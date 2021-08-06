@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 15 for Windows Desktop
+VisualStudioVersion = 15.0.28307.852
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatInspector", "BatInspector\BatInspector.csproj", "{D50438F3-3143-42B1-A568-BF3198B4579D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D50438F3-3143-42B1-A568-BF3198B4579D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D50438F3-3143-42B1-A568-BF3198B4579D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D50438F3-3143-42B1-A568-BF3198B4579D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D50438F3-3143-42B1-A568-BF3198B4579D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F668E43-A3C4-4052-A61B-91D41D58796D}
+	EndGlobalSection
+EndGlobal

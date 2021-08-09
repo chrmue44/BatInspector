@@ -28,7 +28,6 @@ namespace BatInspector
     public MainWindow()
     {
       InitializeComponent();
-      initGrid();
       initTreeView();
     }
 
@@ -130,6 +129,10 @@ namespace BatInspector
       _dgData.ItemsSource = list;
     }
 
+    void createNewFieEntry()
+    {
+    }
+
     void WavFileSelected(object sender, RoutedEventArgs e)
     {
       DataGrid dg = e.Source as DataGrid;
@@ -137,12 +140,16 @@ namespace BatInspector
       Waterfall wf = new Waterfall(_selectedDir + "Records/" + pe.FileName, 1024);
       Bitmap bmp = wf.generatePicture(512, 256);
       BitmapImage bImg = Convert(bmp);
-      Image img = new Image();
-      img.Source = bImg;
-      DockPanel.SetDock(img, Dock.Bottom);
-      img.MaxWidth = 512;
-      img.MaxHeight = 256;
-      _spSpectrums.Children.Add(img); 
+      //Image img = new Image();
+//      img.Source = bImg;
+      ctlWavFile ctl = new ctlWavFile();
+      DockPanel.SetDock(ctl, Dock.Bottom);
+      ctl.Img.Source = bImg;
+      ctl.Img.MaxWidth = 512;
+      ctl.Img.MaxHeight = 256;
+      ctl.setFileInformations(pe.FileName, 1);
+
+      _spSpectrums.Children.Add(ctl); 
     }
 
 
@@ -159,90 +166,6 @@ namespace BatInspector
 
       return image;
     }
-
-    //https://stackoverflow.com/questions/6484357/converting-bitmapimage-to-bitmap-and-vice-versa
-    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-    public static extern bool DeleteObject(IntPtr hObject);
-
-    private BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
-    {
-      IntPtr hBitmap = bitmap.GetHbitmap();
-      BitmapImage retval;
-
-      try
-      {
-        retval = (BitmapImage)Imaging.CreateBitmapSourceFromHBitmap(
-                     hBitmap,
-                     IntPtr.Zero,
-                     Int32Rect.Empty,
-                     BitmapSizeOptions.FromEmptyOptions());
-      }
-      finally
-      {
-        DeleteObject(hBitmap);
-      }
-
-      return retval;
-    }
-    /*
-    private void initPrjGrid()
-    {
-      List<DirListEntry> list = new List<DirListEntry>();
-      string[] dirs = Directory.GetDirectories(@"c:\", "*", SearchOption.TopDirectoryOnly);
-      foreach (string dir in dirs)
-      {
-        DirListEntry item = new DirListEntry();
-        item.IsDir = true;
-        item.Name = dir;
-        item.Date = Directory.GetCreationTime(dir).ToShortDateString();
-        item.Size = "";
-        list.Add(item);
-      }
-
-      string[] files = Directory.GetFiles(@"c:\", "*", SearchOption.TopDirectoryOnly);
-      foreach (string f in files)
-      {
-        DirListEntry item = new DirListEntry();
-        item.Name = f;
-        item.IsDir = false;
-        item.Date = File.GetLastWriteTime(f).ToShortDateString();
-        item.Size = new System.IO.FileInfo(f).Length.ToString();
-        list.Add(item);
-      }
-
-      _dgData.ItemsSource = list;
-    }*/
-
-    /*
-private TreeViewItem GetTreeView(string uid, string text, string imagePath)
-{
-TreeViewItem item = new TreeViewItem();
-item.Uid = uid;
-item.IsExpanded = false;
-
-// create stack panel
-StackPanel stack = new StackPanel();
-stack.Orientation = Orientation.Horizontal;
-
-// create Image
-Image image = new Image();
-image.Source = new BitmapImage(new Uri("pack://application:,,,/images/" + imagePath));
-image.Width = 16;
-image.Height = 16;
-// Label
-Label lbl = new Label();
-lbl.Content = text;
-
-
-// Add into stack
-stack.Children.Add(image);
-stack.Children.Add(lbl);
-
-// assign stack to header
-item.Header = stack;
-return item;
-} */
-
   }
 
   public class PrjEntry

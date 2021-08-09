@@ -31,8 +31,8 @@ namespace BatInspector
       double[] dummy;
       _spec = new List<double[]>();
       _colorMap = new List<Color>();
-      _minAmplitude = -30;
-      _maxAmplitude = -30;
+      _minAmplitude = -25;
+      _maxAmplitude = _minAmplitude;
       prepareColorMap();
       if (File.Exists(_wavName))
       {

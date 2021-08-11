@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Xml.Serialization;
-using Image = System.Windows.Controls.Image;
+
 
 namespace BatInspector
 {
@@ -24,11 +13,14 @@ namespace BatInspector
   /// </summary>
   public partial class MainWindow : Window
   {
-    string _selectedDir;
+    ViewModel _model;
+    FrmLog _log = null;
+
     public MainWindow()
     {
       InitializeComponent();
       initTreeView();
+      _model = new ViewModel();
     }
 
     public void initTreeView()
@@ -56,7 +48,15 @@ namespace BatInspector
         try
         {
           foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
-            item.Items.Add(CreateTreeItem(subDir));
+          {
+            TreeViewItem childItem = CreateTreeItem(subDir);
+            item.Items.Add(childItem);
+            if(_model.containsProject(subDir))
+            {
+              childItem.FontWeight = FontWeights.Bold;
+              childItem.Foreground = new SolidColorBrush(Colors.Violet);
+            }
+          }
         }
         catch { }
       }
@@ -66,11 +66,12 @@ namespace BatInspector
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
-      _selectedDir = dir.FullName + "/";
-      string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
-                       System.IO.SearchOption.TopDirectoryOnly);
-      if (files.Length > 0)
-        initProjectGrid(files[0]);
+      _model.initProject(dir);
+      if (_model.Prj != null)
+      {
+        _lblProject.Text = dir.FullName;
+        populateFiles();
+      }
     }
 
     private TreeViewItem CreateTreeItem(object o)
@@ -82,25 +83,137 @@ namespace BatInspector
       return item;
     }
 
-    private void initProjectGrid(string fName)
+
+    private async void populateFiles()
     {
-      string xml = File.ReadAllText(fName);
-      var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-      BatExplorerProjectFile batExplorerPrj;
-
-      TextReader reader = new StringReader(xml);
-      batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-
-      List<PrjEntry> list = new List<PrjEntry>();
-      foreach (BatExplorerProjectFileRecordsRecord record in batExplorerPrj.Records)
-      {
-        PrjEntry item = new PrjEntry();
-        item.FileName = record.File;
-        list.Add(item);
-      }
-      _dgProject.ItemsSource = list;
+      _spSpectrums.Children.Clear();
+      await createFftImages();
     }
 
+
+    internal async Task  createFftImages()
+    {
+      if(_model.Prj != null)
+      {
+        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+        {
+          ctlWavFile ctl = new ctlWavFile();
+          DockPanel.SetDock(ctl, Dock.Bottom);
+          ctl.Img.Source = _model.getImage(rec);
+          ctl.Img.MaxWidth = 512;
+          ctl.Img.MaxHeight = 256;
+          ctl.setFileInformations(rec.File, 1);
+          _spSpectrums.Dispatcher.Invoke(() =>
+          {
+            _spSpectrums.Children.Add(ctl);
+          });
+          await Task.Delay(5);
+        }
+      }
+    }
+
+    private void _btnAll_Click(object sender, RoutedEventArgs e)
+    {
+      foreach(UIElement it in _spSpectrums.Children)
+      {
+        ctlWavFile ctl = it as ctlWavFile;
+        ctl._cbSel.IsChecked = true;
+      }
+    }
+
+    private void _btnNone_Click(object sender, RoutedEventArgs e)
+    {
+      foreach (UIElement it in _spSpectrums.Children)
+      {
+        ctlWavFile ctl = it as ctlWavFile;
+        ctl._cbSel.IsChecked = false;
+      }
+    }
+
+    private void _btnDelSelected_Click(object sender, RoutedEventArgs e)
+    {
+      List<UIElement> list = new List<UIElement>();
+      foreach (UIElement it in _spSpectrums.Children)
+      {
+        ctlWavFile ctl = it as ctlWavFile;
+        if (ctl._cbSel.IsChecked == true)
+        {
+          _model.deleteFile(ctl._grp.Header.ToString());
+          list.Add(it);
+        }
+      }
+
+      foreach(UIElement it in list)
+        _spSpectrums.Children.Remove(it);
+
+    }
+
+    private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
+    {
+      MessageBoxResult res = MessageBox.Show("Start data evaluation to find calls (may take a long time!)", "", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+      if(res == MessageBoxResult.OK)
+      {
+        _model.startEvaluation();
+      }
+    }
+
+    private void _btnDebug_Click(object sender, RoutedEventArgs e)
+    {
+      if(_log == null)
+      {
+        _log = new FrmLog();
+        DebugLog.setLogDelegate(_log.log);
+        _log.Show();
+        DebugLog.log("Debug log opened", enLogType.INFO);
+        
+      }
+      else
+      {
+        DebugLog.setLogDelegate(null);
+        _log.Close();
+        _log = null;
+      }
+    }
+
+    /*    void WavFileSelected(object sender, RoutedEventArgs e)
+{
+DataGrid dg = e.Source as DataGrid;
+PrjEntry pe = dg.SelectedItem as PrjEntry;
+
+Waterfall wf = new Waterfall(_selectedDir + "Records/" + pe.FileName, 1024);
+Bitmap bmp = wf.generatePicture(512, 256);
+BitmapImage bImg = Convert(bmp);
+//Image img = new Image();
+//      img.Source = bImg;
+ctlWavFile ctl = new ctlWavFile();
+DockPanel.SetDock(ctl, Dock.Bottom);
+ctl.Img.Source = bImg;
+ctl.Img.MaxWidth = 512;
+ctl.Img.MaxHeight = 256;
+ctl.setFileInformations(pe.FileName, 1);
+
+_spSpectrums.Children.Add(ctl);
+} */
+    /*    private void initProjectGrid(string fName)
+        {
+          string xml = File.ReadAllText(fName);
+          var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
+          BatExplorerProjectFile batExplorerPrj;
+
+          TextReader reader = new StringReader(xml);
+          batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
+
+          List<PrjEntry> list = new List<PrjEntry>();
+          foreach (BatExplorerProjectFileRecordsRecord record in batExplorerPrj.Records)
+          {
+            PrjEntry item = new PrjEntry();
+            item.FileName = record.File;
+            list.Add(item);
+          }
+          _dgProject.ItemsSource = list;
+        } */
+
+    /*
     private void initGrid()
     {
       List<DirListEntry> list = new List<DirListEntry>();
@@ -127,52 +240,21 @@ namespace BatInspector
       }
 
       _dgData.ItemsSource = list;
-    }
+    }  
 
     void createNewFieEntry()
     {
-    }
+    } */
 
-    void WavFileSelected(object sender, RoutedEventArgs e)
-    {
-      DataGrid dg = e.Source as DataGrid;
-      PrjEntry pe = dg.SelectedItem as PrjEntry;
-      Waterfall wf = new Waterfall(_selectedDir + "Records/" + pe.FileName, 1024);
-      Bitmap bmp = wf.generatePicture(512, 256);
-      BitmapImage bImg = Convert(bmp);
-      //Image img = new Image();
-//      img.Source = bImg;
-      ctlWavFile ctl = new ctlWavFile();
-      DockPanel.SetDock(ctl, Dock.Bottom);
-      ctl.Img.Source = bImg;
-      ctl.Img.MaxWidth = 512;
-      ctl.Img.MaxHeight = 256;
-      ctl.setFileInformations(pe.FileName, 1);
-
-      _spSpectrums.Children.Add(ctl); 
-    }
-
-
-    //http://www.shujaat.net/2010/08/wpf-images-from-project-resource.html
-    public BitmapImage Convert(Bitmap value)
-    {
-      MemoryStream ms = new MemoryStream();
-      value.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-      BitmapImage image = new BitmapImage();
-      image.BeginInit();
-      ms.Seek(0, SeekOrigin.Begin);
-      image.StreamSource = ms;
-      image.EndInit();
-
-      return image;
-    }
   }
-
+  /*
   public class PrjEntry
   {
     public string FileName { get; set; }
   }
-
+  */
+ 
+  /*
   public class DirListEntry
   {
     public bool IsDir { get; set; }
@@ -181,6 +263,6 @@ namespace BatInspector
     public string Size { get; set; }
 
     public string Date { get; set; }
-  }
+  }*/
 
 }

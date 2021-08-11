@@ -1,3 +1,15 @@
 ﻿Bat_icon-icons.com_75012.png:
 https://icon-icons.com/de/download/75012/PNG/128/
 License: https://creativecommons.org/licenses/by/4.0/
+
+recycle.png
+https://www.flaticon.com/free-icon/recycle_702609?related_id=702609
+made by Good Ware from https://www.flaticon.com Icons made by Eucalyp https://creativemarket.com/eucalyp
+
+magnifying_glass.png
+https://www.flaticon.com/free-icon/magnifying-glass_1166881
+Icon made by https://www.freepik.com  from https://www.flaticon.com
+
+bug_48.png:
+https://www.iconsdb.com/green-icons/bug-icon.html
+License: Creative Commons Attribution-NoDerivs 3.0. 

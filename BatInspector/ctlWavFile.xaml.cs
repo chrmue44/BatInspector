@@ -27,12 +27,13 @@ namespace BatInspector
 
     public void setFileInformations(string Name, int Calls)
     {
+      _grp.Header = Name;
       List<ListItem> list = new List<ListItem>();
-      ListItem item = new ListItem("Filename", Name);
+      //      ListItem item = new ListItem("Filename", Name);
+      //      list.Add(item);
+      ListItem  item = new ListItem("Nr. of Calls", Calls);
       list.Add(item);
-      item = new ListItem("Nr. of Calls", Calls);
-      list.Add(item);
-      FileInfo.ItemsSource = list;
+      _lvFileInfo.ItemsSource = list;
     }
   }
 

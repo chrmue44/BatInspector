@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,14 @@ namespace BatInspector
     string _fileName;
     char _separator = ';';
 
+    public int RowCnt {  get { return _cells.Count; } }
+
     public Csv()
     {
       _cells = new List<List<string>>();
     }
 
-    public int open(string file, char separator = ';')
+    public int read(string file, char separator = ';')
     {
       int retVal = 0;
       _separator = separator;
@@ -39,20 +42,22 @@ namespace BatInspector
       return retVal;
     }
 
-    public int save()
+    public int save(bool withBackup = true)
     {
       int retVal = 0;
+      if(withBackup)
+        File.Copy(_fileName, _fileName + ".bak");
+      
       string[] lines = new string[_cells.Count];
-      int rowNr = 0;
       string sep = _separator.ToString();
-      foreach(List<string> row in _cells)
-        lines[rowNr] = String.Join(sep, row);
+      for (int rowNr = 0;  rowNr < lines.Length; rowNr++)
+        lines[rowNr] = String.Join(sep, _cells[rowNr]);
 
       File.WriteAllLines(_fileName, lines);
       return retVal;
     }
 
-    string getCell(int row, int col)
+    public string getCell(int row, int col)
     {
       string retVal = "";
       row--;
@@ -68,6 +73,21 @@ namespace BatInspector
       }
       else
         log("getCell():row " + row.ToString() + " does not exist");
+      return retVal;
+    }
+
+    public double getCellAsDouble(int row, int col)
+    {
+      string str = getCell(row, col);
+      double retVal = 0;
+      try
+      {
+        retVal = double.Parse(str, CultureInfo.InvariantCulture);
+      }
+      catch
+      {
+        log("value: " + str + " in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed double");
+      }
       return retVal;
     }
 
@@ -97,6 +117,29 @@ namespace BatInspector
       }
       else
         log("setCell():row number must not be lower than 1");
+    }
+
+    public int findInCol(string val, int col)
+    {
+      int retVal = 0;
+      for(int row = 1; row <= _cells.Count; row++)
+      {
+        if((col <= _cells[row-1].Count) && (_cells[row-1][col-1] == val))
+        {
+          retVal = row;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public void removeRow(int row)
+    {
+      if((row > 0) && (row <= _cells.Count))
+      {
+        List<string> r = _cells[row - 1];
+        _cells.Remove(r);
+      }
     }
 
     void log(string msg)

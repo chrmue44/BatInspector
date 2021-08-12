@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 
-namespace BatInspector
+namespace BatInspector.Forms
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml

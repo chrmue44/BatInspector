@@ -1,4 +1,4 @@
-﻿<Window x:Class="BatInspector.MainWindow"
+﻿<Window x:Class="BatInspector.Forms.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector"
         mc:Ignorable="d"
         Title="BatInspector" Height="680" Width="1024"
-        Icon="images/Bat_icon-icons.com_75012.png"
+        Icon="../images/Bat_icon-icons.com_75012.png"
         >
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
@@ -21,13 +21,13 @@
         <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
             <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
                 <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Image Source="images/recycle.png"> </Image>
+                    <Image Source="../images/recycle.png"> </Image>
                 </Button>
                 <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="find bat calls in project" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Image Source="images/magnifying-glass.png"></Image>
+                    <Image Source="../images/magnifying-glass.png"></Image>
                 </Button>
                 <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="enable debug log" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                     <Image Source="images/bug-48.png"></Image>
+                     <Image Source="../images/bug-48.png"></Image>
                   </Button>
             </ToolBar>
         </ToolBarTray>

@@ -30,15 +30,19 @@ namespace BatInspector
         _fileName = file;
         string[] lines = File.ReadAllLines(file);
         _cells.Clear();
-        foreach(string line in lines)
+        foreach (string line in lines)
         {
           string[] s = line.Split(separator);
           List<string> row = s.ToList();
           _cells.Add(row);
         }
+        log("file " + file + " opened successfully", enLogType.INFO);
       }
       else
+      {
         retVal = 1;
+        log("could not open file " + file, enLogType.ERROR);
+      }
       return retVal;
     }
 
@@ -69,10 +73,10 @@ namespace BatInspector
           retVal = _cells[row][col];
         }
         else
-          log("getCell(): column " + col.ToString() + " does not exist");
+          log("getCell(): column " + col.ToString() + " does not exist", enLogType.ERROR);
       }
       else
-        log("getCell():row " + row.ToString() + " does not exist");
+        log("getCell():row " + row.ToString() + " does not exist", enLogType.ERROR);
       return retVal;
     }
 
@@ -86,7 +90,7 @@ namespace BatInspector
       }
       catch
       {
-        log("value: " + str + " in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed double");
+        log("value: " + str + " in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed double", enLogType.ERROR);
       }
       return retVal;
     }
@@ -113,10 +117,10 @@ namespace BatInspector
           _cells[row][col] = value;
         }
         else
-          log("setCell():column number must not be lower than 1");
+          log("setCell():column number must not be lower than 1", enLogType.ERROR);
       }
       else
-        log("setCell():row number must not be lower than 1");
+        log("setCell():row number must not be lower than 1", enLogType.ERROR);
     }
 
     public int findInCol(string val, int col)
@@ -142,9 +146,9 @@ namespace BatInspector
       }
     }
 
-    void log(string msg)
+    void log(string msg, enLogType type)
     {
-
+      DebugLog.log("[Csv] " + msg, type);
     }
   }
 }

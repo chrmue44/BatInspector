@@ -72,25 +72,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ctlWavFile.xaml.cs">
+    <Compile Include="Forms\ctlWavFile.xaml.cs">
       <DependentUpon>ctlWavFile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DebugLog.cs" />
-    <Compile Include="FrmLog.xaml.cs">
+    <Compile Include="ViewModel\DebugLog.cs" />
+    <Compile Include="Forms\FrmLog.xaml.cs">
       <DependentUpon>FrmLog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProcessRunner.cs" />
-    <Compile Include="ViewModel.cs" />
-    <Compile Include="Waterfall.cs" />
-    <Page Include="ctlWavFile.xaml">
+    <Compile Include="ViewModel\ProcessRunner.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="ViewModel\Waterfall.cs" />
+    <Page Include="Forms\ctlWavFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FrmLog.xaml">
+    <Page Include="Forms\FrmLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Forms\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -98,11 +98,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BatInspectFmt.cs" />
-    <Compile Include="Csv.cs" />
-    <Compile Include="DSPLib.cs" />
-    <Compile Include="Fft.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="ViewModel\BatInspectFmt.cs" />
+    <Compile Include="ViewModel\Csv.cs" />
+    <Compile Include="ViewModel\DSPLib.cs" />
+    <Compile Include="ViewModel\Fft.cs" />
+    <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

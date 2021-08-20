@@ -13,13 +13,15 @@ namespace BatInspector
   class ViewModel
   {
     const int COL_NAME = 1;
-    const int COL_FREQ_MAX_AMP = 3;
-    const int COL_FREQ_MIN = 4;
-    const int COL_FREQ_MAX = 5;
-    const int COL_FREQ_KNEE = 6;
-    const int COL_DURATION = 7;
-    const int COL_START_TIME = 8;
-    const int COL_SNR = 9;
+    const int COL_SAMPLERATE = 3;
+    const int COL_FILE_LEN = 4;
+    const int COL_FREQ_MAX_AMP = 5;
+    const int COL_FREQ_MIN = 6;
+    const int COL_FREQ_MAX = 7;
+    const int COL_FREQ_KNEE = 8;
+    const int COL_DURATION = 9;
+    const int COL_START_TIME = 10;
+    const int COL_SNR = 11;
 
     string _selectedDir;
     BatExplorerProjectFile _batExplorerPrj;
@@ -144,13 +146,27 @@ namespace BatInspector
       }
     }
 
+    public AnalysisFile getAnalysis(string fileName)
+    {
+      AnalysisFile retVal = null;
+      foreach(AnalysisFile f in _analysis)
+      {
+        if(f.FileName == fileName)
+        {
+          retVal = f;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     public void startEvaluation()
     {
       if(Prj != null)
       {
         string exe = "D:/bin/R-4.1.0/bin/Rscript.exe";
         string wrkDir = "D:/prj/bioacoustics";
-        string args = "cm1.R " + _selectedDir + "/Records " + _selectedDir + "/report.csv"; 
+        string args = "cm.R " + _selectedDir + "/Records " + _selectedDir + "/report.csv"; 
         _proc.LaunchCommandLineApp(exe, null, wrkDir, false, args, false, true);
       }
     }
@@ -161,7 +177,7 @@ namespace BatInspector
       csv.read(fileName);
       _analysis.Clear();
       string lastFileName = "";
-      AnalysisFile file = new AnalysisFile("");
+      AnalysisFile file = new AnalysisFile();
 
       for (int row = 2; row <= csv.RowCnt; row++)
       {
@@ -172,6 +188,8 @@ namespace BatInspector
           file = new AnalysisFile(fName);
           _analysis.Add(file);
         }
+        file.SampleRate = csv.getCellAsInt(row, COL_SAMPLERATE);
+        file.Duration = csv.getCellAsDouble(row, COL_FILE_LEN);
         double fMaxAmp = csv.getCellAsDouble(row, COL_FREQ_MAX_AMP);
         double fMin = csv.getCellAsDouble(row, COL_FREQ_MIN);
         double fMax = csv.getCellAsDouble(row, COL_FREQ_MAX);
@@ -223,8 +241,16 @@ namespace BatInspector
   {
     List<AnalysisCall> _calls;
 
-    public string FileName { get; }
+    public string FileName { get; set; }
+    public int SampleRate { get; set; }
+    public double Duration { get; set; }
+
     public List<AnalysisCall> Calls { get { return _calls; } }
+
+    public AnalysisFile()
+    {
+      _calls = new List<AnalysisCall>();
+    }
 
     public AnalysisFile(string name)
     {

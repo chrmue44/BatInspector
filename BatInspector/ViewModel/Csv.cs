@@ -49,8 +49,13 @@ namespace BatInspector
     public int save(bool withBackup = true)
     {
       int retVal = 0;
-      if(withBackup)
-        File.Copy(_fileName, _fileName + ".bak");
+      if (withBackup)
+      {
+        string bakName = _fileName + ".bak";
+        if (File.Exists(bakName))
+          File.Delete(bakName);
+        File.Copy(_fileName, bakName);
+      }
       
       string[] lines = new string[_cells.Count];
       string sep = _separator.ToString();
@@ -84,13 +89,34 @@ namespace BatInspector
     {
       string str = getCell(row, col);
       double retVal = 0;
-      try
+      if (str != "")
       {
-        retVal = double.Parse(str, CultureInfo.InvariantCulture);
+        try
+        {
+          retVal = double.Parse(str, CultureInfo.InvariantCulture);
+        }
+        catch
+        {
+          log("value: '" + str + "' in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed double", enLogType.ERROR);
+        }
       }
-      catch
+      return retVal;
+    }
+
+    public int getCellAsInt(int row, int col)
+    {
+      string str = getCell(row, col);
+      int retVal = 0;
+      if (str != "")
       {
-        log("value: " + str + " in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed double", enLogType.ERROR);
+        try
+        {
+          retVal = int.Parse(str, CultureInfo.InvariantCulture);
+        }
+        catch
+        {
+          log("value: '" + str + "' in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed integer", enLogType.ERROR);
+        }
       }
       return retVal;
     }

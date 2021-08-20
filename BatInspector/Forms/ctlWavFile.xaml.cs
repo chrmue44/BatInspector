@@ -1,17 +1,19 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2021: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace BatInspector
 {
@@ -20,20 +22,37 @@ namespace BatInspector
   /// </summary>
   public partial class ctlWavFile : UserControl
   {
+    AnalysisFile _analysis;
+    List<ListItem> _list;
+
     public ctlWavFile()
     {
       InitializeComponent();
+      _list = new List<ListItem>();
     }
 
-    public void setFileInformations(string Name, int Calls)
+    public void setFileInformations(string Name, AnalysisFile analysis)
     {
+      _list.Clear();
+      _analysis = analysis;
       _grp.Header = Name;
-      List<ListItem> list = new List<ListItem>();
-      //      ListItem item = new ListItem("Filename", Name);
-      //      list.Add(item);
-      ListItem  item = new ListItem("Nr. of Calls", Calls);
-      list.Add(item);
-      _lvFileInfo.ItemsSource = list;
+      ListItem item = new ListItem("sample Rate", _analysis.SampleRate);
+      _list.Add(item);
+      item = new ListItem("Duration", _analysis.Duration);
+      _list.Add(item);
+      item = new ListItem("Nr. of Calls", _analysis.Calls.Count);
+      _list.Add(item);
+      _lvFileInfo.ItemsSource = _list;
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      int sampleRate = (int)_list[0].Value;
+      FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis);
+      frm._img.Source = this.Img.Source;
+      frm._img.Width = this.Img.Width;
+      frm._img.Height = this.Img.Height;
+      frm.Show();
     }
   }
 

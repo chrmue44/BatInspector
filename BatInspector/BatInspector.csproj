@@ -75,6 +75,9 @@
     <Compile Include="Forms\ctlWavFile.xaml.cs">
       <DependentUpon>ctlWavFile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmZoom.xaml.cs">
+      <DependentUpon>FrmZoom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\DebugLog.cs" />
     <Compile Include="Forms\FrmLog.xaml.cs">
       <DependentUpon>FrmLog.xaml</DependentUpon>
@@ -87,6 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmZoom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,6 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\bug-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-zoom-in-h-64.png" />
+    <Resource Include="images\icons8-zoom-in-v-64.png" />
+    <Resource Include="images\icons8-zoom-out-h-64.png" />
+    <Resource Include="images\icons8-zoom-out-v-64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

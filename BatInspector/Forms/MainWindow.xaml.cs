@@ -13,8 +13,12 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class MainWindow : Window
   {
+    const int MAX_IMG_HEIGHT = 256;
+    const int MAX_IMG_WIDTH = 512;
+
     ViewModel _model;
     FrmLog _log = null;
+    int _imgHeight = MAX_IMG_HEIGHT;
 
     public MainWindow()
     {
@@ -100,9 +104,9 @@ namespace BatInspector.Forms
           ctlWavFile ctl = new ctlWavFile();
           DockPanel.SetDock(ctl, Dock.Bottom);
           ctl.Img.Source = _model.getImage(rec);
-          ctl.Img.MaxWidth = 512;
-          ctl.Img.MaxHeight = 256;
-          ctl.setFileInformations(rec.File, 1);
+          ctl.Img.MaxWidth = MAX_IMG_WIDTH;
+          ctl.Img.MaxHeight = _imgHeight;
+          ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File));
           _spSpectrums.Dispatcher.Invoke(() =>
           {
             _spSpectrums.Children.Add(ctl);
@@ -172,6 +176,20 @@ namespace BatInspector.Forms
         DebugLog.setLogDelegate(null);
         _log.Close();
         _log = null;
+      }
+    }
+
+    private void _btnSize_Click(object sender, RoutedEventArgs e)
+    {
+      _imgHeight >>= 1;
+      if (_imgHeight < 32)
+        _imgHeight = MAX_IMG_HEIGHT;
+      foreach (UIElement ui in _spSpectrums.Children)
+      {
+        ctlWavFile ctl = ui as ctlWavFile;
+        ctl.Img.MaxHeight = _imgHeight;
+        ctl.Img.Height = _imgHeight;
+        ctl.Img.Width = MAX_IMG_WIDTH;
       }
     }
 

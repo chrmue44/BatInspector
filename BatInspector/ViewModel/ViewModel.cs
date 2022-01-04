@@ -79,7 +79,7 @@ namespace BatInspector
         _batExplorerPrj = null;
     }
 
-    public BitmapImage getImage(BatExplorerProjectFileRecordsRecord rec)
+    public BitmapImage getImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
       string fullName = _selectedDir + "Records/" + rec.File;
       string pngName = fullName.Replace(".wav", ".png");
@@ -87,13 +87,14 @@ namespace BatInspector
       if (File.Exists(pngName))
       {
         bmp = new Bitmap(pngName);
+        newImage = false;
       }
       else
       {
-        _mainWin.setStatus("genearating " + pngName);
         Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, 512);
         bmp = wf.generatePicture(512, 256);
         bmp.Save(pngName);
+        newImage = true;
       }
       BitmapImage bImg = Convert(bmp);
       return bImg;

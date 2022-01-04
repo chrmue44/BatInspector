@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -93,14 +94,52 @@ namespace BatInspector.Forms
     }
 
 
-    private async void populateFiles()
+    private void populateFiles()
     {
       _spSpectrums.Children.Clear();
+
+      BackgroundWorker worker = new BackgroundWorker();
+      worker.WorkerReportsProgress = true;
+      worker.DoWork += createImageFiles;
+      worker.ProgressChanged += worker_ProgressChanged;
+      worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+      worker.RunWorkerAsync(10000);
+    }
+
+    void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+    {
+      if (e.UserState != null)
+        this.setStatus("genearating " + e.UserState);
+
+    }
+
+    void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      populateControls();
+    }
+
+    private async void populateControls()
+    {
       await createFftImages();
     }
 
+    private void createImageFiles(object sender, DoWorkEventArgs e)
+    {
+      if (_model.Prj != null)
+      {
+        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+        {
+          bool newImage;
+          _model.getImage(rec, out newImage);
+          if(newImage)
+          {
+            (sender as BackgroundWorker).ReportProgress(55, rec.Name);
+          }
 
-    internal async Task  createFftImages()
+        }
+      }
+    }
+     internal async Task  createFftImages()
     {
       if(_model.Prj != null)
       {
@@ -108,7 +147,8 @@ namespace BatInspector.Forms
         {
           ctlWavFile ctl = new ctlWavFile();
           DockPanel.SetDock(ctl, Dock.Bottom);
-          ctl.Img.Source = _model.getImage(rec);
+          bool newImage;
+          ctl.Img.Source = _model.getImage(rec, out newImage);
           ctl.Img.MaxWidth = MAX_IMG_WIDTH;
           ctl.Img.MaxHeight = _imgHeight;
           ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File));
@@ -198,95 +238,5 @@ namespace BatInspector.Forms
         ctl.Img.Width = MAX_IMG_WIDTH;
       }
     }
-
-    /*    void WavFileSelected(object sender, RoutedEventArgs e)
-{
-DataGrid dg = e.Source as DataGrid;
-PrjEntry pe = dg.SelectedItem as PrjEntry;
-
-Waterfall wf = new Waterfall(_selectedDir + "Records/" + pe.FileName, 1024);
-Bitmap bmp = wf.generatePicture(512, 256);
-BitmapImage bImg = Convert(bmp);
-//Image img = new Image();
-//      img.Source = bImg;
-ctlWavFile ctl = new ctlWavFile();
-DockPanel.SetDock(ctl, Dock.Bottom);
-ctl.Img.Source = bImg;
-ctl.Img.MaxWidth = 512;
-ctl.Img.MaxHeight = 256;
-ctl.setFileInformations(pe.FileName, 1);
-
-_spSpectrums.Children.Add(ctl);
-} */
-    /*    private void initProjectGrid(string fName)
-        {
-          string xml = File.ReadAllText(fName);
-          var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-          BatExplorerProjectFile batExplorerPrj;
-
-          TextReader reader = new StringReader(xml);
-          batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-
-          List<PrjEntry> list = new List<PrjEntry>();
-          foreach (BatExplorerProjectFileRecordsRecord record in batExplorerPrj.Records)
-          {
-            PrjEntry item = new PrjEntry();
-            item.FileName = record.File;
-            list.Add(item);
-          }
-          _dgProject.ItemsSource = list;
-        } */
-
-    /*
-    private void initGrid()
-    {
-      List<DirListEntry> list = new List<DirListEntry>();
-      string[] dirs = Directory.GetDirectories(@"c:\", "*", SearchOption.TopDirectoryOnly);
-      foreach (string dir in dirs)
-      {
-        DirListEntry item = new DirListEntry();
-        item.IsDir = true;
-        item.Name = dir;
-        item.Date = Directory.GetCreationTime(dir).ToShortDateString();
-        item.Size = "";
-        list.Add(item);
-      }
-
-      string[] files = Directory.GetFiles(@"c:\", "*", SearchOption.TopDirectoryOnly);
-      foreach (string f in files)
-      {
-        DirListEntry item = new DirListEntry();
-        item.Name = f;
-        item.IsDir = false;
-        item.Date = File.GetLastWriteTime(f).ToShortDateString();
-        item.Size = new System.IO.FileInfo(f).Length.ToString();
-        list.Add(item);
-      }
-
-      _dgData.ItemsSource = list;
-    }  
-
-    void createNewFieEntry()
-    {
-    } */
-
   }
-  /*
-  public class PrjEntry
-  {
-    public string FileName { get; set; }
-  }
-  */
- 
-  /*
-  public class DirListEntry
-  {
-    public bool IsDir { get; set; }
-    public string Name { get; set; }
-
-    public string Size { get; set; }
-
-    public string Date { get; set; }
-  }*/
-
 }

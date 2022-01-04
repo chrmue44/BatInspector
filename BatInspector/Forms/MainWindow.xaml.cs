@@ -24,7 +24,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       initTreeView();
-      _model = new ViewModel();
+      _model = new ViewModel(this);
     }
 
     public void initTreeView()
@@ -78,6 +78,11 @@ namespace BatInspector.Forms
       }
     }
 
+    public void setStatus(string status)
+    {
+      _lblStatus.Text = status;
+    }
+
     private TreeViewItem CreateTreeItem(object o)
     {
       TreeViewItem item = new TreeViewItem();
@@ -114,6 +119,7 @@ namespace BatInspector.Forms
           await Task.Delay(5);
         }
       }
+      _lblStatus.Text = "";
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)

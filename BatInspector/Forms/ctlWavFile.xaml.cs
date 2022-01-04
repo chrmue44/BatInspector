@@ -36,13 +36,16 @@ namespace BatInspector
       _list.Clear();
       _analysis = analysis;
       _grp.Header = Name;
-      ListItem item = new ListItem("sample Rate", _analysis.SampleRate);
-      _list.Add(item);
-      item = new ListItem("Duration", _analysis.Duration);
-      _list.Add(item);
-      item = new ListItem("Nr. of Calls", _analysis.Calls.Count);
-      _list.Add(item);
-      _lvFileInfo.ItemsSource = _list;
+      if (analysis != null)
+      {
+        ListItem item = new ListItem("sample Rate", _analysis.SampleRate);
+        _list.Add(item);
+        item = new ListItem("Duration", _analysis.Duration);
+        _list.Add(item);
+        item = new ListItem("Nr. of Calls", _analysis.Calls.Count);
+        _list.Add(item);
+        _lvFileInfo.ItemsSource = _list;
+      }
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

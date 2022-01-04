@@ -163,6 +163,25 @@ namespace BatInspector
       return retVal;
     }
 
+    public void insertCol(int col, string ins = "")
+    {
+      bool err = false;
+      if (col > 0)
+      {
+        foreach (List<string> row in _cells)
+        {
+          if (col <= row.Count)
+            row.Insert(col - 1, ins);
+          else
+            err = true;
+        }
+      }
+      else
+        err = true;
+      if(err)
+        log("insertCol: invalid col nr:" + col.ToString(), enLogType.ERROR);
+    }
+
     public void removeRow(int row)
     {
       if((row > 0) && (row <= _cells.Count))
@@ -170,6 +189,8 @@ namespace BatInspector
         List<string> r = _cells[row - 1];
         _cells.Remove(r);
       }
+      else
+        log("removeRow: invalid row nr:" + row.ToString(), enLogType.ERROR);
     }
 
     void log(string msg, enLogType type)

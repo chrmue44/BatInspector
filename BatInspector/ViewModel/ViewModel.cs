@@ -28,13 +28,15 @@ namespace BatInspector
     string _prjFileName;
     List<AnalysisFile> _analysis;
     ProcessRunner _proc;
+    Forms.MainWindow _mainWin;
 
     public BatExplorerProjectFile Prj { get { return _batExplorerPrj; } }
 
-    public ViewModel()
+    public ViewModel(Forms.MainWindow mainWin)
     {
       _analysis = new List<AnalysisFile>();
       _proc = new ProcessRunner(DebugLog.log);
+      _mainWin = mainWin;
     }
 
     public bool containsProject(DirectoryInfo dir)
@@ -75,6 +77,7 @@ namespace BatInspector
       }
       else
       {
+        _mainWin.setStatus("genearating " + pngName);
         Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, 512);
         bmp = wf.generatePicture(512, 256);
         bmp.Save(pngName);
@@ -125,7 +128,17 @@ namespace BatInspector
         }
         _batExplorerPrj.Records = list.ToArray();
         writePrjFile();
-
+        AnalysisFile fileToDelete = null;
+        foreach (AnalysisFile f in _analysis)
+        {
+          if(f.FileName == wavName)
+          {
+            fileToDelete = f;
+            break;
+          }  
+        }
+        if (fileToDelete != null)
+          _analysis.Remove(fileToDelete);
 
         string reportName = _selectedDir + "/report.csv";
         if (File.Exists(reportName))
@@ -174,7 +187,20 @@ namespace BatInspector
     private void readAnalysis(string fileName)
     {
       Csv csv = new Csv();
-      csv.read(fileName);
+      int ret = csv.read(fileName);
+
+      // @@@ temporary to migrate to new format
+      if(ret == 0)
+      {
+        if(csv.getCellAsInt(2, COL_SAMPLERATE) != 383500)
+        {
+          csv.insertCol(COL_SAMPLERATE, "383500");
+          csv.insertCol(COL_FILE_LEN, "3.001");
+          csv.save();
+        }
+      }
+      //@@@@
+
       _analysis.Clear();
       string lastFileName = "";
       AnalysisFile file = new AnalysisFile();

@@ -10,7 +10,20 @@ using System.Xml.Serialization;
 
 namespace BatInspector
 {
-  class ViewModel
+  public class Cursor
+  {
+    public double Freq = 0;
+    public double Time = 0;
+    public bool Visible = false;
+  }
+   
+  public class RulerData
+  {
+    public double Min = 0;
+    public double Max = 100;
+  }
+
+  public class ViewModel
   {
     const int COL_NAME = 1;
     const int COL_SAMPLERATE = 3;

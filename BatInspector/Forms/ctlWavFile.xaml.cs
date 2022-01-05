@@ -24,6 +24,7 @@ namespace BatInspector
   {
     AnalysisFile _analysis;
     List<ListItem> _list;
+    string _wavFilePath;
 
     public ctlWavFile()
     {
@@ -31,10 +32,11 @@ namespace BatInspector
       _list = new List<ListItem>();
     }
 
-    public void setFileInformations(string Name, AnalysisFile analysis)
+    public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath)
     {
       _list.Clear();
       _analysis = analysis;
+      _wavFilePath = wavFilePath;
       _grp.Header = Name;
       if (analysis != null)
       {
@@ -51,7 +53,7 @@ namespace BatInspector
     private void Button_Click(object sender, RoutedEventArgs e)
     {
       int sampleRate = (int)_list[0].Value;
-      FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis);
+      FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath);
       frm._img.Source = this.Img.Source;
       frm._img.Width = this.Img.Width;
       frm._img.Height = this.Img.Height;

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -26,8 +21,10 @@ namespace BatInspector
     RulerData _rulerDataX;
     RulerData _rulerDataY;
     ObservableCollection<ListItem> _list;
+    string _wavFilePath;
+    Waterfall _wf;
 
-    public FrmZoom(string name, AnalysisFile analysis)
+    public FrmZoom(string name, AnalysisFile analysis, string wavFilePath)
     {
       InitializeComponent();
       this.Title = name;
@@ -37,7 +34,8 @@ namespace BatInspector
       _rulerDataX = new RulerData();
       _rulerDataY = new RulerData();
       _list = new ObservableCollection<ListItem>();
-
+      _wavFilePath = wavFilePath;
+      _wf = new Waterfall(_wavFilePath + analysis.FileName, 512);
       ContentRendered += FrmZoom_ContentRendered;
       SizeChanged += FrmZoom_SizeChanged;
       MouseDown += FrmZoomMouseDown;
@@ -122,8 +120,8 @@ namespace BatInspector
 
     private void FrmZoom_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-      initRulerY(0, _analysis.SampleRate/2000);
-      initRulerX(0, _analysis.Duration);
+      initRulerY(_rulerDataY.Min, _rulerDataY.Max);
+      initRulerX(_rulerDataX.Min, _rulerDataX.Max);
       drawCursor(_cursorX1, _cursorY1, _cursor1);
       drawCursor(_cursorX2, _cursorY2, _cursor2);
     }
@@ -188,6 +186,68 @@ namespace BatInspector
       Canvas.SetLeft(textBlock, x);
       Canvas.SetTop(textBlock, y);
       can.Children.Add(textBlock);
+    }
+
+    private void _btnZoomInV_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void _btnZoomOutV_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void _btnZoomInH_Click(object sender, RoutedEventArgs e)
+    {
+      _rulerDataX.Max = (_rulerDataX.Max - _rulerDataX.Min)/ 2 + _rulerDataX.Min;
+      createZoomImg();
+    }
+
+    private void _btnZoomOutH_Click(object sender, RoutedEventArgs e)
+    {
+      _rulerDataX.Max = (_rulerDataX.Max - _rulerDataX.Min) * 2 + _rulerDataX.Min;
+      createZoomImg();
+    }
+
+    private void _btnmoveLeft_Click(object sender, RoutedEventArgs e)
+    {
+      double width = _rulerDataX.Max - _rulerDataX.Min;
+      if (_rulerDataX.Min >= width / 4)
+      {
+        _rulerDataX.Min -= width / 4;
+        _rulerDataX.Max -= width / 4;
+        createZoomImg();
+      }
+    }
+
+    private void _btnmoveRight_Click(object sender, RoutedEventArgs e)
+    {
+      double width = _rulerDataX.Max - _rulerDataX.Min;
+      if (_rulerDataX.Max <= _wf.Duration - width / 4)
+      {
+        _rulerDataX.Max += width / 4;
+        _rulerDataX.Min += width / 4;
+        createZoomImg();
+      }
+    }
+
+    private void createZoomImg()
+    {
+      System.Drawing.Bitmap bmp = null;
+      BitmapImage bImg = null;
+      if (_rulerDataX.Max > _wf.Duration)
+        _rulerDataX.Max = _wf.Duration;
+      if (_rulerDataX.Min < 0)
+        _rulerDataX.Min = 0;
+      initRulerX(_rulerDataX.Min, _rulerDataX.Max);
+      _wf.generateDiagram(_rulerDataX.Min, _rulerDataX.Max, 512);
+      bmp = _wf.generatePicture(512, 256);
+      if (bmp != null)
+      {
+        bImg = ViewModel.Convert(bmp);
+        _img.Source = bImg;
+      }
     }
   }
 }

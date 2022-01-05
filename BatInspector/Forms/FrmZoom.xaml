@@ -19,21 +19,27 @@
     </Grid.ColumnDefinitions>
     <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" VerticalAlignment="Top">
       <ToolBar x:Name="_tb" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-        <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInV_Click">
           <Image Source="../images/icons8-zoom-in-v-64.png"></Image>
         </Button>
-        <Button x:Name="_btnZoomOutV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Button x:Name="_btnZoomOutV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutV_Click">
           <Image Source="../images/icons8-zoom-out-v-64.png"></Image>
         </Button>
-        <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInH_Click">
           <Image Source="../images/icons8-zoom-in-h-64.png"></Image>
         </Button>
-        <Button x:Name="_btnZoomOutH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Button x:Name="_btnZoomOutH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutH_Click">
           <Image Source="../images/icons8-zoom-out-h-64.png"></Image>
+        </Button>
+        <Button x:Name="_btnmoveLeft"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveLeft_Click">
+          <Image Source="../images/icons8-arrow-left-64.png"></Image>
+        </Button>
+        <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click">
+          <Image Source="../images/icons8-arrow-right-64.png"></Image>
         </Button>
       </ToolBar>
     </ToolBarTray>
-    <Image Name="_img" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Stretch="Uniform">
+    <Image Name="_img" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill">
     </Image>
     <Line Name="_cursorX1" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
     <Line Name="_cursorY1" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />

@@ -4,11 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using DSPLib;
-using Image = System.Drawing.Image;
+
 
 namespace BatInspector
 {
@@ -24,6 +21,15 @@ namespace BatInspector
     double _maxAmplitude;
     double _minAmplitude;
 
+    public double Duration { get { return (double)_samples.Length / _samplingRate; } }
+    public int SamplingRate { get { return _samplingRate; } }
+    public double[] Samples { get { return _samples; } }
+    public List<double[]> Spec {  get { return _spec; } }
+    public bool Ok { get { return _ok; } }
+
+    public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
+    public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
+
     public Waterfall(string wavName, UInt32 fftSize)
     {
       _wavName = wavName;
@@ -37,10 +43,42 @@ namespace BatInspector
       if (File.Exists(_wavName))
       {
         openWav(wavName, out _samples, out dummy, out _samplingRate);
-        for(UInt32 idx = 0; idx < _samples.Length; idx += _fftSize)
-          generateFft(idx, _fftSize);
         _ok = true;
       }
+      else
+      {
+        DebugLog.log("wav file '" + _wavName + "' does not exist!", enLogType.ERROR);
+      }
+    }
+
+    /// <summary>
+    /// generate a waterfall diagram
+    /// </summary>
+    /// <param name="startTime">start time [s] in wav file</param>
+    /// <param name="EndTime">end time [s] in wav file</param>
+    /// <param name="width">width of waterfall diagram in pixel</param>
+    public void generateDiagram(double startTime, double EndTime, uint width)
+    {
+      if (_ok)
+      {
+        Spec.Clear();
+        uint idxStart = (uint)(startTime * _samplingRate);
+        if (idxStart > _samples.Length)
+          idxStart = (uint)_samples.Length;
+        uint idxEnd = (uint)(EndTime * _samplingRate);
+        if (idxEnd > _samples.Length)
+          idxEnd = (uint)_samples.Length;
+        uint step = (idxEnd - idxStart) / width;
+        if (step == 0)
+          step = 1;
+        if (step > _fftSize)
+          step = _fftSize;
+        for (uint idx = idxStart; idx < idxEnd; idx += step)
+          generateFft(idx, _fftSize);
+      }
+      else
+        DebugLog.log("generateWaterfall(): WAV file is not open!", enLogType.ERROR);
+
     }
 
     void addRgb565ColorToMap(int rgb565)
@@ -118,7 +156,10 @@ namespace BatInspector
       {
         lmSpectrum[i] = Math.Log(lmSpectrum[i]);
         if (lmSpectrum[i] > _maxAmplitude)
+        {
           _maxAmplitude = lmSpectrum[i];
+          _minAmplitude = _maxAmplitude - 20;
+        }
       }
 
 
@@ -159,7 +200,7 @@ namespace BatInspector
     }
 
     // Returns left and right double arrays. 'right' will be null if sound is mono.
-    public static void openWav(string filename, out double[] left, out double[] right, out int samplingRate)
+    public void openWav(string filename, out double[] left, out double[] right, out int samplingRate)
     {
       byte[] wav = File.ReadAllBytes(filename);
 

@@ -42,6 +42,9 @@ namespace BatInspector
     List<AnalysisFile> _analysis;
     ProcessRunner _proc;
     Forms.MainWindow _mainWin;
+    public string WavFilePath { get { return _selectedDir + "Records/"; } }
+    public string PrjPath { get { return _selectedDir; } }
+
 
     public BatExplorerProjectFile Prj { get { return _batExplorerPrj; } }
 
@@ -84,19 +87,25 @@ namespace BatInspector
       string fullName = _selectedDir + "Records/" + rec.File;
       string pngName = fullName.Replace(".wav", ".png");
       Bitmap bmp = null;
+      BitmapImage bImg = null;
+      newImage = false;
       if (File.Exists(pngName))
       {
         bmp = new Bitmap(pngName);
-        newImage = false;
       }
       else
       {
         Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, 512);
-        bmp = wf.generatePicture(512, 256);
-        bmp.Save(pngName);
-        newImage = true;
+        if (wf.Ok)
+        {
+          wf.generateDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, 512);
+          bmp = wf.generatePicture(512, 256);
+          bmp.Save(pngName);
+          newImage = true;
+        }
       }
-      BitmapImage bImg = Convert(bmp);
+      if(bmp != null)
+        bImg = Convert(bmp);
       return bImg;
     }
 
@@ -243,7 +252,7 @@ namespace BatInspector
 
 
     //http://www.shujaat.net/2010/08/wpf-images-from-project-resource.html
-    static private BitmapImage Convert(Bitmap value)
+    static public BitmapImage Convert(Bitmap value)
     {
       MemoryStream ms = new MemoryStream();
       value.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);

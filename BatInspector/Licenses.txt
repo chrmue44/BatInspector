@@ -14,7 +14,12 @@ bug_48.png:
 https://www.iconsdb.com/green-icons/bug-icon.html
 License: Creative Commons Attribution-NoDerivs 3.0. 
 
+icons8-zoom-in-v-64.png
 https://icons8.com/icons/set/zoom-in
 
-
+icons8-zoom-out-h-64.png
 https://icons8.com/icons/set/zoom-out
+
+icons8-arrow-left-64.png
+icons8-arrow-right-64.png
+https://icons8.com/icons/set/arrow-left

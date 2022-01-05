@@ -151,7 +151,7 @@ namespace BatInspector.Forms
           ctl.Img.Source = _model.getImage(rec, out newImage);
           ctl.Img.MaxWidth = MAX_IMG_WIDTH;
           ctl.Img.MaxHeight = _imgHeight;
-          ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File));
+          ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File), _model.WavFilePath);
           _spSpectrums.Dispatcher.Invoke(() =>
           {
             _spSpectrums.Children.Add(ctl);

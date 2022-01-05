@@ -187,5 +187,9 @@
     <Resource Include="images\icons8-zoom-out-h-64.png" />
     <Resource Include="images\icons8-zoom-out-v-64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-arrow-left-64.png" />
+    <Resource Include="images\icons8-arrow-right-64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

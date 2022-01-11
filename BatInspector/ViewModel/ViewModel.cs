@@ -95,11 +95,11 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, 512);
+        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, 512, 512, 256);
         if (wf.Ok)
         {
           wf.generateDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, 512);
-          bmp = wf.generatePicture(512, 256);
+          bmp = wf.generatePicture();
           bmp.Save(pngName);
           newImage = true;
         }

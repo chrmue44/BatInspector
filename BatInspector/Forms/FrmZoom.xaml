@@ -37,6 +37,9 @@
         <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click">
           <Image Source="../images/icons8-arrow-right-64.png"></Image>
         </Button>
+        <GroupBox VerticalAlignment="Stretch">
+          <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
+        </GroupBox>
       </ToolBar>
     </ToolBarTray>
     <Image Name="_img" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill">

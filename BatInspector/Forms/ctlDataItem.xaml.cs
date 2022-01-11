@@ -15,17 +15,100 @@ using System.Windows.Shapes;
 
 namespace BatInspector.Forms
 {
+
   /// <summary>
   /// Interaktionslogik für ctlDataItem.xaml
   /// </summary>
   public partial class ctlDataItem : UserControl
   {
-    public string Label { get { return _lbl.Text; } set { _lbl.Text = value; } }
+    enDataType _type = enDataType.STRING;
+    int _decimals = 3;
+    double _valDouble;
+    int _valInt;
+    string _valString;
+    dlgValueChanged _dlgValChange = null;
 
-    public string Value { get { return _tb.Text; } set { _tb.Text = value; } }
+    public void setup(string label, enDataType type, int decimals = 2, dlgValueChanged dlgValChange = null)
+    {
+      _lbl.Text = label;
+      _type = type;
+      _decimals = decimals;
+      _dlgValChange = dlgValChange;
+    }
+
+    public void setValue (int val)
+    {
+      if (_type == enDataType.INT)
+      {
+        _valInt = val;
+        _tb.Text = val.ToString();
+      }
+      else
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+    }
+    public void setValue(double val)
+    {
+      string format = "0.";
+      for (int i = 0; i < _decimals; i++)
+        format += "#";
+      if (_type == enDataType.DOUBLE)
+      {
+        _valDouble = val;
+        _tb.Text = val.ToString(format);
+      }
+      else
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+
+    }
+    public void setValue(string val)
+    {
+      if (_type == enDataType.STRING)
+      {
+        _tb.Text = val;
+        _valString = val;
+      }
+      else
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+
+    }
+
     public ctlDataItem()
     {
       InitializeComponent();
     }
+
+    private void _tb_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      switch(_type)
+      {
+        case enDataType.INT:
+          int.TryParse(_tb.Text, out _valInt);
+          if (_dlgValChange != null)
+            _dlgValChange(enDataType.INT, _valInt);
+          break;
+
+        case enDataType.DOUBLE:
+          double.TryParse(_tb.Text, out _valDouble);
+          if (_dlgValChange != null)
+            _dlgValChange(enDataType.DOUBLE, _valDouble);
+          break;
+
+        case enDataType.STRING:
+          _valString = _tb.Text;
+          if (_dlgValChange != null)
+            _dlgValChange(enDataType.STRING, _valString);
+          break;
+      }
+    }
   }
+
+  public enum enDataType
+  {
+    STRING,
+    DOUBLE,
+    INT
+  }
+
+  public delegate void dlgValueChanged(enDataType type, object val);
+
 }

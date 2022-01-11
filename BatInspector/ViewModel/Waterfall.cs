@@ -20,6 +20,9 @@ namespace BatInspector
     List<Color> _colorMap;
     double _maxAmplitude;
     double _minAmplitude;
+    double _range = 20;
+    int _width;
+    int _height;
 
     public double Duration { get { return (double)_samples.Length / _samplingRate; } }
     public int SamplingRate { get { return _samplingRate; } }
@@ -27,11 +30,14 @@ namespace BatInspector
     public List<double[]> Spec {  get { return _spec; } }
     public bool Ok { get { return _ok; } }
 
+    public double Range { get { return _range; } set { _range = value; _minAmplitude = _maxAmplitude - _range; } }
     public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
-    public Waterfall(string wavName, UInt32 fftSize)
+    public Waterfall(string wavName, UInt32 fftSize, int w, int h)
     {
+      _width = w;
+      _height = h;
       _wavName = wavName;
       _fftSize = fftSize;
       double[] dummy;
@@ -77,7 +83,7 @@ namespace BatInspector
           generateFft(idx, _fftSize);
       }
       else
-        DebugLog.log("generateWaterfall(): WAV file is not open!", enLogType.ERROR);
+        DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);
 
     }
 
@@ -158,7 +164,7 @@ namespace BatInspector
         if (lmSpectrum[i] > _maxAmplitude)
         {
           _maxAmplitude = lmSpectrum[i];
-          _minAmplitude = _maxAmplitude - 20;
+          _minAmplitude = _maxAmplitude - _range;
         }
       }
 
@@ -169,20 +175,23 @@ namespace BatInspector
       _spec.Add(lmSpectrum);
     }
 
-    public Bitmap generatePicture(int width, int height)
+    public Bitmap generatePicture()
     {
-      Bitmap bmp = new Bitmap(width, height);
+      Bitmap bmp = new Bitmap(_width, _height);
       if (_ok)
       {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < _width; x++)
         {
-          int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
-          for (int y = 0; y < height; y++)
+          int idxSpec = (int)((double)_spec.Count / (double)_width * (double)x);
+          for (int y = 0; y < _height; y++)
           {
-            int idxFreq = (int)((double)_spec[0].Length / (double)height * (double)y);
-            double val = _spec[idxSpec][idxFreq];
-            Color col = getColor(val, _minAmplitude, _maxAmplitude);
-            bmp.SetPixel(x, height - 1 - y, col);
+            if (_spec.Count > 0)
+            {
+              int idxFreq = (int)((double)_spec[0].Length / (double)_height * (double)y);
+              double val = _spec[idxSpec][idxFreq];
+              Color col = getColor(val, _minAmplitude, _maxAmplitude);
+              bmp.SetPixel(x, _height - 1 - y, col);
+            }
           }
         }
       }

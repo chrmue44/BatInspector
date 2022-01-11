@@ -27,8 +27,6 @@ namespace BatInspector.Forms
       InitializeComponent();
       initTreeView();
       _model = new ViewModel(this);
-      _ctlRange.Label = "Range [dB]:";
-      _ctlRange.Value = "20";
     }
 
     public void initTreeView()

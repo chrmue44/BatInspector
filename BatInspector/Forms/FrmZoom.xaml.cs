@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BatInspector.Forms;
+using System;
 using System.Collections.ObjectModel;
 
 using System.Windows;
@@ -32,20 +33,34 @@ namespace BatInspector
       _cursor2 = new Cursor();
       _rulerDataX = new RulerData();
       _rulerDataY = new RulerData();
-      _freq1.Label = "Frequency:";
-      _time1.Label = "Time:";
-      _freq2.Label = "Frequency:";
-      _time2.Label = "Time:";
-      _sampleRate.Label = "SampleRate";
-      _sampleRate.Value = ((double)_analysis.SampleRate / 1000).ToString("0.#") + " kHz";
-      _duration.Value = _analysis.Duration.ToString("0.###") + " s";
-      _duration.Label = "Duration";
-      _deltaT.Label = "Delta T:";
+      _freq1.setup("Frequency [kHz]:", Forms.enDataType.DOUBLE, 1);
+      _time1.setup("Time [s]:", Forms.enDataType.DOUBLE, 3);
+      _freq2.setup("Frequency: [kHz]", Forms.enDataType.DOUBLE, 1);
+      _time2.setup("Time [s]:", Forms.enDataType.DOUBLE, 3);
+      _sampleRate.setup("SampleRate [kHz]", Forms.enDataType.DOUBLE, 1);
+      _sampleRate.setValue((double)_analysis.SampleRate / 1000);
+      _duration.setup("Duration [s]", Forms.enDataType.DOUBLE, 3);
+      _duration.setValue(_analysis.Duration);
+      _deltaT.setup("Delta T [ms]:", Forms.enDataType.DOUBLE, 0);
       _wavFilePath = wavFilePath;
-      _wf = new Waterfall(_wavFilePath + analysis.FileName, 512);
+      _wf = new Waterfall(_wavFilePath + analysis.FileName, 512, 512, 256);
+      _ctlRange.setup("Range [dB]:", Forms.enDataType.DOUBLE, 0, rangeChanged);
+      _ctlRange.setValue(20.0);
       ContentRendered += FrmZoom_ContentRendered;
       SizeChanged += FrmZoom_SizeChanged;
       MouseDown += FrmZoomMouseDown;
+    }
+
+    public void rangeChanged(enDataType type, object val)
+    {
+      if (type == enDataType.DOUBLE)
+      {
+        double range = (double)val;
+        _wf.Range = range;
+        updateImage();
+      }
+      else
+        DebugLog.log("wrong data type for 'Range'", enLogType.ERROR);
     }
 
     private void FrmZoomMouseDown(object sender, MouseEventArgs e)
@@ -81,13 +96,13 @@ namespace BatInspector
 
     public void setFileInformations()
     {
-      _sampleRate.Value =  ((double)_analysis.SampleRate / 1000).ToString("0.#") + " kHz";
-      _duration.Value =  _analysis.Duration.ToString("0.###") + " s";
+      _sampleRate.setValue((double)_analysis.SampleRate / 1000);
+      _duration.setValue(_analysis.Duration);
       if (_cursor1.Visible)
       {
         _grpCursor1.Visibility = Visibility.Visible;
-        _freq1.Value =  _cursor1.Freq .ToString("0.#") + " kHz";
-        _time1.Value = _cursor1.Time.ToString("0.###") + " s";
+        _freq1.setValue(_cursor1.Freq);
+        _time1.setValue(_cursor1.Time);
       }
       else
         _grpCursor1.Visibility = Visibility.Hidden;
@@ -95,14 +110,14 @@ namespace BatInspector
       if (_cursor2.Visible)
       {
         _grpCursor2.Visibility = Visibility.Visible;
-        _freq2.Value = _cursor2.Freq.ToString("0.#") + " kHz";
-        _time2.Value = _cursor2.Time.ToString("0.###") + " s";
+        _freq2.setValue(_cursor2.Freq);
+        _time2.setValue(_cursor2.Time);
       }
       else
         _grpCursor2.Visibility = Visibility.Hidden;
       if (_cursor1.Visible && _cursor2.Visible)
       {
-        _deltaT.Value = ((_cursor2.Time - _cursor1.Time) * 1000).ToString("0.") + " ms";
+        _deltaT.setValue((_cursor2.Time - _cursor1.Time) * 1000);
         _deltaT.Visibility = Visibility.Visible;
       }
       else
@@ -253,20 +268,22 @@ namespace BatInspector
 
     private void createZoomImg()
     {
-      System.Drawing.Bitmap bmp = null;
-      BitmapImage bImg = null;
       if (_rulerDataX.Max > _wf.Duration)
         _rulerDataX.Max = _wf.Duration;
       if (_rulerDataX.Min < 0)
         _rulerDataX.Min = 0;
       initRulerX(_rulerDataX.Min, _rulerDataX.Max);
       _wf.generateDiagram(_rulerDataX.Min, _rulerDataX.Max, 512);
-      bmp = _wf.generatePicture(512, 256);
+      updateImage();
+    }
+    private void updateImage()
+    {
+      System.Drawing.Bitmap bmp = _wf.generatePicture();
       if (bmp != null)
       {
-        bImg = ViewModel.Convert(bmp);
+        BitmapImage bImg = ViewModel.Convert(bmp);
         _img.Source = bImg;
       }
     }
-  }
+}
 }

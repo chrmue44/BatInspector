@@ -34,11 +34,11 @@ namespace BatInspector
       _index = index;
       _dlgFocus = setFocus;
       InitializeComponent();
-      _duration.Label = "Duration:";
+      _duration.setup("Duration [s]:", enDataType.DOUBLE, 3);
       _duration.Focusable = false;
-      _sampleRate.Label = "Sampling Rate:";
+      _sampleRate.setup("Sampling Rate [Hz]:", enDataType.INT, 0);
       _sampleRate.Focusable = false;
-      _nrOfCalls.Label = "Nr. of Calls:";
+      _nrOfCalls.setup("Nr. of Calls:", enDataType.INT, 0);
       _nrOfCalls.Focusable = false;
       _cbSel.Focusable = true;
     }
@@ -50,9 +50,9 @@ namespace BatInspector
       _grp.Header = Name;
       if (analysis != null)
       {
-        _sampleRate.Value = _analysis.SampleRate.ToString() + " Hz";
-        _duration.Value = _analysis.Duration.ToString("0.###") + " s";
-        _nrOfCalls.Value = _analysis.Calls.Count.ToString();
+        _sampleRate.setValue(_analysis.SampleRate);
+        _duration.setValue(_analysis.Duration);
+        _nrOfCalls.setValue(_analysis.Calls.Count);
       }
     }
 

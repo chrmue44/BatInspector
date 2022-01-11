@@ -20,7 +20,6 @@ namespace BatInspector
     Cursor _cursor2;
     RulerData _rulerDataX;
     RulerData _rulerDataY;
-    ObservableCollection<ListItem> _list;
     string _wavFilePath;
     Waterfall _wf;
 
@@ -42,7 +41,6 @@ namespace BatInspector
       _duration.Value = _analysis.Duration.ToString("0.###") + " s";
       _duration.Label = "Duration";
       _deltaT.Label = "Delta T:";
-      _list = new ObservableCollection<ListItem>();
       _wavFilePath = wavFilePath;
       _wf = new Waterfall(_wavFilePath + analysis.FileName, 512);
       ContentRendered += FrmZoom_ContentRendered;

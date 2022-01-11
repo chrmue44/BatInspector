@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BatInspector"
+        xmlns:local="clr-namespace:BatInspector" xmlns:forms="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
         Title="BatInspector" Height="680" Width="1024"
         Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown"
@@ -29,7 +29,10 @@
                 <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="enable debug log" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                      <Image Source="../images/bug-48.png"></Image>
                   </Button>
-            </ToolBar>
+          <GroupBox VerticalAlignment="Stretch">
+                 <forms:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></forms:ctlDataItem>
+          </GroupBox>
+        </ToolBar>
         </ToolBarTray>
         <TabControl Grid.Row="1" x:Name="_tbDirectory" Margin="5">
             <TabItem Header="Project View" >

@@ -27,6 +27,8 @@ namespace BatInspector.Forms
       InitializeComponent();
       initTreeView();
       _model = new ViewModel(this);
+      _ctlRange.Label = "Range [dB]:";
+      _ctlRange.Value = "20";
     }
 
     public void initTreeView()
@@ -254,22 +256,6 @@ namespace BatInspector.Forms
       }
     }
 
-   /* private void keyDownEvent(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-      if(e.Key == System.Windows.Input.Key.Down)
-      {
-        MessageBox.Show("Down");
-      }
-      if(e.Key == System.Windows.Input.Key.Up)
-      {
-        MessageBox.Show("Up");
-      }
-      if (e.Key == System.Windows.Input.Key.Return)
-      {
-        MessageBox.Show("Return");
-      }
-    }*/
-
     private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
     {
       if (e.Key == System.Windows.Input.Key.Down)
@@ -283,6 +269,7 @@ namespace BatInspector.Forms
       }
       if (e.Key == System.Windows.Input.Key.Up)
       {
+        // don't know why this is not needed...
         /*if (_cbFocus > 1)
         {
           _cbFocus--;
@@ -305,5 +292,6 @@ namespace BatInspector.Forms
 
     }
   }
+
   public delegate void dlgSetFocus(int index);
 }

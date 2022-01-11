@@ -24,7 +24,7 @@ namespace BatInspector
   public partial class ctlWavFile : UserControl
   {
     AnalysisFile _analysis;
-    List<ListItem> _list;
+  //  List<ListItem> _list;
     string _wavFilePath;
     int _index;
     dlgSetFocus _dlgFocus;
@@ -34,7 +34,6 @@ namespace BatInspector
       _index = index;
       _dlgFocus = setFocus;
       InitializeComponent();
-      _list = new List<ListItem>();
       _duration.Label = "Duration:";
       _duration.Focusable = false;
       _sampleRate.Label = "Sampling Rate:";
@@ -46,7 +45,6 @@ namespace BatInspector
 
     public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath)
     {
-      _list.Clear();
       _analysis = analysis;
       _wavFilePath = wavFilePath;
       _grp.Header = Name;
@@ -70,7 +68,6 @@ namespace BatInspector
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      int sampleRate = (int)_list[0].Value;
       FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath);
       frm._img.Source = this.Img.Source;
       frm._img.Width = this.Img.Width;
@@ -87,23 +84,6 @@ namespace BatInspector
     {
       _cbSel.BorderThickness = new Thickness(3, 3, 3, 3);
       _dlgFocus(_index);
-    }
-  }
-
-  public class ListItem
-  {
-    public string Name { get; set; }
-    public object Value { get; set; }
-
-    public ListItem(string name, object value)
-    {
-      Name = name;
-      Value = value;
-    }
-
-    public override string ToString()
-    {
-      return Name + ": " + Value.ToString();
     }
   }
 }

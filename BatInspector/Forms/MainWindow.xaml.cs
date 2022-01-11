@@ -16,6 +16,7 @@ namespace BatInspector.Forms
   {
     const int MAX_IMG_HEIGHT = 256;
     const int MAX_IMG_WIDTH = 512;
+    int _cbFocus = -1;
 
     ViewModel _model;
     FrmLog _log = null;
@@ -30,6 +31,7 @@ namespace BatInspector.Forms
 
     public void initTreeView()
     {
+      trvStructure.Items.Clear();
       DriveInfo[] drives = DriveInfo.GetDrives();
       foreach (DriveInfo driveInfo in drives)
       {
@@ -141,11 +143,15 @@ namespace BatInspector.Forms
     }
      internal async Task  createFftImages()
     {
+      int index = 0;
+
       if(_model.Prj != null)
       {
+        _spSpectrums.Children.Clear();
+        _cbFocus = -1;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
-          ctlWavFile ctl = new ctlWavFile();
+          ctlWavFile ctl = new ctlWavFile(index++, setFocus);
           DockPanel.SetDock(ctl, Dock.Bottom);
           bool newImage;
           ctl.Img.Source = _model.getImage(rec, out newImage);
@@ -154,9 +160,10 @@ namespace BatInspector.Forms
           ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File), _model.WavFilePath);
           _spSpectrums.Dispatcher.Invoke(() =>
           {
+            _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
           });
-          await Task.Delay(5);
+          await Task.Delay(2);
         }
       }
       _lblStatus.Text = "";
@@ -196,6 +203,14 @@ namespace BatInspector.Forms
       foreach(UIElement it in list)
         _spSpectrums.Children.Remove(it);
 
+    }
+
+    public void setFocus(int index)
+    {
+      if((index >= 0) && (index < _spSpectrums.Children.Count))
+      {
+        _cbFocus = index;
+      }
     }
 
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
@@ -238,5 +253,57 @@ namespace BatInspector.Forms
         ctl.Img.Width = MAX_IMG_WIDTH;
       }
     }
+
+   /* private void keyDownEvent(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+      if(e.Key == System.Windows.Input.Key.Down)
+      {
+        MessageBox.Show("Down");
+      }
+      if(e.Key == System.Windows.Input.Key.Up)
+      {
+        MessageBox.Show("Up");
+      }
+      if (e.Key == System.Windows.Input.Key.Return)
+      {
+        MessageBox.Show("Return");
+      }
+    }*/
+
+    private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+      if (e.Key == System.Windows.Input.Key.Down)
+      {
+        if (_cbFocus < (_spSpectrums.Children.Count - 1))
+        {
+          _cbFocus++;
+          ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_cbFocus];
+          ctl.setFocus();
+        }
+      }
+      if (e.Key == System.Windows.Input.Key.Up)
+      {
+        /*if (_cbFocus > 1)
+        {
+          _cbFocus--;
+          ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_cbFocus];
+          ctl.setFocus();
+        }*/
+      }
+      if (e.Key == System.Windows.Input.Key.Return)
+      {
+        if ((_cbFocus >= 0) && (_cbFocus < _spSpectrums.Children.Count))
+        {
+          ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_cbFocus];
+          ctl.toggleCheckBox();
+        }
+      }
+    }
+
+    private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+
+    }
   }
+  public delegate void dlgSetFocus(int index);
 }

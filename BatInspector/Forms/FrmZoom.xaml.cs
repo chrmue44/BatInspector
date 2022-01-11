@@ -33,6 +33,15 @@ namespace BatInspector
       _cursor2 = new Cursor();
       _rulerDataX = new RulerData();
       _rulerDataY = new RulerData();
+      _freq1.Label = "Frequency:";
+      _time1.Label = "Time:";
+      _freq2.Label = "Frequency:";
+      _time2.Label = "Time:";
+      _sampleRate.Label = "SampleRate";
+      _sampleRate.Value = ((double)_analysis.SampleRate / 1000).ToString("0.#") + " kHz";
+      _duration.Value = _analysis.Duration.ToString("0.###") + " s";
+      _duration.Label = "Duration";
+      _deltaT.Label = "Delta T:";
       _list = new ObservableCollection<ListItem>();
       _wavFilePath = wavFilePath;
       _wf = new Waterfall(_wavFilePath + analysis.FileName, 512);
@@ -44,8 +53,10 @@ namespace BatInspector
     private void FrmZoomMouseDown(object sender, MouseEventArgs e)
     {
       Point p = e.GetPosition(_img);
-      double f = (1.0 - (double)(p.Y) / ((double)_img.ActualHeight)) * _analysis.SampleRate / 2000;
-      double t = (double)(p.X - _img.Margin.Left) / (double)_img.ActualWidth * _analysis.Duration;
+      //      double f = (1.0 - (double)(p.Y) / ((double)_img.ActualHeight)) * _analysis.SampleRate / 2000;
+      double f = (1.0 - (double)(p.Y) / ((double)_img.ActualHeight)) * (_rulerDataY.Max - _rulerDataY.Min) + _rulerDataY.Min;
+      //      double t = (double)(p.X - _img.Margin.Left) / (double)_img.ActualWidth * _analysis.Duration;
+      double t = (double)(p.X - _img.Margin.Left) / (double)_img.ActualWidth * (_rulerDataX.Max - _rulerDataX.Min) + _rulerDataX.Min;
       if (e.LeftButton == MouseButtonState.Pressed)
       {
         if ((f <= _rulerDataY.Max) && (f >= _rulerDataY.Min) && (t >= _rulerDataX.Min) && (t <= _rulerDataX.Max))
@@ -72,42 +83,41 @@ namespace BatInspector
 
     public void setFileInformations()
     {
-      _list.Clear();
-      ListItem item = new ListItem("sample Rate", ((double)_analysis.SampleRate / 1000).ToString("0.#") + " kHz");
-       _list.Add(item);
-       item = new ListItem("Duration", _analysis.Duration.ToString("0.###") + " s");
-       _list.Add(item);
+      _sampleRate.Value =  ((double)_analysis.SampleRate / 1000).ToString("0.#") + " kHz";
+      _duration.Value =  _analysis.Duration.ToString("0.###") + " s";
       if (_cursor1.Visible)
       {
-        item = new ListItem("Cursor 1: ", "");
-        _list.Add(item);
-        item = new ListItem("   Frequency ", _cursor1.Freq .ToString("0.#") + " kHz");
-        _list.Add(item);
-        item = new ListItem("   Time", _cursor1.Time.ToString("0.###") + " s");
-        _list.Add(item);
+        _grpCursor1.Visibility = Visibility.Visible;
+        _freq1.Value =  _cursor1.Freq .ToString("0.#") + " kHz";
+        _time1.Value = _cursor1.Time.ToString("0.###") + " s";
       }
+      else
+        _grpCursor1.Visibility = Visibility.Hidden;
+
       if (_cursor2.Visible)
       {
-        item = new ListItem("Cursor 2: ", "");
-        _list.Add(item);
-        item = new ListItem("   Frequency ", _cursor2.Freq.ToString("0.#") + " kHz");
-        _list.Add(item);
-        item = new ListItem("   Time", _cursor2.Time.ToString("0.###") + " s");
-        _list.Add(item);
+        _grpCursor2.Visibility = Visibility.Visible;
+        _freq2.Value = _cursor2.Freq.ToString("0.#") + " kHz";
+        _time2.Value = _cursor2.Time.ToString("0.###") + " s";
       }
-      if(_cursor1.Visible && _cursor2.Visible)
+      else
+        _grpCursor2.Visibility = Visibility.Hidden;
+      if (_cursor1.Visible && _cursor2.Visible)
       {
-        item = new ListItem("Delta t: ", ((_cursor2.Time - _cursor1.Time) * 1000).ToString("0.") + " ms");
-        _list.Add(item);
+        _deltaT.Value = ((_cursor2.Time - _cursor1.Time) * 1000).ToString("0.") + " ms";
+        _deltaT.Visibility = Visibility.Visible;
       }
-      _lv.ItemsSource = _list;   
+      else
+        _deltaT.Visibility = Visibility.Hidden;
     }
     private void drawCursor(Line lx, Line ly, Cursor cursor)
     {
       lx.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       ly.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
-      int x = (int)(_img.Margin.Left + cursor.Time / _analysis.Duration * _img.ActualWidth);
-      int y = (int)(_img.Margin.Top + (1.0 - 2000 * cursor.Freq / _analysis.SampleRate ) * _img.ActualHeight);
+    //  int x = (int)(_img.Margin.Left + cursor.Time / _analysis.Duration * _img.ActualWidth);
+    int x = (int)(_img.Margin.Left + (cursor.Time - _rulerDataX.Min) /(_rulerDataX.Max - _rulerDataX.Min) * _img.ActualWidth);
+      //  int y = (int)(_img.Margin.Top + (1.0 - 2000 * cursor.Freq / _analysis.SampleRate ) * _img.ActualHeight);
+      int y = (int)(_img.Margin.Top + (1.0 - (cursor.Freq - _rulerDataY.Min) / (_rulerDataY.Max - _rulerDataY.Min)) * _img.ActualHeight);
       lx.X1 = x;
       lx.Y1 = _img.Margin.Top;
       lx.X2 = x;
@@ -126,6 +136,13 @@ namespace BatInspector
       drawCursor(_cursorX2, _cursorY2, _cursor2);
     }
 
+    private void hideCursors()
+    {
+      _cursor1.Visible = false;
+      _cursor2.Visible = false;
+      drawCursor(_cursorX1, _cursorY1, _cursor1);
+      drawCursor(_cursorX2, _cursorY2, _cursor2);
+    }
 
     private void FrmZoom_ContentRendered(object sender, EventArgs e)
     {
@@ -201,12 +218,14 @@ namespace BatInspector
     private void _btnZoomInH_Click(object sender, RoutedEventArgs e)
     {
       _rulerDataX.Max = (_rulerDataX.Max - _rulerDataX.Min)/ 2 + _rulerDataX.Min;
+      hideCursors();
       createZoomImg();
     }
 
     private void _btnZoomOutH_Click(object sender, RoutedEventArgs e)
     {
       _rulerDataX.Max = (_rulerDataX.Max - _rulerDataX.Min) * 2 + _rulerDataX.Min;
+      hideCursors();
       createZoomImg();
     }
 
@@ -215,6 +234,7 @@ namespace BatInspector
       double width = _rulerDataX.Max - _rulerDataX.Min;
       if (_rulerDataX.Min >= width / 4)
       {
+        hideCursors();
         _rulerDataX.Min -= width / 4;
         _rulerDataX.Max -= width / 4;
         createZoomImg();
@@ -226,6 +246,7 @@ namespace BatInspector
       double width = _rulerDataX.Max - _rulerDataX.Min;
       if (_rulerDataX.Max <= _wf.Duration - width / 4)
       {
+        hideCursors();
         _rulerDataX.Max += width / 4;
         _rulerDataX.Min += width / 4;
         createZoomImg();

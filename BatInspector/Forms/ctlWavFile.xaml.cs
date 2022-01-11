@@ -10,6 +10,7 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using BatInspector.Forms;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,11 +26,22 @@ namespace BatInspector
     AnalysisFile _analysis;
     List<ListItem> _list;
     string _wavFilePath;
+    int _index;
+    dlgSetFocus _dlgFocus;
 
-    public ctlWavFile()
+    public ctlWavFile(int index, dlgSetFocus setFocus)
     {
+      _index = index;
+      _dlgFocus = setFocus;
       InitializeComponent();
       _list = new List<ListItem>();
+      _duration.Label = "Duration:";
+      _duration.Focusable = false;
+      _sampleRate.Label = "Sampling Rate:";
+      _sampleRate.Focusable = false;
+      _nrOfCalls.Label = "Nr. of Calls:";
+      _nrOfCalls.Focusable = false;
+      _cbSel.Focusable = true;
     }
 
     public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath)
@@ -40,14 +52,20 @@ namespace BatInspector
       _grp.Header = Name;
       if (analysis != null)
       {
-        ListItem item = new ListItem("sample Rate", _analysis.SampleRate);
-        _list.Add(item);
-        item = new ListItem("Duration", _analysis.Duration);
-        _list.Add(item);
-        item = new ListItem("Nr. of Calls", _analysis.Calls.Count);
-        _list.Add(item);
-        _lvFileInfo.ItemsSource = _list;
+        _sampleRate.Value = _analysis.SampleRate.ToString() + " Hz";
+        _duration.Value = _analysis.Duration.ToString("0.###") + " s";
+        _nrOfCalls.Value = _analysis.Calls.Count.ToString();
       }
+    }
+
+    public void setFocus()
+    {
+      _cbSel.Focus();
+    }
+
+    public void toggleCheckBox()
+    {
+      _cbSel.IsChecked = !_cbSel.IsChecked;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -58,6 +76,17 @@ namespace BatInspector
       frm._img.Width = this.Img.Width;
       frm._img.Height = this.Img.Height;
       frm.Show();
+    }
+
+    private void ctlLostFocus(object sender, RoutedEventArgs e)
+    {
+      _cbSel.BorderThickness = new Thickness(1, 1, 1, 1);
+    }
+
+    private void ctlGotFocus(object sender, RoutedEventArgs e)
+    {
+      _cbSel.BorderThickness = new Thickness(3, 3, 3, 3);
+      _dlgFocus(_index);
     }
   }
 

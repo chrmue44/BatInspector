@@ -82,7 +82,7 @@ namespace BatInspector
         _batExplorerPrj = null;
     }
 
-    public BitmapImage getImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
+    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
       string fullName = _selectedDir + "Records/" + rec.File;
       string pngName = fullName.Replace(".wav", ".png");
@@ -98,8 +98,8 @@ namespace BatInspector
         Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, AppParams.FftWidth, AppParams.WaterfallWidth, AppParams.WaterfallHeight);
         if (wf.Ok)
         {
-          wf.generateDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, AppParams.FftWidth);
-          bmp = wf.generatePicture(0, wf.SamplingRate/2000);
+          wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, AppParams.FftWidth);
+          bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
           bmp.Save(pngName);
           newImage = true;
         }
@@ -108,6 +108,7 @@ namespace BatInspector
         bImg = Convert(bmp);
       return bImg;
     }
+
 
     public void readPrjFile(string fName)
     {

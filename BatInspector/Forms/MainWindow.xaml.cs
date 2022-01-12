@@ -132,7 +132,7 @@ namespace BatInspector.Forms
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
-          _model.getImage(rec, out newImage);
+          _model.getFtImage(rec, out newImage);
           if(newImage)
           {
             (sender as BackgroundWorker).ReportProgress(55, rec.Name);
@@ -154,7 +154,7 @@ namespace BatInspector.Forms
           ctlWavFile ctl = new ctlWavFile(index++, setFocus);
           DockPanel.SetDock(ctl, Dock.Bottom);
           bool newImage;
-          ctl.Img.Source = _model.getImage(rec, out newImage);
+          ctl.Img.Source = _model.getFtImage(rec, out newImage);
           ctl.Img.MaxWidth = MAX_IMG_WIDTH;
           ctl.Img.MaxHeight = _imgHeight;
           ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File), _model.WavFilePath);

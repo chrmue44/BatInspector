@@ -71,9 +71,9 @@ namespace BatInspector
       if (_analysis != null)
       {
         FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath);
-        frm._img.Source = this.Img.Source;
-        frm._img.Width = this.Img.Width;
-        frm._img.Height = this.Img.Height;
+        frm._imgFt.Source = this.Img.Source;
+        frm._imgFt.Width = this.Img.Width;
+        frm._imgFt.Height = this.Img.Height;
         frm.Show();
       }
       else

@@ -22,7 +22,8 @@ namespace BatInspector
     double _minAmplitude;
     double _range = 20;
     int _width;
-    int _height;
+    int _heightFt;
+    int _heightXt;
 
     public double Duration { get { return (double)_samples.Length / _samplingRate; } }
     public int SamplingRate { get { return _samplingRate; } }
@@ -37,7 +38,8 @@ namespace BatInspector
     public Waterfall(string wavName, UInt32 fftSize, int w, int h)
     {
       _width = w;
-      _height = h;
+      _heightFt = h;
+      _heightXt = h / 5;
       _wavName = wavName;
       _fftSize = fftSize;
       double[] dummy;
@@ -63,7 +65,7 @@ namespace BatInspector
     /// <param name="startTime">start time [s] in wav file</param>
     /// <param name="EndTime">end time [s] in wav file</param>
     /// <param name="width">width of waterfall diagram in pixel</param>
-    public void generateDiagram(double startTime, double EndTime, uint width)
+    public void generateFtDiagram(double startTime, double EndTime, uint width)
     {
       if (_ok)
       {
@@ -175,26 +177,26 @@ namespace BatInspector
       _spec.Add(lmSpectrum);
     }
 
-    public Bitmap generatePicture(double fMin, double fMax)
+    public Bitmap generateFtPicture(double fMin, double fMax)
     {
-      Bitmap bmp = new Bitmap(_width, _height);
+      Bitmap bmp = new Bitmap(_width, _heightFt);
       if (_ok)
       {
         for (int x = 0; x < _width; x++)
         {
           int idxSpec = (int)((double)_spec.Count / (double)_width * (double)x);
-          for (int y = 0; y < _height; y++)
+          for (int y = 0; y < _heightFt; y++)
           {
             if (_spec.Count > 0)
             {
            //   int idxFreq2 = (int)((double)_spec[0].Length / (double)_height * (double)y);
-              double f = (fMax - fMin) * y / _height + fMin;
-              int idxFreq =(int)( f * 2000 /(double) _samplingRate * _height);
-              if (idxFreq >= _height)
-                idxFreq = _height - 1;
+              double f = (fMax - fMin) * y / _heightFt + fMin;
+              int idxFreq =(int)( f * 2000 /(double) _samplingRate * _heightFt);
+              if (idxFreq >= _heightFt)
+                idxFreq = _heightFt - 1;
               double val = _spec[idxSpec][idxFreq];
               Color col = getColor(val, _minAmplitude, _maxAmplitude);
-              bmp.SetPixel(x, _height - 1 - y, col);
+              bmp.SetPixel(x, _heightFt - 1 - y, col);
             }
           }
         }
@@ -202,8 +204,17 @@ namespace BatInspector
       return bmp;
     }
 
-    // convert two bytes to one double in the range -1 to 1
-    static double bytesToDouble(sbyte firstByte, sbyte secondByte)
+    public Bitmap generateXtPicture(double fMin, double fMax)
+    {
+      Bitmap bmp = new Bitmap(_width, _heightXt);
+      if (_ok)
+      {
+      }
+      return bmp;
+    }
+
+      // convert two bytes to one double in the range -1 to 1
+      static double bytesToDouble(sbyte firstByte, sbyte secondByte)
     {
       // convert two bytes to one short (little endian)
       int s = (int)secondByte << 8;

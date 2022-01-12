@@ -68,11 +68,16 @@ namespace BatInspector
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath);
-      frm._img.Source = this.Img.Source;
-      frm._img.Width = this.Img.Width;
-      frm._img.Height = this.Img.Height;
-      frm.Show();
+      if (_analysis != null)
+      {
+        FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath);
+        frm._img.Source = this.Img.Source;
+        frm._img.Width = this.Img.Width;
+        frm._img.Height = this.Img.Height;
+        frm.Show();
+      }
+      else
+        MessageBox.Show("Zoom not supported without analysis, perform analysis first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 
     private void ctlLostFocus(object sender, RoutedEventArgs e)

@@ -23,3 +23,6 @@ https://icons8.com/icons/set/zoom-out
 icons8-arrow-left-64.png
 icons8-arrow-right-64.png
 https://icons8.com/icons/set/arrow-left
+
+icons8-enlarge-maximum.png
+https://icons8.com/icons/set/zoom-in

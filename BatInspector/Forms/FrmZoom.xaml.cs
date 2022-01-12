@@ -1,6 +1,5 @@
 ﻿using BatInspector.Forms;
 using System;
-using System.Collections.ObjectModel;
 
 using System.Windows;
 using System.Windows.Controls;
@@ -66,9 +65,7 @@ namespace BatInspector
     private void FrmZoomMouseDown(object sender, MouseEventArgs e)
     {
       Point p = e.GetPosition(_img);
-      //      double f = (1.0 - (double)(p.Y) / ((double)_img.ActualHeight)) * _analysis.SampleRate / 2000;
       double f = (1.0 - (double)(p.Y) / ((double)_img.ActualHeight)) * (_rulerDataY.Max - _rulerDataY.Min) + _rulerDataY.Min;
-      //      double t = (double)(p.X - _img.Margin.Left) / (double)_img.ActualWidth * _analysis.Duration;
       double t = (double)(p.X - _img.Margin.Left) / (double)_img.ActualWidth * (_rulerDataX.Max - _rulerDataX.Min) + _rulerDataX.Min;
       if (e.LeftButton == MouseButtonState.Pressed)
       {
@@ -127,9 +124,7 @@ namespace BatInspector
     {
       lx.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       ly.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
-    //  int x = (int)(_img.Margin.Left + cursor.Time / _analysis.Duration * _img.ActualWidth);
-    int x = (int)(_img.Margin.Left + (cursor.Time - _rulerDataX.Min) /(_rulerDataX.Max - _rulerDataX.Min) * _img.ActualWidth);
-      //  int y = (int)(_img.Margin.Top + (1.0 - 2000 * cursor.Freq / _analysis.SampleRate ) * _img.ActualHeight);
+      int x = (int)(_img.Margin.Left + (cursor.Time - _rulerDataX.Min) /(_rulerDataX.Max - _rulerDataX.Min) * _img.ActualWidth);
       int y = (int)(_img.Margin.Top + (1.0 - (cursor.Freq - _rulerDataY.Min) / (_rulerDataY.Max - _rulerDataY.Min)) * _img.ActualHeight);
       lx.X1 = x;
       lx.Y1 = _img.Margin.Top;
@@ -153,6 +148,9 @@ namespace BatInspector
     {
       _cursor1.Visible = false;
       _cursor2.Visible = false;
+      _grpCursor1.Visibility = Visibility.Hidden;
+      _grpCursor2.Visibility = Visibility.Hidden;
+      _deltaT.Visibility = Visibility.Hidden;
       drawCursor(_cursorX1, _cursorY1, _cursor1);
       drawCursor(_cursorX2, _cursorY2, _cursor2);
     }
@@ -218,14 +216,45 @@ namespace BatInspector
       can.Children.Add(textBlock);
     }
 
+    private void _btnZoomCursor_Click(object sender, RoutedEventArgs e)
+    {
+      if (_cursor1.Visible && _cursor2.Visible)
+      {
+        _rulerDataY.Min = Math.Min(_cursor1.Freq, _cursor2.Freq);
+        _rulerDataY.Max = Math.Max(_cursor1.Freq, _cursor2.Freq);
+        _rulerDataX.Min = Math.Min(_cursor1.Time, _cursor2.Time);
+        _rulerDataX.Max = Math.Max(_cursor1.Time, _cursor2.Time);
+        hideCursors();
+        createZoomImg();
+      }
+      else
+      {
+        MessageBox.Show("Zoom to cursor not possible, enable both cursors first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);
+      }
+    }
+
+    private void _btnZoomTotal_Click(object sender, RoutedEventArgs e)
+    {
+      _rulerDataY.Min = 0;
+      _rulerDataY.Max = _wf.SamplingRate / 2000;
+      _rulerDataX.Min = 0;
+      _rulerDataX.Max = _wf.Duration;
+      hideCursors();
+      createZoomImg();
+    }
+
     private void _btnZoomInV_Click(object sender, RoutedEventArgs e)
     {
-
+      _rulerDataY.Max = (_rulerDataY.Max - _rulerDataY.Min) / 2 + _rulerDataY.Min;
+      hideCursors();
+      createZoomImg();
     }
 
     private void _btnZoomOutV_Click(object sender, RoutedEventArgs e)
     {
-
+      _rulerDataY.Max = (_rulerDataY.Max - _rulerDataY.Min) * 2 + _rulerDataY.Min;
+      hideCursors();
+      createZoomImg();
     }
 
     private void _btnZoomInH_Click(object sender, RoutedEventArgs e)
@@ -265,7 +294,29 @@ namespace BatInspector
         createZoomImg();
       }
     }
+    private void _btnmoveUp_Click(object sender, RoutedEventArgs e)
+    {
+      double height = _rulerDataY.Max - _rulerDataY.Min;
+      if (_rulerDataY.Max <= _wf.SamplingRate/2000 -  height / 4)
+      {
+        hideCursors();
+        _rulerDataY.Min += height/ 4;
+        _rulerDataY.Max += height / 4;
+        createZoomImg();
+      }
+    }
 
+    private void _btnmoveDown_Click(object sender, RoutedEventArgs e)
+    {
+      double height = _rulerDataY.Max - _rulerDataY.Min;
+      if (_rulerDataY.Min >= height / 4)
+      {
+        hideCursors();
+        _rulerDataY.Min -= height / 4;
+        _rulerDataY.Max -= height / 4;
+        createZoomImg();
+      }
+    }
     private void createZoomImg()
     {
       if (_rulerDataX.Max > _wf.Duration)
@@ -273,17 +324,26 @@ namespace BatInspector
       if (_rulerDataX.Min < 0)
         _rulerDataX.Min = 0;
       initRulerX(_rulerDataX.Min, _rulerDataX.Max);
-      _wf.generateDiagram(_rulerDataX.Min, _rulerDataX.Max, 512);
+
+      if (_rulerDataY.Max > _wf.SamplingRate / 2000)
+        _rulerDataY.Max = _wf.SamplingRate / 2000;
+      if (_rulerDataY.Min < 0)
+        _rulerDataY.Min = 0;
+      initRulerY(_rulerDataY.Min, _rulerDataY.Max);
+
+      _wf.generateDiagram(_rulerDataX.Min, _rulerDataX.Max, BatInspector.AppParams.FftWidth);
       updateImage();
     }
     private void updateImage()
     {
-      System.Drawing.Bitmap bmp = _wf.generatePicture();
+      System.Drawing.Bitmap bmp = _wf.generatePicture(_rulerDataY.Min, _rulerDataY.Max);
       if (bmp != null)
       {
         BitmapImage bImg = ViewModel.Convert(bmp);
         _img.Source = bImg;
       }
     }
-}
+
+ 
+  }
 }

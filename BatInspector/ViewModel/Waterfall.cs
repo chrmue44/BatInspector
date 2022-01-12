@@ -175,7 +175,7 @@ namespace BatInspector
       _spec.Add(lmSpectrum);
     }
 
-    public Bitmap generatePicture()
+    public Bitmap generatePicture(double fMin, double fMax)
     {
       Bitmap bmp = new Bitmap(_width, _height);
       if (_ok)
@@ -187,7 +187,11 @@ namespace BatInspector
           {
             if (_spec.Count > 0)
             {
-              int idxFreq = (int)((double)_spec[0].Length / (double)_height * (double)y);
+           //   int idxFreq2 = (int)((double)_spec[0].Length / (double)_height * (double)y);
+              double f = (fMax - fMin) * y / _height + fMin;
+              int idxFreq =(int)( f * 2000 /(double) _samplingRate * _height);
+              if (idxFreq >= _height)
+                idxFreq = _height - 1;
               double val = _spec[idxSpec][idxFreq];
               Color col = getColor(val, _minAmplitude, _maxAmplitude);
               bmp.SetPixel(x, _height - 1 - y, col);

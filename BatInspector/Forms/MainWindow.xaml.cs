@@ -111,7 +111,7 @@ namespace BatInspector.Forms
     void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
       if (e.UserState != null)
-        this.setStatus("genearating " + e.UserState);
+        this.setStatus("generating PNG image " + e.UserState);
 
     }
 

@@ -81,6 +81,7 @@
     <Compile Include="Forms\FrmZoom.xaml.cs">
       <DependentUpon>FrmZoom.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AppParams.cs" />
     <Compile Include="ViewModel\DebugLog.cs" />
     <Compile Include="Forms\FrmLog.xaml.cs">
       <DependentUpon>FrmLog.xaml</DependentUpon>
@@ -197,6 +198,16 @@
   <ItemGroup>
     <Resource Include="images\icons8-arrow-left-64.png" />
     <Resource Include="images\icons8-arrow-right-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-enlarge-maximum.png" />
+    <Resource Include="images\icons8-zoom-in-cursor-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-arrow-down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-arrow-up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

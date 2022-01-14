@@ -35,6 +35,10 @@ namespace BatInspector
       _rulerDataF = new RulerData();
       _rulerDataA = new RulerData();
 
+      initRulerT(0, _analysis.Duration);
+      initRulerA(-1, 1);
+      initRulerF(0, _analysis.SampleRate / 2000);
+
       _freq1.setup("Frequency [kHz]:", Forms.enDataType.DOUBLE, 1);
       _time1.setup("Time [s]:", Forms.enDataType.DOUBLE, 3);
       _freq2.setup("Frequency: [kHz]", Forms.enDataType.DOUBLE, 1);
@@ -59,6 +63,7 @@ namespace BatInspector
       {
         double range = (double)val;
         _wf.Range = range;
+        updateRuler();
         updateImage();
       }
       else
@@ -339,7 +344,8 @@ namespace BatInspector
         createZoomImg();
       }
     }
-    private void createZoomImg()
+
+    private void updateRuler()
     {
       if (_rulerDataT.Max > _wf.Duration)
         _rulerDataT.Max = _wf.Duration;
@@ -353,9 +359,20 @@ namespace BatInspector
         _rulerDataF.Min = 0;
       initRulerF(_rulerDataF.Min, _rulerDataF.Max);
 
+      if (_rulerDataA.Max > 1)
+        _rulerDataA.Max = 1;
+      if (_rulerDataF.Min < -1)
+        _rulerDataF.Min = -1;
+      initRulerF(_rulerDataF.Min, _rulerDataF.Max);
+    }
+
+    private void createZoomImg()
+    {
+      updateRuler();
       _wf.generateFtDiagram(_rulerDataT.Min, _rulerDataT.Max, BatInspector.AppParams.FftWidth);
       updateImage();
     }
+
     private void updateImage()
     {
       System.Drawing.Bitmap bmpFt = _wf.generateFtPicture(_rulerDataF.Min, _rulerDataF.Max);
@@ -364,7 +381,7 @@ namespace BatInspector
         BitmapImage bImg = ViewModel.Convert(bmpFt);
         _imgFt.Source = bImg;
       }
-      System.Drawing.Bitmap bmpXt = _wf.generateXtPicture(_rulerDataA.Min, _rulerDataA.Max);
+      System.Drawing.Bitmap bmpXt = _wf.generateXtPicture(_rulerDataA.Min, _rulerDataA.Max, _rulerDataT.Min, _rulerDataT.Max);
       if (bmpXt != null)
       {
         BitmapImage bImg = ViewModel.Convert(bmpXt);

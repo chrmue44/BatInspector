@@ -204,17 +204,82 @@ namespace BatInspector
       return bmp;
     }
 
-    public Bitmap generateXtPicture(double fMin, double fMax)
+    public Bitmap generateXtPicture(double aMin, double aMax, double tMin, double tMax)
     {
       Bitmap bmp = new Bitmap(_width, _heightXt);
+      for (int x = 0; x < _width; x++)
+        for (int y = 0; y < _heightXt; y++)
+          bmp.SetPixel(x, y, AppParams.ColorXtBackground);
+
       if (_ok)
       {
+        double samplesPerPixelf = this.Samples.Length * (tMax - tMin) / this.Duration / _width;
+        int samplesPerPixel = (int)samplesPerPixelf;
+        int idxMin = (int)(tMin / this.Duration * this.Samples.Length);
+        int idxMax = (int)(tMax / this.Duration * this.Samples.Length);
+        if (samplesPerPixelf > 1.0)
+        {
+          //          m_isMinMax = true;
+          plotAsBand(aMin, aMax, idxMin, idxMax, bmp);
+        }
+        else
+        {
+          plotAsSinglePixels(aMin, aMax, idxMin, idxMax, bmp);
+  //        m_isMinMax = false;
+        }
+
       }
       return bmp;
     }
 
-      // convert two bytes to one double in the range -1 to 1
-      static double bytesToDouble(sbyte firstByte, sbyte secondByte)
+    void drawLine(int x, int ymin, int ymax, Bitmap bmp) 
+    {
+      for (int y = ymin; y <= ymax; y++)
+        bmp.SetPixel(x, y, AppParams.ColorXtLine);
+    }
+
+
+  void plotAsBand(double aMin, double aMax,  int idxMin, int idxMax, Bitmap bmp) 
+    {
+      int samplesPerPixel = (idxMax - idxMin) / _width;
+      for(int x =0; x < _width; x++) 
+      {
+        double min = 10;
+        double max = -10;
+        int idx = (idxMax - idxMin) * x / _width + idxMin;
+        for (int j = 0; j < samplesPerPixel; j++)
+        {
+          if ((idx < 0) || (idx >= this.Samples.Length))
+            break;
+          double val = this.Samples[idx++];
+          if (min > val)
+            min = val;
+          if (max < val)
+            max = val;
+        }
+        if (max > aMax)
+          max = aMax;
+        if (min < aMin)
+          min = aMin;
+        int y1 = (int)((1 - (max - aMin) / (aMax - aMin)) * (_heightXt-1));
+        int y2 = (int)((1 - (min - aMin) / (aMax - aMin)) * (_heightXt-1));
+        drawLine(x, y1, y2, bmp);
+      }
+    }
+
+    void plotAsSinglePixels(double aMin, double aMax, int idxMin, int idxMax, Bitmap bmp)
+    {
+      int samplesPerPixel = (idxMax - idxMin) / _width;
+      for (int x = 0; x < _width; x++)
+      {
+        int idx = (idxMax - idxMin) * x / _width + idxMin;
+        int y1 = (int)((1 - (this.Samples[idx] - aMin) / (aMax - aMin)) * _heightXt);
+        bmp.SetPixel(x, y1, AppParams.ColorXtLine);
+      }
+    }
+
+    // convert two bytes to one double in the range -1 to 1
+    static double bytesToDouble(sbyte firstByte, sbyte secondByte)
     {
       // convert two bytes to one short (little endian)
       int s = (int)secondByte << 8;

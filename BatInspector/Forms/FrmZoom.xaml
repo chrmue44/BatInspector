@@ -49,6 +49,12 @@
         <GroupBox VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
           <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
         </GroupBox>
+        <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="increase range">
+          <Image Source="../images/icons8-plus-+-48.png"></Image>
+        </Button>
+        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="decrease range">
+          <Image Source="../images/icons8-minus-48.png"></Image>
+        </Button>
       </ToolBar>
     </ToolBarTray>
     <Grid Name ="_gridXt" Grid.Row="1">

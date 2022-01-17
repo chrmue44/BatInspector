@@ -212,5 +212,9 @@
   <ItemGroup>
     <Resource Include="images\icons8-arrow-up.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-minus-48.png" />
+    <Resource Include="images\icons8-plus-+-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

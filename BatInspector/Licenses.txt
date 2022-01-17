@@ -26,3 +26,9 @@ https://icons8.com/icons/set/arrow-left
 
 icons8-enlarge-maximum.png
 https://icons8.com/icons/set/zoom-in
+
+icons8-plus-+-48.png
+https://icons8.com/icons/set/plus
+
+icons8-minus-48.png
+https://icons8.com/icons/set/minus

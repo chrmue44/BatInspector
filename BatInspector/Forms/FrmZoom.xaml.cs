@@ -66,6 +66,25 @@ namespace BatInspector
         DebugLog.log("wrong data type for 'Range'", enLogType.ERROR);
     }
 
+
+    private void _btnIncRange_Click(object sender, RoutedEventArgs e)
+    {
+      _wf.Range += 1.0;
+      _ctlRange.setValue(_wf.Range);
+      updateRuler();
+      updateImage();
+    }
+
+    private void _btnDecRange_Click(object sender, RoutedEventArgs e)
+    {
+      if (_wf.Range > 3)
+      {
+        _wf.Range -= 1.0;
+        _ctlRange.setValue(_wf.Range);
+        updateRuler();
+        updateImage();
+      }
+    }
     private void FrmZoomMouseDown(object sender, MouseEventArgs e)
     {
       Point p = e.GetPosition(_imgFt);

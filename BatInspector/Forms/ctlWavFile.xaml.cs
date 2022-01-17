@@ -28,11 +28,13 @@ namespace BatInspector
     string _wavFilePath;
     int _index;
     dlgSetFocus _dlgFocus;
+    ViewModel _model;
 
-    public ctlWavFile(int index, dlgSetFocus setFocus)
+    public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model)
     {
       _index = index;
       _dlgFocus = setFocus;
+      _model = model;
       InitializeComponent();
       _duration.setup("Duration [s]:", enDataType.DOUBLE, 3);
       _duration.Focusable = false;
@@ -42,6 +44,8 @@ namespace BatInspector
       _nrOfCalls.Focusable = false;
       _cbSel.Focusable = true;
     }
+
+    public int Index { get { return _index; } set { _index = value; } }
 
     public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath)
     {
@@ -70,7 +74,7 @@ namespace BatInspector
     {
       if (_analysis != null)
       {
-        FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath);
+        FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath, _model);
         frm._imgFt.Source = this.Img.Source;
         frm._imgFt.Width = this.Img.Width;
         frm._imgFt.Height = this.Img.Height;

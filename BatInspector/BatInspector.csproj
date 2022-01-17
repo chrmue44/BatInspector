@@ -68,6 +68,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\ZoomView.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,6 +88,8 @@
       <DependentUpon>FrmLog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ProcessRunner.cs" />
+    <Compile Include="ViewModel\Analysis.cs" />
+    <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
     <Page Include="Forms\ctlDataItem.xaml">

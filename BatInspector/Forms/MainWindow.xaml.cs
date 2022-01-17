@@ -21,6 +21,7 @@ namespace BatInspector.Forms
     ViewModel _model;
     FrmLog _log = null;
     int _imgHeight = MAX_IMG_HEIGHT;
+    List<UIElement> _listBak = null;
 
     public MainWindow()
     {
@@ -58,7 +59,7 @@ namespace BatInspector.Forms
           {
             TreeViewItem childItem = CreateTreeItem(subDir);
             item.Items.Add(childItem);
-            if(_model.containsProject(subDir))
+            if(Project.containsProject(subDir))
             {
               childItem.FontWeight = FontWeights.Bold;
               childItem.Foreground = new SolidColorBrush(Colors.Violet);
@@ -151,13 +152,13 @@ namespace BatInspector.Forms
         _cbFocus = -1;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
-          ctlWavFile ctl = new ctlWavFile(index++, setFocus);
+          ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model);
           DockPanel.SetDock(ctl, Dock.Bottom);
           bool newImage;
           ctl.Img.Source = _model.getFtImage(rec, out newImage);
           ctl.Img.MaxWidth = MAX_IMG_WIDTH;
           ctl.Img.MaxHeight = _imgHeight;
-          ctl.setFileInformations(rec.File, _model.getAnalysis(rec.File), _model.WavFilePath);
+          ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath);
           _spSpectrums.Dispatcher.Invoke(() =>
           {
             _cbFocus = 0;
@@ -187,6 +188,16 @@ namespace BatInspector.Forms
       }
     }
 
+    private void reIndexSpectrumControls()
+    {
+      int index = 0;
+      foreach (UIElement it in _spSpectrums.Children)
+      {
+        ctlWavFile ctl = it as ctlWavFile;
+        ctl.Index = index++;
+      }
+    }
+
     private void _btnDelSelected_Click(object sender, RoutedEventArgs e)
     {
       List<UIElement> list = new List<UIElement>();
@@ -202,7 +213,38 @@ namespace BatInspector.Forms
 
       foreach(UIElement it in list)
         _spSpectrums.Children.Remove(it);
+      reIndexSpectrumControls();
 
+    }
+
+    private void _btnHideUnSelected_Click(object sender, RoutedEventArgs e)
+    {
+      List<UIElement> list = new List<UIElement>();
+      _listBak = new List<UIElement>();
+      foreach (UIElement it in _spSpectrums.Children)
+      {
+        _listBak.Add(it);
+        ctlWavFile ctl = it as ctlWavFile;
+        if (ctl._cbSel.IsChecked == true)
+          list.Add(it);
+      }
+      _spSpectrums.Children.Clear();
+      foreach (UIElement it in list)
+        _spSpectrums.Children.Add(it);
+    }
+
+    private void _btnShowAll_Click(object sender, RoutedEventArgs e)
+    {
+      if (_listBak != null)
+      {
+        _spSpectrums.Children.Clear();
+        foreach (UIElement it in _listBak)
+        {
+          ctlWavFile ctl = it as ctlWavFile;
+          _spSpectrums.Children.Add(it);
+        }
+        _listBak = null;
+      }
     }
 
     public void setFocus(int index)

@@ -27,13 +27,19 @@ namespace BatInspector.Forms
     int _valInt;
     string _valString;
     dlgValueChanged _dlgValChange = null;
+    
+
+   // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
     public void setup(string label, enDataType type, int decimals = 2, dlgValueChanged dlgValChange = null)
     {
       _lbl.Text = label;
+      _lbl.Focusable = false;
       _type = type;
       _decimals = decimals;
       _dlgValChange = dlgValChange;
+      _tb.Focusable = false;
+
     }
 
     public void setValue (int val)

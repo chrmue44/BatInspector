@@ -29,6 +29,9 @@ namespace BatInspector
     public Project Prj { get { return _prj; } }
 
     public ZoomView ZoomView { get { return _zoom; } }
+
+    public System.Windows.Input.Key LastKey { get; set; }
+    public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin)
     {
       _analysis = new Analysis();
@@ -75,6 +78,12 @@ namespace BatInspector
           bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
           bmp.Save(pngName);
           newImage = true;
+        }
+        else
+        {
+           DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
+          _prj.removeFile(rec.File);
+          _analysis.removeFile(_selectedDir + "/Records", rec.File);
         }
       }
       if(bmp != null)

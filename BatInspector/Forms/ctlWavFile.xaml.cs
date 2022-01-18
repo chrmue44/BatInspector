@@ -36,12 +36,10 @@ namespace BatInspector
       _dlgFocus = setFocus;
       _model = model;
       InitializeComponent();
-      _duration.setup("Duration [s]:", enDataType.DOUBLE, 3);
+      _duration.setup("Duration [s]: ", enDataType.DOUBLE, 3);
       _duration.Focusable = false;
-      _sampleRate.setup("Sampling Rate [Hz]:", enDataType.INT, 0);
+      _sampleRate.setup("Sampling Rate [Hz]: ", enDataType.INT, 0);
       _sampleRate.Focusable = false;
-      _nrOfCalls.setup("Nr. of Calls:", enDataType.INT, 0);
-      _nrOfCalls.Focusable = false;
       _cbSel.Focusable = true;
     }
 
@@ -56,7 +54,16 @@ namespace BatInspector
       {
         _sampleRate.setValue(_analysis.SampleRate);
         _duration.setValue(_analysis.Duration);
-        _nrOfCalls.setValue(_analysis.Calls.Count);
+        int callNr = 1;
+        foreach (AnalysisCall call in _analysis.Calls)
+        {
+          ctlDataItem it = new ctlDataItem();
+          it.Focusable = false;
+          it.setup("Call " + callNr.ToString() + ": ", enDataType.STRING);
+          it.setValue(call.Species);
+          callNr++;
+          _spData.Children.Add(it);
+        }
       }
     }
 

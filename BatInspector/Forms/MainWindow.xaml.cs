@@ -298,25 +298,8 @@ namespace BatInspector.Forms
 
     private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
     {
-      if (e.Key == System.Windows.Input.Key.Down)
-      {
-        if (_cbFocus < (_spSpectrums.Children.Count - 1))
-        {
-          _cbFocus++;
-          ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_cbFocus];
-          ctl.setFocus();
-        }
-      }
-      if (e.Key == System.Windows.Input.Key.Up)
-      {
-        // don't know why this is not needed...
-        /*if (_cbFocus > 1)
-        {
-          _cbFocus--;
-          ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_cbFocus];
-          ctl.setFocus();
-        }*/
-      }
+      _model.KeyPressed = System.Windows.Input.Key.None;
+      _model.LastKey = e.Key;
       if (e.Key == System.Windows.Input.Key.Return)
       {
         if ((_cbFocus >= 0) && (_cbFocus < _spSpectrums.Children.Count))
@@ -329,7 +312,20 @@ namespace BatInspector.Forms
 
     private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
+      _model.KeyPressed = e.Key;
+    }
 
+    private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
+    {
+      if (_model.Analysis.Report != null)
+        _dgData.ItemsSource = _model.Analysis.Report;
+
+    }
+
+    private void Window_Closing(object sender, CancelEventArgs e)
+    {
+      if (_log != null)
+        _log.Close();
     }
   }
 

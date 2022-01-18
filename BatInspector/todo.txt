@@ -1,8 +1,8 @@
 TODO
 - Show Freq, time, Amplitude on mouse over in zoom window
-- cursur up handling in main window
-- excel like tab for report
 . run R scripts
 
 DONE
 - Oscillogram in Zoom window
+- excel like tab for report
+- cursur up handling in main window

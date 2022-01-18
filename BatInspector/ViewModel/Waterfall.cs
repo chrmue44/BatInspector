@@ -82,7 +82,7 @@ namespace BatInspector
         if (step > _fftSize)
           step = _fftSize;
         for (uint idx = idxStart; idx < idxEnd; idx += step)
-          generateFft(idx, _fftSize);
+          generateFft(idx, _fftSize, DSP.Window.Type.Hanning);
       }
       else
         DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);
@@ -135,7 +135,7 @@ namespace BatInspector
       }
     }
 
-    void generateFft(UInt32 idx, UInt32 length)
+    void generateFft(UInt32 idx, UInt32 length, DSP.Window.Type window)
     {
    //   double amplitude = 1.0; double frequency = 20000.5;
       UInt32 zeroPadding = 0; // NOTE: Zero Padding
@@ -147,7 +147,7 @@ namespace BatInspector
       double[] inputSignal = new double[length];
       Array.Copy(_samples, idx, inputSignal, 0, length);
       // Apply window to the Input Data & calculate Scale Factor
-      double[] wCoefs = DSP.Window.Coefficients(DSP.Window.Type.Hanning, length);
+      double[] wCoefs = DSP.Window.Coefficients(window, length);
       double[] wInputData = DSP.Math.Multiply(inputSignal, wCoefs);
       double wScaleFactor = DSP.Window.ScaleFactor.Signal(wCoefs);
 

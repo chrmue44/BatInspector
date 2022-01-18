@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
-        Title="FrmZoom" Height="450" Width="800">
+        Title="FrmZoom" Height="450" Width="800"
+        KeyUp="Window_KeyUp"
+        KeyDown="Window_KeyDown"
+        Icon="..\images\icons8-zoom-in-64.png">
   <Grid Name="_grid" HorizontalAlignment="Left" VerticalAlignment="Top">
     <Grid.RowDefinitions>
       <RowDefinition Height="44"></RowDefinition>

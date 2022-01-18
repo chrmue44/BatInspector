@@ -15,10 +15,9 @@
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Name="_cbSel" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
       <GroupBox Grid.Column="1">
-      <StackPanel >
+      <StackPanel Name="_spData">
         <forms:ctlDataItem x:Name="_sampleRate" />
         <forms:ctlDataItem x:Name="_duration" />
-        <forms:ctlDataItem x:Name="_nrOfCalls" />
       </StackPanel>
       </GroupBox>
       <!--<ListView Grid.Column="1" Name="_lvFileInfo"  HorizontalAlignment="Left"  VerticalAlignment="Top" Focusable="False" />-->

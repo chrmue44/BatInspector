@@ -382,5 +382,15 @@ namespace BatInspector
         _imgXt.Source = bImg;
       }
     }
+
+    private void Window_KeyUp(object sender, KeyEventArgs e)
+    {
+      _model.KeyPressed = System.Windows.Input.Key.None;
+    }
+
+    private void Window_KeyDown(object sender, KeyEventArgs e)
+    {
+      _model.KeyPressed = e.Key;
+    }
   }
 }

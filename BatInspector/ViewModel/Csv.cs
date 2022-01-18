@@ -24,24 +24,32 @@ namespace BatInspector
     public int read(string file, char separator = ';')
     {
       int retVal = 0;
-      _separator = separator;
-      if (File.Exists(file))
+      try
       {
-        _fileName = file;
-        string[] lines = File.ReadAllLines(file);
-        _cells.Clear();
-        foreach (string line in lines)
+        _separator = separator;
+        if (File.Exists(file))
         {
-          string[] s = line.Split(separator);
-          List<string> row = s.ToList();
-          _cells.Add(row);
+          _fileName = file;
+          string[] lines = File.ReadAllLines(file);
+          _cells.Clear();
+          foreach (string line in lines)
+          {
+            string[] s = line.Split(separator);
+            List<string> row = s.ToList();
+            _cells.Add(row);
+          }
+          log("file " + file + " opened successfully", enLogType.INFO);
         }
-        log("file " + file + " opened successfully", enLogType.INFO);
+        else
+        {
+          retVal = 1;
+          log("could not open file " + file, enLogType.ERROR);
+        }
       }
-      else
+      catch(Exception ex)
       {
-        retVal = 1;
-        log("could not open file " + file, enLogType.ERROR);
+        log("could not open file " + file + ex.ToString(), enLogType.ERROR);
+        retVal = 2;
       }
       return retVal;
     }

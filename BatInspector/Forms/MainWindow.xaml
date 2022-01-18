@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector" xmlns:forms="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
         Title="BatInspector" Height="680" Width="1024"
-        Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown"
+        Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing"
         >
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
@@ -31,7 +31,7 @@
           </Button>
         </ToolBar>
         </ToolBarTray>
-        <TabControl Grid.Row="1" x:Name="_tbDirectory" Margin="5">
+        <TabControl Grid.Row="1" x:Name="_tbReport" Margin="5" GotFocus="_tbReport_GotFocus">
             <TabItem Header="Project View" >
                 <Grid>
                     <Grid.RowDefinitions>

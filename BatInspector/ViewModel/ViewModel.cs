@@ -19,6 +19,7 @@ namespace BatInspector
     Analysis _analysis;
     ProcessRunner _proc;
     ZoomView _zoom;
+    Filter _filter;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
@@ -30,6 +31,8 @@ namespace BatInspector
 
     public ZoomView ZoomView { get { return _zoom; } }
 
+    public Filter Filter { get { return _filter; } }
+
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin)
@@ -39,6 +42,7 @@ namespace BatInspector
       _mainWin = mainWin;
       _prj = new Project();
       _zoom = new ZoomView();
+      _filter = new Filter();
     }
 
 

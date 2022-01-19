@@ -20,6 +20,7 @@ namespace BatInspector.Forms
 
     ViewModel _model;
     FrmLog _log = null;
+    FrmFilter _frmFilter = null;
     int _imgHeight = MAX_IMG_HEIGHT;
     List<UIElement> _listBak = null;
 
@@ -142,6 +143,7 @@ namespace BatInspector.Forms
         }
       }
     }
+
      internal async Task  createFftImages()
     {
       int index = 0;
@@ -326,6 +328,12 @@ namespace BatInspector.Forms
     {
       if (_log != null)
         _log.Close();
+    }
+
+    private void _btnFilter_Click(object sender, RoutedEventArgs e)
+    {
+      _frmFilter = new FrmFilter(_model.Filter);
+      _frmFilter.Show();
     }
   }
 

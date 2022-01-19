@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector" xmlns:forms="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
-        Title="BatInspector" Height="680" Width="1024"
+        Title="BatInspector" Height="900" Width="1400"
         Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing"
         >
     <DockPanel>
@@ -28,6 +28,9 @@
                 </Button>
           <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="enable debug log" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/bug-48.png"></Image>
+          </Button>
+          <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="define filters for lists" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/filter.png"></Image>
           </Button>
         </ToolBar>
         </ToolBarTray>

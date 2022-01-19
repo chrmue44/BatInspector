@@ -68,6 +68,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\ctlFilterItem.xaml.cs">
+      <DependentUpon>ctlFilterItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmFilter.xaml.cs">
+      <DependentUpon>FrmFilter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -96,7 +103,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\ctlFilterItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\ctlWavFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +236,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\icons8-zoom-in-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

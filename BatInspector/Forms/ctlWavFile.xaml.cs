@@ -30,6 +30,7 @@ namespace BatInspector
     dlgSetFocus _dlgFocus;
     ViewModel _model;
 
+    public AnalysisFile Analysis { get { return _analysis; } }
     public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model)
     {
       _index = index;

@@ -245,5 +245,11 @@
   <ItemGroup>
     <Resource Include="images\delete.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libParser\libParser\libParser.csproj">
+      <Project>{25d172aa-10d8-401e-a50b-8b7becde4d3b}</Project>
+      <Name>libParser</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

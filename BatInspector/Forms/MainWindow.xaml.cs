@@ -30,6 +30,7 @@ namespace BatInspector.Forms
       initTreeView();
       _model = new ViewModel(this);
       _model.loadSettings();
+      populateFilterComboBox();
     }
 
     public void initTreeView()
@@ -98,6 +99,17 @@ namespace BatInspector.Forms
       return item;
     }
 
+    private void populateFilterComboBox()
+    {
+      _cbFilter.Items.Clear();
+      foreach(FilterItem f in _model.Filter.Items)
+      {
+        string name = f.Name;
+        _cbFilter.Items.Add(name);
+      }
+      if (_cbFilter.Items.Count > 0)
+        _cbFilter.Text = (string)_cbFilter.Items[0];
+    }
 
     private void populateFiles()
     {
@@ -335,6 +347,16 @@ namespace BatInspector.Forms
     {
       _frmFilter = new FrmFilter(_model.Filter);
       _frmFilter.Show();
+    }
+
+    private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
+    {
+      FilterItem filter = _model.Filter.getFilter(_cbFilter.Text);
+      foreach(ctlWavFile c in _spSpectrums.Children)
+      {
+        bool res = _model.Filter.apply(filter, c.Analysis);
+        c._cbSel.IsChecked = res;
+      }
     }
   }
 

@@ -11,7 +11,7 @@ namespace libParser
   {
     uint _err;
     public uint Errors {  get { return _err; } }
-
+    public VarList Variables { get { return _varList; } }
     public Expression()
     {
       _methList = new MthdListMath();
@@ -43,6 +43,43 @@ namespace libParser
       v.changeType(AnyType.tType.RT_STR);
       return v.getString();
     }
+
+    public void setVariable(string name, string value, int index = 0)
+    {
+      VarName n = _varList.look(name);
+      if(n != null)
+      {
+        AnyType v = new AnyType();
+        v.setType(AnyType.tType.RT_STR);
+        v.assign(value);
+        n.setValue(index, v);
+      }
+    }
+
+    public void setVariable(string name, double value, int index = 0)
+    {
+      VarName n = _varList.look(name);
+      if (n != null)
+      {
+        AnyType v = new AnyType();
+        v.setType(AnyType.tType.RT_FLOAT);
+        v.assign(value);
+        n.setValue(index, v);
+      }
+    }
+
+    public void setVariable(string name, int value, int index = 0)
+    {
+      VarName n = _varList.look(name);
+      if (n != null)
+      {
+        AnyType v = new AnyType();
+        v.setType(AnyType.tType.RT_INT64);
+        v.assign(value);
+        n.setValue(index, v);
+      }
+    }
+
 
     MthdListMath _methList;
     MthdResult _result;

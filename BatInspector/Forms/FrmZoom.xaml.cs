@@ -45,7 +45,7 @@ namespace BatInspector
       _duration.setValue(_analysis.Duration);
       _deltaT.setup("Delta T [ms]:", Forms.enDataType.DOUBLE, 0);
       _wavFilePath = wavFilePath;
-      _wf = new Waterfall(_wavFilePath + analysis.FileName, 512, 512, 256);
+      _wf = new Waterfall(_wavFilePath + analysis.FileName, 512, 512, 256, _model.Settings);
       _ctlRange.setup("Range [dB]:", Forms.enDataType.DOUBLE, 0, rangeChanged);
       _ctlRange.setValue(20.0);
       ContentRendered += FrmZoom_ContentRendered;
@@ -362,7 +362,7 @@ namespace BatInspector
     private void createZoomImg()
     {
       updateRuler();
-      _wf.generateFtDiagram(_model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, BatInspector.AppParams.FftWidth);
+      _wf.generateFtDiagram(_model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, _model.Settings.FftWidth);
       updateImage();
     }
 

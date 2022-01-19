@@ -11,12 +11,14 @@
       <ColumnDefinition Width="25" />
       <ColumnDefinition Width="100" />
       <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="20" />
       <ColumnDefinition Width="25" />
     </Grid.ColumnDefinitions>
     <TextBlock Name="_lblIdx" Grid.Column="0" Margin="0,2,2,0">00</TextBlock>
     <TextBox Name="_tbName" Grid.Column="1" LostFocus="_tbName_LostFocus" Margin="0,2,2,0"></TextBox>
     <TextBox Name="_tbExpression" Grid.Column="2" LostFocus="_tbExpression_LostFocus" Margin="0,2,2,0"></TextBox>
-    <Button Name ="_btnDel" Grid.Column="3" Click="_btnDel_Click" Margin="0,2,2,0">
+    <CheckBox Name="_cbAll" Grid.Column="3" Click="_cbAll_Click" Margin="0,2,2,0"></CheckBox>
+    <Button Name ="_btnDel" Grid.Column="4" Click="_btnDel_Click" Margin="0,2,2,0">
       <Image Source="../images/delete.png"></Image>
     </Button>
   </Grid>

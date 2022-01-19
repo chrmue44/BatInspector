@@ -29,6 +29,7 @@ namespace BatInspector.Forms
       InitializeComponent();
       initTreeView();
       _model = new ViewModel(this);
+      _model.loadSettings();
     }
 
     public void initTreeView()

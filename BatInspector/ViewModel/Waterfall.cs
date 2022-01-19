@@ -24,6 +24,7 @@ namespace BatInspector
     int _width;
     int _heightFt;
     int _heightXt;
+    AppParams _settings;
 
     public double Duration { get { return (double)_samples.Length / _samplingRate; } }
     public int SamplingRate { get { return _samplingRate; } }
@@ -35,13 +36,14 @@ namespace BatInspector
     public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
-    public Waterfall(string wavName, UInt32 fftSize, int w, int h)
+    public Waterfall(string wavName, UInt32 fftSize, int w, int h, AppParams settings)
     {
       _width = w;
       _heightFt = h;
       _heightXt = h / 5;
       _wavName = wavName;
       _fftSize = fftSize;
+      _settings = settings;
       double[] dummy;
       _spec = new List<double[]>();
       _colorMap = new List<Color>();
@@ -209,7 +211,7 @@ namespace BatInspector
       Bitmap bmp = new Bitmap(_width, _heightXt);
       for (int x = 0; x < _width; x++)
         for (int y = 0; y < _heightXt; y++)
-          bmp.SetPixel(x, y, AppParams.ColorXtBackground);
+          bmp.SetPixel(x, y, _settings.ColorXtBackground);
 
       if (_ok)
       {
@@ -235,7 +237,7 @@ namespace BatInspector
     void drawLine(int x, int ymin, int ymax, Bitmap bmp) 
     {
       for (int y = ymin; y <= ymax; y++)
-        bmp.SetPixel(x, y, AppParams.ColorXtLine);
+        bmp.SetPixel(x, y, _settings.ColorXtLine);
     }
 
 
@@ -274,7 +276,7 @@ namespace BatInspector
       {
         int idx = (idxMax - idxMin) * x / _width + idxMin;
         int y1 = (int)((1 - (this.Samples[idx] - aMin) / (aMax - aMin)) * _heightXt);
-        bmp.SetPixel(x, y1, AppParams.ColorXtLine);
+        bmp.SetPixel(x, y1, _settings.ColorXtLine);
       }
     }
 

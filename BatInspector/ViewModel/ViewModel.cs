@@ -20,7 +20,7 @@ namespace BatInspector
     ProcessRunner _proc;
     ZoomView _zoom;
     Filter _filter;
-
+    AppParams _settings;
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
     public string PrjPath { get { return _selectedDir; } }
@@ -33,6 +33,8 @@ namespace BatInspector
 
     public Filter Filter { get { return _filter; } }
 
+    public AppParams Settings { get;  }
+
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin)
@@ -43,6 +45,7 @@ namespace BatInspector
       _prj = new Project();
       _zoom = new ZoomView();
       _filter = new Filter();
+      _settings = new AppParams();
     }
 
 
@@ -62,6 +65,20 @@ namespace BatInspector
         _prj = null;
     }
 
+    public void loadSettings()
+    {
+      _settings = AppParams.load();
+      _filter.Items.Clear();
+      foreach(FilterParams p in _settings.Filter)
+      {
+        FilterItem it = new FilterItem();
+        it.Index = _filter.Items.Count;
+        it.Name = p.Name;
+        it.Expression = p.Expression;
+        it.IsForAllCalls = p.isForAllCalls;
+        _filter.Items.Add(it);
+      }
+    }
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
       string fullName = _selectedDir + "Records/" + rec.File;
@@ -75,10 +92,10 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, AppParams.FftWidth, AppParams.WaterfallWidth, AppParams.WaterfallHeight);
+        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, _settings.FftWidth, _settings.WaterfallWidth, _settings.WaterfallHeight, _settings);
         if (wf.Ok)
         {
-          wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, AppParams.FftWidth);
+          wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, _settings.FftWidth);
           bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
           bmp.Save(pngName);
           newImage = true;

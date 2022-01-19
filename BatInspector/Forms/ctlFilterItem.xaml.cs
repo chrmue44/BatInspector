@@ -25,9 +25,10 @@ namespace BatInspector.Forms
 
     FilterItem _filter;
     
-    public int Index { /*set { _index = value; _lblIdx.Text = _index.ToString(); }*/ get { return _index; } }
-    public string FilterName { /*set { _tbName.Text = value; } */get { return _tbName.Text; } }
-    public string FilterExpression {/* set { _tbExpression.Text = value; }*/ get { return _tbExpression.Text; } }
+    public int Index {  get { return _index; } }
+    public string FilterName { get { return _tbName.Text; } }
+    public string FilterExpression { get { return _tbExpression.Text; } }
+
     public ctlFilterItem()
     {
       InitializeComponent();
@@ -40,6 +41,7 @@ namespace BatInspector.Forms
       _tbExpression.Text = filter.Expression;
       _tbName.Text = filter.Name;
       _lblIdx.Text = _filter.Index.ToString();
+      _cbAll.IsChecked = filter.IsForAllCalls;
     }
 
     private void _tbName_LostFocus(object sender, RoutedEventArgs e)
@@ -55,6 +57,11 @@ namespace BatInspector.Forms
     private void _btnDel_Click(object sender, RoutedEventArgs e)
     {
       _dlgDelete(_filter.Index);
+    }
+
+    private void _cbAll_Click(object sender, RoutedEventArgs e)
+    {
+      _filter.IsForAllCalls = (bool)_cbAll.IsChecked;
     }
   }
 }

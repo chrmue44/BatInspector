@@ -54,6 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -75,6 +76,7 @@
       <DependentUpon>FrmFilter.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\Filter.cs" />
+    <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

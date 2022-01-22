@@ -226,8 +226,12 @@ namespace BatInspector.Forms
         }
       }
 
-      foreach(UIElement it in list)
+      foreach (UIElement it in list)
+      {
         _spSpectrums.Children.Remove(it);
+        if (_listBak != null)
+          _listBak.Remove(it);
+      }
       reIndexSpectrumControls();
 
     }

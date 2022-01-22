@@ -3,7 +3,6 @@ TODO
 . run R scripts
 - training crickets
 - add notes and approved species filed on the right side of ctlWavFile
-- find bug: delete after filter application (not everything gets deleted)
 - find bug: apply filter after closing filter window -> crash
 
 DONE
@@ -11,3 +10,4 @@ DONE
 - Oscillogram in Zoom window
 - excel like tab for report
 - cursur up handling in main window
+- find bug: delete after filter application (not everything gets deleted)

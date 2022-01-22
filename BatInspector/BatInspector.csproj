@@ -72,6 +72,9 @@
     <Compile Include="Forms\ctlFilterItem.xaml.cs">
       <DependentUpon>ctlFilterItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmAppSettings.xaml.cs">
+      <DependentUpon>FrmAppSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmFilter.xaml.cs">
       <DependentUpon>FrmFilter.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\ctlWavFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmAppSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,6 +257,9 @@
       <Project>{25d172aa-10d8-401e-a50b-8b7becde4d3b}</Project>
       <Name>libParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-save-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

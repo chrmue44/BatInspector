@@ -14,7 +14,7 @@
                 <ColumnDefinition Width="6*" />
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Name="_cbSel" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-      <GroupBox Grid.Column="1">
+      <GroupBox Grid.Column="1" Header="Auto Detection">
       <StackPanel Name="_spData">
         <forms:ctlDataItem x:Name="_sampleRate" />
         <forms:ctlDataItem x:Name="_duration" />

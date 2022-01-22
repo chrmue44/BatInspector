@@ -38,3 +38,6 @@ https://www.flaticon.com/free-icons/filter
 
 delete.png
 https://www.flaticon.com/free-icons/trash  title="trash icons">Trash icons created by Freepik - Flaticon</a>
+
+icons8-save-48.png
+https://icons8.com/icons/set/save

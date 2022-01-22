@@ -28,6 +28,8 @@ namespace BatInspector
     [Category("Filter")]
     [Description("only valid, whall ALL calls in one file apply to the logical expression")]
     public bool isForAllCalls { get; set; }
+
+    public int Index { get; set; }
   }
 
   [DataContract]
@@ -79,6 +81,7 @@ namespace BatInspector
       p.Name = "Example";
       p.Expression = "(Species == \"PPIP\")";
       p.isForAllCalls = true;
+      p.Index = 0;
       Filter.Add(p);
     }
 

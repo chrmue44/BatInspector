@@ -20,10 +20,11 @@ namespace BatInspector.Forms
   public partial class FrmFilter : Window
   {
     Filter _filter;
-
-    public FrmFilter(Filter filter)
+    dlgUpdate _dlgUpdate;
+    public FrmFilter(Filter filter, dlgUpdate dlgUpdate)
     {
       _filter = filter;
+      _dlgUpdate = dlgUpdate;
       InitializeComponent();
       populateTree();
     }
@@ -65,8 +66,10 @@ namespace BatInspector.Forms
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
-    {
-
+    {      
+      this.Close();
+      _dlgUpdate();
     }
   }
+  public delegate void dlgUpdate();
 }

@@ -22,6 +22,9 @@ namespace BatInspector
     const string VAR_FREQ_MAX = "FreqMax";
     const string VAR_FREQ_MIN = "FreqMin";
     const string VAR_DURATION = "DurationCall";
+    const string VAR_PROBABILITY = "Probability";
+    const string VAR_SNR = "Snr";
+
     List<FilterItem> _list;
     Expression _expression;
     public List<FilterItem> Items { get { return _list; } }
@@ -34,6 +37,8 @@ namespace BatInspector
       _expression.Variables.insert(VAR_FREQ_MIN);
       _expression.Variables.insert(VAR_FREQ_MAX);
       _expression.Variables.insert(VAR_DURATION);
+      _expression.Variables.insert(VAR_PROBABILITY);
+      _expression.Variables.insert(VAR_SNR);
     }
 
     public bool apply(FilterItem filter, AnalysisFile file)
@@ -48,6 +53,8 @@ namespace BatInspector
         _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
         _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
         _expression.setVariable(VAR_DURATION, call.Duration);
+        _expression.setVariable(VAR_PROBABILITY, call.Probability);
+        _expression.setVariable(VAR_SNR, call.Snr);
         AnyType res = _expression.parse(filter.Expression);
         if (filter.IsForAllCalls)
         {

@@ -10,7 +10,7 @@ namespace BatInspector
 
   public class Analysis
   {
-    const int COL_NAME = 1;
+   /* const int COL_NAME = 1;
     const int COL_SAMPLERATE = 3;
     const int COL_FILE_LEN = 4;
     const int COL_FREQ_MAX_AMP = 5;
@@ -20,7 +20,33 @@ namespace BatInspector
     const int COL_DURATION = 9;
     const int COL_START_TIME = 10;
     const int COL_SNR = 11;
-    const int COL_SPECIES = 26;
+    const int COL_SPECIES = 26; */
+    
+    const string COL_NAME = "name";
+    const string COL_SAMPLERATE = "sampleRate";
+    const string COL_FILE_LEN = "FileLen";
+    const string COL_FREQ_MAX_AMP = "freq_max_amp";
+    const string COL_FREQ_MIN = "freq_min";
+    const string COL_FREQ_MAX = "freq_max";
+    const string COL_FREQ_KNEE = "freq_knee";
+    const string COL_DURATION = "duration";
+    const string COL_START_TIME = "start";
+    const string COL_SNR = "snr";
+    const string COL_SPECIES = "Species";
+    const string COL_PROBABILITY = "prob";
+
+    int _colSampleRate = 0;
+    int _colFileLen = 0;
+    int _colName = 0;
+    int _colFreqMaxAmp = 0;
+    int _colFreqMax = 0;
+    int _colFreqMin = 0;
+    int _colFreqKnee = 0;
+    int _colDuration = 0;
+    int _colStartTime = 0;
+    int _colSpecies = 0;
+    int _colProbability = 0;
+    int _colSnr = 0;
 
     List<AnalysisFile> _list;
     List<ReportItem> _report;
@@ -37,13 +63,26 @@ namespace BatInspector
       Csv csv = new Csv();
       int ret = csv.read(fileName);
 
-      // @@@ temporary to migrate to new format
+      _colSampleRate = csv.findInRow(1, COL_SAMPLERATE);
+      _colFileLen = csv.findInRow(1, COL_FILE_LEN);
+      _colName = csv.findInRow(1, COL_NAME);
+      _colFreqMaxAmp = csv.findInRow(1, COL_FREQ_MAX_AMP);
+      _colFreqMax = csv.findInRow(1, COL_FREQ_MAX);
+      _colFreqMin = csv.findInRow(1, COL_FREQ_MIN);
+      _colFreqKnee = csv.findInRow(1, COL_FREQ_KNEE);
+      _colDuration = csv.findInRow(1, COL_DURATION);
+      _colStartTime = csv.findInRow(1, COL_START_TIME);
+      _colSpecies = csv.findInRow(1, COL_SPECIES);
+      _colProbability = csv.findInRow(1, COL_PROBABILITY);
+      _colSnr = csv.findInRow(1, COL_SNR);
+
+      //@@@ temporary
       if (ret == 0)
       {
-        if (csv.getCellAsInt(2, COL_SAMPLERATE) != 383500)
+        if (csv.getCellAsInt(2, _colSampleRate) != 383500)
         {
-          csv.insertCol(COL_SAMPLERATE, "383500");
-          csv.insertCol(COL_FILE_LEN, "3.001");
+          csv.insertCol(_colSampleRate, "383500");
+          csv.insertCol(_colFileLen, "3.001");
           csv.save();
         }
       }
@@ -57,7 +96,7 @@ namespace BatInspector
 
       for (int row = 2; row <= csv.RowCnt; row++)
       {
-        string fName = csv.getCell(row, COL_NAME);
+        string fName = csv.getCell(row, _colName);
         if (fName != lastFileName)
         {
           lastFileName = fName;
@@ -65,16 +104,19 @@ namespace BatInspector
           _list.Add(file);
           callNr = 1;
         }
-        file.SampleRate = csv.getCellAsInt(row, COL_SAMPLERATE);
-        file.Duration = csv.getCellAsDouble(row, COL_FILE_LEN);
-        double fMaxAmp = csv.getCellAsDouble(row, COL_FREQ_MAX_AMP);
-        double fMin = csv.getCellAsDouble(row, COL_FREQ_MIN);
-        double fMax = csv.getCellAsDouble(row, COL_FREQ_MAX);
-        double fKnee = csv.getCellAsDouble(row, COL_FREQ_KNEE);
-        double duration = csv.getCellAsDouble(row, COL_DURATION);
-        string startTime = csv.getCell(row, COL_START_TIME);
-        string species = csv.getCell(row, COL_SPECIES);
-        AnalysisCall call = new AnalysisCall(fMaxAmp, fMin, fMax, fKnee, duration, startTime, species);
+        file.SampleRate = csv.getCellAsInt(row, _colSampleRate);
+        file.Duration = csv.getCellAsDouble(row, _colFileLen);
+        double fMaxAmp = csv.getCellAsDouble(row, _colFreqMaxAmp);
+        double fMin = csv.getCellAsDouble(row, _colFreqMin);
+        double fMax = csv.getCellAsDouble(row, _colFreqMax);
+        double fKnee = csv.getCellAsDouble(row, _colFreqKnee);
+        double duration = csv.getCellAsDouble(row, _colDuration);
+        string startTime = csv.getCell(row, _colStartTime);
+        string species = csv.getCell(row, _colSpecies);
+        double probability = csv.getCellAsDouble(row, _colProbability);
+        double snr = csv.getCellAsDouble(row, _colSnr);
+
+        AnalysisCall call = new AnalysisCall(fMaxAmp, fMin, fMax, fKnee, duration, startTime, species, probability, snr);
         file.Calls.Add(call);
 
         ReportItem rItem = new ReportItem();
@@ -87,6 +129,8 @@ namespace BatInspector
         rItem.Duration = duration.ToString("0.#");
         rItem.StartTime = startTime;
         rItem.Species = species;
+        rItem.Probability = probability.ToString("0.###");
+        rItem.Snr = snr.ToString();
         _report.Add(rItem);
       }
     }
@@ -128,7 +172,7 @@ namespace BatInspector
         int row = 0;
         do
         {
-          row = report.findInCol(wavName, COL_NAME);
+          row = report.findInCol(wavName, _colName);
           if (row > 0)
           {
             report.removeRow(row);
@@ -164,6 +208,8 @@ namespace BatInspector
 
     public string Species { get; set; }
 
+    public string Probability { get; set; }
+    public string Snr { get; set; }
   }
 
   public class AnalysisCall
@@ -174,9 +220,12 @@ namespace BatInspector
     public double FreqKnee { get; }
     public double Duration { get; }
     public String StartTime { get; }
+    public double Probability { get; }
+
+    public double Snr { get; }
 
     public string Species { get; }
-    public AnalysisCall(double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double duration, string start, string species)
+    public AnalysisCall(double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double duration, string start, string species, double probability, double snr)
     {
       FreqMaxAmp = freqMaxAmp;
       FreqMin = freqMin;
@@ -185,6 +234,8 @@ namespace BatInspector
       Duration = duration;
       StartTime = start;
       Species = species;
+      Probability = probability;
+      Snr = snr;
     }
   }
 

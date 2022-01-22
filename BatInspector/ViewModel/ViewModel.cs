@@ -33,7 +33,7 @@ namespace BatInspector
 
     public Filter Filter { get { return _filter; } }
 
-    public AppParams Settings { get;  }
+    public AppParams Settings { get { return _settings; }  }
 
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
@@ -79,6 +79,22 @@ namespace BatInspector
         _filter.Items.Add(it);
       }
     }
+
+    public void saveSettings()
+    {
+      _settings.Filter.Clear();
+      foreach(FilterItem fItem in _filter.Items)
+      {
+        FilterParams fPar = new FilterParams();
+        fPar.Expression = fItem.Expression;
+        fPar.Name = fItem.Name;
+        fPar.isForAllCalls = fItem.IsForAllCalls;
+        _settings.Filter.Add(fPar);
+      }
+      _filter.Items.Clear();
+      _settings.save();
+    }
+
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
       string fullName = _selectedDir + "Records/" + rec.File;

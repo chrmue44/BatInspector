@@ -89,6 +89,17 @@ namespace BatInspector.Forms
     {
       _lblStatus.Text = status;
     }
+    public void populateFilterComboBox()
+    {
+      _cbFilter.Items.Clear();
+      foreach (FilterItem f in _model.Filter.Items)
+      {
+        string name = f.Name;
+        _cbFilter.Items.Add(name);
+      }
+      if (_cbFilter.Items.Count > 0)
+        _cbFilter.Text = (string)_cbFilter.Items[0];
+    }
 
     private TreeViewItem CreateTreeItem(object o)
     {
@@ -99,17 +110,6 @@ namespace BatInspector.Forms
       return item;
     }
 
-    private void populateFilterComboBox()
-    {
-      _cbFilter.Items.Clear();
-      foreach(FilterItem f in _model.Filter.Items)
-      {
-        string name = f.Name;
-        _cbFilter.Items.Add(name);
-      }
-      if (_cbFilter.Items.Count > 0)
-        _cbFilter.Text = (string)_cbFilter.Items[0];
-    }
 
     private void populateFiles()
     {
@@ -345,7 +345,7 @@ namespace BatInspector.Forms
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)
     {
-      _frmFilter = new FrmFilter(_model.Filter);
+      _frmFilter = new FrmFilter(_model.Filter, populateFilterComboBox);
       _frmFilter.Show();
     }
 
@@ -357,6 +357,11 @@ namespace BatInspector.Forms
         bool res = _model.Filter.apply(filter, c.Analysis);
         c._cbSel.IsChecked = res;
       }
+    }
+
+    private void _btnSave_Click(object sender, RoutedEventArgs e)
+    {
+      _model.saveSettings();
     }
   }
 

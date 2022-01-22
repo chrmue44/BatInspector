@@ -61,7 +61,7 @@ namespace BatInspector
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
           it.setup("Call " + callNr.ToString() + ": ", enDataType.STRING);
-          it.setValue(call.Species);
+          it.setValue(call.Species + "(Prob: " + call.Probability.ToString("0.###") + ")");
           callNr++;
           _spData.Children.Add(it);
         }

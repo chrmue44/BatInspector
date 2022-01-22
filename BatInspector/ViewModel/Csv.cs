@@ -54,6 +54,33 @@ namespace BatInspector
       return retVal;
     }
 
+    /// <summary>
+    /// find a value in a row
+    /// </summary>
+    /// <param name="row">row nr 1..n</param>
+    /// <param name="val">value to search</param>
+    /// <returns>column number 1..n, if not found or error: 0</returns>
+    public int findInRow(int row, string val)
+    {
+      int retVal = 0;
+      if ((row > 0) && (row <= _cells.Count))
+      {
+        row--;
+        for (int i = 0; i < _cells[row].Count; i++)
+        {
+          if(_cells[row][i] == val)
+          {
+            retVal = i + 1;
+            break;
+          }
+        }
+      }
+      else
+        DebugLog.log("Csv.findInRow(): rom number " + row.ToString() + " not valid", enLogType.ERROR);
+      return retVal;
+    }
+
+
     public int save(bool withBackup = true)
     {
       int retVal = 0;

@@ -20,7 +20,10 @@
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
             <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-                <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+          <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSave_Click">
+            <Image Source="../images/icons8-save-48.png"></Image>
+          </Button>
+          <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image Source="../images/recycle.png"> </Image>
                 </Button>
                 <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="find bat calls in project" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">

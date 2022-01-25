@@ -4,6 +4,7 @@ TODO
 - training crickets
 - add notes and approved species filed on the right side of ctlWavFile
 - find bug: apply filter after closing filter window -> crash
+- playback of recordings
 
 DONE
 - Filter function

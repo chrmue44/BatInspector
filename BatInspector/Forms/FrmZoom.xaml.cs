@@ -392,5 +392,18 @@ namespace BatInspector
     {
       _model.KeyPressed = e.Key;
     }
+
+    private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
+    {
+      _wf.play(1, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+    }
+    private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
+    {
+      _wf.play(10, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+    }
+    private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
+    {
+      _wf.play(20, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+    }
   }
 }

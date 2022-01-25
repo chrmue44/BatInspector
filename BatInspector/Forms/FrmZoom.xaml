@@ -58,6 +58,17 @@
         <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="decrease range">
           <Image Source="../images/icons8-minus-48.png"></Image>
         </Button>
+        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+        <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="play displayed section">
+          <Image Source="../images/play-button.png"></Image>
+        </Button>
+        <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="play displayed section, stretched 10x">
+          <Image Source="../images/play-button.png"></Image>
+        </Button>
+        <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="play displayed section, stretched 20x">
+          <Image Source="../images/play-button.png"></Image>
+        </Button>
+        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
       </ToolBar>
     </ToolBarTray>
     <Grid Name ="_gridXt" Grid.Row="1">

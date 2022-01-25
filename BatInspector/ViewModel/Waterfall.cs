@@ -91,6 +91,16 @@ namespace BatInspector
 
     }
 
+
+    public void play(int stretch, double tStart, double tEnd)
+    {
+      WavFile wav = new WavFile();
+      int iStart = Math.Max((int)(tStart *  SamplingRate), 0);
+      int iEnd = Math.Min((int)(tEnd * SamplingRate), Samples.Length);
+      wav.play(1, _samplingRate / stretch, iStart, iEnd, Samples);
+    }
+
+
     void addRgb565ColorToMap(int rgb565)
     {
       _colorMap.Add(Color.FromArgb(

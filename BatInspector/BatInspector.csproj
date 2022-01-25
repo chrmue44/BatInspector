@@ -50,6 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -81,6 +82,7 @@
     </Compile>
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
+    <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -261,6 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\icons8-save-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\play-button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

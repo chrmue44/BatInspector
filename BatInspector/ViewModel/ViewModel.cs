@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 
+
 namespace BatInspector
 {
   public class ViewModel
@@ -21,6 +22,7 @@ namespace BatInspector
     ZoomView _zoom;
     Filter _filter;
     AppParams _settings;
+
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
     public string PrjPath { get { return _selectedDir; } }

@@ -11,7 +11,7 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock Name="_lblProject" Text="---"></TextBlock>
-            <TextBlock Name="_lblStatus"></TextBlock>
+            <TextBlock Name="_lblStatus" HorizontalAlignment="Right"></TextBlock>
         </StatusBar>
         <Grid>
         <Grid.RowDefinitions>

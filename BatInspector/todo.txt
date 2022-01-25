@@ -11,3 +11,4 @@ DONE
 - excel like tab for report
 - cursur up handling in main window
 - find bug: delete after filter application (not everything gets deleted)
+- Installer

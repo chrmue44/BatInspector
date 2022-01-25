@@ -1,3 +1,5 @@
 /.vs
 /BatInspector/obj
 /BatInspector/bin
+/Setup/Release
+/Setup/Debug

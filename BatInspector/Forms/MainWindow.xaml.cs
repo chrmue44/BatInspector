@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
+using System.Deployment.Application;
+using System.Reflection;
 
 namespace BatInspector.Forms
 {
@@ -31,6 +32,17 @@ namespace BatInspector.Forms
       _model = new ViewModel(this);
       _model.loadSettings();
       populateFilterComboBox();
+      System.Version version;
+      try
+      {
+        version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
+      }
+      catch 
+      {
+        version = Assembly.GetExecutingAssembly().GetName().Version;
+      }
+      this.Title = "BatInspector V" + version.ToString();
+
     }
 
     public void initTreeView()
@@ -81,6 +93,7 @@ namespace BatInspector.Forms
       if (_model.Prj != null)
       {
         _lblProject.Text = dir.FullName;
+        setStatus("   loading...");
         populateFiles();
       }
     }
@@ -182,7 +195,8 @@ namespace BatInspector.Forms
           await Task.Delay(2);
         }
       }
-      _lblStatus.Text = "";
+      string report = _model.Analysis.Report != null ? "report available" : "no report";
+      setStatus("  [ nr of files: " + _spSpectrums.Children.Count.ToString() + " | " + report  + " ]");
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)

@@ -79,10 +79,17 @@ namespace BatInspector
       //@@@ temporary
       if (ret == 0)
       {
-        if (csv.getCellAsInt(2, _colSampleRate) != 383500)
+        if (_colSampleRate == 0)
         {
-          csv.insertCol(_colSampleRate, "383500");
-          csv.insertCol(_colFileLen, "3.001");
+          if (csv.getCellAsInt(2, 2) != 383500)
+          {
+            csv.insertCol(_colSampleRate, "383500");
+            csv.insertCol(_colFileLen, "3.001");
+          }
+          _colSampleRate = 2;
+          _colFileLen = 3;
+          csv.setCell(1, 3, "sampleRate");
+          csv.setCell(1, 4, "fileLen");
           csv.save();
         }
       }

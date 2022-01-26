@@ -16,7 +16,7 @@ namespace BatInspector
 
     string _selectedDir;
     Project _prj;
-
+    string _version;
     Analysis _analysis;
     ProcessRunner _proc;
     ZoomView _zoom;
@@ -27,6 +27,7 @@ namespace BatInspector
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
     public string PrjPath { get { return _selectedDir; } }
 
+    public string Version { get { return _version; } }
     public Analysis Analysis { get { return _analysis; } }
 
     public Project Prj { get { return _prj; } }
@@ -39,7 +40,7 @@ namespace BatInspector
 
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
-    public ViewModel(Forms.MainWindow mainWin)
+    public ViewModel(Forms.MainWindow mainWin, string version)
     {
       _analysis = new Analysis();
       _proc = new ProcessRunner(DebugLog.log);
@@ -48,6 +49,7 @@ namespace BatInspector
       _zoom = new ZoomView();
       _filter = new Filter();
       _settings = new AppParams();
+      _version = version;
     }
 
 

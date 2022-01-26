@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.Devices;
@@ -191,9 +193,11 @@ namespace BatInspector
     private byte[] _waveData;
 
     Audio _audio;
+    //SoundPlayer _audio;
     public WavFile()
     {
       _audio = new Audio();
+      //_audio = new SoundPlayer();
     }
 
     public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
@@ -212,9 +216,17 @@ namespace BatInspector
       tempBytes.AddRange(format.GetBytes());
       tempBytes.AddRange(data.GetBytes());
       _waveData = tempBytes.ToArray();
+//      File.WriteAllBytes("$$$.wav", _waveData);
+//      _audio = new SoundPlayer("$$$.wav");
       _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
-      _waveData = null;
-      tempBytes = null;
+    //  _waveData = null;
+    //  tempBytes = null;
+    }
+
+    public void stop()
+    {
+      if (_audio != null)
+        _audio.Stop();
     }
   }
 

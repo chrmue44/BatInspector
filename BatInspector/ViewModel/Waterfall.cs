@@ -25,6 +25,7 @@ namespace BatInspector
     int _heightFt;
     int _heightXt;
     AppParams _settings;
+    WavFile _wav = null;
 
     public double Duration { get { return (double)_samples.Length / _samplingRate; } }
     public int SamplingRate { get { return _samplingRate; } }
@@ -94,12 +95,18 @@ namespace BatInspector
 
     public void play(int stretch, double tStart, double tEnd)
     {
-      WavFile wav = new WavFile();
+      _wav = new WavFile();
       int iStart = Math.Max((int)(tStart *  SamplingRate), 0);
       int iEnd = Math.Min((int)(tEnd * SamplingRate), Samples.Length);
-      wav.play(1, _samplingRate / stretch, iStart, iEnd, Samples);
+      _wav.play(1, _samplingRate / stretch, iStart, iEnd, Samples);
+      _wav = null;
     }
 
+    public void stop()
+    {
+      if (_wav != null)
+        _wav.stop();
+    }
 
     void addRgb565ColorToMap(int rgb565)
     {

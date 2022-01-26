@@ -74,6 +74,9 @@
     <Compile Include="Forms\ctlFilterItem.xaml.cs">
       <DependentUpon>ctlFilterItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmAbout.xaml.cs">
+      <DependentUpon>FrmAbout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmAppSettings.xaml.cs">
       <DependentUpon>FrmAppSettings.xaml</DependentUpon>
     </Compile>
@@ -116,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\ctlWavFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,9 +196,9 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Licenses.txt">
+    <AdditionalFiles Include="Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\Bat_icon-icons.com_75012.png">
@@ -244,7 +251,9 @@
     <Resource Include="images\icons8-plus-+-48.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="todo.txt" />
+    <AdditionalFiles Include="history.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\icons8-zoom-in-64.png" />
@@ -266,6 +275,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\play-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Actions_help_about_icon.png" />
+    <Resource Include="images\Button_Help_icon_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\play-button-10x.png" />
+    <Resource Include="images\play-button-20x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

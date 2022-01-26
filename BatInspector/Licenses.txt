@@ -42,4 +42,8 @@ https://www.flaticon.com/free-icons/trash  Trash icons created by Freepik - Flat
 icons8-save-48.png
 https://icons8.com/icons/set/save
 
+play-button.png
 https://www.flaticon.com/free-icons/play-button" Play button icons created by Roundicons - Flaticon
+
+stop.png
+https://www.flaticon.com/free-icons/stop" Stop icons created by DinosoftLabs - Flaticon

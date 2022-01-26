@@ -27,11 +27,6 @@ namespace BatInspector.Forms
 
     public MainWindow()
     {
-      InitializeComponent();
-      initTreeView();
-      _model = new ViewModel(this);
-      _model.loadSettings();
-      populateFilterComboBox();
       System.Version version;
       try
       {
@@ -41,6 +36,11 @@ namespace BatInspector.Forms
       {
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
+      _model = new ViewModel(this, version.ToString());
+      _model.loadSettings();
+      InitializeComponent();
+      initTreeView();
+      populateFilterComboBox();
       this.Title = "BatInspector V" + version.ToString();
 
     }
@@ -89,9 +89,9 @@ namespace BatInspector.Forms
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
-      _model.initProject(dir);
       if (_model.Prj != null)
       {
+        _model.initProject(dir);
         _lblProject.Text = dir.FullName;
         setStatus("   loading...");
         populateFiles();
@@ -380,6 +380,17 @@ namespace BatInspector.Forms
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
       _model.saveSettings();
+    }
+
+    private void _btnHelp_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void _btnInfo_Click(object sender, RoutedEventArgs e)
+    {
+      FrmAbout frm = new FrmAbout(_model.Version);
+      frm.Show();
     }
   }
 

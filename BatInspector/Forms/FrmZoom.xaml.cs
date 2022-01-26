@@ -1,6 +1,6 @@
 ﻿using BatInspector.Forms;
 using System;
-
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,6 +19,8 @@ namespace BatInspector
     string _wavFilePath;
     Waterfall _wf;
     ViewModel _model;
+    int _stretch;
+    BackgroundWorker _worker;
 
     public FrmZoom(string name, AnalysisFile analysis, string wavFilePath, ViewModel model)
     {
@@ -26,6 +28,8 @@ namespace BatInspector
       this.Title = name;
       _analysis = analysis;
       _model = model;
+      _worker = new BackgroundWorker();
+      _worker.WorkerSupportsCancellation = true;
 
       _model.ZoomView.RulerDataA.setRange(-1, 1);
       _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
@@ -395,15 +399,42 @@ namespace BatInspector
 
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
     {
-      _wf.play(1, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+      play(1);
     }
+
+    private void play(int stretch)
+    {
+      _stretch = stretch;
+      _worker.WorkerReportsProgress = true;
+      _worker.DoWork += worker_DoWork;
+    //  worker.ProgressChanged += worker_ProgressChanged;
+    //  worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+      _worker.RunWorkerAsync(10000);
+    }
+
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
     {
-      _wf.play(10, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+      play(10);
+    }
+
+    void worker_DoWork(object sender, DoWorkEventArgs e)
+    {
+      _wf.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+
     }
     private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
     {
-      _wf.play(20, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+      play(20);
+    }
+
+    private void _imgFt_MouseMove(object sender, MouseEventArgs e)
+    {
+      Point p = e.GetPosition(_imgFt);
+    }
+
+    private void _btnStop_Click(object sender, RoutedEventArgs e)
+    {
+      _worker.Dispose();
     }
   }
 }

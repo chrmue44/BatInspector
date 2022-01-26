@@ -13,8 +13,10 @@ namespace BatInspector
     List<List<string>> _cells;
     string _fileName;
     char _separator = ';';
+    int _colCnt = 0;
 
     public int RowCnt {  get { return _cells.Count; } }
+    public int ColCnt { get { return _colCnt; } }
 
     public Csv()
     {
@@ -37,6 +39,8 @@ namespace BatInspector
             string[] s = line.Split(separator);
             List<string> row = s.ToList();
             _cells.Add(row);
+            if (_colCnt < s.Length)
+              _colCnt = s.Length;
           }
           log("file " + file + " opened successfully", enLogType.INFO);
         }
@@ -159,6 +163,7 @@ namespace BatInspector
     public void setCell(int row, int col, string value)
     {
       row--;
+      col--;
       if (row >= 0)
       {
         if(row >= _cells.Count)
@@ -198,6 +203,21 @@ namespace BatInspector
       return retVal;
     }
 
+    public int findInCol(string val1, int col1, string val2, int col2)
+    {
+      int retVal = 0;
+      for (int row = 1; row <= _cells.Count; row++)
+      {
+        if ((col1 <= _cells[row - 1].Count) && (_cells[row - 1][col1 - 1] == val1) &&
+            (col2 <= _cells[row - 1].Count) && (_cells[row - 1][col2 - 1] == val2))
+        {
+          retVal = row;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     public void insertCol(int col, string ins = "")
     {
       bool err = false;
@@ -208,7 +228,11 @@ namespace BatInspector
           if (col <= row.Count)
             row.Insert(col - 1, ins);
           else
-            err = true;
+          {
+            while (row.Count < col-1)
+              row.Add("");
+            row.Add(ins);
+          }
         }
       }
       else

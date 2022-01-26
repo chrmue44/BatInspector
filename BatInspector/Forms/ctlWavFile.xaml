@@ -7,23 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="0" LostFocus="ctlLostFocus" GotFocus="ctlGotFocus">
     <GroupBox Name="_grp" Margin="3" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Header="Bla">
-    <Grid >
+    <Grid Name="_grid" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Name="_cbSel" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-      <GroupBox Grid.Column="1" Header="Auto Detection">
-      <StackPanel Name="_spData">
+      <Button Name="_btnCopy"  VerticalAlignment="Center" Click="_btnCopy_Click">-></Button>
+      <GroupBox Name ="_grpInfoAuto" Grid.Column="1" Header="Auto Detection">
+      <StackPanel Name="_spDataAuto">
         <forms:ctlDataItem x:Name="_sampleRate" />
         <forms:ctlDataItem x:Name="_duration" />
       </StackPanel>
+        </GroupBox>
+      <GroupBox Name ="_grpInfoMan" Grid.Column="2" Header="Manual Detection">
+        <StackPanel Name="_spDataMan">
+        </StackPanel>
       </GroupBox>
       <!--<ListView Grid.Column="1" Name="_lvFileInfo"  HorizontalAlignment="Left"  VerticalAlignment="Top" Focusable="False" />-->
-      <Button Grid.Column="2" Click="Button_Click" HorizontalAlignment="Left"  VerticalAlignment="Top">
-              <Image  Name ="Img" Focusable="False" />
-            </Button>
+      <Button Grid.Column="3" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" >
+        <Image  Name ="_img" Focusable="False" Stretch="Fill"/>
+      </Button>
         </Grid>
     </GroupBox>
 </UserControl>

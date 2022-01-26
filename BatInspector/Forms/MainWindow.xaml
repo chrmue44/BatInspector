@@ -58,14 +58,19 @@
                     <StackPanel Grid.Row ="0" Grid.Column="2" Orientation="Horizontal">
                         <Button x:Name="_btnAll"  Click ="_btnAll_Click" Content="All" HorizontalAlignment="Left"></Button>
                         <Button x:Name="_btnNone" Click="_btnNone_Click" Content="None" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Separator></Separator>
                         <Button x:Name="_btnHideUnSelected" Click="_btnHideUnSelected_Click" Content="Hide unselected" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                         <Button x:Name="_btnShowAll" Click="_btnShowAll_Click" Content="Show all" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                         <Button x:Name="_btnDelSelected" Click ="_btnDelSelected_Click" Content="Del selected" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Separator></Separator>
                         <Button x:Name="_btnSize" Click ="_btnSize_Click"  Content="Size" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Separator></Separator>
                         <TextBlock Margin="5,0,0,0">Filter:</TextBlock>
                         <ComboBox Name="_cbFilter" Margin="5,0,0,0"></ComboBox>
                         <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="Apply Filter" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        </StackPanel>
+                        <Separator></Separator>
+                        <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click"  Content="Hide/Show Info" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+            </StackPanel>
                     <TreeView Name="trvStructure" BorderThickness="0" Grid.Row="1" Grid.Column="0" TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected" Margin="5">
                     </TreeView>
                     <GridSplitter Grid.Row="1" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />

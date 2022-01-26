@@ -1,4 +1,16 @@
-﻿using System.Collections.Generic;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2021: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -183,9 +195,9 @@ namespace BatInspector.Forms
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model);
           DockPanel.SetDock(ctl, Dock.Bottom);
           bool newImage;
-          ctl.Img.Source = _model.getFtImage(rec, out newImage);
-          ctl.Img.MaxWidth = MAX_IMG_WIDTH;
-          ctl.Img.MaxHeight = _imgHeight;
+          ctl._img.Source = _model.getFtImage(rec, out newImage);
+//          ctl._img.MaxWidth = MAX_IMG_WIDTH;
+          ctl._img.MaxHeight = _imgHeight;
           ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath);
           _spSpectrums.Dispatcher.Invoke(() =>
           {
@@ -323,9 +335,8 @@ namespace BatInspector.Forms
       foreach (UIElement ui in _spSpectrums.Children)
       {
         ctlWavFile ctl = ui as ctlWavFile;
-        ctl.Img.MaxHeight = _imgHeight;
-        ctl.Img.Height = _imgHeight;
-        ctl.Img.Width = MAX_IMG_WIDTH;
+        ctl._img.MaxHeight = _imgHeight;
+        ctl._img.Height = _imgHeight;
       }
     }
 
@@ -380,6 +391,7 @@ namespace BatInspector.Forms
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
       _model.saveSettings();
+      _model.Analysis.save(_model.PrjPath + "report.csv");
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
@@ -391,6 +403,12 @@ namespace BatInspector.Forms
     {
       FrmAbout frm = new FrmAbout(_model.Version);
       frm.Show();
+    }
+
+    private void _btnCallInfo_Click(object sender, RoutedEventArgs e)
+    {
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+        ctl.InfoVisible = !ctl.InfoVisible;
     }
   }
 

@@ -71,6 +71,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\ctlSelectItem.xaml.cs">
+      <DependentUpon>ctlSelectItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ctlFilterItem.xaml.cs">
       <DependentUpon>ctlFilterItem.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
+    <Page Include="Forms\ctlSelectItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Forms\ctlDataItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

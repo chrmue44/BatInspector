@@ -30,6 +30,26 @@ namespace BatInspector
     dlgSetFocus _dlgFocus;
     ViewModel _model;
 
+    public bool InfoVisible
+    {
+      get { return _grpInfoAuto.Visibility == Visibility.Visible; }
+      set
+      {
+        _grpInfoAuto.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        _grpInfoMan.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        if (!value)
+        {
+          _grid.ColumnDefinitions[1].Width = new GridLength(0);
+          _grid.ColumnDefinitions[2].Width = new GridLength(0);
+        }
+        else
+        {
+          _grid.ColumnDefinitions[1].Width = new GridLength(200);
+          _grid.ColumnDefinitions[2].Width = new GridLength(200);
+        }
+      }
+    }
+
     public AnalysisFile Analysis { get { return _analysis; } }
     public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model)
     {
@@ -51,6 +71,7 @@ namespace BatInspector
       _analysis = analysis;
       _wavFilePath = wavFilePath;
       _grp.Header = Name;
+      string[] spec = { "###","PPIP", "PNAT", "PPYG", "NNOC", "NLEI", "MDAU", "ESER","BBAR","CRIC" };
       if (analysis != null)
       {
         _sampleRate.setValue(_analysis.SampleRate);
@@ -61,9 +82,15 @@ namespace BatInspector
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
           it.setup("Call " + callNr.ToString() + ": ", enDataType.STRING);
-          it.setValue(call.Species + "(Prob: " + call.Probability.ToString("0.###") + ")");
+          it.setValue(call.SpeciesAuto + "(Prob: " + call.Probability.ToString("0.###") + ")");
+          _spDataAuto.Children.Add(it);
+
+          ctlSelectItem im = new ctlSelectItem();
+          im.setup("Call " + callNr.ToString() + ": ");
+          im.setItems(spec);
+          im.setValue(call.SpeciesMan);
+          _spDataMan.Children.Add(im);
           callNr++;
-          _spData.Children.Add(it);
         }
       }
     }
@@ -83,9 +110,7 @@ namespace BatInspector
       if (_analysis != null)
       {
         FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath, _model);
-        frm._imgFt.Source = this.Img.Source;
-        frm._imgFt.Width = this.Img.Width;
-        frm._imgFt.Height = this.Img.Height;
+        frm._imgFt.Source = _img.Source;
         frm.Show();
       }
       else
@@ -101,6 +126,16 @@ namespace BatInspector
     {
       _cbSel.BorderThickness = new Thickness(3, 3, 3, 3);
       _dlgFocus(_index);
+    }
+
+    private void _btnCopy_Click(object sender, RoutedEventArgs e)
+    {
+      for (int i = 0; i < _analysis.Calls.Count; i++)
+      {
+        _analysis.Calls[i].SpeciesMan = Analysis.Calls[i].SpeciesAuto;
+        ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
+        ctlm.setValue(Analysis.Calls[i].SpeciesAuto);
+      }
     }
   }
 }

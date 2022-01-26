@@ -78,6 +78,20 @@ namespace BatInspector.Forms
 
     }
 
+    public string getValue()
+    {
+      switch(_type)
+      {
+        case enDataType.STRING:
+          return _valString;
+        case enDataType.DOUBLE:
+          return _valDouble.ToString();
+        case enDataType.INT:
+          return _valInt.ToString();
+      }
+      return "";
+    }
+
     public ctlDataItem()
     {
       InitializeComponent();
@@ -107,14 +121,4 @@ namespace BatInspector.Forms
       }
     }
   }
-
-  public enum enDataType
-  {
-    STRING,
-    DOUBLE,
-    INT
-  }
-
-  public delegate void dlgValueChanged(enDataType type, object val);
-
 }

@@ -49,7 +49,7 @@ namespace BatInspector
 
       foreach (AnalysisCall call in file.Calls)
       {
-        _expression.setVariable(VAR_SPECIES, call.Species);
+        _expression.setVariable(VAR_SPECIES, call.SpeciesAuto);
         _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
         _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
         _expression.setVariable(VAR_DURATION, call.Duration);

@@ -95,7 +95,6 @@ namespace BatInspector
         fPar.isForAllCalls = fItem.IsForAllCalls;
         _settings.Filter.Add(fPar);
       }
-      _filter.Items.Clear();
       _settings.save();
     }
 
@@ -139,7 +138,8 @@ namespace BatInspector
       {
         string dirName = _selectedDir + "/Records";
         string delName = wavName.Replace(".wav", ".*");
-        foreach (string f in Directory.EnumerateFiles(dirName, delName))
+        IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
+        foreach (string f in delFiles)
         {
           File.Delete(f);
         }

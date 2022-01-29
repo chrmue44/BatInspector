@@ -36,6 +36,8 @@ namespace BatInspector
       _model.ZoomView.RulerDataA.setRange(-1, 1);
       _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
       _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
+      _model.ZoomView.Cursor1.set(0, 0, false);
+      _model.ZoomView.Cursor2.set(0, 0, false);
 
       initRulerT();
       initRulerA();

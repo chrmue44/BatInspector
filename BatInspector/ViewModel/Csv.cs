@@ -88,20 +88,23 @@ namespace BatInspector
     public int save(bool withBackup = true)
     {
       int retVal = 0;
-      if (withBackup)
+      if (_fileName != null)
       {
-        string bakName = _fileName + ".bak";
-        if (File.Exists(bakName))
-          File.Delete(bakName);
-        File.Copy(_fileName, bakName);
-      }
-      
-      string[] lines = new string[_cells.Count];
-      string sep = _separator.ToString();
-      for (int rowNr = 0;  rowNr < lines.Length; rowNr++)
-        lines[rowNr] = String.Join(sep, _cells[rowNr]);
+        if (withBackup)
+        {
+          string bakName = _fileName + ".bak";
+          if (File.Exists(bakName))
+            File.Delete(bakName);
+          File.Copy(_fileName, bakName);
+        }
 
-      File.WriteAllLines(_fileName, lines);
+        string[] lines = new string[_cells.Count];
+        string sep = _separator.ToString();
+        for (int rowNr = 0; rowNr < lines.Length; rowNr++)
+          lines[rowNr] = String.Join(sep, _cells[rowNr]);
+
+        File.WriteAllLines(_fileName, lines);
+      }
       return retVal;
     }
 

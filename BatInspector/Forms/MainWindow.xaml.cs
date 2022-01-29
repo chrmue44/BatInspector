@@ -89,7 +89,10 @@ namespace BatInspector.Forms
             if(Project.containsProject(subDir))
             {
               childItem.FontWeight = FontWeights.Bold;
-              childItem.Foreground = new SolidColorBrush(Colors.Violet);
+              if(Project.evaluationDone(subDir))
+                childItem.Foreground = new SolidColorBrush(Colors.Green);
+              else
+                childItem.Foreground = new SolidColorBrush(Colors.Violet);
             }
           }
         }

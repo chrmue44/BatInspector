@@ -18,7 +18,8 @@ namespace BatInspector
   
   public class Filter
   {
-    const string VAR_SPECIES = "Species";
+    const string VAR_SPECIES_AUTO = "SpeciesAuto";
+    const string VAR_SPECIES_MAN = "SpeciesMan";
     const string VAR_FREQ_MAX = "FreqMax";
     const string VAR_FREQ_MIN = "FreqMin";
     const string VAR_DURATION = "DurationCall";
@@ -33,7 +34,8 @@ namespace BatInspector
     {
       _list = new List<FilterItem>();
       _expression = new Expression();
-      _expression.Variables.insert(VAR_SPECIES);
+      _expression.Variables.insert(VAR_SPECIES_AUTO);
+      _expression.Variables.insert(VAR_SPECIES_MAN);
       _expression.Variables.insert(VAR_FREQ_MIN);
       _expression.Variables.insert(VAR_FREQ_MAX);
       _expression.Variables.insert(VAR_DURATION);
@@ -49,7 +51,8 @@ namespace BatInspector
 
       foreach (AnalysisCall call in file.Calls)
       {
-        _expression.setVariable(VAR_SPECIES, call.SpeciesAuto);
+        _expression.setVariable(VAR_SPECIES_AUTO, call.SpeciesAuto);
+        _expression.setVariable(VAR_SPECIES_MAN, call.SpeciesMan);
         _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
         _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
         _expression.setVariable(VAR_DURATION, call.Duration);

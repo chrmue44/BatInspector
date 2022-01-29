@@ -121,4 +121,7 @@ namespace BatInspector.Forms
       }
     }
   }
+
+  public delegate void dlgValueChanged(enDataType type , object val);
+
 }

@@ -71,7 +71,7 @@ namespace BatInspector
       _analysis = analysis;
       _wavFilePath = wavFilePath;
       _grp.Header = Name;
-      string[] spec = { "###","PPIP", "PNAT", "PPYG", "NNOC", "NLEI", "MDAU", "ESER","BBAR","CRIC" };
+      string[] spec = { "todo","PPIP", "PNAT", "PPYG", "NNOC", "NLEI", "MDAU", "ESER","BBAR","CRIC","?","---" };
       if (analysis != null)
       {
         _sampleRate.setValue(_analysis.SampleRate);
@@ -86,7 +86,7 @@ namespace BatInspector
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup("Call " + callNr.ToString() + ": ");
+          im.setup("Call " + callNr.ToString() + ": ", callNr - 1, selItemChanged);
           im.setItems(spec);
           im.setValue(call.SpeciesMan);
           _spDataMan.Children.Add(im);
@@ -117,6 +117,17 @@ namespace BatInspector
         MessageBox.Show("Zoom not supported without analysis, perform analysis first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 
+    private void selItemChanged(int index, string val)
+    {
+      if (_analysis != null)
+      {
+        if ((index >= 0) && (index < _analysis.Calls.Count))
+          _analysis.Calls[index].SpeciesMan = val;
+        else
+          DebugLog.log("ctlWavFile.selItemChanged(): index error", enLogType.ERROR);
+      }
+    }
+
     private void ctlLostFocus(object sender, RoutedEventArgs e)
     {
       _cbSel.BorderThickness = new Thickness(1, 1, 1, 1);
@@ -136,6 +147,11 @@ namespace BatInspector
         ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
         ctlm.setValue(Analysis.Calls[i].SpeciesAuto);
       }
+    }
+
+    private void _tbRemarks_LostFocus(object sender, RoutedEventArgs e)
+    {
+
     }
   }
 }

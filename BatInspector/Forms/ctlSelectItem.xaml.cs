@@ -22,16 +22,18 @@ namespace BatInspector.Forms
   public partial class ctlSelectItem : UserControl
   {
     string _valString;
-    dlgValueChanged _dlgValChange = null;
+    dlgSelItemChanged _dlgValChange = null;
+    int _index;
     
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, dlgValueChanged dlgValChange = null)
+    public void setup(string label, int index, dlgSelItemChanged dlgValChange = null)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
       _dlgValChange = dlgValChange;
+      _index = index;
     }
 
     public void setValue(string val)
@@ -59,11 +61,27 @@ namespace BatInspector.Forms
     }
 
 
-    private void _cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+    private void _cb_LostFocus(object sender, RoutedEventArgs e)
     {
-      _valString = _cb.Text;
-      if (_dlgValChange != null)
-        _dlgValChange(enDataType.STRING, _valString);
+      if (_cb.SelectedIndex >= 0)
+      {
+        _valString = _cb.Items[_cb.SelectedIndex].ToString();
+        if (_dlgValChange != null)
+          _dlgValChange(_index, _valString);
+      }
+
+    }
+
+    private void _cb_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+    {
+      if ( IsVisible && (_cb.SelectedIndex >= 0))
+      {
+        _valString = _cb.Items[_cb.SelectedIndex].ToString();
+        if (_dlgValChange != null)
+          _dlgValChange(_index, _valString);
+      }
+
     }
   }
 
@@ -74,6 +92,6 @@ namespace BatInspector.Forms
     INT
   }
 
-  public delegate void dlgValueChanged(enDataType type, object val);
+  public delegate void dlgSelItemChanged(int index, string val);
 
 }

@@ -22,20 +22,21 @@ namespace BatInspector
     const int COL_SNR = 11;
     const int COL_SPECIES = 26; */
     
-    const string COL_NAME = "name";
-    const string COL_NR = "nr";
-    const string COL_SAMPLERATE = "sampleRate";
-    const string COL_FILE_LEN = "FileLen";
-    const string COL_FREQ_MAX_AMP = "freq_max_amp";
-    const string COL_FREQ_MIN = "freq_min";
-    const string COL_FREQ_MAX = "freq_max";
-    const string COL_FREQ_KNEE = "freq_knee";
-    const string COL_DURATION = "duration";
-    const string COL_START_TIME = "start";
-    const string COL_SNR = "snr";
-    const string COL_SPECIES = "Species";
-    const string COL_SPECIES_MAN = "SpeciesMan";
-    const string COL_PROBABILITY = "prob";
+   public const string COL_NAME = "name";
+    public const string COL_NR = "nr";
+    public const string COL_SAMPLERATE = "sampleRate";
+    public const string COL_FILE_LEN = "FileLen";
+    public const string COL_FREQ_MAX_AMP = "freq_max_amp";
+    public const string COL_FREQ_MIN = "freq_min";
+    public const string COL_FREQ_MAX = "freq_max";
+    public const string COL_FREQ_KNEE = "freq_knee";
+    public const string COL_DURATION = "duration";
+    public const string COL_START_TIME = "start";
+    public const string COL_SNR = "snr";
+    public const string COL_SPECIES = "Species";
+    public const string COL_SPECIES_MAN = "SpeciesMan";
+    public const string COL_PROBABILITY = "prob";
+    public const string COL_REMARKS = "remarks";
 
     int _colSampleRate = 0;
     int _colNr = 0;
@@ -51,6 +52,7 @@ namespace BatInspector
     int _colSpeciesMan = 0;
     int _colProbability = 0;
     int _colSnr = 0;
+    int _colRemarks= 0;
 
     List<AnalysisFile> _list;
     List<ReportItem> _report;
@@ -81,6 +83,7 @@ namespace BatInspector
       _colProbability = csv.findInRow(1, COL_PROBABILITY);
       _colSnr = csv.findInRow(1, COL_SNR);
       _colSpeciesMan = csv.findInRow(1, COL_SPECIES_MAN);
+      _colRemarks = csv.findInRow(1, COL_REMARKS);
 
       //@@@ temporary
       if (ret == 0)
@@ -101,13 +104,21 @@ namespace BatInspector
         if(_colSpeciesMan == 0)
         {
           int col = csv.ColCnt + 1;
-          csv.insertCol(col, "###");
+          csv.insertCol(col, "todo");
           csv.setCell(1, col, COL_SPECIES_MAN);
           _colSpeciesMan = col;
           csv.save();
         }
+        if (_colRemarks == 0)
+        {
+          int col = csv.ColCnt + 1;
+          csv.insertCol(col, "");
+          csv.setCell(1, col, COL_REMARKS);
+          _colRemarks = col;
+          csv.save();
+        }
       }
-      //@@@@
+      //@@@
 
       _list.Clear();
       string lastFileName = "";
@@ -138,22 +149,27 @@ namespace BatInspector
         double probability = csv.getCellAsDouble(row, _colProbability);
         double snr = csv.getCellAsDouble(row, _colSnr);
         string speciesMan = csv.getCell(row, _colSpeciesMan);
+        file.Remarks = csv.getCell(row, _colRemarks);
 
-        AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species, probability, speciesMan, snr);
+        AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species, 
+                                             probability, speciesMan, snr);
         file.Calls.Add(call);
 
         ReportItem rItem = new ReportItem();
         rItem.FileName = fName;
         rItem.CallNr = callNr.ToString();
+        if (callNr < 2)
+          rItem.Remarks = file.Remarks;
         callNr++;
         rItem.FreqMin = (fMin / 1000).ToString("0.#");
         rItem.FreqMax = (fMax / 1000).ToString("0.#");
         rItem.FreqMaxAmp = (fMaxAmp/1000).ToString("0.#");
         rItem.Duration = duration.ToString("0.#");
         rItem.StartTime = startTime;
-        rItem.Species = species;
+        rItem.SpeciesAuto = species;
         rItem.Probability = probability.ToString("0.###");
         rItem.Snr = snr.ToString();
+        rItem.SpeciesMan = speciesMan;
         _report.Add(rItem);
       }
     }
@@ -164,10 +180,13 @@ namespace BatInspector
       csv.read(fileName);
       foreach(AnalysisFile f in _list)
       {
+
         foreach(AnalysisCall c in f.Calls)
         {
           int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
           csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
+          if(_colNr < 2)
+            csv.setCell(row, _colRemarks, f.Remarks);
         }
       }
       csv.save();
@@ -245,10 +264,12 @@ namespace BatInspector
     public string FreqMax { get; set; }
     public string FreqMaxAmp { get; set; }
 
-    public string Species { get; set; }
+    public string SpeciesAuto { get; set; }
 
+    public string SpeciesMan { get; set; }
     public string Probability { get; set; }
     public string Snr { get; set; }
+    public string Remarks { get; set; }
   }
 
   public class AnalysisCall
@@ -291,6 +312,7 @@ namespace BatInspector
     public string FileName { get; set; }
     public int SampleRate { get; set; }
     public double Duration { get; set; }
+    public string Remarks { get; set; }
 
     public List<AnalysisCall> Calls { get { return _calls; } }
 

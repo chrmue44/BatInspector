@@ -118,6 +118,8 @@ namespace BatInspector
           file = new FileStream(fPath, FileMode.Open);
           DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
           retVal = (AppParams)ser.ReadObject(file);
+          if (retVal == null)
+            DebugLog.log("settings file not well formed!", enLogType.ERROR);
         }
         else
         {

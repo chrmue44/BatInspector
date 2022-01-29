@@ -26,6 +26,28 @@ namespace BatInspector
       return retVal;
     }
 
+    public static bool evaluationDone(DirectoryInfo dir)
+    {
+      bool retVal = false;
+      string fName = dir.FullName + "\\report.csv";
+      if (File.Exists(fName))
+      {
+        Csv csv = new Csv();
+        {
+          csv.read(fName);
+          int colSp = csv.findInRow(1, Analysis.COL_SPECIES_MAN);
+          if (colSp > 0)
+          {
+            int row = csv.findInCol("todo", colSp);
+            if (row == 0)
+              retVal = true;
+          }
+        }
+      }
+
+      return retVal;
+    }
+
     public void readPrjFile(string fName)
     {
       _prjFileName = fName;

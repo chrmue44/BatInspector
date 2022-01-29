@@ -4,6 +4,33 @@
              xmlns:local="clr-namespace:BatInspector"
              StartupUri="Forms/MainWindow.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+    <Style TargetType="GroupBox">
+      <Setter Property="Background" Value="#FFF7F9FE"/>
+    </Style>
+    <Style TargetType="Grid">
+      <Setter Property="Background" Value="#FFF7F9FE"/>
+    </Style>
+    <Style TargetType="CheckBox">
+      <Setter Property="Background" Value="White"/>
+    </Style>
+    <Style TargetType="TreeView">
+      <Setter Property="Background" Value="#FFF7F9FE"/>
+    </Style>
+    <Style TargetType="TextBox">
+      <Setter Property="Background" Value="White"/>
+    </Style>
+    <Style TargetType="TextBlock">
+      <Setter Property="Background" Value="#FFF7F9FE"/>
+    </Style>
+    <Style TargetType="GridSplitter">
+      <Setter Property="Background" Value="#FF5D6B99"/>
+    </Style>
+    <Style TargetType="ToolBar">
+      <Setter Property="Background" Value="#FFCCD5F0"/>
+    </Style>
+    <Style TargetType="ToolBarTray">
+      <Setter Property="Background" Value="#FFCCD5F0"/>
+    </Style>
+
+  </Application.Resources>
 </Application>

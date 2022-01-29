@@ -185,7 +185,7 @@ namespace BatInspector
         {
           int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
           csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
-          if(_colNr < 2)
+          if(c.Nr < 2)
             csv.setCell(row, _colRemarks, f.Remarks);
         }
       }

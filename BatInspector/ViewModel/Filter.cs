@@ -49,25 +49,28 @@ namespace BatInspector
       if (filter.IsForAllCalls)
         retVal = true;
 
-      foreach (AnalysisCall call in file.Calls)
+      if (file != null)
       {
-        _expression.setVariable(VAR_SPECIES_AUTO, call.SpeciesAuto);
-        _expression.setVariable(VAR_SPECIES_MAN, call.SpeciesMan);
-        _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
-        _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
-        _expression.setVariable(VAR_DURATION, call.Duration);
-        _expression.setVariable(VAR_PROBABILITY, call.Probability);
-        _expression.setVariable(VAR_SNR, call.Snr);
-        AnyType res = _expression.parse(filter.Expression);
-        if (filter.IsForAllCalls)
+        foreach (AnalysisCall call in file.Calls)
         {
-          if ((res.getType() != AnyType.tType.RT_BOOL) || !res.getBool())
-            retVal = false;
-        }
-        else
-        {
-          if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
-            retVal = true;
+          _expression.setVariable(VAR_SPECIES_AUTO, call.SpeciesAuto);
+          _expression.setVariable(VAR_SPECIES_MAN, call.SpeciesMan);
+          _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
+          _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
+          _expression.setVariable(VAR_DURATION, call.Duration);
+          _expression.setVariable(VAR_PROBABILITY, call.Probability);
+          _expression.setVariable(VAR_SNR, call.Snr);
+          AnyType res = _expression.parse(filter.Expression);
+          if (filter.IsForAllCalls)
+          {
+            if ((res.getType() != AnyType.tType.RT_BOOL) || !res.getBool())
+              retVal = false;
+          }
+          else
+          {
+            if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
+              retVal = true;
+          }
         }
       }
       return retVal;

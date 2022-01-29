@@ -28,7 +28,7 @@
         </StackPanel>
       </GroupBox>
         <GroupBox  Header="Remarks" VerticalAlignment="Stretch">
-          <TextBox Name="_tbRemarks" HorizontalAlignment="Stretch" BorderThickness="0" LostFocus="_tbRemarks_LostFocus" VerticalAlignment="Stretch"></TextBox>
+          <TextBox Name="_tbRemarks" HorizontalAlignment="Stretch" BorderThickness="0"  VerticalAlignment="Stretch" TextChanged="_tbRemarks_TextChanged"></TextBox>
         </GroupBox>
       </StackPanel>
       <!--<ListView Grid.Column="1" Name="_lvFileInfo"  HorizontalAlignment="Left"  VerticalAlignment="Top" Focusable="False" />-->

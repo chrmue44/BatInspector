@@ -8,6 +8,7 @@ TODO
 - scripting engine
 - help
 - species information
+- spectrum for each call
 
 DONE
 - set nodes to green when evaluation done

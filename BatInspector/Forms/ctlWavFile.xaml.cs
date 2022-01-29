@@ -149,9 +149,9 @@ namespace BatInspector
       }
     }
 
-    private void _tbRemarks_LostFocus(object sender, RoutedEventArgs e)
+    private void _tbRemarks_TextChanged(object sender, TextChangedEventArgs e)
     {
-
+      _analysis.Remarks = _tbRemarks.Text;
     }
   }
 }

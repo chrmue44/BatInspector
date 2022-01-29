@@ -70,6 +70,15 @@ namespace BatInspector.Forms
       this.Close();
       _dlgUpdate();
     }
+
+    private void _btnHelp_Click(object sender, RoutedEventArgs e)
+    {
+      string str = "List of available variables:\n\n";
+      str += _filter.getVariables();
+      FrmHelpFilter frm = new FrmHelpFilter();
+      frm._tbHelp.Text = str;
+      frm.Show();
+    }
   }
   public delegate void dlgUpdate();
 }

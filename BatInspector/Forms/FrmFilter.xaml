@@ -17,6 +17,9 @@
     <Button x:Name="_btnAdd"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnAdd_Click" ToolTip="Add a filter expression to the list">
       <Image Source="../images/icons8-plus-+-48.png"></Image>
     </Button>
+      <Button x:Name="_btnHelp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnHelp_Click" ToolTip="show list of variables available for filter expressions">
+        <Image Source="../images/Button_Help_icon_32.png"></Image>
+      </Button>
     </ToolBar>
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>

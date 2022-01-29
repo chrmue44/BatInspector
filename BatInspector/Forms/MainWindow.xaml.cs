@@ -54,7 +54,7 @@ namespace BatInspector.Forms
       initTreeView();
       populateFilterComboBox();
       this.Title = "BatInspector V" + version.ToString();
-
+      
     }
 
     public void initTreeView()

@@ -210,9 +210,9 @@ namespace BatInspector
             {
            //   int idxFreq2 = (int)((double)_spec[0].Length / (double)_height * (double)y);
               double f = (fMax - fMin) * y / _heightFt + fMin;
-              int idxFreq =(int)( f * 2000 /(double) _samplingRate * _heightFt);
-              if (idxFreq >= _heightFt)
-                idxFreq = _heightFt - 1;
+              int idxFreq =(int)( f * 2000 /(double) _samplingRate * _fftSize / 2);
+              if (idxFreq >= _spec[idxSpec].Length)
+                idxFreq = _spec[idxSpec].Length - 1;
               double val = _spec[idxSpec][idxFreq];
               Color col = getColor(val, _minAmplitude, _maxAmplitude);
               bmp.SetPixel(x, _heightFt - 1 - y, col);

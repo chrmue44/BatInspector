@@ -89,5 +89,15 @@ namespace BatInspector
       }
       return retVal;
     }
+
+    public string getVariables()
+    {
+      string retVal = "";
+      foreach(VarListItem v in _expression.Variables.getVarList(false))
+      {
+        retVal += v.name + "\n";
+      }
+      return retVal;
+    }
   }
 }

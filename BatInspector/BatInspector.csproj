@@ -86,6 +86,9 @@
     <Compile Include="Forms\FrmFilter.xaml.cs">
       <DependentUpon>FrmFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmHelpFilter.xaml.cs">
+      <DependentUpon>FrmHelpFilter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\Wav.cs" />
@@ -165,6 +168,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Forms\FrmHelpFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -85,6 +85,7 @@ namespace BatInspector
     RulerData _rulerDataA;
     Cursor _cursor1;
     Cursor _cursor2;
+    Spectrum _spectrum;
 
 
     public ZoomView()
@@ -94,6 +95,7 @@ namespace BatInspector
       _rulerDataA = new RulerData();
       _cursor1 = new Cursor();
       _cursor2 = new Cursor();
+      _spectrum = new Spectrum();
     }
 
 
@@ -102,6 +104,7 @@ namespace BatInspector
     public RulerData RulerDataA { get { return _rulerDataA; } }
     public Cursor Cursor1 { get { return _cursor1; } }
     public Cursor Cursor2 { get { return _cursor2; } }
+    public Spectrum Spectrum { get { return _spectrum; } }
 
     public void zoomInV()
     {

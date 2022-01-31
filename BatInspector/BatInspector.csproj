@@ -77,6 +77,9 @@
     <Compile Include="Forms\ctlFilterItem.xaml.cs">
       <DependentUpon>ctlFilterItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CtlSpectrum.xaml.cs">
+      <DependentUpon>CtlSpectrum.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,7 @@
     </Compile>
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
+    <Compile Include="ViewModel\Spectrum.cs" />
     <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
     <Page Include="App.xaml">
@@ -125,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\ctlFilterItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\CtlSpectrum.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -30,15 +30,13 @@ namespace BatInspector
       this.Title = name;
       _analysis = analysis;
       _model = model;
-//      _worker = new BackgroundWorker();
-//      _worker.WorkerSupportsCancellation = true;
 
       _model.ZoomView.RulerDataA.setRange(-1, 1);
       _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
       _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
       _model.ZoomView.Cursor1.set(0, 0, false);
       _model.ZoomView.Cursor2.set(0, 0, false);
-
+      _model.ZoomView.Spectrum.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
       initRulerT();
       initRulerA();
       initRulerF();
@@ -59,7 +57,24 @@ namespace BatInspector
       ContentRendered += FrmZoom_ContentRendered;
       SizeChanged += FrmZoom_SizeChanged;
       MouseDown += FrmZoomMouseDown;
+
+      _ctlSelectCall.setup("Call Nr.", 0, ctlSelCallChanged);
+      _ctlFMin.setup("Fmin [kHz]: ", enDataType.DOUBLE, 1);
+      _ctlFMax.setup("Fmax [kHz]: ", enDataType.DOUBLE, 1);
+      _ctlFMaxAmpl.setup("FmaxAmpl [kHz]: ", enDataType.DOUBLE, 1);
+      _ctlDuration.setup("Duration [ms]: ", enDataType.DOUBLE, 1);
+      _ctlSnr.setup("Snr: ", enDataType.DOUBLE, 1);
+      _ctlDist.setup("Dist to previous [ms]: ", enDataType.DOUBLE, 1);
+
+      string[] items = new string[_analysis.Calls.Count];
+      for (int i = 0; i < _analysis.Calls.Count; i++)
+        items[i] = (i + 1).ToString();
+      _ctlSelectCall.setItems(items);
+
+      setupCallData(0);
     }
+
+
 
     public void rangeChanged(enDataType type, object val)
     {
@@ -172,6 +187,7 @@ namespace BatInspector
       initRulerF();
       initRulerT();
       initRulerA();
+      _ctlSpectrum.initRulerF();
       drawCursor(_cursorX1, _cursorY1, _model.ZoomView.Cursor1);
       drawCursor(_cursorX2, _cursorY2, _model.ZoomView.Cursor2);
     }
@@ -196,6 +212,9 @@ namespace BatInspector
       initRulerF();
       initRulerT();
       initRulerA();
+      _ctlSpectrum.initRulerF();
+      _ctlSpectrum.createFftImage();
+
     }
 
     void initRulerA()
@@ -244,7 +263,7 @@ namespace BatInspector
     }
 
 
-    private void createLine(Canvas ca, double x1, double y1, double x2, double y2, Brush brush, int thickness = 1)
+    public static void createLine(Canvas ca, double x1, double y1, double x2, double y2, Brush brush, int thickness = 1)
     {
       Line li = new Line();
       li.X1 = x1;
@@ -256,7 +275,7 @@ namespace BatInspector
       ca.Children.Add(li);
     }
 
-    private void createText(Canvas can, double x, double y, string text, Color color)
+    public static void createText(Canvas can, double x, double y, string text, Color color)
     {
       TextBlock textBlock = new TextBlock();
       textBlock.Text = text;
@@ -443,5 +462,30 @@ namespace BatInspector
     {
       _worker.Abort();
     }
+
+    private void ctlSelCallChanged(int index, string val)
+    {
+      int idx = 0;
+      int.TryParse(val, out idx);
+      idx--;
+      if (idx >= 0)
+        setupCallData(idx);
+    }
+    private void setupCallData(int idx)
+    {
+      if (idx < _analysis.Calls.Count)
+      {
+        _ctlFMin.setValue(_analysis.Calls[idx].FreqMin / 1000);
+        _ctlFMax.setValue(_analysis.Calls[idx].FreqMax / 1000);
+        _ctlFMaxAmpl.setValue(_analysis.Calls[idx].FreqMaxAmp / 1000);
+        _ctlDuration.setValue(_analysis.Calls[idx].Duration);
+        _ctlSnr.setValue(_analysis.Calls[idx].Snr);
+        if(idx > 0)
+        {
+        }
+        _ctlSpectrum.init(_model.ZoomView.Spectrum);
+      }
+    }
+
   }
 }

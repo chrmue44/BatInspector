@@ -37,6 +37,7 @@ namespace BatInspector
       {
         _grpInfoAuto.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _grpInfoMan.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        _btnCopy.Visibility = value ? Visibility.Visible : Visibility.Hidden;
         if (!value)
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
@@ -143,7 +144,10 @@ namespace BatInspector
     {
       for (int i = 0; i < _analysis.Calls.Count; i++)
       {
-        _analysis.Calls[i].SpeciesMan = Analysis.Calls[i].SpeciesAuto;
+        if(Analysis.Calls[i].SpeciesAuto.Substring(0,3) == "CRI")
+          _analysis.Calls[i].SpeciesMan = "CRIC";
+        else
+          _analysis.Calls[i].SpeciesMan = Analysis.Calls[i].SpeciesAuto;
         ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
         ctlm.setValue(Analysis.Calls[i].SpeciesAuto);
       }

@@ -85,7 +85,10 @@ namespace BatInspector
         if (step > _fftSize)
           step = _fftSize;
         for (uint idx = idxStart; idx < idxEnd; idx += step)
-          generateFft(idx, _fftSize, DSP.Window.Type.Hanning);
+        {
+          double[] sp = generateFft(idx, _fftSize, DSP.Window.Type.Hanning);
+          _spec.Add(sp);
+        }
       }
       else
         DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);
@@ -154,15 +157,16 @@ namespace BatInspector
       }
     }
 
-    void generateFft(UInt32 idx, UInt32 length, DSP.Window.Type window)
+    public double[] generateFft(UInt32 idx, UInt32 length, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
    //   double amplitude = 1.0; double frequency = 20000.5;
       UInt32 zeroPadding = 0; // NOTE: Zero Padding
       if(idx + length > _samples.Length)
       {
         length = (UInt32)_samples.Length - idx - 1;
-        zeroPadding = _fftSize - length;
+//        zeroPadding = _fftSize - length;
       }
+      zeroPadding = _fftSize - length;
       double[] inputSignal = new double[length];
       Array.Copy(_samples, idx, inputSignal, 0, length);
       // Apply window to the Input Data & calculate Scale Factor
@@ -193,7 +197,7 @@ namespace BatInspector
       // Properly scale the spectrum for the added window
       lmSpectrum = DSP.Math.Multiply(lmSpectrum, wScaleFactor);
 
-      _spec.Add(lmSpectrum);
+      return lmSpectrum;
     }
 
     public Bitmap generateFtPicture(double fMin, double fMax)

@@ -123,22 +123,36 @@ namespace BatInspector
     void prepareColorMap()
     {
       addRgb565ColorToMap(0x0000);
+      addRgb565ColorToMap(0x0001);
       addRgb565ColorToMap(0x0002);
+      addRgb565ColorToMap(0x0003);
       addRgb565ColorToMap(0x0004);
+      addRgb565ColorToMap(0x0008);
       addRgb565ColorToMap(0x0010);
+      addRgb565ColorToMap(0x0020);
       addRgb565ColorToMap(0x0038);
+      addRgb565ColorToMap(0x0078);
       addRgb565ColorToMap(0x00F8);
+      addRgb565ColorToMap(0x0138);
       addRgb565ColorToMap(0x01D8);
+      addRgb565ColorToMap(0x0218);
       addRgb565ColorToMap(0x0238);
+      addRgb565ColorToMap(0x0338);
       addRgb565ColorToMap(0x0438);
+      addRgb565ColorToMap(0x0838);
       addRgb565ColorToMap(0x0730);
+      addRgb565ColorToMap(0x0780);
       addRgb565ColorToMap(0x07F0);
+      addRgb565ColorToMap(0x0F40);
       addRgb565ColorToMap(0x0FC0);
       addRgb565ColorToMap(0x2F40);
       addRgb565ColorToMap(0xFFC0);
+      addRgb565ColorToMap(0xFF80);
       addRgb565ColorToMap(0xFF00);
+      addRgb565ColorToMap(0xFE00);
       addRgb565ColorToMap(0xFD00);
       addRgb565ColorToMap(0xFC00);
+      addRgb565ColorToMap(0xF800);
     }
 
     Color getColor(double val, double min, double max)

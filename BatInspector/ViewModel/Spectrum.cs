@@ -73,5 +73,45 @@ namespace BatInspector
 
       return lmSpectrum;
     }
+
+    public double findMinAmplitude()
+    {
+      double min = 100000;
+      foreach(double a in _ampl)
+      {
+        if (min > a)
+          min = a;
+      }
+      return Math.Pow(10, min / 10);
+    }
+
+    public double findMaxAmplitude()
+    {
+      double max = -100000;
+      foreach (double a in _ampl)
+      {
+        if (max < a)
+          max = a;
+      }
+      return Math.Pow(10, max / 10);
+    }
+
+    public double getMeanAmpl(int idx, int n)
+    {
+      double retVal = 0;
+      if(idx >= 0)
+      {
+        for(int i = idx; i < (idx + n); i++)
+        {
+          if (i < _ampl.Length)
+            retVal += Math.Pow(10, _ampl[i]/10);
+          else
+            n--;
+        }
+        if(n > 0)
+          retVal /= n;
+      }
+      return retVal;
+    }
   }
 }

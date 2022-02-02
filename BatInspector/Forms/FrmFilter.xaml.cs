@@ -32,10 +32,11 @@ namespace BatInspector.Forms
     void populateTree()
     {
       _sp.Children.Clear();
+      int index = 0;
       foreach (FilterItem fItem in _filter.Items)
       {
         ctlFilterItem fIt = new ctlFilterItem();
-        fIt.setup(fItem, deleteFilter);
+        fIt.setup(fItem, index++, deleteFilter);
         _sp.Children.Add(fIt);
       }
     }
@@ -48,7 +49,7 @@ namespace BatInspector.Forms
       _filter.Items.Add(fIt);
 
       ctlFilterItem item = new ctlFilterItem();
-      item.setup(fIt, deleteFilter);
+      item.setup(fIt, _filter.Items.Count - 1, deleteFilter);
       _sp.Children.Add(item);
     }
 

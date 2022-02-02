@@ -213,8 +213,8 @@ namespace BatInspector
       initRulerT();
       initRulerA();
       _ctlSpectrum.initRulerF();
-      _ctlSpectrum.createFftImage();
-
+      
+      _ctlSelectCall._cb.SelectedIndex = 0;
     }
 
     void initRulerA()
@@ -430,12 +430,6 @@ namespace BatInspector
       _stretch = stretch;
       _worker = new Thread(worker_DoWork);
       _worker.Start(); 
-
-//      _worker.WorkerReportsProgress = true;
-//      _worker.DoWork += worker_DoWork;
-    //  worker.ProgressChanged += worker_ProgressChanged;
-    //  worker.RunWorkerCompleted += worker_RunWorkerCompleted;
- //     _worker.RunWorkerAsync(10000);
     }
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
@@ -469,8 +463,14 @@ namespace BatInspector
       int.TryParse(val, out idx);
       idx--;
       if (idx >= 0)
+      {
         setupCallData(idx);
+        double tStart = _analysis.getStartTime(idx);
+        double tEnd = _analysis.getEndTime(idx);
+        _ctlSpectrum.createFftImage(_wf.Samples, tStart, tEnd, _analysis.SampleRate);
+      }
     }
+
     private void setupCallData(int idx)
     {
       if (idx < _analysis.Calls.Count)

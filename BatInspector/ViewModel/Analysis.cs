@@ -326,5 +326,39 @@ namespace BatInspector
       FileName = name;
       _calls = new List<AnalysisCall>();
     }
+
+    /// <summary>
+    /// get start time[s] for call
+    /// </summary>
+    /// <param name="idx">index of call (0..n)</param>
+    /// <returns>start time [s]</returns>
+    public double getStartTime(int idx)
+    {
+      double retVal = 0;
+      if ((idx >= 0) && (idx < _calls.Count))
+      {
+        int pos = _calls[idx].StartTime.LastIndexOf(':');
+        if (pos >= 0)
+        {
+          string s = _calls[idx].StartTime.Substring(pos + 1);
+          s = s.Replace(".", "");
+          s = s.Replace(",", "");
+          double.TryParse(s, out retVal);
+          retVal /= 1000;
+        }
+      }
+      return retVal;
+    }
+
+    public double getEndTime(int idx)
+    {
+      double retVal = 0;
+      if ((idx >= 0) && (idx < _calls.Count))
+      {
+        retVal = getStartTime(idx);
+        retVal += _calls[idx].Duration / 1000;
+      }
+      return retVal;
+    }
   }
 }

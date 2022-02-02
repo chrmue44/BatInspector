@@ -46,16 +46,25 @@ namespace BatInspector.Forms
       }
     }
 
-    public void createFftImage()
+    public void createFftImage(double[] samples, double tStart, double tEnd, int samplingRate)
     {
+      _cvSpec.Children.Clear();
+      _spectrum.create(samples, tStart, tEnd, samplingRate);
+      double min = _spectrum.findMinAmplitude();
+      double max = _spectrum.findMaxAmplitude();
       int w = (int)_cvSpec.ActualWidth;
       int h = (int)_cvSpec.ActualHeight;
-      for (int i = 0; i < 20; i++)
+      int n = _spectrum.Amplitude.Length / h + 1;
+
+      for (int x = 0; x < w; x++)
       {
-        int x = (int)(_cvSpec.ActualWidth / 19.0 * i);
+        if (x == (w - 1)) //@@@
+          x = w - 1;  //@@@
         int y1 = (int)(_cvSpec.ActualHeight);
-        int y2 = (int)(_cvSpec.ActualHeight - i*i / 4);
-        FrmZoom.createLine(_cvSpec, x, y1,x , y2, Brushes.Blue);
+        int i = (int)((double)_spectrum.Amplitude.Length / w * x);
+        double a =  _spectrum.getMeanAmpl(i, n);
+        int y2 = h - (int)(a/(max - min) * h);
+        FrmZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);
       }
     }
   }

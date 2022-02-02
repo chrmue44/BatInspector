@@ -34,9 +34,10 @@ namespace BatInspector.Forms
       InitializeComponent();
     }
 
-    public void setup(FilterItem filter, dlgDelete del)
+    public void setup(FilterItem filter, int index, dlgDelete del)
     {
       _filter = filter;
+      _index = index;
       _dlgDelete = del;
       _tbExpression.Text = filter.Expression;
       _tbName.Text = filter.Name;

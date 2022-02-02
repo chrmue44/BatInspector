@@ -157,5 +157,16 @@ namespace BatInspector
     {
       _analysis.Remarks = _tbRemarks.Text;
     }
+
+    private void _btnIgnore_Click(object sender, RoutedEventArgs e)
+    {
+      for (int i = 0; i < _analysis.Calls.Count; i++)
+      {
+        _analysis.Calls[i].SpeciesMan = "---";
+        ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
+        ctlm.setValue("---");
+      }
+
+    }
   }
 }

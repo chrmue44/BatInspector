@@ -18,7 +18,6 @@ namespace BatInspector
   {
     AnalysisFile _analysis;
     string _wavFilePath;
-    Waterfall _wf;
     ViewModel _model;
     int _stretch;
     //    BackgroundWorker _worker;
@@ -51,7 +50,7 @@ namespace BatInspector
       _duration.setValue(_analysis.Duration);
       _deltaT.setup("Delta T [ms]:", Forms.enDataType.DOUBLE, 0);
       _wavFilePath = wavFilePath;
-      _wf = new Waterfall(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
+      _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
       _ctlRange.setup("Range [dB]:", Forms.enDataType.DOUBLE, 0, rangeChanged);
       _ctlRange.setValue(20.0);
       ContentRendered += FrmZoom_ContentRendered;
@@ -81,7 +80,7 @@ namespace BatInspector
       if (type == enDataType.DOUBLE)
       {
         double range = (double)val;
-        _wf.Range = range;
+        _model.ZoomView.Waterfall.Range = range;
         updateRuler();
         updateImage();
       }
@@ -92,18 +91,18 @@ namespace BatInspector
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
     {
-      _wf.Range += 1.0;
-      _ctlRange.setValue(_wf.Range);
+      _model.ZoomView.Waterfall.Range += 1.0;
+      _ctlRange.setValue(_model.ZoomView.Waterfall.Range);
       updateRuler();
       updateImage();
     }
 
     private void _btnDecRange_Click(object sender, RoutedEventArgs e)
     {
-      if (_wf.Range > 3)
+      if (_model.ZoomView.Waterfall.Range > 3)
       {
-        _wf.Range -= 1.0;
-        _ctlRange.setValue(_wf.Range);
+        _model.ZoomView.Waterfall.Range -= 1.0;
+        _ctlRange.setValue(_model.ZoomView.Waterfall.Range);
         updateRuler();
         updateImage();
       }
@@ -304,8 +303,8 @@ namespace BatInspector
 
     private void _btnZoomTotal_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.RulerDataF.setRange(0,_wf.SamplingRate / 2000);
-      _model.ZoomView.RulerDataT.setRange( 0, _wf.Duration);
+      _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+      _model.ZoomView.RulerDataT.setRange( 0, _model.ZoomView.Waterfall.Duration);
       hideCursors();
       createZoomImg();
     }
@@ -349,7 +348,7 @@ namespace BatInspector
 
     private void _btnmoveRight_Click(object sender, RoutedEventArgs e)
     {
-      if(_model.ZoomView.moveRight(_wf.Duration))
+      if(_model.ZoomView.moveRight(_model.ZoomView.Waterfall.Duration))
       { 
         hideCursors();
         createZoomImg();
@@ -358,7 +357,7 @@ namespace BatInspector
 
     private void _btnmoveUp_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.moveUp(_wf.SamplingRate / 2000))
+      if (_model.ZoomView.moveUp(_model.ZoomView.Waterfall.SamplingRate / 2000))
       {
         hideCursors();
         createZoomImg();
@@ -376,10 +375,10 @@ namespace BatInspector
 
     private void updateRuler()
     {
-      _model.ZoomView.RulerDataT.limits(0, _wf.Duration);
+      _model.ZoomView.RulerDataT.limits(0, _model.ZoomView.Waterfall.Duration);
       initRulerT();
 
-      _model.ZoomView.RulerDataF.limits(0, _wf.SamplingRate / 2000);
+      _model.ZoomView.RulerDataF.limits(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
       initRulerF();
 
       _model.ZoomView.RulerDataA.limits(-1, 1);
@@ -389,19 +388,19 @@ namespace BatInspector
     private void createZoomImg()
     {
       updateRuler();
-      _wf.generateFtDiagram(_model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, _model.Settings.FftWidth);
+      _model.ZoomView.Waterfall.generateFtDiagram(_model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, _model.Settings.FftWidth);
       updateImage();
     }
 
     private void updateImage()
     {
-      System.Drawing.Bitmap bmpFt = _wf.generateFtPicture(_model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max);
+      System.Drawing.Bitmap bmpFt = _model.ZoomView.Waterfall.generateFtPicture(_model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max);
       if (bmpFt != null)
       {
         BitmapImage bImg = ViewModel.Convert(bmpFt);
         _imgFt.Source = bImg;
       }
-      System.Drawing.Bitmap bmpXt = _wf.generateXtPicture(_model.ZoomView.RulerDataA.Min, _model.ZoomView.RulerDataA.Max,
+      System.Drawing.Bitmap bmpXt = _model.ZoomView.Waterfall.generateXtPicture(_model.ZoomView.RulerDataA.Min, _model.ZoomView.RulerDataA.Max,
                                                           _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
       if (bmpXt != null)
       {
@@ -439,7 +438,7 @@ namespace BatInspector
 
     void worker_DoWork()
     {
-      _wf.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+      _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
 
     }
     private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
@@ -467,7 +466,7 @@ namespace BatInspector
         setupCallData(idx);
         double tStart = _analysis.getStartTime(idx);
         double tEnd = _analysis.getEndTime(idx);
-        _ctlSpectrum.createFftImage(_wf.Samples, tStart, tEnd, _analysis.SampleRate);
+        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
       }
     }
 

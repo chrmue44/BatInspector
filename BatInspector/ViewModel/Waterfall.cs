@@ -9,7 +9,7 @@ using DSPLib;
 
 namespace BatInspector
 {
-  class Waterfall
+  public class Waterfall
   {
     string _wavName;
     UInt32 _fftSize;
@@ -17,7 +17,7 @@ namespace BatInspector
     bool _ok = false;
     List<double[]> _spec;
     int _samplingRate;
-    List<Color> _colorMap;
+    ColorTable _colorTable;
     double _maxAmplitude;
     double _minAmplitude;
     double _range = 20;
@@ -37,7 +37,7 @@ namespace BatInspector
     public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
-    public Waterfall(string wavName, UInt32 fftSize, int w, int h, AppParams settings)
+    public Waterfall(string wavName, UInt32 fftSize, int w, int h, AppParams settings, ColorTable colorTable)
     {
       _width = w;
       _heightFt = h;
@@ -45,12 +45,11 @@ namespace BatInspector
       _wavName = wavName;
       _fftSize = fftSize;
       _settings = settings;
+      _colorTable = colorTable;
       double[] dummy;
       _spec = new List<double[]>();
-      _colorMap = new List<Color>();
       _minAmplitude = -25;
       _maxAmplitude = _minAmplitude;
-      prepareColorMap();
       if (File.Exists(_wavName))
       {
         openWav(wavName, out _samples, out dummy, out _samplingRate);
@@ -111,7 +110,7 @@ namespace BatInspector
         _wav.stop();
     }
 
-    void addColorToMap(int r, int g, int b)
+/*    void addColorToMap(int r, int g, int b)
     {
       _colorMap.Add(Color.FromArgb(r, g, b));
     }
@@ -124,160 +123,165 @@ namespace BatInspector
                                    (rgb565 & 0x001F) << 3
                                   ));
     }
+*/
 
-  //  http://web-tech.ga-usa.com/2012/05/creating-a-custom-hot-to-cold-temperature-color-gradient-for-use-with-rrdtool/index.html
-    void prepareColorMap()
-    {
+    
 
-      addColorToMap(255, 14, 240);
-      addColorToMap(255,13,240);
-//      addColorToMap(255,12,240);
-//      addColorToMap(255,11,240);
-//      addColorToMap(255,10,240);
-      addColorToMap(255,9,240);
-//      addColorToMap(255,8,240);
-//      addColorToMap(255,7,240);
-//      addColorToMap(255,6,240);
-      addColorToMap(255,5,240);
-//      addColorToMap(255,4,240);
-//      addColorToMap(255,3,240);
-//      addColorToMap(255,2,240);
-      addColorToMap(255,1,240);
-//      addColorToMap(255,0,240);
-//      addColorToMap(255,0,224);
-//      addColorToMap(255,0,208);
-      addColorToMap(255,0,192);
-//      addColorToMap(255,0,176);
-//      addColorToMap(255,0,160);
-//      addColorToMap(255,0,144);
-      addColorToMap(255,0,128);
-//      addColorToMap(255,0,112);
-      addColorToMap(255,0,96);
-//      addColorToMap(255,0,80);
-      addColorToMap(255,0,64);
-//      addColorToMap(255,0,48);
-      addColorToMap(255,0,32);
-//      addColorToMap(255,0,16);
-      addColorToMap(255,0,0);
-//      addColorToMap(255,10,0);
-      addColorToMap(255,20,0);
-//      addColorToMap(255,30,0);
-      addColorToMap(255,40,0);
- //     addColorToMap(255,50,0);
-      addColorToMap(255,60,0);
- //     addColorToMap(255,70,0);
-      addColorToMap(255,80,0);
- //     addColorToMap(255,90,0);
-      addColorToMap(255,100,0);
- //     addColorToMap(255,110,0);
-      addColorToMap(255,120,0);
- //     addColorToMap(255,130,0);
-      addColorToMap(255,140,0);
- //     addColorToMap(255,150,0);
-      addColorToMap(255,160,0);
-//      addColorToMap(255,170,0);
-      addColorToMap(255,180,0);
-      addColorToMap(255,190,0);
-      addColorToMap(255,200,0);
-      addColorToMap(255,210,0);
-      addColorToMap(255,220,0);
-      addColorToMap(255,230,0);
-      addColorToMap(255,240,0);
-      addColorToMap(255,250,0);
-      addColorToMap(253,255,0);
-      addColorToMap(215,255,0);
-      addColorToMap(176,255,0);
-      addColorToMap(138,255,0);
-      addColorToMap(101,255,0);
-      addColorToMap(62,255,0);
-      addColorToMap(23,255,0);
-      addColorToMap(0,255,16);
-      addColorToMap(0,255,54);
-      addColorToMap(0,255,92);
-      addColorToMap(0,255,131);
-      addColorToMap(0,255,168);
-      addColorToMap(0,255,208);
-      addColorToMap(0,255,244);
-      addColorToMap(0,228,255);
-      addColorToMap(0,212,255);
-      addColorToMap(0,196,255);
-      addColorToMap(0,180,255);
-      addColorToMap(0,164,255);
-      addColorToMap(0,148,255);
-      addColorToMap(0,132,255);
-      addColorToMap(0,116,255);
-      addColorToMap(0,100,255);
-      addColorToMap(0,84,255);
-      addColorToMap(0,68,255);
-      addColorToMap(0,50,255);
-      addColorToMap(0,34,255);
-      addColorToMap(0,18,255);
-      addColorToMap(0,2,255);
-      addColorToMap(0,0,255);
-      addColorToMap(1,0,255);
-      addColorToMap(2,0,255);
-      addColorToMap(3,0,255);
-      addColorToMap(4,0,255);
-      addColorToMap(5,0,255);
+    //  http://web-tech.ga-usa.com/2012/05/creating-a-custom-hot-to-cold-temperature-color-gradient-for-use-with-rrdtool/index.html
+    /* void prepareColorMap()
+     {
 
-      int len = _colorMap.Count;
-      for(int i = 0; i < len/2; i++)
-      {
-        Color c = _colorMap[i];
-        _colorMap[i] = _colorMap[len -1 - i];
-        _colorMap[len -1 - i] = c;
-      }
+       addColorToMap(255, 14, 240);
+       addColorToMap(255,13,240);
+ //      addColorToMap(255,12,240);
+ //      addColorToMap(255,11,240);
+ //      addColorToMap(255,10,240);
+       addColorToMap(255,9,240);
+ //      addColorToMap(255,8,240);
+ //      addColorToMap(255,7,240);
+ //      addColorToMap(255,6,240);
+       addColorToMap(255,5,240);
+ //      addColorToMap(255,4,240);
+ //      addColorToMap(255,3,240);
+ //      addColorToMap(255,2,240);
+       addColorToMap(255,1,240);
+ //      addColorToMap(255,0,240);
+ //      addColorToMap(255,0,224);
+ //      addColorToMap(255,0,208);
+       addColorToMap(255,0,192);
+ //      addColorToMap(255,0,176);
+ //      addColorToMap(255,0,160);
+ //      addColorToMap(255,0,144);
+       addColorToMap(255,0,128);
+ //      addColorToMap(255,0,112);
+       addColorToMap(255,0,96);
+ //      addColorToMap(255,0,80);
+       addColorToMap(255,0,64);
+ //      addColorToMap(255,0,48);
+       addColorToMap(255,0,32);
+ //      addColorToMap(255,0,16);
+       addColorToMap(255,0,0);
+ //      addColorToMap(255,10,0);
+       addColorToMap(255,20,0);
+ //      addColorToMap(255,30,0);
+       addColorToMap(255,40,0);
+  //     addColorToMap(255,50,0);
+       addColorToMap(255,60,0);
+  //     addColorToMap(255,70,0);
+       addColorToMap(255,80,0);
+  //     addColorToMap(255,90,0);
+       addColorToMap(255,100,0);
+  //     addColorToMap(255,110,0);
+       addColorToMap(255,120,0);
+  //     addColorToMap(255,130,0);
+       addColorToMap(255,140,0);
+  //     addColorToMap(255,150,0);
+       addColorToMap(255,160,0);
+ //      addColorToMap(255,170,0);
+       addColorToMap(255,180,0);
+       addColorToMap(255,190,0);
+       addColorToMap(255,200,0);
+       addColorToMap(255,210,0);
+       addColorToMap(255,220,0);
+       addColorToMap(255,230,0);
+       addColorToMap(255,240,0);
+       addColorToMap(255,250,0);
+       addColorToMap(253,255,0);
+       addColorToMap(215,255,0);
+       addColorToMap(176,255,0);
+       addColorToMap(138,255,0);
+       addColorToMap(101,255,0);
+       addColorToMap(62,255,0);
+       addColorToMap(23,255,0);
+       addColorToMap(0,255,16);
+       addColorToMap(0,255,54);
+       addColorToMap(0,255,92);
+       addColorToMap(0,255,131);
+       addColorToMap(0,255,168);
+       addColorToMap(0,255,208);
+       addColorToMap(0,255,244);
+       addColorToMap(0,228,255);
+       addColorToMap(0,212,255);
+       addColorToMap(0,196,255);
+       addColorToMap(0,180,255);
+       addColorToMap(0,164,255);
+       addColorToMap(0,148,255);
+       addColorToMap(0,132,255);
+       addColorToMap(0,116,255);
+       addColorToMap(0,100,255);
+       addColorToMap(0,84,255);
+       addColorToMap(0,68,255);
+       addColorToMap(0,50,255);
+       addColorToMap(0,34,255);
+       addColorToMap(0,18,255);
+       addColorToMap(0,2,255);
+       addColorToMap(0,0,255);
+       addColorToMap(1,0,255);
+       addColorToMap(2,0,255);
+       addColorToMap(3,0,255);
+       addColorToMap(4,0,255);
+       addColorToMap(5,0,255);
+
+       int len = _colorMap.Count;
+       for(int i = 0; i < len/2; i++)
+       {
+         Color c = _colorMap[i];
+         _colorMap[i] = _colorMap[len -1 - i];
+         _colorMap[len -1 - i] = c;
+       }
 
 
-      /*
-      addRgb565ColorToMap(0x0000);
-      addRgb565ColorToMap(0x0001);
-      addRgb565ColorToMap(0x0002);
-      addRgb565ColorToMap(0x0003);
-      addRgb565ColorToMap(0x0004);
-      addRgb565ColorToMap(0x0008);
-      addRgb565ColorToMap(0x0010);
-      addRgb565ColorToMap(0x0020);
-      addRgb565ColorToMap(0x0038);
-      addRgb565ColorToMap(0x0078);
-      addRgb565ColorToMap(0x00F8);
-      addRgb565ColorToMap(0x0138);
-      addRgb565ColorToMap(0x01D8);
-      addRgb565ColorToMap(0x0218);
-      addRgb565ColorToMap(0x0238);
-      addRgb565ColorToMap(0x0338);
-      addRgb565ColorToMap(0x0438);
-      addRgb565ColorToMap(0x0838);
-      addRgb565ColorToMap(0x0730);
-      addRgb565ColorToMap(0x0780);
-      addRgb565ColorToMap(0x07F0);
-      addRgb565ColorToMap(0x0F40);
-      addRgb565ColorToMap(0x0FC0);
-      addRgb565ColorToMap(0x2F40);
-      addRgb565ColorToMap(0xFFC0);
-      addRgb565ColorToMap(0xFF80);
-      addRgb565ColorToMap(0xFF00);
-      addRgb565ColorToMap(0xFE00);
-      addRgb565ColorToMap(0xFD00);
-      addRgb565ColorToMap(0xFC00);
-      addRgb565ColorToMap(0xF800); */
-    }
-
-    Color getColor(double val, double min, double max)
-    {
-      if (val < min)
-        return _colorMap[0];
-      else if (val > max)
-        return _colorMap.Last();
-      else
-      {
-        int i = (int)((val - min) / (max - min) * _colorMap.Count);
-        if (i < _colorMap.Count)
-          return _colorMap[i];
-        else
-          return _colorMap.Last();
-      }
-    }
+       /*
+       addRgb565ColorToMap(0x0000);
+       addRgb565ColorToMap(0x0001);
+       addRgb565ColorToMap(0x0002);
+       addRgb565ColorToMap(0x0003);
+       addRgb565ColorToMap(0x0004);
+       addRgb565ColorToMap(0x0008);
+       addRgb565ColorToMap(0x0010);
+       addRgb565ColorToMap(0x0020);
+       addRgb565ColorToMap(0x0038);
+       addRgb565ColorToMap(0x0078);
+       addRgb565ColorToMap(0x00F8);
+       addRgb565ColorToMap(0x0138);
+       addRgb565ColorToMap(0x01D8);
+       addRgb565ColorToMap(0x0218);
+       addRgb565ColorToMap(0x0238);
+       addRgb565ColorToMap(0x0338);
+       addRgb565ColorToMap(0x0438);
+       addRgb565ColorToMap(0x0838);
+       addRgb565ColorToMap(0x0730);
+       addRgb565ColorToMap(0x0780);
+       addRgb565ColorToMap(0x07F0);
+       addRgb565ColorToMap(0x0F40);
+       addRgb565ColorToMap(0x0FC0);
+       addRgb565ColorToMap(0x2F40);
+       addRgb565ColorToMap(0xFFC0);
+       addRgb565ColorToMap(0xFF80);
+       addRgb565ColorToMap(0xFF00);
+       addRgb565ColorToMap(0xFE00);
+       addRgb565ColorToMap(0xFD00);
+       addRgb565ColorToMap(0xFC00);
+       addRgb565ColorToMap(0xF800); 
+     }
+   */
+    /*
+     Color getColor(double val, double min, double max)
+     {
+       if (val < min)
+         return _colorMap[0];
+       else if (val > max)
+         return _colorMap.Last();
+       else
+       {
+         int i = (int)((val - min) / (max - min) * _colorMap.Count);
+         if (i < _colorMap.Count)
+           return _colorMap[i];
+         else
+           return _colorMap.Last();
+       }
+     }
+    */
 
     public double[] generateFft(UInt32 idx, UInt32 length, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
@@ -340,7 +344,7 @@ namespace BatInspector
               if (idxFreq >= _spec[idxSpec].Length)
                 idxFreq = _spec[idxSpec].Length - 1;
               double val = _spec[idxSpec][idxFreq];
-              Color col = getColor(val, _minAmplitude, _maxAmplitude);
+              Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
               bmp.SetPixel(x, _heightFt - 1 - y, col);
             }
           }

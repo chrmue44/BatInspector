@@ -78,7 +78,12 @@ namespace BatInspector.Forms
 
     }
 
-    public string getValue()
+    public int getIntValue()
+    {
+      return _valInt;
+    }
+
+      public string getValue()
     {
       switch(_type)
       {

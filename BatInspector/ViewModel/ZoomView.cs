@@ -12,6 +12,7 @@ namespace BatInspector
     double _max = 100;
     public double Min { get { return _min; } }
     public double Max { get { return _max; } }
+
     public bool check(double x)
     {
       return ((Min <= x) && (x <= Max));
@@ -86,10 +87,13 @@ namespace BatInspector
     Cursor _cursor1;
     Cursor _cursor2;
     Spectrum _spectrum;
+    Waterfall _wf = null;
+    ColorTable _colorTable;
 
 
-    public ZoomView()
+    public ZoomView(ColorTable colorTable)
     {
+      _colorTable = colorTable;
       _rulerDataT = new RulerData();
       _rulerDataF = new RulerData();
       _rulerDataA = new RulerData();
@@ -105,6 +109,13 @@ namespace BatInspector
     public Cursor Cursor1 { get { return _cursor1; } }
     public Cursor Cursor2 { get { return _cursor2; } }
     public Spectrum Spectrum { get { return _spectrum; } }
+
+    public Waterfall Waterfall {  get { return _wf; } }
+
+    public void initWaterfallDiagram(string wavName, uint fftSize, int w, int h, AppParams settings)
+    {
+      _wf = new Waterfall(wavName, fftSize, w, h, settings, _colorTable);
+    }
 
     public void zoomInV()
     {

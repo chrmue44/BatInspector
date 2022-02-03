@@ -413,6 +413,12 @@ namespace BatInspector.Forms
       foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.InfoVisible = !ctl.InfoVisible;
     }
+
+    private void _btnDel_Click(object sender, RoutedEventArgs e)
+    {
+      FrmColorMap frm = new FrmColorMap(_model);
+      frm.Show();
+    }
   }
 
   public delegate void dlgSetFocus(int index);

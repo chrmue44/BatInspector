@@ -71,6 +71,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\CtlColorMap.xaml.cs">
+      <DependentUpon>CtlColorMap.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ctlSelectItem.xaml.cs">
       <DependentUpon>ctlSelectItem.xaml</DependentUpon>
     </Compile>
@@ -86,12 +89,16 @@
     <Compile Include="Forms\FrmAppSettings.xaml.cs">
       <DependentUpon>FrmAppSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmColorMap.xaml.cs">
+      <DependentUpon>FrmColorMap.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmFilter.xaml.cs">
       <DependentUpon>FrmFilter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmHelpFilter.xaml.cs">
       <DependentUpon>FrmHelpFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\Spectrum.cs" />
@@ -120,6 +127,10 @@
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
+    <Page Include="Forms\CtlColorMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\ctlSelectItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -145,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmAppSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmColorMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

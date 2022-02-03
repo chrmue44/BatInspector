@@ -22,6 +22,7 @@ namespace BatInspector
     ZoomView _zoom;
     Filter _filter;
     AppParams _settings;
+    ColorTable _colorTable;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
@@ -38,6 +39,8 @@ namespace BatInspector
 
     public AppParams Settings { get { return _settings; }  }
 
+    public ColorTable ColorTable { get { return _colorTable; } }
+
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -46,10 +49,11 @@ namespace BatInspector
       _proc = new ProcessRunner(DebugLog.log);
       _mainWin = mainWin;
       _prj = new Project();
-      _zoom = new ZoomView();
       _filter = new Filter();
       _settings = new AppParams();
       _version = version;
+      _colorTable = new ColorTable(this);
+      _zoom = new ZoomView(_colorTable);
     }
 
 
@@ -111,7 +115,7 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, _settings.FftWidth, _settings.WaterfallWidth, _settings.WaterfallHeight, _settings);
+        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, _settings.FftWidth, _settings.WaterfallWidth, _settings.WaterfallHeight, _settings, _colorTable);
         if (wf.Ok)
         {
           wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, _settings.FftWidth);

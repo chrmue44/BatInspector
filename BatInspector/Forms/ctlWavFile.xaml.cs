@@ -38,6 +38,7 @@ namespace BatInspector
         _grpInfoAuto.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _grpInfoMan.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _btnCopy.Visibility = value ? Visibility.Visible : Visibility.Hidden;
+        _btnIgnore.Visibility = value ? Visibility.Visible : Visibility.Hidden;
         if (!value)
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);

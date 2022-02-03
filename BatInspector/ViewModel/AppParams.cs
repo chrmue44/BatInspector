@@ -12,6 +12,7 @@ using System.Windows;
 
 namespace BatInspector
 {
+  [DataContract]
   public class FilterParams
   {
     [DataMember]
@@ -20,16 +21,28 @@ namespace BatInspector
     public string Name { get; set; }
 
     [DataMember]
-    [Category("Filter")]
     [Description("logical expression for filter")]
     public string Expression { get; set; }
 
     [DataMember]
-    [Category("Filter")]
     [Description("only valid, whall ALL calls in one file apply to the logical expression")]
     public bool isForAllCalls { get; set; }
 
     public int Index { get; set; }
+  }
+
+  [DataContract]
+  public class ColorItem
+  {
+    public ColorItem(int col, int val)
+    {
+      Color = col;
+      Value = val;
+    }
+    [DataMember]
+    public int Color;
+    [DataMember]
+    public int Value;
   }
 
   [DataContract]
@@ -64,6 +77,19 @@ namespace BatInspector
     [Description("settings for display filter")]
     public List<FilterParams> Filter { get; set; }
 
+    [DataMember]
+    [Category("ColorGradient")]
+    [Description("definition of color gradient for color channel red")]
+    public List<ColorItem> ColorGradientRed { get; set; }
+
+    [DataMember]
+    [Category("ColorGradient")]
+    [Description("definition of color gradient for color channel green")]
+    public List<ColorItem> ColorGradientGreen { get; set; }
+    [DataMember]
+    [Category("ColorGradient")]
+    [Description("definition of color gradient for color channel green")]
+    public List<ColorItem> ColorGradientBlue { get; set; }
     public AppParams()
     {
       init();
@@ -83,6 +109,7 @@ namespace BatInspector
       p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);
+      initColorGradient();
     }
 
     public void save()
@@ -120,6 +147,8 @@ namespace BatInspector
           retVal = (AppParams)ser.ReadObject(file);
           if (retVal == null)
             DebugLog.log("settings file not well formed!", enLogType.ERROR);
+          if (retVal.ColorGradientBlue == null)
+            retVal.initColorGradient();
         }
         else
         {
@@ -140,6 +169,28 @@ namespace BatInspector
       }
 
       return retVal;
+    }
+
+    public void initColorGradient()
+    {
+      ColorGradientBlue = new List<ColorItem>();
+      ColorGradientBlue.Add(new ColorItem(255, 0));
+      ColorGradientBlue.Add(new ColorItem(255, 25));
+      ColorGradientBlue.Add(new ColorItem(0, 50));
+      ColorGradientBlue.Add(new ColorItem(0, 100));
+      ColorGradientBlue.Add(new ColorItem(0, 100));
+      ColorGradientGreen = new List<ColorItem>();
+      ColorGradientGreen.Add(new ColorItem(0, 0));
+      ColorGradientGreen.Add(new ColorItem(255, 25));
+      ColorGradientGreen.Add(new ColorItem(255, 50));
+      ColorGradientGreen.Add(new ColorItem(0, 75));
+      ColorGradientGreen.Add(new ColorItem(0, 100));
+      ColorGradientRed = new List<ColorItem>();
+      ColorGradientRed.Add(new ColorItem(0, 0));
+      ColorGradientRed.Add(new ColorItem(0, 25));
+      ColorGradientRed.Add(new ColorItem(125, 50));
+      ColorGradientRed.Add(new ColorItem(125, 75));
+      ColorGradientRed.Add(new ColorItem(255, 100));
     }
   }
 }

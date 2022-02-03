@@ -104,7 +104,7 @@ namespace BatInspector.Forms
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
-      if (_model.Prj != null)
+ //     if (_model.Prj != null)
       {
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;

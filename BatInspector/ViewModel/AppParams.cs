@@ -13,10 +13,36 @@ using System.Windows;
 namespace BatInspector
 {
   [DataContract]
+  public class SpeciesInfos
+  {
+    public SpeciesInfos(string abbr, string latin, string local, bool show)
+    {
+      Abbreviation = abbr;
+      Latin = latin;
+      Local = local;
+      Show = show;
+    }
+
+    [DataMember]
+    [Description("4 letter abbreviation for species name")]
+    public string Abbreviation { get; set; }
+
+    [DataMember]
+    [Description("latin species name")]
+    public string Latin { get; set; }
+
+    [DataMember]
+    [Description("local species name")]
+    public string Local { get; set; }
+
+    [DataMember]
+    [Description("show species in comboboxes to select species")]
+    public bool Show { get; set; }
+
+  }
   public class FilterParams
   {
     [DataMember]
-    [Category("Filter")]
     [Description("name of the display filter")]
     public string Name { get; set; }
 
@@ -73,9 +99,14 @@ namespace BatInspector
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 
     [DataMember]
-    [Category("Application")]
+    [Category("Filter")]
     [Description("settings for display filter")]
     public List<FilterParams> Filter { get; set; }
+
+    [DataMember]
+    [Category("Bat Species")]
+    [Description("settings for display filter")]
+    public List<SpeciesInfos> Species { get; set; }
 
     [DataMember]
     [Category("ColorGradient")]
@@ -102,6 +133,13 @@ namespace BatInspector
       FftWidth = 512;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
+      initFilterParams();
+      initColorGradient();
+      initSpeciesInfos();
+    }
+
+    private void initFilterParams()
+    {
       Filter = new List<FilterParams>();
       FilterParams p = new FilterParams();
       p.Name = "Example";
@@ -109,7 +147,6 @@ namespace BatInspector
       p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);
-      initColorGradient();
     }
 
     public void save()
@@ -169,6 +206,17 @@ namespace BatInspector
       }
 
       return retVal;
+    }
+
+    private void initSpeciesInfos()
+    {
+      Species = new List<SpeciesInfos>();
+      Species.Add(new SpeciesInfos("PPIP", "Pippistrellus pippistrellus", "Zwergfledermaus", true));
+      Species.Add(new SpeciesInfos("PPYP", "Pippistrellus pygmaeus", "Mückenfledermaus", true));
+      Species.Add(new SpeciesInfos("PNAT", "Pippistrellus natusii", "Bartfledermaus", true));
+
+      Species.Add(new SpeciesInfos("NNOC", "", "Großer Abendsegler", true));
+      Species.Add(new SpeciesInfos("NLEI", "", "Kleiner Abendsegler", true));
     }
 
     public void initColorGradient()

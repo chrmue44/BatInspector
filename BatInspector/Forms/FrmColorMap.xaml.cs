@@ -95,5 +95,10 @@ namespace BatInspector.Forms
     {
 
     }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      _btnApply_Click(null, null);
+    }
   }
 }

@@ -24,7 +24,7 @@
               <Image Source="../images/icons8-save-48.png"></Image>
             </Button>
           <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDel_Click">
-              <Image Source="../images/recycle.png"> </Image>
+              <Image Source="../images/color-palette.png"> </Image>
             </Button>
             <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="find bat calls in project" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Image Source="../images/magnifying-glass.png"></Image>

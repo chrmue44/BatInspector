@@ -47,3 +47,6 @@ https://www.flaticon.com/free-icons/play-button" Play button icons created by Ro
 
 stop.png
 https://www.flaticon.com/free-icons/stop" Stop icons created by DinosoftLabs - Flaticon
+
+color-palette.png
+https://www.flaticon.com/free-icons/art" Art icons created by Freepik - Flaticon

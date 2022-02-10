@@ -10,13 +10,14 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using BatInspector.Controls;
 using BatInspector.Forms;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
 
-namespace BatInspector
+namespace BatInspector.Controls
 {
   /// <summary>
   /// Interaktionslogik für ctlWavFile.xaml

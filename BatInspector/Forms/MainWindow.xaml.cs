@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Deployment.Application;
 using System.Reflection;
+using BatInspector.Controls;
 
 namespace BatInspector.Forms
 {
@@ -417,6 +418,12 @@ namespace BatInspector.Forms
     private void _btnDel_Click(object sender, RoutedEventArgs e)
     {
       FrmColorMap frm = new FrmColorMap(_model);
+      frm.Show();
+    }
+
+    private void _btnSpecies_Click(object sender, RoutedEventArgs e)
+    {
+      frmSpeciesData frm = new frmSpeciesData(_model);
       frm.Show();
     }
   }

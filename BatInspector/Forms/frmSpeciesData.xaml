@@ -1,0 +1,19 @@
+﻿<Window x:Class="BatInspector.Forms.frmSpeciesData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        mc:Ignorable="d"
+        Title="Edit Species Data" Height="1000" Width="800">
+    <Grid>
+    <StackPanel>
+      <local:ctlSelectItem x:Name="_ctlSelSpecies" Margin="10"/>
+      <local:ctlSpeciesData x:Name="_ctlSpecData"/>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Width="80" Name="_btnCacel"  Margin="10,10,0,0" Click="_btnCacel_Click" Height="25">Cancel</Button>
+        <Button Width="80" Name="_btnOk" Margin="10,10,10,0" Click="_btnOk_Click" Height="25">OK</Button>
+      </StackPanel>
+    </StackPanel>
+    </Grid>
+</Window>

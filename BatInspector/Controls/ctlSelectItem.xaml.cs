@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BatInspector.Forms
+namespace BatInspector.Controls
 {
 
   /// <summary>

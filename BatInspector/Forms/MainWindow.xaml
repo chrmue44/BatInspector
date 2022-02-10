@@ -35,7 +35,10 @@
             <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="define filters for lists" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Image Source="../images/filter.png"></Image>
             </Button>
-            <Button x:Name="_btnHelp" Click="_btnHelp_Click"  ToolTip="open manual" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+          <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="edit species information" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
+          </Button>
+          <Button x:Name="_btnHelp" Click="_btnHelp_Click"  ToolTip="open manual" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Image Source="../images/Button_Help_icon_32.png"></Image>
             </Button>
             <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="show software info" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">

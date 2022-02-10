@@ -57,6 +57,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -71,16 +72,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\CtlColorMap.xaml.cs">
+    <Compile Include="Controls\CtlColorMap.xaml.cs">
       <DependentUpon>CtlColorMap.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ctlSelectItem.xaml.cs">
+    <Compile Include="Controls\ctlDataItemMinMax.xaml.cs">
+      <DependentUpon>ctlDataItemMinMax.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlSelectItem.xaml.cs">
       <DependentUpon>ctlSelectItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ctlFilterItem.xaml.cs">
+    <Compile Include="Controls\ctlFilterItem.xaml.cs">
       <DependentUpon>ctlFilterItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CtlSpectrum.xaml.cs">
+    <Compile Include="Controls\ctlSpeciesData.xaml.cs">
+      <DependentUpon>ctlSpeciesData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CtlSpectrum.xaml.cs">
       <DependentUpon>CtlSpectrum.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmAbout.xaml.cs">
@@ -98,6 +105,9 @@
     <Compile Include="Forms\FrmHelpFilter.xaml.cs">
       <DependentUpon>FrmHelpFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmSpeciesData.xaml.cs">
+      <DependentUpon>frmSpeciesData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
@@ -108,10 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Forms\ctlDataItem.xaml.cs">
+    <Compile Include="Controls\ctlDataItem.xaml.cs">
       <DependentUpon>ctlDataItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ctlWavFile.xaml.cs">
+    <Compile Include="Controls\ctlWavFile.xaml.cs">
       <DependentUpon>ctlWavFile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmZoom.xaml.cs">
@@ -127,27 +137,35 @@
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
-    <Page Include="Forms\CtlColorMap.xaml">
+    <Page Include="Controls\CtlColorMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\ctlSelectItem.xaml">
+    <Page Include="Controls\ctlDataItemMinMax.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\ctlDataItem.xaml">
+    <Page Include="Controls\ctlSelectItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ctlDataItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\ctlFilterItem.xaml">
+    <Page Include="Controls\ctlFilterItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\CtlSpectrum.xaml">
+    <Page Include="Controls\ctlSpeciesData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\ctlWavFile.xaml">
+    <Page Include="Controls\CtlSpectrum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlWavFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmSpeciesData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

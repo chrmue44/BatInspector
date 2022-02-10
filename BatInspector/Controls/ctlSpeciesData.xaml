@@ -1,0 +1,30 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:Forms="clr-namespace:BatInspector.Controls" x:Class="BatInspector.Controls.ctlSpeciesData"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="420">
+  <Grid>
+    <GroupBox Margin="5">
+      <StackPanel>
+        <local:ctlDataItem x:Name="_ctlLocalName" Margin="5"/>
+        <local:ctlDataItemMinMax x:Name="_ctFreqC"/>
+      <local:ctlDataItemMinMax x:Name="_ctDuration" />
+        <GroupBox Header="Proof of Species" Height="200">
+          <TextBox Margin="5" Name="_tbProof" > </TextBox>
+        </GroupBox>
+        <GroupBox Header="Distinctive Calls" Height="200">
+          <TextBox Margin="5" Name="_tbDistintCalls"></TextBox>
+        </GroupBox>
+        <GroupBox Header="Habitat" Height="100">
+          <TextBox Margin="5" Name="_tbHabitat"></TextBox>
+        </GroupBox>
+        <local:ctlSelectItem x:Name="_ctlSelPic" Margin="10"/>
+        <Image Name="_img" Height="256"></Image>
+      </StackPanel>
+    </GroupBox>
+  </Grid>
+</UserControl>

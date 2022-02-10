@@ -1,4 +1,5 @@
-﻿using BatInspector.Forms;
+﻿using BatInspector.Controls;
+using BatInspector.Forms;
 using System;
 using System.ComponentModel;
 using System.Threading;
@@ -9,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BatInspector
+namespace BatInspector.Forms
 {
   /// <summary>
   /// Interaktionslogik für FrmZoom.xaml
@@ -40,18 +41,18 @@ namespace BatInspector
       initRulerA();
       initRulerF();
 
-      _freq1.setup("Frequency [kHz]:", Forms.enDataType.DOUBLE, 1);
-      _time1.setup("Time [s]:", Forms.enDataType.DOUBLE, 3);
-      _freq2.setup("Frequency: [kHz]", Forms.enDataType.DOUBLE, 1);
-      _time2.setup("Time [s]:", Forms.enDataType.DOUBLE, 3);
-      _sampleRate.setup("SampleRate [kHz]", Forms.enDataType.DOUBLE, 1);
+      _freq1.setup("Frequency [kHz]:", enDataType.DOUBLE, 1);
+      _time1.setup("Time [s]:", enDataType.DOUBLE, 3);
+      _freq2.setup("Frequency: [kHz]", enDataType.DOUBLE, 1);
+      _time2.setup("Time [s]:", enDataType.DOUBLE, 3);
+      _sampleRate.setup("SampleRate [kHz]", enDataType.DOUBLE, 1);
       _sampleRate.setValue((double)_analysis.SampleRate / 1000);
-      _duration.setup("Duration [s]", Forms.enDataType.DOUBLE, 3);
+      _duration.setup("Duration [s]", enDataType.DOUBLE, 3);
       _duration.setValue(_analysis.Duration);
-      _deltaT.setup("Delta T [ms]:", Forms.enDataType.DOUBLE, 0);
+      _deltaT.setup("Delta T [ms]:", enDataType.DOUBLE, 0);
       _wavFilePath = wavFilePath;
       _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
-      _ctlRange.setup("Range [dB]:", Forms.enDataType.DOUBLE, 0, 80, 80, rangeChanged);
+      _ctlRange.setup("Range [dB]:", enDataType.DOUBLE, 0, 80, 80, rangeChanged);
       _ctlRange.setValue(20.0);
       ContentRendered += FrmZoom_ContentRendered;
       SizeChanged += FrmZoom_SizeChanged;

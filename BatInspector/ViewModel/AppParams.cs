@@ -211,33 +211,43 @@ namespace BatInspector
     private void initSpeciesInfos()
     {
       Species = new List<SpeciesInfos>();
-      Species.Add(new SpeciesInfos("PPIP", "Pippistrellus pippistrellus", "Zwergfledermaus", true));
-      Species.Add(new SpeciesInfos("PPYP", "Pippistrellus pygmaeus", "Mückenfledermaus", true));
-      Species.Add(new SpeciesInfos("PNAT", "Pippistrellus natusii", "Bartfledermaus", true));
+      Species.Add(new SpeciesInfos("BBAR", "Barbastella barbastellus", "Mopsfledermaus", true));
+      Species.Add(new SpeciesInfos("ESER", "Eptesicus Serotinus", "Breitflügelfledermaus", true));
+      Species.Add(new SpeciesInfos("MBRA", "Myotis brandtii", "Große Bartfledermaus", true));
+      Species.Add(new SpeciesInfos("MBEC", "Myotis bechsteinii", "Bechsteinfledermaus", true));
+      Species.Add(new SpeciesInfos("MMYS", "Myotis mystacinus", "Kleine Bartfledermaus", true));
+      Species.Add(new SpeciesInfos("MNAT", "Myotis nattereri", "Fransenfledermaus", true));
+      Species.Add(new SpeciesInfos("MMYO", "Myotis myotis", "Großes Mausohr", true));
+      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnatus", "Kleines Mausohr", true));
+      Species.Add(new SpeciesInfos("MDAU", "Myotis daubentinii", "Wasserfledermaus", true));
+      Species.Add(new SpeciesInfos("NNOC", "Nyctalus noctula", "Großer Abendsegler", true));
+      Species.Add(new SpeciesInfos("NLEI", "Nyctalus leisleri", "Kleiner Abendsegler", true));
+      Species.Add(new SpeciesInfos("PPIP", "Pipistrellus pipistrellus", "Zwergfledermaus", true));
+      Species.Add(new SpeciesInfos("PPYP", "Pipistrellus pygmaeus", "Mückenfledermaus", true));
+      Species.Add(new SpeciesInfos("PNAT", "Pipistrellus nathusii", "Rauhautfledermaus", true));
 
-      Species.Add(new SpeciesInfos("NNOC", "", "Großer Abendsegler", true));
-      Species.Add(new SpeciesInfos("NLEI", "", "Kleiner Abendsegler", true));
+
     }
 
     public void initColorGradient()
     {
       ColorGradientBlue = new List<ColorItem>();
-      ColorGradientBlue.Add(new ColorItem(255, 0));
-      ColorGradientBlue.Add(new ColorItem(255, 25));
-      ColorGradientBlue.Add(new ColorItem(0, 50));
+      ColorGradientBlue.Add(new ColorItem(128, 0));
+      ColorGradientBlue.Add(new ColorItem(255, 40));
+      ColorGradientBlue.Add(new ColorItem(0, 70));
       ColorGradientBlue.Add(new ColorItem(0, 100));
       ColorGradientBlue.Add(new ColorItem(0, 100));
       ColorGradientGreen = new List<ColorItem>();
       ColorGradientGreen.Add(new ColorItem(0, 0));
-      ColorGradientGreen.Add(new ColorItem(255, 25));
-      ColorGradientGreen.Add(new ColorItem(255, 50));
-      ColorGradientGreen.Add(new ColorItem(0, 75));
+      ColorGradientGreen.Add(new ColorItem(200, 40));
+      ColorGradientGreen.Add(new ColorItem(255, 70));
+      ColorGradientGreen.Add(new ColorItem(128, 75));
       ColorGradientGreen.Add(new ColorItem(0, 100));
       ColorGradientRed = new List<ColorItem>();
       ColorGradientRed.Add(new ColorItem(0, 0));
-      ColorGradientRed.Add(new ColorItem(0, 25));
-      ColorGradientRed.Add(new ColorItem(125, 50));
-      ColorGradientRed.Add(new ColorItem(125, 75));
+      ColorGradientRed.Add(new ColorItem(0, 40));
+      ColorGradientRed.Add(new ColorItem(255, 70));
+      ColorGradientRed.Add(new ColorItem(255, 75));
       ColorGradientRed.Add(new ColorItem(255, 100));
     }
   }

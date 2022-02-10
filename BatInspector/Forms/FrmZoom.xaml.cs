@@ -51,19 +51,19 @@ namespace BatInspector
       _deltaT.setup("Delta T [ms]:", Forms.enDataType.DOUBLE, 0);
       _wavFilePath = wavFilePath;
       _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
-      _ctlRange.setup("Range [dB]:", Forms.enDataType.DOUBLE, 0, rangeChanged);
+      _ctlRange.setup("Range [dB]:", Forms.enDataType.DOUBLE, 0, 80, 80, rangeChanged);
       _ctlRange.setValue(20.0);
       ContentRendered += FrmZoom_ContentRendered;
       SizeChanged += FrmZoom_SizeChanged;
       MouseDown += FrmZoomMouseDown;
 
-      _ctlSelectCall.setup("Call Nr.", 0, ctlSelCallChanged);
-      _ctlFMin.setup("Fmin [kHz]: ", enDataType.DOUBLE, 1);
-      _ctlFMax.setup("Fmax [kHz]: ", enDataType.DOUBLE, 1);
-      _ctlFMaxAmpl.setup("FmaxAmpl [kHz]: ", enDataType.DOUBLE, 1);
-      _ctlDuration.setup("Duration [ms]: ", enDataType.DOUBLE, 1);
-      _ctlSnr.setup("Snr: ", enDataType.DOUBLE, 1);
-      _ctlDist.setup("Dist to previous [ms]: ", enDataType.DOUBLE, 1);
+      _ctlSelectCall.setup("Call Nr.", 0, 60, 60, ctlSelCallChanged);
+      _ctlFMin.setup("Fmin [kHz]: ", enDataType.DOUBLE, 1, 100);
+      _ctlFMax.setup("Fmax [kHz]: ", enDataType.DOUBLE, 1, 100);
+      _ctlFMaxAmpl.setup("FmaxAmpl [kHz]: ", enDataType.DOUBLE, 1, 100);
+      _ctlDuration.setup("Duration [ms]: ", enDataType.DOUBLE, 1, 100);
+      _ctlSnr.setup("Snr: ", enDataType.DOUBLE, 1, 100);
+      _ctlDist.setup("Dist to previous [ms]: ", enDataType.DOUBLE, 1, 100);
 
       string[] items = new string[_analysis.Calls.Count];
       for (int i = 0; i < _analysis.Calls.Count; i++)

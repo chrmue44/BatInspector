@@ -53,6 +53,7 @@ namespace BatInspector
       _settings = new AppParams();
       _version = version;
       _colorTable = new ColorTable(this);
+      _colorTable.createColorLookupTable();
       _zoom = new ZoomView(_colorTable);
     }
 

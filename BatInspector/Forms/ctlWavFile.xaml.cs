@@ -59,9 +59,9 @@ namespace BatInspector
       _dlgFocus = setFocus;
       _model = model;
       InitializeComponent();
-      _duration.setup("Duration [s]: ", enDataType.DOUBLE, 3);
+      _duration.setup("Duration [s]: ", enDataType.DOUBLE, 3, 110);
       _duration.Focusable = false;
-      _sampleRate.setup("Sampling Rate [Hz]: ", enDataType.INT, 0);
+      _sampleRate.setup("Sampling Rate [Hz]: ", enDataType.INT, 0, 110);
       _sampleRate.Focusable = false;
       _cbSel.Focusable = true;
     }
@@ -72,8 +72,17 @@ namespace BatInspector
     {
       _analysis = analysis;
       _wavFilePath = wavFilePath;
+      
       _grp.Header = Name;
-      string[] spec = { "todo","PPIP", "PNAT", "PPYG", "NNOC", "NLEI", "MDAU", "ESER","BBAR","CRIC","?","---" };
+      List<string> spec = new List<string>();
+      foreach(SpeciesInfos si in _model.Settings.Species)
+      {
+        if(si.Show)
+          spec.Add(si.Abbreviation);
+      }
+      spec.Add("todo");
+      spec.Add("?");
+      spec.Add("---");
       if (analysis != null)
       {
         _sampleRate.setValue(_analysis.SampleRate);
@@ -83,13 +92,13 @@ namespace BatInspector
         {
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
-          it.setup("Call " + callNr.ToString() + ": ", enDataType.STRING);
+          it.setup("Call " + callNr.ToString() + ": ", enDataType.STRING, 0, 60, 100);
           it.setValue(call.SpeciesAuto + "(Prob: " + call.Probability.ToString("0.###") + ")");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup("Call " + callNr.ToString() + ": ", callNr - 1, selItemChanged);
-          im.setItems(spec);
+          im.setup("Call " + callNr.ToString() + ": ", callNr - 1, 60, 60, selItemChanged);
+          im.setItems(spec.ToArray());
           im.setValue(call.SpeciesMan);
           _spDataMan.Children.Add(im);
           callNr++;

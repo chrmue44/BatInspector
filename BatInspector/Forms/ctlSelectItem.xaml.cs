@@ -28,12 +28,15 @@ namespace BatInspector.Forms
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, int index, dlgSelItemChanged dlgValChange = null)
+    public void setup(string label, int index, int widthLbl = 80, int widthTb = 80, dlgSelItemChanged dlgValChange = null)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
       _dlgValChange = dlgValChange;
       _index = index;
+      _lbl.Width = widthLbl;
+      _cb.Width = widthTb;
+
     }
 
     public void setValue(string val)

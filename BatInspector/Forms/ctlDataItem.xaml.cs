@@ -31,14 +31,16 @@ namespace BatInspector.Forms
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, enDataType type, int decimals = 2, dlgValueChanged dlgValChange = null)
+    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, dlgValueChanged dlgValChange = null)
     {
-      _lbl.Text = label;
+      _lbl.Content= label;
       _lbl.Focusable = false;
       _type = type;
       _decimals = decimals;
       _dlgValChange = dlgValChange;
       _tb.Focusable = false;
+      _tb.Width = widthTb;
+      _lbl.Width = widthLbl;
 
     }
 
@@ -50,7 +52,7 @@ namespace BatInspector.Forms
         _tb.Text = val.ToString();
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
     }
     public void setValue(double val)
     {
@@ -63,7 +65,7 @@ namespace BatInspector.Forms
         _tb.Text = val.ToString(format);
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
 
     }
     public void setValue(string val)
@@ -74,7 +76,7 @@ namespace BatInspector.Forms
         _valString = val;
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
 
     }
 

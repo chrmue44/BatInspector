@@ -19,11 +19,8 @@
     <Style TargetType="TextBox">
       <Setter Property="Background" Value="White"/>
     </Style>
-    <Style TargetType="TextBlock">
-      <Setter Property="Background" Value="#FFF7F9FE"/>
-    </Style>
     <Style TargetType="Window">
-      <Setter Property="Background" Value="#FF5D6B99"/>
+      <Setter Property="Background" Value="#FF5D6B99" />
     </Style>
     <Style TargetType="GridSplitter">
       <Setter Property="Background" Value="#FF5D6B99"/>
@@ -34,12 +31,15 @@
     <Style TargetType="ToolBarTray">
       <Setter Property="Background" Value="#FFCCD5F0"/>
     </Style>
-    <Style TargetType="Button">
-      <Setter Property="Background" Value="#FF95A4D3"/>
-    </Style>
+ 
     <Style TargetType="Label">
       <Setter Property="Background" Value="#FFF7F9FE"/>
+    </Style>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="#FF95A4D3"/>
+      <Setter Property="Foreground" Value="#FFFFFFFF" />
     </Style>
 
   </Application.Resources>
 </Application>
+ 

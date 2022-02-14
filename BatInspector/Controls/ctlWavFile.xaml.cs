@@ -122,7 +122,7 @@ namespace BatInspector.Controls
       if (_analysis != null)
       {
         FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath, _model);
-        frm._imgFt.Source = _img.Source;
+        frm.ImgSource = _img.Source;
         frm.Show();
       }
       else

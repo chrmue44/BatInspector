@@ -36,14 +36,14 @@ namespace BatInspector.Controls
     public void initRulerF()
     {
       _cvRulerF.Children.Clear();
-      FrmZoom.createLine(_cvRulerF, 0, 3, _cvRulerF.ActualWidth, 3, Brushes.Black);
+      CtrlZoom.createLine(_cvRulerF, 0, 3, _cvRulerF.ActualWidth, 3, Brushes.Black);
       RulerData rData = _spectrum.RulerDataF;
       for (int i = 0; i <= 10; i++)
       {
-        FrmZoom.createLine(_cvRulerF, _cvRulerF.ActualWidth * i / 10, 3, _cvRulerF.ActualWidth * i / 10, 10, Brushes.Black);
+        CtrlZoom.createLine(_cvRulerF, _cvRulerF.ActualWidth * i / 10, 3, _cvRulerF.ActualWidth * i / 10, 10, Brushes.Black);
         string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.0");
         if((i % 2) == 0)
-          FrmZoom.createText(_cvRulerF, _cvRulerF.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
+          CtrlZoom.createText(_cvRulerF, _cvRulerF.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
       }
     }
 
@@ -65,7 +65,7 @@ namespace BatInspector.Controls
         int i = (int)((double)_spectrum.Amplitude.Length / w * x);
         double a =  _spectrum.getMeanAmpl(i, n);
         int y2 = h - (int)(a/(max - min) * h);
-        FrmZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);
+        CtrlZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);
       }
     }
   }

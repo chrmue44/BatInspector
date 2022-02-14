@@ -70,6 +70,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\CtlColorMap.xaml.cs">
@@ -90,6 +91,9 @@
     <Compile Include="Controls\CtlSpectrum.xaml.cs">
       <DependentUpon>CtlSpectrum.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CtrlZoom.xaml.cs">
+      <DependentUpon>CtrlZoom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
@@ -104,6 +108,9 @@
     </Compile>
     <Compile Include="Forms\FrmHelpFilter.xaml.cs">
       <DependentUpon>FrmHelpFilter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSettings.xaml.cs">
+      <DependentUpon>frmSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmSpeciesData.xaml.cs">
       <DependentUpon>frmSpeciesData.xaml</DependentUpon>
@@ -169,6 +176,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CtrlZoom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\FrmAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -186,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -348,6 +363,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\color-palette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\settingscog_87317.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -20,8 +20,10 @@ namespace BatInspector.Controls
     string _maxValString;
     dlgValueChanged _dlgValChange = null;
     
+    public double MaxDouble { get { return _maxValDouble; } }
+    public double MinDouble { get { return _minValDouble; } }
 
-   // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
+    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
     public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, dlgValueChanged dlgValChange = null)
     {

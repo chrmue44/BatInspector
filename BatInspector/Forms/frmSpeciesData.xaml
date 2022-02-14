@@ -5,15 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
-        Title="Edit Species Data" Height="1000" Width="800">
-    <Grid>
-    <StackPanel>
-      <local:ctlSelectItem x:Name="_ctlSelSpecies" Margin="10"/>
-      <local:ctlSpeciesData x:Name="_ctlSpecData"/>
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button Width="80" Name="_btnCacel"  Margin="10,10,0,0" Click="_btnCacel_Click" Height="25">Cancel</Button>
-        <Button Width="80" Name="_btnOk" Margin="10,10,10,0" Click="_btnOk_Click" Height="25">OK</Button>
+        Title="Edit Species Data" Height="750">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="45"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0">
+        <local:ctlSelectItem x:Name="_ctlSelSpecies1" Margin="10"/>
+        <local:ctlSpeciesData x:Name="_ctlSpecData1"/>
       </StackPanel>
-    </StackPanel>
+      <StackPanel Grid.Column="1">
+        <local:ctlSelectItem x:Name="_ctlSelSpecies2" Margin="10"/>
+        <local:ctlSpeciesData x:Name="_ctlSpecData2"/>
+      </StackPanel>
     </Grid>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Width="280">
+      <Button Width="80" Name="_btnCacel"  Margin="10,10,0,10" Click="_btnCacel_Click" Height="25">Cancel</Button>
+      <Button Width="80" Name="_btnSave" Margin="10,10,0,10" Click="_btnSave_Click" Height="25">Save</Button>
+      <Button Width="80" Name="_btnOk" Margin="10,10,10,10" Click="_btnOk_Click" Height="25">OK</Button>
+    </StackPanel>
+  </Grid>
 </Window>

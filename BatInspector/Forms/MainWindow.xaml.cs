@@ -426,6 +426,12 @@ namespace BatInspector.Forms
       frmSpeciesData frm = new frmSpeciesData(_model);
       frm.Show();
     }
+
+    private void _btnSettings_Click(object sender, RoutedEventArgs e)
+    {
+      frmSettings frm = new frmSettings(_model.Settings);
+        frm.Show();
+    }
   }
 
   public delegate void dlgSetFocus(int index);

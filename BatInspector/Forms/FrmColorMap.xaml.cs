@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using SDColor = System.Drawing.Color;
 using SWMColor = System.Windows.Media.Color;
 using SWMBrush = System.Windows.Media.Brush;
+using BatInspector.Controls;
 
 namespace BatInspector.Forms
 {
@@ -82,7 +83,7 @@ namespace BatInspector.Forms
       for (double i = 0; i < w;i++)
       {
         System.Windows.Media.Color color = _model.ColorTable.getSwmColor(i, 0, w);
-        FrmZoom.createLine(_cvImg, i, 0, i, h, new SolidColorBrush(color));
+        CtrlZoom.createLine(_cvImg, i, 0, i, h, new SolidColorBrush(color));
       }
     }
 

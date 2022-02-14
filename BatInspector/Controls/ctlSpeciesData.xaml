@@ -6,21 +6,21 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:Forms="clr-namespace:BatInspector.Controls" x:Class="BatInspector.Controls.ctlSpeciesData"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="420">
+             >
   <Grid>
     <GroupBox Margin="5">
       <StackPanel>
         <local:ctlDataItem x:Name="_ctlLocalName" Margin="5"/>
         <local:ctlDataItemMinMax x:Name="_ctFreqC"/>
       <local:ctlDataItemMinMax x:Name="_ctDuration" />
-        <GroupBox Header="Proof of Species" Height="200">
-          <TextBox Margin="5" Name="_tbProof" > </TextBox>
+        <GroupBox Header="Proof of Species" Height="120">
+          <TextBox Margin="5" Name="_tbProof" TextWrapping="Wrap" AcceptsReturn="True"> </TextBox>
         </GroupBox>
-        <GroupBox Header="Distinctive Calls" Height="200">
-          <TextBox Margin="5" Name="_tbDistintCalls"></TextBox>
+        <GroupBox Header="Distinctive Calls" Height="120">
+          <TextBox Margin="5" Name="_tbDistintCalls" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
         </GroupBox>
-        <GroupBox Header="Habitat" Height="100">
-          <TextBox Margin="5" Name="_tbHabitat"></TextBox>
+        <GroupBox Header="Habitat" Height="120" >
+          <TextBox Margin="5" Name="_tbHabitat" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
         </GroupBox>
         <local:ctlSelectItem x:Name="_ctlSelPic" Margin="10"/>
         <Image Name="_img" Height="256"></Image>

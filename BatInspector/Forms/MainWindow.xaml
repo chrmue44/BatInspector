@@ -20,10 +20,10 @@
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
           <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-            <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSave_Click">
+            <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="save settings" Click="_btnSave_Click">
               <Image Source="../images/icons8-save-48.png"></Image>
             </Button>
-          <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDel_Click">
+          <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="edit color scheme for waterfall diagram" Click="_btnDel_Click">
               <Image Source="../images/color-palette.png"> </Image>
             </Button>
             <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="find bat calls in project" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -38,13 +38,16 @@
           <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="edit species information" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
           </Button>
+          <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="show application settings" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/settingscog_87317.png"></Image>
+          </Button>
           <Button x:Name="_btnHelp" Click="_btnHelp_Click"  ToolTip="open manual" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Image Source="../images/Button_Help_icon_32.png"></Image>
             </Button>
             <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="show software info" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Image Source="../images/Actions_help_about_icon.png"></Image>
             </Button>
-          </ToolBar>
+        </ToolBar>
         </ToolBarTray>
         <TabControl Grid.Row="1" x:Name="_tbReport" Margin="5" GotFocus="_tbReport_GotFocus">
             <TabItem Header="Project View" >

@@ -69,6 +69,10 @@ namespace BatInspector
     [DataMember]
     [Description("Characteristic calls")]
     public string CharCalls { get; set; }
+
+    [DataMember]
+    [Description("Habitat")]
+    public string Habitat { get; set; }
   }
 
   public class FilterParams

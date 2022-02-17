@@ -59,8 +59,6 @@ namespace BatInspector.Controls
 
       for (int x = 0; x < w; x++)
       {
-        if (x == (w - 1)) //@@@
-          x = w - 1;  //@@@
         int y1 = (int)(_cvSpec.ActualHeight);
         int i = (int)((double)_spectrum.Amplitude.Length / w * x);
         double a =  _spectrum.getMeanAmpl(i, n);

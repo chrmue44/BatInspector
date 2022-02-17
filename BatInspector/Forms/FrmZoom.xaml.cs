@@ -23,14 +23,17 @@ namespace BatInspector.Forms
     {
       set { _ctl._imgFt.Source = value; }
     }
-    public FrmZoom(string name, AnalysisFile analysis, string wavFilePath, ViewModel model)
+    public FrmZoom(ViewModel model)
     {
       InitializeComponent();
       _model = model;
-      _ctl.setup(analysis, wavFilePath, model);
-      this.Title = name;
-
       ContentRendered += FrmZoom_ContentRendered;
+    }
+
+    public void setup(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
+    {
+      _ctl.setup(analysis, wavFilePath, _model, img);
+      this.Title = name;
     }
 
 

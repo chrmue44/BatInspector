@@ -130,6 +130,11 @@ namespace BatInspector
 
     [DataMember]
     [Category("Application")]
+    [Description("Show zoom view in a separate window side by side to main window")]
+    public bool ZoomSeparateWin { get; set; } = false;
+
+    [DataMember]
+    [Category("Application")]
     [Description("Color of Background in XT diagram")]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector" xmlns:forms="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400"
-        Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing"
+        Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">

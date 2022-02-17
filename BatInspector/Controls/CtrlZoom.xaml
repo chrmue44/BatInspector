@@ -135,7 +135,6 @@
           <local:ctlDataItem x:Name="_ctlDuration"/>
           <local:ctlDataItem x:Name="_ctlSnr"/>
           <local:ctlDataItem x:Name="_ctlDist"/>
-
         </StackPanel>
       </Grid>
     </GroupBox>

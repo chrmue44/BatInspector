@@ -37,7 +37,9 @@ namespace BatInspector.Forms
     FrmFilter _frmFilter = null;
     int _imgHeight = MAX_IMG_HEIGHT;
     List<UIElement> _listBak = null;
-
+    FrmZoom _frmZoom = null;
+    CtrlZoom _ctlZoom = null;
+    TabItem _tbZoom = null;
     public MainWindow()
     {
       System.Version version;
@@ -45,7 +47,7 @@ namespace BatInspector.Forms
       {
         version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
       }
-      catch 
+      catch
       {
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
@@ -54,9 +56,11 @@ namespace BatInspector.Forms
       InitializeComponent();
       initTreeView();
       populateFilterComboBox();
+      initZoomWindow();
       this.Title = "BatInspector V" + version.ToString();
-      
+
     }
+
 
     public void initTreeView()
     {
@@ -87,10 +91,10 @@ namespace BatInspector.Forms
           {
             TreeViewItem childItem = CreateTreeItem(subDir);
             item.Items.Add(childItem);
-            if(Project.containsProject(subDir))
+            if (Project.containsProject(subDir))
             {
               childItem.FontWeight = FontWeights.Bold;
-              if(Project.evaluationDone(subDir))
+              if (Project.evaluationDone(subDir))
                 childItem.Foreground = new SolidColorBrush(Colors.Green);
               else
                 childItem.Foreground = new SolidColorBrush(Colors.Violet);
@@ -105,7 +109,7 @@ namespace BatInspector.Forms
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
- //     if (_model.Prj != null)
+      //     if (_model.Prj != null)
       {
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;
@@ -128,6 +132,47 @@ namespace BatInspector.Forms
       }
       if (_cbFilter.Items.Count > 0)
         _cbFilter.Text = (string)_cbFilter.Items[0];
+    }
+
+    private void initZoomWindow()
+    {
+      if (_model.Settings.ZoomSeparateWin)
+      {
+        _frmZoom = new FrmZoom(_model);
+      }
+      else
+      {
+        _tbZoom = new TabItem();
+        _tbZoom.Header = "Zoom";
+        _tbReport.Items.Add(_tbZoom);
+        _ctlZoom = new CtrlZoom();
+        _tbZoom.Content = _ctlZoom;
+        _tbReport.SelectedIndex = 0;
+      }
+    }
+
+    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
+    {
+      if (_frmZoom != null)
+      {
+
+        _frmZoom.setup(name, analysis, wavFilePath, img);
+        setZoomPosition();
+        _frmZoom.Show();
+      }
+      else
+      {
+        _ctlZoom.setup(analysis, wavFilePath, _model, img);
+        _tbZoom.Header = "Zoom: " + name;
+      }
+    }
+    private void setZoomPosition()
+    {
+      if (_frmZoom != null)
+      {
+        _frmZoom.Top = this.Top;
+        _frmZoom.Left = this.Left + this.Width - 10;
+      }
     }
 
     private TreeViewItem CreateTreeItem(object o)
@@ -177,7 +222,7 @@ namespace BatInspector.Forms
         {
           bool newImage;
           _model.getFtImage(rec, out newImage);
-          if(newImage)
+          if (newImage)
           {
             (sender as BackgroundWorker).ReportProgress(55, rec.Name);
           }
@@ -186,21 +231,21 @@ namespace BatInspector.Forms
       }
     }
 
-     internal async Task  createFftImages()
+    internal async Task createFftImages()
     {
       int index = 0;
 
-      if(_model.Prj != null)
+      if (_model.Prj != null)
       {
         _spSpectrums.Children.Clear();
         _cbFocus = -1;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
-          ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model);
+          ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this);
           DockPanel.SetDock(ctl, Dock.Bottom);
           bool newImage;
           ctl._img.Source = _model.getFtImage(rec, out newImage);
-//          ctl._img.MaxWidth = MAX_IMG_WIDTH;
+          //          ctl._img.MaxWidth = MAX_IMG_WIDTH;
           ctl._img.MaxHeight = _imgHeight;
           ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath);
           _spSpectrums.Dispatcher.Invoke(() =>
@@ -212,12 +257,12 @@ namespace BatInspector.Forms
         }
       }
       string report = _model.Analysis.Report != null ? "report available" : "no report";
-      setStatus("  [ nr of files: " + _spSpectrums.Children.Count.ToString() + " | " + report  + " ]");
+      setStatus("  [ nr of files: " + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)
     {
-      foreach(UIElement it in _spSpectrums.Children)
+      foreach (UIElement it in _spSpectrums.Children)
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = true;
@@ -298,7 +343,7 @@ namespace BatInspector.Forms
 
     public void setFocus(int index)
     {
-      if((index >= 0) && (index < _spSpectrums.Children.Count))
+      if ((index >= 0) && (index < _spSpectrums.Children.Count))
       {
         _cbFocus = index;
       }
@@ -307,7 +352,7 @@ namespace BatInspector.Forms
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
       MessageBoxResult res = MessageBox.Show("Start data evaluation to find calls (may take a long time!)", "", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-      if(res == MessageBoxResult.OK)
+      if (res == MessageBoxResult.OK)
       {
         _model.startEvaluation();
       }
@@ -315,13 +360,13 @@ namespace BatInspector.Forms
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
-      if(_log == null)
+      if (_log == null)
       {
         _log = new FrmLog();
         DebugLog.setLogDelegate(_log.log);
         _log.Show();
         DebugLog.log("Debug log opened", enLogType.INFO);
-        
+
       }
       else
       {
@@ -374,6 +419,8 @@ namespace BatInspector.Forms
     {
       if (_log != null)
         _log.Close();
+      if (_frmZoom != null)
+        _frmZoom.Close();
     }
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)
@@ -385,7 +432,7 @@ namespace BatInspector.Forms
     private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
     {
       FilterItem filter = _model.Filter.getFilter(_cbFilter.Text);
-      foreach(ctlWavFile c in _spSpectrums.Children)
+      foreach (ctlWavFile c in _spSpectrums.Children)
       {
         bool res = _model.Filter.apply(filter, c.Analysis);
         c._cbSel.IsChecked = res;
@@ -430,7 +477,26 @@ namespace BatInspector.Forms
     private void _btnSettings_Click(object sender, RoutedEventArgs e)
     {
       frmSettings frm = new frmSettings(_model.Settings);
-        frm.Show();
+      frm.Show();
+    }
+
+    private void Content_rendered(object sender, System.EventArgs e)
+    {
+      if ((_ctlZoom != null) && (_model.PrjPath != null))
+      {
+        _ctlZoom.update();
+        _tbReport.SelectedIndex = 2;
+      }
+    }
+
+    private void Window_LocationChanged(object sender, System.EventArgs e)
+    {
+      setZoomPosition();
+    }
+
+    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+      setZoomPosition ();
     }
   }
 

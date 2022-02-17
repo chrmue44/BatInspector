@@ -9,10 +9,11 @@ TODO
 - scripting engine
 - help
 - species comparison
-- Zoom window: one window side by side to main window
-- alternatively (controllable per parameter in settings) Zoom window: as additional tab
 
 DONE
+- automatically zoom to call in zoom window
+- Zoom window: one window side by side to main window
+- alternatively (controllable per parameter in settings) Zoom window: as additional tab
 - CtrlZoom as control
 - settings wndow
 - species information as parameter in settings

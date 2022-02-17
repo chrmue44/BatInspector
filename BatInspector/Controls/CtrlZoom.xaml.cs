@@ -21,17 +21,25 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtrlZoom : UserControl
   {
+    AnalysisFile _analysis;
+    string _wavFilePath;
+    ViewModel _model;
+    int _stretch;
+    //    BackgroundWorker _worker;
+    Thread _worker;
+    int _oldCallIdx = -1;
+
     public CtrlZoom()
     {
       InitializeComponent();
     }
 
-    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model)
+    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img)
     {
       InitializeComponent();
-      _analysis = analysis;
       _model = model;
-
+      _imgFt.Source = img;
+      _analysis = analysis;
       _model.ZoomView.RulerDataA.setRange(-1, 1);
       _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
       _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
@@ -72,29 +80,25 @@ namespace BatInspector.Controls
       _ctlSelectCall.setItems(items);
 
       setupCallData(0);
+      update();
     }
-
-    AnalysisFile _analysis;
-    string _wavFilePath;
-    ViewModel _model;
-    int _stretch;
-    //    BackgroundWorker _worker;
-    Thread _worker;
 
 
     public void update()
     {
-      _model.ZoomView.RulerDataA.setRange(-1, 1);
-      _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
-      _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
+      if (_model != null)
+      {
+        _model.ZoomView.RulerDataA.setRange(-1, 1);
+        _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
+        _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
 
-      initRulerF();
-      initRulerT();
-      initRulerA();
-      _ctlSpectrum.initRulerF();
+        initRulerF();
+        initRulerT();
+        initRulerA();
+        _ctlSpectrum.initRulerF();
 
-      _ctlSelectCall._cb.SelectedIndex = 0;
-
+        _ctlSelectCall._cb.SelectedIndex = 0;
+      }
     }
 
 
@@ -462,12 +466,18 @@ namespace BatInspector.Controls
       int idx = 0;
       int.TryParse(val, out idx);
       idx--;
-      if (idx >= 0)
+      if((idx != _oldCallIdx)&& (idx >= 0))
       {
+        _oldCallIdx = idx;
         setupCallData(idx);
         double tStart = _analysis.getStartTime(idx);
         double tEnd = _analysis.getEndTime(idx);
         _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
+        _model.ZoomView.RulerDataF.setRange(0, 100);
+        _model.ZoomView.RulerDataT.setRange(tStart-0.01, tStart + 0.09);
+        hideCursors();
+        createZoomImg();
+
       }
     }
 

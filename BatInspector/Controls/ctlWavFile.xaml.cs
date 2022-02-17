@@ -30,6 +30,7 @@ namespace BatInspector.Controls
     int _index;
     dlgSetFocus _dlgFocus;
     ViewModel _model;
+    MainWindow _parent;
 
     public bool InfoVisible
     {
@@ -54,11 +55,12 @@ namespace BatInspector.Controls
     }
 
     public AnalysisFile Analysis { get { return _analysis; } }
-    public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model)
+    public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model, MainWindow parent)
     {
       _index = index;
       _dlgFocus = setFocus;
       _model = model;
+      _parent = parent;
       InitializeComponent();
       _duration.setup("Duration [s]: ", enDataType.DOUBLE, 3, 110);
       _duration.Focusable = false;
@@ -121,9 +123,7 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        FrmZoom frm = new FrmZoom(_grp.Header.ToString(), _analysis, _wavFilePath, _model);
-        frm.ImgSource = _img.Source;
-        frm.Show();
+        _parent.setZoom(_grp.Header.ToString(), _analysis, _wavFilePath, _img.Source);
       }
       else
         MessageBox.Show("Zoom not supported without analysis, perform analysis first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);

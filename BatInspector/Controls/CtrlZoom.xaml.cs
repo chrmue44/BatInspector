@@ -62,7 +62,7 @@ namespace BatInspector.Controls
       _wavFilePath = wavFilePath;
       _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
       _ctlRange.setup("Range [dB]:", enDataType.DOUBLE, 0, 80, 80, rangeChanged);
-      _ctlRange.setValue(20.0);
+      _ctlRange.setValue(_model.Settings.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
@@ -468,17 +468,22 @@ namespace BatInspector.Controls
       idx--;
       if((idx != _oldCallIdx)&& (idx >= 0))
       {
-        _oldCallIdx = idx;
-        setupCallData(idx);
-        double tStart = _analysis.getStartTime(idx);
-        double tEnd = _analysis.getEndTime(idx);
-        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
-        _model.ZoomView.RulerDataF.setRange(0, 100);
-        _model.ZoomView.RulerDataT.setRange(tStart-0.01, tStart + 0.09);
-        hideCursors();
-        createZoomImg();
-
+        changeCall(idx);
       }
+    }
+
+    private void changeCall(int idx)
+    {
+      _oldCallIdx = idx;
+      setupCallData(idx);
+      double tStart = _analysis.getStartTime(idx);
+      double tEnd = _analysis.getEndTime(idx);
+      _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
+      _model.ZoomView.RulerDataF.setRange(0, 100);
+      double pre = 0.01;
+      _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + _model.Settings.ZoomOneCall / 1000.0 - pre);
+      hideCursors();
+      createZoomImg();
     }
 
     private void setupCallData(int idx)
@@ -493,9 +498,28 @@ namespace BatInspector.Controls
         if (idx > 0)
         {
         }
-        _ctlSpectrum.init(_model.ZoomView.Spectrum);
+        _ctlSpectrum.init(_model.ZoomView.Spectrum, 100);
       }
     }
 
+    private void _btnPrev_Click(object sender, RoutedEventArgs e)
+    {
+      int idx = _oldCallIdx - 1;
+      if ((idx >= 0) && (idx < _analysis.Calls.Count))
+      {
+        changeCall(idx);
+        _ctlSelectCall.setValue((idx + 1).ToString());
+      }
+    }
+
+    private void _btnNext_Click(object sender, RoutedEventArgs e)
+    {
+      int idx = _oldCallIdx + 1;
+      if ((idx >= 0) && (idx < _analysis.Calls.Count))
+      {
+        changeCall(idx);
+        _ctlSelectCall.setValue((idx + 1).ToString());
+      }
+    }
   }
 }

@@ -8,7 +8,7 @@
         Title="FrmZoom" Height="800" Width="1200"
         KeyUp="Window_KeyUp"
         KeyDown="Window_KeyDown"
-        Icon="..\images\icons8-zoom-in-64.png">
+        Icon="..\images\icons8-zoom-in-64.png" SizeChanged="Window_SizeChanged">
   <Grid Name="_grid" HorizontalAlignment="Left" VerticalAlignment="Top">
     <local:CtrlZoom x:Name="_ctl">
       

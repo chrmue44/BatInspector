@@ -20,7 +20,6 @@ namespace BatInspector
     ColorTable _colorTable;
     double _maxAmplitude;
     double _minAmplitude;
-    double _range = 20;
     int _width;
     int _heightFt;
     int _heightXt;
@@ -33,7 +32,7 @@ namespace BatInspector
     public List<double[]> Spec {  get { return _spec; } }
     public bool Ok { get { return _ok; } }
 
-    public double Range { get { return _range; } set { _range = value; _minAmplitude = _maxAmplitude - _range; } }
+    public double Range { get { return _settings.GradientRange; } set { _settings.GradientRange = value; _minAmplitude = _maxAmplitude - value; } }
     public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
@@ -315,7 +314,7 @@ namespace BatInspector
         if (lmSpectrum[i] > _maxAmplitude)
         {
           _maxAmplitude = lmSpectrum[i];
-          _minAmplitude = _maxAmplitude - _range;
+          _minAmplitude = _maxAmplitude - _settings.GradientRange;
         }
       }
 

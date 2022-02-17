@@ -54,5 +54,10 @@ namespace BatInspector.Forms
       _model.KeyPressed = e.Key;
     }
 
+    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+      _model.Settings.ZoomWindowHeight = this.Height;
+      _model.Settings.ZoomWindowWidth = this.Width;
+    }
   }
 }

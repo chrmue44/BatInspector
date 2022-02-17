@@ -135,8 +135,53 @@ namespace BatInspector
 
     [DataMember]
     [Category("Application")]
+    [Description("length of zoom for automatic zoom to call [ms]")]
+    public double ZoomOneCall { get; set; } = 100.0;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("width of main window [px]")]
+    public double MainWindowWidth { get; set; } = 1400;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("Height of main window [px]")]
+    public double MainWindowHeight { get; set; } = 900;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("width of main window [px]")]
+    public double ZoomWindowWidth { get; set; } = 1200;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("Height of main window [px]")]
+    public double ZoomWindowHeight { get; set; } = 900;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("Hide call related information in overview")]
+    public bool HideInfos { get; set; } = false;
+
+    [DataMember]
+    [Category("Application")]
     [Description("Color of Background in XT diagram")]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("Main window x position")]
+    public double MainWindowPosX { get; set; } = 0;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("Main window y position")]
+    public double MainWindowPosY { get; set; } = 0;
+
+    [DataMember]
+    [Category("Application")]
+    [Description("Range for color gradient in zoom window [dB]")]
+    public double GradientRange { get; set; } = 15;
 
     [DataMember]
     [Category("Filter")]
@@ -173,6 +218,15 @@ namespace BatInspector
       FftWidth = 512;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
+      MainWindowWidth = 1400;
+      MainWindowHeight = 900;
+      ZoomWindowWidth = 1200;
+      ZoomWindowHeight = 900;
+      ZoomOneCall = 100;
+      MainWindowPosX = 0;
+      MainWindowPosY = 0;
+      GradientRange = 15;
+      HideInfos = false;
       initFilterParams();
       initColorGradient();
       initSpeciesInfos();

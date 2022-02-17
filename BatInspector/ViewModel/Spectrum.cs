@@ -14,9 +14,12 @@ namespace BatInspector
     RulerData _rulerDataF;
     uint _fftSize;
     double[] _ampl;
+    double _fMax;
 
     public RulerData RulerDataF { get { return _rulerDataF; } }
     public double[] Amplitude {  get { return _ampl; } }
+
+    public double Fmax { get { return _fMax; } }
 
     public Spectrum()
     {
@@ -27,6 +30,7 @@ namespace BatInspector
     {
       uint idxStart = (uint)(tStart * samplingRate);
       uint idxEnd = (uint)(tEnd *samplingRate);
+      _fMax = ((double)samplingRate )/ 2000.0;
       _samples = samples;
       uint len = idxEnd - idxStart;
       _fftSize = 256;

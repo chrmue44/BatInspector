@@ -128,7 +128,11 @@
 
         <local:CtlSpectrum x:Name ="_ctlSpectrum" Margin="30,5,30,5"  Grid.Column="0"/>
         <StackPanel Orientation="Vertical" Grid.Column="1" Name ="_spCallInfo">
-          <local:ctlSelectItem x:Name="_ctlSelectCall"/>
+          <StackPanel Orientation="Horizontal">
+            <Button Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click">&lt;-</Button>
+            <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left"/>
+            <Button Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click">-&gt;</Button>
+          </StackPanel>
           <local:ctlDataItem x:Name="_ctlFMin"/>
           <local:ctlDataItem x:Name="_ctlFMax"/>
           <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>

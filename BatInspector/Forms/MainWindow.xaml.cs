@@ -58,6 +58,13 @@ namespace BatInspector.Forms
       populateFilterComboBox();
       initZoomWindow();
       this.Title = "BatInspector V" + version.ToString();
+      if ((_model.Settings.MainWindowWidth > 100) && (_model.Settings.MainWindowHeight > 100))
+      {
+        this.Width = _model.Settings.MainWindowWidth;
+        this.Height = _model.Settings.MainWindowHeight;
+      }
+      this.Top = _model.Settings.MainWindowPosX;
+      this.Left = _model.Settings.MainWindowPosY;
 
     }
 
@@ -139,6 +146,8 @@ namespace BatInspector.Forms
       if (_model.Settings.ZoomSeparateWin)
       {
         _frmZoom = new FrmZoom(_model);
+        _frmZoom.Width = _model.Settings.ZoomWindowWidth;
+        _frmZoom.Height = _model.Settings.ZoomWindowHeight;
       }
       else
       {
@@ -248,6 +257,7 @@ namespace BatInspector.Forms
           //          ctl._img.MaxWidth = MAX_IMG_WIDTH;
           ctl._img.MaxHeight = _imgHeight;
           ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath);
+          ctl.InfoVisible = !_model.Settings.HideInfos;
           _spSpectrums.Dispatcher.Invoke(() =>
           {
             _cbFocus = 0;
@@ -458,6 +468,12 @@ namespace BatInspector.Forms
 
     private void _btnCallInfo_Click(object sender, RoutedEventArgs e)
     {
+      if (_spSpectrums.Children.Count > 0)
+      {
+        ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
+        _model.Settings.HideInfos = !ctl0.InfoVisible;
+      }
+      
       foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.InfoVisible = !ctl.InfoVisible;
     }
@@ -492,11 +508,16 @@ namespace BatInspector.Forms
     private void Window_LocationChanged(object sender, System.EventArgs e)
     {
       setZoomPosition();
+      _model.Settings.MainWindowPosX = this.Top;
+      _model.Settings.MainWindowPosY = this.Left;
+
     }
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
       setZoomPosition ();
+      _model.Settings.MainWindowWidth = this.Width;
+      _model.Settings.MainWindowHeight = this.Height;
     }
   }
 

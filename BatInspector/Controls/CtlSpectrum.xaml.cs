@@ -27,9 +27,10 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
-    public void init(Spectrum sp)
+    public void init(Spectrum sp, double maxF)
     {
       _spectrum = sp;
+      _spectrum.RulerDataF.setRange(0, maxF);
       initRulerF();
     }
 
@@ -60,7 +61,7 @@ namespace BatInspector.Controls
       for (int x = 0; x < w; x++)
       {
         int y1 = (int)(_cvSpec.ActualHeight);
-        int i = (int)((double)_spectrum.Amplitude.Length / w * x);
+        int i = (int)((double)_spectrum.Amplitude.Length / w * x * _spectrum.RulerDataF.Max/_spectrum.Fmax);
         double a =  _spectrum.getMeanAmpl(i, n);
         int y2 = h - (int)(a/(max - min) * h);
         CtrlZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);

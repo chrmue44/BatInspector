@@ -68,6 +68,8 @@ namespace BatInspector
            _analysis.read(_selectedDir + "report.csv");
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
                          System.IO.SearchOption.TopDirectoryOnly);
+        if (_prj == null)
+          _prj = new Project();
         _prj.readPrjFile(files[0]);
       }
       else

@@ -9,6 +9,7 @@ TODO
 - scripting engine
 - help
 - species comparison
+- frequency scale in spectrum on zoom view not accurate
 
 DONE
 - automatically zoom to call in zoom window

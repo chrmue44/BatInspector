@@ -100,7 +100,7 @@ namespace BatInspector.Controls
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup("Call " + callNr.ToString() + ": ", callNr - 1, 60, 60, selItemChanged);
+          im.setup("Call " + callNr.ToString() + ": ", callNr - 1, 60, 65, selItemChanged);
           im.setItems(spec.ToArray());
           im.setValue(call.SpeciesMan);
           _spDataMan.Children.Add(im);

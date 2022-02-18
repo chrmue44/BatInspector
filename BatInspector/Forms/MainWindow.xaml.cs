@@ -40,6 +40,7 @@ namespace BatInspector.Forms
     FrmZoom _frmZoom = null;
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
+    frmSpeciesData _frmSpecies = null;
     public MainWindow()
     {
       System.Version version;
@@ -431,6 +432,8 @@ namespace BatInspector.Forms
         _log.Close();
       if (_frmZoom != null)
         _frmZoom.Close();
+      if (_frmSpecies != null)
+        _frmSpecies.Close();
     }
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)
@@ -486,8 +489,9 @@ namespace BatInspector.Forms
 
     private void _btnSpecies_Click(object sender, RoutedEventArgs e)
     {
-      frmSpeciesData frm = new frmSpeciesData(_model);
-      frm.Show();
+      if(_frmSpecies == null)
+        _frmSpecies = new frmSpeciesData(_model);
+      _frmSpecies.Show();
     }
 
     private void _btnSettings_Click(object sender, RoutedEventArgs e)

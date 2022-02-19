@@ -23,9 +23,11 @@ namespace BatInspector.Forms
   public partial class frmSpeciesData : Window
   {
     ViewModel _model;
-    public frmSpeciesData(ViewModel model)
+    dlgcloseChildWindow _closWin;
+    public frmSpeciesData(ViewModel model, dlgcloseChildWindow closeWin)
     {
       _model = model;
+      _closWin = closeWin;
       InitializeComponent();
       _ctlSelSpecies1.setup("select species:", 0, 150, 200, species1Changed);
       _ctlSelSpecies1._cb.Items.Clear();
@@ -123,6 +125,11 @@ namespace BatInspector.Forms
           si.CharCalls = _ctlSpecData2._tbDistintCalls.Text;
         }
       }
+    }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      _closWin(enWinType.BAT);
     }
   }
 }

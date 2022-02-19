@@ -18,15 +18,17 @@ namespace BatInspector.Forms
   public partial class FrmZoom : Window
   {
     ViewModel _model;
+    dlgcloseChildWindow _closeWin;
 
     public System.Windows.Media.ImageSource ImgSource
     {
       set { _ctl._imgFt.Source = value; }
     }
-    public FrmZoom(ViewModel model)
+    public FrmZoom(ViewModel model, dlgcloseChildWindow dlgClose)
     {
       InitializeComponent();
       _model = model;
+      _closeWin = dlgClose;
       ContentRendered += FrmZoom_ContentRendered;
     }
 
@@ -58,6 +60,11 @@ namespace BatInspector.Forms
     {
       _model.Settings.ZoomWindowHeight = this.Height;
       _model.Settings.ZoomWindowWidth = this.Width;
+    }
+
+    private void Window_Closing(object sender, CancelEventArgs e)
+    {
+      _closeWin(enWinType.ZOOM);
     }
   }
 }

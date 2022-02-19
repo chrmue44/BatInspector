@@ -130,6 +130,7 @@ namespace BatInspector.Forms
     {
       _lblStatus.Text = status;
     }
+
     public void populateFilterComboBox()
     {
       _cbFilter.Items.Clear();
@@ -142,11 +143,24 @@ namespace BatInspector.Forms
         _cbFilter.Text = (string)_cbFilter.Items[0];
     }
 
+    public void closeWindow(enWinType w)
+    {
+      switch(w)
+      {
+        case enWinType.ZOOM:
+          _frmZoom = null;
+          break;
+        case enWinType.BAT:
+          _frmSpecies = null;
+          break;
+      }
+    }
+
     private void initZoomWindow()
     {
       if (_model.Settings.ZoomSeparateWin)
       {
-        _frmZoom = new FrmZoom(_model);
+        _frmZoom = new FrmZoom(_model, closeWindow);
         _frmZoom.Width = _model.Settings.ZoomWindowWidth;
         _frmZoom.Height = _model.Settings.ZoomWindowHeight;
       }
@@ -163,9 +177,10 @@ namespace BatInspector.Forms
 
     public void setZoom(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
     {
-      if (_frmZoom != null)
+      if(_model.Settings.ZoomSeparateWin)
       {
-
+        if (_frmZoom == null)
+          _frmZoom = new FrmZoom(_model,closeWindow);
         _frmZoom.setup(name, analysis, wavFilePath, img);
         setZoomPosition();
         _frmZoom.Show();
@@ -490,7 +505,7 @@ namespace BatInspector.Forms
     private void _btnSpecies_Click(object sender, RoutedEventArgs e)
     {
       if(_frmSpecies == null)
-        _frmSpecies = new frmSpeciesData(_model);
+        _frmSpecies = new frmSpeciesData(_model, closeWindow);
       _frmSpecies.Show();
     }
 
@@ -525,5 +540,12 @@ namespace BatInspector.Forms
     }
   }
 
+  public enum enWinType 
+  {
+    ZOOM,
+    BAT
+  }
+
   public delegate void dlgSetFocus(int index);
+  public delegate void dlgcloseChildWindow(enWinType w);
 }

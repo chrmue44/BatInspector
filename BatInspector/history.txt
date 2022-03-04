@@ -12,6 +12,7 @@ TODO
 - frequency scale in spectrum on zoom view not accurate
 
 DONE
+- specify threshold for probability to copy auto species to man species
 - automatically zoom to call in zoom window
 - Zoom window: one window side by side to main window
 - alternatively (controllable per parameter in settings) Zoom window: as additional tab

@@ -66,7 +66,7 @@ namespace BatInspector.Forms
       }
       this.Top = _model.Settings.MainWindowPosX;
       this.Left = _model.Settings.MainWindowPosY;
-
+      DebugLog.setLogDelegate(_ctlLog.log);
     }
 
 
@@ -386,10 +386,11 @@ namespace BatInspector.Forms
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
+      /*
       if (_log == null)
       {
         _log = new FrmLog();
-        DebugLog.setLogDelegate(_log.log);
+        DebugLog.setLogDelegate(_log._ctl.log);
         _log.Show();
         DebugLog.log("Debug log opened", enLogType.INFO);
 
@@ -399,7 +400,7 @@ namespace BatInspector.Forms
         DebugLog.setLogDelegate(null);
         _log.Close();
         _log = null;
-      }
+      } */
     }
 
     private void _btnSize_Click(object sender, RoutedEventArgs e)

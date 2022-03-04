@@ -184,6 +184,11 @@ namespace BatInspector
     public double GradientRange { get; set; } = 15;
 
     [DataMember]
+    [Category("Application")]
+    [Description("minimal probability to copy automated to manually set probability with copy button")]
+    public double ProbabilityMin { get; set; } = 0.5;
+
+    [DataMember]
     [Category("Filter")]
     [Description("settings for display filter")]
     public List<FilterParams> Filter { get; set; }
@@ -226,6 +231,7 @@ namespace BatInspector
       MainWindowPosX = 0;
       MainWindowPosY = 0;
       GradientRange = 15;
+      ProbabilityMin = 0.5;
       HideInfos = false;
       initFilterParams();
       initColorGradient();

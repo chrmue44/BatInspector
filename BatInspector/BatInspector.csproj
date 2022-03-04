@@ -79,6 +79,9 @@
     <Compile Include="Controls\ctlDataItemMinMax.xaml.cs">
       <DependentUpon>ctlDataItemMinMax.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CtlLog.xaml.cs">
+      <DependentUpon>CtlLog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlSelectItem.xaml.cs">
       <DependentUpon>ctlSelectItem.xaml</DependentUpon>
     </Compile>
@@ -151,6 +154,10 @@
     <Page Include="Controls\ctlDataItemMinMax.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CtlLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ctlSelectItem.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -160,7 +160,10 @@ namespace BatInspector.Controls
         else
           _analysis.Calls[i].SpeciesMan = Analysis.Calls[i].SpeciesAuto;
         ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-        ctlm.setValue(Analysis.Calls[i].SpeciesAuto);
+        if(_analysis.Calls[i].Probability >= _model.Settings.ProbabilityMin)
+          ctlm.setValue(Analysis.Calls[i].SpeciesAuto);
+        else
+          ctlm.setValue("");
       }
     }
 

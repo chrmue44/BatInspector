@@ -28,7 +28,7 @@ namespace BatInspector
   }
 
   public delegate void delegateLogMsg(string Text, enLogType logType);
-  public delegate void delegateLogEntry(stLogEntry entry);
+  public delegate void delegateLogEntry(stLogEntry entry, List<stLogEntry> list);
 
   public class DebugLog
   {
@@ -62,7 +62,7 @@ namespace BatInspector
     {
       stLogEntry entry = new stLogEntry(msg, type, DateTime.Now);
       if (_dlgLog != null)
-        _dlgLog(entry);
+        _dlgLog(entry, _list);
     }
   }
 }

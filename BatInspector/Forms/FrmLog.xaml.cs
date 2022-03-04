@@ -27,19 +27,5 @@ namespace BatInspector
       InitializeComponent();
       _entries = new List<stLogEntry>();
     }
-
-    public void log(stLogEntry entry)
-    {
-      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
-      {
-         Dispatcher.Invoke(new delegateLogEntry(log), entry);
-         return;
-      }
-      _entries.Add(entry);
-      TextBlock text = new TextBlock();
-      text.Text = entry.Time.ToString() + "  " + entry.Type.ToString() + ": " + entry.Text;
-      
-      _spEntries.Children.Add(text);
-    }
   }
 }

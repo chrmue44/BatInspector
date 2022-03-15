@@ -18,11 +18,14 @@ namespace BatInspector
     public static bool containsProject(DirectoryInfo dir)
     {
       bool retVal = false;
-      string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
-                       System.IO.SearchOption.TopDirectoryOnly);
-      if (files.Length > 0)
-        retVal = true;
-
+      try
+      {
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
+                         System.IO.SearchOption.TopDirectoryOnly);
+        if (files.Length > 0)
+          retVal = true;
+      }
+      catch { }
       return retVal;
     }
 

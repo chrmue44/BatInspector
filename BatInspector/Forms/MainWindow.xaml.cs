@@ -21,6 +21,7 @@ using System.Deployment.Application;
 using System.Reflection;
 using BatInspector.Controls;
 using System.Windows.Input;
+using System;
 
 namespace BatInspector.Forms
 {
@@ -42,6 +43,10 @@ namespace BatInspector.Forms
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
+
+    System.Windows.Threading.DispatcherTimer _dispatcherTimer;
+
+
     public MainWindow()
     {
       System.Version version;
@@ -67,6 +72,10 @@ namespace BatInspector.Forms
       }
       this.Top = _model.Settings.MainWindowPosX;
       this.Left = _model.Settings.MainWindowPosY;
+      _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+      _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+      _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+      _dispatcherTimer.Start();
       DebugLog.setLogDelegate(_ctlLog.log);
     }
 
@@ -328,24 +337,29 @@ namespace BatInspector.Forms
     private void _btnDelSelected_Click(object sender, RoutedEventArgs e)
     {
       List<UIElement> list = new List<UIElement>();
-      foreach (UIElement it in _spSpectrums.Children)
+      MessageBoxResult res = MessageBox.Show("Do you really want to delete all selected files?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+      if (res == MessageBoxResult.Yes)
       {
-        ctlWavFile ctl = it as ctlWavFile;
-        if (ctl._cbSel.IsChecked == true)
+
+        foreach (UIElement it in _spSpectrums.Children)
         {
-          _model.deleteFile(ctl._grp.Header.ToString());
-          list.Add(it);
+          ctlWavFile ctl = it as ctlWavFile;
+          if (ctl._cbSel.IsChecked == true)
+          {
+            _model.deleteFile(ctl._grp.Header.ToString());
+            list.Add(it);
+          }
         }
-      }
 
-      foreach (UIElement it in list)
-      {
-        _spSpectrums.Children.Remove(it);
-        if (_listBak != null)
-          _listBak.Remove(it);
-      }
-      reIndexSpectrumControls();
 
+        foreach (UIElement it in list)
+        {
+          _spSpectrums.Children.Remove(it);
+          if (_listBak != null)
+            _listBak.Remove(it);
+        }
+        reIndexSpectrumControls();
+      }
     }
 
     private void _btnHideUnSelected_Click(object sender, RoutedEventArgs e)
@@ -549,6 +563,14 @@ namespace BatInspector.Forms
       setZoomPosition ();
       _model.Settings.MainWindowWidth = this.Width;
       _model.Settings.MainWindowHeight = this.Height;
+    }
+
+    private void dispatcherTimer_Tick(object sender, EventArgs e)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        Mouse.OverrideCursor = _model.Busy ? Cursors.Wait : null;
+      });
     }
   }
 

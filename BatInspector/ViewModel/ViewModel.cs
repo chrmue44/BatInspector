@@ -41,6 +41,8 @@ namespace BatInspector
 
     public ColorTable ColorTable { get { return _colorTable; } }
 
+    public bool Busy { get { return isBusy(); } }
+
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -149,6 +151,7 @@ namespace BatInspector
         foreach (string f in delFiles)
         {
           File.Delete(f);
+          DebugLog.log("delete file " + f, enLogType.INFO);
         }
 
         _prj.removeFile(wavName);
@@ -172,11 +175,15 @@ namespace BatInspector
         if (File.Exists(reportName))
         {
           DebugLog.log("backup file: " + reportName, enLogType.INFO);
-          File.Copy(reportName, reportName + "_old");
-          File.Delete(reportName);
+          try
+          {
+            File.Delete(reportName + "_old");
+            File.Copy(reportName, reportName + "_old");
+            File.Delete(reportName);
+          }
+          catch { }
         }
         _proc.LaunchCommandLineApp(exe, null, wrkDir, false, args, false, true);
-        DebugLog.log("evaluation finished", enLogType.INFO);
       }
     }
 
@@ -193,6 +200,14 @@ namespace BatInspector
       image.EndInit();
 
       return image;
+    }
+
+    bool isBusy()
+    {
+      bool retVal = false;
+
+      retVal = _proc.IsRunning;
+      return retVal;
     }
   }
 

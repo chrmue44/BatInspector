@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2021: christian Müller christian(at)chrmue(dot).de
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
  *
  *              Licence:
  * 
@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Deployment.Application;
 using System.Reflection;
 using BatInspector.Controls;
+using System.Windows.Input;
 
 namespace BatInspector.Forms
 {
@@ -243,6 +244,11 @@ namespace BatInspector.Forms
     {
       if (_model.Prj != null)
       {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          Mouse.OverrideCursor = Cursors.Wait;
+        });
+
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
@@ -251,8 +257,13 @@ namespace BatInspector.Forms
           {
             (sender as BackgroundWorker).ReportProgress(55, rec.Name);
           }
-
         }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          Mouse.OverrideCursor = null;
+        });
+
       }
     }
 

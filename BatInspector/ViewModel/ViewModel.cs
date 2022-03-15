@@ -157,15 +157,26 @@ namespace BatInspector
       }
     }
 
-
+    /// <summary>
+    /// start evaluation of bat species
+    /// </summary>
     public void startEvaluation()
     {
       if(Prj != null)
       {
         string exe = "D:/bin/R-4.1.0/bin/Rscript.exe";
         string wrkDir = "D:/prj/bioacoustics";
-        string args = "cm.R " + _selectedDir + "/Records " + _selectedDir + "/report.csv"; 
+        string reportName = _selectedDir + "/report.csv";
+        string args = "cm.R " + _selectedDir + "/Records " + reportName;
+        DebugLog.log("starting evaluation: " + exe + " " + args, enLogType.INFO);
+        if (File.Exists(reportName))
+        {
+          DebugLog.log("backup file: " + reportName, enLogType.INFO);
+          File.Copy(reportName, reportName + "_old");
+          File.Delete(reportName);
+        }
         _proc.LaunchCommandLineApp(exe, null, wrkDir, false, args, false, true);
+        DebugLog.log("evaluation finished", enLogType.INFO);
       }
     }
 

@@ -10,6 +10,7 @@ TODO
 - help
 - species comparison
 - frequency scale in spectrum on zoom view not accurate
+- ask before closing programm, if user wantas to save his work
 
 DONE
 - specify threshold for probability to copy auto species to man species

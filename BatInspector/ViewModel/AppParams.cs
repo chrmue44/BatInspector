@@ -207,10 +207,27 @@ namespace BatInspector
     [Category("ColorGradient")]
     [Description("definition of color gradient for color channel green")]
     public List<ColorItem> ColorGradientGreen { get; set; }
+
     [DataMember]
     [Category("ColorGradient")]
     [Description("definition of color gradient for color channel green")]
     public List<ColorItem> ColorGradientBlue { get; set; }
+
+    [DataMember]
+    [Category("R-Scripting")]
+    [Description("full path to binary Rscript to execute R scripts")]
+    string Rbin = "D:/bin/R-4.1.0/bin/Rscript.exe";
+
+    [DataMember]
+    [Category("R-Scripting")]
+    [Description("working directory for scripter")]
+    string RWorkDir = "D:/prj/bioacoustics";
+
+    [DataMember]
+    [Category("R-Scripting")]
+    [Description("script to execute")]
+    string RScript = "cm.R";
+
     public AppParams()
     {
       init();

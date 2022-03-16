@@ -23,6 +23,7 @@ namespace BatInspector
     Filter _filter;
     AppParams _settings;
     ColorTable _colorTable;
+    bool _extBusy = false;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
@@ -41,7 +42,7 @@ namespace BatInspector
 
     public ColorTable ColorTable { get { return _colorTable; } }
 
-    public bool Busy { get { return isBusy(); } }
+    public bool Busy { get { return isBusy(); } set { _extBusy = value; } }
 
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
@@ -206,7 +207,7 @@ namespace BatInspector
     {
       bool retVal = false;
 
-      retVal = _proc.IsRunning;
+      retVal = _proc.IsRunning | _extBusy;
       return retVal;
     }
   }

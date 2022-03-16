@@ -94,7 +94,7 @@ namespace BatInspector.Forms
     public void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
     {
       TreeViewItem item = e.Source as TreeViewItem;
-      if ((item.Items.Count == 1) && (item.Items[0] is string))
+      if ((item.Items.Count >= 1) /*&& (item.Items[0] is string)*/)
       {
         item.Items.Clear();
 
@@ -105,6 +105,7 @@ namespace BatInspector.Forms
           expandedDir = (item.Tag as DirectoryInfo);
         try
         {
+          _model.Busy = true;
           foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
           {
             TreeViewItem childItem = CreateTreeItem(subDir);
@@ -118,16 +119,27 @@ namespace BatInspector.Forms
                 childItem.Foreground = new SolidColorBrush(Colors.Violet);
             }
           }
+          _model.Busy = false;
         }
-        catch { }
+        catch
+        {
+          _model.Busy = false;
+        }
       }
+    }
+
+    private void trvStructure_Collapsed(object sender, RoutedEventArgs e)
+    {
+      TreeViewItem item = e.Source as TreeViewItem;
+/*      object it = item.Items[0];
+      item.Items.Clear();
+      item.Items.Add(it); */
     }
 
     public void TreeViewItem_Selected(object sender, RoutedEventArgs e)
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
-      //     if (_model.Prj != null)
       {
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;
@@ -253,11 +265,7 @@ namespace BatInspector.Forms
     {
       if (_model.Prj != null)
       {
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-          Mouse.OverrideCursor = Cursors.Wait;
-        });
-
+        _model.Busy = true;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
@@ -267,12 +275,7 @@ namespace BatInspector.Forms
             (sender as BackgroundWorker).ReportProgress(55, rec.Name);
           }
         }
-
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-          Mouse.OverrideCursor = null;
-        });
-
+        _model.Busy = false;
       }
     }
 
@@ -411,21 +414,7 @@ namespace BatInspector.Forms
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
-      /*
-      if (_log == null)
-      {
-        _log = new FrmLog();
-        DebugLog.setLogDelegate(_log._ctl.log);
-        _log.Show();
-        DebugLog.log("Debug log opened", enLogType.INFO);
 
-      }
-      else
-      {
-        DebugLog.setLogDelegate(null);
-        _log.Close();
-        _log = null;
-      } */
     }
 
     private void _btnSize_Click(object sender, RoutedEventArgs e)

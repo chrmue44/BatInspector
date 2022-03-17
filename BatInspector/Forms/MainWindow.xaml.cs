@@ -304,7 +304,12 @@ namespace BatInspector.Forms
           });
           await Task.Delay(2);
         }
+        showStatus();
       }
+    }
+
+    void showStatus()
+    {
       string report = _model.Analysis.Report != null ? "report available" : "no report";
       setStatus("  [ nr of files: " + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
     }
@@ -362,6 +367,7 @@ namespace BatInspector.Forms
             _listBak.Remove(it);
         }
         reIndexSpectrumControls();
+        showStatus();
       }
     }
 
@@ -379,6 +385,7 @@ namespace BatInspector.Forms
       _spSpectrums.Children.Clear();
       foreach (UIElement it in list)
         _spSpectrums.Children.Add(it);
+      showStatus();
     }
 
     private void _btnShowAll_Click(object sender, RoutedEventArgs e)
@@ -393,6 +400,7 @@ namespace BatInspector.Forms
         }
         _listBak = null;
       }
+      showStatus();
     }
 
     public void setFocus(int index)

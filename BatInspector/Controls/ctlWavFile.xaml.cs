@@ -28,6 +28,7 @@ namespace BatInspector.Controls
     AnalysisFile _analysis;
   //  List<ListItem> _list;
     string _wavFilePath;
+    string _wavName;
     int _index;
     dlgSetFocus _dlgFocus;
     ViewModel _model;
@@ -71,13 +72,13 @@ namespace BatInspector.Controls
     }
 
     public int Index { get { return _index; } set { _index = value; } }
-
+    public string WavName { get { return _wavName; } }
     public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath)
     {
       _analysis = analysis;
       _wavFilePath = wavFilePath;
-      
-      _grp.Header = Name;
+      _wavName = Name;
+      _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       List<string> spec = new List<string>();
       foreach(SpeciesInfos si in _model.Settings.Species)
       {
@@ -124,7 +125,7 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        _parent.setZoom(_grp.Header.ToString(), _analysis, _wavFilePath, _img.Source);
+        _parent.setZoom(_wavName, _analysis, _wavFilePath, _img.Source);
       }
       else
         MessageBox.Show("Zoom not supported without analysis, perform analysis first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);

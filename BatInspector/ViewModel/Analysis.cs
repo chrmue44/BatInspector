@@ -58,6 +58,31 @@ namespace BatInspector
     List<ReportItem> _report;
 
     public List<ReportItem> Report { get { return _report; } }
+
+    public bool Changed
+    {
+      get
+      {
+        bool retVal = false;
+        if (_list != null)
+        {
+          foreach (AnalysisFile f in _list)
+          {
+            retVal |= f.Changed;
+          }
+        }
+
+        if (_report != null)
+        {
+          foreach (ReportItem r in _report)
+          {
+            retVal |= r.Changed;
+          }
+        }
+        return retVal;
+      }
+    }
+
     public Analysis()
     {
       _list = new List<AnalysisFile>();
@@ -180,16 +205,21 @@ namespace BatInspector
       csv.read(fileName);
       foreach(AnalysisFile f in _list)
       {
-
         foreach(AnalysisCall c in f.Calls)
         {
           int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
           csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
           if(c.Nr < 2)
             csv.setCell(row, _colRemarks, f.Remarks);
+          c.resetChanged();
         }
       }
       csv.save();
+      foreach(ReportItem r in _report)
+      {
+        r.resetChanged();
+      }
+
     }
 
     public AnalysisFile getAnalysis(string fileName)
@@ -256,6 +286,9 @@ namespace BatInspector
 
   public class ReportItem
   {
+    bool _changed = false;
+    string _remarks;
+    public bool Changed { get; }
     public string FileName { get; set; }
     public string CallNr { get; set; }
     public string StartTime { get; set; }
@@ -269,11 +302,19 @@ namespace BatInspector
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
     public string Snr { get; set; }
-    public string Remarks { get; set; }
+    public string Remarks { get { return _remarks; } set { _remarks = value; _changed = true; } }
+
+    public void resetChanged()
+    {
+      _changed = false;
+    }
   }
 
   public class AnalysisCall
   {
+
+    bool _changed = false;
+    string _speciesMan;
     public int Nr { get; }
     public double FreqMaxAmp { get; }
     public double FreqMin { get; }
@@ -286,7 +327,9 @@ namespace BatInspector
     public double Snr { get; }
 
     public string SpeciesAuto { get; }
-    public string SpeciesMan { get;  set; }
+    public string SpeciesMan { get { return _speciesMan; }  set { _speciesMan = value; _changed = true; } }
+
+    public bool Changed { get { return _changed; } }
 
     public AnalysisCall(int nr, double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double duration, string start, string speciesAuto, double probability, string speciesMan, double snr)
     {
@@ -299,8 +342,14 @@ namespace BatInspector
       StartTime = start;
       SpeciesAuto = speciesAuto;
       Probability = probability;
-      SpeciesMan = speciesMan;
+      _speciesMan = speciesMan;
       Snr = snr;
+      _changed = false;
+    }
+
+    public void resetChanged()
+    {
+      _changed = false;
     }
   }
 
@@ -313,6 +362,19 @@ namespace BatInspector
     public int SampleRate { get; set; }
     public double Duration { get; set; }
     public string Remarks { get; set; }
+
+    public bool Changed 
+    {
+    get
+      {
+        bool retVal = false;
+        foreach(AnalysisCall c in _calls)
+        {
+          retVal |= c.Changed;
+        }
+        return retVal;
+      }
+    }
 
     public List<AnalysisCall> Calls { get { return _calls; } }
 

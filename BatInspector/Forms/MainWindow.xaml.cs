@@ -141,6 +141,7 @@ namespace BatInspector.Forms
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
       {
+        checkSavePrj();
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;
         setStatus("   loading...");
@@ -213,7 +214,24 @@ namespace BatInspector.Forms
         _tbZoom.Header = "Zoom: " + name;
       }
     }
-    private void setZoomPosition()
+
+    /// <summary>
+    /// check if project should be saved if changed
+    /// </summary>
+    void checkSavePrj()
+    {
+      if (_model.Prj != null)
+      {
+        if (_model.Analysis.Changed)
+        {
+          MessageBoxResult res = MessageBox.Show("Do you want to save changed project before closing?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+          if (res == MessageBoxResult.Yes)
+            _model.Analysis.save(_model.PrjPath + "report.csv");
+        }
+      }
+    }
+
+private void setZoomPosition()
     {
       if (_frmZoom != null)
       {
@@ -354,7 +372,7 @@ namespace BatInspector.Forms
           ctlWavFile ctl = it as ctlWavFile;
           if (ctl._cbSel.IsChecked == true)
           {
-            _model.deleteFile(ctl._grp.Header.ToString());
+            _model.deleteFile(ctl.WavName.ToString());
             list.Add(it);
           }
         }
@@ -466,6 +484,7 @@ namespace BatInspector.Forms
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
+      checkSavePrj();      
       if (_log != null)
         _log.Close();
       if (_frmZoom != null)

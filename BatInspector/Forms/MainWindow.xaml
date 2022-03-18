@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="44"></RowDefinition>
           <RowDefinition Height="*"></RowDefinition>
-          <RowDefinition Height="5"></RowDefinition>
+          <RowDefinition Height="10"></RowDefinition>
           <RowDefinition Height="80"></RowDefinition>
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
@@ -61,7 +61,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="6*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Row ="0" Grid.Column="2" Orientation="Horizontal">
@@ -82,7 +82,7 @@
             </StackPanel>
                     <TreeView Name="trvStructure" BorderThickness="0" Grid.Row="1" Grid.Column="0" TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5">
                     </TreeView>
-                    <GridSplitter Grid.Row="1" Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+                    <GridSplitter Grid.Row="1" Grid.Column="1" Width="7" HorizontalAlignment="Stretch" />
                     <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" >
                          <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
                     </StackPanel>
@@ -95,7 +95,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <GridSplitter Grid.Row="2" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" />
+        <GridSplitter Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" />
       <controls:CtlLog x:Name="_ctlLog" Grid.Row="3"/>
     </Grid>
     </DockPanel>

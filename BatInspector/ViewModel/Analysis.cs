@@ -211,6 +211,8 @@ namespace BatInspector
           csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
           if(c.Nr < 2)
             csv.setCell(row, _colRemarks, f.Remarks);
+          else
+            csv.setCell(row, _colRemarks, "");
           c.resetChanged();
         }
       }

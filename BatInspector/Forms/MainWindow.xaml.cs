@@ -131,9 +131,7 @@ namespace BatInspector.Forms
     private void trvStructure_Collapsed(object sender, RoutedEventArgs e)
     {
       TreeViewItem item = e.Source as TreeViewItem;
-/*      object it = item.Items[0];
-      item.Items.Clear();
-      item.Items.Add(it); */
+
     }
 
     public void TreeViewItem_Selected(object sender, RoutedEventArgs e)

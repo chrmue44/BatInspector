@@ -118,9 +118,11 @@
     <Compile Include="Forms\frmSpeciesData.xaml.cs">
       <DependentUpon>frmSpeciesData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BatCommands.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
+    <Compile Include="ViewModel\ScriptRunner.cs" />
     <Compile Include="ViewModel\Spectrum.cs" />
     <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
@@ -138,11 +140,9 @@
       <DependentUpon>FrmZoom.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppParams.cs" />
-    <Compile Include="ViewModel\DebugLog.cs" />
     <Compile Include="Forms\FrmLog.xaml.cs">
       <DependentUpon>FrmLog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ProcessRunner.cs" />
     <Compile Include="ViewModel\Analysis.cs" />
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
@@ -349,6 +349,10 @@
     <ProjectReference Include="..\libParser\libParser\libParser.csproj">
       <Project>{25d172aa-10d8-401e-a50b-8b7becde4d3b}</Project>
       <Name>libParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libScripter\libScripter.csproj">
+      <Project>{d3341f96-d18d-44af-9a16-1aea7296e1d4}</Project>
+      <Name>libScripter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

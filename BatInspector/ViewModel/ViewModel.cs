@@ -1,12 +1,20 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using libParser;
+using libScripter;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using System.Xml.Serialization;
 
 
 namespace BatInspector
@@ -24,6 +32,7 @@ namespace BatInspector
     AppParams _settings;
     ColorTable _colorTable;
     bool _extBusy = false;
+    ScriptRunner _scripter = null;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + "Records/"; } }
@@ -49,7 +58,7 @@ namespace BatInspector
     public ViewModel(Forms.MainWindow mainWin, string version)
     {
       _analysis = new Analysis();
-      _proc = new ProcessRunner(DebugLog.log);
+      _proc = new ProcessRunner();
       _mainWin = mainWin;
       _prj = new Project();
       _filter = new Filter();
@@ -74,6 +83,7 @@ namespace BatInspector
         if (_prj == null)
           _prj = new Project();
         _prj.readPrjFile(files[0]);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, null);
       }
       else
         _prj = null;
@@ -141,8 +151,16 @@ namespace BatInspector
       return bImg;
     }
 
+    public void deleteFiles(List<string> files)
+    {
+      DebugLog.log("start deleting files", enLogType.INFO);
+      foreach (string f in files)
+        deleteFile(f);
+      DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
+    }
 
-    public void deleteFile(string wavName)
+
+    void deleteFile(string wavName)
     {
       if (_prj != null)
       {
@@ -152,7 +170,7 @@ namespace BatInspector
         foreach (string f in delFiles)
         {
           File.Delete(f);
-          DebugLog.log("delete file " + f, enLogType.INFO);
+          DebugLog.log("delete file " + f, enLogType.DEBUG);
         }
 
         _prj.removeFile(wavName);

@@ -3,3 +3,5 @@
 /BatInspector/bin
 /Setup/Release
 /Setup/Debug
+/libScripter/bin/Debug
+/libScripter/obj/Debug

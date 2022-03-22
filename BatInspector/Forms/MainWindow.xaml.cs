@@ -22,6 +22,7 @@ using System.Reflection;
 using BatInspector.Controls;
 using System.Windows.Input;
 using System;
+using libParser;
 
 namespace BatInspector.Forms
 {
@@ -106,6 +107,7 @@ namespace BatInspector.Forms
         try
         {
           _model.Busy = true;
+          DebugLog.log("start evaluation TODO", enLogType.DEBUG);
           foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
           {
             TreeViewItem childItem = CreateTreeItem(subDir);
@@ -119,6 +121,7 @@ namespace BatInspector.Forms
                 childItem.Foreground = new SolidColorBrush(Colors.Violet);
             }
           }
+          DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.INFO);
           _model.Busy = false;
         }
         catch
@@ -139,6 +142,7 @@ namespace BatInspector.Forms
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
       {
+        DebugLog.log("start to open project", enLogType.DEBUG);
         checkSavePrj();
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;
@@ -320,6 +324,7 @@ private void setZoomPosition()
           });
           await Task.Delay(2);
         }
+        DebugLog.log("project opened", enLogType.INFO);
         showStatus();
       }
     }
@@ -337,6 +342,7 @@ private void setZoomPosition()
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = true;
       }
+      DebugLog.log("select all files", enLogType.INFO);
     }
 
     private void _btnNone_Click(object sender, RoutedEventArgs e)
@@ -346,6 +352,7 @@ private void setZoomPosition()
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = false;
       }
+      DebugLog.log("deselect all files", enLogType.INFO);
     }
 
     private void reIndexSpectrumControls()
@@ -361,6 +368,7 @@ private void setZoomPosition()
     private void _btnDelSelected_Click(object sender, RoutedEventArgs e)
     {
       List<UIElement> list = new List<UIElement>();
+      List<string> files = new List<string>();
       MessageBoxResult res = MessageBox.Show("Do you really want to delete all selected files?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (res == MessageBoxResult.Yes)
       {
@@ -370,12 +378,12 @@ private void setZoomPosition()
           ctlWavFile ctl = it as ctlWavFile;
           if (ctl._cbSel.IsChecked == true)
           {
-            _model.deleteFile(ctl.WavName.ToString());
+            files.Add(ctl.WavName.ToString());
             list.Add(it);
           }
         }
 
-
+        _model.deleteFiles(files);
         foreach (UIElement it in list)
         {
           _spSpectrums.Children.Remove(it);
@@ -401,6 +409,7 @@ private void setZoomPosition()
       _spSpectrums.Children.Clear();
       foreach (UIElement it in list)
         _spSpectrums.Children.Add(it);
+      DebugLog.log("hide unselected files", enLogType.INFO);
       showStatus();
     }
 
@@ -416,6 +425,7 @@ private void setZoomPosition()
         }
         _listBak = null;
       }
+      DebugLog.log("show all files", enLogType.INFO);
       showStatus();
     }
 
@@ -505,12 +515,14 @@ private void setZoomPosition()
         bool res = _model.Filter.apply(filter, c.Analysis);
         c._cbSel.IsChecked = res;
       }
+      DebugLog.log("filter '" + filter.Name + "' applied", enLogType.INFO);
     }
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
       _model.saveSettings();
       _model.Analysis.save(_model.PrjPath + "report.csv");
+      DebugLog.log("project '" + _model.Prj.Name + "' saved", enLogType.INFO);
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)

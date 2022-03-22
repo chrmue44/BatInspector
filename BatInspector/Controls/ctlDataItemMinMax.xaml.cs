@@ -1,5 +1,6 @@
 ﻿
 using BatInspector.Forms;
+using libParser;
 using System.Windows.Controls;
 
 namespace BatInspector.Controls

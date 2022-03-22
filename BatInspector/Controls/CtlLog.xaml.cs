@@ -1,4 +1,5 @@
-﻿using System;
+﻿using libParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,9 @@ namespace BatInspector.Controls
     public CtlLog()
     {
       InitializeComponent();
+      _cbInfo.IsChecked = true;
+      _cbErr.IsChecked = true;
+      _cbWarn.IsChecked = true;
     }
 
     public void log(stLogEntry entry, List<stLogEntry> list)
@@ -34,12 +38,23 @@ namespace BatInspector.Controls
         return;
       }
       list.Add(entry);
-      TextBlock text = new TextBlock();
-      text.Text = entry.Time.ToString() + "  " + entry.Type.ToString() + ": " + entry.Text;
-
-      _spEntries.Children.Add(text);
-      _scrViewer.ScrollToBottom();
+      if (
+          ((entry.Type == enLogType.ERROR) && _cbErr.IsChecked.Value) ||
+          ((entry.Type == enLogType.WARNING) && _cbWarn.IsChecked.Value) ||
+          ((entry.Type == enLogType.INFO) && _cbInfo.IsChecked.Value) ||
+          ((entry.Type == enLogType.DEBUG) && _cbDebug.IsChecked.Value)
+        )
+      {
+        TextBlock text = new TextBlock();
+        text.Text = entry.Time.ToString() + "  " + entry.Type.ToString() + ": " + entry.Text;
+        _spEntries.Children.Add(text);
+        _scrViewer.ScrollToBottom();
+      }
     }
 
+    private void _btnClear_Click(object sender, RoutedEventArgs e)
+    {
+      _spEntries.Children.Clear();
+    }
   }
 }

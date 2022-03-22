@@ -1,4 +1,15 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,20 +20,8 @@ namespace BatInspector
 {
 
   public class Analysis
-  {
-   /* const int COL_NAME = 1;
-    const int COL_SAMPLERATE = 3;
-    const int COL_FILE_LEN = 4;
-    const int COL_FREQ_MAX_AMP = 5;
-    const int COL_FREQ_MIN = 6;
-    const int COL_FREQ_MAX = 7;
-    const int COL_FREQ_KNEE = 8;
-    const int COL_DURATION = 9;
-    const int COL_START_TIME = 10;
-    const int COL_SNR = 11;
-    const int COL_SPECIES = 26; */
-    
-   public const string COL_NAME = "name";
+  {   
+    public const string COL_NAME = "name";
     public const string COL_NR = "nr";
     public const string COL_SAMPLERATE = "sampleRate";
     public const string COL_FILE_LEN = "FileLen";
@@ -290,7 +289,7 @@ namespace BatInspector
   {
     bool _changed = false;
     string _remarks;
-    public bool Changed { get; }
+    public bool Changed { get { return _changed; } }
     public string FileName { get; set; }
     public string CallNr { get; set; }
     public string StartTime { get; set; }

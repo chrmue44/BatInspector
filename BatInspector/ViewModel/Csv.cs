@@ -1,4 +1,16 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using libParser;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -42,7 +54,7 @@ namespace BatInspector
             if (_colCnt < s.Length)
               _colCnt = s.Length;
           }
-          log("file " + file + " opened successfully", enLogType.INFO);
+          log("file " + file + " opened successfully", enLogType.DEBUG);
         }
         else
         {

@@ -1,26 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using System;
 using System.Diagnostics;
+using libParser;
 
-
-namespace BatInspector
+namespace libScripter
 {
   public delegate void StdOutDataRecHandler(string data);
 
   public class ProcessRunner
   {
-    private delegateLogMsg _logMsg = null;
     private Process _pr;
     public bool IsRunning { get { return checkIsRunning(); } }
     private bool _logOutput = false;
 
-    public ProcessRunner(delegateLogMsg logMsg)
+    public ProcessRunner()
     {
-      _logMsg = logMsg;
     }
+
     public int LaunchCommandLineApp(string exePath, DataReceivedEventHandler handler = null, string workDir = "", bool wait = false,
                                     string args = "", bool newWindow = false, bool logOutput = false)
     {
@@ -110,13 +116,12 @@ namespace BatInspector
     private void outputDataHandler(object sender, DataReceivedEventArgs ev)
     {
       if (_logOutput)
-        _logMsg(ev.Data, enLogType.INFO);
+        DebugLog.log(ev.Data, enLogType.INFO);
     }
 
     private void LogMsg(string text, enLogType type)
     {
-      if (_logMsg != null)
-        _logMsg(text, type);
+        DebugLog.log(text, type);
     }
   }
 }

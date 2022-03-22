@@ -12,6 +12,7 @@
 
 using BatInspector.Controls;
 using BatInspector.Forms;
+using libParser;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -159,15 +160,12 @@ namespace BatInspector.Controls
       {
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {
-          if (Analysis.Calls[i].SpeciesAuto.Substring(0, 3) == "CRI")
-            _analysis.Calls[i].SpeciesMan = "CRIC";
-          else
-            _analysis.Calls[i].SpeciesMan = Analysis.Calls[i].SpeciesAuto;
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
           if (_analysis.Calls[i].Probability >= _model.Settings.ProbabilityMin)
             ctlm.setValue(Analysis.Calls[i].SpeciesAuto);
           else
             ctlm.setValue("");
+          _analysis.Calls[i].SpeciesMan = ctlm.getValue();
         }
       }
       catch (Exception ex)
@@ -189,7 +187,6 @@ namespace BatInspector.Controls
         ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
         ctlm.setValue("---");
       }
-
     }
   }
 }

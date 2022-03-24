@@ -1,0 +1,31 @@
+SET A 55
+SET B 66
+SET Result 0
+SET Res2 0
+
+IF =(%A% < 100)
+  IF =(%B% > 33)
+    SET Result 1
+  ELSE
+    SET Result 2
+  END
+ELSE
+  IF =(%B% > 33)
+    SET Result 3
+  ELSE
+    SET Result 4
+  END
+END
+IF =(%A% > 100)
+  IF =(%B% > 33)
+    SET Res2 1
+  ELSE
+    SET Res2 2
+  END
+ELSE
+  IF =(%B% < 55)
+    SET Res2 3
+  ELSE
+    SET Res2 4
+  END
+END

@@ -78,6 +78,10 @@ namespace BatInspector.Forms
       _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
       _dispatcherTimer.Start();
       DebugLog.setLogDelegate(_ctlLog.log);
+#if DEBUG
+      Tests tests = new Tests();
+      tests.exec();      
+#endif
     }
 
 

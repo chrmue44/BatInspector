@@ -91,15 +91,18 @@ namespace libScripter
       _items.Clear();
       ErrorText = "";
       bool found = false;
-      while (i < args.Length) {
-
-        foreach (OptItem feat in _features) {
+      while (i < args.Length) 
+      {
+        foreach (OptItem feat in _features) 
+        {
           string arg = args[i].Replace(" ", "");
           if (feat.Option == arg) {
             found = true;
             OptItem optItem = new OptItem(feat);
-            if (feat.ParamCount > 0) {
-              while (i < args.Length) {
+            if (feat.ParamCount > 0)
+            {
+              while (i < args.Length)
+              {
                 i++;
                 if ((i >= args.Length) || (args[i].Length > 0) && (args[i].Substring(0,1)== "-") && _isCmdLineOption)
                   break;
@@ -126,7 +129,8 @@ namespace libScripter
             break;
         }
 
-        if (!found) {
+        if (!found)
+        {
           retVal = enErrOption.OPT_NOT_FOUND;
           ErrorText = "unknown option: " + args[i];
           break;

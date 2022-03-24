@@ -18,9 +18,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BatInspector
+namespace libScripter
 {
-  class Csv
+  public class Csv
   {
     List<List<string>> _cells;
     string _fileName;

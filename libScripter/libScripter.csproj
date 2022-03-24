@@ -42,9 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Csv.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripter\BaseCommands.cs" />
+    <Compile Include="Scripter\CodeBlock.cs" />
     <Compile Include="Scripter\Options.cs" />
     <Compile Include="Scripter\OsCommands.cs" />
     <Compile Include="Scripter\Parser.cs" />

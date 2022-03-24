@@ -43,7 +43,7 @@ namespace libScripter
         if (err != enErrOption.OK)
           LogMsg(_options.ErrorText, enLogType.DEBUG);
         else
-          LogMsg("0", enLogType.ERROR);
+          LogMsg("0", enLogType.DEBUG);
       }
 
       if (err != enErrOption.OK)

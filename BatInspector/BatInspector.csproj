@@ -118,6 +118,7 @@
     <Compile Include="Forms\frmSpeciesData.xaml.cs">
       <DependentUpon>frmSpeciesData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\Filter.cs" />
@@ -228,7 +229,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\BatInspectFmt.cs" />
-    <Compile Include="ViewModel\Csv.cs" />
     <Compile Include="ViewModel\DSPLib.cs" />
     <Compile Include="ViewModel\Fft.cs" />
     <Compile Include="Forms\MainWindow.xaml.cs">

@@ -42,7 +42,8 @@ namespace libScripter
       LineNr = line;
     }
   }
-  
+
+
   /// <summary>
   /// parses scripts and executes them
   /// </summary>
@@ -66,7 +67,9 @@ namespace libScripter
     ProcessRunner _proc;
     BaseCommands[] _commands;
     string _wrkDir;
-    string _codeBlock;
+    string _codeSection;
+    CodeBlock _currBlock;
+    List<CodeBlock> _blockStack;
 
     /// <summary>
     /// constructor
@@ -83,6 +86,8 @@ namespace libScripter
       _wrkDir = wrkDir;
       _updateProgress = delUpd;
       _labels = new List<stLabelItem>();
+      _currBlock = null;
+      _blockStack = new List<CodeBlock>();
       if (vars == null)
         _vars = new Variables();
       else
@@ -98,7 +103,10 @@ namespace libScripter
         new OptItem("SKIP_IF_NE","<arg1> <arg2> skip next line if arguments are not equal", 2, fctSkipIfNotEqual),
         new OptItem("RET_VALUE","<value> set return value of script", 1, fctRetValue),
         new OptItem("PAUSE", "wait for entry on console", 0, fctPause),
-
+        new OptItem("FOR", "<option> <arg1> <arg2> ... <argn> execute code block", 0, fctFor),
+        new OptItem("IF", "<condition>  execute code block if condition = TRUE", 1, fctIf),
+        new OptItem("ELSE", "elsefor preceeding if", 0, fctElse),
+        new OptItem("END", "end of code block", 0, fctEnd),
       });
 
       _options = new Options(_features, false);
@@ -112,13 +120,13 @@ namespace libScripter
     public static int ParsedLines { get; set; }
 
 
-    public void startParsingBlock(string code)
+    public void startParsingSection(string code)
     {
-      _codeBlock = code;
+      _codeSection = code;
       _busy = true;
       /* Create the thread object, passing in the abc.Read() method
       via a ThreadStart delegate. This does not start the thread. */
-      _oThread = new Thread(new ThreadStart(this.ParseBlock));
+      _oThread = new Thread(new ThreadStart(this.ParseSection));
       _oThread.Start();
     }
 
@@ -156,10 +164,10 @@ namespace libScripter
         DebugLog.log(msg, type);
     }
 
-    public void ParseBlock()
+    public void ParseSection()
     {
       log("start SCRIPT BLOCK", enLogType.INFO);
-      ParseTextBlock(_codeBlock);
+      ParseTextSection(_codeSection);
     }
 
     public int ParseScript(string name)
@@ -210,7 +218,7 @@ namespace libScripter
     /// parse a block of text
     /// </summary>
     /// <param name="text"></param>
-    public void ParseTextBlock(string text)
+    public void ParseTextSection(string text)
     {
       if ((text != null) && (text.Length > 1))
       {
@@ -233,16 +241,20 @@ namespace libScripter
       _actLineNr = 0;
       while (_actLineNr < _lines.Length)
       {
-        string result = ParseLine(_lines[_actLineNr]);
+        string result = "0";
+        if ( (_currBlock == null) ||
+             (_currBlock.Type != enBlockType.IF) || 
+            ((_currBlock.Type == enBlockType.IF) && _currBlock.Execute))
+          result = ParseLine(_lines[_actLineNr]);
+        else
+          result = mangeBlockLevel(_lines[_actLineNr]);
         _vars.SetValue(ERROR_LEVEL, result);
         _actLineNr++;
         if (_updateProgress != null)
           _updateProgress(_actLineNr * 100 / _lines.Length);
-  //      Thread.Sleep(2);  //what was this for???
       }
       _busy = false;
     }
-
 
     public string getTextBlock(int startLine, int endLine)
     {
@@ -411,6 +423,76 @@ namespace libScripter
         _lastToken = enToken.UNKNOWN;
       }
       return _lastToken;
+    }
+
+    string mangeBlockLevel(string line)
+    {
+      string retVal = "0";
+      CodeBlock blk = checkForBlockStart(line);
+      if (blk != null)
+        _blockStack.Add(blk);
+
+      if (_currBlock != null)
+      {
+        if (_currBlock == _blockStack.Last())
+        {
+          switch (_currBlock.Type)
+          {
+            case enBlockType.IF:
+              bool ok = checkForElse(line) || checkForEnd(line);
+              if (ok)
+                retVal = ParseLine(line);
+              break;
+          }
+        }
+        else
+        {
+          bool yes = checkForEnd(line);
+          if (yes && _currBlock != _blockStack.Last())
+            _blockStack.Remove(_blockStack.Last());
+        }
+      }
+      return retVal;
+    }
+
+    CodeBlock checkForBlockStart(string line)
+    {
+      CodeBlock retVal = null;
+      _actLine = line;
+      _actPos = 0;
+      if (GetToken() == enToken.NAME)
+      {
+        if (_actName == "FOR")
+          retVal = new ForCsvCodeBlock(null, _actLineNr);
+        if (_actName == "IF")
+          retVal = new IfCodeBlock("",_actLineNr);
+      }
+      return retVal;
+    }
+
+    bool checkForEnd(string line)
+    {
+      bool retVal = false;
+      _actLine = line;
+      _actPos = 0;
+      if (GetToken() == enToken.NAME)
+      {
+        if (_actName == "END")
+          retVal = true;
+      }
+      return retVal;
+    }
+
+    bool checkForElse(string line)
+    {
+      bool retVal = false;
+      _actLine = line;
+      if (GetToken() == enToken.NAME)
+      {
+        if (_actName == "ELSE")
+          retVal = true;
+      }
+      return retVal;
     }
 
     /// <summary>
@@ -584,6 +666,114 @@ namespace libScripter
       return retVal;
     }
 
+    int fctFor(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      switch (pars[0])
+      {
+        case "CSV_ROWS":
+          if ((_currBlock is ForCsvCodeBlock) && (_currBlock.StartLine == _actLineNr))
+          {
+            _currBlock.loopStart();
+          }
+          else
+          {
+            List<string> arg = new List<string>();
+            for (int i = 1; i < pars.Count; i++)
+              arg.Add(pars[i]);
+            ForCsvCodeBlock blk = new ForCsvCodeBlock(arg, _actLineNr);
+            ErrText = blk.ErrText;
+            if (ErrText == "")
+            {
+              _currBlock = blk;
+              _blockStack.Add(_currBlock);
+            }
+          }
+          break;
+
+        case "ITERATOR":
+          if ((_currBlock is ForItCodeBlock) && (_currBlock.StartLine == _actLineNr))
+          {
+            _currBlock.loopStart();
+          }
+          else
+          {
+            List<string> arg = new List<string>();
+            for (int i = 1; i < pars.Count; i++)
+              arg.Add(pars[i]);
+            ForItCodeBlock blk = new ForItCodeBlock(arg, _actLineNr, VarTable);
+            ErrText = blk.ErrText;
+            if (ErrText == "")
+            {
+              _currBlock = blk;
+              _blockStack.Add(_currBlock);
+            }
+          }
+          break;
+
+      }
+      return retVal;
+    }
+
+    int fctIf(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      IfCodeBlock blk = new IfCodeBlock(pars[0], _actLineNr);
+      ErrText = blk.ErrText;
+      if (ErrText == "")
+      {
+        _currBlock = blk;
+        _blockStack.Add(_currBlock);
+      }
+      return retVal;
+    }
+
+    int fctEnd(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if (_currBlock != null)
+      {
+        if (_currBlock.loopEnd())
+        {
+          _actLineNr = _currBlock.StartLine - 1;  //decrement by 1 because line nr will be incremented automatically after ParseLine()
+        }
+        else
+        {
+          _blockStack.Remove(_currBlock);
+          if (_blockStack.Count > 0)
+            _currBlock = _blockStack.Last();
+          else
+            _currBlock = null;
+        }
+      }
+      else
+      {
+        ErrText = "END outside of code block";
+        retVal = 1;
+      }
+      return retVal;
+    }
+
+    int fctElse(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if ((_currBlock != null) &&(_currBlock.Type == enBlockType.IF))
+      {
+        IfCodeBlock blk = _currBlock as IfCodeBlock;
+        blk.Execute = !blk.Execute;
+      }
+      else
+      {
+        ErrText = "ELSE not allowed outside of IF statement";
+        retVal = 1;
+      }
+      return retVal;
+    }
+     
     /// <summary>
     /// replace variables in actual name
     /// </summary>

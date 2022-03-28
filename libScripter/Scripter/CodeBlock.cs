@@ -23,6 +23,7 @@ namespace libScripter
     protected string _errText;
     protected List<string> _lines;
     protected bool _execute;
+    protected bool _inactive;
     public string ErrText { get { return _errText; } }
     public int StartLine { get { return _startLine; } }
     public enBlockType Type { get { return _blockType; } }

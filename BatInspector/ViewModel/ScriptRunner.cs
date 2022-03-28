@@ -80,8 +80,9 @@ namespace BatInspector
 
     public string getVariable(string name)
     {
-      DebugLog.log("GET " + name , enLogType.INFO);
-      return _parser.VarTable.GetValue(name);
+      string retVal = _parser.VarTable.GetValue(name);
+      DebugLog.log("GET " + name + ": " + retVal, enLogType.INFO);
+      return retVal;
     }
 
 

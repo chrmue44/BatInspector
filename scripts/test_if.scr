@@ -1,31 +1,28 @@
-SET A 55
-SET B 66
-SET Result 0
-SET Res2 0
-
+SET Result "init"
+SET Res2 "init"
 IF =(%A% < 100)
   IF =(%B% > 33)
-    SET Result 1
+    SET Result "AlowBhigh"
   ELSE
-    SET Result 2
+    SET Result "AlowBlow"
   END
 ELSE
   IF =(%B% > 33)
-    SET Result 3
+    SET Result "AhighBhigh"
   ELSE
-    SET Result 4
+    SET Result "AhighBlow"
   END
 END
 IF =(%A% > 100)
   IF =(%B% > 33)
-    SET Res2 1
+    SET Res2 "AhighBhigh"
   ELSE
-    SET Res2 2
+    SET Res2 "AhighBlow"
   END
 ELSE
-  IF =(%B% < 55)
-    SET Res2 3
+  IF =(%B% > 33)
+    SET Res2 "AlowBhigh"
   ELSE
-    SET Res2 4
+    SET Res2 "AlowBlow"
   END
 END

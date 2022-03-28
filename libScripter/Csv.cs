@@ -35,6 +35,13 @@ namespace libScripter
       _cells = new List<List<string>>();
     }
 
+    /// <summary>
+    /// read a file and close it.
+    /// The complete file content is copied to memory. When the method exits, the file will be closed
+    /// </summary>
+    /// <param name="file">fiel name</param>
+    /// <param name="separator">separator for cells in lines</param>
+    /// <returns>0: ok, 1:error</returns>
     public int read(string file, char separator = ';')
     {
       int retVal = 0;
@@ -97,6 +104,11 @@ namespace libScripter
     }
 
 
+    /// <summary>
+    /// save file
+    /// </summary>
+    /// <param name="withBackup">true: create a bockup before overwriting existing file</param>
+    /// <returns></returns>
     public int save(bool withBackup = true)
     {
       int retVal = 0;
@@ -115,11 +127,17 @@ namespace libScripter
         for (int rowNr = 0; rowNr < lines.Length; rowNr++)
           lines[rowNr] = String.Join(sep, _cells[rowNr]);
 
-        File.WriteAllLines(_fileName, lines);
+          File.WriteAllLines(_fileName, lines);
       }
       return retVal;
     }
 
+    /// <summary>
+    /// get call value as string
+    /// </summary>
+    /// <param name="row">row nr 1..n</param>
+    /// <param name="col">col nr 1..n</param>
+    /// <returns>int value </returns>    
     public string getCell(int row, int col)
     {
       string retVal = "";
@@ -139,6 +157,12 @@ namespace libScripter
       return retVal;
     }
 
+    /// <summary>
+    /// get call value as double value if possible (with decimal POINT, independent from localization of PC)
+    /// </summary>
+    /// <param name="row">row nr 1..n</param>
+    /// <param name="col">col nr 1..n</param>
+    /// <returns>int value (or 0 if value isn't a double)</returns>
     public double getCellAsDouble(int row, int col)
     {
       string str = getCell(row, col);
@@ -157,6 +181,13 @@ namespace libScripter
       return retVal;
     }
 
+
+    /// <summary>
+    /// get call value as integer value if possible
+    /// </summary>
+    /// <param name="row">row nr 1..n</param>
+    /// <param name="col">col nr 1..n</param>
+    /// <returns>int value (or 0 if value isn't an int)</returns>
     public int getCellAsInt(int row, int col)
     {
       string str = getCell(row, col);
@@ -175,6 +206,12 @@ namespace libScripter
       return retVal;
     }
 
+    /// <summary>
+    /// set value of cell
+    /// </summary>
+    /// <param name="row">row nr 1..n</param>
+    /// <param name="col">col nr 1..n</param>
+    /// <param name="value"></param>
     public void setCell(int row, int col, string value)
     {
       row--;
@@ -204,6 +241,12 @@ namespace libScripter
         log("setCell():row number must not be lower than 1", enLogType.ERROR);
     }
 
+    /// <summary>
+    /// find a value in a column
+    /// </summary>
+    /// <param name="val">value to find</param>
+    /// <param name="col">column nr (1..n)</param>
+    /// <returns>row number containing the value, or 0 if not found</returns>
     public int findInCol(string val, int col)
     {
       int retVal = 0;
@@ -218,6 +261,12 @@ namespace libScripter
       return retVal;
     }
 
+    /// <summary>
+    /// find two values in two columns
+    /// </summary>
+    /// <param name="val">value to find</param>
+    /// <param name="col">column nr (1..n)</param>
+    /// <returns>row number containing the values, or 0 if not found</returns>
     public int findInCol(string val1, int col1, string val2, int col2)
     {
       int retVal = 0;
@@ -233,6 +282,11 @@ namespace libScripter
       return retVal;
     }
 
+    /// <summary>
+    /// insert a column at a given position
+    /// </summary>
+    /// <param name="col">column r (1..n)</param>
+    /// <param name="ins">value to insert</param>
     public void insertCol(int col, string ins = "")
     {
       bool err = false;

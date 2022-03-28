@@ -436,14 +436,14 @@ namespace libScripter
       {
         if (_currBlock == _blockStack.Last())
         {
-          switch (_currBlock.Type)
-          {
-            case enBlockType.IF:
-              bool ok = checkForElse(line) || checkForEnd(line);
-              if (ok)
-                retVal = ParseLine(line);
-              break;
-          }
+            switch (_currBlock.Type)
+            {
+              case enBlockType.IF:
+                bool ok = checkForElse(line) || checkForEnd(line);
+                if (ok)
+                  retVal = ParseLine(line);
+                break;
+            }
         }
         else
         {
@@ -487,6 +487,7 @@ namespace libScripter
     {
       bool retVal = false;
       _actLine = line;
+      _actPos = 0;
       if (GetToken() == enToken.NAME)
       {
         if (_actName == "ELSE")

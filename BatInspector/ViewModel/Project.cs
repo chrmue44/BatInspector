@@ -23,9 +23,12 @@ namespace BatInspector
   {
     BatExplorerProjectFile _batExplorerPrj;
     string _prjFileName;
+    string _wavSubDir;
+    bool _isDirContentOnly = false;  //if prj has no bpr file
 
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _batExplorerPrj.Records; } }
     public string Name { get{ return _prjFileName; } }
+    public string WavSubDir { get { return _wavSubDir; } }
 
     public static bool containsProject(DirectoryInfo dir)
     {
@@ -33,6 +36,20 @@ namespace BatInspector
       try
       {
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
+                         System.IO.SearchOption.TopDirectoryOnly);
+        if (files.Length > 0)
+          retVal = true;
+      }
+      catch { }
+      return retVal;
+    }
+
+    public static bool containsWavs(DirectoryInfo dir)
+    {
+      bool retVal = false;
+      try
+      {
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.wav",
                          System.IO.SearchOption.TopDirectoryOnly);
         if (files.Length > 0)
           retVal = true;
@@ -71,11 +88,13 @@ namespace BatInspector
 
       TextReader reader = new StringReader(xml);
       _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
+      _wavSubDir = "Records/";
+      _isDirContentOnly = false;
     }
 
     public void writePrjFile()
     {
-      if (_batExplorerPrj != null)
+      if ((_batExplorerPrj != null) && (!_isDirContentOnly))
       {
         var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
         TextWriter writer = new StreamWriter(_prjFileName);
@@ -96,6 +115,26 @@ namespace BatInspector
         }
       }
       _batExplorerPrj.Records = list.ToArray();
+    }
+
+    public void fillFromDirectory(DirectoryInfo dir)
+    {
+      try
+      {
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.wav",
+                         System.IO.SearchOption.TopDirectoryOnly);
+        _batExplorerPrj = new BatExplorerProjectFile("wavs", files.Length);
+        for (int i = 0; i < files.Length; i++)
+        {
+          string name = Path.GetFileName(files[i]);
+          _batExplorerPrj.Records[i].File = name;
+          name = Path.GetFileNameWithoutExtension(files[i]);
+          _batExplorerPrj.Records[i].Name = name;
+        }
+        _wavSubDir = "";
+        _isDirContentOnly = true;
+      }
+      catch { }
 
     }
   }

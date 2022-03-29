@@ -35,7 +35,7 @@ namespace BatInspector
     ScriptRunner _scripter = null;
 
     Forms.MainWindow _mainWin;
-    public string WavFilePath { get { return _selectedDir + "Records/"; } }
+    public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
     public string PrjPath { get { return _selectedDir; } }
 
     public string Version { get { return _version; } }
@@ -73,16 +73,23 @@ namespace BatInspector
 
     public void initProject(DirectoryInfo dir)
     {
-      if(Project.containsProject(dir))
-      { 
+      if (Project.containsProject(dir))
+      {
         _selectedDir = dir.FullName + "/";
-         if (File.Exists(_selectedDir + "report.csv"))
-           _analysis.read(_selectedDir + "report.csv");
+        if (File.Exists(_selectedDir + "report.csv"))
+          _analysis.read(_selectedDir + "report.csv");
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
           _prj = new Project();
         _prj.readPrjFile(files[0]);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, null);
+      }
+      else if (Project.containsWavs(dir))
+      {
+        _prj = new Project();
+        _prj.fillFromDirectory(dir);
+        _selectedDir = dir.FullName + "/";
         _scripter = new ScriptRunner(ref _proc, _selectedDir, null);
       }
       else
@@ -120,7 +127,7 @@ namespace BatInspector
 
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
-      string fullName = _selectedDir + "Records/" + rec.File;
+      string fullName = _selectedDir + _prj.WavSubDir + rec.File;
       string pngName = fullName.Replace(".wav", ".png");
       Bitmap bmp = null;
       BitmapImage bImg = null;
@@ -131,7 +138,7 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + "Records/" + rec.File, _settings.FftWidth, _settings.WaterfallWidth, _settings.WaterfallHeight, _settings, _colorTable);
+        Waterfall wf = new Waterfall(_selectedDir + _prj.WavSubDir + rec.File, _settings.FftWidth, _settings.WaterfallWidth, _settings.WaterfallHeight, _settings, _colorTable);
         if (wf.Ok)
         {
           wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, _settings.FftWidth);

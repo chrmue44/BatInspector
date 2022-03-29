@@ -33,7 +33,20 @@ public partial class BatExplorerProjectFile {
     private string fileVersionField;
     
     private string originatorField;
-    
+    public BatExplorerProjectFile()
+    {
+    }
+
+    public BatExplorerProjectFile(string name, int fileCount)
+    {
+      nameField = name;
+      recordsField = new BatExplorerProjectFileRecordsRecord[fileCount];
+      for (int i = 0; i < recordsField.Length; i++)
+        recordsField[i] = new BatExplorerProjectFileRecordsRecord();
+      typeField = "";
+      originatorField = "";
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string Name {

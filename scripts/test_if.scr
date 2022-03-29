@@ -14,15 +14,15 @@ ELSE
   END
 END
 IF =(%A% > 100)
-  IF =(%B% > 33)
-    SET Res2 "AhighBhigh"
-  ELSE
+  IF =(%B% < 33)
     SET Res2 "AhighBlow"
+  ELSE
+    SET Res2 "AhighBhigh"
   END
 ELSE
-  IF =(%B% > 33)
-    SET Res2 "AlowBhigh"
-  ELSE
+  IF =(%B% < 33)
     SET Res2 "AlowBlow"
+  ELSE
+    SET Res2 "AlowBhigh"
   END
 END

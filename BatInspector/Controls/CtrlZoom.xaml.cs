@@ -76,14 +76,37 @@ namespace BatInspector.Controls
       _ctlDist.setup("Dist to previous [ms]: ", enDataType.DOUBLE, 1, 100);
 
       string[] items = new string[_analysis.Calls.Count];
-      for (int i = 0; i < _analysis.Calls.Count; i++)
-        items[i] = (i + 1).ToString();
-      _ctlSelectCall.setItems(items);
+      if (_analysis.Calls.Count > 0)
+      {
+        setVisabilityCallData(true);
+        for (int i = 0; i < _analysis.Calls.Count; i++)
+          items[i] = (i + 1).ToString();
+        _ctlSelectCall.setItems(items);
+      }
+      else
+      {
+        setVisabilityCallData(false);
+      }
 
       setupCallData(0);
       update();
     }
 
+    void setVisabilityCallData(bool on)
+    {
+      Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
+      _ctlSelectCall.Visibility = vis;
+      _ctlSpectrum.Visibility = vis;
+      _btnNext.Visibility = vis;
+      _btnPrev.Visibility = vis;
+      _ctlFMax.Visibility = vis;
+      _ctlFMaxAmpl.Visibility = vis;
+      _ctlFMin.Visibility = vis;
+      _ctlSnr.Visibility = vis;
+      _ctlDist.Visibility = vis;
+      _ctlDuration.Visibility = vis;
+
+    }
 
     public void update()
     {
@@ -96,7 +119,8 @@ namespace BatInspector.Controls
         initRulerF();
         initRulerT();
         initRulerA();
-        _ctlSpectrum.initRulerF();
+        if(_ctlSpectrum.Visibility == Visibility.Visible)
+          _ctlSpectrum.initRulerF();
 
         _ctlSelectCall._cb.SelectedIndex = 0;
       }

@@ -129,7 +129,11 @@ namespace BatInspector.Controls
         _parent.setZoom(_wavName, _analysis, _wavFilePath, _img.Source);
       }
       else
-        MessageBox.Show("Zoom not supported without analysis, perform analysis first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);
+      {
+        AnalysisFile ana = new AnalysisFile(_wavName);
+        _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
+
+      }
     }
 
     private void selItemChanged(int index, string val)

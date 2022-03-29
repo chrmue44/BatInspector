@@ -36,15 +36,18 @@ namespace BatInspector.Controls
 
     public void initRulerF()
     {
-      _cvRulerF.Children.Clear();
-      CtrlZoom.createLine(_cvRulerF, 0, 3, _cvRulerF.ActualWidth, 3, Brushes.Black);
-      RulerData rData = _spectrum.RulerDataF;
-      for (int i = 0; i <= 10; i++)
+      if (Visibility == Visibility.Visible)
       {
-        CtrlZoom.createLine(_cvRulerF, _cvRulerF.ActualWidth * i / 10, 3, _cvRulerF.ActualWidth * i / 10, 10, Brushes.Black);
-        string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.0");
-        if((i % 2) == 0)
-          CtrlZoom.createText(_cvRulerF, _cvRulerF.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
+        _cvRulerF.Children.Clear();
+        CtrlZoom.createLine(_cvRulerF, 0, 3, _cvRulerF.ActualWidth, 3, Brushes.Black);
+        RulerData rData = _spectrum.RulerDataF;
+        for (int i = 0; i <= 10; i++)
+        {
+          CtrlZoom.createLine(_cvRulerF, _cvRulerF.ActualWidth * i / 10, 3, _cvRulerF.ActualWidth * i / 10, 10, Brushes.Black);
+          string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.0");
+          if ((i % 2) == 0)
+            CtrlZoom.createText(_cvRulerF, _cvRulerF.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
+        }
       }
     }
 

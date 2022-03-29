@@ -124,6 +124,8 @@ namespace BatInspector.Forms
               else
                 childItem.Foreground = new SolidColorBrush(Colors.Violet);
             }
+            else if (Project.containsWavs(subDir))
+              childItem.Foreground = new SolidColorBrush(Colors.Blue);
           }
           DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.INFO);
           _model.Busy = false;
@@ -526,6 +528,7 @@ private void setZoomPosition()
     {
       _model.saveSettings();
       _model.Analysis.save(_model.PrjPath + "report.csv");
+      _model.Prj.writePrjFile();
       DebugLog.log("project '" + _model.Prj.Name + "' saved", enLogType.INFO);
     }
 

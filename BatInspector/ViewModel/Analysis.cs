@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using libParser;
 using libScripter;
 
 namespace BatInspector
@@ -214,9 +215,12 @@ namespace BatInspector
         }
       }
       csv.save();
-      foreach(ReportItem r in _report)
+      if (_report != null)
       {
-        r.resetChanged();
+        foreach (ReportItem r in _report)
+        {
+          r.resetChanged();
+        }
       }
 
     }
@@ -237,6 +241,9 @@ namespace BatInspector
 
     public void removeFile(string dir, string wavName)
     {
+      string reportName = dir + "/report.csv";
+      save(reportName);
+
       //remove from analysis file list
       AnalysisFile fileToDelete = null;
       foreach (AnalysisFile f in _list)
@@ -251,7 +258,6 @@ namespace BatInspector
         _list.Remove(fileToDelete);
 
       // remove from report file
-      string reportName = dir + "/report.csv";
       if (File.Exists(reportName))
       {
         Csv report = new Csv();
@@ -266,6 +272,10 @@ namespace BatInspector
           }
         } while (row > 0);
         report.save();
+      }
+      else
+      {
+        DebugLog.log("Analysis::removeFile: report file: " + reportName + " not found", enLogType.ERROR);
       }
 
       // remove from report control

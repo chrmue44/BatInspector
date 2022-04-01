@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-
+using BatInspector.Properties;
 
 namespace BatInspector.Controls
 {
@@ -65,9 +65,9 @@ namespace BatInspector.Controls
       _model = model;
       _parent = parent;
       InitializeComponent();
-      _duration.setup("Duration [s]: ", enDataType.DOUBLE, 3, 110);
+      _duration.setup(MyResources.Duration + " [s]: ", enDataType.DOUBLE, 3, 110);
       _duration.Focusable = false;
-      _sampleRate.setup("Sampling Rate [Hz]: ", enDataType.INT, 0, 110);
+      _sampleRate.setup(MyResources.SamplingRate + " [Hz]: ", enDataType.INT, 0, 110);
       _sampleRate.Focusable = false;
       _cbSel.Focusable = true;
     }
@@ -98,12 +98,12 @@ namespace BatInspector.Controls
         {
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
-          it.setup("Call " + callNr.ToString() + ": ", enDataType.STRING, 0, 60, 100);
+          it.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", enDataType.STRING, 0, 60, 100);
           it.setValue(call.SpeciesAuto + "(Prob: " + call.Probability.ToString("0.###") + ")");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup("Call " + callNr.ToString() + ": ", callNr - 1, 60, 65, selItemChanged);
+          im.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", callNr - 1, 60, 65, selItemChanged);
           im.setItems(spec.ToArray());
           im.setValue(call.SpeciesMan);
           _spDataMan.Children.Add(im);
@@ -131,6 +131,8 @@ namespace BatInspector.Controls
       else
       {
         AnalysisFile ana = new AnalysisFile(_wavName);
+        ana.SampleRate = 383500;
+        ana.Duration = 3.001;
         _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
 
       }

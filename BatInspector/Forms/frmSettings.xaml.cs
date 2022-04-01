@@ -1,4 +1,5 @@
-﻿using libParser;
+﻿using BatInspector.Properties;
+using libParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace BatInspector.Forms
       InitializeComponent();
       _settings = settings;
       _pg.SelectedObject= settings;
+      Title = MyResources.Settings;
     }
 
     private void _btnFactSettings_Click(object sender, RoutedEventArgs e)

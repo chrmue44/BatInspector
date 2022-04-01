@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BatInspector" xmlns:forms="clr-namespace:BatInspector.Forms"
+        xmlns:res="clr-namespace:BatInspector.Properties" 
+        xmlns:forms="clr-namespace:BatInspector.Forms"
         xmlns:controls="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400"
@@ -23,7 +24,7 @@
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
           <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-            <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="save settings" Click="_btnSave_Click">
+            <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
               <Image Source="../images/icons8-save-48.png"></Image>
             </Button>
           <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="edit color scheme for waterfall diagram" Click="_btnDel_Click">
@@ -41,6 +42,9 @@
           <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="edit species information" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
           </Button>
+          <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="tool to inspect and manipulate wav files" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/wav-file-format-symbol.png"></Image>
+          </Button>
           <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="show application settings" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
@@ -53,7 +57,7 @@
         </ToolBar>
         </ToolBarTray>
         <TabControl Grid.Row="1" x:Name="_tbReport" Margin="5" GotFocus="_tbReport_GotFocus">
-            <TabItem Header="Project View" >
+            <TabItem Header="{x:Static res:MyResources.MainWinProjectView}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>
@@ -65,20 +69,20 @@
                         <ColumnDefinition Width="6*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Row ="0" Grid.Column="2" Orientation="Horizontal">
-                        <Button x:Name="_btnAll"  Click ="_btnAll_Click" Content="All" HorizontalAlignment="Left"></Button>
-                        <Button x:Name="_btnNone" Click="_btnNone_Click" Content="None" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnAll"  Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left"></Button>
+                        <Button x:Name="_btnNone" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                         <Separator></Separator>
-                        <Button x:Name="_btnHideUnSelected" Click="_btnHideUnSelected_Click" Content="Hide unselected" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Button x:Name="_btnShowAll" Click="_btnShowAll_Click" Content="Show all" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Button x:Name="_btnDelSelected" Click ="_btnDelSelected_Click" Content="Del selected" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnHideUnSelected" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnShowAll" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnDelSelected" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                         <Separator></Separator>
-                        <Button x:Name="_btnSize" Click ="_btnSize_Click"  Content="Size" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnSize" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                         <Separator></Separator>
-                        <TextBlock Margin="5,0,0,0">Filter:</TextBlock>
+              <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}"></TextBlock>
                         <ComboBox Name="_cbFilter" Margin="5,0,0,0"></ComboBox>
-                        <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="Apply Filter" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                         <Separator></Separator>
-                        <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click"  Content="Hide/Show Info" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                        <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
             </StackPanel>
                     <TreeView Name="trvStructure" BorderThickness="0" Grid.Row="1" Grid.Column="0" TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5">
                     </TreeView>

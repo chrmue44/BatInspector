@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
-             xmlns:Forms="clr-namespace:BatInspector.Controls" x:Class="BatInspector.Controls.ctlSpeciesData"
+             xmlns:res="clr-namespace:BatInspector"
+             xmlns:Forms="clr-namespace:BatInspector.Controls"
+             x:Class="BatInspector.Controls.ctlSpeciesData"
              mc:Ignorable="d" 
              >
   <Grid>

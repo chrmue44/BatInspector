@@ -9,6 +9,7 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using libParser;
 using libScripter;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,9 @@ namespace BatInspector
     string _prjFileName;
     string _wavSubDir;
     bool _isDirContentOnly = false;  //if prj has no bpr file
+    bool _ok;
+
+    public bool Ok {get {return _ok;} }
 
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _batExplorerPrj.Records; } }
     public string Name { get{ return _prjFileName; } }
@@ -82,14 +86,23 @@ namespace BatInspector
 
     public void readPrjFile(string fName)
     {
-      _prjFileName = fName;
-      string xml = File.ReadAllText(fName);
-      var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
+      try
+      {
+        _prjFileName = fName;
+        string xml = File.ReadAllText(fName);
+        var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
 
-      TextReader reader = new StringReader(xml);
-      _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-      _wavSubDir = "Records/";
-      _isDirContentOnly = false;
+        TextReader reader = new StringReader(xml);
+        _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
+        _wavSubDir = "Records/";
+        _isDirContentOnly = false;
+        _ok = true;
+      }
+      catch
+      {
+        DebugLog.log("error reading project file: " + fName, enLogType.ERROR);
+        _ok = false;
+      }
     }
 
     public void writePrjFile()
@@ -99,7 +112,7 @@ namespace BatInspector
         var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
         TextWriter writer = new StreamWriter(_prjFileName);
         serializer.Serialize(writer, _batExplorerPrj);
-        writer.Close();
+        writer.Close();        
       }
     }
 
@@ -133,6 +146,7 @@ namespace BatInspector
         }
         _wavSubDir = "";
         _isDirContentOnly = true;
+        _ok = true;
       }
       catch { }
 

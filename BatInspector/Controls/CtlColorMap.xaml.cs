@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using BatInspector.Properties;
 namespace BatInspector.Controls
 {
   /// <summary>
@@ -28,35 +29,35 @@ namespace BatInspector.Controls
     public void setup(string color, List<ColorItem> col)
     {
       _grp.Header = color;
-      _ctlCol1.setup("Color Pt 1", enDataType.INT, 0);
+      _ctlCol1.setup(MyResources.ColorMapColorPt + " 1", enDataType.INT, 0);
       _ctlCol1._tb.Focusable = true;
       _ctlCol1.setValue(col[0].Color);
-      _ctlCol2.setup("Color Pt 2", enDataType.INT, 0);
+      _ctlCol2.setup(MyResources.ColorMapColorPt + " 2", enDataType.INT, 0);
       _ctlCol2._tb.Focusable = true;
       _ctlCol2.setValue(col[1].Color);
-      _ctlCol3.setup("Color Pt 3", enDataType.INT, 0);
+      _ctlCol3.setup(MyResources.ColorMapColorPt + " 3", enDataType.INT, 0);
       _ctlCol3.setValue(col[2].Color);
       _ctlCol3._tb.Focusable = true;
-      _ctlCol4.setup("Color Pt 4", enDataType.INT, 0);
+      _ctlCol4.setup(MyResources.ColorMapColorPt + " 4", enDataType.INT, 0);
       _ctlCol4.setValue(col[3].Color);
       _ctlCol4._tb.Focusable = true;
-      _ctlCol5.setup("Color Pt 5", enDataType.INT, 0);
+      _ctlCol5.setup(MyResources.ColorMapColorPt + " 5", enDataType.INT, 0);
       _ctlCol5.setValue(col[4].Color);
       _ctlCol5._tb.Focusable = true;
 
-      _ctlVal1.setup("Value Pt 1", enDataType.INT, 0);
+      _ctlVal1.setup(MyResources.ColorMapValuePt + " 1", enDataType.INT, 0);
       _ctlVal1.setValue(col[0].Value);
       _ctlVal1._tb.Focusable = true;
-      _ctlVal2.setup("Value Pt 2", enDataType.INT, 0);
+      _ctlVal2.setup(MyResources.ColorMapValuePt + " 2", enDataType.INT, 0);
       _ctlVal2.setValue(col[1].Value);
       _ctlVal2._tb.Focusable = true;
-      _ctlVal3.setup("Value Pt 3", enDataType.INT, 0);
+      _ctlVal3.setup(MyResources.ColorMapValuePt + " 3", enDataType.INT, 0);
       _ctlVal3.setValue(col[2].Value);
       _ctlVal3._tb.Focusable = true;
-      _ctlVal4.setup("Value Pt 4", enDataType.INT, 0);
+      _ctlVal4.setup(MyResources.ColorMapValuePt + " 4", enDataType.INT, 0);
       _ctlVal4.setValue(col[3].Value);
       _ctlVal4._tb.Focusable = true;
-      _ctlVal5.setup("Value Pt 5", enDataType.INT, 0);
+      _ctlVal5.setup(MyResources.ColorMapValuePt + " 5", enDataType.INT, 0);
       _ctlVal5.setValue(col[4].Value);
       _ctlVal5._tb.Focusable = true;
     }

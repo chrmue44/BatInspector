@@ -27,23 +27,35 @@ namespace BatInspector.Controls
     int _decimals = 3;
     double _valDouble;
     int _valInt;
+    uint _valUInt;
     string _valString;
     dlgValueChanged _dlgValChange = null;
     
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, dlgValueChanged dlgValChange = null)
+    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, bool edit = false, dlgValueChanged dlgValChange = null)
     {
       _lbl.Content= label;
       _lbl.Focusable = false;
       _type = type;
       _decimals = decimals;
       _dlgValChange = dlgValChange;
-      _tb.Focusable = false;
+      _tb.Focusable = edit;
       _tb.Width = widthTb;
       _lbl.Width = widthLbl;
 
+    }
+
+    public void setValue(uint val)
+    {
+      if (_type == enDataType.UINT)
+      {
+        _valUInt = val;
+        _tb.Text = val.ToString();
+      }
+      else
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
     }
 
     public void setValue (int val)
@@ -67,7 +79,7 @@ namespace BatInspector.Controls
         _tb.Text = val.ToString(format);
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
 
     }
     public void setValue(string val)
@@ -78,7 +90,7 @@ namespace BatInspector.Controls
         _valString = val;
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
 
     }
 
@@ -87,7 +99,12 @@ namespace BatInspector.Controls
       return _valInt;
     }
 
-      public string getValue()
+    public uint getUIntValue()
+    {
+      return _valUInt;
+    }
+
+    public string getValue()
     {
       switch(_type)
       {
@@ -97,6 +114,8 @@ namespace BatInspector.Controls
           return _valDouble.ToString();
         case enDataType.INT:
           return _valInt.ToString();
+        case enDataType.UINT:
+          return _valUInt.ToString();
       }
       return "";
     }
@@ -114,6 +133,12 @@ namespace BatInspector.Controls
           int.TryParse(_tb.Text, out _valInt);
           if (_dlgValChange != null)
             _dlgValChange(enDataType.INT, _valInt);
+          break;
+
+        case enDataType.UINT:
+          int.TryParse(_tb.Text, out _valInt);
+          if (_dlgValChange != null)
+            _dlgValChange(enDataType.UINT, _valInt);
           break;
 
         case enDataType.DOUBLE:

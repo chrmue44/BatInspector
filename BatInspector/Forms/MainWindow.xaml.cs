@@ -23,6 +23,7 @@ using BatInspector.Controls;
 using System.Windows.Input;
 using System;
 using libParser;
+using System.Threading;
 
 namespace BatInspector.Forms
 {
@@ -59,6 +60,12 @@ namespace BatInspector.Forms
       {
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
+
+      //   string culture = "en-US";
+      string culture = "de-DE";
+      Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+      Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
+
       _model = new ViewModel(this, version.ToString());
       _model.loadSettings();
       InitializeComponent();
@@ -289,7 +296,7 @@ private void setZoomPosition()
 
     private void createImageFiles(object sender, DoWorkEventArgs e)
     {
-      if (_model.Prj != null)
+      if ((_model.Prj!= null) && ( _model.Prj.Ok))
       {
         _model.Busy = true;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
@@ -309,7 +316,7 @@ private void setZoomPosition()
     {
       int index = 0;
 
-      if (_model.Prj != null)
+      if ((_model.Prj != null) && (_model.Prj.Ok))
       {
         _spSpectrums.Children.Clear();
         _cbFocus = -1;
@@ -571,6 +578,12 @@ private void setZoomPosition()
     private void _btnSettings_Click(object sender, RoutedEventArgs e)
     {
       frmSettings frm = new frmSettings(_model.Settings);
+      frm.Show();
+    }
+
+    private void _btnWavTool_Click(object sender, RoutedEventArgs e)
+    {
+      frmWavFile frm = new frmWavFile(_model);
       frm.Show();
     }
 

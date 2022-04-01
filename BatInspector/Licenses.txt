@@ -50,3 +50,9 @@ https://www.flaticon.com/free-icons/stop" Stop icons created by DinosoftLabs - F
 
 color-palette.png
 https://www.flaticon.com/free-icons/art" Art icons created by Freepik - Flaticon
+
+wav-file-format-symbol.png:
+https://www.flaticon.com/free-icons/wav" Wav icons created by Freepik - Flaticon
+
+icons8-folder-48.png
+https://icons8.com/icons/set/folder

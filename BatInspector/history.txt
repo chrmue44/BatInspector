@@ -10,8 +10,10 @@ TODO
 - help
 - species comparison
 - frequency scale in spectrum on zoom view not accurate
+- tool to inspect and manipulate wav files
 
 DONE
+- possibility to switch between logarithmic and linear scaling for waterfall diagram
 - show data in directories without project files as well
 - ask before closing programm, if user wantas to save his work
 - specify threshold for probability to copy auto species to man species

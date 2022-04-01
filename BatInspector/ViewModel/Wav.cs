@@ -29,13 +29,20 @@ namespace BatInspector
     public string FileTypeId { get; private set; }
     public UInt32 FileLength { get; set; }
     public string MediaTypeId { get; private set; }
-
     public WaveHeader()
     {
       FileTypeId = FILE_TYPE_ID;
       MediaTypeId = MEDIA_TYPE_ID;
       // Minimum size is always 4 bytes
       FileLength = 4;
+    }
+
+    public WaveHeader(byte[] data)
+    {
+      FileTypeId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
+      MediaTypeId = System.Text.Encoding.ASCII.GetString(data, 8, 4);
+      // Minimum size is always 4 bytes
+      FileLength = BitConverter.ToUInt32(data, 4); 
     }
 
     public byte[] GetBytes()
@@ -80,6 +87,18 @@ namespace BatInspector
       set { _bitsPerSample = value; RecalcBlockSizes(); }
     }
 
+    public FormatChunk(byte[] data)
+    {
+      ChunkId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
+      ChunkSize = BitConverter.ToUInt32(data, 4);
+      FormatTag = BitConverter.ToUInt16(data, 8);
+      Channels = BitConverter.ToUInt16(data, 10);
+      Frequency = BitConverter.ToUInt32(data, 12);
+      AverageBytesPerSec = BitConverter.ToUInt32(data, 16);
+      BlockAlign = BitConverter.ToUInt16(data, 20);
+      BitsPerSample = BitConverter.ToUInt16(data, 22);
+    }
+
     public FormatChunk(ushort chans, uint freq)
     {
       ChunkId = CHUNK_ID;
@@ -120,7 +139,6 @@ namespace BatInspector
 
   }
 
-
   public class DataChunk
   {
     private const string CHUNK_ID = "data";
@@ -133,6 +151,12 @@ namespace BatInspector
     {
       ChunkId = CHUNK_ID;
       ChunkSize = 0;  // Until we add some data
+    }
+
+    public DataChunk(byte[] data)
+    {
+      ChunkId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
+      ChunkSize = BitConverter.ToUInt32(data, 4);
     }
 
     public UInt32 Length()
@@ -182,6 +206,19 @@ namespace BatInspector
       ChunkSize = (UInt32)WaveData.Length * 2;
     }
 
+    public void AddSampleData(byte[] data, int offs, int len)
+    {
+      WaveData = new short[len / 2];
+      for (int i= 0; i < len/2; i++)
+      {
+        int s = (int)(sbyte)data[offs+1] << 8;
+        s |= (int)(sbyte)data[offs ];
+        WaveData[i] = (short)s;
+        offs += 2;
+      }
+      ChunkSize = (UInt32)WaveData.Length * 2;
+    }
+
     public void AddSampleData(double[] leftBuffer, int idxStart, int idxEnd)
     {
       WaveData = new short[idxEnd - idxStart + 2];
@@ -202,36 +239,91 @@ namespace BatInspector
   public class WavFile
   {
     private byte[] _waveData;
-
+    WaveHeader _header;
+    FormatChunk _format;
+    DataChunk _data;
     Audio _audio;
     //SoundPlayer _audio;
+
+    public int Channels { get { return _format.Channels; } }
+    public int BitsPerSample { get { return _format.BitsPerSample; } }
+    public uint SamplingRate {  get { return _format.Frequency; } }
+
     public WavFile()
     {
       _audio = new Audio();
       //_audio = new SoundPlayer();
     }
 
-    public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    private byte[] partArray(byte[]list, int startIdx, int len)
     {
-      WaveHeader header = new WaveHeader();
-      FormatChunk format = new FormatChunk(chanCount, (uint)sampleRate);
-      DataChunk data = new DataChunk();
+      byte[] retVal = new byte[len];
+      for (int i = 0; i < len; i++)
+        retVal[i] = list[startIdx + i];
+      return retVal;
+    }
+
+    public int readFile(string name)
+    {
+      int retVal = 0;
+      try
+      {
+        _waveData = File.ReadAllBytes(name);
+        byte[] hdr = partArray(_waveData, 0, 12);
+        _header = new WaveHeader(hdr);
+        byte[] format = partArray(_waveData, 12, 24);
+        _format = new FormatChunk(format);
+
+        int pos = 12;
+        while (!(_waveData[pos] == 100 && _waveData[pos + 1] == 97 && _waveData[pos + 2] == 116 && _waveData[pos + 3] == 97))
+        {
+          pos += 4;
+          int chunkSize = _waveData[pos] + _waveData[pos + 1] * 256 + _waveData[pos + 2] * 65536 + _waveData[pos + 3] * 16777216;
+          pos += 4 + chunkSize;
+        }
+        byte[] data = partArray(_waveData, pos, 8);
+        _data = new DataChunk(data);
+        pos += 8;
+        _data.AddSampleData(_waveData, pos, _waveData.Length - pos);
+      }
+      catch 
+      {
+        retVal = 1;
+      }
+      return retVal;
+    }
+
+    void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    {
+      _header = new WaveHeader();
+      _format = new FormatChunk(chanCount, (uint)sampleRate);
+      _data = new DataChunk();
       List<Byte> tempBytes = new List<byte>();
 
       if (chanCount == 1)
-        data.AddSampleData(left, idxStart, idxEnd);
+        _data.AddSampleData(left, idxStart, idxEnd);
       else
-        data.AddSampleData(left, right, idxStart, idxEnd);
+        _data.AddSampleData(left, right, idxStart, idxEnd);
 
-      tempBytes.AddRange(header.GetBytes());
-      tempBytes.AddRange(format.GetBytes());
-      tempBytes.AddRange(data.GetBytes());
+      tempBytes.AddRange(_header.GetBytes());
+      tempBytes.AddRange(_format.GetBytes());
+      tempBytes.AddRange(_data.GetBytes());
       _waveData = tempBytes.ToArray();
-//      File.WriteAllBytes("$$$.wav", _waveData);
-//      _audio = new SoundPlayer("$$$.wav");
+    }
+
+    public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    {
+      createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
+      play();
+    }
+
+    public void play()
+    {
+      //      File.WriteAllBytes("$$$.wav", _waveData);
+      //      _audio = new SoundPlayer("$$$.wav");
       _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
-    //  _waveData = null;
-    //  tempBytes = null;
+      //  _waveData = null;
+      //  tempBytes = null;
     }
 
     public void stop()

@@ -4,21 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="Configure Color MAp" Height="550" Width="900" Loaded="Window_Loaded">
+        Title="{x:Static res:MyResources.ColorMapConfig}" Height="550" Width="1000" Loaded="Window_Loaded">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="280*"/>
-      <ColumnDefinition Width="613*"/>
+      <ColumnDefinition Width="640*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition/>
-      <RowDefinition Height="100"/>
-      <RowDefinition Height="100"/>
-      <RowDefinition Height="100"/>
+      <RowDefinition Height="120"/>
+      <RowDefinition Height="120"/>
+      <RowDefinition Height="120"/>
       <RowDefinition Height="50"/>
     </Grid.RowDefinitions>
-    <GroupBox Grid.Row="0" Header="Color Gradient" Margin="5" Grid.ColumnSpan="2">
+    <GroupBox Grid.Row="0" Header="{x:Static res:MyResources.ColorMapGradient}" Margin="5" Grid.ColumnSpan="2">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="60"/>
@@ -32,8 +33,8 @@
     <local:CtlColorMap x:Name="_ctlG" Grid.Row="2" Grid.ColumnSpan="2"/>
     <local:CtlColorMap x:Name="_ctlB" Grid.Row="3" Grid.ColumnSpan="2"/>
     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-      <Button Name="_btnApply" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnApply_Click">Apply</Button>
-      <Button Name="_btnCancel" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnCancel_Click" >Cancel</Button>
+      <Button Name="_btnApply" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnApply_Click" Content="{x:Static res:MyResources.BtnApply}"></Button>
+      <Button Name="_btnCancel" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnCancel_Click" Content="{x:Static res:MyResources.BtnCancel}"></Button>
       <Button Name="_btnOk" Width="100"  HorizontalAlignment="Right" Margin="10" Click="_btnOk_Click">OK</Button>
     </StackPanel>
   </Grid>

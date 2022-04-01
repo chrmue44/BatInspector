@@ -30,7 +30,7 @@ namespace BatInspector
     public void createColorLookupTable()
     {
       _colorTable = new Color[100];
-      for (int i = 0; i < 99; i++)
+      for (int i = 0; i < _colorTable.Length; i++)
       {
         int r = getColorFromGradient((double)i, _model.Settings.ColorGradientRed);
         int g = getColorFromGradient((double)i, _model.Settings.ColorGradientGreen);

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-        xmlns:local="clr-namespace:BatInspector.Forms"
+        xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
         Title="frmSettings" Height="450" Width="800">
     <Grid>
@@ -16,9 +16,9 @@
       <wf:PropertyGrid x:Name="_pg"></wf:PropertyGrid>
     </WindowsFormsHost>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-      <Button Name="_btnFactSettings" Width="100" Margin="5" Click="_btnFactSettings_Click">Factory settings</Button>
-      <Button Name="_btnCancel" Width="100" Margin="5" Click="_btnCancel_Click">Cancel</Button>
-      <Button Name="_btnOk" Width="100" Margin="5" Click="_btnOk_Click">OK</Button>
+      <Button Name="_btnFactSettings" Width="130" Margin="5" Click="_btnFactSettings_Click" Content="{x:Static res:MyResources.FactorySettings}"></Button>
+      <Button Name="_btnCancel" Width="130" Margin="5" Click="_btnCancel_Click" Content="{x:Static res:MyResources.BtnCancel}"></Button>
+      <Button Name="_btnOk" Width="130" Margin="5" Click="_btnOk_Click" Content="OK"></Button>
 
     </StackPanel>
     </Grid>

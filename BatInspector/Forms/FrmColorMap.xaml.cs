@@ -15,6 +15,7 @@ using SDColor = System.Drawing.Color;
 using SWMColor = System.Windows.Media.Color;
 using SWMBrush = System.Windows.Media.Brush;
 using BatInspector.Controls;
+using BatInspector.Properties;
 
 namespace BatInspector.Forms
 {
@@ -28,9 +29,9 @@ namespace BatInspector.Forms
     {
       _model = model;
       InitializeComponent();
-      _ctlB.setup("Blue", _model.Settings.ColorGradientBlue);
-      _ctlG.setup("Green", _model.Settings.ColorGradientGreen);
-      _ctlR.setup("Red", _model.Settings.ColorGradientRed);
+      _ctlB.setup(MyResources.ColorMapBlue, _model.Settings.ColorGradientBlue);
+      _ctlG.setup(MyResources.ColorMapGreen, _model.Settings.ColorGradientGreen);
+      _ctlR.setup(MyResources.ColorMapRed, _model.Settings.ColorGradientRed);
     }
 
 

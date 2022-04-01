@@ -92,7 +92,8 @@ namespace BatInspector.Controls
   {
     STRING,
     DOUBLE,
-    INT
+    INT,
+    UINT
   }
 
   public delegate void dlgSelItemChanged(int index, string val);

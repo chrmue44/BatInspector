@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -12,8 +12,8 @@
         <RowDefinition Height="*"></RowDefinition>
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0"  Orientation="Horizontal">
-        <CheckBox  Name="_cbErr" Content="Error" Margin="5,0,0,0"></CheckBox>
-        <CheckBox  Name="_cbWarn"  Content="Warning" Margin="5,0,0,0"></CheckBox>
+      <CheckBox  Name="_cbErr" Content="{x:Static res:MyResources.Error}" Margin="5,0,0,0"></CheckBox>
+      <CheckBox  Name="_cbWarn"  Content="{x:Static res:MyResources.Warning}" Margin="5,0,0,0"></CheckBox>
         <CheckBox  Name="_cbInfo"  Content="Info" Margin="5,0,0,0"></CheckBox>
         <CheckBox  Name="_cbDebug"  Content="Debug" Margin="5,0,0,0"></CheckBox>
       <Button Name="_btnClear" Margin="15,0,0,0" Click="_btnClear_Click" >Clear</Button>

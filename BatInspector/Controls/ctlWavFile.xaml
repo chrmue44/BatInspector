@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="0" LostFocus="ctlLostFocus" GotFocus="ctlGotFocus">
     <GroupBox Name="_grp" Margin="3" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" Header="Bla">
@@ -19,18 +20,18 @@
         <Button Name="_btnCopy"  Margin="0,40,0,0" Click="_btnCopy_Click">-></Button>
       <Button Name="_btnIgnore" Margin="0,20,0,0"  Click="_btnIgnore_Click">Ign</Button>
       </StackPanel>
-      <GroupBox Name ="_grpInfoAuto" Grid.Column="1" Header="Auto Detection">
+      <GroupBox Name ="_grpInfoAuto" Grid.Column="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}">
       <StackPanel Name="_spDataAuto">
         <local:ctlDataItem x:Name="_sampleRate" />
         <local:ctlDataItem x:Name="_duration" />
       </StackPanel>
         </GroupBox>
       <StackPanel Grid.Column="2" VerticalAlignment="Stretch">
-        <GroupBox Name ="_grpInfoMan"  Header="Manual Detection">
+        <GroupBox Name ="_grpInfoMan"  Header="{x:Static res:MyResources.CtlWavManualDetection}">
         <StackPanel Name="_spDataMan">
         </StackPanel>
       </GroupBox>
-        <GroupBox  Header="Remarks" VerticalAlignment="Stretch">
+        <GroupBox  Header="{x:Static res:MyResources.CtlWavRemarks}" VerticalAlignment="Stretch">
           <TextBox Name="_tbRemarks" HorizontalAlignment="Stretch" BorderThickness="0"  VerticalAlignment="Stretch" TextChanged="_tbRemarks_TextChanged"></TextBox>
         </GroupBox>
       </StackPanel>

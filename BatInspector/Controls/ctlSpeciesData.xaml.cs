@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BatInspector.Properties;
 
 namespace BatInspector.Controls
 {
@@ -24,9 +25,9 @@ namespace BatInspector.Controls
     {
       InitializeComponent();
       _ctlLocalName.setup("Local Name:", enDataType.STRING, 0, 120, 200);
-      _ctDuration.setup("Duration [ms]:", enDataType.DOUBLE, 1, 120, 70);
-      _ctFreqC.setup("char.Frequency [kHz]", enDataType.DOUBLE, 1, 120, 70);
-      _ctlSelPic.setup("select call type", 0, 150, 150, callTypeChanged);
+      _ctDuration.setup(MyResources.Duration + " [ms]:", enDataType.DOUBLE, 1, 120, 70);
+      _ctFreqC.setup(MyResources.CharFrequency + "[kHz]", enDataType.DOUBLE, 1, 120, 70);
+      _ctlSelPic.setup(MyResources.SelectCallType, 0, 150, 150, callTypeChanged);
     }
 
     private void callTypeChanged(int idx, string val)

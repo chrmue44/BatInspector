@@ -211,6 +211,11 @@ namespace BatInspector
     public List<SpeciesInfos> Species { get; set; }
 
     [DataMember]
+    [Category("Application")]
+    [Description("define if waterfall diagram should be logarithmic or linear")]
+    public bool WaterfallLogarithmic { get; set; }
+
+    [DataMember]
     [Category("ColorGradient")]
     [Description("definition of color gradient for color channel red")]
     public List<ColorItem> ColorGradientRed { get; set; }
@@ -262,6 +267,7 @@ namespace BatInspector
       GradientRange = 15;
       ProbabilityMin = 0.5;
       HideInfos = false;
+      WaterfallLogarithmic = true;
       initFilterParams();
       initColorGradient();
       initSpeciesInfos();

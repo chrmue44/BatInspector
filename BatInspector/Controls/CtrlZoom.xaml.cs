@@ -41,28 +41,27 @@ namespace BatInspector.Controls
       _model = model;
       _imgFt.Source = img;
       _analysis = analysis;
-      _model.ZoomView.RulerDataA.setRange(-1, 1);
+/*      _model.ZoomView.RulerDataA.setRange(-1, 1);
       _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
-      _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
+      _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000); */
       _model.ZoomView.Cursor1.set(0, 0, false);
       _model.ZoomView.Cursor2.set(0, 0, false);
-      _model.ZoomView.Spectrum.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
-      initRulerT();
+/*      initRulerT();
       initRulerA();
-      initRulerF();
+      initRulerF(); */
 
       _freq1.setup("Frequency [kHz]:", enDataType.DOUBLE, 1);
       _time1.setup("Time [s]:", enDataType.DOUBLE, 3);
       _freq2.setup("Frequency: [kHz]", enDataType.DOUBLE, 1);
       _time2.setup("Time [s]:", enDataType.DOUBLE, 3);
       _sampleRate.setup("SampleRate [kHz]", enDataType.DOUBLE, 1);
-      _sampleRate.setValue((double)_analysis.SampleRate / 1000);
       _duration.setup("Duration [s]", enDataType.DOUBLE, 3);
-      _duration.setValue(_analysis.Duration);
       _deltaT.setup("Delta T [ms]:", enDataType.DOUBLE, 0);
       _wavFilePath = wavFilePath;
       _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
-      _ctlRange.setup("Range [dB]:", enDataType.DOUBLE, 0, 80, 80, rangeChanged);
+      _duration.setValue(_model.ZoomView.Waterfall.Duration);
+      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
+      _ctlRange.setup("Range [dB]:", enDataType.DOUBLE, 0, 80, 80, true, rangeChanged);
       _ctlRange.setValue(_model.Settings.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
@@ -82,13 +81,21 @@ namespace BatInspector.Controls
         for (int i = 0; i < _analysis.Calls.Count; i++)
           items[i] = (i + 1).ToString();
         _ctlSelectCall.setItems(items);
+        setupCallData(0);
       }
       else
       {
         setVisabilityCallData(false);
       }
 
-      setupCallData(0);
+      _btnZoomTotal_Click(null, null);
+     /* _model.ZoomView.RulerDataA.setRange(-1, 1);
+      _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
+      _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+      _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+      initRulerT();
+      initRulerA();
+      initRulerF(); */
       update();
     }
 
@@ -113,8 +120,9 @@ namespace BatInspector.Controls
       if (_model != null)
       {
         _model.ZoomView.RulerDataA.setRange(-1, 1);
-        _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
-        _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000);
+        _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
+        _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate/ 2000);
+        _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
 
         initRulerF();
         initRulerT();

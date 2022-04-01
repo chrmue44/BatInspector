@@ -117,4 +117,109 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="CharFrequency" xml:space="preserve">
+    <value>char. Frequency</value>
+  </data>
+  <data name="SelectCallType" xml:space="preserve">
+    <value>select call type</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="AboutHistory" xml:space="preserve">
+    <value>Version History</value>
+  </data>
+  <data name="CallInformation" xml:space="preserve">
+    <value>Call Information</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="FactorySettings" xml:space="preserve">
+    <value>Factory settings</value>
+  </data>
+  <data name="BtnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ToolTipSaveSettings" xml:space="preserve">
+    <value>save settings</value>
+  </data>
+  <data name="MainWinProjectView" xml:space="preserve">
+    <value>Project View</value>
+  </data>
+  <data name="MainBtnAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="MainBtnNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="MainBtnHideUnselected" xml:space="preserve">
+    <value>Hide unselected</value>
+  </data>
+  <data name="MainBtnShowAll" xml:space="preserve">
+    <value>Show all</value>
+  </data>
+  <data name="MainBtnDelSelected" xml:space="preserve">
+    <value>Del selected</value>
+  </data>
+  <data name="MainBtnSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="MainBtnApplyFilter" xml:space="preserve">
+    <value>Apply Filter</value>
+  </data>
+  <data name="MainBtnHideShowInfo" xml:space="preserve">
+    <value>Hide/Show Info</value>
+  </data>
+  <data name="MainFilter" xml:space="preserve">
+    <value>Filter: </value>
+  </data>
+  <data name="ColorMapColorPt" xml:space="preserve">
+    <value>Color Pt</value>
+  </data>
+  <data name="ColorMapValuePt" xml:space="preserve">
+    <value>Value Pt</value>
+  </data>
+  <data name="ColorMapBlue" xml:space="preserve">
+    <value>Blue</value>
+  </data>
+  <data name="ColorMapGreen" xml:space="preserve">
+    <value>Green</value>
+  </data>
+  <data name="ColorMapRed" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="ColorMapConfig" xml:space="preserve">
+    <value>Configure Color Gradient</value>
+  </data>
+  <data name="ColorMapGradient" xml:space="preserve">
+    <value>Color Gradient</value>
+  </data>
+  <data name="BtnApply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CtlWavAutoDetection" xml:space="preserve">
+    <value>Automatic Classification</value>
+  </data>
+  <data name="CtlWavManualDetection" xml:space="preserve">
+    <value>Manual Classification</value>
+  </data>
+  <data name="CtlWavCall" xml:space="preserve">
+    <value>Call </value>
+  </data>
+  <data name="SamplingRate" xml:space="preserve">
+    <value>Sampling Rate</value>
+  </data>
+  <data name="CtlWavRemarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
 </root>

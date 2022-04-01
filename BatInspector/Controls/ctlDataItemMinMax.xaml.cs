@@ -81,7 +81,7 @@ namespace BatInspector.Controls
         tb.Text = newVal.ToString(format);
       }
       else
-        DebugLog.log("wrong data type for ctlDataItemMinMAx: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItemMinMax: " + _lbl.Content, enLogType.ERROR);
     }
 
     private void setValue(string newVal, ref string val, TextBox tb)

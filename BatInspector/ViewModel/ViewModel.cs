@@ -33,6 +33,7 @@ namespace BatInspector
     ColorTable _colorTable;
     bool _extBusy = false;
     ScriptRunner _scripter = null;
+    WavFile _wav;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
@@ -53,6 +54,8 @@ namespace BatInspector
 
     public bool Busy { get { return isBusy(); } set { _extBusy = value; } }
 
+    public WavFile WavFile { get { return _wav; } }
+
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -67,6 +70,7 @@ namespace BatInspector
       _colorTable = new ColorTable(this);
       _colorTable.createColorLookupTable();
       _zoom = new ZoomView(_colorTable);
+      _wav = new WavFile();
     }
 
 

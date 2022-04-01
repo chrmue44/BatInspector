@@ -56,6 +56,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Resources.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -117,6 +118,14 @@
     </Compile>
     <Compile Include="Forms\frmSpeciesData.xaml.cs">
       <DependentUpon>frmSpeciesData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmWavFile.xaml.cs">
+      <DependentUpon>frmWavFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MyResources.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyResources.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
@@ -216,6 +225,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\frmWavFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\FrmZoom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,19 +257,23 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\MyResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>MyResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Properties\MyResources.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MyResources.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MyResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MyResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -377,6 +394,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\settingscog_87317.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\wav-file-format-symbol.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons8-folder-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

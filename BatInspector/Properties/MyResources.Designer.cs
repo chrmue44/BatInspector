@@ -178,7 +178,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Call  ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Call ähnelt.
         /// </summary>
         public static string CtlWavCall {
             get {
@@ -201,6 +201,33 @@ namespace BatInspector.Properties {
         public static string CtlWavRemarks {
             get {
                 return ResourceManager.GetString("CtlWavRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Dist to previous ähnelt.
+        /// </summary>
+        public static string CtlZoomDistToPrev {
+            get {
+                return ResourceManager.GetString("CtlZoomDistToPrev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die dyn. Range ähnelt.
+        /// </summary>
+        public static string CtlZoomRange {
+            get {
+                return ResourceManager.GetString("CtlZoomRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Time Lag ähnelt.
+        /// </summary>
+        public static string DeltaT {
+            get {
+                return ResourceManager.GetString("DeltaT", resourceCulture);
             }
         }
         
@@ -228,6 +255,15 @@ namespace BatInspector.Properties {
         public static string FactorySettings {
             get {
                 return ResourceManager.GetString("FactorySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Frequency ähnelt.
+        /// </summary>
+        public static string Frequency {
+            get {
+                return ResourceManager.GetString("Frequency", resourceCulture);
             }
         }
         
@@ -331,6 +367,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Point in Time ähnelt.
+        /// </summary>
+        public static string PointInTime {
+            get {
+                return ResourceManager.GetString("PointInTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Sampling Rate ähnelt.
         /// </summary>
         public static string SamplingRate {
@@ -358,11 +403,164 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die S/N ratio ähnelt.
+        /// </summary>
+        public static string Snr {
+            get {
+                return ResourceManager.GetString("Snr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die decrease dynamic range ähnelt.
+        /// </summary>
+        public static string ToolTipDecRange {
+            get {
+                return ResourceManager.GetString("ToolTipDecRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die increase dynamic range ähnelt.
+        /// </summary>
+        public static string ToolTipIncRange {
+            get {
+                return ResourceManager.GetString("ToolTipIncRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Move down (decreasing frequency) ähnelt.
+        /// </summary>
+        public static string ToolTipMoveDownF {
+            get {
+                return ResourceManager.GetString("ToolTipMoveDownF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Move left (decreasing time) ähnelt.
+        /// </summary>
+        public static string ToolTipMoveLeftT {
+            get {
+                return ResourceManager.GetString("ToolTipMoveLeftT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Move right (increasing time) ähnelt.
+        /// </summary>
+        public static string ToolTipMoveRightIT {
+            get {
+                return ResourceManager.GetString("ToolTipMoveRightIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Move up (increasing frequency) ähnelt.
+        /// </summary>
+        public static string ToolTipMoveUpF {
+            get {
+                return ResourceManager.GetString("ToolTipMoveUpF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die play displayed section ähnelt.
+        /// </summary>
+        public static string ToolTipPlayDispSection {
+            get {
+                return ResourceManager.GetString("ToolTipPlayDispSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die play displayed section, stretched 10x ähnelt.
+        /// </summary>
+        public static string ToolTipPlayDispSection10x {
+            get {
+                return ResourceManager.GetString("ToolTipPlayDispSection10x", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die play displayed section, stretched 20x ähnelt.
+        /// </summary>
+        public static string ToolTipPlayDispSection20x {
+            get {
+                return ResourceManager.GetString("ToolTipPlayDispSection20x", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die save settings ähnelt.
         /// </summary>
         public static string ToolTipSaveSettings {
             get {
                 return ResourceManager.GetString("ToolTipSaveSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die stop playing audio ähnelt.
+        /// </summary>
+        public static string ToolTipStopPlayingAudio {
+            get {
+                return ResourceManager.GetString("ToolTipStopPlayingAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Zoom in x2 horizontally ähnelt.
+        /// </summary>
+        public static string ToolTipZoomInX2H {
+            get {
+                return ResourceManager.GetString("ToolTipZoomInX2H", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Zoom in x2 vertically ähnelt.
+        /// </summary>
+        public static string TooltipZoomInX2V {
+            get {
+                return ResourceManager.GetString("TooltipZoomInX2V", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Zoom out to total image ähnelt.
+        /// </summary>
+        public static string ToolTipZoomOutTotal {
+            get {
+                return ResourceManager.GetString("ToolTipZoomOutTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Zoom out x2 horizontally ähnelt.
+        /// </summary>
+        public static string ToolTipZoomOutX2Horizontally {
+            get {
+                return ResourceManager.GetString("ToolTipZoomOutX2Horizontally", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Zoom out x2 vertically ähnelt.
+        /// </summary>
+        public static string ToolTipZoomOutX2V {
+            get {
+                return ResourceManager.GetString("ToolTipZoomOutX2V", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Zoom to cursor ähnelt.
+        /// </summary>
+        public static string ToolTipZoomToCursor {
+            get {
+                return ResourceManager.GetString("ToolTipZoomToCursor", resourceCulture);
             }
         }
         

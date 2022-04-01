@@ -214,12 +214,78 @@
     <value>Manual Classification</value>
   </data>
   <data name="CtlWavCall" xml:space="preserve">
-    <value>Call </value>
+    <value>Call</value>
   </data>
   <data name="SamplingRate" xml:space="preserve">
     <value>Sampling Rate</value>
   </data>
   <data name="CtlWavRemarks" xml:space="preserve">
     <value>Remarks</value>
+  </data>
+  <data name="ToolTipZoomToCursor" xml:space="preserve">
+    <value>Zoom to cursor</value>
+  </data>
+  <data name="ToolTipZoomOutTotal" xml:space="preserve">
+    <value>Zoom out to total image</value>
+  </data>
+  <data name="TooltipZoomInX2V" xml:space="preserve">
+    <value>Zoom in x2 vertically</value>
+  </data>
+  <data name="ToolTipZoomOutX2V" xml:space="preserve">
+    <value>Zoom out x2 vertically</value>
+  </data>
+  <data name="ToolTipMoveUpF" xml:space="preserve">
+    <value>Move up (increasing frequency)</value>
+  </data>
+  <data name="ToolTipMoveDownF" xml:space="preserve">
+    <value>Move down (decreasing frequency)</value>
+  </data>
+  <data name="ToolTipZoomInX2H" xml:space="preserve">
+    <value>Zoom in x2 horizontally</value>
+  </data>
+  <data name="ToolTipZoomOutX2Horizontally" xml:space="preserve">
+    <value>Zoom out x2 horizontally</value>
+  </data>
+  <data name="ToolTipMoveLeftT" xml:space="preserve">
+    <value>Move left (decreasing time)</value>
+  </data>
+  <data name="ToolTipMoveRightIT" xml:space="preserve">
+    <value>Move right (increasing time)</value>
+  </data>
+  <data name="ToolTipIncRange" xml:space="preserve">
+    <value>increase dynamic range</value>
+  </data>
+  <data name="ToolTipDecRange" xml:space="preserve">
+    <value>decrease dynamic range</value>
+  </data>
+  <data name="ToolTipPlayDispSection" xml:space="preserve">
+    <value>play displayed section</value>
+  </data>
+  <data name="ToolTipPlayDispSection10x" xml:space="preserve">
+    <value>play displayed section, stretched 10x</value>
+  </data>
+  <data name="ToolTipPlayDispSection20x" xml:space="preserve">
+    <value>play displayed section, stretched 20x</value>
+  </data>
+  <data name="ToolTipStopPlayingAudio" xml:space="preserve">
+    <value>stop playing audio</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="PointInTime" xml:space="preserve">
+    <value>Point in Time</value>
+  </data>
+  <data name="DeltaT" xml:space="preserve">
+    <value>Time Lag</value>
+  </data>
+  <data name="CtlZoomRange" xml:space="preserve">
+    <value>dyn. Range</value>
+  </data>
+  <data name="Snr" xml:space="preserve">
+    <value>S/N ratio</value>
+  </data>
+  <data name="CtlZoomDistToPrev" xml:space="preserve">
+    <value>Dist to previous</value>
   </data>
 </root>

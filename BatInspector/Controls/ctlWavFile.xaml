@@ -22,8 +22,8 @@
       </StackPanel>
       <GroupBox Name ="_grpInfoAuto" Grid.Column="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}">
       <StackPanel Name="_spDataAuto">
-        <local:ctlDataItem x:Name="_sampleRate" />
-        <local:ctlDataItem x:Name="_duration" />
+    <!--    <local:ctlDataItem x:Name="_sampleRate" />
+        <local:ctlDataItem x:Name="_duration" /> -->
       </StackPanel>
         </GroupBox>
       <StackPanel Grid.Column="2" VerticalAlignment="Stretch">

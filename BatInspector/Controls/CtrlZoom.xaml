@@ -15,59 +15,59 @@
     </Grid.RowDefinitions>
     <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" VerticalAlignment="Top">
       <ToolBar x:Name="_tb" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-        <Button x:Name="_btnZoomCursor"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomCursor_Click" ToolTip="Zoom to cursor">
+        <Button x:Name="_btnZoomCursor"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomCursor_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomToCursor}">
           <Image Source="../images/icons8-zoom-in-cursor-64.png"></Image>
         </Button>
-        <Button x:Name="_btnZoomTotal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomTotal_Click" ToolTip="Zoom out to total image">
+        <Button x:Name="_btnZoomTotal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomTotal_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutTotal}">
           <Image Source="../images/icons8-enlarge-maximum.png"></Image>
         </Button>
         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInV_Click" ToolTip="Zoom in x2 vertically">
+        <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInV_Click" ToolTip="{x:Static res:MyResources.TooltipZoomInX2V}">
           <Image Source="../images/icons8-zoom-in-v-64.png"></Image>
         </Button>
-        <Button x:Name="_btnZoomOutV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutV_Click" ToolTip="Zoom out x2 vertically">
+        <Button x:Name="_btnZoomOutV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutV_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutX2V}">
           <Image Source="../images/icons8-zoom-out-v-64.png"></Image>
         </Button>
-        <Button x:Name="_btnmoveUp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveUp_Click" ToolTip="Move up (increasing frequency)">
+        <Button x:Name="_btnmoveUp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveUp_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveUpF}">
           <Image Source="../images/icons8-arrow-up.png"></Image>
         </Button>
-        <Button x:Name="_btnmoveDown"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveDown_Click" ToolTip="Move down (decreasing frequency)">
+        <Button x:Name="_btnmoveDown"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveDown_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveDownF}">
           <Image Source="../images/icons8-arrow-down.png"></Image>
         </Button>
         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInH_Click" ToolTip="Zoom in x2 horizontally">
+        <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomInX2H}">
           <Image Source="../images/icons8-zoom-in-h-64.png"></Image>
         </Button>
-        <Button x:Name="_btnZoomOutH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutH_Click" ToolTip="Zoom out x2 horizontally">
+        <Button x:Name="_btnZoomOutH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutX2Horizontally}">
           <Image Source="../images/icons8-zoom-out-h-64.png"></Image>
         </Button>
-        <Button x:Name="_btnmoveLeft"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveLeft_Click" ToolTip="Move left (decreasing time)">
+        <Button x:Name="_btnmoveLeft"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveLeft_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveLeftT}">
           <Image Source="../images/icons8-arrow-left-64.png"></Image>
         </Button>
-        <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click" ToolTip="Move right (increasing time)">
+        <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveRightIT}">
           <Image Source="../images/icons8-arrow-right-64.png"></Image>
         </Button>
         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         <GroupBox VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
           <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
         </GroupBox>
-        <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="increase range">
+        <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
           <Image Source="../images/icons8-plus-+-48.png"></Image>
         </Button>
-        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="decrease range">
+        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
           <Image Source="../images/icons8-minus-48.png"></Image>
         </Button>
         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="play displayed section">
+        <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
           <Image Source="../images/play-button.png"></Image>
         </Button>
-        <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="play displayed section, stretched 10x">
+        <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection10x}">
           <Image Source="../images/play-button-10x.png"></Image>
         </Button>
-        <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="play displayed section, stretched 20x">
+        <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
           <Image Source="../images/play-button-20x.png"></Image>
         </Button>
-        <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="stop playing audio">
+        <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
           <Image Source="../images/stop.png"></Image>
         </Button>
         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -131,7 +131,7 @@
         <StackPanel Orientation="Vertical" Grid.Column="1" Name ="_spCallInfo">
           <StackPanel Orientation="Horizontal">
             <Button Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click">&lt;-</Button>
-            <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left"/>
+            <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left" Margin="10,0,0,0"/>
             <Button Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click">-&gt;</Button>
           </StackPanel>
           <local:ctlDataItem x:Name="_ctlFMin"/>

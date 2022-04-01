@@ -222,4 +222,70 @@
   <data name="CtlWavRemarks" xml:space="preserve">
     <value>Bemerkungen</value>
   </data>
+  <data name="ToolTipZoomToCursor" xml:space="preserve">
+    <value>Vergrößere auf Cursor</value>
+  </data>
+  <data name="ToolTipZoomOutTotal" xml:space="preserve">
+    <value>Zeige gesamte Aufnahme</value>
+  </data>
+  <data name="TooltipZoomInX2V" xml:space="preserve">
+    <value>Vergrößere 2x vertikal</value>
+  </data>
+  <data name="ToolTipZoomOutX2V" xml:space="preserve">
+    <value>Verkleinere 2x vertikal</value>
+  </data>
+  <data name="ToolTipMoveUpF" xml:space="preserve">
+    <value>Gehe nach oben auf der Frequenzachse</value>
+  </data>
+  <data name="ToolTipMoveDownF" xml:space="preserve">
+    <value>Gehe nach unten auf der Frequenzachse</value>
+  </data>
+  <data name="ToolTipZoomInX2H" xml:space="preserve">
+    <value>Vergrößere 2x hotizontal</value>
+  </data>
+  <data name="ToolTipZoomOutX2Horizontally" xml:space="preserve">
+    <value>Verkleinere 2x vertikal</value>
+  </data>
+  <data name="ToolTipMoveLeftT" xml:space="preserve">
+    <value>Gehe nach links auf der Zeitachse</value>
+  </data>
+  <data name="ToolTipMoveRightIT" xml:space="preserve">
+    <value>Gehe nach rechts auf der Zeitachse</value>
+  </data>
+  <data name="ToolTipIncRange" xml:space="preserve">
+    <value>vergrößere Dynamik-Bereich für Darstellung</value>
+  </data>
+  <data name="ToolTipDecRange" xml:space="preserve">
+    <value>verkleinere Dynamik-Bereich für Darstellung</value>
+  </data>
+  <data name="ToolTipPlayDispSection" xml:space="preserve">
+    <value>Spiele angezeigten Abschnitt ab</value>
+  </data>
+  <data name="ToolTipPlayDispSection10x" xml:space="preserve">
+    <value>Spiele angezeigten Abschnitt 10x gestreckt ab</value>
+  </data>
+  <data name="ToolTipPlayDispSection20x" xml:space="preserve">
+    <value>Spiele angezeigten Abschnitt 20x gestreckt ab</value>
+  </data>
+  <data name="ToolTipStopPlayingAudio" xml:space="preserve">
+    <value>Audion abspielen beenden</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequenz</value>
+  </data>
+  <data name="PointInTime" xml:space="preserve">
+    <value>Zeitpunkt</value>
+  </data>
+  <data name="DeltaT" xml:space="preserve">
+    <value>Zeitdifferenz</value>
+  </data>
+  <data name="CtlZoomRange" xml:space="preserve">
+    <value>dyn. Bereich</value>
+  </data>
+  <data name="Snr" xml:space="preserve">
+    <value>S/R-Abstand</value>
+  </data>
+  <data name="CtlZoomDistToPrev" xml:space="preserve">
+    <value>Abstand vorh. Ruf</value>
+  </data>
 </root>

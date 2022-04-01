@@ -1,4 +1,15 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2021: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +25,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using libParser;
+using BatInspector.Properties;
 
 namespace BatInspector.Controls
 {
@@ -50,29 +62,29 @@ namespace BatInspector.Controls
       initRulerA();
       initRulerF(); */
 
-      _freq1.setup("Frequency [kHz]:", enDataType.DOUBLE, 1);
-      _time1.setup("Time [s]:", enDataType.DOUBLE, 3);
-      _freq2.setup("Frequency: [kHz]", enDataType.DOUBLE, 1);
-      _time2.setup("Time [s]:", enDataType.DOUBLE, 3);
-      _sampleRate.setup("SampleRate [kHz]", enDataType.DOUBLE, 1);
-      _duration.setup("Duration [s]", enDataType.DOUBLE, 3);
-      _deltaT.setup("Delta T [ms]:", enDataType.DOUBLE, 0);
+      _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1,100);
+      _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3,100);
+      _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1,100);
+      _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3,100);
+      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1,100);
+      _duration.setup(MyResources.Duration+ " [s]", enDataType.DOUBLE, 3,100);
+      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 0,100);
       _wavFilePath = wavFilePath;
       _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
       _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
-      _ctlRange.setup("Range [dB]:", enDataType.DOUBLE, 0, 80, 80, true, rangeChanged);
+      _ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);
       _ctlRange.setValue(_model.Settings.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
-      _ctlSelectCall.setup("Call Nr.", 0, 60, 60, ctlSelCallChanged);
-      _ctlFMin.setup("Fmin [kHz]: ", enDataType.DOUBLE, 1, 100);
-      _ctlFMax.setup("Fmax [kHz]: ", enDataType.DOUBLE, 1, 100);
-      _ctlFMaxAmpl.setup("FmaxAmpl [kHz]: ", enDataType.DOUBLE, 1, 100);
-      _ctlDuration.setup("Duration [ms]: ", enDataType.DOUBLE, 1, 100);
-      _ctlSnr.setup("Snr: ", enDataType.DOUBLE, 1, 100);
-      _ctlDist.setup("Dist to previous [ms]: ", enDataType.DOUBLE, 1, 100);
+      _ctlSelectCall.setup(MyResources.CtlWavCall +" Nr.", 0, 60, 60, ctlSelCallChanged);
+      _ctlFMin.setup("Fmin [kHz]: ", enDataType.DOUBLE, 1, 130);
+      _ctlFMax.setup("Fmax [kHz]: ", enDataType.DOUBLE, 1, 130);
+      _ctlFMaxAmpl.setup("FmaxAmpl [kHz]: ", enDataType.DOUBLE, 1, 130);
+      _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
+      _ctlSnr.setup(MyResources.Snr +": ", enDataType.DOUBLE, 1, 130);
+      _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
 
       string[] items = new string[_analysis.Calls.Count];
       if (_analysis.Calls.Count > 0)

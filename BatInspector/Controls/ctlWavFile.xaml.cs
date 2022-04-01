@@ -65,10 +65,10 @@ namespace BatInspector.Controls
       _model = model;
       _parent = parent;
       InitializeComponent();
-      _duration.setup(MyResources.Duration + " [s]: ", enDataType.DOUBLE, 3, 110);
+     /* _duration.setup(MyResources.Duration + " [s]: ", enDataType.DOUBLE, 3, 110);
       _duration.Focusable = false;
       _sampleRate.setup(MyResources.SamplingRate + " [Hz]: ", enDataType.INT, 0, 110);
-      _sampleRate.Focusable = false;
+      _sampleRate.Focusable = false; */
       _cbSel.Focusable = true;
     }
 
@@ -91,8 +91,8 @@ namespace BatInspector.Controls
       spec.Add("---");
       if (analysis != null)
       {
-        _sampleRate.setValue(_analysis.SampleRate);
-        _duration.setValue(_analysis.Duration);
+      //  _sampleRate.setValue(_analysis.SampleRate);
+      //  _duration.setValue(_analysis.Duration);
         int callNr = 1;
         foreach (AnalysisCall call in _analysis.Calls)
         {

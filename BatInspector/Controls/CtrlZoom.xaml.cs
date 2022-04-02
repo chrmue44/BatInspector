@@ -53,14 +53,8 @@ namespace BatInspector.Controls
       _model = model;
       _imgFt.Source = img;
       _analysis = analysis;
-/*      _model.ZoomView.RulerDataA.setRange(-1, 1);
-      _model.ZoomView.RulerDataT.setRange(0, _analysis.Duration);
-      _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate / 2000); */
       _model.ZoomView.Cursor1.set(0, 0, false);
       _model.ZoomView.Cursor2.set(0, 0, false);
-/*      initRulerT();
-      initRulerA();
-      initRulerF(); */
 
       _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1,100);
       _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3,100);
@@ -101,13 +95,6 @@ namespace BatInspector.Controls
       }
 
       _btnZoomTotal_Click(null, null);
-     /* _model.ZoomView.RulerDataA.setRange(-1, 1);
-      _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
-      _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-      _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-      initRulerT();
-      initRulerA();
-      initRulerF(); */
       update();
     }
 
@@ -124,7 +111,6 @@ namespace BatInspector.Controls
       _ctlSnr.Visibility = vis;
       _ctlDist.Visibility = vis;
       _ctlDuration.Visibility = vis;
-
     }
 
     public void update()

@@ -288,4 +288,7 @@
   <data name="CtlZoomDistToPrev" xml:space="preserve">
     <value>Dist to previous</value>
   </data>
+  <data name="CtlLogClear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
 </root>

@@ -206,10 +206,10 @@ namespace BatInspector.Forms
       {
         _tbZoom = new TabItem();
         _tbZoom.Header = "Zoom";
-        _tbReport.Items.Add(_tbZoom);
+        _tbMain.Items.Add(_tbZoom);
         _ctlZoom = new CtrlZoom();
         _tbZoom.Content = _ctlZoom;
-        _tbReport.SelectedIndex = 0;
+        _tbMain.SelectedIndex = 0;
       }
     }
 
@@ -227,6 +227,7 @@ namespace BatInspector.Forms
       {
         _ctlZoom.setup(analysis, wavFilePath, _model, img);
         _tbZoom.Header = "Zoom: " + name;
+        _tbMain.SelectedItem = _tbZoom;
       }
     }
 
@@ -299,7 +300,8 @@ private void setZoomPosition()
       if ((_model.Prj!= null) && ( _model.Prj.Ok))
       {
         _model.Busy = true;
-        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+        Parallel.ForEach(_model.Prj.Records, rec =>
+        //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
           _model.getFtImage(rec, out newImage);
@@ -307,7 +309,7 @@ private void setZoomPosition()
           {
             (sender as BackgroundWorker).ReportProgress(55, rec.Name);
           }
-        }
+        });
         _model.Busy = false;
       }
     }
@@ -335,7 +337,7 @@ private void setZoomPosition()
             _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
           });
-          await Task.Delay(2);
+         await Task.Delay(1);
         }
         DebugLog.log("project opened", enLogType.INFO);
         showStatus();
@@ -592,7 +594,7 @@ private void setZoomPosition()
       if ((_ctlZoom != null) && (_model.PrjPath != null))
       {
         _ctlZoom.update();
-        _tbReport.SelectedIndex = 2;
+        _tbMain.SelectedIndex = 2;
       }
     }
 

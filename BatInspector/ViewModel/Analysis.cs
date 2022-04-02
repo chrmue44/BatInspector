@@ -239,9 +239,8 @@ namespace BatInspector
       return retVal;
     }
 
-    public void removeFile(string dir, string wavName)
+    public void removeFile(string reportName, string wavName)
     {
-      string reportName = dir + "/report.csv";
       save(reportName);
 
       //remove from analysis file list

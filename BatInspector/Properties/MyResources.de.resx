@@ -288,4 +288,7 @@
   <data name="CtlZoomDistToPrev" xml:space="preserve">
     <value>Abstand vorh. Ruf</value>
   </data>
+  <data name="CtlLogClear" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
 </root>

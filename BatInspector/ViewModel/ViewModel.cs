@@ -154,7 +154,7 @@ namespace BatInspector
         {
            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
           _prj.removeFile(rec.File);
-          _analysis.removeFile(_selectedDir + "/Records", rec.File);
+          _analysis.removeFile(_selectedDir + "/report.csv", rec.File);
         }
       }
       if(bmp != null)
@@ -186,7 +186,7 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _analysis.removeFile(_selectedDir, wavName);
+        _analysis.removeFile(_selectedDir +"/report.csv", wavName);
       }
     }
 

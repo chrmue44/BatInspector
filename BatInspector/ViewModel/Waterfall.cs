@@ -17,6 +17,7 @@ using System.Linq;
 using System.Numerics;
 using DSPLib;
 using libParser;
+using System.Threading.Tasks;
 
 namespace BatInspector
 {
@@ -37,7 +38,16 @@ namespace BatInspector
     AppParams _settings;
     WavFile _wav = null;
 
-    public double Duration { get { return (double)_samples.Length / _samplingRate; } }
+    public double Duration 
+    { 
+      get
+      {
+        if (_samples != null)
+          return (double)_samples.Length / _samplingRate;
+        else
+          return 0;
+       }
+    }
     public int SamplingRate { get { return _samplingRate; } }
     public double[] Samples { get { return _samples; } }
     public List<double[]> Spec {  get { return _spec; } }
@@ -88,7 +98,7 @@ namespace BatInspector
     {
       if (_ok)
       {
-        Spec.Clear();
+        _spec.Clear();
         uint idxStart = (uint)(startTime * _samplingRate);
         if (idxStart > _samples.Length)
           idxStart = (uint)_samples.Length;
@@ -100,11 +110,16 @@ namespace BatInspector
           step = 1;
         if (step > _fftSize)
           step = _fftSize;
-        for (uint idx = idxStart; idx < idxEnd; idx += step)
-        {
-          double[] sp = generateFft(idx, _fftSize, DSP.Window.Type.Hanning);
-          _spec.Add(sp);
-        }
+
+         int max = (int)(idxEnd - idxStart) / (int)step;
+         for (int i = 0; i < max; i++)
+           _spec.Add(null);
+         Parallel.For(0, max, i =>
+         {
+           uint idx = idxStart + (uint)i * step;
+           double[] sp = generateFft(idx, _fftSize, DSP.Window.Type.Hanning);
+           _spec[i] = sp;
+         });
       }
       else
         DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);

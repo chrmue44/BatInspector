@@ -56,7 +56,7 @@
             </Button>
         </ToolBar>
         </ToolBarTray>
-        <TabControl Grid.Row="1" x:Name="_tbReport" Margin="5" GotFocus="_tbReport_GotFocus">
+        <TabControl Grid.Row="1" x:Name="_tbMain" Margin="5" GotFocus="_tbReport_GotFocus">
             <TabItem Header="{x:Static res:MyResources.MainWinProjectView}" >
                 <Grid>
                     <Grid.RowDefinitions>
@@ -86,7 +86,7 @@
             </StackPanel>
                     <TreeView Name="trvStructure" BorderThickness="0" Grid.Row="1" Grid.Column="0" TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5">
                     </TreeView>
-                    <GridSplitter Grid.Row="1" Grid.Column="1" Width="7" HorizontalAlignment="Stretch" />
+                    <GridSplitter Name="_grdSplitterV" Grid.Row="1" Grid.Column="1" Width="7" HorizontalAlignment="Stretch" />
                     <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" >
                          <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
                     </StackPanel>
@@ -99,7 +99,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <GridSplitter Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" />
+        <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" />
       <controls:CtlLog x:Name="_ctlLog" Grid.Row="3"/>
     </Grid>
     </DockPanel>

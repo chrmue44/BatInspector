@@ -195,7 +195,9 @@ namespace BatInspector
         rItem.SpeciesMan = speciesMan;
         _report.Add(rItem);
       }
+      restChanged();
     }
+
 
     public void save(string fileName)
     {
@@ -222,7 +224,6 @@ namespace BatInspector
           r.resetChanged();
         }
       }
-
     }
 
     public AnalysisFile getAnalysis(string fileName)
@@ -290,6 +291,26 @@ namespace BatInspector
           _report.Remove(item);
       }
     }
+
+    void restChanged()
+    {
+      foreach (AnalysisFile f in _list)
+      {
+        foreach (AnalysisCall c in f.Calls)
+        {
+          c.resetChanged();
+        }
+      }
+      if (_report != null)
+      {
+        foreach (ReportItem r in _report)
+        {
+          r.resetChanged();
+        }
+      }
+
+    }
+
   }
 
   public class ReportItem
@@ -310,7 +331,15 @@ namespace BatInspector
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
     public string Snr { get; set; }
-    public string Remarks { get { return _remarks; } set { _remarks = value; _changed = true; } }
+    public string Remarks
+    {
+      get { return _remarks; } 
+      set 
+      { 
+        _remarks = value; 
+        _changed = true; 
+      }
+    }
 
     public void resetChanged()
     {
@@ -335,7 +364,15 @@ namespace BatInspector
     public double Snr { get; }
 
     public string SpeciesAuto { get; }
-    public string SpeciesMan { get { return _speciesMan; }  set { _speciesMan = value; _changed = true; } }
+    public string SpeciesMan 
+    { 
+      get { return _speciesMan; } 
+      set
+      {
+        _speciesMan = value; 
+        _changed = true; 
+      }
+    }
 
     public bool Changed { get { return _changed; } }
 

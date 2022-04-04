@@ -38,8 +38,14 @@
     <Style TargetType="Button">
       <Setter Property="Background" Value="#FF95A4D3"/>
       <Setter Property="Foreground" Value="#FFFFFFFF" />
+      <Setter Property="Padding"    Value="6,0,6,0" />
     </Style>
-
+    <Style TargetType="TabControl">
+      <Setter Property="Background" Value="#FF5D6B99"/>
+    </Style>
+    <Style TargetType="StatusBar">
+      <Setter Property="Background" Value="#FFF7F9FE"/>
+    </Style>
   </Application.Resources>
 </Application>
  

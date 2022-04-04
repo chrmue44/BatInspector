@@ -10,35 +10,35 @@
         Title="BatInspector" Height="900" Width="1400"
         Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
-    <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock Name="_lblProject" Text="---"></TextBlock>
-            <TextBlock Name="_lblStatus" HorizontalAlignment="Right"></TextBlock>
-        </StatusBar>
-        <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="44"></RowDefinition>
-          <RowDefinition Height="*"></RowDefinition>
-          <RowDefinition Height="10"></RowDefinition>
-          <RowDefinition Height="80"></RowDefinition>
-        </Grid.RowDefinitions>
-        <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
-          <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-            <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
-              <Image Source="../images/icons8-save-48.png"></Image>
-            </Button>
+  <DockPanel>
+    <StatusBar DockPanel.Dock="Bottom">
+      <TextBlock Name="_lblProject" Text="---"></TextBlock>
+      <TextBlock Name="_lblStatus" HorizontalAlignment="Right"></TextBlock>
+    </StatusBar>
+    <Grid Background="#FF5D6B99">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="44"></RowDefinition>
+        <RowDefinition Height="*" ></RowDefinition>
+        <RowDefinition Height="10"></RowDefinition>
+        <RowDefinition Height="80"></RowDefinition>
+      </Grid.RowDefinitions>
+      <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
+        <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
+          <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
+            <Image Source="../images/icons8-save-48.png"></Image>
+          </Button>
           <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="edit color scheme for waterfall diagram" Click="_btnDel_Click">
-              <Image Source="../images/color-palette.png"> </Image>
-            </Button>
-            <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="find bat calls in project" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-              <Image Source="../images/magnifying-glass.png"></Image>
-            </Button>
-            <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="enable debug log" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-              <Image Source="../images/bug-48.png"></Image>
-            </Button>
-            <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="define filters for lists" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-              <Image Source="../images/filter.png"></Image>
-            </Button>
+            <Image Source="../images/color-palette.png"></Image>
+          </Button>
+          <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="find bat calls in project" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/magnifying-glass.png"></Image>
+          </Button>
+          <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="enable debug log" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/bug-48.png"></Image>
+          </Button>
+          <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="define filters for lists" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/filter.png"></Image>
+          </Button>
           <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="edit species information" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
           </Button>
@@ -49,58 +49,60 @@
             <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
           <Button x:Name="_btnHelp" Click="_btnHelp_Click"  ToolTip="open manual" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-              <Image Source="../images/Button_Help_icon_32.png"></Image>
-            </Button>
-            <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="show software info" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-              <Image Source="../images/Actions_help_about_icon.png"></Image>
-            </Button>
+            <Image Source="../images/Button_Help_icon_32.png"></Image>
+          </Button>
+          <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="show software info" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/Actions_help_about_icon.png"></Image>
+          </Button>
         </ToolBar>
-        </ToolBarTray>
-        <TabControl Grid.Row="1" x:Name="_tbMain" Margin="5" GotFocus="_tbReport_GotFocus">
-            <TabItem Header="{x:Static res:MyResources.MainWinProjectView}" >
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="6*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Row ="0" Grid.Column="2" Orientation="Horizontal">
-                        <Button x:Name="_btnAll"  Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left"></Button>
-                        <Button x:Name="_btnNone" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Separator></Separator>
-                        <Button x:Name="_btnHideUnSelected" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Button x:Name="_btnShowAll" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Button x:Name="_btnDelSelected" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Separator></Separator>
-                        <Button x:Name="_btnSize" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Separator></Separator>
+      </ToolBarTray>
+      <TabControl Grid.Row="1" x:Name="_tbMain"  GotFocus="_tbReport_GotFocus" BorderThickness="0" Margin="10,0,10,0" Background="#FF5D6B99">
+        <TabItem Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0" >
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="20"></RowDefinition>
+              <RowDefinition Height="14*"></RowDefinition>
+              <RowDefinition Height="12*"/>
+              <RowDefinition Height="639*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*" />
+              <ColumnDefinition Width="10" />
+              <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row ="0" Grid.Column="2" Orientation="Horizontal">
+              <Button x:Name="_btnAll"  Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom"></Button>
+              <Button x:Name="_btnNone" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <Separator></Separator>
+              <Button x:Name="_btnHideUnSelected" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <Button x:Name="_btnShowAll" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <Button x:Name="_btnDelSelected" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <Separator></Separator>
+              <Button x:Name="_btnSize" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <Separator></Separator>
               <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}"></TextBlock>
-                        <ComboBox Name="_cbFilter" Margin="5,0,0,0"></ComboBox>
-                        <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                        <Separator></Separator>
-                        <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <ComboBox Name="_cbFilter" Margin="5,0,0,0"></ComboBox>
+              <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+              <Separator></Separator>
+              <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
             </StackPanel>
-                    <TreeView Name="trvStructure" BorderThickness="0" Grid.Row="1" Grid.Column="0" TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5">
-                    </TreeView>
-                    <GridSplitter Name="_grdSplitterV" Grid.Row="1" Grid.Column="1" Width="7" HorizontalAlignment="Stretch" />
-                    <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" >
-                         <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
-                    </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Report" Margin="0">
-                <Grid Background="#FFE5E5E5" >
-                    <DataGrid x:Name="_dgData" Margin="0,0,0,10" />
-                </Grid>
-            </TabItem>
-        </TabControl>
-        <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" />
-      <controls:CtlLog x:Name="_ctlLog" Grid.Row="3"/>
+            <TreeView Name="trvStructure" BorderThickness="0" Grid.Row="1" Grid.Column="0" TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5" Grid.RowSpan="3">
+            </TreeView>
+            <GridSplitter Name="_grdSplitterV" Grid.Row="1" Grid.Column="1" Width="7" HorizontalAlignment="Stretch" Margin="1,0" Grid.RowSpan="3" />
+            <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" >
+              <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
+              </StackPanel>
+            </ScrollViewer>
+          </Grid>
+        </TabItem>
+        <TabItem Header="Report" Margin="0">
+          <Grid Background="#FFE5E5E5" >
+            <DataGrid x:Name="_dgData" Margin="0,0,0,10" />
+          </Grid>
+        </TabItem>
+      </TabControl>
+      <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" Margin="0" BorderThickness="0"/>
+      <controls:CtlLog x:Name="_ctlLog" Grid.Row="3" Margin="10,0,10,5"/>
     </Grid>
-    </DockPanel>
+  </DockPanel>
 </Window>

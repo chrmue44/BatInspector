@@ -291,4 +291,25 @@
   <data name="CtlLogClear" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="CtlZoomFileInfo" xml:space="preserve">
+    <value>Datei Informationen</value>
+  </data>
+  <data name="CtlZoomRecTime" xml:space="preserve">
+    <value>Aufnahmezeitpunkt</value>
+  </data>
+  <data name="CtlZoomPos" xml:space="preserve">
+    <value>Aufnahmeort</value>
+  </data>
+  <data name="CtlZoomGain" xml:space="preserve">
+    <value>Verstärkung</value>
+  </data>
+  <data name="CtlZoomTrigLevel" xml:space="preserve">
+    <value>Triggerschwelle [dB]</value>
+  </data>
+  <data name="CtlZoomTrigFilt" xml:space="preserve">
+    <value>Trigger-Filter</value>
+  </data>
+  <data name="CtlZoomTrigFilttFreq" xml:space="preserve">
+    <value>Trigger- Filter Freq. [kHz]</value>
+  </data>
 </root>

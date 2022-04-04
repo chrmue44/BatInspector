@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -223,11 +223,74 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die File Information ähnelt.
+        /// </summary>
+        public static string CtlZoomFileInfo {
+            get {
+                return ResourceManager.GetString("CtlZoomFileInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Gain ähnelt.
+        /// </summary>
+        public static string CtlZoomGain {
+            get {
+                return ResourceManager.GetString("CtlZoomGain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Position ähnelt.
+        /// </summary>
+        public static string CtlZoomPos {
+            get {
+                return ResourceManager.GetString("CtlZoomPos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die dyn. Range ähnelt.
         /// </summary>
         public static string CtlZoomRange {
             get {
                 return ResourceManager.GetString("CtlZoomRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Recording Time ähnelt.
+        /// </summary>
+        public static string CtlZoomRecTime {
+            get {
+                return ResourceManager.GetString("CtlZoomRecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Trigger Filter ähnelt.
+        /// </summary>
+        public static string CtlZoomTrigFilt {
+            get {
+                return ResourceManager.GetString("CtlZoomTrigFilt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Trigger Filter Freq. [kHz] ähnelt.
+        /// </summary>
+        public static string CtlZoomTrigFilttFreq {
+            get {
+                return ResourceManager.GetString("CtlZoomTrigFilttFreq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Trigger Level [dB] ähnelt.
+        /// </summary>
+        public static string CtlZoomTrigLevel {
+            get {
+                return ResourceManager.GetString("CtlZoomTrigLevel", resourceCulture);
             }
         }
         

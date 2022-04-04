@@ -120,7 +120,8 @@
       </StackPanel>
       <Canvas Name ="_rulerT" Grid.Row="2" Grid.Column="1" ></Canvas>
     </Grid>
-    <GroupBox Header="{x:Static res:MyResources.CallInformation}"  Grid.Row="2">
+    <StackPanel Orientation="Horizontal" Grid.Row="2">
+    <GroupBox Header="{x:Static res:MyResources.CallInformation}"  >
       <Grid >
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="350"></ColumnDefinition>
@@ -143,6 +144,17 @@
         </StackPanel>
       </Grid>
     </GroupBox>
+      <GroupBox Header="{x:Static res:MyResources.CtlZoomFileInfo}">
+        <StackPanel>
+        <local:ctlDataItem x:Name="_ctlDateTime" />
+        <local:ctlDataItem x:Name="_ctlGpsPos" />
+        <local:ctlDataItem x:Name="_ctlGain" />
+        <local:ctlDataItem x:Name="_ctlTrigLevel" />
+        <local:ctlDataItem x:Name="_ctlTrigFilter" />
+          <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
 
+        </StackPanel>
+      </GroupBox>
+    </StackPanel>
   </Grid>
 </UserControl>

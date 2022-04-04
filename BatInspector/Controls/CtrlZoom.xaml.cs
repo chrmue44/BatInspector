@@ -80,6 +80,21 @@ namespace BatInspector.Controls
       _ctlSnr.setup(MyResources.Snr +": ", enDataType.DOUBLE, 1, 130);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
 
+      int wt = 140;
+      int wv = 130;
+      _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt, wv);
+      _ctlDateTime.setValue(_model.ZoomView.FileInfo.DateTime);
+      _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt, wv);
+      _ctlGpsPos.setValue(_model.ZoomView.FileInfo.GPS.Position);
+      _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, enDataType.STRING, 0, wt, wv);
+      _ctlGain.setValue(_model.ZoomView.FileInfo.Gain);
+      _ctlTrigLevel.setup(BatInspector.Properties.MyResources.CtlZoomTrigLevel, enDataType.STRING, 0, wt, wv);
+      _ctlTrigLevel.setValue(_model.ZoomView.FileInfo.Trigger.Level);
+      _ctlTrigFilter.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilt, enDataType.STRING, 0, wt, wv);
+      _ctlTrigFilter.setValue(_model.ZoomView.FileInfo.Trigger.Filter);
+      _ctlTrigFiltFreq.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilttFreq, enDataType.STRING, 0, wt, wv);
+      _ctlTrigFiltFreq.setValue(_model.ZoomView.FileInfo.Trigger.Frequency);
+
       string[] items = new string[_analysis.Calls.Count];
       if (_analysis.Calls.Count > 0)
       {
@@ -94,8 +109,8 @@ namespace BatInspector.Controls
         setVisabilityCallData(false);
       }
 
-      _btnZoomTotal_Click(null, null);
       update();
+      _btnZoomTotal_Click(null, null);
     }
 
     void setVisabilityCallData(bool on)

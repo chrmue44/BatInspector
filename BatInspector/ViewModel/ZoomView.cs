@@ -10,6 +10,8 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 using System;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace BatInspector
 {
@@ -96,6 +98,7 @@ namespace BatInspector
     Spectrum _spectrum;
     Waterfall _wf = null;
     ColorTable _colorTable;
+    BatRecord _fileInfo;
 
 
     public ZoomView(ColorTable colorTable)
@@ -107,6 +110,7 @@ namespace BatInspector
       _cursor1 = new Cursor();
       _cursor2 = new Cursor();
       _spectrum = new Spectrum();
+      _fileInfo = new BatRecord();
     }
 
 
@@ -116,12 +120,19 @@ namespace BatInspector
     public Cursor Cursor1 { get { return _cursor1; } }
     public Cursor Cursor2 { get { return _cursor2; } }
     public Spectrum Spectrum { get { return _spectrum; } }
+    public BatRecord FileInfo {  get { return  _fileInfo; } }
 
     public Waterfall Waterfall {  get { return _wf; } }
 
     public void initWaterfallDiagram(string wavName, uint fftSize, int w, int h, AppParams settings)
     {
       _wf = new Waterfall(wavName, fftSize, w, h, settings, _colorTable);
+      string infoName = wavName.Replace(".wav", ".xml");
+
+      string xml = File.ReadAllText(infoName);
+      var serializer = new XmlSerializer(typeof(BatRecord));
+      TextReader reader = new StringReader(xml);
+      _fileInfo = (BatRecord)serializer.Deserialize(reader);
     }
 
     public void zoomInV()

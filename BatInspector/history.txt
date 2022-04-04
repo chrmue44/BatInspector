@@ -1,18 +1,16 @@
 TODO
 - Show Freq, time, Amplitude on mouse over in zoom window (use Popup control)
-. run R scripts
-  https://www.codeproject.com/articles/20109/wpf-multi-lingual-at-runtime
-  https://github.com/XAMLMarkupExtensions/WPFLocalizeExtension
+- run R scripts
 - GUI themes 
 - terminal
 - scripting engine
 - help
 - species comparison
-- frequency scale in spectrum on zoom view not accurate
 - tool to inspect and manipulate wav files
-- show file information (from xml-file) in zoom view
 
 DONE
+- frequency scale in spectrum on zoom view not accurate (seems to be ok)
+- show file information (from xml-file) in zoom view
 - multi language support:
 - possibility to switch between logarithmic and linear scaling for waterfall diagram
 - show data in directories without project files as well

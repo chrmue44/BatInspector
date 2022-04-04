@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
+    <Compile Include="ViewModel\BatRecord.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />

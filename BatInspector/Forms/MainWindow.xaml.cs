@@ -61,13 +61,12 @@ namespace BatInspector.Forms
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
 
-      //   string culture = "en-US";
-      string culture = "de-DE";
-      Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-      Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
 
       _model = new ViewModel(this, version.ToString());
       _model.loadSettings();
+      _log = new FrmLog();
+
+      setLanguage();
       InitializeComponent();
       initTreeView();
       populateFilterComboBox();
@@ -142,6 +141,13 @@ namespace BatInspector.Forms
           _model.Busy = false;
         }
       }
+    }
+
+    private void setLanguage()
+    {
+      string culture = _model.Settings.Culture.ToString().Replace('_', '-');
+      Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+      Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
     }
 
     private void trvStructure_Collapsed(object sender, RoutedEventArgs e)
@@ -461,11 +467,7 @@ private void setZoomPosition()
       }
     }
 
-    private void _btnDebug_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
+  
     private void _btnSize_Click(object sender, RoutedEventArgs e)
     {
       _imgHeight >>= 1;
@@ -619,6 +621,11 @@ private void setZoomPosition()
       {
         Mouse.OverrideCursor = _model.Busy ? Cursors.Wait : null;
       });
+    }
+
+    private void _btnReport_Click(object sender, RoutedEventArgs e)
+    {
+
     }
   }
 

@@ -21,9 +21,46 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using BatInspector.Properties;
+using System.Resources;
 
 namespace BatInspector
 {
+
+  public enum enCulture
+  {
+    de_DE,
+    en_US,
+  }
+
+  [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter)]
+  class LocalizedDescriptionAttribute : DescriptionAttribute
+  {
+    static string Localize(string key)
+    {
+      return MyResources.ResourceManager.GetString(key, MyResources.Culture);
+    }
+
+    public LocalizedDescriptionAttribute(string key)
+        : base(Localize(key))
+    {
+    }
+  }
+
+  [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter)]
+  class LocalizedCategoryAttribute : CategoryAttribute
+  {
+    static string Localize(string key)
+    {
+      return MyResources.ResourceManager.GetString(key, MyResources.Culture);
+    }
+
+    public LocalizedCategoryAttribute(string key)
+        : base(Localize(key))
+    {
+    }
+  }
+
   [DataContract]
   public class SpeciesInfos
   {
@@ -39,7 +76,6 @@ namespace BatInspector
       DurationMax = dMax;
       ProofSpecies = "TODO";
       CharCalls = "TODO";
-
     }
 
     [DataMember]
@@ -58,8 +94,6 @@ namespace BatInspector
     [Description("show species in comboboxes to select species")]
     public bool Show { get; set; }
 
-    [DataMember]
-    [Description("minimal characteristic frequency [kHz]")]
     public double FreqCharMin { get; set; }
 
     [DataMember]
@@ -124,109 +158,114 @@ namespace BatInspector
     const string _fName = "BatInspectorSettings.json";
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedDescription("SetDescLanguage")]
+    [LocalizedCategory("SetCatApplication")]
+    public enCulture Culture { get; set; } = enCulture.de_DE;
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
     [Description("width of waterfall diagram in px")]
     public int WaterfallHeight { get; set; } = 256;
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("height of waterfall diagram in px")]
     public int WaterfallWidth { get; set; } = 512;
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("width of FFT in points (MUST be a power of 2)")]
     public uint FftWidth { get; set; } = 512;
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Color of line in XT diagram")]
     public Color ColorXtLine { get; set; } = Color.Black;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Show zoom view in a separate window side by side to main window")]
     public bool ZoomSeparateWin { get; set; } = false;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("length of zoom for automatic zoom to call [ms]")]
     public double ZoomOneCall { get; set; } = 100.0;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("width of main window [px]")]
     public double MainWindowWidth { get; set; } = 1400;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Height of main window [px]")]
     public double MainWindowHeight { get; set; } = 900;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("width of main window [px]")]
     public double ZoomWindowWidth { get; set; } = 1200;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Height of main window [px]")]
     public double ZoomWindowHeight { get; set; } = 900;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Hide call related information in overview")]
     public bool HideInfos { get; set; } = false;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Color of Background in XT diagram")]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Main window x position")]
     public double MainWindowPosX { get; set; } = 0;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Main window y position")]
     public double MainWindowPosY { get; set; } = 0;
 
     [DataMember]
-    [Category("Application")]
+    [LocalizedCategory("SetCatApplication")]
     [Description("Range for color gradient in zoom window [dB]")]
     public double GradientRange { get; set; } = 15;
 
     [DataMember]
-    [Category("Application")]
-    [Description("minimal probability to copy automated to manually set probability with copy button")]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescProb")]
     public double ProbabilityMin { get; set; } = 0.5;
 
     [DataMember]
     [Category("Filter")]
-    [Description("settings for display filter")]
+    [LocalizedDescription("SetDescFilter")]
     public List<FilterParams> Filter { get; set; }
 
     [DataMember]
-    [Category("Bat Species")]
-    [Description("settings for display filter")]
+    [LocalizedCategory("SetCatBatSpecies")]
+    [LocalizedDescription("SetDescBatSpecies")]
     public List<SpeciesInfos> Species { get; set; }
 
     [DataMember]
-    [Category("Application")]
-    [Description("define if waterfall diagram should be logarithmic or linear")]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescWfLog")]
     public bool WaterfallLogarithmic { get; set; }
 
     [DataMember]
-    [Category("ColorGradient")]
+    [LocalizedCategory("SetCatColorGradient")]
     [Description("definition of color gradient for color channel red")]
     public List<ColorItem> ColorGradientRed { get; set; }
 
     [DataMember]
-    [Category("ColorGradient")]
+    [LocalizedCategory("SetCatColorGradient")]
     [Description("definition of color gradient for color channel green")]
     public List<ColorItem> ColorGradientGreen { get; set; }
 
     [DataMember]
-    [Category("ColorGradient")]
+    [LocalizedCategory("SetCatColorGradient")]
     [Description("definition of color gradient for color channel green")]
     public List<ColorItem> ColorGradientBlue { get; set; }
 
@@ -268,6 +307,7 @@ namespace BatInspector
       ProbabilityMin = 0.5;
       HideInfos = false;
       WaterfallLogarithmic = true;
+      Culture = enCulture.de_DE;
       initFilterParams();
       initColorGradient();
       initSpeciesInfos();

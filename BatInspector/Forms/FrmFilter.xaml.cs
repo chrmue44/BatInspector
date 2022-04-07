@@ -74,11 +74,16 @@ namespace BatInspector.Forms
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {
-      string str = "List of available variables:\n\n";
+      string str = BatInspector.Properties.MyResources.FrmFilterListOfVars + ":\n\n";
       str += _filter.getVariables();
       FrmHelpFilter frm = new FrmHelpFilter();
       frm._tbHelp.Text = str;
       frm.Show();
+    }
+
+    private void _btnCancel_Click(object sender, RoutedEventArgs e)
+    {
+
     }
   }
   public delegate void dlgUpdate();

@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -84,6 +84,15 @@ namespace BatInspector.Properties {
         public static string BtnCancel {
             get {
                 return ResourceManager.GetString("BtnCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
+        /// </summary>
+        public static string BtnOK {
+            get {
+                return ResourceManager.GetString("BtnOK", resourceCulture);
             }
         }
         
@@ -340,6 +349,69 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Filter Expression ähnelt.
+        /// </summary>
+        public static string FrmFilterFilterExpression {
+            get {
+                return ResourceManager.GetString("FrmFilterFilterExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Filter Name ähnelt.
+        /// </summary>
+        public static string FrmFilterFilterName {
+            get {
+                return ResourceManager.GetString("FrmFilterFilterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List of available variables ähnelt.
+        /// </summary>
+        public static string FrmFilterListOfVars {
+            get {
+                return ResourceManager.GetString("FrmFilterListOfVars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Manage Display Filter ähnelt.
+        /// </summary>
+        public static string FrmFilterTitle {
+            get {
+                return ResourceManager.GetString("FrmFilterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Close list without changes ähnelt.
+        /// </summary>
+        public static string FrmFilterToolCancel {
+            get {
+                return ResourceManager.GetString("FrmFilterToolCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Close list and save changes ähnelt.
+        /// </summary>
+        public static string FrmFilterToolOk {
+            get {
+                return ResourceManager.GetString("FrmFilterToolOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Help ähnelt.
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Licenses ähnelt.
         /// </summary>
         public static string Licenses {
@@ -430,6 +502,87 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create summarized report ähnelt.
+        /// </summary>
+        public static string MainToolCreateSumReport {
+            get {
+                return ResourceManager.GetString("MainToolCreateSumReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Define filters for lists ähnelt.
+        /// </summary>
+        public static string MainToolDefFilters {
+            get {
+                return ResourceManager.GetString("MainToolDefFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Edit application settings ähnelt.
+        /// </summary>
+        public static string MainToolEditAppSettings {
+            get {
+                return ResourceManager.GetString("MainToolEditAppSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Edit color scheme for waterfall diagram ähnelt.
+        /// </summary>
+        public static string MainToolEditColorScheme {
+            get {
+                return ResourceManager.GetString("MainToolEditColorScheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Edit species information ähnelt.
+        /// </summary>
+        public static string MainToolEditSpeciesInfo {
+            get {
+                return ResourceManager.GetString("MainToolEditSpeciesInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Evaluate and classify bat calls in project ähnelt.
+        /// </summary>
+        public static string MainToolEvalBatCalls {
+            get {
+                return ResourceManager.GetString("MainToolEvalBatCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Inspect and manipulate wav files ähnelt.
+        /// </summary>
+        public static string MainToolManipWavFiles {
+            get {
+                return ResourceManager.GetString("MainToolManipWavFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Open manual ähnelt.
+        /// </summary>
+        public static string MainToolOpenManual {
+            get {
+                return ResourceManager.GetString("MainToolOpenManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show software info ähnelt.
+        /// </summary>
+        public static string MainToolShowSoftwareInfo {
+            get {
+                return ResourceManager.GetString("MainToolShowSoftwareInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Project View ähnelt.
         /// </summary>
         public static string MainWinProjectView {
@@ -466,11 +619,92 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application ähnelt.
+        /// </summary>
+        public static string SetCatApplication {
+            get {
+                return ResourceManager.GetString("SetCatApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bat Species ähnelt.
+        /// </summary>
+        public static string SetCatBatSpecies {
+            get {
+                return ResourceManager.GetString("SetCatBatSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Color Gradient ähnelt.
+        /// </summary>
+        public static string SetCatColorGradient {
+            get {
+                return ResourceManager.GetString("SetCatColorGradient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Settings for bat species ähnelt.
+        /// </summary>
+        public static string SetDescBatSpecies {
+            get {
+                return ResourceManager.GetString("SetDescBatSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Settings for display filter ähnelt.
+        /// </summary>
+        public static string SetDescFilter {
+            get {
+                return ResourceManager.GetString("SetDescFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Set language ähnelt.
+        /// </summary>
+        public static string SetDescLanguage {
+            get {
+                return ResourceManager.GetString("SetDescLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Minimal probability to copy automated to manually set probability with copy button ähnelt.
+        /// </summary>
+        public static string SetDescProb {
+            get {
+                return ResourceManager.GetString("SetDescProb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Define if waterfall diagram should be logarithmic or linear ähnelt.
+        /// </summary>
+        public static string SetDescWfLog {
+            get {
+                return ResourceManager.GetString("SetDescWfLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Settings ähnelt.
         /// </summary>
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application ähnelt.
+        /// </summary>
+        public static string SettingsApplication {
+            get {
+                return ResourceManager.GetString("SettingsApplication", resourceCulture);
             }
         }
         

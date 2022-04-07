@@ -79,6 +79,7 @@ namespace BatInspector
     }
 
     public UInt32 AverageBytesPerSec { get; private set; }
+    
     public UInt16 BlockAlign { get; private set; }
 
     public UInt16 BitsPerSample
@@ -233,7 +234,6 @@ namespace BatInspector
       }
       ChunkSize = (UInt32)WaveData.Length * 2;
     }
-
   }
 
   public class WavFile
@@ -243,8 +243,7 @@ namespace BatInspector
     FormatChunk _format;
     DataChunk _data;
     Audio _audio;
-    //SoundPlayer _audio;
-
+   
     public int Channels { get { return _format.Channels; } }
     public int BitsPerSample { get { return _format.BitsPerSample; } }
     public uint SamplingRate {  get { return _format.Frequency; } }
@@ -321,7 +320,8 @@ namespace BatInspector
     {
       //      File.WriteAllBytes("$$$.wav", _waveData);
       //      _audio = new SoundPlayer("$$$.wav");
-      _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
+      if(_waveData != null)
+        _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
       //  _waveData = null;
       //  tempBytes = null;
     }
@@ -332,47 +332,4 @@ namespace BatInspector
         _audio.Stop();
     }
   }
-
-/*
-  class WavTest
-  {
-    static Audio myAudio = new Audio();
-    private static byte[] myWaveData;
-
-    // Sample rate (Or number of samples in one second)
-    private const int SAMPLE_FREQUENCY = 44100;
-    // 60 seconds or 1 minute of audio
-    private const int AUDIO_LENGTH_IN_SECONDS = 1;
-
-    static void Main()
-    {
-      List<Byte> tempBytes = new List<byte>();
-
-      WaveHeader header = new WaveHeader();
-      FormatChunk format = new FormatChunk();
-      DataChunk data = new DataChunk();
-
-      // Create 1 second of tone at 697Hz
-      SineGenerator leftData = new SineGenerator(697.0f,
-         SAMPLE_FREQUENCY, AUDIO_LENGTH_IN_SECONDS);
-      // Create 1 second of tone at 1209Hz
-      SineGenerator rightData = new SineGenerator(1209.0f,
-         SAMPLE_FREQUENCY, AUDIO_LENGTH_IN_SECONDS);
-
-      data.AddSampleData(leftData.Data, rightData.Data);
-
-      header.FileLength += format.Length() + data.Length();
-
-      tempBytes.AddRange(header.GetBytes());
-      tempBytes.AddRange(format.GetBytes());
-      tempBytes.AddRange(data.GetBytes());
-
-      myWaveData = tempBytes.ToArray();
-
-      myAudio.Play(myWaveData, AudioPlayMode.WaitToComplete);
-
-    }
-
-  }
-*/
 }

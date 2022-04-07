@@ -312,4 +312,82 @@
   <data name="CtlZoomTrigFilttFreq" xml:space="preserve">
     <value>Trigger Filter Freq. [kHz]</value>
   </data>
+  <data name="MainToolEditSpeciesInfo" xml:space="preserve">
+    <value>Edit species information</value>
+  </data>
+  <data name="MainToolManipWavFiles" xml:space="preserve">
+    <value>Inspect and manipulate wav files</value>
+  </data>
+  <data name="MainToolCreateSumReport" xml:space="preserve">
+    <value>Create summarized report</value>
+  </data>
+  <data name="MainToolEditAppSettings" xml:space="preserve">
+    <value>Edit application settings</value>
+  </data>
+  <data name="MainToolOpenManual" xml:space="preserve">
+    <value>Open manual</value>
+  </data>
+  <data name="MainToolDefFilters" xml:space="preserve">
+    <value>Define filters for lists</value>
+  </data>
+  <data name="MainToolEvalBatCalls" xml:space="preserve">
+    <value>Evaluate and classify bat calls in project</value>
+  </data>
+  <data name="MainToolEditColorScheme" xml:space="preserve">
+    <value>Edit color scheme for waterfall diagram</value>
+  </data>
+  <data name="MainToolShowSoftwareInfo" xml:space="preserve">
+    <value>Show software info</value>
+  </data>
+  <data name="FrmFilterFilterName" xml:space="preserve">
+    <value>Filter Name</value>
+  </data>
+  <data name="FrmFilterFilterExpression" xml:space="preserve">
+    <value>Filter Expression</value>
+  </data>
+  <data name="FrmFilterToolCancel" xml:space="preserve">
+    <value>Close list without changes</value>
+  </data>
+  <data name="FrmFilterToolOk" xml:space="preserve">
+    <value>Close list and save changes</value>
+  </data>
+  <data name="BtnOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="FrmFilterTitle" xml:space="preserve">
+    <value>Manage Display Filter</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="FrmFilterListOfVars" xml:space="preserve">
+    <value>List of available variables</value>
+  </data>
+  <data name="SettingsApplication" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="SetDescLanguage" xml:space="preserve">
+    <value>Set language</value>
+  </data>
+  <data name="SetCatApplication" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="SetCatBatSpecies" xml:space="preserve">
+    <value>Bat Species</value>
+  </data>
+  <data name="SetDescWfLog" xml:space="preserve">
+    <value>Define if waterfall diagram should be logarithmic or linear</value>
+  </data>
+  <data name="SetDescFilter" xml:space="preserve">
+    <value>Settings for display filter</value>
+  </data>
+  <data name="SetDescBatSpecies" xml:space="preserve">
+    <value>Settings for bat species</value>
+  </data>
+  <data name="SetDescProb" xml:space="preserve">
+    <value>Minimal probability to copy automated to manually set probability with copy button</value>
+  </data>
+  <data name="SetCatColorGradient" xml:space="preserve">
+    <value>Color Gradient</value>
+  </data>
 </root>

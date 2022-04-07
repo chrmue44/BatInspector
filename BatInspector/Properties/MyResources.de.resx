@@ -312,4 +312,82 @@
   <data name="CtlZoomTrigFilttFreq" xml:space="preserve">
     <value>Trigger- Filter Freq. [kHz]</value>
   </data>
+  <data name="MainToolEditSpeciesInfo" xml:space="preserve">
+    <value>Bearbeite Spezies-Details</value>
+  </data>
+  <data name="MainToolManipWavFiles" xml:space="preserve">
+    <value>Betrachte und bearbeite WAV-Datei</value>
+  </data>
+  <data name="MainToolCreateSumReport" xml:space="preserve">
+    <value>Erstelle Datenauswertung über mehrere Projekte</value>
+  </data>
+  <data name="MainToolEditAppSettings" xml:space="preserve">
+    <value>Bearbeite Programm-Eintellungen</value>
+  </data>
+  <data name="MainToolOpenManual" xml:space="preserve">
+    <value>Öffne Bedienungsanleitung</value>
+  </data>
+  <data name="MainToolDefFilters" xml:space="preserve">
+    <value>Definiere Filter für Auswertung</value>
+  </data>
+  <data name="MainToolEvalBatCalls" xml:space="preserve">
+    <value>Klassifizierung und Auswertung von Rufen</value>
+  </data>
+  <data name="MainToolEditColorScheme" xml:space="preserve">
+    <value>Bearbeite Farbverlauf für Wasserfalldiagramm</value>
+  </data>
+  <data name="MainToolShowSoftwareInfo" xml:space="preserve">
+    <value>Zeige Softwareiformationen</value>
+  </data>
+  <data name="FrmFilterFilterName" xml:space="preserve">
+    <value>Filtername</value>
+  </data>
+  <data name="FrmFilterFilterExpression" xml:space="preserve">
+    <value>Ausdruck</value>
+  </data>
+  <data name="FrmFilterToolCancel" xml:space="preserve">
+    <value>Schließe Fenster ohne Änderungen</value>
+  </data>
+  <data name="FrmFilterToolOk" xml:space="preserve">
+    <value>Schließe Fenster und speichere Änderungen</value>
+  </data>
+  <data name="BtnOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="FrmFilterTitle" xml:space="preserve">
+    <value>Verwalte Anzeigefilter</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="FrmFilterListOfVars" xml:space="preserve">
+    <value>Liste der verfügbaren Variablen</value>
+  </data>
+  <data name="SettingsApplication" xml:space="preserve">
+    <value>Programm Allgemein</value>
+  </data>
+  <data name="SetDescLanguage" xml:space="preserve">
+    <value>Sprache einstellen</value>
+  </data>
+  <data name="SetCatApplication" xml:space="preserve">
+    <value>Programm</value>
+  </data>
+  <data name="SetCatBatSpecies" xml:space="preserve">
+    <value>Fledermausarten</value>
+  </data>
+  <data name="SetDescWfLog" xml:space="preserve">
+    <value>LEgt fest ob die Darstellung im Wasserfalldiagramm linear oder Logarithmisch ist</value>
+  </data>
+  <data name="SetDescFilter" xml:space="preserve">
+    <value>Einstellungen für Anzeigefilter</value>
+  </data>
+  <data name="SetDescBatSpecies" xml:space="preserve">
+    <value>Einstellungen für Fledermausarten</value>
+  </data>
+  <data name="SetDescProb" xml:space="preserve">
+    <value>Mindestwert für die Erkennungswahrscheinlichkeit, um automatisch erkannte Art mit dem "Copy"-Button zu kopieren</value>
+  </data>
+  <data name="SetCatColorGradient" xml:space="preserve">
+    <value>Farbverlauf</value>
+  </data>
 </root>

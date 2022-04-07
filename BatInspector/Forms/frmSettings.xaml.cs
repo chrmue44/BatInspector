@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,8 +51,17 @@ namespace BatInspector.Forms
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
       _settings.save();
+      setLanguage();
+
       DebugLog.log("Application Settings changed and saved", enLogType.INFO);
       this.Close();
     }
+    private void setLanguage()
+    {
+      string culture = _settings.Culture.ToString().Replace('_', '-');
+      Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+      Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
+    }
+
   }
 }

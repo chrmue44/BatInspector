@@ -15,12 +15,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+
 using BatInspector.Properties;
 using System.Resources;
 
@@ -79,11 +76,11 @@ namespace BatInspector
     }
 
     [DataMember]
-    [Description("4 letter abbreviation for species name")]
+    [LocalizedDescription("SpecDescAbbr")]
     public string Abbreviation { get; set; }
 
     [DataMember]
-    [Description("latin species name")]
+    [LocalizedDescription("SpecDescLatinSpec")]
     public string Latin { get; set; }
 
     [DataMember]
@@ -91,7 +88,7 @@ namespace BatInspector
     public string Local { get; set; }
 
     [DataMember]
-    [Description("show species in comboboxes to select species")]
+    [LocalizedDescription("SpecDescShowSpec")]
     public bool Show { get; set; }
 
     public double FreqCharMin { get; set; }
@@ -101,11 +98,11 @@ namespace BatInspector
     public double FreqCharMax { get; set; }
 
     [DataMember]
-    [Description("minimal call duration [ms]")]
+    [LocalizedDescription("SpecDescMinCall")]
     public double DurationMin { get; set; }
 
     [DataMember]
-    [Description("maximal call duration [ms]")]
+    [LocalizedDescription("SpecDescMaxCall")]
     public double DurationMax { get; set; }
 
     [DataMember]
@@ -121,6 +118,7 @@ namespace BatInspector
     public string Habitat { get; set; }
   }
 
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class FilterParams
   {
     [DataMember]
@@ -164,39 +162,39 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("width of waterfall diagram in px")]
+    [LocalizedDescription("SpecDescWidthWf")]
     public int WaterfallHeight { get; set; } = 256;
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("height of waterfall diagram in px")]
+    [LocalizedDescription("SetDescHeightWf")]
     public int WaterfallWidth { get; set; } = 512;
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("width of FFT in points (MUST be a power of 2)")]
+    [LocalizedDescription("SetDescWidthFFT")]
     public uint FftWidth { get; set; } = 512;
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Color of line in XT diagram")]
+    [LocalizedDescription("SetDescColorOfLine")]
     public Color ColorXtLine { get; set; } = Color.Black;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Show zoom view in a separate window side by side to main window")]
+    [LocalizedDescription("SpecDescShowZoom")]
     public bool ZoomSeparateWin { get; set; } = false;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("length of zoom for automatic zoom to call [ms]")]
+    [LocalizedDescription("SetDescLengthZoomMs")]
     public double ZoomOneCall { get; set; } = 100.0;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("width of main window [px]")]
+    [LocalizedDescription("SetDescWidthMainWin")]
     public double MainWindowWidth { get; set; } = 1400;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Height of main window [px]")]
+    [LocalizedDescription("SetDescHeightMainWin")]
     public double MainWindowHeight { get; set; } = 900;
 
     [DataMember]
@@ -206,32 +204,32 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Height of main window [px]")]
+    [LocalizedDescription("SetDescHeightMainWin")]
     public double ZoomWindowHeight { get; set; } = 900;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Hide call related information in overview")]
+    [LocalizedDescription("SerDescHideCallInfo")]
     public bool HideInfos { get; set; } = false;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Color of Background in XT diagram")]
+    [LocalizedDescription("SetDescColorBackgXTDiag")]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Main window x position")]
+    [LocalizedDescription("SetDescMainWinPosX")]
     public double MainWindowPosX { get; set; } = 0;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Main window y position")]
+    [LocalizedDescription("SetDescMainWinPosY")]
     public double MainWindowPosY { get; set; } = 0;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [Description("Range for color gradient in zoom window [dB]")]
+    [LocalizedDescription("SetDescRangeZoomWin")]
     public double GradientRange { get; set; } = 15;
 
     [DataMember]
@@ -256,17 +254,17 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient")]
-    [Description("definition of color gradient for color channel red")]
+    [LocalizedDescription("SpecDescColorRed")]
     public List<ColorItem> ColorGradientRed { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient")]
-    [Description("definition of color gradient for color channel green")]
+    [LocalizedDescription("SpecDescColorGreen")]
     public List<ColorItem> ColorGradientGreen { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient")]
-    [Description("definition of color gradient for color channel green")]
+    [LocalizedDescription("SpecDescColorBlue")]
     public List<ColorItem> ColorGradientBlue { get; set; }
 
     [DataMember]

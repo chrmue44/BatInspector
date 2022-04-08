@@ -390,4 +390,67 @@
   <data name="SetCatColorGradient" xml:space="preserve">
     <value>Farbverlauf</value>
   </data>
+  <data name="SetDescHeightWf" xml:space="preserve">
+    <value>Höhe des Wasserfalldiagramms in Pixel</value>
+  </data>
+  <data name="SetDescWidthFFT" xml:space="preserve">
+    <value>Breite der FFT in Punkten (muss eine Potenz von 2 sein)</value>
+  </data>
+  <data name="SetDescColorOfLine" xml:space="preserve">
+    <value>Linienfarbe für das XT Diagramm</value>
+  </data>
+  <data name="SpecDescWidthWf" xml:space="preserve">
+    <value>Breite des Wasserfalldiagramms in Pixel</value>
+  </data>
+  <data name="SpecDescShowZoom" xml:space="preserve">
+    <value>Zeige Zoom-Anzeige in separatem Fenster</value>
+  </data>
+  <data name="SetDescLengthZoomMs" xml:space="preserve">
+    <value>Länge der Zoomanzeige für automatischen Zoom in Einzelruf [ms]</value>
+  </data>
+  <data name="SetDescWidthMainWin" xml:space="preserve">
+    <value>Breite des Hauptfensters [px]</value>
+  </data>
+  <data name="SetDescHeightMainWin" xml:space="preserve">
+    <value>Höhe des Hauptfensters [px]</value>
+  </data>
+  <data name="SerDescHideCallInfo" xml:space="preserve">
+    <value>Verberge rufbezogene Informationen in Übersicht</value>
+  </data>
+  <data name="SetDescRangeZoomWin" xml:space="preserve">
+    <value>Bereich für Farbgradient im Zoomfenster [dB]</value>
+  </data>
+  <data name="SetDescMainWinPosY" xml:space="preserve">
+    <value>Hauptfenster Y-Position</value>
+  </data>
+  <data name="SetDescMainWinPosX" xml:space="preserve">
+    <value>Hauptfenster X-Position</value>
+  </data>
+  <data name="SetDescColorBackgXTDiag" xml:space="preserve">
+    <value>Hintergrundfarbe für XT-Diagramm</value>
+  </data>
+  <data name="SpecDescColorRed" xml:space="preserve">
+    <value>Definition des Farbverlaufs für den Kanal rot</value>
+  </data>
+  <data name="SpecDescColorGreen" xml:space="preserve">
+    <value>Definition des Farbverlaufs für den Kanal grün</value>
+  </data>
+  <data name="SpecDescColorBlue" xml:space="preserve">
+    <value>Definition des Farbverlaufs für den Kanal blau</value>
+  </data>
+  <data name="SpecDescAbbr" xml:space="preserve">
+    <value>Abkürzung Fledermausart (4 Buchstaben)</value>
+  </data>
+  <data name="SpecDescLatinSpec" xml:space="preserve">
+    <value>Lateinischer Speziesname</value>
+  </data>
+  <data name="SpecDescShowSpec" xml:space="preserve">
+    <value>Zeige Species in Kombo-Box zur Auswahl</value>
+  </data>
+  <data name="SpecDescMinCall" xml:space="preserve">
+    <value>Minimale Rufdauer [ms]</value>
+  </data>
+  <data name="SpecDescMaxCall" xml:space="preserve">
+    <value>Maximale Rufdauer [ms]</value>
+  </data>
 </root>

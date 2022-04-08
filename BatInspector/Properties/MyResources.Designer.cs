@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -619,6 +619,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hide call related information in overview ähnelt.
+        /// </summary>
+        public static string SerDescHideCallInfo {
+            get {
+                return ResourceManager.GetString("SerDescHideCallInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Application ähnelt.
         /// </summary>
         public static string SetCatApplication {
@@ -655,11 +664,47 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Color of Background in XT diagram ähnelt.
+        /// </summary>
+        public static string SetDescColorBackgXTDiag {
+            get {
+                return ResourceManager.GetString("SetDescColorBackgXTDiag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Color of line in XT diagram ähnelt.
+        /// </summary>
+        public static string SetDescColorOfLine {
+            get {
+                return ResourceManager.GetString("SetDescColorOfLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Settings for display filter ähnelt.
         /// </summary>
         public static string SetDescFilter {
             get {
                 return ResourceManager.GetString("SetDescFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Height of main window [px] ähnelt.
+        /// </summary>
+        public static string SetDescHeightMainWin {
+            get {
+                return ResourceManager.GetString("SetDescHeightMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Height of waterfall diagram in pixel ähnelt.
+        /// </summary>
+        public static string SetDescHeightWf {
+            get {
+                return ResourceManager.GetString("SetDescHeightWf", resourceCulture);
             }
         }
         
@@ -673,6 +718,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Length of zoom for automatic zoom to call [ms] ähnelt.
+        /// </summary>
+        public static string SetDescLengthZoomMs {
+            get {
+                return ResourceManager.GetString("SetDescLengthZoomMs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Main window X position ähnelt.
+        /// </summary>
+        public static string SetDescMainWinPosX {
+            get {
+                return ResourceManager.GetString("SetDescMainWinPosX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Main window y position ähnelt.
+        /// </summary>
+        public static string SetDescMainWinPosY {
+            get {
+                return ResourceManager.GetString("SetDescMainWinPosY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Minimal probability to copy automated to manually set probability with copy button ähnelt.
         /// </summary>
         public static string SetDescProb {
@@ -682,11 +754,38 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Range for color gradient in zoom window [dB] ähnelt.
+        /// </summary>
+        public static string SetDescRangeZoomWin {
+            get {
+                return ResourceManager.GetString("SetDescRangeZoomWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Define if waterfall diagram should be logarithmic or linear ähnelt.
         /// </summary>
         public static string SetDescWfLog {
             get {
                 return ResourceManager.GetString("SetDescWfLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Width of FFT in points (MUST be a power of 2) ähnelt.
+        /// </summary>
+        public static string SetDescWidthFFT {
+            get {
+                return ResourceManager.GetString("SetDescWidthFFT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Width of main window [px] ähnelt.
+        /// </summary>
+        public static string SetDescWidthMainWin {
+            get {
+                return ResourceManager.GetString("SetDescWidthMainWin", resourceCulture);
             }
         }
         
@@ -714,6 +813,96 @@ namespace BatInspector.Properties {
         public static string Snr {
             get {
                 return ResourceManager.GetString("Snr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 4 letter abbreviation for species name ähnelt.
+        /// </summary>
+        public static string SpecDescAbbr {
+            get {
+                return ResourceManager.GetString("SpecDescAbbr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Definition of color gradient for color channel blue ähnelt.
+        /// </summary>
+        public static string SpecDescColorBlue {
+            get {
+                return ResourceManager.GetString("SpecDescColorBlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Definition of color gradient for color channel green ähnelt.
+        /// </summary>
+        public static string SpecDescColorGreen {
+            get {
+                return ResourceManager.GetString("SpecDescColorGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Definition of color gradient for color channel red ähnelt.
+        /// </summary>
+        public static string SpecDescColorRed {
+            get {
+                return ResourceManager.GetString("SpecDescColorRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Latin species name ähnelt.
+        /// </summary>
+        public static string SpecDescLatinSpec {
+            get {
+                return ResourceManager.GetString("SpecDescLatinSpec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Maximal call duration [ms] ähnelt.
+        /// </summary>
+        public static string SpecDescMaxCall {
+            get {
+                return ResourceManager.GetString("SpecDescMaxCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Minimal call duration [ms] ähnelt.
+        /// </summary>
+        public static string SpecDescMinCall {
+            get {
+                return ResourceManager.GetString("SpecDescMinCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show species in comboboxes to select species ähnelt.
+        /// </summary>
+        public static string SpecDescShowSpec {
+            get {
+                return ResourceManager.GetString("SpecDescShowSpec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show zoom view in a separate window side by side to main window ähnelt.
+        /// </summary>
+        public static string SpecDescShowZoom {
+            get {
+                return ResourceManager.GetString("SpecDescShowZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Width of waterfall diagram in pixel ähnelt.
+        /// </summary>
+        public static string SpecDescWidthWf {
+            get {
+                return ResourceManager.GetString("SpecDescWidthWf", resourceCulture);
             }
         }
         

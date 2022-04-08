@@ -390,4 +390,67 @@
   <data name="SetCatColorGradient" xml:space="preserve">
     <value>Color Gradient</value>
   </data>
+  <data name="SetDescHeightWf" xml:space="preserve">
+    <value>Height of waterfall diagram in pixel</value>
+  </data>
+  <data name="SetDescWidthFFT" xml:space="preserve">
+    <value>Width of FFT in points (MUST be a power of 2)</value>
+  </data>
+  <data name="SetDescColorOfLine" xml:space="preserve">
+    <value>Color of line in XT diagram</value>
+  </data>
+  <data name="SpecDescWidthWf" xml:space="preserve">
+    <value>Width of waterfall diagram in pixel</value>
+  </data>
+  <data name="SpecDescShowZoom" xml:space="preserve">
+    <value>Show zoom view in a separate window side by side to main window</value>
+  </data>
+  <data name="SetDescLengthZoomMs" xml:space="preserve">
+    <value>Length of zoom for automatic zoom to call [ms]</value>
+  </data>
+  <data name="SetDescWidthMainWin" xml:space="preserve">
+    <value>Width of main window [px]</value>
+  </data>
+  <data name="SetDescHeightMainWin" xml:space="preserve">
+    <value>Height of main window [px]</value>
+  </data>
+  <data name="SerDescHideCallInfo" xml:space="preserve">
+    <value>Hide call related information in overview</value>
+  </data>
+  <data name="SetDescRangeZoomWin" xml:space="preserve">
+    <value>Range for color gradient in zoom window [dB]</value>
+  </data>
+  <data name="SetDescMainWinPosY" xml:space="preserve">
+    <value>Main window y position</value>
+  </data>
+  <data name="SetDescMainWinPosX" xml:space="preserve">
+    <value>Main window X position</value>
+  </data>
+  <data name="SetDescColorBackgXTDiag" xml:space="preserve">
+    <value>Color of Background in XT diagram</value>
+  </data>
+  <data name="SpecDescColorRed" xml:space="preserve">
+    <value>Definition of color gradient for color channel red</value>
+  </data>
+  <data name="SpecDescColorGreen" xml:space="preserve">
+    <value>Definition of color gradient for color channel green</value>
+  </data>
+  <data name="SpecDescColorBlue" xml:space="preserve">
+    <value>Definition of color gradient for color channel blue</value>
+  </data>
+  <data name="SpecDescAbbr" xml:space="preserve">
+    <value>4 letter abbreviation for species name</value>
+  </data>
+  <data name="SpecDescLatinSpec" xml:space="preserve">
+    <value>Latin species name</value>
+  </data>
+  <data name="SpecDescShowSpec" xml:space="preserve">
+    <value>Show species in comboboxes to select species</value>
+  </data>
+  <data name="SpecDescMinCall" xml:space="preserve">
+    <value>Minimal call duration [ms]</value>
+  </data>
+  <data name="SpecDescMaxCall" xml:space="preserve">
+    <value>Maximal call duration [ms]</value>
+  </data>
 </root>

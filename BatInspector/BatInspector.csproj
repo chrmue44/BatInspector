@@ -83,6 +83,9 @@
     <Compile Include="Controls\CtlLog.xaml.cs">
       <DependentUpon>CtlLog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CtlSelectFile.xaml.cs">
+      <DependentUpon>CtlSelectFile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlSelectItem.xaml.cs">
       <DependentUpon>ctlSelectItem.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,9 @@
     </Compile>
     <Compile Include="Controls\CtlSpectrum.xaml.cs">
       <DependentUpon>CtlSpectrum.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CtlSumReport.xaml.cs">
+      <DependentUpon>CtlSumReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CtrlZoom.xaml.cs">
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
@@ -170,6 +176,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CtlSelectFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ctlSelectItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -187,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CtlSpectrum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CtlSumReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

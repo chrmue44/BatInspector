@@ -7,6 +7,7 @@ TODO
 - help
 - species comparison
 - tool to inspect and manipulate wav files
+- reports across projects (week, month year)
 
 DONE
 - frequency scale in spectrum on zoom view not accurate (seems to be ok)

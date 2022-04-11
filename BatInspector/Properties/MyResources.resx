@@ -453,4 +453,7 @@
   <data name="SpecDescMaxCall" xml:space="preserve">
     <value>Maximal call duration [ms]</value>
   </data>
+  <data name="CtlSpecProofSpecies" xml:space="preserve">
+    <value>Proof of Species</value>
+  </data>
 </root>

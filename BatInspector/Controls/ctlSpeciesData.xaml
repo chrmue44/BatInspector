@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
-             xmlns:res="clr-namespace:BatInspector"
+             xmlns:res="clr-namespace:BatInspector.Properties"
              xmlns:Forms="clr-namespace:BatInspector.Controls"
              x:Class="BatInspector.Controls.ctlSpeciesData"
              mc:Ignorable="d" 
@@ -15,7 +15,7 @@
         <local:ctlDataItem x:Name="_ctlLocalName" Margin="5"/>
         <local:ctlDataItemMinMax x:Name="_ctFreqC"/>
       <local:ctlDataItemMinMax x:Name="_ctDuration" />
-        <GroupBox Header="Proof of Species" Height="120">
+        <GroupBox Header="{x:Static res:MyResources.CtlSpecProofSpecies}" Height="120">
           <TextBox Margin="5" Name="_tbProof" TextWrapping="Wrap" AcceptsReturn="True"> </TextBox>
         </GroupBox>
         <GroupBox Header="Distinctive Calls" Height="120">

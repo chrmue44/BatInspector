@@ -4,14 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <StackPanel>
-            <local:CtlSelectFile x:Name="_ctlFolder"></local:CtlSelectFile>
-            <local:ctlSelectItem x:Name="_ctlPeriod"></local:ctlSelectItem>
-            <local:ctlSelectItem x:Name="_ctlFilter"></local:ctlSelectItem>
-            <Button Content="go" Width="100" HorizontalAlignment="Center"></Button>
-        </StackPanel>
-    </Grid>
+  <StackPanel>
+    <StackPanel Orientation="Horizontal">
+      <Label Content="Filter" HorizontalContentAlignment="Right" Width="150"/>
+      <ComboBox Name="_cbFilter" Width="150"></ComboBox>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal">
+      <Label Content="{x:Static res:MyResources.CtlSumReportTimespan}" HorizontalContentAlignment="Right" Width="150"/>
+      <ComboBox Width="150">
+        <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsDaily}" />
+        <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsWeekly}" />
+        <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsMonthly}" />
+      </ComboBox>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal">
+      <Label Content="{x:Static res:MyResources.CtlSumReportStartDate}" HorizontalContentAlignment="Right" Width="150"/>
+      <DatePicker></DatePicker>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal">
+      <Label Content="{x:Static res:MyResources.CtlSumReportEndDate}" HorizontalContentAlignment="Right" Width="150"/>
+      <DatePicker></DatePicker>
+      <Button Content="{x:Static res:MyResources.CtlReportCreate}" Width="150"  Margin="100,0,0,0" HorizontalAlignment="Right"></Button>
+    </StackPanel>
+  </StackPanel>
 </UserControl>

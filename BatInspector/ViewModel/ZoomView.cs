@@ -133,6 +133,7 @@ namespace BatInspector
       var serializer = new XmlSerializer(typeof(BatRecord));
       TextReader reader = new StringReader(xml);
       _fileInfo = (BatRecord)serializer.Deserialize(reader);
+      initUninitializedValues();
     }
 
     public void zoomInV()
@@ -203,6 +204,37 @@ namespace BatInspector
         _rulerDataF.decr(0.25, min);
       }
       return retVal;
+    }
+
+    //TODO: very ugly: find a better way to do this
+    private void initUninitializedValues()
+    {
+      if (_fileInfo.DateTime == null)
+        _fileInfo.DateTime = "";
+      if (_fileInfo.Duration == null)
+        _fileInfo.Duration = "";
+      if (_fileInfo.FileName == null)
+        _fileInfo.FileName = "";
+      if (_fileInfo.Gain == null)
+        _fileInfo.Gain = "";
+      if (_fileInfo.GPS == null)
+        _fileInfo.GPS = new BatRecordGPS();
+      if (_fileInfo.GPS.Position == null)
+        _fileInfo.GPS.Position = "";
+      if (_fileInfo.InputFilter == null)
+        _fileInfo.InputFilter = "";
+      if (_fileInfo.PeakValue == null)
+        _fileInfo.PeakValue = "";
+      if (_fileInfo.Samplerate == null)
+        _fileInfo.Samplerate = "";
+      if (_fileInfo.Trigger == null)
+        _fileInfo.Trigger = new BatRecordTrigger();
+      if (_fileInfo.Trigger.Filter == null)
+        _fileInfo.Trigger.Filter = "";
+      if (_fileInfo.Trigger.Frequency == null)
+        _fileInfo.Trigger.Frequency = "";
+      if (_fileInfo.Trigger.Level == null)
+        _fileInfo.Trigger.Level = "";
     }
 
   }

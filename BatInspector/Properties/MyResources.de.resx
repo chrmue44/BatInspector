@@ -456,4 +456,37 @@
   <data name="CtlSpecProofSpecies" xml:space="preserve">
     <value>Artnachweis</value>
   </data>
+  <data name="MainReportProject" xml:space="preserve">
+    <value>Auswertung Projekt</value>
+  </data>
+  <data name="MainSelectFolder" xml:space="preserve">
+    <value>Verzeichnis auswählen</value>
+  </data>
+  <data name="MainReportTimespan" xml:space="preserve">
+    <value>Auswertung Zeitabschnitt</value>
+  </data>
+  <data name="CtlReportCreate" xml:space="preserve">
+    <value>Erstelle Auswertung</value>
+  </data>
+  <data name="CtlSumReportStartDate" xml:space="preserve">
+    <value>Datum Anfang</value>
+  </data>
+  <data name="CtlSumReportEndDate" xml:space="preserve">
+    <value>Datum Ende</value>
+  </data>
+  <data name="CtlSumReportTimespan" xml:space="preserve">
+    <value>Zeitspanne</value>
+  </data>
+  <data name="CtlSumReportTsDaily" xml:space="preserve">
+    <value>Täglich</value>
+  </data>
+  <data name="CtlSumReportTsWeekly" xml:space="preserve">
+    <value>Wöchentlich</value>
+  </data>
+  <data name="CtlSumReportTsMonthly" xml:space="preserve">
+    <value>Monatlich</value>
+  </data>
+  <data name="MainFilterNone" xml:space="preserve">
+    <value>Keiner</value>
+  </data>
 </root>

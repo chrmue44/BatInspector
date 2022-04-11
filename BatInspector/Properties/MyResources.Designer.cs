@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -187,11 +187,74 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create Report ähnelt.
+        /// </summary>
+        public static string CtlReportCreate {
+            get {
+                return ResourceManager.GetString("CtlReportCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Proof of Species ähnelt.
         /// </summary>
         public static string CtlSpecProofSpecies {
             get {
                 return ResourceManager.GetString("CtlSpecProofSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die End Date ähnelt.
+        /// </summary>
+        public static string CtlSumReportEndDate {
+            get {
+                return ResourceManager.GetString("CtlSumReportEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Start Date ähnelt.
+        /// </summary>
+        public static string CtlSumReportStartDate {
+            get {
+                return ResourceManager.GetString("CtlSumReportStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Timespan ähnelt.
+        /// </summary>
+        public static string CtlSumReportTimespan {
+            get {
+                return ResourceManager.GetString("CtlSumReportTimespan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Daily ähnelt.
+        /// </summary>
+        public static string CtlSumReportTsDaily {
+            get {
+                return ResourceManager.GetString("CtlSumReportTsDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Monthly ähnelt.
+        /// </summary>
+        public static string CtlSumReportTsMonthly {
+            get {
+                return ResourceManager.GetString("CtlSumReportTsMonthly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Weekly ähnelt.
+        /// </summary>
+        public static string CtlSumReportTsWeekly {
+            get {
+                return ResourceManager.GetString("CtlSumReportTsWeekly", resourceCulture);
             }
         }
         
@@ -507,6 +570,42 @@ namespace BatInspector.Properties {
         public static string MainFilter {
             get {
                 return ResourceManager.GetString("MainFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die None ähnelt.
+        /// </summary>
+        public static string MainFilterNone {
+            get {
+                return ResourceManager.GetString("MainFilterNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Report Project ähnelt.
+        /// </summary>
+        public static string MainReportProject {
+            get {
+                return ResourceManager.GetString("MainReportProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Report Timespan ähnelt.
+        /// </summary>
+        public static string MainReportTimespan {
+            get {
+                return ResourceManager.GetString("MainReportTimespan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Select Folder ähnelt.
+        /// </summary>
+        public static string MainSelectFolder {
+            get {
+                return ResourceManager.GetString("MainSelectFolder", resourceCulture);
             }
         }
         

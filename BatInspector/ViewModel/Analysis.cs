@@ -51,6 +51,7 @@ namespace BatInspector
     int _colProbability = 0;
     int _colSnr = 0;
     int _colRemarks= 0;
+    object _fileLock = new object();
 
     List<AnalysisFile> _list;
     List<ReportItem> _report;
@@ -89,60 +90,61 @@ namespace BatInspector
 
     public void read(string fileName)
     {
-      Csv csv = new Csv();
-      int ret = csv.read(fileName);
-
-      _colSampleRate = csv.findInRow(1, COL_SAMPLERATE);
-      _colFileLen = csv.findInRow(1, COL_FILE_LEN);
-      _colName = csv.findInRow(1, COL_NAME);
-      _colNr = csv.findInRow(1, COL_NR);
-      _colFreqMaxAmp = csv.findInRow(1, COL_FREQ_MAX_AMP);
-      _colFreqMax = csv.findInRow(1, COL_FREQ_MAX);
-      _colFreqMin = csv.findInRow(1, COL_FREQ_MIN);
-      _colFreqKnee = csv.findInRow(1, COL_FREQ_KNEE);
-      _colDuration = csv.findInRow(1, COL_DURATION);
-      _colStartTime = csv.findInRow(1, COL_START_TIME);
-      _colSpecies = csv.findInRow(1, COL_SPECIES);
-      _colProbability = csv.findInRow(1, COL_PROBABILITY);
-      _colSnr = csv.findInRow(1, COL_SNR);
-      _colSpeciesMan = csv.findInRow(1, COL_SPECIES_MAN);
-      _colRemarks = csv.findInRow(1, COL_REMARKS);
-
-      //@@@ temporary
-      if (ret == 0)
+      lock (_fileLock)
       {
-        if (_colSampleRate == 0)
-        {
-          _colSampleRate = 3;
-          _colFileLen = 4;
-          if (csv.getCellAsInt(2, 2) != 383500)
-          {
-            csv.insertCol(_colSampleRate, "383500");
-            csv.insertCol(_colFileLen, "3.001");
-          }
-          csv.setCell(1, _colSampleRate, COL_SAMPLERATE);
-          csv.setCell(1, _colFileLen, COL_FILE_LEN);
-          csv.save();
-        }
-        if(_colSpeciesMan == 0)
-        {
-          int col = csv.ColCnt + 1;
-          csv.insertCol(col, "todo");
-          csv.setCell(1, col, COL_SPECIES_MAN);
-          _colSpeciesMan = col;
-          csv.save();
-        }
-        if (_colRemarks == 0)
-        {
-          int col = csv.ColCnt + 1;
-          csv.insertCol(col, "");
-          csv.setCell(1, col, COL_REMARKS);
-          _colRemarks = col;
-          csv.save();
-        }
-      }
-      //@@@
+        Csv csv = new Csv();
+        int ret = csv.read(fileName);
 
+        _colSampleRate = csv.findInRow(1, COL_SAMPLERATE);
+        _colFileLen = csv.findInRow(1, COL_FILE_LEN);
+        _colName = csv.findInRow(1, COL_NAME);
+        _colNr = csv.findInRow(1, COL_NR);
+        _colFreqMaxAmp = csv.findInRow(1, COL_FREQ_MAX_AMP);
+        _colFreqMax = csv.findInRow(1, COL_FREQ_MAX);
+        _colFreqMin = csv.findInRow(1, COL_FREQ_MIN);
+        _colFreqKnee = csv.findInRow(1, COL_FREQ_KNEE);
+        _colDuration = csv.findInRow(1, COL_DURATION);
+        _colStartTime = csv.findInRow(1, COL_START_TIME);
+        _colSpecies = csv.findInRow(1, COL_SPECIES);
+        _colProbability = csv.findInRow(1, COL_PROBABILITY);
+        _colSnr = csv.findInRow(1, COL_SNR);
+        _colSpeciesMan = csv.findInRow(1, COL_SPECIES_MAN);
+        _colRemarks = csv.findInRow(1, COL_REMARKS);
+
+        //@@@ temporary
+        if (ret == 0)
+        {
+          if (_colSampleRate == 0)
+          {
+            _colSampleRate = 3;
+            _colFileLen = 4;
+            if (csv.getCellAsInt(2, 2) != 383500)
+            {
+              csv.insertCol(_colSampleRate, "383500");
+              csv.insertCol(_colFileLen, "3.001");
+            }
+            csv.setCell(1, _colSampleRate, COL_SAMPLERATE);
+            csv.setCell(1, _colFileLen, COL_FILE_LEN);
+            csv.save();
+          }
+          if (_colSpeciesMan == 0)
+          {
+            int col = csv.ColCnt + 1;
+            csv.insertCol(col, "todo");
+            csv.setCell(1, col, COL_SPECIES_MAN);
+            _colSpeciesMan = col;
+            csv.save();
+          }
+          if (_colRemarks == 0)
+          {
+            int col = csv.ColCnt + 1;
+            csv.insertCol(col, "");
+            csv.setCell(1, col, COL_REMARKS);
+            _colRemarks = col;
+            csv.save();
+          }
+        }
+      
       _list.Clear();
       string lastFileName = "";
       AnalysisFile file = new AnalysisFile();
@@ -174,7 +176,7 @@ namespace BatInspector
         string speciesMan = csv.getCell(row, _colSpeciesMan);
         file.Remarks = csv.getCell(row, _colRemarks);
 
-        AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species, 
+        AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
                                              probability, speciesMan, snr);
         file.Calls.Add(call);
 
@@ -186,7 +188,7 @@ namespace BatInspector
         callNr++;
         rItem.FreqMin = (fMin / 1000).ToString("0.#");
         rItem.FreqMax = (fMax / 1000).ToString("0.#");
-        rItem.FreqMaxAmp = (fMaxAmp/1000).ToString("0.#");
+        rItem.FreqMaxAmp = (fMaxAmp / 1000).ToString("0.#");
         rItem.Duration = duration.ToString("0.#");
         rItem.StartTime = startTime;
         rItem.SpeciesAuto = species;
@@ -197,31 +199,35 @@ namespace BatInspector
       }
       restChanged();
     }
+    }
 
 
     public void save(string fileName)
     {
-      Csv csv = new Csv();
-      csv.read(fileName);
-      foreach(AnalysisFile f in _list)
+      lock (_fileLock)
       {
-        foreach(AnalysisCall c in f.Calls)
+        Csv csv = new Csv();
+        csv.read(fileName);
+        foreach (AnalysisFile f in _list)
         {
-          int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
-          csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
-          if(c.Nr < 2)
-            csv.setCell(row, _colRemarks, f.Remarks);
-          else
-            csv.setCell(row, _colRemarks, "");
-          c.resetChanged();
+          foreach (AnalysisCall c in f.Calls)
+          {
+            int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
+            csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
+            if (c.Nr < 2)
+              csv.setCell(row, _colRemarks, f.Remarks);
+            else
+              csv.setCell(row, _colRemarks, "");
+            c.resetChanged();
+          }
         }
-      }
-      csv.save();
-      if (_report != null)
-      {
-        foreach (ReportItem r in _report)
+        csv.save();
+        if (_report != null)
         {
-          r.resetChanged();
+          foreach (ReportItem r in _report)
+          {
+            r.resetChanged();
+          }
         }
       }
     }
@@ -242,53 +248,56 @@ namespace BatInspector
 
     public void removeFile(string reportName, string wavName)
     {
-      save(reportName);
-
-      //remove from analysis file list
-      AnalysisFile fileToDelete = null;
-      foreach (AnalysisFile f in _list)
+      lock (_fileLock)
       {
-        if (f.FileName == wavName)
-        {
-          fileToDelete = f;
-          break;
-        }
-      }
-      if (fileToDelete != null)
-        _list.Remove(fileToDelete);
+        save(reportName);
 
-      // remove from report file
-      if (File.Exists(reportName))
-      {
-        Csv report = new Csv();
-        report.read(reportName);
-        int row = 0;
-        do
+        //remove from analysis file list
+        AnalysisFile fileToDelete = null;
+        foreach (AnalysisFile f in _list)
         {
-          row = report.findInCol(wavName, _colName);
-          if (row > 0)
+          if (f.FileName == wavName)
           {
-            report.removeRow(row);
+            fileToDelete = f;
+            break;
           }
-        } while (row > 0);
-        report.save();
-      }
-      else
-      {
-        DebugLog.log("Analysis::removeFile: report file: " + reportName + " not found", enLogType.ERROR);
-      }
-
-      // remove from report control
-      if(_report != null)
-      {
-        List<ReportItem> list = new List<ReportItem>();
-        foreach(ReportItem item in _report)
-        {
-          if (item.FileName == wavName)
-            list.Add(item);
         }
-        foreach (ReportItem item in list)
-          _report.Remove(item);
+        if (fileToDelete != null)
+          _list.Remove(fileToDelete);
+
+        // remove from report file
+        if (File.Exists(reportName))
+        {
+          Csv report = new Csv();
+          report.read(reportName);
+          int row = 0;
+          do
+          {
+            row = report.findInCol(wavName, _colName);
+            if (row > 0)
+            {
+              report.removeRow(row);
+            }
+          } while (row > 0);
+          report.save();
+        }
+        else
+        {
+          DebugLog.log("Analysis::removeFile: report file: " + reportName + " not found", enLogType.ERROR);
+        }
+
+        // remove from report control
+        if (_report != null)
+        {
+          List<ReportItem> list = new List<ReportItem>();
+          foreach (ReportItem item in _report)
+          {
+            if (item.FileName == wavName)
+              list.Add(item);
+          }
+          foreach (ReportItem item in list)
+            _report.Remove(item);
+        }
       }
     }
 

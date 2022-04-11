@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System;
 using libParser;
 using System.Threading;
+using BatInspector.Properties;
 
 namespace BatInspector.Forms
 {
@@ -69,7 +70,7 @@ namespace BatInspector.Forms
       setLanguage();
       InitializeComponent();
       initTreeView();
-      populateFilterComboBox();
+      populateFilterComboBoxes();
       initZoomWindow();
       this.Title = "BatInspector V" + version.ToString();
       if ((_model.Settings.MainWindowWidth > 100) && (_model.Settings.MainWindowHeight > 100))
@@ -175,16 +176,24 @@ namespace BatInspector.Forms
       _lblStatus.Text = status;
     }
 
-    public void populateFilterComboBox()
+    public void populateFilterComboBoxes()
     {
-      _cbFilter.Items.Clear();
+      populateFilterComboBox(_cbFilter);
+      populateFilterComboBox(_ctlSum._cbFilter);
+
+    }
+
+    public void populateFilterComboBox(ComboBox fiBox)
+    {
+      fiBox.Items.Clear();
+      fiBox.Items.Add(MyResources.MainFilterNone);
       foreach (FilterItem f in _model.Filter.Items)
       {
         string name = f.Name;
-        _cbFilter.Items.Add(name);
+        fiBox.Items.Add(name);
       }
-      if (_cbFilter.Items.Count > 0)
-        _cbFilter.Text = (string)_cbFilter.Items[0];
+      if (fiBox.Items.Count > 0)
+        fiBox.Text = (string)fiBox.Items[0];
     }
 
     public void closeWindow(enWinType w)
@@ -520,19 +529,25 @@ private void setZoomPosition()
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)
     {
-      _frmFilter = new FrmFilter(_model.Filter, populateFilterComboBox);
+      _frmFilter = new FrmFilter(_model.Filter, populateFilterComboBoxes);
       _frmFilter.Show();
     }
 
     private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
     {
       FilterItem filter = _model.Filter.getFilter(_cbFilter.Text);
-      foreach (ctlWavFile c in _spSpectrums.Children)
+      if (filter != null)
       {
-        bool res = _model.Filter.apply(filter, c.Analysis);
-        c._cbSel.IsChecked = res;
+        foreach (ctlWavFile c in _spSpectrums.Children)
+        {
+          bool res = _model.Filter.apply(filter, c.Analysis);
+          c._cbSel.IsChecked = res;
+        }
+        DebugLog.log("filter '" + filter.Name + "' applied", enLogType.INFO);
       }
-      DebugLog.log("filter '" + filter.Name + "' applied", enLogType.INFO);
+      else
+        DebugLog.log("no filter applied", enLogType.INFO);
+
     }
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)

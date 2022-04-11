@@ -114,18 +114,18 @@ namespace libScripter
       int retVal = 0;
       if (_fileName != null)
       {
-        if (withBackup)
-        {
-          string bakName = _fileName + ".bak";
-          if (File.Exists(bakName))
-            File.Delete(bakName);
-          File.Copy(_fileName, bakName);
-        }
+          if (withBackup)
+          {
+            string bakName = _fileName + ".bak";
+            if (File.Exists(bakName))
+              File.Delete(bakName);
+            File.Copy(_fileName, bakName);
+          }
 
-        string[] lines = new string[_cells.Count];
-        string sep = _separator.ToString();
-        for (int rowNr = 0; rowNr < lines.Length; rowNr++)
-          lines[rowNr] = String.Join(sep, _cells[rowNr]);
+          string[] lines = new string[_cells.Count];
+          string sep = _separator.ToString();
+          for (int rowNr = 0; rowNr < lines.Length; rowNr++)
+            lines[rowNr] = String.Join(sep, _cells[rowNr]);
 
           File.WriteAllLines(_fileName, lines);
       }

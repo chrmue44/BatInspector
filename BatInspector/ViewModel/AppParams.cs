@@ -9,6 +9,9 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+
+//https://weblog.west-wind.com/posts/2020/Apr/06/Displaying-Nested-Child-Objects-in-the-Windows-Forms-Designer-Property-Grid
+
 using libParser;
 using System;
 using System.Collections.Generic;
@@ -58,6 +61,21 @@ namespace BatInspector
     }
   }
 
+
+  public class SpeciesInfoConfigurationTypeConverter : TypeConverter
+  {
+    public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+    {
+      return true;
+    }
+
+    public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+    {
+      return TypeDescriptor.GetProperties(typeof(SpeciesInfos));
+    }
+  }
+
+  [TypeConverter(typeof(SpeciesInfoConfigurationTypeConverter))]
   [DataContract]
   public class SpeciesInfos
   {
@@ -119,6 +137,7 @@ namespace BatInspector
   }
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
+  [DataContract]
   public class FilterParams
   {
     [DataMember]
@@ -136,6 +155,20 @@ namespace BatInspector
     public int Index { get; set; }
   }
 
+  public class ColorItemConfigurationTypeConverter : TypeConverter
+  {
+    public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+    {
+      return true;
+    }
+
+    public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+    {
+      return TypeDescriptor.GetProperties(typeof(ColorItem));
+    }
+  }
+
+  [TypeConverter(typeof(ColorItemConfigurationTypeConverter))]
   [DataContract]
   public class ColorItem
   {
@@ -145,11 +178,12 @@ namespace BatInspector
       Value = val;
     }
     [DataMember]
-    public int Color;
+    public int Color { get; set; }
     [DataMember]
-    public int Value;
+    public int Value { get; set; }
   }
 
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
   public class AppParams
   {
@@ -243,8 +277,9 @@ namespace BatInspector
     public List<FilterParams> Filter { get; set; }
 
     [DataMember]
-    [LocalizedCategory("SetCatBatSpecies")]
-    [LocalizedDescription("SetDescBatSpecies")]
+    [LocalizedCategory("SetCatBatSpecies"),
+     LocalizedDescription("SetDescBatSpecies"),
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public List<SpeciesInfos> Species { get; set; }
 
     [DataMember]
@@ -253,19 +288,22 @@ namespace BatInspector
     public bool WaterfallLogarithmic { get; set; }
 
     [DataMember]
-    [LocalizedCategory("SetCatColorGradient")]
-    [LocalizedDescription("SpecDescColorRed")]
-    public List<ColorItem> ColorGradientRed { get; set; }
+    [LocalizedCategory("SetCatColorGradient"),
+     LocalizedDescription("SpecDescColorRed"),
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public List<ColorItem> ColorGradientRed { get; set; } = new List<ColorItem>();
 
     [DataMember]
-    [LocalizedCategory("SetCatColorGradient")]
-    [LocalizedDescription("SpecDescColorGreen")]
-    public List<ColorItem> ColorGradientGreen { get; set; }
+    [LocalizedCategory("SetCatColorGradient"),
+    LocalizedDescription("SpecDescColorGreen"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public List<ColorItem> ColorGradientGreen { get; set; } = new List<ColorItem>();
 
     [DataMember]
-    [LocalizedCategory("SetCatColorGradient")]
-    [LocalizedDescription("SpecDescColorBlue")]
-    public List<ColorItem> ColorGradientBlue { get; set; }
+    [LocalizedCategory("SetCatColorGradient"),
+    LocalizedDescription("SpecDescColorBlue"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public List<ColorItem> ColorGradientBlue { get; set; } = new List<ColorItem>();
 
     [DataMember]
     [Category("R-Scripting")]

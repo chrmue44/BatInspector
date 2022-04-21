@@ -5,3 +5,5 @@
 /Setup/Debug
 /libScripter/bin/Debug
 /libScripter/obj/Debug
+/libScripter/bin/Release
+/libScripter/obj/Release

@@ -70,6 +70,7 @@
         <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
           <Image Source="../images/stop.png"></Image>
         </Button>
+        <ComboBox x:Name="_cbWindow" Width="100" SelectionChanged="_cbWindow_SelectionChanged"></ComboBox>
         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
       </ToolBar>
     </ToolBarTray>

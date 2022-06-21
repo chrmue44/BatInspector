@@ -10,6 +10,7 @@ TODO
 - reports across projects (week, month year)
 
 DONE
+- select window type for FFT (in zoom window and saved to settings)
 - frequency scale in spectrum on zoom view not accurate (seems to be ok)
 - show file information (from xml-file) in zoom view
 - multi language support:

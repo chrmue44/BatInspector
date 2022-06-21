@@ -94,6 +94,7 @@ namespace BatInspector.Controls
       _ctlTrigFilter.setValue(_model.ZoomView.FileInfo.Trigger.Filter);
       _ctlTrigFiltFreq.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilttFreq, enDataType.STRING, 0, wt, wv);
       _ctlTrigFiltFreq.setValue(_model.ZoomView.FileInfo.Trigger.Frequency);
+      initWindows();
 
       string[] items = new string[_analysis.Calls.Count];
       if (_analysis.Calls.Count > 0)
@@ -113,6 +114,31 @@ namespace BatInspector.Controls
       _btnZoomTotal_Click(null, null);
     }
 
+    void initWindows()
+    {
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.None.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Hanning.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Hann.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Hamming.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Welch.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT3F.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT3M.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT4F.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT4M.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Nutall3.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Nutall4.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT116D.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT144D.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT169D.ToString());
+      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT196D.ToString());
+
+     /* for(int i = 0; i < _cbWindow.Items.Count; i++)
+      {
+        if(_cbWindow.Items[i].ToString() ==)
+      }*/
+
+      _cbWindow.SelectedItem = _model.Settings.FftWindow.ToString();
+    }
     void setVisabilityCallData(bool on)
     {
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
@@ -566,6 +592,14 @@ namespace BatInspector.Controls
         changeCall(idx);
         _ctlSelectCall.setValue((idx + 1).ToString());
       }
+    }
+
+    private void _cbWindow_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      DSPLib.DSP.Window.Type wType = DSPLib.DSP.Window.Type.None;
+      Enum.TryParse(_cbWindow.Items[_cbWindow.SelectedIndex].ToString(), out wType);
+      _model.Settings.FftWindow = wType;
+      createZoomImg();
     }
   }
 }

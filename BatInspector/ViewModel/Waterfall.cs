@@ -117,7 +117,7 @@ namespace BatInspector
          Parallel.For(0, max, i =>
          {
            uint idx = idxStart + (uint)i * step;
-           double[] sp = generateFft(idx, _fftSize, DSP.Window.Type.Hanning);
+           double[] sp = generateFft(idx, _fftSize, _settings.FftWindow);
            _spec[i] = sp;
          });
       }

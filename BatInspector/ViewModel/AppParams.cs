@@ -288,6 +288,11 @@ namespace BatInspector
     public bool WaterfallLogarithmic { get; set; }
 
     [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+//    [LocalizedDescription("SetDescWfLog")]
+    public DSPLib.DSP.Window.Type FftWindow { get; set; }
+
+    [DataMember]
     [LocalizedCategory("SetCatColorGradient"),
      LocalizedDescription("SpecDescColorRed"),
      DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

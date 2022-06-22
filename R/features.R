@@ -8,15 +8,21 @@ library(bioacoustics)
 library(tools)
 library(randomForest)
 library(rstudioapi)
+library(stringr)
 
 ########################################
 # Let's consolidate all the output data:
 
-consolidate_results <- function(rf)
+check_species <- function(fname, species)
 {
-  matrix_M <- predict(rf , EvDat[,-1], type = "prob")
-  results <- colMeans(matrix_M)
-  return(results)
+  len = length(species[[1]])
+  for (i in 1:len) {
+    spec = species[i,1]
+    if (str_detect(fname, spec)) {
+      return (spec)   
+    }
+  }
+  return("----")
 }
 
 
@@ -25,8 +31,6 @@ consolidate_results <- function(rf)
 ############################################
 args <- commandArgs(trailingOnly=TRUE)
 if (length(args)<2) {
-#  dataDir <-   "/media/christian/05EE-4AA4/bat/210721/Records/"
-#  resultFile <-"/media/christian/05EE-4AA4/bat/210721/report.csv"
    dataDir <-  "C:/Users/chrmu/bat/train"
    resultFile <-"C:/Users/chrmu/bat/train/calls.csv"
    specFile  <-"C:/Users/chrmu/bat/train/species.csv"
@@ -40,10 +44,11 @@ species <- read.csv(file = specFile)
 #setwd("~/prj/bioacoustics")
 setwd("C:/Users/chrmu/prj/BatInspector/R")
 filesToTest <- dir(dataDir, recursive = TRUE, full.names = TRUE, pattern = "[.]wav$")
-
-  cat("name", "nr","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","\n",file=resultFile, sep = ";")
+calls = 0
+  cat("name", "spec", "nr","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","\n",file=resultFile, sep = ";")
 
   for (fileToTest in filesToTest) {
+    actSpec = check_species(fileToTest, species)
     tryCatch( {    
       print(fileToTest)
       TDs <- setNames(
@@ -87,15 +92,16 @@ filesToTest <- dir(dataDir, recursive = TRUE, full.names = TRUE, pattern = "[.]w
       } else {
         nrOfObjects <- length(EvDat$filename)
         for(i in 1:nrOfObjects) {
-  #        cat(EvDat$filename[i], i,"",file=resultFile, sep = ";", append=TRUE)
-          cat(fileToTest, i,"",file=resultFile, sep = ";", append=TRUE)
+          cat(fileToTest, i,actSpec,"",file=resultFile, sep = ";", append=TRUE)
           cat(383500, 3.001, file=resultFile,"", sep = ";", append=TRUE)
           cat(EvDat$freq_max_amp[i],EvDat$freq_min[i],EvDat$freq_max[i],"",file=resultFile, sep = ";", append=TRUE)
           cat(EvDat$freq_knee[i], EvDat$duration[i], EvDat$starting_time[i], EvDat$snr[i],"\n",file=resultFile, sep = ";", append=TRUE)
+          calls <- calls + 1
         }
       }
       gc()
+      msg <- paste("nr of detected training samples:", calls, sep = " ")
+      print(msg)
     })     
   }
-
 

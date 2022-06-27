@@ -8,7 +8,7 @@ import csv
 import numpy as np
 import time
 
-dataFile = "C:/Users/chrmu/bat/train/calls.csv"
+dataFile = "C:/Users/chrmu/bat/train/calls_ppyg.csv"
 callFileDir = "C:/Users/chrmu/prj/BatInspector/mod/trn/"
 
 

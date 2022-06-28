@@ -8,3 +8,4 @@
 /libScripter/bin/Release
 /libScripter/obj/Release
 /mod
+/py/__pycache__

@@ -8,7 +8,7 @@ import csv
 import numpy as np
 import time
 
-dataFile = "C:/Users/chrmu/bat/train/calls_ppyg.csv"
+dataFile = "C:/Users/chrmu/bat/train/calls_vmur.csv"
 callFileDir = "C:/Users/chrmu/prj/BatInspector/mod/trn/"
 
 
@@ -260,8 +260,8 @@ def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = Fal
 ##############
 #   main
 ##############
-#start_time = time. time()
-#processCalls(dataFile, callFileDir, dataFormat, verbose = verbose, withImg = withImg)
-#end_time = time.time()
-#time_elapsed = (end_time - start_time)
-#print("time elapsed:", time_elapsed)
+start_time = time. time()
+processCalls(dataFile, callFileDir, dataFormat, verbose = verbose, withImg = withImg)
+end_time = time.time()
+time_elapsed = (end_time - start_time)
+print("time elapsed:", time_elapsed)

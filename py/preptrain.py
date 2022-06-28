@@ -1,4 +1,4 @@
-import audio
+#import audio
 import glob
 import csv
 import numpy as np
@@ -6,12 +6,12 @@ import time
 
 ### global variables
 speciesFile = "C:/Users/chrmu/bat/train/species.csv"
-pathTrainFiles = "C:/Users/chrmu/prj/BatInspector/mod/trn/dat/*_max.npy"   # .._max.npy
+pathTrainFiles = "C:/Users/chrmu/prj/BatInspector/mod/trn/dat/*_fft.npy"   # .._max.npy
 checkFile = "C:/Users/chrmu/prj/BatInspector/mod/trn/check"
 verbosity = True
 maxCallLen = 330   # max length of a training sample
 TRAIN_PATH = "C:/Users/chrmu/prj/BatInspector/mod/trn/"
-batchSize = 1024
+batchSize = 2048
 
 def readSpeciesInfo(csvFile):
     """
@@ -147,11 +147,11 @@ print("dev size:", len(listDev))
 print("test size:", len(listTest))
 
 print("gen test set")
-genTrainingData(listSpecies, listTest, testSize, "test")
+genTrainingData(listSpecies, listTest, len(listTest), "test")
 print("gen dev set")
-genTrainingData(listSpecies, listDev, devSize, "dev")
+genTrainingData(listSpecies, listDev, len(listDev), "dev")
 print("gen train set")
-genTrainingData(listSpecies, listTrain, trainSize, "train")
+genTrainingData(listSpecies, listTrain, batchSize, "train")
 end_time = time.time()
 time_elapsed = (end_time - start_time)
 print("generation of test data finished")

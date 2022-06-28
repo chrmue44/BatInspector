@@ -139,9 +139,11 @@ np.random.shuffle(listTrainSamples)
 trainSize = int(len(listTrainSamples) * 0.8)
 devSize = int(len(listTrainSamples) * 0.1)
 testSize = len(listTrainSamples) - devSize - trainSize 
-listTrain = listTrainSamples[:trainSize]
 listDev = listTrainSamples[trainSize:trainSize + devSize]
 listTest = listTrainSamples[trainSize + devSize:]
+if trainSize > 20000:
+    trainSize = 20000
+listTrain = listTrainSamples[:trainSize]
 print("train size:", len(listTrain))
 print("dev size:", len(listDev))
 print("test size:", len(listTest))
@@ -151,7 +153,7 @@ genTrainingData(listSpecies, listTest, len(listTest), "test")
 print("gen dev set")
 genTrainingData(listSpecies, listDev, len(listDev), "dev")
 print("gen train set")
-genTrainingData(listSpecies, listTrain, batchSize, "train")
+genTrainingData(listSpecies, listTrain, len(listTrain), "train")
 end_time = time.time()
 time_elapsed = (end_time - start_time)
 print("generation of test data finished")

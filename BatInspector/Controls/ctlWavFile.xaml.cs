@@ -27,7 +27,6 @@ namespace BatInspector.Controls
   public partial class ctlWavFile : UserControl
   {
     AnalysisFile _analysis;
-  //  List<ListItem> _list;
     string _wavFilePath;
     string _wavName;
     int _index;

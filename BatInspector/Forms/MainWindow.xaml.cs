@@ -343,7 +343,6 @@ private void setZoomPosition()
           DockPanel.SetDock(ctl, Dock.Bottom);
           bool newImage;
           ctl._img.Source = _model.getFtImage(rec, out newImage);
-          //          ctl._img.MaxWidth = MAX_IMG_WIDTH;
           ctl._img.MaxHeight = _imgHeight;
           ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath);
           ctl.InfoVisible = !_model.Settings.HideInfos;

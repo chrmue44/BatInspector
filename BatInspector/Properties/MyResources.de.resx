@@ -489,4 +489,7 @@
   <data name="MainFilterNone" xml:space="preserve">
     <value>Keiner</value>
   </data>
+  <data name="MainTrainData" xml:space="preserve">
+    <value>Trainingsdaten</value>
+  </data>
 </root>

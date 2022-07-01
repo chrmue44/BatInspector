@@ -6,10 +6,7 @@ import os
 from pydub import AudioSegment
 import csv
 import numpy as np
-import time
 
-dataFile = "C:/Users/chrmu/bat/train/calls_vmur.csv"
-callFileDir = "C:/Users/chrmu/prj/BatInspector/mod/trn/"
 
 
 mrgBefore = 10    #time before call [ms]
@@ -225,7 +222,7 @@ def detectHardClipping(signal, threshold=2):
 def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = False):
     """
     process all calls in the csv file:
-    generate wav file and img file
+    generate wav file and img file for each detected call
     Arguments:
     csvFile: name of the csv (;-delimited) file containing the call informations
     outDir: directory to output all the wav and png files
@@ -257,11 +254,4 @@ def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = Fal
             if(count % 50) == 1:
                 print("nr. of processed calls:", count)
 
-##############
-#   main
-##############
-start_time = time. time()
-processCalls(dataFile, callFileDir, dataFormat, verbose = verbose, withImg = withImg)
-end_time = time.time()
-time_elapsed = (end_time - start_time)
-print("time elapsed:", time_elapsed)
+

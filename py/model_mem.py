@@ -328,7 +328,9 @@ def createModel(mod, rows, timeSteps, classes, train, epochs = 10):
     else:
         train = True
     if train:
+        print("read train data set...")
         train = readDataset(dirName, "Xtrain000.npy", "Ytrain000.npy")
+        print("read dev data set...")
         dev = readDataset(dirName, "Xdev000.npy", "Ydev000.npy")
         train = train.batch(BATCH_SIZE, drop_remainder=True)
         dev = dev.batch(BATCH_SIZE, drop_remainder=True)
@@ -383,6 +385,8 @@ def predictOnBatches(model, data):
             absIdx += 1
                 
         all_labels = np.concatenate([all_labels, labels_max])
+    print("\n*******************")
+    print("accuracy score: {:.3f}".format(accuracy_score(all_labels, all_predictions)))
     return all_labels, all_predictions, bad_labels
 
 
@@ -480,6 +484,7 @@ dirName = "C:/Users/chrmu/prj/BatInspector/mod/trn/"
 speciesFile = "C:/Users/chrmu/bat/train/species.csv"
 logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
 checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
+print("reading test set...")
 test = readDataset(dirName, "Xtest000.npy", "Ytest000.npy")
 rows, timeSteps, classes = getDimensions(test)
 test = test.batch(BATCH_SIZE, drop_remainder=True)

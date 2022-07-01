@@ -137,6 +137,7 @@ tf.random.set_seed(42)
 
 batch_size = 64
 #train_x, train_y, dev_x, dev_y, test_x, test_y = readData("C:/Users/chrmu/prj/BatInspector/mod/trn/fft/")
+print("start reading data set")
 train, dev, test = readDataset("C:/Users/chrmu/prj/BatInspector/mod/trn/")
 it = iter(dev)
 elem = next(it)

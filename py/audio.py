@@ -14,9 +14,9 @@ mrgAfter = 20     #time after call [ms]
 threshold = 0.005 #threshold value for noise canceling
 scaleType = 'lin' #scaling of spectrogram ('log', 'lin')
 verbose = False   #show more infos on console
-withAxes = False  #show axes in pngs
 dataFormat = 'npy' # format to save arrays: 'csv, 'npy'
-withImg = False
+#withImg = False
+#withAxes = False  #show axes in pngs
 
 def extractPart(srcFile, dstFile, start, end):
     """
@@ -219,7 +219,7 @@ def detectHardClipping(signal, threshold=2):
         return False
     return HasLongSequence(mask_min) or HasLongSequence(mask_max)   
         
-def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = False):
+def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = False, withAxes = False):
     """
     process all calls in the csv file:
     generate wav file and img file for each detected call
@@ -228,6 +228,8 @@ def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = Fal
     outDir: directory to output all the wav and png files
     format - file format "csv, "npy"
     verbose: True - print information about each detected call
+    withImg: True create image file for each call
+    withAxes: True create axes in image for each call
     """
     with open(csvFile,  newline='') as f:
         reader = csv.DictReader(f, delimiter=';')

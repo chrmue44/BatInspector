@@ -129,7 +129,7 @@ def genTrainingData(listSpecies, listTrainSamples, batchSize, fName, trainPath):
             
     return
     
-def prepareTrainingData(speciesFile, pathTrainFiles, outPath):
+def prepareTrainingData(speciesFile, pathTrainFiles, outPath, batchSize):
     """
     consolidate all training samples to a train, dev and test set
     
@@ -137,6 +137,7 @@ def prepareTrainingData(speciesFile, pathTrainFiles, outPath):
     speciesFile - csv file with a list of species to learn
     pathTrainFiles - a file filter for all the call data files to process
     outPath - target path for training data
+    batchSize - batchSize for training data
     """
     listSpecies = readSpeciesInfo(speciesFile)
     listTrainSamples = glob.glob(pathTrainFiles)
@@ -146,16 +147,16 @@ def prepareTrainingData(speciesFile, pathTrainFiles, outPath):
     testSize = len(listTrainSamples) - devSize - trainSize 
     listDev = listTrainSamples[trainSize:trainSize + devSize]
     listTest = listTrainSamples[trainSize + devSize:]
-    if trainSize > 20000:
-        trainSize = 20000
+    #if trainSize > 20000:
+    #    trainSize = 20000
     listTrain = listTrainSamples[:trainSize]
-    print("train size:", len(listTrain))
+    print("train size:", len(listTrain), " batch size: ", batchSize)
     print("dev size:", len(listDev))
     print("test size:", len(listTest))
 
     print("gen test set")
     genTrainingData(listSpecies, listTest, len(listTest), "test", outPath)
     print("gen dev set")
-    genTrainingData(listSpecies, listDev, len(listDev), "dev", outPath)
+    genTrainingData(listSpecies, listDev, batchSize, "dev", outPath)
     print("gen train set")
-    genTrainingData(listSpecies, listTrain, len(listTrain), "train", outPath)
+    genTrainingData(listSpecies, listTrain, batchSize, "train", outPath)

@@ -116,7 +116,7 @@ def execute():
         preptrain.prepareTrainingData(env['specFile'], env['trainDataMask'], outDir, env['batchSize'])
     if env['runModel']:
         model.runModel(env["train"], env["trainDir"], env["specFile"], 
-                       logName = env["trainDir"] + '//log_pred_errs.csv', 
+                       logName = env["trainDir"] + '//log_', 
                        checkFileName = env['infoTestFile'], epochs = env['epochs'], cleanMod = env['cleanModel'],
                        showConfusion = True)
         

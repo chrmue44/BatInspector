@@ -340,6 +340,7 @@ def predictOnBatches(model, data):
     all_predictions = np.array([])
     all_labels = np.array([])
     bad_labels = []
+    good_labels = []
     absIdx = 0
     for test_batch in data:
         inputs_b, labels_b = test_batch
@@ -350,14 +351,16 @@ def predictOnBatches(model, data):
         for i in range(len(labels_b)):
             if pred_max[i] != labels_max[i]:
                 item = (absIdx, pred_max[i], labels_max[i], pred_batch[i])
-#                print ("bad:", item)
                 bad_labels.append(item)
+            else:
+                item = (absIdx, pred_max[i], labels_max[i], pred_batch[i])
+                good_labels.append(item)
             absIdx += 1
                 
         all_labels = np.concatenate([all_labels, labels_max])
     print("\n*******************")
     print("accuracy score: {:.3f}".format(accuracy_score(all_labels, all_predictions)))
-    return all_labels, all_predictions, bad_labels
+    return all_labels, all_predictions, bad_labels, good_labels
 
 
 def readCheckInfo(csvFile):
@@ -377,7 +380,7 @@ def readCheckInfo(csvFile):
             ret.append({'sample':row['sample'],'index':row['index']})
     return ret
 
-def evalErrorData(errList, resultFileName, checkFileName, speciesFile):
+def evalLogData(errList, resultFileName, checkFileName, speciesFile):
     """
     create a evaluation file with information about the wrongly labeled data
     
@@ -409,9 +412,9 @@ def evalErrorData(errList, resultFileName, checkFileName, speciesFile):
             imgName = checkInfo[absIdx]['sample'].replace('/dat', '/img')
             imgName = imgName.replace('_fft.npy','.png')
             if prediction[predIdx] < 0.5:
-                reject = 'reject'
+                reject = '1'
             else:
-                reject = '-'
+                reject = '0'
             row = [imgName, species[realIdx], species[predIdx], reject]
             for p in prediction:
                 row.append(p)
@@ -464,8 +467,9 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
     input_shape = (rows, timeSteps, classes)
     model = createModel(rnn1Model, input_shape, dirName, train, epochs, cleanMod, logs_dir)
 
-    all_labels, all_predictions, bad_labels = predictOnBatches(model, test)
-    evalErrorData(bad_labels, logName, checkFileName, speciesFile)
+    all_labels, all_predictions, bad_labels, good_labels = predictOnBatches(model, test)
+    evalLogData(bad_labels, logName + 'bad.csv', checkFileName, speciesFile)
+    evalLogData(good_labels, logName + 'good.csv', checkFileName, speciesFile)
 
     if showConfusion:
         showConfusionMatrix(speciesFile, all_labels, all_predictions)

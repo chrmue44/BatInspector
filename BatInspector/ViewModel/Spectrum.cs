@@ -43,7 +43,7 @@ namespace BatInspector
       _fftSize = 256;
       while (_fftSize < len)
         _fftSize <<= 1;
-      _ampl = generateFft(idxStart, len);
+      _ampl = generateFft(idxStart, len, DSP.Window.Type.Hanning);
     }
 
 

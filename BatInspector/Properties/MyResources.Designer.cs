@@ -781,6 +781,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Training Data ähnelt.
+        /// </summary>
+        public static string MainTrainData {
+            get {
+                return ResourceManager.GetString("MainTrainData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Project View ähnelt.
         /// </summary>
         public static string MainWinProjectView {

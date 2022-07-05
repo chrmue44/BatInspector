@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2021: christian Müller christian(at)chrmue(dot).de
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
  *
  *              Licence:
  * 
@@ -9,20 +9,13 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using libParser;
 using BatInspector.Properties;
@@ -73,12 +66,21 @@ namespace BatInspector.Controls
       MouseDown += ctrlZoomMouseDown;
 
       _ctlSelectCall.setup(MyResources.CtlWavCall +" Nr.", 0, 60, 60, ctlSelCallChanged);
-      _ctlFMin.setup("Fmin [kHz]: ", enDataType.DOUBLE, 1, 130);
-      _ctlFMax.setup("Fmax [kHz]: ", enDataType.DOUBLE, 1, 130);
-      _ctlFMaxAmpl.setup("FmaxAmpl [kHz]: ", enDataType.DOUBLE, 1, 130);
+      _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
+      _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
+      _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
       _ctlSnr.setup(MyResources.Snr +": ", enDataType.DOUBLE, 1, 130);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
+
+      _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 50, 50, calcMeanValues);
+      _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 50, 50, calcMeanValues);
+      _ctlMeanDist.setup(MyResources.CtlZoomDistToPrev, enDataType.DOUBLE, 1, 130);
+      _ctlMeanDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
+      _ctlMeanFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
+      _ctlMeanFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
+      _ctlMeanFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
+      
 
       int wt = 140;
       int wv = 130;
@@ -102,7 +104,13 @@ namespace BatInspector.Controls
         for (int i = 0; i < _analysis.Calls.Count; i++)
           items[i] = (i + 1).ToString();
         _ctlSelectCall.setItems(items);
+        _ctlMeanCallMin.setItems(items);
+        _ctlMeanCallMax.setItems(items);
         setupCallData(0);
+        _ctlMeanCallMin.setValue("1");
+        _ctlMeanCallMax.setValue(_analysis.Calls.Count.ToString());
+        calcMeanValues(0, 0);
+
       }
       else
       {
@@ -160,6 +168,7 @@ namespace BatInspector.Controls
       else
         DebugLog.log("wrong data type for 'Range'", enLogType.ERROR);
     }
+
 
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
@@ -531,6 +540,42 @@ namespace BatInspector.Controls
       hideCursors();
       createZoomImg();
     }
+    public void calcMeanValues(int idx, object val)
+    {
+        int min = 0;
+        int.TryParse(_ctlMeanCallMin.getValue(), out min);
+        min--;
+        int max = 0;
+        int.TryParse(_ctlMeanCallMax.getValue(), out max);
+        max--;
+        if ((min >= 0) && (max < _analysis.Calls.Count))
+        {
+          double fMin = 0;
+          double fMax = 0;
+          double fMaxAmpl = 0;
+          double duration = 0;
+          double callDist = 0;
+          int count = max - min + 1;
+          int countDistPrev = count;
+          if (min == 0)
+            countDistPrev = count - 1;
+          {
+            for (int i = min; i <= max; i++)
+            {
+              fMin += _analysis.Calls[i].FreqMin / count;
+              fMax += _analysis.Calls[i].FreqMax / count;
+              fMaxAmpl += _analysis.Calls[i].FreqMaxAmp / count;
+              duration += _analysis.Calls[i].Duration / count;
+              callDist += _analysis.Calls[i].DistToPrev / countDistPrev;
+            }
+            _ctlMeanDist.setValue(callDist);
+            _ctlMeanFMax.setValue(fMax / 1000);
+            _ctlMeanFMin.setValue(fMin / 1000);
+            _ctlMeanFMaxAmpl.setValue(fMaxAmpl / 1000);
+            _ctlMeanDuration.setValue(duration);
+          }
+        }
+    }
 
     private void setupCallData(int idx)
     {
@@ -541,6 +586,7 @@ namespace BatInspector.Controls
         _ctlFMaxAmpl.setValue(_analysis.Calls[idx].FreqMaxAmp / 1000);
         _ctlDuration.setValue(_analysis.Calls[idx].Duration);
         _ctlSnr.setValue(_analysis.Calls[idx].Snr);
+        _ctlDist.setValue(_analysis.Calls[idx].DistToPrev);
         if (idx > 0)
         {
         }

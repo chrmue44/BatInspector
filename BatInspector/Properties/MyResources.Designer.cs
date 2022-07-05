@@ -97,6 +97,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Call Distance ähnelt.
+        /// </summary>
+        public static string CallDistance {
+            get {
+                return ResourceManager.GetString("CallDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Call Information ähnelt.
         /// </summary>
         public static string CallInformation {
@@ -376,6 +385,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die First ähnelt.
+        /// </summary>
+        public static string CtrlZoomFirst {
+            get {
+                return ResourceManager.GetString("CtrlZoomFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Last ähnelt.
+        /// </summary>
+        public static string CtrlZoomLast {
+            get {
+                return ResourceManager.GetString("CtrlZoomLast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mean Values Calls ähnelt.
+        /// </summary>
+        public static string CtrlZoomMeanValues {
+            get {
+                return ResourceManager.GetString("CtrlZoomMeanValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Time Lag ähnelt.
         /// </summary>
         public static string DeltaT {
@@ -408,6 +444,51 @@ namespace BatInspector.Properties {
         public static string FactorySettings {
             get {
                 return ResourceManager.GetString("FactorySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Narrow down species ähnelt.
+        /// </summary>
+        public static string FindBatNarrowDown {
+            get {
+                return ResourceManager.GetString("FindBatNarrowDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Possible Species ähnelt.
+        /// </summary>
+        public static string FindBatPossibleSpecies {
+            get {
+                return ResourceManager.GetString("FindBatPossibleSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fmax [kHz] ähnelt.
+        /// </summary>
+        public static string Fmax {
+            get {
+                return ResourceManager.GetString("Fmax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die FmaxAmpl [kHz] ähnelt.
+        /// </summary>
+        public static string fMaxAmpl {
+            get {
+                return ResourceManager.GetString("fMaxAmpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fmin [kHz] ähnelt.
+        /// </summary>
+        public static string Fmin {
+            get {
+                return ResourceManager.GetString("Fmin", resourceCulture);
             }
         }
         
@@ -660,6 +741,15 @@ namespace BatInspector.Properties {
         public static string MainToolEvalBatCalls {
             get {
                 return ResourceManager.GetString("MainToolEvalBatCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Find species by entering call parameters ähnelt.
+        /// </summary>
+        public static string MainToolFindSpeciesInfo {
+            get {
+                return ResourceManager.GetString("MainToolFindSpeciesInfo", resourceCulture);
             }
         }
         
@@ -979,11 +1069,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Maximal call diatance [ms] ähnelt.
+        /// </summary>
+        public static string SpecDescMaxCallDist {
+            get {
+                return ResourceManager.GetString("SpecDescMaxCallDist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Minimal call duration [ms] ähnelt.
         /// </summary>
         public static string SpecDescMinCall {
             get {
                 return ResourceManager.GetString("SpecDescMinCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Minimal call diatance [ms] ähnelt.
+        /// </summary>
+        public static string SpecDescMinCallDist {
+            get {
+                return ResourceManager.GetString("SpecDescMinCallDist", resourceCulture);
             }
         }
         

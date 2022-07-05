@@ -26,6 +26,7 @@ namespace BatInspector.Controls
       InitializeComponent();
       _ctlLocalName.setup("Local Name:", enDataType.STRING, 0, 120, 200);
       _ctDuration.setup(MyResources.Duration + " [ms]:", enDataType.DOUBLE, 1, 120, 70);
+      _ctCallDist.setup(MyResources.CallDistance + " [ms]", enDataType.DOUBLE, 1, 120, 70);
       _ctFreqC.setup(MyResources.CharFrequency + "[kHz]", enDataType.DOUBLE, 1, 120, 70);
       _ctlSelPic.setup(MyResources.SelectCallType, 0, 150, 150, callTypeChanged);
     }

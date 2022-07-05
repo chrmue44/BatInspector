@@ -109,6 +109,8 @@ namespace BatInspector
     [LocalizedDescription("SpecDescShowSpec")]
     public bool Show { get; set; }
 
+    [DataMember]
+    [Description("minimal characteristic frequency [kHz]")]
     public double FreqCharMin { get; set; }
 
     [DataMember]
@@ -122,6 +124,14 @@ namespace BatInspector
     [DataMember]
     [LocalizedDescription("SpecDescMaxCall")]
     public double DurationMax { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SpecDescMinCallDist")]
+    public double CallDistMin { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SpecDescMaxCallDist")]
+    public double CallDistMax { get; set; }
 
     [DataMember]
     [Description("proof of species")]

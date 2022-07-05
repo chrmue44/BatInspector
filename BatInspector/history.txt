@@ -10,6 +10,8 @@ TODO
 - reports across projects (week, month year)
 
 DONE
+- calculate distance to previous call and show it in zoom view
+- tool to narrow down possible species by call parameters 
 - frequency scale in spectrum on zoom view not accurate (seems to be ok)
 - show file information (from xml-file) in zoom view
 - multi language support:

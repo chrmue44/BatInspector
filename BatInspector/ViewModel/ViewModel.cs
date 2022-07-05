@@ -19,6 +19,20 @@ using System.Windows.Media.Imaging;
 
 namespace BatInspector
 {
+  public class SpeciesItem
+  {
+    public string Abbreviation { get; set; }
+    public string Name { get; set; }
+    public double CharFreqMin { get; set; }
+    public double ChaFreqMax { get; set; }
+    public double DurationMin { get; set; }
+    public double DurationMax { get; set; }
+    public double CallDistMin { get; set; }
+    public double CallDistMax { get; set; }
+
+
+  }
+
   public class ViewModel
   {
 
@@ -217,6 +231,32 @@ namespace BatInspector
       }
     }
 
+    public List<SpeciesItem> getPossibleSpecies(double charFreq, double duration, double callDist)
+    {
+      List<SpeciesItem> retVal = new List<SpeciesItem>();
+
+      foreach(SpeciesInfos s in _settings.Species)
+      {
+        if(
+            (s.FreqCharMin <= charFreq) && (charFreq <= s.FreqCharMax) &&
+            (s.DurationMin <= duration) && (duration <= s.DurationMax) &&
+            (s.CallDistMin <= callDist) && (callDist <= s.CallDistMax) 
+          )
+        {
+          SpeciesItem item = new SpeciesItem();
+          item.Abbreviation = s.Abbreviation;
+          item.Name = s.Local;
+          item.CharFreqMin = s.FreqCharMin;
+          item.ChaFreqMax = s.FreqCharMax;
+          item.DurationMin = s.DurationMin;
+          item.DurationMax = s.DurationMax;
+          item.CallDistMin = s.CallDistMin;
+          item.CallDistMax = s.CallDistMax;
+          retVal.Add(item);
+        }
+      }
+      return retVal;
+    }
 
     //http://www.shujaat.net/2010/08/wpf-images-from-project-resource.html
     static public BitmapImage Convert(Bitmap value)

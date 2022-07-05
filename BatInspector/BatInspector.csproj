@@ -116,6 +116,9 @@
     <Compile Include="Forms\FrmFilter.xaml.cs">
       <DependentUpon>FrmFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmFindBat.xaml.cs">
+      <DependentUpon>frmFindBat.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmHelpFilter.xaml.cs">
       <DependentUpon>FrmHelpFilter.xaml</DependentUpon>
     </Compile>
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmFindBat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -418,6 +425,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\report.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Bat_icon-icons.com_Q.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

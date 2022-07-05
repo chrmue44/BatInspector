@@ -73,6 +73,8 @@ namespace BatInspector.Forms
           _ctlSpecData1._ctDuration.setMaxValue(si.DurationMax);
           _ctlSpecData1._ctFreqC.setMinValue(si.FreqCharMin);
           _ctlSpecData1._ctFreqC.setMaxValue(si.FreqCharMax);
+          _ctlSpecData1._ctCallDist.setMinValue(si.CallDistMin);
+          _ctlSpecData1._ctCallDist.setMaxValue(si.CallDistMax);
           _ctlSpecData1._tbProof.Text = si.ProofSpecies;
           _ctlSpecData1._tbHabitat.Text = si.Habitat;
           _ctlSpecData1._tbDistintCalls.Text = si.CharCalls;
@@ -92,6 +94,8 @@ namespace BatInspector.Forms
           _ctlSpecData2._ctDuration.setMaxValue(si.DurationMax);
           _ctlSpecData2._ctFreqC.setMinValue(si.FreqCharMin);
           _ctlSpecData2._ctFreqC.setMaxValue(si.FreqCharMax);
+          _ctlSpecData2._ctCallDist.setMinValue(si.CallDistMin);
+          _ctlSpecData2._ctCallDist.setMaxValue(si.CallDistMax);
           _ctlSpecData2._tbProof.Text = si.ProofSpecies;
           _ctlSpecData2._tbHabitat.Text = si.Habitat;
           _ctlSpecData2._tbDistintCalls.Text = si.CharCalls;
@@ -110,16 +114,19 @@ namespace BatInspector.Forms
           si.DurationMin = _ctlSpecData1._ctDuration.MinDouble;
           si.FreqCharMax = _ctlSpecData1._ctFreqC.MaxDouble;
           si.FreqCharMin = _ctlSpecData1._ctFreqC.MinDouble;
+          si.CallDistMin = _ctlSpecData1._ctCallDist.MinDouble;
+          si.CallDistMax = _ctlSpecData1._ctCallDist.MaxDouble;
           si.ProofSpecies = _ctlSpecData1._tbProof.Text;
           si.Habitat = _ctlSpecData1._tbHabitat.Text;
           si.CharCalls = _ctlSpecData1._tbDistintCalls.Text;
-        }
-        if (si.Latin == _ctlSelSpecies2._cb.Text)
+        }else  if (si.Latin == _ctlSelSpecies2._cb.Text)
         {
           si.DurationMax = _ctlSpecData2._ctDuration.MaxDouble;
           si.DurationMin = _ctlSpecData2._ctDuration.MinDouble;
           si.FreqCharMax = _ctlSpecData2._ctFreqC.MaxDouble;
           si.FreqCharMin = _ctlSpecData2._ctFreqC.MinDouble;
+          si.CallDistMin = _ctlSpecData2._ctCallDist.MinDouble;
+          si.CallDistMax = _ctlSpecData2._ctCallDist.MaxDouble;
           si.ProofSpecies = _ctlSpecData2._tbProof.Text;
           si.Habitat = _ctlSpecData2._tbHabitat.Text;
           si.CharCalls = _ctlSpecData2._tbDistintCalls.Text;

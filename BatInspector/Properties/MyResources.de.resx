@@ -489,4 +489,40 @@
   <data name="MainFilterNone" xml:space="preserve">
     <value>Keiner</value>
   </data>
+  <data name="MainToolFindSpeciesInfo" xml:space="preserve">
+    <value>Bestimme Art durch Rufparameter</value>
+  </data>
+  <data name="FindBatPossibleSpecies" xml:space="preserve">
+    <value>Mögliche Arten</value>
+  </data>
+  <data name="FindBatNarrowDown" xml:space="preserve">
+    <value>Arten eingrenzen</value>
+  </data>
+  <data name="SpecDescMinCallDist" xml:space="preserve">
+    <value>Minimaler Rufabstand [ms]</value>
+  </data>
+  <data name="SpecDescMaxCallDist" xml:space="preserve">
+    <value>Maximaler Rufabstand [ms]</value>
+  </data>
+  <data name="CallDistance" xml:space="preserve">
+    <value>Rufabstand</value>
+  </data>
+  <data name="CtrlZoomMeanValues" xml:space="preserve">
+    <value>Mittelwerte über Rufe</value>
+  </data>
+  <data name="CtrlZoomFirst" xml:space="preserve">
+    <value>Erster</value>
+  </data>
+  <data name="CtrlZoomLast" xml:space="preserve">
+    <value>Letzter</value>
+  </data>
+  <data name="Fmin" xml:space="preserve">
+    <value>Fmin [kHz]</value>
+  </data>
+  <data name="Fmax" xml:space="preserve">
+    <value>Fmax [kHz]</value>
+  </data>
+  <data name="fMaxAmpl" xml:space="preserve">
+    <value>Hauptfreq. [kHz]</value>
+  </data>
 </root>

@@ -11,6 +11,7 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using libParser;
 using libScripter;
@@ -175,9 +176,9 @@ namespace BatInspector
         double snr = csv.getCellAsDouble(row, _colSnr);
         string speciesMan = csv.getCell(row, _colSpeciesMan);
         file.Remarks = csv.getCell(row, _colRemarks);
-
+        double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
         AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
-                                             probability, speciesMan, snr);
+                                             probability, speciesMan, snr, distToPrev);
         file.Calls.Add(call);
 
         ReportItem rItem = new ReportItem();
@@ -301,6 +302,28 @@ namespace BatInspector
       }
     }
 
+    /// <summary>
+    /// calculates the time difference bewtween to times
+    /// </summary>
+    /// <param name="time1"></param>
+    /// <param name="time2"></param>
+    /// <returns>time difference in ms</returns>
+    double calcDistToPrev(string time1, string time2)
+    {
+      double retVal = 0.0;
+      string[] split1 = time1.Split(':');
+      string[] split2 = time2.Split(':');
+      if((split1.Length == 3) && (split2.Length == 3))
+      {
+        double t1 = 0.0;
+        double.TryParse(split1[2], NumberStyles.Any, CultureInfo.InvariantCulture, out t1);
+        double t2 = 0.0;
+        double.TryParse(split2[2], NumberStyles.Any, CultureInfo.InvariantCulture, out t2);
+        retVal = Math.Abs(t1 - t2) * 1000;
+      }
+      return retVal;
+    }
+
     void restChanged()
     {
       foreach (AnalysisFile f in _list)
@@ -367,6 +390,7 @@ namespace BatInspector
     public double FreqMax { get; }
     public double FreqKnee { get; }
     public double Duration { get; }
+    public double DistToPrev { get; }
     public String StartTime { get; }
     public double Probability { get; }
 
@@ -385,7 +409,7 @@ namespace BatInspector
 
     public bool Changed { get { return _changed; } }
 
-    public AnalysisCall(int nr, double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double duration, string start, string speciesAuto, double probability, string speciesMan, double snr)
+    public AnalysisCall(int nr, double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double duration, string start, string speciesAuto, double probability, string speciesMan, double snr, double distToPrev)
     {
       Nr = nr;
       FreqMaxAmp = freqMaxAmp;
@@ -393,6 +417,7 @@ namespace BatInspector
       FreqMax = freqMax;
       FreqKnee = freqKnee;
       Duration = duration;
+      DistToPrev = distToPrev;
       StartTime = start;
       SpeciesAuto = speciesAuto;
       Probability = probability;

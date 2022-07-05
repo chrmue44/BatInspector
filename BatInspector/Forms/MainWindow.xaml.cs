@@ -641,6 +641,12 @@ private void setZoomPosition()
     {
 
     }
+
+    private void _btnFindSpecies_Click(object sender, RoutedEventArgs e)
+    {
+      frmFindBat frm = new frmFindBat(_model);
+      frm.Show();
+    }
   }
 
   public enum enWinType 

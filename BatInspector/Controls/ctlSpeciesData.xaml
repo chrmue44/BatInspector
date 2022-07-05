@@ -14,7 +14,8 @@
       <StackPanel>
         <local:ctlDataItem x:Name="_ctlLocalName" Margin="5"/>
         <local:ctlDataItemMinMax x:Name="_ctFreqC"/>
-      <local:ctlDataItemMinMax x:Name="_ctDuration" />
+        <local:ctlDataItemMinMax x:Name="_ctDuration" />
+        <local:ctlDataItemMinMax x:Name="_ctCallDist" />
         <GroupBox Header="{x:Static res:MyResources.CtlSpecProofSpecies}" Height="120">
           <TextBox Margin="5" Name="_tbProof" TextWrapping="Wrap" AcceptsReturn="True"> </TextBox>
         </GroupBox>

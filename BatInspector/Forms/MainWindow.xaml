@@ -39,6 +39,9 @@
           <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
           </Button>
+          <Button x:Name="_btnFindSpecies" Click="_btnFindSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolFindSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/Bat_icon-icons.com_Q.png"></Image>
+          </Button>
           <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>

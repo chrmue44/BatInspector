@@ -489,6 +489,42 @@
   <data name="MainFilterNone" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="MainToolFindSpeciesInfo" xml:space="preserve">
+    <value>Find species by entering call parameters</value>
+  </data>
+  <data name="FindBatPossibleSpecies" xml:space="preserve">
+    <value>Possible Species</value>
+  </data>
+  <data name="FindBatNarrowDown" xml:space="preserve">
+    <value>Narrow down species</value>
+  </data>
+  <data name="SpecDescMinCallDist" xml:space="preserve">
+    <value>Minimal call diatance [ms]</value>
+  </data>
+  <data name="SpecDescMaxCallDist" xml:space="preserve">
+    <value>Maximal call diatance [ms]</value>
+  </data>
+  <data name="CallDistance" xml:space="preserve">
+    <value>Call Distance</value>
+  </data>
+  <data name="CtrlZoomMeanValues" xml:space="preserve">
+    <value>Mean Values Calls</value>
+  </data>
+  <data name="CtrlZoomFirst" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="CtrlZoomLast" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="Fmin" xml:space="preserve">
+    <value>Fmin [kHz]</value>
+  </data>
+  <data name="Fmax" xml:space="preserve">
+    <value>Fmax [kHz]</value>
+  </data>
+  <data name="fMaxAmpl" xml:space="preserve">
+    <value>FmaxAmpl [kHz]</value>
+  </data>
   <data name="MainTrainData" xml:space="preserve">
     <value>Training Data</value>
   </data>

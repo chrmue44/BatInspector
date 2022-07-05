@@ -7,7 +7,7 @@
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+  <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="44"></RowDefinition>
       <RowDefinition Height="*"></RowDefinition>
@@ -122,36 +122,52 @@
       <Canvas Name ="_rulerT" Grid.Row="2" Grid.Column="1" ></Canvas>
     </Grid>
     <StackPanel Orientation="Horizontal" Grid.Row="2">
-    <GroupBox Header="{x:Static res:MyResources.CallInformation}"  >
-      <Grid >
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="350"></ColumnDefinition>
-          <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+      <GroupBox Header="{x:Static res:MyResources.CallInformation}"  >
+        <Grid >
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"></ColumnDefinition>
+            <ColumnDefinition Width="36"/>
+            <ColumnDefinition Width="299"/>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+          </Grid.ColumnDefinitions>
 
-        <local:CtlSpectrum x:Name ="_ctlSpectrum" Margin="30,5,30,5"  Grid.Column="0"/>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Name ="_spCallInfo">
-          <StackPanel Orientation="Horizontal">
-            <Button Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click">&lt;-</Button>
-            <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-            <Button Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click">-&gt;</Button>
+          <local:CtlSpectrum x:Name ="_ctlSpectrum" Margin="15,5,30,5"  Grid.Column="1" Grid.ColumnSpan="2"/>
+          <StackPanel Orientation="Vertical" Grid.Column="3" Name ="_spCallInfo">
+            <StackPanel Orientation="Horizontal">
+              <Button Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click">&lt;-</Button>
+              <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+              <Button Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click">-&gt;</Button>
+            </StackPanel>
+            <local:ctlDataItem x:Name="_ctlFMin"/>
+            <local:ctlDataItem x:Name="_ctlFMax"/>
+            <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
+            <local:ctlDataItem x:Name="_ctlDuration"/>
+            <local:ctlDataItem x:Name="_ctlSnr"/>
+            <local:ctlDataItem x:Name="_ctlDist"/>
           </StackPanel>
-          <local:ctlDataItem x:Name="_ctlFMin"/>
-          <local:ctlDataItem x:Name="_ctlFMax"/>
-          <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
-          <local:ctlDataItem x:Name="_ctlDuration"/>
-          <local:ctlDataItem x:Name="_ctlSnr"/>
-          <local:ctlDataItem x:Name="_ctlDist"/>
-        </StackPanel>
-      </Grid>
-    </GroupBox>
+        </Grid>
+      </GroupBox>
+      
+      <GroupBox Header="{x:Static res:MyResources.CtrlZoomMeanValues}">
+        <StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <local:ctlSelectItem x:Name="_ctlMeanCallMin" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+            <local:ctlSelectItem x:Name="_ctlMeanCallMax" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+          </StackPanel>
+          <local:ctlDataItem x:Name="_ctlMeanFMin"/>
+          <local:ctlDataItem x:Name="_ctlMeanFMax"/>
+          <local:ctlDataItem x:Name="_ctlMeanFMaxAmpl"/>
+          <local:ctlDataItem x:Name="_ctlMeanDuration"/>
+          <local:ctlDataItem x:Name="_ctlMeanDist"/>
+        </StackPanel>  
+      </GroupBox>
       <GroupBox Header="{x:Static res:MyResources.CtlZoomFileInfo}">
         <StackPanel>
-        <local:ctlDataItem x:Name="_ctlDateTime" />
-        <local:ctlDataItem x:Name="_ctlGpsPos" />
-        <local:ctlDataItem x:Name="_ctlGain" />
-        <local:ctlDataItem x:Name="_ctlTrigLevel" />
-        <local:ctlDataItem x:Name="_ctlTrigFilter" />
+          <local:ctlDataItem x:Name="_ctlDateTime" />
+          <local:ctlDataItem x:Name="_ctlGpsPos" />
+          <local:ctlDataItem x:Name="_ctlGain" />
+          <local:ctlDataItem x:Name="_ctlTrigLevel" />
+          <local:ctlDataItem x:Name="_ctlTrigFilter" />
           <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
 
         </StackPanel>

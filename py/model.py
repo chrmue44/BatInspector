@@ -302,7 +302,7 @@ def createModel(mod, input_shape, dirName, train, epochs, cleanMod, logs_dir):
         dev_y = glob.glob(dirName +"/Ydev*.npy")
         devGenerator = gen.DataGenerator(dev_x, dev_y, batchSize = BATCH_SIZE)
     
-    opt = tf.keras.optimizers.Adam(learning_rate=0.001)
+    opt = tf.keras.optimizers.Adam(learning_rate=0.0005)
     model.compile(
         loss= "categorical_crossentropy", #'mean_squared_logarithmic_error',
         optimizer=opt,   #"adam", 

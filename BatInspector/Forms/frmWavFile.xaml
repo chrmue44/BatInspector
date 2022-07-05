@@ -20,14 +20,18 @@
         <Button x:Name="_btnPlay" Grid.Row="0" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_Click">
           <Image Source="../images/play-button.png"></Image>
         </Button>
-      </ToolBar>
+                <Button x:Name="_btnSave" Grid.Row="0" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSave_Click">
+                    <Image Source="../images/icons8-save-48.png"></Image>
+                </Button>
+
+            </ToolBar>
     </ToolBarTray>
     <StackPanel Orientation="Vertical" Grid.Row="1">
       <local:ctlDataItem x:Name="_ctlFileName"/>
     <GroupBox Header="Header">
       <StackPanel Orientation="Vertical">
-        <local:ctlDataItem x:Name="_ctlSamplingRate"/>
-        <local:ctlDataItem x:Name="_ctlChannels"/>
+                    <local:ctlDataItem x:Name="_ctlSamplingRate"/>
+                    <local:ctlDataItem x:Name="_ctlChannels"/>
         <local:ctlDataItem x:Name="_ctlBitsPerSample"/>
       </StackPanel>
     </GroupBox>

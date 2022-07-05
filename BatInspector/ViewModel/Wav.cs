@@ -243,15 +243,18 @@ namespace BatInspector
     FormatChunk _format;
     DataChunk _data;
     Audio _audio;
+    string _fName;
+    bool _isOpen;
    
     public int Channels { get { return _format.Channels; } }
     public int BitsPerSample { get { return _format.BitsPerSample; } }
-    public uint SamplingRate {  get { return _format.Frequency; } }
+    public uint SamplingRate { get { return _format.Frequency; } set { _format.Frequency = value; } }
 
     public WavFile()
     {
       _audio = new Audio();
-      //_audio = new SoundPlayer();
+      _isOpen = false;
+      _fName = "";
     }
 
     private byte[] partArray(byte[]list, int startIdx, int len)
@@ -284,6 +287,8 @@ namespace BatInspector
         _data = new DataChunk(data);
         pos += 8;
         _data.AddSampleData(_waveData, pos, _waveData.Length - pos);
+        _fName = name;
+        _isOpen = true;
       }
       catch 
       {
@@ -292,6 +297,31 @@ namespace BatInspector
       return retVal;
     }
 
+    public int saveFile()
+    {
+      int retVal = 0;
+      try
+      {
+        if (_isOpen)
+        {
+          FileStream f = File.OpenWrite(_fName);
+          List<Byte> tempBytes = new List<byte>();
+          tempBytes.AddRange(_header.GetBytes());
+          tempBytes.AddRange(_format.GetBytes());
+          tempBytes.AddRange(_data.GetBytes());
+          _waveData = tempBytes.ToArray();
+          foreach (byte b in _waveData)
+            f.WriteByte(b);
+          f.Close();
+        }
+      }
+      catch
+      {
+        retVal = 1;
+      }
+      return retVal;
+    }
+    
     void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
     {
       _header = new WaveHeader();

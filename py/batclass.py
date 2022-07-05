@@ -35,7 +35,7 @@ def printHelp():
     -a create axes in images for each call
     -c cut recordings in single wav (calls), img (spectrogram) and npy files (spectrogram)
     -d <dir> set directory path for recordings for training
-    -e prepare train, dev and test set to train model
+    --prepTrain prepare train, dev and test set to train model
     -f <dataFile> csv file containing list of calls to process
     -g <infoTestFile> csv file containing information about test data set
     -h print this help
@@ -59,7 +59,7 @@ def printHelp():
 
 def parseArguments(argv):
     try:
-        opts, args = getopt.getopt(argv,"acd:ef:g:hio:p:s:t", ['clean','run', 'train', 'specFile:'])
+        opts, args = getopt.getopt(argv,"acd:ef:g:hio:p:s:t", ['clean','run', 'train', 'specFile=', 'prepTrain'])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -71,13 +71,13 @@ def parseArguments(argv):
             printHelp()
             sys.exit()
         elif opt == '-c':
-            env["cut"] = True
+            env['cut'] = True
         elif opt == '--clean':
-            env["cleanModel"] = True
+            env['cleanModel'] = True
         elif opt == '-d':
-            env["dirRecordings"] = arg
-        elif opt == '-e':
-            env["prepare"] = True
+            env['dirRecordings'] = arg
+        elif opt == '--prepTrain':
+            env['prepare'] = True
         elif opt == '-f':
             env["callFile"] = arg
         elif opt == '-g':
@@ -87,9 +87,9 @@ def parseArguments(argv):
         elif opt == '-m':
             env["model"] = arg
         elif opt == '-o':
-            env["trainDir"] = arg
+            env['trainDir'] = arg
         elif opt == '--specFile':
-            env["specFile"] = arg
+            env['specFile'] = arg
         elif opt == '--run':
             env['runModel'] = True
         elif opt == '--train':
@@ -109,13 +109,19 @@ def execute():
     if env['prepare']:
         outDir = env['trainDir']+'batch/'
         print ("**** prepare training data ****")
+        print ("*     species file:", env['specFile'])
         print ("* output directory:", outDir)
         print ("*       batch size:", env['batchSize'])
         print ("*******************************")        
         env['trainDataMask'] = env['trainDir'] + 'dat/*_fft.npy'
         preptrain.prepareTrainingData(env['specFile'], env['trainDataMask'], outDir, env['batchSize'])
     if env['runModel']:
-        model.runModel(env["train"], env["trainDir"], env["specFile"], 
+        print('********* run model ***********')
+        print('*        train:', env['train'])
+        print('*     dir name:', env['trainDir'])
+        print('* species file:', env['specFile'])
+        print ("*******************************")        
+        model.runModel(train = env['train'], dirName = env['trainDir'], speciesFile = env['specFile'], 
                        logName = env["trainDir"] + '//log_', 
                        checkFileName = env['infoTestFile'], epochs = env['epochs'], cleanMod = env['cleanModel'],
                        showConfusion = True)

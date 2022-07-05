@@ -10,6 +10,7 @@ TODO
 - reports across projects (week, month year)
 
 DONE
+- tool to inspect and manipulate wav files: can change sampling rate
 - calculate distance to previous call and show it in zoom view
 - tool to narrow down possible species by call parameters 
 - Scrollbar in treeview for directory browser 

@@ -1,5 +1,6 @@
 ﻿
 using System.Windows;
+using BatInspector.Controls;
 using Microsoft.Win32;
 
 namespace BatInspector.Forms
@@ -17,7 +18,7 @@ namespace BatInspector.Forms
       _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, 110, 400);
       _ctlBitsPerSample.setup("Bits per Chan", Controls.enDataType.INT, 0, 110);
       _ctlChannels.setup("Channel count.", Controls.enDataType.INT, 0, 110);
-      _ctlSamplingRate.setup("Sampling rate", Controls.enDataType.UINT, 0, 110, 80, true);
+      _ctlSamplingRate.setup("Sampling rate", Controls.enDataType.UINT, 0, 110, 80, true, samplingRateChanged);
 
     }
   
@@ -38,6 +39,17 @@ namespace BatInspector.Forms
     private void _btnPlay_Click(object sender, RoutedEventArgs e)
     {
       _model.WavFile.play();
+    }
+
+    private void _btnSave_Click(object sender, RoutedEventArgs e)
+    {
+      _model.WavFile.saveFile();
+    }
+
+    private void samplingRateChanged(enDataType type, object val)
+    {
+      int sr = _ctlSamplingRate.getIntValue();
+      _model.WavFile.SamplingRate = (uint)sr;
     }
   }
 }

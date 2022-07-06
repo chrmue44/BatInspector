@@ -1,0 +1,7 @@
+pip install matplotlib
+pip install scipy
+pip install tensorflow
+pip install pydub
+pip install seaborn
+pip install sklearn
+ffmpeg

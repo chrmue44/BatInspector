@@ -1,4 +1,5 @@
-set SPEC_PATH=C:/Users/chrmu/bat/train/species.csv
-set MOD_PATH=C:/Users/chrmu/prj/BatInspector/mod/trn/batch/
-python batclass.py --run --clean --train -s %SPEC_PATH% -o %MOD_PATH% -g C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv --specFile "C:/Users/chrmu/bat/train/species.csv"
+set ROOT=D:
+set SPEC_PATH=%ROOT%/bat/train/species.csv
+set MOD_PATH=%ROOT%/prj/BatInspector/mod/trn/batch/
+python batclass.py --run --clean --train -s %SPEC_PATH% -o %MOD_PATH% -g %ROOT%/prj/BatInspector/mod/trn/checktest.csv --specFile %SPEC_PATH%
 pause

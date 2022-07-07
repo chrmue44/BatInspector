@@ -160,3 +160,21 @@ def prepareTrainingData(speciesFile, pathTrainFiles, outPath, batchSize):
     genTrainingData(listSpecies, listDev, batchSize, "dev", outPath)
     print("gen train set")
     genTrainingData(listSpecies, listTrain, batchSize, "train", outPath)
+    
+def preparePrediction(speciesFile, pathFiles, outPath):
+    """
+    consolidate all data samples to a single set
+    
+    Arguments:
+    speciesFile - csv file with a list of species to learn
+    pathFiles - a file filter for all the call data files to process
+    outPath - target path for training data
+    """
+    listSpecies = readSpeciesInfo(speciesFile)
+    listSamples = glob.glob(pathFiles)
+    np.random.shuffle(listSamples)
+    size = int(len(listSamples))
+    print("number of calls:", size)
+    print("gen data set")
+    genTrainingData(listSpecies, listSamples, size, "data", outPath)
+

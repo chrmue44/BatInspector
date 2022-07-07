@@ -5,5 +5,5 @@ set MODPATH=%ROOT%\prj\BatInspector\mod\trn\
 :del "%MODPATH%dat\%SPEC%*.*"
 :del "%MODPATH%img\%SPEC%*.*"
 :del "%MODPATH%wav\%SPEC%*.*"
-python batclass.py -c -f "%ROOT%/bat/train/calls_%SPEC%.csv" -o %MODPATH% -i -a
+python batclass.py --cut --img --axes --csvcalls "%ROOT%/bat/train/calls_%SPEC%.csv" -o %MODPATH% 
 pause

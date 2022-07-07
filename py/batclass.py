@@ -10,21 +10,24 @@ env = {
        'batchSize': 64,     #batch size for files training dataset
        'cut': False,
        'prepare': False,
+       'prepPredict': False,
        'runModel': False,
-       "predict": False,
-       "predictList": "",
-       "dirRecordings": "",
+       'predict': False,
+       'predictList': '',
+       'predictData': '',
+       'dirRecordings': '',
        "callFile": "",
        'specFile': "",
-       'model': "rnnModel",
+       'model': 'rnnModel',
        'trainDir': "",
        'trainDataMask':'',
        'withImg': False,
        'withAxes': False,
-       'infoTestFile' : "",
+       'infoTestFile' : '',
        'epochs': 10,
        'cleanModel': False,
-       'train' : False
+       'train' : False,
+       'dirModel': ''
       }
 
 
@@ -32,21 +35,24 @@ def printHelp():
     print
     """
     batclass.py 
-    -a create axes in images for each call
-    -c cut recordings in single wav (calls), img (spectrogram) and npy files (spectrogram)
+    --axes create axes in images for each call
+    --cut cut recordings in single wav (calls), img (spectrogram) and npy files (spectrogram)
     -d <dir> set directory path for recordings for training
+    --dirModel <modelDir> specify the directory for model weights
+    --data data (npy) containing the calls to predict (MUST match with 'PredictList')
     --prepTrain prepare train, dev and test set to train model
-    -f <dataFile> csv file containing list of calls to process
+    --prepPredict prepare files for prediction
+    --csvcalls <dataFile> csv file containing list of calls to process
     -g <infoTestFile> csv file containing information about test data set
     -h print this help
-    -i create images for each call
+    --img create images for each call
     -m <model> select model
     -o <trainDir> specify root directory for training data
-    -p <fileList> predict
-    --specFile <specFile> set file containing list of species to learn    
-    --run run model
-    --train train model
-    --clean clean model (delete pre trained weights)
+    --predict - predict calls
+    --specFile <specFile> - set file containing list of species to learn    
+    --run - run model
+    --train - train model
+    --clean - clean model (delete pre trained weights)
     
     Examples:
     cut all recordings listed in call file to wav-files containing 1 call:
@@ -59,30 +65,37 @@ def printHelp():
 
 def parseArguments(argv):
     try:
-        opts, args = getopt.getopt(argv,"acd:ef:g:hio:p:s:t", ['clean','run', 'train', 'specFile=', 'prepTrain'])
+        opts, args = getopt.getopt(argv,"d:eg:ho:p:s:t", ['data=','dirModel=','predict','prepPredict','img','clean',
+                                                          'run', 'train', 'specFile=', 'prepTrain','cut','axes','csvcalls='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
         
     for opt, arg in opts:
-        if opt == '-a':
+        if opt == '--axes':
             env['withAxes'] = True
         elif opt == '-h':
             printHelp()
             sys.exit()
-        elif opt == '-c':
+        elif opt == '--cut':
             env['cut'] = True
         elif opt == '--clean':
             env['cleanModel'] = True
+        elif opt == '--dirModel':
+            env['dirModel'] = arg
+        elif opt == '--data':
+            env['predictData'] = arg     
         elif opt == '-d':
             env['dirRecordings'] = arg
         elif opt == '--prepTrain':
             env['prepare'] = True
-        elif opt == '-f':
+        elif opt == '--prepPredict':
+            env['prepPredict'] = True
+        elif opt == '--csvcalls':
             env["callFile"] = arg
         elif opt == '-g':
             env['infoTestFile'] = arg
-        elif opt == '-i':
+        elif opt == '--img':
             env['withImg'] = True
         elif opt == '-m':
             env["model"] = arg
@@ -94,9 +107,8 @@ def parseArguments(argv):
             env['runModel'] = True
         elif opt == '--train':
             env['train'] = True
-        elif opt == '-p':
+        elif opt == '--predict':        
             env['predict'] = True
-            env['predictList'] = arg
 
     #logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
     #checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
@@ -104,6 +116,9 @@ def parseArguments(argv):
 def execute():
     print("**** bat classification running ****")
     if env['cut']:
+        print ("**** cutting audio files ****")
+        print ("* call file:",env['callFile'])
+        print ("*   out dir:",env['trainDir'])
         audio.processCalls(env['callFile'], env['trainDir'], withImg = env['withImg'], withAxes = env['withAxes'])
         
     if env['prepare']:
@@ -115,6 +130,14 @@ def execute():
         print ("*******************************")        
         env['trainDataMask'] = env['trainDir'] + 'dat/*_fft.npy'
         preptrain.prepareTrainingData(env['specFile'], env['trainDataMask'], outDir, env['batchSize'])
+    
+    if env['prepPredict']:
+        print ("**** prepare predict data ****")
+        print ("*     species file:", env['specFile'])
+        print ("* output directory:", env['trainDir'])
+        env['trainDataMask'] = env['trainDir'] + 'dat/*_fft.npy'
+        preptrain.preparePrediction(env['specFile'], env['trainDataMask'], env['trainDir'])
+    
     if env['runModel']:
         print('********* run model ***********')
         print('*        train:', env['train'])
@@ -125,6 +148,15 @@ def execute():
                        logName = env["trainDir"] + '//log_', 
                        checkFileName = env['infoTestFile'], epochs = env['epochs'], cleanMod = env['cleanModel'],
                        showConfusion = True)
+
+    if env['predict']:
+        print('********* predict calls ***********')
+        print('*   list calls:', env['callFile'])
+        print('*    data file:', env['predictData'])
+        print('* species file:', env['specFile'])
+        print('*    dir model:', env['dirModel'])
+        
+        model.predict(env['predictData'], env['specFile'], env['callFile'], env['dirModel'])
         
 if __name__ == "__main__":
     start_time = time.time()

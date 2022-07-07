@@ -1,4 +1,5 @@
 import numpy as np
+import numpy as np
 import os
 import shutil
 import tensorflow as tf
@@ -8,6 +9,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix
 import generator as gen
+from tempfile import NamedTemporaryFile
+import shutil
 
 BATCH_SIZE = 64
 
@@ -265,7 +268,7 @@ def rnn4Model(rows, timeSteps, classes):
     
     
 
-def createModel(mod, input_shape, dirName, train, epochs, cleanMod, logs_dir):
+def createModel(mod, input_shape, datDir = "", dirModel ="", train =False, epochs = 0, cleanMod = False, logs_dir = ""):
     """
     create a model 
     
@@ -275,6 +278,8 @@ def createModel(mod, input_shape, dirName, train, epochs, cleanMod, logs_dir):
                     rows - number of rows in input data,
                     timesteps - number of timesteps/cols in input data
                     classes - number of classes in output vector
+    datDir - name of the directory containing the training data (no ending slash)
+    dirModel - name of the directory containing model data no ending slash)   
     train - True train the model and save weights, False load weights
     epochs - numbr of epochs to train
     cleanMod - True delete pretrained weights
@@ -283,7 +288,7 @@ def createModel(mod, input_shape, dirName, train, epochs, cleanMod, logs_dir):
     """
     model = mod(input_shape[0], input_shape[1], input_shape[2])
     print(model.summary())
-    weightsFile = model.name + ".h5"
+    weightsFile = dirModel + '/' + model.name + ".h5"
     if os.path.isfile(weightsFile):
         if cleanMod:
             os.remove(weightsFile) 
@@ -293,13 +298,13 @@ def createModel(mod, input_shape, dirName, train, epochs, cleanMod, logs_dir):
         train = True
     if train:
         print("read train data set...")
-        files_x = glob.glob(dirName +"/Xtrain*.npy")
-        files_y = glob.glob(dirName +"/Ytrain*.npy")        
+        files_x = glob.glob(datDir +"/Xtrain*.npy")
+        files_y = glob.glob(datDir +"/Ytrain*.npy")        
         trainGenerator = gen.DataGenerator(files_x, files_y, batchSize = BATCH_SIZE)
        
         print("read dev data set...")
-        dev_x = glob.glob(dirName +"/Xdev*.npy")
-        dev_y = glob.glob(dirName +"/Ydev*.npy")
+        dev_x = glob.glob(datDir +"/Xdev*.npy")
+        dev_y = glob.glob(datDir +"/Ydev*.npy")
         devGenerator = gen.DataGenerator(dev_x, dev_y, batchSize = BATCH_SIZE)
     
     opt = tf.keras.optimizers.Adam(learning_rate=0.0005)
@@ -309,16 +314,16 @@ def createModel(mod, input_shape, dirName, train, epochs, cleanMod, logs_dir):
         metrics=["accuracy"]
         )
 
-    checkpoint = tf.keras.callbacks.ModelCheckpoint(weightsFile,
-        save_weights_only=True,
-        save_best_only=True,
-        verbose=1)
-
-    tensorboard = tf.keras.callbacks.TensorBoard(log_dir=logs_dir)
-
     if train:
-    #model.fit(train_x, train_y, validation_data=(dev_x, dev_y), batch_size=32, epochs=10)
-    #model.fit(train, validation_data=dev, batch_size=BATCH_SIZE, callbacks=[checkpoint, tensorboard], epochs=epochs)
+        checkpoint = tf.keras.callbacks.ModelCheckpoint(weightsFile,
+            save_weights_only=True,
+            save_best_only=True,
+            verbose=1)
+
+        tensorboard = tf.keras.callbacks.TensorBoard(log_dir=logs_dir)
+
+        #model.fit(train_x, train_y, validation_data=(dev_x, dev_y), batch_size=32, epochs=10)
+        #model.fit(train, validation_data=dev, batch_size=BATCH_SIZE, callbacks=[checkpoint, tensorboard], epochs=epochs)
         model.fit(trainGenerator, validation_data=devGenerator,  callbacks=[checkpoint, tensorboard], epochs=epochs, batch_size=BATCH_SIZE)
 
     return model
@@ -379,6 +384,7 @@ def readCheckInfo(csvFile):
         for row in reader:
             ret.append({'sample':row['sample'],'index':row['index']})
     return ret
+
 
 def evalLogData(errList, resultFileName, checkFileName, speciesFile):
     """
@@ -447,7 +453,7 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
     crate and run the model
     
     Arguments:
-    train - True model will be trained
+    train - True model will be trained, False: exeute prediction
     speciesFile - name of the csv file containing the list of species
     logName - name of the logfile created for the erroneous predictions
     checkFileName - name of the csv file containing information about the test set (created during prep data phase)
@@ -459,13 +465,14 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
     # clean up log area
     data_dir = "./data"
     logs_dir = clean_logs(data_dir)
-
+    dirModel = "";
     print("reading test set...")
     test = readDataset(dirName, "Xtest000.npy", "Ytest000.npy")
     rows, timeSteps, classes = getDimensions(test)
     test = test.batch(BATCH_SIZE, drop_remainder=True)
+        
     input_shape = (rows, timeSteps, classes)
-    model = createModel(rnn1Model, input_shape, dirName, train, epochs, cleanMod, logs_dir)
+    model = createModel(rnn1Model, input_shape, dirName, dirModel, train, epochs, cleanMod, logs_dir)
 
     all_labels, all_predictions, bad_labels, good_labels = predictOnBatches(model, test)
     evalLogData(bad_labels, logName + 'bad.csv', checkFileName, speciesFile)
@@ -473,3 +480,58 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
 
     if showConfusion:
         showConfusionMatrix(speciesFile, all_labels, all_predictions)
+
+
+def predict(dataName, speciesFile, report, dirModel):
+    """
+    crate the model and predict
+    
+    Arguments:
+    train - True model will be trained
+    speciesFile - name of the csv file containing the list of species
+    logName - name of the logfile created for the erroneous predictions
+    checkFileName - name of the csv file containing information about the test set (created during prep data phase)
+    showConfusion - True shows the confusion matrix
+    """
+    print("#### predict #####")
+    listSpec = readSpeciesInfo(speciesFile)
+
+    print("reading data set...")
+    x = np.load(dataName)
+    np.swapaxes(x,1,2)
+   
+    rows, timeSteps, classes = x.shape[1], x.shape[2], len(listSpec)
+    print (x.shape)
+    input_shape = (rows, timeSteps, classes)
+    model = createModel(rnn1Model, input_shape, dirModel = dirModel)
+    y = model.predict(x)
+    
+    #write predictions in report file
+    fields = []
+    with open(report, "r") as f:
+        reader = csv.reader(f, delimiter =';')
+        for row in reader:
+            fields = row
+            break
+    print(fields)
+    
+    tempfile = NamedTemporaryFile(mode='w',  newline='', delete=False)
+    with open(report,  newline='') as r, tempfile:
+        reader = csv.DictReader(r, delimiter=';')
+        writer = csv.DictWriter(tempfile, delimiter=';', fieldnames = fields)
+        writer.writeheader()
+        idx = 0
+        for row in reader:
+            iMax = np.argmax(y[idx])
+            if y[idx, iMax] < 0.5:
+                row['spec'] = '????'
+            else:
+                row['spec'] = listSpec[iMax]
+            spIdx = 0
+            for species in listSpec:
+                row[species] = y[idx, spIdx]
+                spIdx += 1
+            writer.writerow(row)
+            idx += 1
+    
+    shutil.move(tempfile.name, report)

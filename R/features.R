@@ -45,7 +45,11 @@ species <- read.csv(file = specFile)
 setwd("C:/Users/chrmu/prj/BatInspector/R")
 filesToTest <- dir(dataDir, recursive = TRUE, full.names = TRUE, pattern = "[.]wav$")
 calls = 0
-  cat("name", "nr","spec","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","\n",file=resultFile, sep = ";")
+cat("name", "nr","spec","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","spec_man","comment","----",file=resultFile, sep = ";")
+for (sp in species) {
+  cat("", sp, file=resultFile, sep = ";", append=TRUE)
+}
+cat("", "\n", file=resultFile, sep = ";", append=TRUE)
 
   for (fileToTest in filesToTest) {
     actSpec = check_species(fileToTest, species)

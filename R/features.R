@@ -34,10 +34,12 @@ if (length(args)<2) {
    dataDir <-  "C:/Users/chrmu/bat/train"
    resultFile <-"C:/Users/chrmu/bat/train/calls.csv"
    specFile  <-"C:/Users/chrmu/bat/train/species.csv"
+   sampleRate <- 383500
 } else {
   dataDir <-   args[1]
   resultFile <- args[2]
   specFile <- args[3]
+  sampleRate <-args[4]
 }
 
 species <- read.csv(file = specFile)
@@ -45,7 +47,7 @@ species <- read.csv(file = specFile)
 setwd("C:/Users/chrmu/prj/BatInspector/R")
 filesToTest <- dir(dataDir, recursive = TRUE, full.names = TRUE, pattern = "[.]wav$")
 calls = 0
-cat("name", "nr","spec","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","spec_man","comment","----",file=resultFile, sep = ";")
+cat("name", "nr","Species","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","SpeciesMan","prob","----",file=resultFile, sep = ";")
 for (sp in species) {
   cat("", sp, file=resultFile, sep = ";", append=TRUE)
 }
@@ -97,9 +99,9 @@ cat("", "\n", file=resultFile, sep = ";", append=TRUE)
         nrOfObjects <- length(EvDat$filename)
         for(i in 1:nrOfObjects) {
           cat(fileToTest, i,actSpec,"",file=resultFile, sep = ";", append=TRUE)
-          cat(383500, 3.001, file=resultFile,"", sep = ";", append=TRUE)
+          cat(sampleRate, 3.001, file=resultFile,"", sep = ";", append=TRUE)
           cat(EvDat$freq_max_amp[i],EvDat$freq_min[i],EvDat$freq_max[i],"",file=resultFile, sep = ";", append=TRUE)
-          cat(EvDat$freq_knee[i], EvDat$duration[i], EvDat$starting_time[i], EvDat$snr[i],"\n",file=resultFile, sep = ";", append=TRUE)
+          cat(EvDat$freq_knee[i], EvDat$duration[i], EvDat$starting_time[i], EvDat$snr[i],"todo","\n",file=resultFile, sep = ";", append=TRUE)
           calls <- calls + 1
         }
       }

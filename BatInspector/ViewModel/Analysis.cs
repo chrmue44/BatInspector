@@ -238,7 +238,7 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        if (f.FileName == fileName)
+        if ( f.FileName.IndexOf(fileName) >= 0)
         {
           retVal = f;
           break;

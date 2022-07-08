@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using libParser;
 using BatInspector.Properties;
 using System;
+using System.IO;
 
 namespace BatInspector.Controls
 {
@@ -58,7 +59,9 @@ namespace BatInspector.Controls
       _duration.setup(MyResources.Duration+ " [s]", enDataType.DOUBLE, 3,100);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 0,100);
       _wavFilePath = wavFilePath;
-      _model.ZoomView.initWaterfallDiagram(_wavFilePath + analysis.FileName, 1024, 512, 256, _model.Settings);
+      string wavName = File.Exists(analysis.FileName) ? analysis.FileName : _wavFilePath + analysis.FileName;
+
+      _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256, _model.Settings);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
       _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
       _ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);

@@ -27,7 +27,8 @@ env = {
        'epochs': 10,
        'cleanModel': False,
        'train' : False,
-       'dirModel': ''
+       'dirModel': '',
+       'minSnr': 12.0
       }
 
 
@@ -156,7 +157,7 @@ def execute():
         print('* species file:', env['specFile'])
         print('*    dir model:', env['dirModel'])
         
-        model.predict(env['predictData'], env['specFile'], env['callFile'], env['dirModel'])
+        model.predict(env['predictData'], env['specFile'], env['callFile'], env['dirModel'], minSnr = env['minSnr'])
         
 if __name__ == "__main__":
     start_time = time.time()

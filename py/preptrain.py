@@ -75,7 +75,7 @@ def genTrainingData(listSpecies, listTrainSamples, batchSize, fName, trainPath):
     for spec in listSpecies:
         fields.append(spec)
     with open(checkFile + fName + ".csv", 'w', newline='') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, delimiter = ';')
         writer.writerow(fields)
         #loop over the list of training samples
         idx = 0
@@ -172,7 +172,6 @@ def preparePrediction(speciesFile, pathFiles, outPath):
     """
     listSpecies = readSpeciesInfo(speciesFile)
     listSamples = glob.glob(pathFiles)
-    np.random.shuffle(listSamples)
     size = int(len(listSamples))
     print("number of calls:", size)
     print("gen data set")

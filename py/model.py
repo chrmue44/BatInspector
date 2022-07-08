@@ -482,16 +482,16 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
         showConfusionMatrix(speciesFile, all_labels, all_predictions)
 
 
-def predict(dataName, speciesFile, report, dirModel):
+def predict(dataName, speciesFile, report, dirModel, minSnr):
     """
     crate the model and predict
     
     Arguments:
     train - True model will be trained
     speciesFile - name of the csv file containing the list of species
-    logName - name of the logfile created for the erroneous predictions
-    checkFileName - name of the csv file containing information about the test set (created during prep data phase)
-    showConfusion - True shows the confusion matrix
+    report - name of the report 
+    dirModel - directory where the model file i stored
+    minSnr - min SNR value to accept a prediction
     """
     print("#### predict #####")
     listSpec = readSpeciesInfo(speciesFile)
@@ -522,11 +522,13 @@ def predict(dataName, speciesFile, report, dirModel):
         writer.writeheader()
         idx = 0
         for row in reader:
+            snr = row['snr']
             iMax = np.argmax(y[idx])
-            if y[idx, iMax] < 0.5:
-                row['spec'] = '????'
+            row['prob'] = y[idx, iMax]
+            if (y[idx, iMax] < 0.5) or (float(snr) < minSnr):
+                row['Species'] = '????'
             else:
-                row['spec'] = listSpec[iMax]
+                row['Species'] = listSpec[iMax]
             spIdx = 0
             for species in listSpec:
                 row[species] = y[idx, spIdx]

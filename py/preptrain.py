@@ -51,12 +51,13 @@ def speciesToOnehot(spec, size, listSpecies):
 def to_raw(string):
     return fr"{string}"
     
-def genTrainingData(listSpecies, listTrainSamples, batchSize, fName, trainPath):
+def genTrainingData(listSpecies, listTrainSamples,  batchSize, checkFile, fName, trainPath):
     """
     generate training data from training samples and save batches to files
     
     Arguments:
     listSpecies - list containing a list of species to train
+    checkFile - name of checkFile
     listTrainSamples - a list of files with training samples
     batchSize - size of one batch
     
@@ -74,7 +75,7 @@ def genTrainingData(listSpecies, listTrainSamples, batchSize, fName, trainPath):
     fields = ['sample','batch','index','trunc']
     for spec in listSpecies:
         fields.append(spec)
-    with open(checkFile + fName + ".csv", 'w', newline='') as f:
+    with open(checkFile, 'w', newline='') as f:
         writer = csv.writer(f, delimiter = ';')
         writer.writerow(fields)
         #loop over the list of training samples
@@ -129,12 +130,13 @@ def genTrainingData(listSpecies, listTrainSamples, batchSize, fName, trainPath):
             
     return
     
-def prepareTrainingData(speciesFile, pathTrainFiles, outPath, batchSize):
+def prepareTrainingData(speciesFile, logDir, pathTrainFiles, outPath, batchSize):
     """
     consolidate all training samples to a train, dev and test set
     
     Arguments:
     speciesFile - csv file with a list of species to learn
+    rootDir - root directory of the model
     pathTrainFiles - a file filter for all the call data files to process
     outPath - target path for training data
     batchSize - batchSize for training data
@@ -153,13 +155,15 @@ def prepareTrainingData(speciesFile, pathTrainFiles, outPath, batchSize):
     print("train size:", len(listTrain), " batch size: ", batchSize)
     print("dev size:", len(listDev))
     print("test size:", len(listTest))
-
     print("gen test set")
-    genTrainingData(listSpecies, listTest, len(listTest), "test", outPath)
+    checkFile = logDir + '/checktest.csv'
+    genTrainingData(listSpecies, listTest, len(listTest), checkFile, 'test', outPath)
     print("gen dev set")
-    genTrainingData(listSpecies, listDev, batchSize, "dev", outPath)
+    checkFile = logDir + '/checkdev.csv'
+    genTrainingData(listSpecies, listDev, batchSize, checkFile, 'dev', outPath)
     print("gen train set")
-    genTrainingData(listSpecies, listTrain, batchSize, "train", outPath)
+    checkFile = logDir + '/checktrain.csv'
+    genTrainingData(listSpecies, listTrain, batchSize, checkFile, 'train', outPath)
     
 def preparePrediction(speciesFile, pathFiles, outPath):
     """

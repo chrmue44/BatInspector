@@ -134,13 +134,15 @@ def execute():
         print ("*       batch size:", modPars['batchSize'])
         print ("*******************************")        
         env['trainDataMask'] = env['rootDir'] + '/' + modPars['dirData'] + '/*_fft.npy'
-        preptrain.prepareTrainingData(env['specFile'], env['trainDataMask'], outDir, modPars['batchSize'])
+        logDir = env['rootDir'] + '/' + modPars['dirLogs']
+        preptrain.prepareTrainingData(env['specFile'], logDir, env['trainDataMask'], outDir, modPars['batchSize'])
     
     if env['prepPredict']:
         print ("**** prepare predict data ****")
         print ("*     species file:", env['specFile'])
         print ("* output directory:", env['rootDir'])
         env['trainDataMask'] = env['rootDir'] + '/' + modParams['dirData'] +'/*_fft.npy'
+        logDir = env['rootDir'] + '/' + modPars['dirLogs']
         preptrain.preparePrediction(env['specFile'], env['trainDataMask'], env['rootDir'])
     
     if env['runModel']:

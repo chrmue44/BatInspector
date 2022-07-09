@@ -7,7 +7,6 @@ import model
 import tensorflow as tf
 
 env = {
-       'batchSize': 64,     #batch size for files training dataset
        'cut': False,
        'prepare': False,
        'prepPredict': False,
@@ -29,8 +28,18 @@ env = {
        'train' : False,
        'dirModel': '',
        'minSnr': 12.0
-      }
+       }
 
+modPars = {
+      'batchSize': 64,         #batch size for files training dataset
+      'modName': 'rnn1Model',
+      'lrnRate': 0.0005,
+      'epochs': 10,
+      'clean': True,
+      'dirData' :'dat',        #sub directory for the prepared data files
+      'dirBatch' : 'bat',      #sub directory for the batches
+      
+}
 
 def printHelp():
     print
@@ -67,7 +76,7 @@ def printHelp():
 def parseArguments(argv):
     try:
         opts, args = getopt.getopt(argv,"d:eg:ho:p:s:t", ['data=','dirModel=','predict','prepPredict','img','clean',
-                                                          'run', 'train', 'specFile=', 'prepTrain','cut','axes','csvcalls='])
+                                                          'check', 'run', 'train', 'specFile=', 'prepTrain','cut','axes','csvcalls='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -110,7 +119,8 @@ def parseArguments(argv):
             env['train'] = True
         elif opt == '--predict':        
             env['predict'] = True
-
+            
+            
     #logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
     #checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
 
@@ -123,7 +133,7 @@ def execute():
         audio.processCalls(env['callFile'], env['trainDir'], withImg = env['withImg'], withAxes = env['withAxes'])
         
     if env['prepare']:
-        outDir = env['trainDir']+'batch/'
+        outDir = env['trainDir']+'/batch/'
         print ("**** prepare training data ****")
         print ("*     species file:", env['specFile'])
         print ("* output directory:", outDir)
@@ -144,9 +154,10 @@ def execute():
         print('*        train:', env['train'])
         print('*     dir name:', env['trainDir'])
         print('* species file:', env['specFile'])
+        print('*    dir model:', env['dirModel'])
         print ("*******************************")        
-        model.runModel(train = env['train'], dirName = env['trainDir'], speciesFile = env['specFile'], 
-                       logName = env["trainDir"] + '//log_', 
+        model.runModel(train = env['train'], dirName = env['trainDir'],dirModel = env['dirModel'],
+                       speciesFile = env['specFile'], logName = env["trainDir"] + '//log_', 
                        checkFileName = env['infoTestFile'], epochs = env['epochs'], cleanMod = env['cleanModel'],
                        showConfusion = True)
 

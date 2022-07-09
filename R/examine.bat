@@ -3,9 +3,8 @@ set SCRIPT=features.R
 rem set DIR=%1%
 rem set RESULT=%2%
 rem set SPEC_FILE=%3%
-set SPEC=Eser_Skiba
-set DIR=C:\Users\chrmu\bat\train\%SPEC%
-set RESULT=C:\Users\chrmu\bat\train\calls_%SPEC%.csv
+set DIR=C:\Users\chrmu\bat\train
+set RESULT=C:\Users\chrmu\bat\train\calls.csv
 set SPEC_FILE=C:\Users\chrmu\bat\train\species.csv
 %TOOL% %SCRIPT% %DIR% %RESULT% %SPEC_FILE%
 pause

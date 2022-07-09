@@ -379,7 +379,7 @@ def readCheckInfo(csvFile):
     """
     ret = []
     with open(csvFile,  newline='') as f:
-        reader = csv.DictReader(f, delimiter=',')
+        reader = csv.DictReader(f, delimiter=';')
         count = 0
         for row in reader:
             ret.append({'sample':row['sample'],'index':row['index']})
@@ -426,12 +426,13 @@ def evalLogData(errList, resultFileName, checkFileName, speciesFile):
                 row.append(p)
             writer.writerow(row)
     
-def showConfusionMatrix(speciesFile, labels, predictions):
+def showConfusionMatrix(speciesFile, dirName, labels, predictions):
     """
     show confusion matrix
     
     Arguments:
     speciesFile - file name for csv file containing the labels
+    dirName - directory to store the confusion matrix
     labels - true labels 1D array
     predictions - predicted values 1D array
     """
@@ -445,18 +446,22 @@ def showConfusionMatrix(speciesFile, labels, predictions):
     plt.xlabel('Prediction')
     plt.ylabel('Label')
     #plt.show()
-    plt.savefig("confusion.png")
+    plt.savefig(dirName + "/confusion.png")
   
 
-def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanMod, showConfusion = True):
+def runModel(train, dirName,  dirModel, speciesFile, logName, checkFileName, epochs, cleanMod, showConfusion = True):
     """
     crate and run the model
     
     Arguments:
     train - True model will be trained, False: exeute prediction
+    dirName - directory of the model data
+    dirModel - directory of the model weights
     speciesFile - name of the csv file containing the list of species
     logName - name of the logfile created for the erroneous predictions
     checkFileName - name of the csv file containing information about the test set (created during prep data phase)
+    epochs - nr of epochs to train
+    cleanMod - True: delete weights file and begin training from scratch
     showConfusion - True shows the confusion matrix
     """
     print("#### run model #####")
@@ -465,7 +470,6 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
     # clean up log area
     data_dir = "./data"
     logs_dir = clean_logs(data_dir)
-    dirModel = "";
     print("reading test set...")
     test = readDataset(dirName, "Xtest000.npy", "Ytest000.npy")
     rows, timeSteps, classes = getDimensions(test)
@@ -479,7 +483,8 @@ def runModel(train, dirName, speciesFile, logName, checkFileName, epochs, cleanM
     evalLogData(good_labels, logName + 'good.csv', checkFileName, speciesFile)
 
     if showConfusion:
-        showConfusionMatrix(speciesFile, all_labels, all_predictions)
+        showConfusionMatrix(speciesFile, dirName, all_labels, all_predictions)
+
 
 
 def predict(dataName, speciesFile, report, dirModel, minSnr):

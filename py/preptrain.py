@@ -6,7 +6,7 @@ import time
 ### global variables
 #speciesFile = "C:/Users/chrmu/bat/train/species.csv"
 #pathTrainFiles = "C:/Users/chrmu/prj/BatInspector/mod/trn/dat/*_fft.npy"   # .._max.npy
-checkFile = "C:/Users/chrmu/prj/BatInspector/mod/trn/check"
+#checkFile = "C:/Users/chrmu/prj/BatInspector/mod/trn/check"
 verbosity = True
 maxCallLen = 330   # max length of a training sample
 # TRAIN_PATH = "C:/Users/chrmu/prj/BatInspector/mod/trn/"

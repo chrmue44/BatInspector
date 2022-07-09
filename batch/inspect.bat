@@ -1,7 +1,10 @@
 rem executable R
 set TOOL="C:\Program Files\R\R-4.2.0/bin/Rscript.exe"
 rem scritp name
-set SCRIPT=C:\Users\chrmu\prj\BatInspector\R\features.R
+set ROOT=C:\Users\chrmu
+rem set ROOT=D:\
+set R_SCRIPT=%ROOT%\prj\BatInspector\R\features.R
+set PY_SCRIPT=%ROOT%\prj\BatInspector\py\batclass.py
 
 set SAMPLE_RATE=312800
 set YEAR=2022
@@ -22,7 +25,7 @@ rem ####set DAT_FILE=%DIR%/Xtest000.npy
 
 rem goto prepare
 rem find all calls in recordings specified above
-%TOOL% %SCRIPT% %DIR%\Records %REPORT% %SPEC_FILE% %SAMPLE_RATE%
+%TOOL% %_RSCRIPT% %DIR%\Records %REPORT% %SPEC_FILE% %SAMPLE_RATE%
 
 
 :start_cut
@@ -36,17 +39,17 @@ del "%DIR%\wav\*.*" /Q
 
 goto all_in_one
 
-python batclass.py --cut --img --axes --csvcalls %REPORT% -o %DIR%/ 
+python %PY_SCRIPT% --cut --img --axes --csvcalls %REPORT% -o %DIR%/ 
 pause
 
 :prepare
-python batclass.py --prepPredict --specFile %SPEC_FILE% -o %DIR%/
+python %PY_SCRIPT% --prepPredict --specFile %SPEC_FILE% -o %DIR%/
 pause
 
 :predict
-python batclass.py --predict --data %DAT_FILE% --csvcalls %REPORT% --specFile %SPEC_FILE% --dirModel %MOD_PATH%
+python %PY_SCRIPT% --predict --data %DAT_FILE% --csvcalls %REPORT% --specFile %SPEC_FILE% --dirModel %MOD_PATH%
 pause
 
 :all_in_one
-python batclass.py --cut --prepPredict --predict --csvcalls %REPORT% -o %DIR%/ --specFile %SPEC_FILE% --data %DAT_FILE% --dirModel %MOD_PATH%
+python %PY_SCRIPT% --cut --prepPredict --predict --csvcalls %REPORT% -o %DIR%/ --specFile %SPEC_FILE% --data %DAT_FILE% --dirModel %MOD_PATH%
 pause

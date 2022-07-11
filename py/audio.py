@@ -1,3 +1,4 @@
+from fileinput import filename
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
@@ -6,19 +7,13 @@ import os
 from pydub import AudioSegment
 import csv
 import numpy as np
+import glob
+
+verbose = False    #show more infos on console
 
 
 
-mrgBefore = 10    #time before call [ms]
-mrgAfter = 20     #time after call [ms]
-threshold = 0.005 #threshold value for noise canceling
-scaleType = 'lin' #scaling of spectrogram ('log', 'lin')
-verbose = False   #show more infos on console
-dataFormat = 'npy' # format to save arrays: 'csv, 'npy'
-#withImg = False
-#withAxes = False  #show axes in pngs
-
-def extractPart(srcFile, dstFile, start, end):
+def extractPart(srcFile, dstFile, start, end, save = True):
     """
     extract a part from a wav file and save it as a file
     
@@ -34,7 +29,8 @@ def extractPart(srcFile, dstFile, start, end):
     if end > recording.duration_seconds * 1000:
         end = recording.duration_seconds * 1000 - 1
     call = recording[start:end]
-    call.export(dstFile, format="wav")
+    if save:
+        call.export(dstFile, format="wav")
     return call
 
 def spectrogramFromAudio(seg):
@@ -80,13 +76,15 @@ def get_wav_info(wav_file):
     rate, data = wavfile.read(wav_file)
     return rate, data
 
-def readFileInfos(row, dir):
+def readFileInfos(row, dir, modPars, audioPars):
     """
     read all informations needed to extract a call
    
     Arguments:
     row: dictionary containing one row of csv file
     dir: output directory 
+    modPars - model parameter
+    
     Returns:
     wavFile - name of wav file to extract a call
     callfile - name of call file without extension
@@ -102,12 +100,12 @@ def readFileInfos(row, dir):
     duration = float(row['duration'])
     wavFile = row['name']
     pos = wavFile.rfind('/')
-    callFile = dir +"wav/"+ wavFile[pos+1:-4] + "_call_" + f'{int(nr):03d}' + ".wav" 
-    imgFile = dir +"img/"+ wavFile[pos+1:-4] + "_call_" + f'{int(nr):03d}' + ".png" 
-    datFile = dir +"dat/"+ wavFile[pos+1:-4] + "_call_" + f'{int(nr):03d}' 
+    callFile = dir + '/' + modPars['dirWav'] + '/' + wavFile[pos+1:-4] + "_call_" + f'{int(nr):03d}' + ".wav" 
+    imgFile = dir + '/' + modPars['dirImg'] + '/' + wavFile[pos+1:-4] + "_call_" + f'{int(nr):03d}' + ".png" 
+    datFile = dir + '/' + modPars['dirData'] + '/' + wavFile[pos+1:-4] + "_call_" + f'{int(nr):03d}' 
             
-    start = startTime - mrgBefore
-    end = startTime + duration + mrgAfter
+    start = startTime - audioPars['mrgBefore']
+    end = startTime + duration + audioPars['mrgAfter']
     
     return wavFile, imgFile, callFile, datFile, start, end
 
@@ -117,7 +115,10 @@ def denoise(data,threshold):
     
     Arguments:
     data - the data
-    threshold - threshold valaue
+    threshold - threshold valaue for the amplitude
+    
+    Returns:
+    clean - a denoised data set
     """
     n = np.amax(data)
     if(n != 0):
@@ -125,6 +126,74 @@ def denoise(data,threshold):
     clean_id = data > threshold
     clean = data * clean_id
     return clean
+
+def denoise95_old(data,percent):
+    """
+    normalize and take only the first <percent> of the spectral energy
+    
+    Arguments:
+    data - the data
+    percent - [%] threshold valaue for the spectral energy^
+    
+    Returns:
+    clean - a denoised data set
+    """
+    n = np.amax(data)
+    if(n != 0):
+        data /= n
+        
+    cols = data.shape[1]
+    clean = np.zeros(data.shape)
+    for c in range (cols):
+        col = data[:,c]
+        sum = 0
+        thresh = np.sum(col) * percent
+        while sum < thresh:
+            i = np.argmax(col)
+            sum += col[i]
+            clean[i,c] = col[i]
+            col[i] = 0
+    return clean
+
+
+def denoise95(data,percent):
+    """
+    normalize and take only the first <percent> of the spectral energy
+    
+    Arguments:
+    data - the data
+    percent - [%] threshold valaue for the spectral energy^
+    
+    Returns:
+    clean - a denoised data set
+    """
+    
+    #normalize data
+    n = np.amax(data)
+    if(n != 0):
+        data /= n
+    
+    colMax = np.sum(data, axis = 0)
+    threshT = percent * np.sum(colMax)
+    sumT = 0    
+    clean = np.zeros(data.shape)
+    
+    # while sum energy in direction t < threshold value
+    while sumT < threshT:
+        t = np.argmax(colMax)
+        col = data[:,t]
+        sum = 0
+        thresh = np.sum(col) * percent
+        sumT += colMax[t]
+        colMax[t] = 0
+        # while sum energ< in direction f < threshold value
+        while sum < thresh:
+            f = np.argmax(col)
+            sum += col[f]
+            clean[f,t] = col[f]
+            col[f] = 0
+    return clean
+
 
 def createImage(data, imgFile, duration, withAxes = False):
     """
@@ -218,33 +287,50 @@ def detectHardClipping(signal, threshold=2):
                 return True
         return False
     return HasLongSequence(mask_min) or HasLongSequence(mask_max)   
+
+def resampleWavFiles(inDir, sampleRate, timeStretch):
+    listFile = glob.glob(inDir)
+    for f in listFile:
+        newf = f.replace("Eptesicus_serotinus","Eser")
+        samples = AudioSegment.from_wav(f)
+        print("exporting: ", newf)
+        newRate = samples.frame_rate * timeStretch
+        samples.frame_rate = newRate
+        newS = samples.set_frame_rate(sampleRate)
+        newS.export(newf, format='wav')
+
         
-def processCalls(csvFile, outDir, format = "npy", verbose = False, withImg = False, withAxes = False):
+def processCalls(csvFile, outDir, modPars, audioPars, format = "npy", verbose = False):
     """
     process all calls in the csv file:
     generate wav file and img file for each detected call
     Arguments:
     csvFile: name of the csv (;-delimited) file containing the call informations
     outDir: directory to output all the wav and png files
+    modPars - dictionary with model parameter (defined in batcalls.py)
+    audioPars - dictionary with audio parameters (defined in batcalls.py)
     format - file format "csv, "npy"
     verbose: True - print information about each detected call
-    withImg: True create image file for each call
-    withAxes: True create axes in image for each call
     """
     with open(csvFile,  newline='') as f:
         reader = csv.DictReader(f, delimiter=';')
         count = 0
         for row in reader:
-            wavFile, imgFile, callFile, datFile, start, end = readFileInfos(row, outDir)
-            seg = extractPart(wavFile, callFile, start, end)
+            wavFile, imgFile, callFile, datFile, start, end = readFileInfos(row, outDir, modPars, audioPars)
+            seg = extractPart(wavFile, callFile, start, end, audioPars['saveWav'])
             if detectHardClipping(seg):
                 print("clipping detected in file:", callFile)
                 continue
-            data, freq, bins = graph_spectrogram(callFile, imgFile, scale = scaleType, withAxes = withAxes)
-            data_denoised = denoise(data, threshold)
-            getMaxima(data_denoised, freq, bins, datFile, format = format)
-            if withImg:
-                createImage(data_denoised, imgFile, end - start, withAxes = withAxes)
+            data, freq, bins = graph_spectrogram(callFile, imgFile, scale = audioPars['scaleType'], withAxes = audioPars['withAxes'])
+            if audioPars['denoise'] == 'threshold':
+                data_denoised = denoise(data, audioPars['threshold'])
+            elif audioPars['denoise'] == 'energy':
+                data_denoised = denoise95(data, audioPars['energy'])
+            else:
+                print('ERROR: denoise type "',modPars['denoise'],'" unknown') 
+            #getMaxima(data_denoised, freq, bins, datFile, format = format)
+            if audioPars['withImg']:
+                createImage(data_denoised, imgFile, end - start, withAxes = audioPars['withAxes'])
             if format == "csv":
                 np.savetxt(datFile + "_fft.csv",data_denoised, delimiter=';')
             else:

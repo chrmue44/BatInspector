@@ -113,8 +113,8 @@ def genTrainingData(listSpecies, listTrainSamples,  batchSize, checkFile, fName,
             Ytrain[idx,:] = y
             idx += 1
             if idx >= batchSize:
-                np.save(trainPath + "X" + fName + f'{b:03d}' + ".npy", Xtrain)
-                np.save(trainPath + "Y" + fName + f'{b:03d}' + ".npy", Ytrain)
+                np.save(trainPath + "/X" + fName + f'{b:03d}' + ".npy", Xtrain)
+                np.save(trainPath + "/Y" + fName + f'{b:03d}' + ".npy", Ytrain)
                 Xtrain = np.zeros((batchSize, x.shape[0], maxCallLen))
                 Ytrain = np.zeros((batchSize, length))
                 b += 1
@@ -122,8 +122,8 @@ def genTrainingData(listSpecies, listTrainSamples,  batchSize, checkFile, fName,
                 print("processing batch ", b, "/", bcnt)
         #handle last block
         if idx > 0:
-            np.save(trainPath + "X" + fName + f'{b:03d}' + ".npy", Xtrain)
-            np.save(trainPath + "Y" + fName + f'{b:03d}' + ".npy", Ytrain)
+            np.save(trainPath + "/X" + fName + f'{b:03d}' + ".npy", Xtrain)
+            np.save(trainPath + "/Y" + fName + f'{b:03d}' + ".npy", Ytrain)
             Xtrain = np.zeros((batchSize, x.shape[0], maxCallLen))
             Ytrain = np.zeros((batchSize, length))
             print("processing batch ", b, "/", bcnt)

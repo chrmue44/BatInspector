@@ -16,22 +16,26 @@ env = {
        'predictData': '',
        "callFile": "",
        'specFile': "",
-       'model': 'rnnModel',
+       'model': 'rnn1aModel',
        'rootDir': "",
        'trainDataMask':'',
-       'withImg': False,
-       'withAxes': False,
        'infoTestFile' : '',
        'train' : False,
-       'minSnr': 12.0
+       'minSnr': 12.0,
+       'resample': False,
+       'inFile':'',
+       'outFile':'',
+       'sampleRate': 312500,
        }
 
 modPars = {
       'batchSize': 64,           #batch size for files training dataset
-      'modelName':'rnn1Model',   #type of model to run
+      'modelName':'rnn1aModel',  #type of model to run
       'lrnRate': 0.0005,
-      'epochs': 1,
+      'epochs': 15,
       'clean': True,
+      'dirWav' :'wav',           #sub directory to store single call wav files
+      'dirImg' : 'img',          #sub directory to store generated spectrograms of single calls      
       'dirData' :'dat',          #sub directory for the prepared data files
       'dirBatch' : 'bat',        #sub directory for the batches
       'dirWeights' : 'wgt',      #sub directory to store the weights file     
@@ -39,49 +43,62 @@ modPars = {
       'logName': 'log_'          #base name for generated log files for good and bad samples during test of model
 }
 
+audioPars = {
+       'denoise': 'threshold',   #type of denoising: 'threshold', 'energy'
+       'threshold': 0.005,       #threshold value (amplitude) for denoising type threshold
+       'energy':  0.95,          #threshold value (percentage) for denoising type energy
+       'withImg': False,         #create image files for each call
+       'withAxes': False,        #include axes in image file
+       'saveWav': True,          #create wav file for each call (must be true at the moment)
+       'scaleType': 'lin',       #scale type for spectrogram
+       'mrgBefore': 10,          #added time before call [ms] when cutting out single calls
+       'mrgAfter': 20            #added timetime after call [ms] when cutting out single calls
+}
 def printHelp():
     print
     """
     batclass.py 
     --axes create axes in images for each call
     --cut cut recordings in single wav (calls), img (spectrogram) and npy files (spectrogram)
-    -d <dir> set directory path for recordings for training
     --data data (npy) containing the calls to predict (MUST match with 'PredictList')
     --prepTrain prepare train, dev and test set to train model
     --prepPredict prepare files for prediction
     --csvcalls <dataFile> csv file containing list of calls to process
     -g <infoTestFile> csv file containing information about test data set
     -h print this help
+    --wav save extracted calls as wav files
     --img create images for each call
-    -m <model> select model
+    --model <model> select model
     --root <rootDir> specify root directory for training data
     --predict - predict calls
     --specFile <specFile> - set file containing list of species to learn    
     --run - run model
     --train - train model
     --clean - clean model (delete pre trained weights)
+    --resample <fileName>
+    --outFile <outfile>
+    --sampleRate <sampleRate>
     
     Examples:
     cut all recordings listed in call file to wav-files containing 1 call:
-    batclass.py -c -f "C:/Users/chrmu/bat/train/calls_nnoc.csv" -o "C:/Users/chrmu/prj/BatInspector/mod/trn/"
     
     collect all calls and consolidate them to training, dev and test datasets
-    batclass.py -e -s "C:/Users/chrmu/bat/train/species.csv" -o "C:/Users/chrmu/prj/BatInspector/mod/trn/"
-    
+     
     """
 
 def parseArguments(argv):
     try:
         opts, args = getopt.getopt(argv,"d:eg:hp:s:t", ['data=','predict','prepPredict','img','clean',
                                                         'root=', 'check', 'run', 'train', 'specFile=', 'prepTrain',
-                                                        'cut','axes','csvcalls='])
+                                                        'wav','model=','cut','axes','csvcalls=',
+                                                        'resample=','outFile=','sampleRate='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
         
     for opt, arg in opts:
         if opt == '--axes':
-            env['withAxes'] = True
+            audioPars['withAxes'] = True
         elif opt == '-h':
             printHelp()
             sys.exit()
@@ -100,8 +117,8 @@ def parseArguments(argv):
         elif opt == '-g':
             env['infoTestFile'] = arg
         elif opt == '--img':
-            env['withImg'] = True
-        elif opt == '-m':
+            audioPars['withImg'] = True
+        elif opt == '--model':
             env["model"] = arg
         elif opt == '--root':
             env['rootDir'] = arg
@@ -113,7 +130,15 @@ def parseArguments(argv):
             env['train'] = True
         elif opt == '--predict':        
             env['predict'] = True
-            
+        elif opt == '--wav':
+            env['saveWav'] = True
+        elif opt == '--resample':
+            env['resample'] = True
+            env['inFile'] = arg
+        elif opt == '--outFile':
+            env['outFile'] = arg
+        elif opt == '--sampleRate':
+            env['sampleRate'] = int(arg)
             
     #logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
     #checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
@@ -121,10 +146,11 @@ def parseArguments(argv):
 def execute():
     print("**** bat classification running ****")
     if env['cut']:
+        outDir = env['rootDir'] + '/' + modPars['dirData']
         print ("**** cutting audio files ****")
         print ("* call file:",env['callFile'])
-        print ("*   out dir:",env['rootDir'])
-        audio.processCalls(env['callFile'], env['rootDir'], withImg = env['withImg'], withAxes = env['withAxes'])
+        print ("*   out dir:",outDir)
+        audio.processCalls(env['callFile'], env['rootDir'], modPars, audioPars)
         
     if env['prepare']:
         outDir = env['rootDir'] + '/' + modPars['dirBatch'] 
@@ -141,7 +167,7 @@ def execute():
         print ("**** prepare predict data ****")
         print ("*     species file:", env['specFile'])
         print ("* output directory:", env['rootDir'])
-        env['trainDataMask'] = env['rootDir'] + '/' + modParams['dirData'] +'/*_fft.npy'
+        env['trainDataMask'] = env['rootDir'] + '/' + modPars['dirData'] +'/*_fft.npy'
         logDir = env['rootDir'] + '/' + modPars['dirLogs']
         preptrain.preparePrediction(env['specFile'], env['trainDataMask'], env['rootDir'])
     
@@ -150,22 +176,23 @@ def execute():
         print('*        train:', env['train'])
         print('*     dir name:', env['rootDir'])
         print('* species file:', env['specFile'])
-        print ("*******************************")        
-#        model.runModel(train = env['train'], dirName = env['rootDir'],dirModel = env['dirModel'],
-#                       speciesFile = env['specFile'], logName = env["rootDir"] + '//log_', 
-#                       checkFileName = env['infoTestFile'], epochs = modPars['epochs'], cleanMod = modPars['clean'],
-#                       showConfusion = True)                       
+        print ("*******************************")                             
         mod.runModel(train = env['train'], rootDir = env['rootDir'],speciesFile = env['specFile'],
-                       checkFileName = env['infoTestFile'], modParams = modPars, showConfusion = True)
+                       checkFileName = env['infoTestFile'], modPars = modPars, showConfusion = True)
                        
     if env['predict']:
         print('********* predict calls ***********')
         print('*   list calls:', env['callFile'])
         print('*    data file:', env['predictData'])
         print('* species file:', env['specFile'])
-        
         mod.predict(env['predictData'], env['specFile'], env['callFile'], minSnr = env['minSnr'])
-        
+    
+    if env['resample']:
+        print('********* resample WAV file ***********')
+        print('*       input:', env['inFile'])      
+        print('* sample rate:', env['sampleRate'])
+        audio.resampleWavFiles(env['inFile'], env['sampleRate'], 10)
+
 if __name__ == "__main__":
     start_time = time.time()
     parseArguments(sys.argv[1:])

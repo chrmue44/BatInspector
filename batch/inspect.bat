@@ -39,17 +39,17 @@ del "%DIR%\wav\*.*" /Q
 
 goto all_in_one
 
-python %PY_SCRIPT% --cut --img --axes --csvcalls %REPORT% -o %DIR%/ 
+python %PY_SCRIPT% --cut --csvcalls %REPORT% --root %DIR%
 pause
 
 :prepare
-python %PY_SCRIPT% --prepPredict --specFile %SPEC_FILE% -o %DIR%/
+python %PY_SCRIPT% --prepPredict --specFile %SPEC_FILE% --root %DIR%
 pause
 
 :predict
-python %PY_SCRIPT% --predict --data %DAT_FILE% --csvcalls %REPORT% --specFile %SPEC_FILE% --dirModel %MOD_PATH%
+python %PY_SCRIPT% --predict --data %DAT_FILE% --csvcalls %REPORT% --specFile %SPEC_FILE% 
 pause
 
 :all_in_one
-python %PY_SCRIPT% --cut --prepPredict --predict --csvcalls %REPORT% -o %DIR%/ --specFile %SPEC_FILE% --data %DAT_FILE% --dirModel %MOD_PATH%
+python %PY_SCRIPT% --cut --prepPredict --predict --csvcalls %REPORT% --root %DIR% --specFile %SPEC_FILE% --data %DAT_FILE% 
 pause

@@ -1,8 +1,8 @@
 rem set ROOT=D:
 set ROOT=C:\Users\chrmu
-set MODPATH=%ROOT%\prj\BatInspector\mod\trn\
-:del "%MODPATH%dat\%SPEC%*.*"
-:del "%MODPATH%img\%SPEC%*.*"
-:del "%MODPATH%wav\%SPEC%*.*"
-python batclass.py --cut  --csvcalls "%ROOT%/bat/train/calls.csv" -o %MODPATH% 
+set MODPATH=%ROOT%\prj\BatInspector\mod
+del %MODPATH%\dat\*.* /Q
+del %MODPATH%\img\*.* /Q
+del %MODPATH%\wav\*.* /Q
+python ..\py\batclass.py --cut --axes --csvcalls "%ROOT%/bat/train/calls.csv" --root %MODPATH% 
 pause

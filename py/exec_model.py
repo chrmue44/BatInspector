@@ -12,10 +12,6 @@ from tempfile import NamedTemporaryFile
 import shutil
 from models import getModel
 
-BATCH_SIZE = 64
-
-
-
 
 def readSpeciesInfo(csvFile):
     """
@@ -70,7 +66,7 @@ def getDimensions(data):
     return rows, timeSteps,classes
         
 
-def createModel(mod, input_shape, rootDir, modParams, train = False):
+def createModel(mod, input_shape, rootDir, modPars, train = False):
 
     """
     create a model 
@@ -87,9 +83,10 @@ def createModel(mod, input_shape, rootDir, modParams, train = False):
     """
     model = mod(input_shape[0], input_shape[1], input_shape[2])
     print(model.summary())
-    weightsFile = rootDir + '/' + modParams['dirWeights'] + '/' + model.name + ".h5"
+    
+    weightsFile = rootDir + '/' + modPars['dirWeights'] + '/' + model.name + ".h5"
     if os.path.isfile(weightsFile):
-        if modParams['clean']:
+        if modPars['clean']:
             os.remove(weightsFile) 
         else:
             model.load_weights(weightsFile)
@@ -97,17 +94,17 @@ def createModel(mod, input_shape, rootDir, modParams, train = False):
         train = True
     if train:
         print("read train data set...")
-        batDir = rootDir + '/' + modParams['dirBatch']
+        batDir = rootDir + '/' + modPars['dirBatch']
         files_x = glob.glob(batDir +"/Xtrain*.npy")
         files_y = glob.glob(batDir +"/Ytrain*.npy")        
-        trainGenerator = gen.DataGenerator(files_x, files_y, batchSize = BATCH_SIZE)
+        trainGenerator = gen.DataGenerator(files_x, files_y, batchSize = modPars['batchSize'])
        
         print("read dev data set...")
         dev_x = glob.glob(batDir +"/Xdev*.npy")
         dev_y = glob.glob(batDir +"/Ydev*.npy")
-        devGenerator = gen.DataGenerator(dev_x, dev_y, batchSize = BATCH_SIZE)
+        devGenerator = gen.DataGenerator(dev_x, dev_y, batchSize = modPars['batchSize'])
     
-    opt = tf.keras.optimizers.Adam(learning_rate=modParams['lrnRate'])
+    opt = tf.keras.optimizers.Adam(learning_rate=modPars['lrnRate'])
     model.compile(
         loss= "categorical_crossentropy", #'mean_squared_logarithmic_error',
         optimizer=opt,   #"adam", 
@@ -119,14 +116,14 @@ def createModel(mod, input_shape, rootDir, modParams, train = False):
             save_weights_only=True,
             save_best_only=True,
             verbose=1)
-        logDir = rootDir + '/' + modParams['dirLogs']
+        logDir = rootDir + '/' + modPars['dirLogs']
         tensorboard = tf.keras.callbacks.TensorBoard(log_dir=logDir)
 
         #model.fit(train_x, train_y, validation_data=(dev_x, dev_y), batch_size=32, epochs=10)
         #model.fit(train, validation_data=dev, batch_size=BATCH_SIZE, callbacks=[checkpoint, tensorboard], epochs=epochs)
         model.fit(trainGenerator, validation_data=devGenerator,  callbacks=[checkpoint, tensorboard], 
-        epochs=modParams['epochs'], batch_size=modParams['batchSize'])
-
+        epochs=modPars['epochs'], batch_size=modPars['batchSize'])
+        model.load_weights(weightsFile)
     return model
 
 def predictOnBatches(model, data):
@@ -250,7 +247,7 @@ def showConfusionMatrix(speciesFile, dirName, labels, predictions):
     plt.savefig(dirName + "/confusion.png")
   
 
-def runModel(train, rootDir, speciesFile, checkFileName, modParams, showConfusion = True):
+def runModel(train, rootDir, speciesFile, checkFileName, modPars, showConfusion = True):
     """
     crate and run the model
     
@@ -259,34 +256,35 @@ def runModel(train, rootDir, speciesFile, checkFileName, modParams, showConfusio
     rootDir - root directory of model data
     speciesFile - name of the csv file containing the list of species
     checkFileName - name of the csv file containing information about the test set (created during prep data phase)
-    modParams - model parameters (defined in batclass.py)
+    modPars - model parameters (defined in batclass.py)
     showConfusion - True shows the confusion matrix
     """
     print("#### run model #####")
     tf.random.set_seed(42)
 
     # clean up log area
-    logdir = rootDir + '/' + modParams['dirLogs']
-    shutil.rmtree(logdir, ignore_errors=True)
+    logdir = rootDir + '/' + modPars['dirLogs']
+    shutil.rmtree(logdir + '/train', ignore_errors=True)
+    shutil.rmtree(logdir + '/validation', ignore_errors=True)
 
     print("reading test set...")
-    dirBatch = rootDir + '/' + modParams['dirBatch']
+    dirBatch = rootDir + '/' + modPars['dirBatch']
     test = readDataset(dirBatch, "Xtest000.npy", "Ytest000.npy")
     rows, timeSteps, classes = getDimensions(test)
-    test = test.batch(BATCH_SIZE, drop_remainder=True)
+    test = test.batch(modPars['batchSize'], drop_remainder=True)
         
     input_shape = (rows, timeSteps, classes)
-    mod = getModel(modParams['modelName'])    
-#    model = createModel(mod, input_shape, modParams['dirBatch'], modParams['dirWeights'], train, modParams['epochs'], modParams['clean'], logdir)
-    model = createModel(mod, input_shape, rootDir, modParams, train)
+    mod = getModel(modPars['modelName'])    
+#    model = createModel(mod, input_shape, modPars['dirBatch'], modPars['dirWeights'], train, modPars['epochs'], modPars['clean'], logdir)
+    model = createModel(mod, input_shape, rootDir, modPars, train)
 
     all_labels, all_predictions, bad_labels, good_labels = predictOnBatches(model, test)
-    baseName = rootDir + '/' + modParams['dirLogs'] + '/' +  modParams['logName']
+    baseName = rootDir + '/' + modPars['dirLogs'] + '/' +  modPars['logName']
     evalLogData(bad_labels, baseName + 'bad.csv', checkFileName, speciesFile)
     evalLogData(good_labels, baseName + 'good.csv', checkFileName, speciesFile)
 
     if showConfusion:
-        dirName = rootDir + '/' + modParams['dirLogs']
+        dirName = rootDir + '/' + modPars['dirLogs']
         showConfusionMatrix(speciesFile, dirName, all_labels, all_predictions)
 
 

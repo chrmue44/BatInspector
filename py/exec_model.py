@@ -224,7 +224,7 @@ def evalLogData(errList, resultFileName, checkFileName, speciesFile):
                 row.append(p)
             writer.writerow(row)
     
-def showConfusionMatrix(speciesFile, dirName, labels, predictions):
+def showConfusionMatrix(speciesFile, dirName, modelName, labels, predictions):
     """
     show confusion matrix
     
@@ -244,7 +244,7 @@ def showConfusionMatrix(speciesFile, dirName, labels, predictions):
     plt.xlabel('Prediction')
     plt.ylabel('Label')
     #plt.show()
-    plt.savefig(dirName + "/confusion.png")
+    plt.savefig(dirName + "/confusion_" + modelName + ".png")
   
 
 def runModel(train, rootDir, speciesFile, checkFileName, modPars, showConfusion = True):
@@ -285,7 +285,7 @@ def runModel(train, rootDir, speciesFile, checkFileName, modPars, showConfusion 
 
     if showConfusion:
         dirName = rootDir + '/' + modPars['dirLogs']
-        showConfusionMatrix(speciesFile, dirName, all_labels, all_predictions)
+        showConfusionMatrix(speciesFile, dirName, model.name, all_labels, all_predictions)
 
 
 
@@ -344,3 +344,5 @@ def predict(dataName, speciesFile, report, dirModel, minSnr):
             idx += 1
     
     shutil.move(tempfile.name, report)
+    
+

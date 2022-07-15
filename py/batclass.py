@@ -16,7 +16,6 @@ env = {
        'predictData': '',
        "callFile": "",
        'specFile': "",
-       'model': 'rnn1aModel',
        'rootDir': "",
        'trainDataMask':'',
        'infoTestFile' : '',
@@ -30,10 +29,10 @@ env = {
 
 modPars = {
       'batchSize': 64,           #batch size for files training dataset
-      'modelName':'rnn1aModel',  #type of model to run
-      'lrnRate': 0.0005,
-      'epochs': 15,
-      'clean': True,
+      'modelName':'resNet34Model',  #type of model to run
+      'lrnRate': 0.00002,
+      'epochs': 30,
+      'clean': False,
       'dirWav' :'wav',           #sub directory to store single call wav files
       'dirImg' : 'img',          #sub directory to store generated spectrograms of single calls      
       'dirData' :'dat',          #sub directory for the prepared data files
@@ -42,6 +41,15 @@ modPars = {
       'dirLogs': 'log',          #sub directory for log files   
       'logName': 'log_'          #base name for generated log files for good and bad samples during test of model
 }
+
+def printModelPars(modPars):
+    print('##### model parameters #######')
+    print('    batch size:', modPars['batchSize'])
+    print('    model name:', modPars['modelName'])
+    print(' learning rate:', modPars['lrnRate'])
+    print('        epochs:', modPars['epochs'])
+    print('         clean:', modPars['clean'])
+    print('##############################')
 
 audioPars = {
        'denoise': 'threshold',   #type of denoising: 'threshold', 'energy'
@@ -61,6 +69,7 @@ def printHelp():
     --axes create axes in images for each call
     --cut cut recordings in single wav (calls), img (spectrogram) and npy files (spectrogram)
     --data data (npy) containing the calls to predict (MUST match with 'PredictList')
+    --epochs specify nr of epochs to train
     --prepTrain prepare train, dev and test set to train model
     --prepPredict prepare files for prediction
     --csvcalls <dataFile> csv file containing list of calls to process
@@ -90,13 +99,14 @@ def parseArguments(argv):
     try:
         opts, args = getopt.getopt(argv,"d:eg:hp:s:t", ['data=','predict','prepPredict','img','clean',
                                                         'root=', 'check', 'run', 'train', 'specFile=', 'prepTrain',
-                                                        'wav','model=','cut','axes','csvcalls=',
+                                                        'wav','model=','cut','axes','csvcalls=','epochs=',
                                                         'resample=','outFile=','sampleRate='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
-        
+    print('arguments:')    
     for opt, arg in opts:
+        print('opt:', opt, ', arg:', arg)
         if opt == '--axes':
             audioPars['withAxes'] = True
         elif opt == '-h':
@@ -139,6 +149,8 @@ def parseArguments(argv):
             env['outFile'] = arg
         elif opt == '--sampleRate':
             env['sampleRate'] = int(arg)
+        elif opt == '--epochs':
+            modPars['epochs'] = int(arg)
             
     #logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
     #checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
@@ -176,7 +188,8 @@ def execute():
         print('*        train:', env['train'])
         print('*     dir name:', env['rootDir'])
         print('* species file:', env['specFile'])
-        print ("*******************************")                             
+        print ("*******************************")
+        printModelPars(modPars)        
         mod.runModel(train = env['train'], rootDir = env['rootDir'],speciesFile = env['specFile'],
                        checkFileName = env['infoTestFile'], modPars = modPars, showConfusion = True)
                        

@@ -7,5 +7,5 @@
 /libScripter/obj/Debug
 /libScripter/bin/Release
 /libScripter/obj/Release
-/mod
+/mod*
 /py/__pycache__

@@ -252,7 +252,7 @@ def getMaxima(d, f, b, fname, format = 'npy'):
 def AudioSegmentToRawData(signal):
     samples = signal.get_array_of_samples()
     if samples.typecode != 'h':
-        raise exceptions.SignalProcessingException('Unsupported samples type')
+        print('Unsupported samples type')
     return np.array(signal.get_array_of_samples(), np.int16)
     
 def detectHardClipping(signal, threshold=2):
@@ -268,10 +268,11 @@ def detectHardClipping(signal, threshold=2):
       True if hard clipping is detect, False otherwise.
     """
     if signal.channels != 1:
-      raise NotImplementedError('mutliple-channel clipping not implemented')
+      print('mutliple-channel clipping not implemented')
+      return False
     if signal.sample_width != 2:  # Note that signal.sample_width is in bytes.
-      raise exceptions.SignalProcessingException(
-          'hard-clipping detection only supported for 16 bit samples')
+      print('hard-clipping detection only supported for 16 bit samples')
+      return False
     samples = AudioSegmentToRawData(signal)
     # Detect adjacent clipped samples.
     samples_type_info = np.iinfo(samples.dtype)
@@ -292,6 +293,12 @@ def resampleWavFiles(inDir, sampleRate, timeStretch):
     listFile = glob.glob(inDir)
     for f in listFile:
         newf = f.replace("Eptesicus_serotinus","Eser")
+        newf = newf.replace('Nyctalus_noctula','Nnoc')
+        newf = newf.replace('Nyctalus_leisleri','Nlei')
+        newf = newf.replace('Myotis_daubentonii','Mdau')
+        newf = newf.replace('Myotis_myotis','Mmyo')
+        newf = newf.replace('Pipistrellus_pipistrellus','Ppip')
+        newf = newf.replace('Pipistrellus_nathusii','Pnat')
         samples = AudioSegment.from_wav(f)
         print("exporting: ", newf)
         newRate = samples.frame_rate * timeStretch

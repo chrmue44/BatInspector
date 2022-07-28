@@ -528,4 +528,25 @@
   <data name="MainTrainData" xml:space="preserve">
     <value>Training Data</value>
   </data>
+  <data name="frmStartPredInspect" xml:space="preserve">
+    <value>Identify calls</value>
+  </data>
+  <data name="frmStartPredCut" xml:space="preserve">
+    <value>Cut Calls</value>
+  </data>
+  <data name="frmPredPrepare" xml:space="preserve">
+    <value>Prepare data</value>
+  </data>
+  <data name="frmStartPredPredict" xml:space="preserve">
+    <value>Predict species</value>
+  </data>
+  <data name="frmStartPredMsg" xml:space="preserve">
+    <value>This operation may take a long time, do you want to preceed?</value>
+  </data>
+  <data name="frmStartPredTitle" xml:space="preserve">
+    <value>Start automatic prediction of species</value>
+  </data>
+  <data name="MainBtnCopySpec" xml:space="preserve">
+    <value>Apply spec selected</value>
+  </data>
 </root>

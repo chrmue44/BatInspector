@@ -102,6 +102,7 @@
                                 <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                                 <Separator></Separator>
                                 <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                                <Button x:Name="_btnCopySpec" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                             </StackPanel>
                             <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" >
                                 <StackPanel  Name="_spSpectrums" Orientation="Vertical" >

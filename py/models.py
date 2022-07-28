@@ -123,13 +123,13 @@ def flat2Model(rows, timeSteps, classes):
     model.add(tf.keras.layers.Flatten())
     model.add(tf.keras.layers.Dense(256,  activation="relu"))
     model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.Dropout(0.5))
     model.add(tf.keras.layers.Dense(256,  activation="relu"))
     model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.Dropout(0.5))
     model.add(tf.keras.layers.Dense(128,  activation="relu"))
     model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.Dropout(0.5))
     model.add(tf.keras.layers.Dense(64,  activation="relu"))
     model.add(tf.keras.layers.Dense(classes, activation="softmax"))
     return model
@@ -265,9 +265,6 @@ def rnn4Model(rows, timeSteps, classes):
 
 
 def rnn5Model(rows, timeSteps, classes):
-    """
-    best performance: 23 epochs, 84.7% accurracy on test data
-    """
     model = tf.keras.Sequential()
     model._name = "rnn5Model"
     model.add(tf.keras.layers.Conv1D(input_shape = (rows, timeSteps), filters=196,kernel_size=15,strides=4))
@@ -278,6 +275,43 @@ def rnn5Model(rows, timeSteps, classes):
     model.add(tf.keras.layers.Dropout(rate=0.5))
     model.add(tf.keras.layers.BatchNormalization())                               
     model.add(tf.keras.layers.GRU(units=128, return_sequences =True))
+    model.add(tf.keras.layers.Dropout(rate=0.5))
+    model.add(tf.keras.layers.Flatten())
+    model.add(tf.keras.layers.Dense(128,  activation="relu"))
+    model.add(tf.keras.layers.Dense(classes, activation="softmax"))
+    return model
+
+def rnn6Model(rows, timeSteps, classes):
+    model = tf.keras.Sequential()
+    model._name = "rnn6Model"
+    model.add(tf.keras.layers.Conv1D(input_shape = (rows, timeSteps), filters=196,kernel_size=15,strides=4))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.Dropout(rate=0.5))                                  
+    model.add(tf.keras.layers.GRU(128, return_sequences= True))
+    model.add(tf.keras.layers.Dropout(rate=0.5))
+    model.add(tf.keras.layers.GRU(units=128, return_sequences = True))
+    model.add(tf.keras.layers.Dropout(rate=0.5))
+    model.add(tf.keras.layers.GRU(units=128, return_sequences = True))
+    model.add(tf.keras.layers.Dropout(rate=0.5))
+    model.add(tf.keras.layers.Flatten())
+    model.add(tf.keras.layers.Dense(128,  activation="relu"))
+    model.add(tf.keras.layers.Dense(classes, activation="softmax"))
+    return model
+
+def rnn6aModel(rows, timeSteps, classes):
+    model = tf.keras.Sequential()
+    model._name = "rnn6aModel"
+    model.add(tf.keras.layers.Conv1D(input_shape = (rows, timeSteps), filters=196,kernel_size=15,strides=4))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.Dropout(rate=0.5))                                  
+    model.add(tf.keras.layers.GRU(128, return_sequences= True))
+    model.add(tf.keras.layers.Dropout(rate=0.5))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.GRU(units=128, return_sequences = True))
+    model.add(tf.keras.layers.Dropout(rate=0.5))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.GRU(units=128, return_sequences = True))
     model.add(tf.keras.layers.Dropout(rate=0.5))
     model.add(tf.keras.layers.Flatten())
     model.add(tf.keras.layers.Dense(128,  activation="relu"))
@@ -297,5 +331,7 @@ def getModel(modelName):
     l['rnn3Model'] = rnn3Model
     l['rnn4Model'] = rnn4Model
     l['rnn5Model'] = rnn5Model
+    l['rnn6Model'] = rnn6Model
+    l['rnn6aModel'] = rnn6aModel
     l['resNet34Model'] = resNet34Model
     return l[modelName]

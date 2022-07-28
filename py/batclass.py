@@ -14,7 +14,7 @@ env = {
        'predict': False,
        'predictList': '',
        'predictData': '',
-       "callFile": "",
+       'callFile': "",
        'specFile': "",
        'rootDir': "",
        'trainDataMask':'',
@@ -25,11 +25,12 @@ env = {
        'inFile':'',
        'outFile':'',
        'sampleRate': 312500,
+       'dataDir' : '',
        }
 
 modPars = {
       'batchSize': 64,           #batch size for files training dataset
-      'modelName':'resNet34Model',  #type of model to run
+      'modelName':'rnn6aModel',   #type of model to run
       'lrnRate': 0.00002,
       'epochs': 30,
       'clean': False,
@@ -69,6 +70,7 @@ def printHelp():
     --axes create axes in images for each call
     --cut cut recordings in single wav (calls), img (spectrogram) and npy files (spectrogram)
     --data data (npy) containing the calls to predict (MUST match with 'PredictList')
+    --dataDir root directory of data to predict
     --epochs specify nr of epochs to train
     --prepTrain prepare train, dev and test set to train model
     --prepPredict prepare files for prediction
@@ -100,7 +102,7 @@ def parseArguments(argv):
         opts, args = getopt.getopt(argv,"d:eg:hp:s:t", ['data=','predict','prepPredict','img','clean',
                                                         'root=', 'check', 'run', 'train', 'specFile=', 'prepTrain',
                                                         'wav','model=','cut','axes','csvcalls=','epochs=',
-                                                        'resample=','outFile=','sampleRate='])
+                                                        'resample=','outFile=','sampleRate=', 'dataDir='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -129,7 +131,7 @@ def parseArguments(argv):
         elif opt == '--img':
             audioPars['withImg'] = True
         elif opt == '--model':
-            env["model"] = arg
+            modPars['modelName'] = arg
         elif opt == '--root':
             env['rootDir'] = arg
         elif opt == '--specFile':
@@ -151,6 +153,8 @@ def parseArguments(argv):
             env['sampleRate'] = int(arg)
         elif opt == '--epochs':
             modPars['epochs'] = int(arg)
+        elif opt == '--dataDir':
+            env['dataDir'] = arg
             
     #logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
     #checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
@@ -158,11 +162,10 @@ def parseArguments(argv):
 def execute():
     print("**** bat classification running ****")
     if env['cut']:
-        outDir = env['rootDir'] + '/' + modPars['dirData']
         print ("**** cutting audio files ****")
-        print ("* call file:",env['callFile'])
-        print ("*   out dir:",outDir)
-        audio.processCalls(env['callFile'], env['rootDir'], modPars, audioPars)
+        print ("* call file:", env['callFile'])
+        print ("*   out dir:", env['dataDir'])
+        audio.processCalls(env['callFile'], env['dataDir'], modPars, audioPars)
         
     if env['prepare']:
         outDir = env['rootDir'] + '/' + modPars['dirBatch'] 
@@ -178,10 +181,15 @@ def execute():
     if env['prepPredict']:
         print ("**** prepare predict data ****")
         print ("*     species file:", env['specFile'])
-        print ("* output directory:", env['rootDir'])
-        env['trainDataMask'] = env['rootDir'] + '/' + modPars['dirData'] +'/*_fft.npy'
-        logDir = env['rootDir'] + '/' + modPars['dirLogs']
-        preptrain.preparePrediction(env['specFile'], env['trainDataMask'], env['rootDir'])
+        if env['train']:
+            env['trainDataMask'] = env['rootDir'] + '/' + modPars['dirData'] +'/*_fft.npy'
+            print ("* output directory:", env['rootDir'])
+        else:
+            env['trainDataMask'] = env['dataDir'] + '/' + modPars['dirData'] +'/*_fft.npy'
+            print ("* output directory:", env['dataDir'])
+
+        logDir = env['dataDir'] + '/' + modPars['dirLogs']
+        preptrain.preparePrediction(env['specFile'], logDir, env['trainDataMask'], env['dataDir'])
     
     if env['runModel']:
         print('********* run model ***********')
@@ -198,7 +206,8 @@ def execute():
         print('*   list calls:', env['callFile'])
         print('*    data file:', env['predictData'])
         print('* species file:', env['specFile'])
-        mod.predict(env['predictData'], env['specFile'], env['callFile'], minSnr = env['minSnr'])
+        mod.predict(env['predictData'], env['specFile'], env['callFile'], 
+                    rootDir = env['rootDir'], minSnr = env['minSnr'], modPars = modPars)
     
     if env['resample']:
         print('********* resample WAV file ***********')

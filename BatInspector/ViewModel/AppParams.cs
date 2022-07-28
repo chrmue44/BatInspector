@@ -321,6 +321,12 @@ namespace BatInspector
     public List<ColorItem> ColorGradientBlue { get; set; } = new List<ColorItem>();
 
     [DataMember]
+    [Category("Application")]
+    [Description("full path to binary Rscript to execute R scripts")]
+    public string RootDataDir = "c:/users/chrmu/bat";
+
+
+    [DataMember]
     [Category("R-Scripting")]
     [Description("full path to binary Rscript to execute R scripts")]
     string Rbin = "D:/bin/R-4.1.0/bin/Rscript.exe";

@@ -6,10 +6,12 @@ TODO
 - scripting engine
 - help
 - species comparison
-- tool to inspect and manipulate wav files
+
 - reports across projects (week, month year)
+- 95% plausibility check
 
 DONE
+- classification of species with tensorflow classifier
 - tool to inspect and manipulate wav files: can change sampling rate
 - calculate distance to previous call and show it in zoom view
 - tool to narrow down possible species by call parameters 

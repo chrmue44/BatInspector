@@ -12,6 +12,8 @@
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <InterpreterId />
+    <InterpreterArguments> --cut --prepPredict --predict --csvcalls C:\Users\chrmu\bat\2022\20220702\report.csv --root C:/Users/chrmu/prj/BatInspector/mod --dataDir C:\Users\chrmu\bat\2022\20220702 --specFile C:/Users/chrmu/bat/tierSta/species.csv --data C:\Users\chrmu\bat\2022\20220702/Xdata000.npy</InterpreterArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />

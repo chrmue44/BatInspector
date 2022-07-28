@@ -59,6 +59,20 @@ namespace BatInspector
 
     public List<ReportItem> Report { get { return _report; } }
 
+    public AnalysisFile find(string name)
+    {
+      AnalysisFile retVal = null;
+      foreach(AnalysisFile f in _list)
+      {
+        if(f.FileName == name)
+        {
+          retVal = f;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     public bool Changed
     {
       get

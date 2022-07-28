@@ -101,6 +101,8 @@ namespace BatInspector.Forms
         DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
         trvStructure.Items.Add(CreateTreeItem(dir));
       }
+      DirectoryInfo batDataDir = new DirectoryInfo(_model.Settings.RootDataDir);
+      trvStructure.Items.Add(CreateTreeItem(batDataDir));
     }
 
     public void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
@@ -280,6 +282,20 @@ private void setZoomPosition()
       return item;
     }
 
+
+    private void updateWavControls()
+    {
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+      {
+        if (ctl.Analysis != null)
+        {
+          string name = ctl.Analysis.FileName;
+          AnalysisFile anaF = _model.Analysis.find(name);
+          if (anaF != null)
+            ctl.setFileInformations(ctl.Analysis.FileName, anaF, ctl.WavFilePath);
+        }
+      }
+    }
 
     private void populateFiles()
     {
@@ -466,13 +482,20 @@ private void setZoomPosition()
       }
     }
 
+    private void startPrediction(int options)
+    {
+      Thread.Sleep(100);
+      if (_model.startEvaluation(options) == 0)
+      {
+        _model.updateReport();
+        updateWavControls();
+      }
+    }
+
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
-      MessageBoxResult res = MessageBox.Show("Start data evaluation to find calls (may take a long time!)", "", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-      if (res == MessageBoxResult.OK)
-      {
-        _model.startEvaluation();
-      }
+      //MessageBoxResult res = MessageBox.Show("Start data evaluation to find calls (may take a long time!)", "", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+      frmStartPredict.showMsg(startPrediction);
     }
 
   
@@ -646,6 +669,17 @@ private void setZoomPosition()
     {
       frmFindBat frm = new frmFindBat(_model);
       frm.Show();
+    }
+
+    private void _btnCopySpec_Click(object sender, RoutedEventArgs e)
+    {
+      foreach(ctlWavFile ctl in _spSpectrums.Children)
+      {
+        if(ctl._cbSel.IsChecked == true)
+        {
+          ctl._btnCopy_Click(null, null);
+        }
+      }
     }
   }
 

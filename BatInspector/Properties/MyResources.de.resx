@@ -528,4 +528,25 @@
   <data name="MainTrainData" xml:space="preserve">
     <value>Trainingsdaten</value>
   </data>
+  <data name="frmStartPredInspect" xml:space="preserve">
+    <value>Rufe ermitteln</value>
+  </data>
+  <data name="frmStartPredCut" xml:space="preserve">
+    <value>Rufe ausschneiden</value>
+  </data>
+  <data name="frmPredPrepare" xml:space="preserve">
+    <value>Daten aufbereiten</value>
+  </data>
+  <data name="frmStartPredPredict" xml:space="preserve">
+    <value>Arten ermitteln</value>
+  </data>
+  <data name="frmStartPredMsg" xml:space="preserve">
+    <value>Diese Operation kann einige Zeit dauern, möchten Sie fortfahren?</value>
+  </data>
+  <data name="frmStartPredTitle" xml:space="preserve">
+    <value>Starte automatische Artenbestimmung</value>
+  </data>
+  <data name="MainBtnCopySpec" xml:space="preserve">
+    <value>Übernehme selektierte</value>
+  </data>
 </root>

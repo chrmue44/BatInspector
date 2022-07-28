@@ -34,6 +34,7 @@ namespace BatInspector.Controls
     ViewModel _model;
     MainWindow _parent;
 
+    public string WavFilePath {  get { return _wavFilePath; } }
     public bool InfoVisible
     {
       get { return _grpInfoAuto.Visibility == Visibility.Visible; }
@@ -69,6 +70,7 @@ namespace BatInspector.Controls
       _sampleRate.setup(MyResources.SamplingRate + " [Hz]: ", enDataType.INT, 0, 110);
       _sampleRate.Focusable = false; */
       _cbSel.Focusable = true;
+      Visibility = Visibility.Visible;
     }
 
     public int Index { get { return _index; } set { _index = value; } }
@@ -159,7 +161,7 @@ namespace BatInspector.Controls
       _dlgFocus(_index);
     }
 
-    private void _btnCopy_Click(object sender, RoutedEventArgs e)
+    public void _btnCopy_Click(object sender, RoutedEventArgs e)
     {
       try
       {

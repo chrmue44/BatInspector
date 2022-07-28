@@ -91,6 +91,7 @@ def createModel(mod, input_shape, rootDir, modPars, train = False):
         else:
             model.load_weights(weightsFile)
     else:
+        print('file: ' + weightsFile+ ' not found, set parameter "train" to TRUE')
         train = True
     if train:
         print("read train data set...")
@@ -199,7 +200,7 @@ def evalLogData(errList, resultFileName, checkFileName, speciesFile):
     checkInfo = readCheckInfo(checkFileName)
     
     with open(resultFileName, 'w', newline='') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, delimiter=';')
         #create header
         species = readSpeciesInfo(speciesFile)
         fields = ['call','realSpec','errSpec','reject']
@@ -224,9 +225,29 @@ def evalLogData(errList, resultFileName, checkFileName, speciesFile):
                 row.append(p)
             writer.writerow(row)
     
+def calcPrecision(r, cm):
+    """
+    calculate precision p = TP / ( TP + FP)
+    
+    Arguments:
+    r - row in confusion matrix
+    cm - confusion matrix
+    
+    Returns:
+    prec - precision
+    """
+    tp = cm[r,r].numpy()
+    fp = 0.0
+    for i in range(cm.shape[1]):
+        if i != r:
+            fp += cm[r, i].numpy()
+    prec = tp / (tp + fp)
+    return prec
+
+    
 def showConfusionMatrix(speciesFile, dirName, modelName, labels, predictions):
     """
-    show confusion matrix
+    create confusion matrix, write it to csv file and generate a picture
     
     Arguments:
     speciesFile - file name for csv file containing the labels
@@ -245,7 +266,30 @@ def showConfusionMatrix(speciesFile, dirName, modelName, labels, predictions):
     plt.ylabel('Label')
     #plt.show()
     plt.savefig(dirName + "/confusion_" + modelName + ".png")
-  
+
+    print("cm.shape:",cm.shape)
+    
+    #write csv file
+    with open(dirName + "/confusion_" + modelName + ".csv", 'w', newline='') as f:
+        writer = csv.writer(f, delimiter=';')
+        
+        #write header
+        row = ['  ']
+        for c in range(len(listSpec)):
+            row.append(listSpec[c])
+        row.append('precision')
+        writer.writerow(row)
+        
+        #write lines for predictions
+        for r in range(len(listSpec)):
+            row = [listSpec[r]]
+            for c in range(cm.shape[1]):
+                row.append(cm[r,c].numpy())
+            row.append(calcPrecision(r, cm))
+            writer.writerow(row)
+            
+        
+ 
 
 def runModel(train, rootDir, speciesFile, checkFileName, modPars, showConfusion = True):
     """
@@ -279,7 +323,7 @@ def runModel(train, rootDir, speciesFile, checkFileName, modPars, showConfusion 
     model = createModel(mod, input_shape, rootDir, modPars, train)
 
     all_labels, all_predictions, bad_labels, good_labels = predictOnBatches(model, test)
-    baseName = rootDir + '/' + modPars['dirLogs'] + '/' +  modPars['logName']
+    baseName = rootDir + '/' + modPars['dirLogs'] + '/' +  modPars['modelName'] + '_' + modPars['logName']
     evalLogData(bad_labels, baseName + 'bad.csv', checkFileName, speciesFile)
     evalLogData(good_labels, baseName + 'good.csv', checkFileName, speciesFile)
 
@@ -289,7 +333,7 @@ def runModel(train, rootDir, speciesFile, checkFileName, modPars, showConfusion 
 
 
 
-def predict(dataName, speciesFile, report, dirModel, minSnr):
+def predict(dataName, speciesFile, report, rootDir, minSnr, modPars):
     """
     crate the model and predict
     
@@ -297,7 +341,7 @@ def predict(dataName, speciesFile, report, dirModel, minSnr):
     train - True model will be trained
     speciesFile - name of the csv file containing the list of species
     report - name of the report 
-    dirModel - directory where the model file i stored
+    rootDir - root directory where the model file is stored
     minSnr - min SNR value to accept a prediction
     """
     print("#### predict #####")
@@ -310,11 +354,13 @@ def predict(dataName, speciesFile, report, dirModel, minSnr):
     rows, timeSteps, classes = x.shape[1], x.shape[2], len(listSpec)
     print (x.shape)
     input_shape = (rows, timeSteps, classes)
-    model = createModel(rnn1Model, input_shape, dirModel = dirModel)
+    mod = getModel(modPars['modelName'])    
+    model = createModel(mod, input_shape, rootDir, modPars)    
     y = model.predict(x)
     
     #write predictions in report file
     fields = []
+    print('generating report: ', report)
     with open(report, "r") as f:
         reader = csv.reader(f, delimiter =';')
         for row in reader:
@@ -332,8 +378,10 @@ def predict(dataName, speciesFile, report, dirModel, minSnr):
             snr = row['snr']
             iMax = np.argmax(y[idx])
             row['prob'] = y[idx, iMax]
-            if (y[idx, iMax] < 0.5) or (float(snr) < minSnr):
-                row['Species'] = '????'
+            if (y[idx, iMax] < 0.5):
+                row['Species'] = '??PRO'
+            elif (float(snr) < minSnr):
+                row['Species'] = '??SNR'
             else:
                 row['Species'] = listSpec[iMax]
             spIdx = 0

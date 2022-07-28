@@ -37,27 +37,31 @@ namespace libScripter
       _pr.StartInfo.Arguments = args;
       _pr.StartInfo.CreateNoWindow = !newWindow;
       _pr.StartInfo.UseShellExecute = false;
-//      pr.StartInfo.WindowStyle = winStyle;
-      _pr.StartInfo.RedirectStandardOutput = true;
-      if(workDir != "")
+      //      pr.StartInfo.WindowStyle = winStyle;
+      if (!newWindow)
+      {
+        _pr.StartInfo.RedirectStandardOutput = true;
+        _pr.StartInfo.RedirectStandardError = true;
+        if (handler != null)
+        {
+          _pr.OutputDataReceived += handler;
+          _pr.ErrorDataReceived += handler;
+        }
+        else
+        {
+          _pr.OutputDataReceived += outputDataHandler;
+          _pr.ErrorDataReceived += outputDataHandler;
+        }
+      }
+      if (workDir != "")
         _pr.StartInfo.WorkingDirectory = workDir;
-      if (handler != null)
-      {
-        _pr.OutputDataReceived += handler;
-        _pr.ErrorDataReceived += handler;
-      }
-      else
-      {
-        _pr.OutputDataReceived += outputDataHandler;
-        _pr.ErrorDataReceived += outputDataHandler;
-      }
       try
       {
         // Start the process with the info we specified.
         // Call WaitForExit and then the using statement will close.
         LogMsg("CMD " + exePath + " " + args, enLogType.INFO);
         _pr.Start();
-        _pr.BeginOutputReadLine();
+     //   _pr.BeginOutputReadLine();
         if (wait)
         {
 //          System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;

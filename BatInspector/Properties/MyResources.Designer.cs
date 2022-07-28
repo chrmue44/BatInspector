@@ -556,6 +556,60 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Prepare data ähnelt.
+        /// </summary>
+        public static string frmPredPrepare {
+            get {
+                return ResourceManager.GetString("frmPredPrepare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Cut Calls ähnelt.
+        /// </summary>
+        public static string frmStartPredCut {
+            get {
+                return ResourceManager.GetString("frmStartPredCut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Identify calls ähnelt.
+        /// </summary>
+        public static string frmStartPredInspect {
+            get {
+                return ResourceManager.GetString("frmStartPredInspect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die This operation may take a long time, do you want to preceed? ähnelt.
+        /// </summary>
+        public static string frmStartPredMsg {
+            get {
+                return ResourceManager.GetString("frmStartPredMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Predict species ähnelt.
+        /// </summary>
+        public static string frmStartPredPredict {
+            get {
+                return ResourceManager.GetString("frmStartPredPredict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Start automatic prediction of species ähnelt.
+        /// </summary>
+        public static string frmStartPredTitle {
+            get {
+                return ResourceManager.GetString("frmStartPredTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Help ähnelt.
         /// </summary>
         public static string Help {
@@ -588,6 +642,15 @@ namespace BatInspector.Properties {
         public static string MainBtnApplyFilter {
             get {
                 return ResourceManager.GetString("MainBtnApplyFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Apply spec selected ähnelt.
+        /// </summary>
+        public static string MainBtnCopySpec {
+            get {
+                return ResourceManager.GetString("MainBtnCopySpec", resourceCulture);
             }
         }
         

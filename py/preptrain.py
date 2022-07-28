@@ -60,6 +60,7 @@ def genTrainingData(listSpecies, listTrainSamples,  batchSize, checkFile, fName,
     checkFile - name of checkFile
     listTrainSamples - a list of files with training samples
     batchSize - size of one batch
+    trainPath - path to store the consolidated data 
     
     """
     length = len(listSpecies)
@@ -165,19 +166,20 @@ def prepareTrainingData(speciesFile, logDir, pathTrainFiles, outPath, batchSize)
     checkFile = logDir + '/checktrain.csv'
     genTrainingData(listSpecies, listTrain, batchSize, checkFile, 'train', outPath)
     
-def preparePrediction(speciesFile, pathFiles, outPath):
+def preparePrediction(speciesFile, logDir, pathFiles, outPath):
     """
     consolidate all data samples to a single set
     
     Arguments:
     speciesFile - csv file with a list of species to learn
     pathFiles - a file filter for all the call data files to process
-    outPath - target path for training data
+    outPath - target path for prediction data
     """
     listSpecies = readSpeciesInfo(speciesFile)
     listSamples = glob.glob(pathFiles)
     size = int(len(listSamples))
     print("number of calls:", size)
     print("gen data set")
-    genTrainingData(listSpecies, listSamples, size, "data", outPath)
+    checkFile = logDir + '/checkprediction.csv'
+    genTrainingData(listSpecies, listSamples, size, checkFile, "data", outPath)
 

@@ -102,6 +102,9 @@ namespace libParser
       MathHelpTab.Add(new HelpTabItem("strlen", "returns the length of a string if the variable type is STRING otherwise 0",
                       new List<string> { "1: a string" }, new List<string> { "1: length of string" }));
       addMethod(new FuncTabItem("strlen", strlen));
+      MathHelpTab.Add(new HelpTabItem("substr", "returns substring if the variable type is STRING otherwise 0",
+                      new List<string> { "1: a string", "2:index of first char", "3: length of substring" }, new List<string> { "1: length of string" }));
+      addMethod(new FuncTabItem("substr", substr));
     }
 
     // Ueberschrift fuer Hilfe zur Methodenliste
@@ -542,6 +545,28 @@ namespace libParser
         else
           len = 0;
         result.assign(len);
+      }
+      else
+      {
+        err = tParseError.NR_OF_ARGUMENTS;
+      }
+      return err;
+    }
+
+    static tParseError substr(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 3)
+      {
+        if (argv[0].getType() == AnyType.tType.RT_STR)
+        {
+          string inStr = argv[0].getString();
+          ulong startIdx = argv[1].getUint64();
+          ulong length = argv[2].getUint64();
+          string str = inStr.Substring((int)startIdx, (int)length);
+          result.assign(str);
+        }
       }
       else
       {

@@ -28,7 +28,7 @@ namespace BatInspector
     private void testIf()
     {
       string wrkDir = "D:\\prj\\BatInspector\\scripts\\";
-      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null);
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
 
       scr.SetVariable("A", "55");
       scr.SetVariable("B", "34");

@@ -39,6 +39,7 @@ namespace BatInspector
     public const int OPT_CUT = 2;
     public const int OPT_PREPARE = 4;
     public const int OPT_PREDICT = 8;
+    public const int OPT_CONF95 = 16;
 
     string _selectedDir;
     Project _prj;
@@ -109,14 +110,14 @@ namespace BatInspector
         if (_prj == null)
           _prj = new Project();
         _prj.readPrjFile(files[0]);
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, null);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, null, this);
       }
       else if (Project.containsWavs(dir))
       {
         _prj = new Project();
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName + "/";
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, null);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, null, this);
       }
       else
         _prj = null;
@@ -184,6 +185,12 @@ namespace BatInspector
       return bImg;
     }
 
+    public void executeCmd(string cmd)
+    {
+      if (_scripter != null)
+        _scripter.execCmd(cmd);
+    }
+
     public void deleteFiles(List<string> files)
     {
       DebugLog.log("start deleting files", enLogType.INFO);
@@ -220,17 +227,14 @@ namespace BatInspector
       int retVal = 2;
       if(Prj != null)
       {
-        
-        string exeR = "\"C:/Program Files/R/R-4.2.0/bin/Rscript.exe\"";
         string reportName = _selectedDir + "report.csv";
         reportName = reportName.Replace("\\", "/");
-        string specFile = "C:/Users/chrmu/bat/tierSta/species.csv";
 
         if ((options & OPT_INSPECT) != 0)
         {
-          string scriptR = "C:/Users/chrmu/prj/BatInspector/R/features.R";
-          string argsR = scriptR + " " + _selectedDir + "/Records " + reportName + " " + specFile + " 312500";
-          DebugLog.log("starting evaluation of calls: " + exeR + " " + argsR, enLogType.INFO);
+          string scriptR = _settings.RScript; // "C:/Users/chrmu/prj/BatInspector/R/features.R";
+          string argsR = scriptR + " " + _selectedDir + "/Records " + reportName + " " + _settings.SpeciesFile + " 312500";
+          DebugLog.log("starting evaluation of calls: " + _settings.Rbin + " " + argsR, enLogType.INFO);
           if (File.Exists(reportName))
           {
             DebugLog.log("backup file: " + reportName, enLogType.INFO);
@@ -242,17 +246,14 @@ namespace BatInspector
             }
             catch { }
           }
-          retVal = _proc.LaunchCommandLineApp(exeR, null, _selectedDir, true, argsR, true, true);
+          retVal = _proc.LaunchCommandLineApp(_settings.Rbin, null, _selectedDir, true, argsR, true, true);
         }
 
         if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT)) != 0)
         {
-          string exePy = "\"C:/Program Files/Python310/python.exe\"";
           string datFile = _selectedDir + "/Xdata000.npy";
           string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
-          string script = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
-          string modDir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
-          string args = script;
+          string args = _settings.PythonScript;
           prepareFolder();
           if ((options & OPT_CUT) != 0)
             args += " --cut";
@@ -261,10 +262,18 @@ namespace BatInspector
           if ((options & OPT_PREDICT) != 0)
             args += " --predict";
           args += " --csvcalls " + reportName +
-               " --root " + modDir + " --specFile " + specFile +
+               " --root " + _settings.ModelDir + " --specFile " + _settings.SpeciesFile +
                " --dataDir " + _selectedDir +
                " --data " + datFile;
-          retVal = _proc.LaunchCommandLineApp(exePy, null, wrkDir, true, args, true, true);
+          retVal = _proc.LaunchCommandLineApp(_settings.PythonBin, null, wrkDir, true, args, true, true);
+        }
+
+        if((options & OPT_CONF95) != 0)
+        {
+          _analysis.read(PrjPath + "report.csv");
+          _analysis.checkConfidence(_settings.Species);
+          _analysis.save(PrjPath + "report.csv");
+          _analysis.read(PrjPath + "report.csv");
         }
       }
       return retVal;

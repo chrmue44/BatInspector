@@ -549,4 +549,25 @@
   <data name="MainBtnCopySpec" xml:space="preserve">
     <value>Apply spec selected</value>
   </data>
+  <data name="frmStartPredConfTest" xml:space="preserve">
+    <value>Confidence test</value>
+  </data>
+  <data name="SetCatScripting" xml:space="preserve">
+    <value>Scripting</value>
+  </data>
+  <data name="SpecDescRexe" xml:space="preserve">
+    <value>full path to binary 'Rscript' to execute R scripts</value>
+  </data>
+  <data name="CtlLogCommand" xml:space="preserve">
+    <value>Command:</value>
+  </data>
+  <data name="CtlLogEnterCommandHere" xml:space="preserve">
+    <value>enter cosole command here...</value>
+  </data>
+  <data name="SetDescHeightLogCtrl" xml:space="preserve">
+    <value>Height of log control [px]</value>
+  </data>
+  <data name="SetDescWidthFileSel" xml:space="preserve">
+    <value>Width of file browser [px]</value>
+  </data>
 </root>

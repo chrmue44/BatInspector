@@ -549,4 +549,25 @@
   <data name="MainBtnCopySpec" xml:space="preserve">
     <value>Übernehme selektierte</value>
   </data>
+  <data name="frmStartPredConfTest" xml:space="preserve">
+    <value>Plausibilitätstest</value>
+  </data>
+  <data name="SetCatScripting" xml:space="preserve">
+    <value>Scripting</value>
+  </data>
+  <data name="SpecDescRexe" xml:space="preserve">
+    <value>vollständiger Pfad zur ausführbaren Datei 'Rscript' zum Ausführen von R Skripten</value>
+  </data>
+  <data name="CtlLogCommand" xml:space="preserve">
+    <value>Kommando:</value>
+  </data>
+  <data name="CtlLogEnterCommandHere" xml:space="preserve">
+    <value>hier Konsolenkommando eingeben...</value>
+  </data>
+  <data name="SetDescHeightLogCtrl" xml:space="preserve">
+    <value>Höhe des Logfensters [px]</value>
+  </data>
+  <data name="SetDescWidthFileSel" xml:space="preserve">
+    <value>Breite des Dateiauswahlfensters [px]</value>
+  </data>
 </root>

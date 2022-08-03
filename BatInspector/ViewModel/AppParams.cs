@@ -93,6 +93,20 @@ namespace BatInspector
       CharCalls = "TODO";
     }
 
+    public static SpeciesInfos find(string abbreviation, List<SpeciesInfos> list)
+    {
+      SpeciesInfos retVal = null;
+      foreach(SpeciesInfos s in list)
+      {
+        if(abbreviation.ToLower() == s.Abbreviation.ToLower())
+        {
+          retVal = s;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     [DataMember]
     [LocalizedDescription("SpecDescAbbr")]
     public string Abbreviation { get; set; }
@@ -243,6 +257,16 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescHeightLogCtrl")]
+    public double LogControlHeight { get; set; } = 150;
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescWidthFileSel")]
+    public double WidthFileSelector { get; set; } = 200;
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
     [Description("width of main window [px]")]
     public double ZoomWindowWidth { get; set; } = 1200;
 
@@ -297,6 +321,43 @@ namespace BatInspector
     [LocalizedDescription("SetDescWfLog")]
     public bool WaterfallLogarithmic { get; set; }
 
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [Description("root directory for bat data")]
+    public string RootDataDir { get; set; }
+
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    LocalizedDescription("SpecDescRexe")]
+    public string Rbin { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("script to execute inspection")]
+    public string RScript { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("csv file containing list of species supported by automatic species detection")]
+    public string SpeciesFile { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("full path to python executable for executing python scripts")]
+    public string PythonBin { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("full path to python script for predicting species")]
+    public string PythonScript { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("full path to root directory contining the trained models")]
+    public string ModelDir { get; set; }
+
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
 //    [LocalizedDescription("SetDescWfLog")]
@@ -320,26 +381,7 @@ namespace BatInspector
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public List<ColorItem> ColorGradientBlue { get; set; } = new List<ColorItem>();
 
-    [DataMember]
-    [Category("Application")]
-    [Description("full path to binary Rscript to execute R scripts")]
-    public string RootDataDir = "c:/users/chrmu/bat";
 
-
-    [DataMember]
-    [Category("R-Scripting")]
-    [Description("full path to binary Rscript to execute R scripts")]
-    string Rbin = "D:/bin/R-4.1.0/bin/Rscript.exe";
-
-    [DataMember]
-    [Category("R-Scripting")]
-    [Description("working directory for scripter")]
-    string RWorkDir = "D:/prj/bioacoustics";
-
-    [DataMember]
-    [Category("R-Scripting")]
-    [Description("script to execute")]
-    string RScript = "cm.R";
 
     public AppParams()
     {
@@ -354,6 +396,8 @@ namespace BatInspector
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
       MainWindowWidth = 1400;
+      LogControlHeight = 150;
+      WidthFileSelector = 150;
       MainWindowHeight = 900;
       ZoomWindowWidth = 1200;
       ZoomWindowHeight = 900;
@@ -368,6 +412,13 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       initSpeciesInfos();
+      RootDataDir = "C:/users/chrmu/bat";
+      Rbin = "\"C:/Program Files/R/R-4.2.0/bin/Rscript.exe\"";
+      RScript = "C:/Users/chrmu/prj/BatInspector/R/features.R";
+      SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
+      PythonBin = "\"C:/Program Files/Python310/python.exe\"";
+      PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
+      ModelDir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
     }
 
     private void initFilterParams()

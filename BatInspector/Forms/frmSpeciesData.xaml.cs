@@ -132,6 +132,7 @@ namespace BatInspector.Forms
           si.CharCalls = _ctlSpecData2._tbDistintCalls.Text;
         }
       }
+      _model.Settings.save();
     }
 
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

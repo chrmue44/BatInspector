@@ -128,11 +128,13 @@ namespace BatInspector
     {
       _wf = new Waterfall(wavName, fftSize, w, h, settings, _colorTable);
       string infoName = wavName.Replace(".wav", ".xml");
-
-      string xml = File.ReadAllText(infoName);
-      var serializer = new XmlSerializer(typeof(BatRecord));
-      TextReader reader = new StringReader(xml);
-      _fileInfo = (BatRecord)serializer.Deserialize(reader);
+      if (File.Exists(infoName))
+      {
+        string xml = File.ReadAllText(infoName);
+        var serializer = new XmlSerializer(typeof(BatRecord));
+        TextReader reader = new StringReader(xml);
+        _fileInfo = (BatRecord)serializer.Deserialize(reader);
+      }
       initUninitializedValues();
     }
 

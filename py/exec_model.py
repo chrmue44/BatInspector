@@ -379,9 +379,9 @@ def predict(dataName, speciesFile, report, rootDir, minSnr, modPars):
             iMax = np.argmax(y[idx])
             row['prob'] = y[idx, iMax]
             if (y[idx, iMax] < 0.5):
-                row['Species'] = '??PRO'
+                row['Species'] = '??PRO[' + listSpec[iMax] + ']'
             elif (float(snr) < minSnr):
-                row['Species'] = '??SNR'
+                row['Species'] = '??SNR[' + listSpec[iMax] + ']'
             else:
                 row['Species'] = listSpec[iMax]
             spIdx = 0

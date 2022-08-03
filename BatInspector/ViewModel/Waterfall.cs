@@ -313,25 +313,16 @@ namespace BatInspector
         _minAmplitude = _maxAmplitude / Math.Pow(10, _settings.GradientRange / 20);
     }
 
-    // convert two bytes to one double in the range -1 to 1
-    static double bytesToDouble(sbyte firstByte, sbyte secondByte)
-    {
-      // convert two bytes to one short (little endian)
-      int s = (int)secondByte << 8;
-      s |=  (int)firstByte;
-      // convert to range from -1 to (just below) 1
-      return s / 32768.0;
-    }
-
-
     // Returns left and right double arrays. 'right' will be null if sound is mono.
     public void openWav(string filename, out double[] left, out double[] right, out int samplingRate)
     {
       byte[] wav = File.ReadAllBytes(filename);
 
       // Determine if mono or stereo
+      int bitsPerSample = wav[34] + wav[35] * 0x100;
       int channels = wav[22];     // Forget byte 23 as 99.999% of WAVs are 1 or 2 channels
-     samplingRate = wav[24] + wav[25] * 0x100 + wav[26] * 0x10000 + wav[27] * 0x1000000;
+      samplingRate = wav[24] + wav[25] * 0x100 + wav[26] * 0x10000 + wav[27] * 0x1000000;
+      int fmt = wav[20] + wav[21] * 0x100;
 
       // Get past all the other sub chunks to get to the data subchunk:
       int pos = 12;   // First Subchunk ID from 12 to 16
@@ -346,7 +337,7 @@ namespace BatInspector
       pos += 8;
 
       // Pos is now positioned to start of actual sound data.
-      int samples = (wav.Length - pos) / 2;     // 2 bytes per sample (16 bit sound mono)
+      int samples = (wav.Length - pos) * 8 / bitsPerSample;     // 2 bytes per sample (16 bit sound mono)
       if (channels == 2) samples /= 2;        // 4 bytes per sample (16 bit stereo)
 
       // Allocate memory (right will be null if only mono sound)
@@ -359,21 +350,34 @@ namespace BatInspector
       //      while (pos < length)
 
       if (channels == 1)
-      { 
-        while (i < left.Length)
+      {
+        if (bitsPerSample == 16)
         {
-          left[i] = bytesToDouble((sbyte)wav[pos], (sbyte)wav[pos + 1]);
-          pos += 2;
-          i++;
+          while (i < left.Length)
+          {
+            left[i] = BitConverter.ToInt16(wav, pos) / 32768.0;
+            pos += 2;
+            i++;
+          }
         }
+        if (bitsPerSample == 32)
+        {
+          while (i < left.Length)
+          {
+            left[i] = BitConverter.ToInt32(wav, pos) / 32768.0 / 32768.0;
+            pos += 4;
+            i++;
+          }
+        }
+
       }
       else
       {
         while (i < left.Length)
         {
-          left[i] = bytesToDouble((sbyte)wav[pos], (sbyte)wav[pos + 1]);
+          left[i] = BitConverter.ToInt16(wav, pos) / 32768.0;
           pos += 2;
-          right[i] = bytesToDouble((sbyte)wav[pos], (sbyte)wav[pos + 1]);
+          right[i] = BitConverter.ToInt16(wav, pos) / 32768.0;
           pos += 2;
           i++;
         }

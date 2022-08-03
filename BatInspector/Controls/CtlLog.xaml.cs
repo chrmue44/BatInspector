@@ -22,12 +22,18 @@ namespace BatInspector.Controls
   public partial class CtlLog : UserControl
   {
 
+    ViewModel _model = null;
     public CtlLog()
     {
       InitializeComponent();
       _cbInfo.IsChecked = true;
       _cbErr.IsChecked = true;
       _cbWarn.IsChecked = true;
+    }
+
+    public void setViewModel(ViewModel model)
+    {
+      _model = model;
     }
 
     public void log(stLogEntry entry, List<stLogEntry> list)
@@ -55,6 +61,16 @@ namespace BatInspector.Controls
     private void _btnClear_Click(object sender, RoutedEventArgs e)
     {
       _spEntries.Children.Clear();
+    }
+
+    private void _tbCmd_KeyDown(object sender, KeyEventArgs e)
+    {
+      if (e.Key == Key.Return)
+      {
+        string cmd = _tbCmd.Text;
+        if (_model != null)
+          _model.executeCmd(cmd);
+      }
     }
   }
 }

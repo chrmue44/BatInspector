@@ -41,7 +41,7 @@ namespace BatInspector.Forms
     FrmLog _log = null;
     FrmFilter _frmFilter = null;
     int _imgHeight = MAX_IMG_HEIGHT;
-    List<UIElement> _listBak = null;
+
     FrmZoom _frmZoom = null;
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
@@ -77,6 +77,8 @@ namespace BatInspector.Forms
       {
         this.Width = _model.Settings.MainWindowWidth;
         this.Height = _model.Settings.MainWindowHeight;
+        _grdMain.RowDefinitions[3].Height = new GridLength(_model.Settings.LogControlHeight);
+        _grdCtrl.ColumnDefinitions[0].Width = new GridLength(_model.Settings.WidthFileSelector);
       }
       this.Top = _model.Settings.MainWindowPosX;
       this.Left = _model.Settings.MainWindowPosY;
@@ -85,6 +87,7 @@ namespace BatInspector.Forms
       _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
       _dispatcherTimer.Start();
       DebugLog.setLogDelegate(_ctlLog.log);
+      _ctlLog.setViewModel(_model);
 #if DEBUG
       Tests tests = new Tests();
       tests.exec();      
@@ -430,11 +433,8 @@ private void setZoomPosition()
 
         _model.deleteFiles(files);
         foreach (UIElement it in list)
-        {
           _spSpectrums.Children.Remove(it);
-          if (_listBak != null)
-            _listBak.Remove(it);
-        }
+
         reIndexSpectrumControls();
         showStatus();
       }
@@ -442,34 +442,19 @@ private void setZoomPosition()
 
     private void _btnHideUnSelected_Click(object sender, RoutedEventArgs e)
     {
-      List<UIElement> list = new List<UIElement>();
-      _listBak = new List<UIElement>();
-      foreach (UIElement it in _spSpectrums.Children)
-      {
-        _listBak.Add(it);
-        ctlWavFile ctl = it as ctlWavFile;
-        if (ctl._cbSel.IsChecked == true)
-          list.Add(it);
-      }
-      _spSpectrums.Children.Clear();
-      foreach (UIElement it in list)
-        _spSpectrums.Children.Add(it);
-      DebugLog.log("hide unselected files", enLogType.INFO);
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+      
+        ctl.Visibility = ctl._cbSel.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        DebugLog.log("hide unselected files", enLogType.INFO);
       showStatus();
     }
 
     private void _btnShowAll_Click(object sender, RoutedEventArgs e)
     {
-      if (_listBak != null)
-      {
-        _spSpectrums.Children.Clear();
-        foreach (UIElement it in _listBak)
-        {
-          ctlWavFile ctl = it as ctlWavFile;
-          _spSpectrums.Children.Add(it);
-        }
-        _listBak = null;
-      }
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+        ctl.Visibility = Visibility.Visible;
+
+
       DebugLog.log("show all files", enLogType.INFO);
       showStatus();
     }
@@ -680,6 +665,16 @@ private void setZoomPosition()
           ctl._btnCopy_Click(null, null);
         }
       }
+    }
+
+    private void _grdSplitterH_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+    {
+      _model.Settings.LogControlHeight = _grdMain.RowDefinitions[3].Height.Value;
+    }
+
+    private void _grdSplitterV_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+    {
+      _model.Settings.WidthFileSelector = _grdCtrl.ColumnDefinitions[0].Width.Value;
     }
   }
 

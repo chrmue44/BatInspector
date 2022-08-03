@@ -25,7 +25,9 @@ namespace BatInspector
     public MthdListScript() : base()
     {
       _methods = null;
+
     }
+
     public override void initMthdTab()
     {
       _inst = this;
@@ -33,8 +35,10 @@ namespace BatInspector
       addMethod(new FuncTabItem("setSampleRate", setSampleRate));
       _scriptHelpTab.Add(new HelpTabItem("setSampleRate", "sets the samplerate of a file",
                       new List<string> { "1: fileName","2:sample rate" }, new List<string> { "" }));
+      addMethod(new FuncTabItem("getSampleRate", getSampleRate)); 
       _scriptHelpTab.Add(new HelpTabItem("getSampleRate", "returns the samplerate of a file",
                       new List<string> { "1: fileName" }, new List<string> { "1: sampling rate" }));
+      addMethod(new FuncTabItem("rescaleSampleRate", rescaleSampleRate));
       _scriptHelpTab.Add(new HelpTabItem("rescaleSampleRate", "rescales the samplerate of a file",
                       new List<string> { "1: fileName", "2:factor" }, new List<string> { "1: new sampling rate" }));
     }
@@ -113,6 +117,7 @@ namespace BatInspector
         err = tParseError.NR_OF_ARGUMENTS;
       return err;
     }
+      
 
     // liefert die Tabelle mit detaillierter Hilfe zu den Methoden
     public override List<HelpTabItem> getHelpTab()

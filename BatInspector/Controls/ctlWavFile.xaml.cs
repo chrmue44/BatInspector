@@ -100,7 +100,7 @@ namespace BatInspector.Controls
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
           it.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", enDataType.STRING, 0, 60, 100);
-          it.setValue(call.SpeciesAuto + "(Prob: " + call.Probability.ToString("0.###") + ")");
+          it.setValue(call.SpeciesAuto + "(" + ((int)(call.Probability * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();

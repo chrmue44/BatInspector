@@ -17,12 +17,14 @@ namespace BatInspector
 {
   public class BatCommands : BaseCommands
   {
-    public BatCommands(delegateUpdateProgress delUpd) : base(delUpd)
+    ViewModel _model;
+    public BatCommands(delegateUpdateProgress delUpd, ViewModel model) : base(delUpd)
     {
-
+      _model = model;
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
         new OptItem("Test", "test", 1, fctTest),
+        new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport)
       });
 
       _options = new Options(_features, false);
@@ -33,5 +35,14 @@ namespace BatInspector
       ErrText = "";
       return 0;
     }
+
+    int fctAdjustReport(List<string> pars, out string ErrText)
+    {
+      ErrText = "";
+      string report = _model.PrjPath + "/report.csv";
+      _model.Analysis.removeDeletedWavsFromReport(report);
+      return 0;
+    }
+
   }
 }

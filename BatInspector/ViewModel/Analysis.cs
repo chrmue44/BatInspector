@@ -20,7 +20,7 @@ namespace BatInspector
 {
 
   public class Analysis
-  {   
+  {
     public const string COL_NAME = "name";
     public const string COL_NR = "nr";
     public const string COL_SAMPLERATE = "sampleRate";
@@ -51,7 +51,7 @@ namespace BatInspector
     int _colSpeciesMan = 0;
     int _colProbability = 0;
     int _colSnr = 0;
-    int _colRemarks= 0;
+    int _colRemarks = 0;
     object _fileLock = new object();
 
     List<AnalysisFile> _list;
@@ -62,9 +62,9 @@ namespace BatInspector
     public AnalysisFile find(string name)
     {
       AnalysisFile retVal = null;
-      foreach(AnalysisFile f in _list)
+      foreach (AnalysisFile f in _list)
       {
-        if(f.FileName == name)
+        if (f.FileName == name)
         {
           retVal = f;
           break;
@@ -159,61 +159,61 @@ namespace BatInspector
             csv.save();
           }
         }
-      
-      _list.Clear();
-      string lastFileName = "";
-      AnalysisFile file = new AnalysisFile();
-      int callNr = 1;
-      _report = new List<ReportItem>();
 
-      for (int row = 2; row <= csv.RowCnt; row++)
-      {
-        string fName = csv.getCell(row, _colName);
-        if (fName != lastFileName)
+        _list.Clear();
+        string lastFileName = "";
+        AnalysisFile file = new AnalysisFile();
+        int callNr = 1;
+        _report = new List<ReportItem>();
+
+        for (int row = 2; row <= csv.RowCnt; row++)
         {
-          lastFileName = fName;
-          file = new AnalysisFile(fName);
-          _list.Add(file);
-          callNr = 1;
-        }
-        file.SampleRate = csv.getCellAsInt(row, _colSampleRate);
-        file.Duration = csv.getCellAsDouble(row, _colFileLen);
-        double fMaxAmp = csv.getCellAsDouble(row, _colFreqMaxAmp);
-        int nr = csv.getCellAsInt(row, _colNr);
-        double fMin = csv.getCellAsDouble(row, _colFreqMin);
-        double fMax = csv.getCellAsDouble(row, _colFreqMax);
-        double fKnee = csv.getCellAsDouble(row, _colFreqKnee);
-        double duration = csv.getCellAsDouble(row, _colDuration);
-        string startTime = csv.getCell(row, _colStartTime);
-        string species = csv.getCell(row, _colSpecies);
-        double probability = csv.getCellAsDouble(row, _colProbability);
-        double snr = csv.getCellAsDouble(row, _colSnr);
-        string speciesMan = csv.getCell(row, _colSpeciesMan);
-        file.Remarks = csv.getCell(row, _colRemarks);
-        double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
-        AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
-                                             probability, speciesMan, snr, distToPrev);
-        file.Calls.Add(call);
+          string fName = csv.getCell(row, _colName);
+          if (fName != lastFileName)
+          {
+            lastFileName = fName;
+            file = new AnalysisFile(fName);
+            _list.Add(file);
+            callNr = 1;
+          }
+          file.SampleRate = csv.getCellAsInt(row, _colSampleRate);
+          file.Duration = csv.getCellAsDouble(row, _colFileLen);
+          double fMaxAmp = csv.getCellAsDouble(row, _colFreqMaxAmp);
+          int nr = csv.getCellAsInt(row, _colNr);
+          double fMin = csv.getCellAsDouble(row, _colFreqMin);
+          double fMax = csv.getCellAsDouble(row, _colFreqMax);
+          double fKnee = csv.getCellAsDouble(row, _colFreqKnee);
+          double duration = csv.getCellAsDouble(row, _colDuration);
+          string startTime = csv.getCell(row, _colStartTime);
+          string species = csv.getCell(row, _colSpecies);
+          double probability = csv.getCellAsDouble(row, _colProbability);
+          double snr = csv.getCellAsDouble(row, _colSnr);
+          string speciesMan = csv.getCell(row, _colSpeciesMan);
+          file.Remarks = csv.getCell(row, _colRemarks);
+          double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
+          AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
+                                               probability, speciesMan, snr, distToPrev);
+          file.Calls.Add(call);
 
-        ReportItem rItem = new ReportItem();
-        rItem.FileName = fName;
-        rItem.CallNr = callNr.ToString();
-        if (callNr < 2)
-          rItem.Remarks = file.Remarks;
-        callNr++;
-        rItem.FreqMin = (fMin / 1000).ToString("0.#");
-        rItem.FreqMax = (fMax / 1000).ToString("0.#");
-        rItem.FreqMaxAmp = (fMaxAmp / 1000).ToString("0.#");
-        rItem.Duration = duration.ToString("0.#");
-        rItem.StartTime = startTime;
-        rItem.SpeciesAuto = species;
-        rItem.Probability = probability.ToString("0.###");
-        rItem.Snr = snr.ToString();
-        rItem.SpeciesMan = speciesMan;
-        _report.Add(rItem);
+          ReportItem rItem = new ReportItem();
+          rItem.FileName = fName;
+          rItem.CallNr = callNr.ToString();
+          if (callNr < 2)
+            rItem.Remarks = file.Remarks;
+          callNr++;
+          rItem.FreqMin = (fMin / 1000).ToString("0.#");
+          rItem.FreqMax = (fMax / 1000).ToString("0.#");
+          rItem.FreqMaxAmp = (fMaxAmp / 1000).ToString("0.#");
+          rItem.Duration = duration.ToString("0.#");
+          rItem.StartTime = startTime;
+          rItem.SpeciesAuto = species;
+          rItem.Probability = probability.ToString("0.###");
+          rItem.Snr = snr.ToString();
+          rItem.SpeciesMan = speciesMan;
+          _report.Add(rItem);
+        }
+        restChanged();
       }
-      restChanged();
-    }
     }
 
 
@@ -229,6 +229,7 @@ namespace BatInspector
           {
             int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
             csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
+            csv.setCell(row, _colSpecies, c.SpeciesAuto);
             if (c.Nr < 2)
               csv.setCell(row, _colRemarks, f.Remarks);
             else
@@ -252,13 +253,40 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        if ( f.FileName.IndexOf(fileName) >= 0)
+        if (f.FileName.IndexOf(fileName) >= 0)
         {
           retVal = f;
           break;
         }
       }
       return retVal;
+    }
+
+    public void removeDeletedWavsFromReport(string reportName)
+    {
+      if (File.Exists(reportName))
+      {
+        List<string> wavToDel = new List<string>();
+
+        Csv report = new Csv();
+        report.read(reportName);
+        for(int r = 1; r <= report.RowCnt; r++)
+        {
+          string wavName = report.getCell(r, _colName);
+          int pos = wavName.LastIndexOf("/");
+          if (pos < 0)
+            pos = wavName.LastIndexOf("\\");
+          wavName = wavName.Substring(pos + 1);
+          AnalysisFile f = AnalysisFile.find(_list, wavName);
+          if(f == null)
+            wavToDel.Add(wavName);
+        }
+
+        foreach (string f in wavToDel)
+          removeWavFromReport(report, f);
+
+        report.save();
+      }
     }
 
     public void removeFile(string reportName, string wavName)
@@ -285,15 +313,7 @@ namespace BatInspector
         {
           Csv report = new Csv();
           report.read(reportName);
-          int row = 0;
-          do
-          {
-            row = report.findInCol(wavName, _colName);
-            if (row > 0)
-            {
-              report.removeRow(row);
-            }
-          } while (row > 0);
+          removeWavFromReport(report, wavName);
           report.save();
         }
         else
@@ -316,6 +336,26 @@ namespace BatInspector
       }
     }
 
+    public void checkConfidence(List<SpeciesInfos> species)
+    {
+      foreach (AnalysisFile f in _list)
+        f.checkConfidence(species);
+    }
+
+
+    void removeWavFromReport(Csv report, string wavName)
+    {
+      int row = 0;
+      do
+      {
+        row = report.findInCol(wavName, _colName);
+        if (row > 0)
+        {
+          report.removeRow(row);
+        }
+      } while (row > 0);
+    }
+
     /// <summary>
     /// calculates the time difference bewtween to times
     /// </summary>
@@ -327,7 +367,7 @@ namespace BatInspector
       double retVal = 0.0;
       string[] split1 = time1.Split(':');
       string[] split2 = time2.Split(':');
-      if((split1.Length == 3) && (split2.Length == 3))
+      if ((split1.Length == 3) && (split2.Length == 3))
       {
         double t1 = 0.0;
         double.TryParse(split1[2], NumberStyles.Any, CultureInfo.InvariantCulture, out t1);
@@ -379,11 +419,11 @@ namespace BatInspector
     public string Snr { get; set; }
     public string Remarks
     {
-      get { return _remarks; } 
-      set 
-      { 
-        _remarks = value; 
-        _changed = true; 
+      get { return _remarks; }
+      set
+      {
+        _remarks = value;
+        _changed = true;
       }
     }
 
@@ -398,6 +438,7 @@ namespace BatInspector
 
     bool _changed = false;
     string _speciesMan;
+    string _speciesAuto;
     public int Nr { get; }
     public double FreqMaxAmp { get; }
     public double FreqMin { get; }
@@ -410,14 +451,14 @@ namespace BatInspector
 
     public double Snr { get; }
 
-    public string SpeciesAuto { get; }
-    public string SpeciesMan 
-    { 
-      get { return _speciesMan; } 
+    public string SpeciesAuto { get { return _speciesAuto; } }
+    public string SpeciesMan
+    {
+      get { return _speciesMan; }
       set
       {
-        _speciesMan = value; 
-        _changed = true; 
+        _speciesMan = value;
+        _changed = true;
       }
     }
 
@@ -433,7 +474,7 @@ namespace BatInspector
       Duration = duration;
       DistToPrev = distToPrev;
       StartTime = start;
-      SpeciesAuto = speciesAuto;
+      _speciesAuto = speciesAuto;
       Probability = probability;
       _speciesMan = speciesMan;
       Snr = snr;
@@ -443,6 +484,23 @@ namespace BatInspector
     public void resetChanged()
     {
       _changed = false;
+    }
+
+    public bool checkConfidence(List<SpeciesInfos> species)
+    {
+      bool retVal = false;
+      SpeciesInfos spec = SpeciesInfos.find(SpeciesAuto, species);
+      if(spec != null)
+      {
+        if((spec.DurationMin <= this.Duration) && (this.Duration <= spec.DurationMax) &&
+           (spec.FreqCharMin <= this.FreqMaxAmp * 1000) && (this.FreqMaxAmp <= spec.FreqCharMax * 1000))
+           retVal = true;
+        else
+        {
+          this._speciesAuto = "??C95[" + this.SpeciesAuto + "]";
+        }
+      }
+      return retVal;
     }
   }
 
@@ -456,12 +514,12 @@ namespace BatInspector
     public double Duration { get; set; }
     public string Remarks { get; set; }
 
-    public bool Changed 
+    public bool Changed
     {
-    get
+      get
       {
         bool retVal = false;
-        foreach(AnalysisCall c in _calls)
+        foreach (AnalysisCall c in _calls)
         {
           retVal |= c.Changed;
         }
@@ -512,6 +570,26 @@ namespace BatInspector
       {
         retVal = getStartTime(idx);
         retVal += _calls[idx].Duration / 1000;
+      }
+      return retVal;
+    }
+
+    public void checkConfidence(List<SpeciesInfos> species)
+    {
+      foreach (AnalysisCall c in _calls)
+        c.checkConfidence(species);
+    }
+
+    static public AnalysisFile find(List<AnalysisFile> list, string fName)
+    {
+      AnalysisFile retVal = null;
+      foreach(AnalysisFile f in list)
+      {
+        if(f.FileName == fName)
+        {
+          retVal = f;
+          break;
+        }
       }
       return retVal;
     }

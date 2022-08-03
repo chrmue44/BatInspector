@@ -11,6 +11,7 @@ TODO
 - 95% plausibility check
 
 DONE
+- start prediction with possibility to enabel/disable single steps
 - classification of species with tensorflow classifier
 - tool to inspect and manipulate wav files: can change sampling rate
 - calculate distance to previous call and show it in zoom view

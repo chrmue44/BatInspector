@@ -13,12 +13,12 @@ namespace BatInspector
     BaseCommands[] _cmds;
     string _wrkDir;
 
-    public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg)
+    public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
     {
       _proc = proc;
       _updProgress = updProg;
       _cmds = new BaseCommands[2];
-      BatCommands batCmds = new BatCommands(updProg);
+      BatCommands batCmds = new BatCommands(updProg, model);
       _cmds[0] = batCmds;
       OsCommands os = new OsCommands(updProg);
       os.WorkDir = wrkDir;
@@ -30,6 +30,14 @@ namespace BatInspector
     }
     public bool IsBusy {  get { return _parser.Busy; } }
 
+    public void execCmd(string cmd)
+    {
+      string[] lines = new string[1];
+      lines[0] = cmd;
+      _parser.ParseLines(lines);
+      string res = _parser.VarTable.GetValue(Parser.ERROR_LEVEL);
+      DebugLog.log("ConsoleCmd:" + cmd + ": " + res, enLogType.INFO);
+    }
     public int RunScript(string fileName, bool background = true)
     {
       int retVal = 0;

@@ -21,6 +21,7 @@ namespace BatInspector.Forms
       _cbCut.IsChecked = true;
       _cbPredict.IsChecked = true;
       _cbPrepare.IsChecked = true;
+      _cbConf95.IsChecked = true;
     }
 
     public static void showMsg(dlgStartPrediction dlg)
@@ -45,6 +46,8 @@ namespace BatInspector.Forms
         options |= ViewModel.OPT_PREPARE;
       if (_cbPredict.IsChecked == true)
         options |= ViewModel.OPT_PREDICT;
+      if (_cbConf95.IsChecked == true)
+        options |= ViewModel.OPT_CONF95;
       _dlg(options);
       _frm.Close();
     }

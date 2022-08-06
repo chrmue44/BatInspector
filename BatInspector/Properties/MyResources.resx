@@ -537,8 +537,8 @@
   <data name="frmPredPrepare" xml:space="preserve">
     <value>Prepare data</value>
   </data>
-  <data name="frmStartPredPredict" xml:space="preserve">
-    <value>Predict species</value>
+  <data name="frmStartPredPredict1" xml:space="preserve">
+    <value>Predict species (classifier 1)</value>
   </data>
   <data name="frmStartPredMsg" xml:space="preserve">
     <value>This operation may take a long time, do you want to preceed?</value>
@@ -569,5 +569,14 @@
   </data>
   <data name="SetDescWidthFileSel" xml:space="preserve">
     <value>Width of file browser [px]</value>
+  </data>
+  <data name="frmStartPredResample" xml:space="preserve">
+    <value>Adapt sampling rate</value>
+  </data>
+  <data name="frmStartPredPredict2" xml:space="preserve">
+    <value>Predict species (classifier 2)</value>
+  </data>
+  <data name="frmStartPredPredict3" xml:space="preserve">
+    <value>Predict species (classifier 3)</value>
   </data>
 </root>

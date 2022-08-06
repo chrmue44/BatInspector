@@ -35,11 +35,14 @@ namespace BatInspector
 
   public class ViewModel
   {
-    public const int OPT_INSPECT = 1;
-    public const int OPT_CUT = 2;
-    public const int OPT_PREPARE = 4;
-    public const int OPT_PREDICT = 8;
-    public const int OPT_CONF95 = 16;
+    public const int OPT_INSPECT = 0x01;
+    public const int OPT_CUT = 0x02;
+    public const int OPT_PREPARE = 0x04;
+    public const int OPT_PREDICT1 = 0x08;
+    public const int OPT_CONF95 = 0x10;
+    public const int OPT_RESAMPLE = 0x20;
+    public const int OPT_PREDICT2 = 0x40;
+    public const int OPT_PREDICT3 = 0x80;
 
     string _selectedDir;
     Project _prj;
@@ -206,6 +209,12 @@ namespace BatInspector
       {
         string dirName = _selectedDir + "/Records";
         string delName = wavName.Replace(".wav", ".*");
+        int pos = delName.LastIndexOf("/");
+        int pos2 = delName.LastIndexOf("\\");
+        if ((pos >= 0) && (pos > pos2))
+          delName = delName.Substring(pos + 1);
+        else if (pos2 >= 0)
+          delName = delName.Substring(pos2 + 1);
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
         foreach (string f in delFiles)
         {
@@ -249,17 +258,20 @@ namespace BatInspector
           retVal = _proc.LaunchCommandLineApp(_settings.Rbin, null, _selectedDir, true, argsR, true, true);
         }
 
-        if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT)) != 0)
+        if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1 | OPT_RESAMPLE)) != 0)
         {
           string datFile = _selectedDir + "/Xdata000.npy";
           string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
           string args = _settings.PythonScript;
           prepareFolder();
+          if ((options & OPT_RESAMPLE) != 0)
+            args += " --resample " + _selectedDir + "/Records/*.wav" +
+                    " --sampleRate " + _settings.SamplingRate.ToString();
           if ((options & OPT_CUT) != 0)
             args += " --cut";
           if ((options & OPT_PREPARE) != 0)
             args += " --prepPredict";
-          if ((options & OPT_PREDICT) != 0)
+          if ((options & OPT_PREDICT1) != 0)
             args += " --predict";
           args += " --csvcalls " + reportName +
                " --root " + _settings.ModelDir + " --specFile " + _settings.SpeciesFile +

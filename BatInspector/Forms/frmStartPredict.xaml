@@ -6,17 +6,20 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.frmStartPredTitle}" Height="194" Width="325.273" ShowInTaskbar="False" ResizeMode="NoResize">
-    <Grid Margin="0,0,0,-16">
+        Title="{x:Static res:MyResources.frmStartPredTitle}" Height="260" Width="325.273" ShowInTaskbar="False" ResizeMode="NoResize">
+    <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="79*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition/>
+            <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="10,10,10,5" Grid.RowSpan="2">
+        <StackPanel Margin="10,10,10,10" Grid.RowSpan="2">
             <CheckBox Name="_cbInspect" Content="{x:Static res:MyResources.frmStartPredInspect}"/>
+            <CheckBox Name="_cbResample" Content="{x:Static res:MyResources.frmStartPredResample}"/>
             <CheckBox Name="_cbCut" Content="{x:Static res:MyResources.frmStartPredCut}"/>
             <CheckBox Name="_cbPrepare" Content="{x:Static res:MyResources.frmPredPrepare}"/>
-            <CheckBox Name ="_cbPredict" Content="{x:Static res:MyResources.frmStartPredPredict}"/>
+            <CheckBox Name ="_cbPredict1" Content="{x:Static res:MyResources.frmStartPredPredict1}"/>
+            <CheckBox Name ="_cbPredict2" Content="{x:Static res:MyResources.frmStartPredPredict2}"/>
+            <CheckBox Name ="_cbPredict3" Content="{x:Static res:MyResources.frmStartPredPredict3}"/>
             <CheckBox Name ="_cbConf95" Content="{x:Static res:MyResources.frmStartPredConfTest}"/>
             <TextBlock Margin ="0,10,0,10" TextWrapping="Wrap" Text="{x:Static res:MyResources.frmStartPredMsg}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

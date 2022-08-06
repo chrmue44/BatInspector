@@ -20,12 +20,13 @@ env = {
        'trainDataMask':'',
        'infoTestFile' : '',
        'train' : False,
-       'minSnr': 12.0,
+       'minSnr': 8.0,
        'resample': False,
-       'inFile':'',
        'outFile':'',
        'sampleRate': 312500,
+       'stretchFactor' : 1,
        'dataDir' : '',
+       'inDirMask': '',
        }
 
 modPars = {
@@ -86,10 +87,11 @@ def printHelp():
     --run - run model
     --train - train model
     --clean - clean model (delete pre trained weights)
-    --resample <fileName>
+    --resample <inputDirMask> resample to new sample rate
+    --sampleRate <sampleRate> new rate for --resample
     --outFile <outfile>
-    --sampleRate <sampleRate>
-    
+    --stretch <factor> stretch factor during resampling operation
+    --minSnr <snr> min value for SNR to accept prediction of recording
     Examples:
     cut all recordings listed in call file to wav-files containing 1 call:
     
@@ -101,8 +103,8 @@ def parseArguments(argv):
     try:
         opts, args = getopt.getopt(argv,"d:eg:hp:s:t", ['data=','predict','prepPredict','img','clean',
                                                         'root=', 'check', 'run', 'train', 'specFile=', 'prepTrain',
-                                                        'wav','model=','cut','axes','csvcalls=','epochs=',
-                                                        'resample=','outFile=','sampleRate=', 'dataDir='])
+                                                        'wav','model=','cut','axes','csvcalls=','epochs=', 'minSnr=',
+                                                        'resample=','sampleRate=', 'outFile=', 'dataDir=', 'stretch='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -146,21 +148,31 @@ def parseArguments(argv):
             env['saveWav'] = True
         elif opt == '--resample':
             env['resample'] = True
-            env['inFile'] = arg
+            env['inDirMask'] = arg
+        elif opt == '--resample':
+            env['sampleRate'] = int(arg)
         elif opt == '--outFile':
             env['outFile'] = arg
-        elif opt == '--sampleRate':
-            env['sampleRate'] = int(arg)
         elif opt == '--epochs':
             modPars['epochs'] = int(arg)
         elif opt == '--dataDir':
             env['dataDir'] = arg
-            
+        elif opt == '--stretch':
+            env['stretch'] = int(arg)
+        elif opt == '--minSnr':
+            env['minSnr'] = float(arg)
     #logName = "C:/Users/chrmu/prj/BatInspector/mod/trn/log_pred_errs.csv"
     #checkFileName = "C:/Users/chrmu/prj/BatInspector/mod/trn/checktest.csv"
 
 def execute():
     print("**** bat classification running ****")
+    if env['resample']:
+        print('********* resample WAV file ***********')
+        print('*          input:', env['inDirMask'])      
+        print('*    sample rate:', env['sampleRate'])
+        print('* stretch factor:', env['stretchFactor'])
+        audio.resampleWavFiles(env['inDirMask'], env['sampleRate'], env['stretchFactor'])
+
     if env['cut']:
         print ("**** cutting audio files ****")
         print ("* call file:", env['callFile'])
@@ -206,14 +218,10 @@ def execute():
         print('*   list calls:', env['callFile'])
         print('*    data file:', env['predictData'])
         print('* species file:', env['specFile'])
+        print('*     min. SNR:', env['minSnr'])
         mod.predict(env['predictData'], env['specFile'], env['callFile'], 
                     rootDir = env['rootDir'], minSnr = env['minSnr'], modPars = modPars)
     
-    if env['resample']:
-        print('********* resample WAV file ***********')
-        print('*       input:', env['inFile'])      
-        print('* sample rate:', env['sampleRate'])
-        audio.resampleWavFiles(env['inFile'], env['sampleRate'], 10)
 
 if __name__ == "__main__":
     start_time = time.time()

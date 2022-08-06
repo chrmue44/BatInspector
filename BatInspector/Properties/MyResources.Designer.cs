@@ -619,11 +619,38 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Predict species.
+        ///   Looks up a localized string similar to Predict species (classifier 1).
         /// </summary>
-        public static string frmStartPredPredict {
+        public static string frmStartPredPredict1 {
             get {
-                return ResourceManager.GetString("frmStartPredPredict", resourceCulture);
+                return ResourceManager.GetString("frmStartPredPredict1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Predict species (classifier 2).
+        /// </summary>
+        public static string frmStartPredPredict2 {
+            get {
+                return ResourceManager.GetString("frmStartPredPredict2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Predict species (classifier 3).
+        /// </summary>
+        public static string frmStartPredPredict3 {
+            get {
+                return ResourceManager.GetString("frmStartPredPredict3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapt sampling rate.
+        /// </summary>
+        public static string frmStartPredResample {
+            get {
+                return ResourceManager.GetString("frmStartPredResample", resourceCulture);
             }
         }
         

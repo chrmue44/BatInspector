@@ -33,6 +33,12 @@ namespace BatInspector
     en_US,
   }
 
+  public enum enModel
+  {
+    rnn6aModel,
+    resNet34Model
+  };
+
   [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter)]
   class LocalizedDescriptionAttribute : DescriptionAttribute
   {
@@ -359,6 +365,16 @@ namespace BatInspector
     public string ModelDir { get; set; }
 
     [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("default sampling rate for automatic prediction")]
+    public int SamplingRate { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    Description("select type of model for prediction")]
+    public enModel ModelType { get; set; }
+
+    [DataMember]
     [LocalizedCategory("SetCatApplication")]
 //    [LocalizedDescription("SetDescWfLog")]
     public DSPLib.DSP.Window.Type FftWindow { get; set; }
@@ -419,6 +435,8 @@ namespace BatInspector
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
       PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
       ModelDir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
+
+      SamplingRate = 312500;
     }
 
     private void initFilterParams()

@@ -17,9 +17,12 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _dlg = startPrediction;
+      _cbResample.IsChecked = true;
       _cbInspect.IsChecked = true;
       _cbCut.IsChecked = true;
-      _cbPredict.IsChecked = true;
+      _cbPredict1.IsChecked = true;
+      _cbPredict2.IsChecked = false;
+      _cbPredict3.IsChecked = false;
       _cbPrepare.IsChecked = true;
       _cbConf95.IsChecked = true;
     }
@@ -38,18 +41,20 @@ namespace BatInspector.Forms
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
       int options = 0;
+      if (_cbResample.IsChecked == true)
+        options |= ViewModel.OPT_RESAMPLE;
       if (_cbInspect.IsChecked == true)
         options |= ViewModel.OPT_INSPECT;
       if (_cbCut.IsChecked == true)
         options |= ViewModel.OPT_CUT;
       if (_cbPrepare.IsChecked == true)
         options |= ViewModel.OPT_PREPARE;
-      if (_cbPredict.IsChecked == true)
-        options |= ViewModel.OPT_PREDICT;
+      if (_cbPredict1.IsChecked == true)
+        options |= ViewModel.OPT_PREDICT1;
       if (_cbConf95.IsChecked == true)
         options |= ViewModel.OPT_CONF95;
-      _dlg(options);
       _frm.Close();
+      _dlg(options);
     }
   }
 }

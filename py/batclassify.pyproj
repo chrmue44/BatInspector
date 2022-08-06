@@ -23,9 +23,9 @@
   <ItemGroup>
     <Compile Include="audio.py" />
     <Compile Include="batclass.py" />
-    <Compile Include="model.py" />
-    <Compile Include="model_mem - Kopie.py" />
-    <Compile Include="model_mem.py" />
+    <Compile Include="exec_model.py" />
+    <Compile Include="generator.py" />
+    <Compile Include="models.py" />
     <Compile Include="preptrain.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

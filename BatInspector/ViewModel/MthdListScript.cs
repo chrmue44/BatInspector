@@ -18,13 +18,11 @@ namespace BatInspector
 {
   public class MthdListScript : MethodList
   {
-    Methods _methods;
     static MthdListScript _inst;
     List<HelpTabItem> _scriptHelpTab = new List<HelpTabItem>();
 
     public MthdListScript() : base()
     {
-      _methods = null;
 
     }
 

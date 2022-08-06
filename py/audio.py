@@ -290,6 +290,13 @@ def detectHardClipping(signal, threshold=2):
     return HasLongSequence(mask_min) or HasLongSequence(mask_max)   
 
 def resampleWavFiles(inDir, sampleRate, timeStretch):
+    """
+    change the sample rate of files in a directory
+    Arguments:
+    inDir - name of the directory
+    sampleRate - new sample rate
+    timeStretch - time stretch factor
+    """
     listFile = glob.glob(inDir)
     for f in listFile:
         newf = f.replace("Eptesicus_serotinus","Eser")
@@ -299,12 +306,17 @@ def resampleWavFiles(inDir, sampleRate, timeStretch):
         newf = newf.replace('Myotis_myotis','Mmyo')
         newf = newf.replace('Pipistrellus_pipistrellus','Ppip')
         newf = newf.replace('Pipistrellus_nathusii','Pnat')
+        newf = newf.replace('Barbastella_barbastellus','Bbar')
+
         samples = AudioSegment.from_wav(f)
-        print("exporting: ", newf)
-        newRate = samples.frame_rate * timeStretch
-        samples.frame_rate = newRate
-        newS = samples.set_frame_rate(sampleRate)
-        newS.export(newf, format='wav')
+        newRate = sampleRate * timeStretch
+        if int(samples.frame_rate) != int(newRate):
+            print("resampling from", samples.frame_rate, "to", newRate,newf)
+            #samples.frame_rate = newRate
+            newS = samples.set_frame_rate(newRate)
+            newS.export(newf, format='wav')
+        else:
+            print("sampling rate is already", samples.frame_rate, newRate," ", newf)
 
         
 def processCalls(csvFile, outDir, modPars, audioPars, format = "npy", verbose = False):

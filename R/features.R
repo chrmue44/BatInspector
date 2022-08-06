@@ -47,7 +47,10 @@ species <- read.csv(file = specFile)
 setwd("C:/Users/chrmu/prj/BatInspector/R")
 filesToTest <- dir(dataDir, recursive = TRUE, full.names = TRUE, pattern = "[.]wav$")
 calls = 0
-cat("name", "nr","Species","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "snr","SpeciesMan","prob","----",file=resultFile, sep = ";")
+cat("name", "nr","Species","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "bandwidth","",file=resultFile, sep = ";")
+cat("freq_start", "freq_center","freq_end", "fc", "freq_bw_knee_fc", "bin_max_amp","pc_freq_max_amp", "pc_freq_max", "",file=resultFile, sep = ";", append=TRUE)
+cat("pc_freq_min","pc_knee", "temp_bw_knee_fc", "slope", "kalman_slope", "", file=resultFile, sep = ";", append=TRUE)
+cat("curve_neg", "curve_pos_start", "curve_pos_end", "mid_offset", "smoothness", "snr","SpeciesMan","prob","remarks","----", file=resultFile, sep = ";", append=TRUE)
 for (sp in species) {
   cat("", sp, file=resultFile, sep = ";", append=TRUE)
 }
@@ -101,7 +104,12 @@ cat("", "\n", file=resultFile, sep = ";", append=TRUE)
           cat(fileToTest, i,actSpec,"",file=resultFile, sep = ";", append=TRUE)
           cat(sampleRate, 3.001, file=resultFile,"", sep = ";", append=TRUE)
           cat(EvDat$freq_max_amp[i],EvDat$freq_min[i],EvDat$freq_max[i],"",file=resultFile, sep = ";", append=TRUE)
-          cat(EvDat$freq_knee[i], EvDat$duration[i], EvDat$starting_time[i], EvDat$snr[i],"todo","\n",file=resultFile, sep = ";", append=TRUE)
+          cat(EvDat$freq_knee[i], EvDat$duration[i], EvDat$starting_time[i],"",file=resultFile, sep = ";", append=TRUE)
+          cat(EvDat$bandwidth[i], EvDat$freq_start[i], EvDat$freq_center[i], EvDat$freq_end[i],"",file=resultFile, sep = ";", append=TRUE)
+          cat(EvDat$fc[i], EvDat$freq_bw_knee_fc[i], EvDat$bin_max_amp[i], EvDat$pc_freq_max_amp[i], EvDat$pc_freq_max[i],"",file=resultFile, sep = ";", append=TRUE) 
+          cat(EvDat$pc_freq_min[i], EvDat$pc_knee[i], EvDat$temp_bw_knee_fc[i], EvDat$slope[i],EvDat$kalman_slope[i],"",file=resultFile, sep = ";", append=TRUE)
+          cat(EvDat$curve_neg[i],EvDat$curve_pos_start[i], EvDat$curve_pos_end[i], EvDat$mid_offset[i], EvDat$smoothness[i],"",file=resultFile, sep = ";", append=TRUE)            
+          cat(EvDat$snr[i],"todo","\n",file=resultFile, sep = ";", append=TRUE)
           calls <- calls + 1
         }
       }
@@ -110,4 +118,3 @@ cat("", "\n", file=resultFile, sep = ";", append=TRUE)
   }
   msg <- paste("nr of detected training samples:", calls, sep = " ")
   print(msg)
-

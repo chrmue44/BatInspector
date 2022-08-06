@@ -375,13 +375,13 @@ def predict(dataName, speciesFile, report, rootDir, minSnr, modPars):
         writer.writeheader()
         idx = 0
         for row in reader:
-            snr = row['snr']
+            snr = float(row['snr'])
             iMax = np.argmax(y[idx])
             row['prob'] = y[idx, iMax]
             if (y[idx, iMax] < 0.5):
                 row['Species'] = '??PRO[' + listSpec[iMax] + ']'
-            elif (float(snr) < minSnr):
-                row['Species'] = '??SNR[' + listSpec[iMax] + ']'
+            elif (snr < minSnr):
+                row['Species'] = '??SNR[' + f'{snr:.1f}' + ',' + listSpec[iMax] + ']'
             else:
                 row['Species'] = listSpec[iMax]
             spIdx = 0

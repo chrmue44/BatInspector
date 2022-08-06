@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
  *
  *              Licence:
  * 
@@ -19,39 +19,92 @@ using libScripter;
 namespace BatInspector
 {
 
+   public class Cols
+   {
+    public const string NAME = "name";
+    public const string NR = "nr";
+    public const string SAMPLERATE = "sampleRate";
+    public const string FILE_LEN = "FileLen";
+    public const string F_MAX_AMP = "freq_max_amp";
+    public const string F_MIN = "freq_min";
+    public const string F_MAX = "freq_max";
+    public const string F_KNEE = "freq_knee";
+    public const string DURATION = "duration";
+    public const string START_TIME = "start";
+    public const string SNR = "snr";
+    public const string SPECIES = "Species";
+    public const string SPECIES_MAN = "SpeciesMan";
+    public const string PROBABILITY = "prob";
+    public const string REMARKS = "remarks";
+    public const string BANDWIDTH = "bandwidth";
+    public const string F_START = "freq_start";
+    public const string F_CENTER = "freq_center";
+    public const string F_END = "freq_end";
+    public const string FC = "fc";
+    public const string F_BW_KNEE_FC = "freq_bw_knee_fc";
+    public const string BIN_MAX_AMP = "bin_max_amp";
+    public const string PC_F_MAX_AMP = "pc_freq_max_amp";
+    public const string PC_F_MAX = "pc_freq_max";
+    public const string PC_F_MIN = "pc_freq_min";
+    public const string PC_KNEE = "pc_knee";
+    public const string TEMP_BW_KNEE_FC = "temp_bw_knee_fc";
+    public const string SLOPE = "slope";
+    public const string KALMAN_SLOPE = "kalman_slope";
+    public const string CURVE_NEW = "curve_neg";
+    public const string CURVE_POS_START = "curve_pos_start";
+    public const string CURVE_POS_END = "curve_pos_end";
+    public const string MID_OFFSET = "mid_offset";
+    public const string SMOTTHNESS = "smoothness";
+
+    Dictionary<string, int> _cols = new Dictionary<string, int>();
+
+
+    public void init(Csv csv)
+    {
+      _cols.Clear();
+      _cols.Add(SAMPLERATE, csv.findInRow(1, SAMPLERATE));
+      _cols.Add(FILE_LEN, csv.findInRow(1, FILE_LEN));
+      _cols.Add(NAME, csv.findInRow(1, NAME));
+      _cols.Add(NR, csv.findInRow(1, NR));
+      _cols.Add(F_MAX_AMP, csv.findInRow(1, F_MAX_AMP));
+      _cols.Add(F_MAX, csv.findInRow(1, F_MAX));
+      _cols.Add(F_MIN, csv.findInRow(1, F_MIN));
+      _cols.Add(F_KNEE, csv.findInRow(1, F_KNEE));
+      _cols.Add(DURATION, csv.findInRow(1, DURATION));
+      _cols.Add(START_TIME, csv.findInRow(1, START_TIME));
+      _cols.Add(SPECIES, csv.findInRow(1, SPECIES));
+      _cols.Add(PROBABILITY, csv.findInRow(1, PROBABILITY));
+      _cols.Add(SNR, csv.findInRow(1, SNR));
+      _cols.Add(SPECIES_MAN, csv.findInRow(1, SPECIES_MAN));
+      _cols.Add(REMARKS, csv.findInRow(1, REMARKS));
+    }
+
+    public int getCol(string id)
+    {
+      int retVal = 0;
+      bool ok = _cols.TryGetValue(id, out retVal);
+      if (!ok)
+        DebugLog.log("unknown column id " + id, enLogType.ERROR);
+      return retVal;
+    }
+
+    public void Add(string id, int val)
+    {
+      try
+      {
+        _cols.Add(id, val);
+      }
+      catch 
+      {
+        DebugLog.log("id '" + id + "'already present in dictionary", enLogType.ERROR);
+      }
+    }
+  }
   public class Analysis
   {
-    public const string COL_NAME = "name";
-    public const string COL_NR = "nr";
-    public const string COL_SAMPLERATE = "sampleRate";
-    public const string COL_FILE_LEN = "FileLen";
-    public const string COL_FREQ_MAX_AMP = "freq_max_amp";
-    public const string COL_FREQ_MIN = "freq_min";
-    public const string COL_FREQ_MAX = "freq_max";
-    public const string COL_FREQ_KNEE = "freq_knee";
-    public const string COL_DURATION = "duration";
-    public const string COL_START_TIME = "start";
-    public const string COL_SNR = "snr";
-    public const string COL_SPECIES = "Species";
-    public const string COL_SPECIES_MAN = "SpeciesMan";
-    public const string COL_PROBABILITY = "prob";
-    public const string COL_REMARKS = "remarks";
 
-    int _colSampleRate = 0;
-    int _colNr = 0;
-    int _colFileLen = 0;
-    int _colName = 0;
-    int _colFreqMaxAmp = 0;
-    int _colFreqMax = 0;
-    int _colFreqMin = 0;
-    int _colFreqKnee = 0;
-    int _colDuration = 0;
-    int _colStartTime = 0;
-    int _colSpecies = 0;
-    int _colSpeciesMan = 0;
-    int _colProbability = 0;
-    int _colSnr = 0;
-    int _colRemarks = 0;
+    Cols _cols;
+
     object _fileLock = new object();
 
     List<AnalysisFile> _list;
@@ -101,6 +154,7 @@ namespace BatInspector
     {
       _list = new List<AnalysisFile>();
       _report = null;
+      _cols = new Cols();
     }
 
     public void read(string fileName)
@@ -109,53 +163,38 @@ namespace BatInspector
       {
         Csv csv = new Csv();
         int ret = csv.read(fileName);
-
-        _colSampleRate = csv.findInRow(1, COL_SAMPLERATE);
-        _colFileLen = csv.findInRow(1, COL_FILE_LEN);
-        _colName = csv.findInRow(1, COL_NAME);
-        _colNr = csv.findInRow(1, COL_NR);
-        _colFreqMaxAmp = csv.findInRow(1, COL_FREQ_MAX_AMP);
-        _colFreqMax = csv.findInRow(1, COL_FREQ_MAX);
-        _colFreqMin = csv.findInRow(1, COL_FREQ_MIN);
-        _colFreqKnee = csv.findInRow(1, COL_FREQ_KNEE);
-        _colDuration = csv.findInRow(1, COL_DURATION);
-        _colStartTime = csv.findInRow(1, COL_START_TIME);
-        _colSpecies = csv.findInRow(1, COL_SPECIES);
-        _colProbability = csv.findInRow(1, COL_PROBABILITY);
-        _colSnr = csv.findInRow(1, COL_SNR);
-        _colSpeciesMan = csv.findInRow(1, COL_SPECIES_MAN);
-        _colRemarks = csv.findInRow(1, COL_REMARKS);
+        _cols.init(csv);
 
         //@@@ temporary
         if (ret == 0)
         {
-          if (_colSampleRate == 0)
+          if (_cols.getCol(Cols.SAMPLERATE) == 0)
           {
-            _colSampleRate = 3;
-            _colFileLen = 4;
+            _cols.Add(Cols.SAMPLERATE, 3);
+            _cols.Add(Cols.FILE_LEN, 4);
             if (csv.getCellAsInt(2, 2) != 383500)
             {
-              csv.insertCol(_colSampleRate, "383500");
-              csv.insertCol(_colFileLen, "3.001");
+              csv.insertCol(_cols.getCol(Cols.SAMPLERATE), "383500");
+              csv.insertCol(_cols.getCol(Cols.FILE_LEN), "3.001");
             }
-            csv.setCell(1, _colSampleRate, COL_SAMPLERATE);
-            csv.setCell(1, _colFileLen, COL_FILE_LEN);
+            csv.setCell(1, _cols.getCol(Cols.SAMPLERATE), Cols.SAMPLERATE);
+            csv.setCell(1, _cols.getCol(Cols.FILE_LEN), Cols.FILE_LEN);
             csv.save();
           }
-          if (_colSpeciesMan == 0)
+          if (_cols.getCol(Cols.SPECIES_MAN) == 0)
           {
             int col = csv.ColCnt + 1;
             csv.insertCol(col, "todo");
-            csv.setCell(1, col, COL_SPECIES_MAN);
-            _colSpeciesMan = col;
+            csv.setCell(1, col, Cols.SPECIES_MAN);
+            _cols.Add(Cols.SPECIES_MAN, col);
             csv.save();
           }
-          if (_colRemarks == 0)
+          if (_cols.getCol(Cols.REMARKS) == 0)
           {
             int col = csv.ColCnt + 1;
             csv.insertCol(col, "");
-            csv.setCell(1, col, COL_REMARKS);
-            _colRemarks = col;
+            csv.setCell(1, col, Cols.REMARKS);
+            _cols.Add(Cols.REMARKS, col);
             csv.save();
           }
         }
@@ -168,7 +207,7 @@ namespace BatInspector
 
         for (int row = 2; row <= csv.RowCnt; row++)
         {
-          string fName = csv.getCell(row, _colName);
+          string fName = csv.getCell(row, _cols.getCol(Cols.NAME));
           if (fName != lastFileName)
           {
             lastFileName = fName;
@@ -176,20 +215,20 @@ namespace BatInspector
             _list.Add(file);
             callNr = 1;
           }
-          file.SampleRate = csv.getCellAsInt(row, _colSampleRate);
-          file.Duration = csv.getCellAsDouble(row, _colFileLen);
-          double fMaxAmp = csv.getCellAsDouble(row, _colFreqMaxAmp);
-          int nr = csv.getCellAsInt(row, _colNr);
-          double fMin = csv.getCellAsDouble(row, _colFreqMin);
-          double fMax = csv.getCellAsDouble(row, _colFreqMax);
-          double fKnee = csv.getCellAsDouble(row, _colFreqKnee);
-          double duration = csv.getCellAsDouble(row, _colDuration);
-          string startTime = csv.getCell(row, _colStartTime);
-          string species = csv.getCell(row, _colSpecies);
-          double probability = csv.getCellAsDouble(row, _colProbability);
-          double snr = csv.getCellAsDouble(row, _colSnr);
-          string speciesMan = csv.getCell(row, _colSpeciesMan);
-          file.Remarks = csv.getCell(row, _colRemarks);
+          file.SampleRate = csv.getCellAsInt(row, _cols.getCol(Cols.SAMPLERATE));
+          file.Duration = csv.getCellAsDouble(row, _cols.getCol(Cols.FILE_LEN));
+          double fMaxAmp = csv.getCellAsDouble(row, _cols.getCol(Cols.F_MAX_AMP));
+          int nr = csv.getCellAsInt(row, _cols.getCol(Cols.NR));
+          double fMin = csv.getCellAsDouble(row, _cols.getCol(Cols.F_MIN));
+          double fMax = csv.getCellAsDouble(row, _cols.getCol(Cols.F_MAX));
+          double fKnee = csv.getCellAsDouble(row, _cols.getCol(Cols.F_KNEE));
+          double duration = csv.getCellAsDouble(row, _cols.getCol(Cols.DURATION));
+          string startTime = csv.getCell(row, _cols.getCol(Cols.START_TIME));
+          string species = csv.getCell(row, _cols.getCol(Cols.SPECIES));
+          double probability = csv.getCellAsDouble(row, _cols.getCol(Cols.PROBABILITY));
+          double snr = csv.getCellAsDouble(row, _cols.getCol(Cols.SNR));
+          string speciesMan = csv.getCell(row, _cols.getCol(Cols.SPECIES_MAN));
+          file.Remarks = csv.getCell(row, _cols.getCol(Cols.REMARKS));
           double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
           AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
                                                probability, speciesMan, snr, distToPrev);
@@ -227,13 +266,13 @@ namespace BatInspector
         {
           foreach (AnalysisCall c in f.Calls)
           {
-            int row = csv.findInCol(f.FileName, _colName, c.Nr.ToString(), _colNr);
-            csv.setCell(row, _colSpeciesMan, c.SpeciesMan);
-            csv.setCell(row, _colSpecies, c.SpeciesAuto);
+            int row = csv.findInCol(f.FileName, _cols.getCol(Cols.NAME), c.Nr.ToString(), _cols.getCol(Cols.NR));
+            csv.setCell(row, _cols.getCol(Cols.SPECIES_MAN), c.SpeciesMan);
+            csv.setCell(row, _cols.getCol(Cols.SPECIES), c.SpeciesAuto);
             if (c.Nr < 2)
-              csv.setCell(row, _colRemarks, f.Remarks);
+              csv.setCell(row, _cols.getCol(Cols.REMARKS), f.Remarks);
             else
-              csv.setCell(row, _colRemarks, "");
+              csv.setCell(row, _cols.getCol(Cols.REMARKS), "");
             c.resetChanged();
           }
         }
@@ -272,7 +311,7 @@ namespace BatInspector
         report.read(reportName);
         for(int r = 1; r <= report.RowCnt; r++)
         {
-          string wavName = report.getCell(r, _colName);
+          string wavName = report.getCell(r, _cols.getCol(Cols.NAME));
           int pos = wavName.LastIndexOf("/");
           if (pos < 0)
             pos = wavName.LastIndexOf("\\");
@@ -348,7 +387,7 @@ namespace BatInspector
       int row = 0;
       do
       {
-        row = report.findInCol(wavName, _colName);
+        row = report.findInCol(wavName, _cols.getCol(Cols.NAME));
         if (row > 0)
         {
           report.removeRow(row);

@@ -71,7 +71,7 @@ namespace BatInspector
         Csv csv = new Csv();
         {
           csv.read(fName);
-          int colSp = csv.findInRow(1, Analysis.COL_SPECIES_MAN);
+          int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
           if (colSp > 0)
           {
             int row = csv.findInCol("todo", colSp);

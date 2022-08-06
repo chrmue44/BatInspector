@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -399,6 +399,15 @@ namespace BatInspector.Properties {
         public static string CtlZoomTrigLevel {
             get {
                 return ResourceManager.GetString("CtlZoomTrigLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom Aplitude.
+        /// </summary>
+        public static string ctlZoomZoomAplitude {
+            get {
+                return ResourceManager.GetString("ctlZoomZoomAplitude", resourceCulture);
             }
         }
         
@@ -934,6 +943,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete all selected files?.
+        /// </summary>
+        public static string msgDeleteFiles {
+            get {
+                return ResourceManager.GetString("msgDeleteFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to reset to factory settings?.
         /// </summary>
         public static string msgFactorySettings {
@@ -1389,6 +1407,15 @@ namespace BatInspector.Properties {
         public static string SpecDescShowZoom {
             get {
                 return ResourceManager.GetString("SpecDescShowZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to full path to Wav example file.
+        /// </summary>
+        public static string SpecDescWav {
+            get {
+                return ResourceManager.GetString("SpecDescWav", resourceCulture);
             }
         }
         

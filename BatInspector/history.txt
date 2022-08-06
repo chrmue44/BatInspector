@@ -11,6 +11,8 @@ TODO
 - 95% plausibility check
 
 DONE
+- button "show example" of bat species in zoom tab
+- zoom amplitude in Xt view to maximum in observed interval (toggle via checkbox) 
 - GUI fully multi language
 - terminal (command line) to enter script commands
 - start prediction with possibility to enabel/disable single steps

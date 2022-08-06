@@ -618,4 +618,13 @@
   <data name="msgSaveBeforeClose" xml:space="preserve">
     <value>Do you want to save changed project before closing?</value>
   </data>
+  <data name="ctlZoomZoomAplitude" xml:space="preserve">
+    <value>Zoom Aplitude</value>
+  </data>
+  <data name="msgDeleteFiles" xml:space="preserve">
+    <value>Do you really want to delete all selected files?</value>
+  </data>
+  <data name="SpecDescWav" xml:space="preserve">
+    <value>full path to Wav example file</value>
+  </data>
 </root>

@@ -239,5 +239,22 @@ namespace BatInspector
         _fileInfo.Trigger.Level = "";
     }
 
+    public void findMaxAmplitude()
+    {
+      if(_wf != null)
+      {
+        int iMin = (int)(_rulerDataT.Min * _wf.SamplingRate);
+        int iMax = (int)(_rulerDataT.Max * _wf.SamplingRate);
+        double max = 0;
+        for(int i = iMin; i < iMax; i++)
+        {
+          double abs = Math.Abs(_wf.Samples[i]);
+          if (max < abs)
+            max = abs;
+        }
+        _rulerDataA.setRange(-max, max);
+      }
+    }
+
   }
 }

@@ -164,6 +164,10 @@ namespace BatInspector
     [DataMember]
     [Description("Habitat")]
     public string Habitat { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SpecDescWav")]
+    public string WavExample { get; set; }
   }
 
   [TypeConverter(typeof(ExpandableObjectConverter))]

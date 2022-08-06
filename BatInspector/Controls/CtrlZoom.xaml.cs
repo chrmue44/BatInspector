@@ -499,6 +499,11 @@ namespace BatInspector.Controls
         BitmapImage bImg = ViewModel.Convert(bmpFt);
         _imgFt.Source = bImg;
       }
+      updateXtImage();
+    }
+
+    private void updateXtImage()
+    {
       System.Drawing.Bitmap bmpXt = _model.ZoomView.Waterfall.generateXtPicture(_model.ZoomView.RulerDataA.Min, _model.ZoomView.RulerDataA.Max,
                                                           _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
       if (bmpXt != null)
@@ -507,7 +512,6 @@ namespace BatInspector.Controls
         _imgXt.Source = bImg;
       }
     }
-
 
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
     {
@@ -650,6 +654,15 @@ namespace BatInspector.Controls
       Enum.TryParse(_cbWindow.Items[_cbWindow.SelectedIndex].ToString(), out wType);
       _model.Settings.FftWindow = wType;
       createZoomImg();
+    }
+
+    private void _cbZoomAmpl_Click(object sender, RoutedEventArgs e)
+    {
+      if (_cbZoomAmpl.IsChecked == true)
+        _model.ZoomView.findMaxAmplitude();
+      else
+        _model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
+      updateXtImage();
     }
   }
 }

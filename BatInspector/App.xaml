@@ -6,7 +6,8 @@
     <Application.Resources>
     <Style TargetType="GroupBox">
       <Setter Property="Background" Value="#FFF7F9FE"/>
-    </Style>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
     <Style TargetType="Grid">
       <Setter Property="Background" Value="#FFF7F9FE"/>
     </Style>

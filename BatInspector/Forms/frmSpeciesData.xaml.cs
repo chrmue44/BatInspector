@@ -24,15 +24,20 @@ namespace BatInspector.Forms
   {
     ViewModel _model;
     dlgcloseChildWindow _closWin;
-    public frmSpeciesData(ViewModel model, dlgcloseChildWindow closeWin)
+    MainWindow _parent;
+    public frmSpeciesData(ViewModel model, dlgcloseChildWindow closeWin, MainWindow parent)
     {
       _model = model;
       _closWin = closeWin;
+      _parent = parent;
       InitializeComponent();
       _ctlSelSpecies1.setup("select species:", 0, 150, 200, species1Changed);
       _ctlSelSpecies1._cb.Items.Clear();
       _ctlSelSpecies2.setup("select species:", 0, 150, 200, species2Changed);
       _ctlSelSpecies2._cb.Items.Clear();
+      _ctlSpecData1.setDelegate(showSpecExample);
+      _ctlSpecData2.setDelegate(showSpecExample);
+
       foreach (SpeciesInfos si in _model.Settings.Species)
       {
         _ctlSelSpecies1._cb.Items.Add(si.Latin);
@@ -50,6 +55,33 @@ namespace BatInspector.Forms
       }
     }
 
+    private void showSpecExample(string locSpecName)
+    {
+      foreach(SpeciesInfos spec in _model.Settings.Species)
+      {
+        if(spec.Local == locSpecName)
+        {
+          if (spec.WavExample != null)
+          {
+            string wavName;
+            int pos = spec.WavExample.LastIndexOf("\\");
+            int pos2 = spec.WavExample.LastIndexOf("/");
+            if ((pos > pos2) && (pos >= 0))
+              wavName = spec.WavExample.Substring(pos + 1);
+            else if (pos2 >= 0)
+              wavName = spec.WavExample.Substring(pos2 + 1);
+            else
+              wavName = spec.WavExample;
+
+
+            AnalysisFile ana = new AnalysisFile(spec.WavExample);
+            ana.SampleRate = _model.Settings.SamplingRate;
+            ana.Duration = 3.001;
+            _parent.setZoom(wavName, ana, spec.WavExample, null);
+          }
+        }
+      }
+    }
 
     private void _btnCacel_Click(object sender, RoutedEventArgs e)
     {

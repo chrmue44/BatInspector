@@ -65,10 +65,7 @@ namespace BatInspector.Controls
       _model = model;
       _parent = parent;
       InitializeComponent();
-     /* _duration.setup(MyResources.Duration + " [s]: ", enDataType.DOUBLE, 3, 110);
-      _duration.Focusable = false;
-      _sampleRate.setup(MyResources.SamplingRate + " [Hz]: ", enDataType.INT, 0, 110);
-      _sampleRate.Focusable = false; */
+
       _cbSel.Focusable = true;
       Visibility = Visibility.Visible;
     }
@@ -135,7 +132,6 @@ namespace BatInspector.Controls
         ana.SampleRate = 383500;
         ana.Duration = 3.001;
         _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
-
       }
     }
 

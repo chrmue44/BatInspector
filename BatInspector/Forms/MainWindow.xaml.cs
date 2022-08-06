@@ -380,7 +380,13 @@ private void setZoomPosition()
     void showStatus()
     {
       string report = _model.Analysis.Report != null ? "report available" : "no report";
-      setStatus("  [ nr of files: " + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
+      int vis = 0;
+      foreach(ctlWavFile c in _spSpectrums.Children)
+      {
+        if (c.Visibility == Visibility.Visible)
+          vis++;
+      }
+      setStatus("  [ nr of files: " + vis.ToString() + "/" + _spSpectrums.Children.Count.ToString() +" | " + report + " ]");
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)
@@ -417,7 +423,7 @@ private void setZoomPosition()
     {
       List<UIElement> list = new List<UIElement>();
       List<string> files = new List<string>();
-      MessageBoxResult res = MessageBox.Show("Do you really want to delete all selected files?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+      MessageBoxResult res = MessageBox.Show(MyResources.msgDeleteFiles, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (res == MessageBoxResult.Yes)
       {
 
@@ -596,7 +602,7 @@ private void setZoomPosition()
     private void _btnSpecies_Click(object sender, RoutedEventArgs e)
     {
       if(_frmSpecies == null)
-        _frmSpecies = new frmSpeciesData(_model, closeWindow);
+        _frmSpecies = new frmSpeciesData(_model, closeWindow, this);
       _frmSpecies.Show();
     }
 

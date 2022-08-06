@@ -16,11 +16,13 @@ using BatInspector.Properties;
 
 namespace BatInspector.Controls
 {
+  public delegate void dlgShowZoom(string species);
   /// <summary>
   /// Interaktionslogik für ctlSpeciesData.xaml
   /// </summary>
   public partial class ctlSpeciesData : UserControl
   {
+    dlgShowZoom _dlg;
     public ctlSpeciesData()
     {
       InitializeComponent();
@@ -31,9 +33,20 @@ namespace BatInspector.Controls
       _ctlSelPic.setup(MyResources.SelectCallType, 0, 150, 150, callTypeChanged);
     }
 
+    public void setDelegate(dlgShowZoom dlg)
+    {
+      _dlg = dlg;
+    }
     private void callTypeChanged(int idx, string val)
     {
 
+    }
+
+
+    private void _btnExample_Click(object sender, RoutedEventArgs e)
+    {
+      if(_dlg != null)
+        _dlg(_ctlLocalName.getValue());
     }
   }
 }

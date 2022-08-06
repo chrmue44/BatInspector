@@ -260,7 +260,7 @@ namespace BatInspector.Forms
       {
         if (_model.Analysis.Changed)
         {
-          MessageBoxResult res = MessageBox.Show("Do you want to save changed project before closing?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+          MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
             _model.Analysis.save(_model.PrjPath + "report.csv");
         }
@@ -479,7 +479,6 @@ private void setZoomPosition()
 
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
-      //MessageBoxResult res = MessageBox.Show("Start data evaluation to find calls (may take a long time!)", "", MessageBoxButton.OKCancel, MessageBoxImage.Information);
       frmStartPredict.showMsg(startPrediction);
     }
 

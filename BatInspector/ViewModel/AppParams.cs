@@ -341,32 +341,32 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    Description("script to execute inspection")]
+    LocalizedDescription("SetDescScriptProp")]
     public string RScript { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    Description("csv file containing list of species supported by automatic species detection")]
+    LocalizedDescription("SetDescSpeciesFile")]
     public string SpeciesFile { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    Description("full path to python executable for executing python scripts")]
+    LocalizedDescription("SetDescPythonExe")]
     public string PythonBin { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    Description("full path to python script for predicting species")]
+    LocalizedDescription("SetDescScriptPredict")]
     public string PythonScript { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    Description("full path to root directory contining the trained models")]
+    LocalizedDescription("SetDescModDir")]
     public string ModelDir { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    Description("default sampling rate for automatic prediction")]
+    LocalizedDescription("SetDescSamplingRate")]
     public int SamplingRate { get; set; }
 
     [DataMember]

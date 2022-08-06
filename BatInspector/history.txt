@@ -2,7 +2,7 @@ TODO
 - Show Freq, time, Amplitude on mouse over in zoom window (use Popup control)
 - run R scripts
 - GUI themes 
-- terminal
+
 - scripting engine
 - help
 - species comparison
@@ -11,6 +11,8 @@ TODO
 - 95% plausibility check
 
 DONE
+- GUI fully multi language
+- terminal (command line) to enter script commands
 - start prediction with possibility to enabel/disable single steps
 - classification of species with tensorflow classifier
 - tool to inspect and manipulate wav files: can change sampling rate

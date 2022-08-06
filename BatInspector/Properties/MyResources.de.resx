@@ -579,4 +579,43 @@
   <data name="frmStartPredPredict3" xml:space="preserve">
     <value>Arten ermitteln (Klassifizierer 3)</value>
   </data>
+  <data name="FrmFilterTtipAdd" xml:space="preserve">
+    <value>Füge einen Filter zur Liste hinzu</value>
+  </data>
+  <data name="FrmFilterTtipShowList" xml:space="preserve">
+    <value>Zeige alle für Filter-Ausdrücke verfügbaren Variablen</value>
+  </data>
+  <data name="msgFactorySettings" xml:space="preserve">
+    <value>Sollen wirklich die Werkseinstellungen geladen werden?</value>
+  </data>
+  <data name="msgQuestion" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="SetDescScriptProp" xml:space="preserve">
+    <value>Vollständiger Pfad zum R-Skript zur Bestimmung der Ruf-Parameter</value>
+  </data>
+  <data name="SetDescSpeciesFile" xml:space="preserve">
+    <value>Csv-Datei mit der Liste der Arten für die automatische Artenbestimmung</value>
+  </data>
+  <data name="SetDescPythonExe" xml:space="preserve">
+    <value>Vollständiger Pfad zur Python-Binärdatei zur Ausführung von Skripten</value>
+  </data>
+  <data name="SetDescScriptPredict" xml:space="preserve">
+    <value>Vollständiger Pfad zum Python-Skript zur Bestimmung der Fledermaus-Arten</value>
+  </data>
+  <data name="SetDescModDir" xml:space="preserve">
+    <value>Vollständiger Pfad zum Wurzelverzeichnis der trainierten KI-Modelle</value>
+  </data>
+  <data name="SetDescSamplingRate" xml:space="preserve">
+    <value>Abtastrate, die zur Bestimmung durch die KI-Modelle benötigt wird</value>
+  </data>
+  <data name="msgZoomNotPossible" xml:space="preserve">
+    <value>Zoom nicht möglich, bitte erst beide Cursor setzen!</value>
+  </data>
+  <data name="msgInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="msgSaveBeforeClose" xml:space="preserve">
+    <value>Soll das geänderte Projekt gespeichert werden, bevor es geschlossen wird?</value>
+  </data>
 </root>

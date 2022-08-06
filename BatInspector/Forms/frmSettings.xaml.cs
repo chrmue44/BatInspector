@@ -33,7 +33,7 @@ namespace BatInspector.Forms
 
     private void _btnFactSettings_Click(object sender, RoutedEventArgs e)
     {
-      MessageBoxResult res = MessageBox.Show("do you really want to reset to factory settings?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+      MessageBoxResult res = MessageBox.Show(MyResources.msgFactorySettings, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (res == MessageBoxResult.Yes)
       {
          DebugLog.log("application settings reset to factory settings", enLogType.INFO);

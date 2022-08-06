@@ -541,7 +541,7 @@
     <value>Predict species (classifier 1)</value>
   </data>
   <data name="frmStartPredMsg" xml:space="preserve">
-    <value>This operation may take a long time, do you want to preceed?</value>
+    <value>This operation may take a long time, do you want to proceed?</value>
   </data>
   <data name="frmStartPredTitle" xml:space="preserve">
     <value>Start automatic prediction of species</value>
@@ -578,5 +578,44 @@
   </data>
   <data name="frmStartPredPredict3" xml:space="preserve">
     <value>Predict species (classifier 3)</value>
+  </data>
+  <data name="FrmFilterTtipAdd" xml:space="preserve">
+    <value>Add a filter expression to the list</value>
+  </data>
+  <data name="FrmFilterTtipShowList" xml:space="preserve">
+    <value>show list of variables available for filter expressions</value>
+  </data>
+  <data name="msgFactorySettings" xml:space="preserve">
+    <value>Do you really want to reset to factory settings?</value>
+  </data>
+  <data name="msgQuestion" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="SetDescScriptProp" xml:space="preserve">
+    <value>full path to R script for determination of call parameters</value>
+  </data>
+  <data name="SetDescSpeciesFile" xml:space="preserve">
+    <value>Csv file containing list of species supported by automatic species detection</value>
+  </data>
+  <data name="SetDescPythonExe" xml:space="preserve">
+    <value>Full path to python executable for executing python scripts</value>
+  </data>
+  <data name="SetDescScriptPredict" xml:space="preserve">
+    <value>full path to python script to predict bat species</value>
+  </data>
+  <data name="SetDescModDir" xml:space="preserve">
+    <value>Full path to root directory containing the trained AI  models</value>
+  </data>
+  <data name="SetDescSamplingRate" xml:space="preserve">
+    <value>Sampling rate needed for AI models</value>
+  </data>
+  <data name="msgZoomNotPossible" xml:space="preserve">
+    <value>Zoom to cursor not possible, enable both cursors first!</value>
+  </data>
+  <data name="msgInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="msgSaveBeforeClose" xml:space="preserve">
+    <value>Do you want to save changed project before closing?</value>
   </data>
 </root>

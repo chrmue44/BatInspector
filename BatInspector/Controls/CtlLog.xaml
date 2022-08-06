@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Content="{x:Static res:MyResources.CtlLogCommand}" Grid.Column="0" HorizontalAlignment="Stretch" Background="#FFCCD5F0"> </Label>
-            <TextBox x:Name="_tbCmd" Grid.Column="1" Text="{x:Static res:MyResources.CtlLogEnterCommandHere}" KeyDown="_tbCmd_KeyDown"> </TextBox>
+            <TextBox x:Name="_tbCmd" Grid.Column="1" Text="{x:Static res:MyResources.CtlLogEnterCommandHere}" KeyDown="_tbCmd_KeyDown" VerticalAlignment="Center" Height="25"> </TextBox>
         </Grid>
     <ScrollViewer   Name="_scrViewer" VerticalScrollBarVisibility="Auto" Grid.Row="2">
       <StackPanel Name="_spEntries"  Margin="5">

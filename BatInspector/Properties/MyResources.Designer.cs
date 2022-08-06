@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -574,6 +574,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a filter expression to the list.
+        /// </summary>
+        public static string FrmFilterTtipAdd {
+            get {
+                return ResourceManager.GetString("FrmFilterTtipAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to show list of variables available for filter expressions.
+        /// </summary>
+        public static string FrmFilterTtipShowList {
+            get {
+                return ResourceManager.GetString("FrmFilterTtipShowList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prepare data.
         /// </summary>
         public static string frmPredPrepare {
@@ -610,7 +628,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This operation may take a long time, do you want to preceed?.
+        ///   Looks up a localized string similar to This operation may take a long time, do you want to proceed?.
         /// </summary>
         public static string frmStartPredMsg {
             get {
@@ -916,6 +934,51 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to reset to factory settings?.
+        /// </summary>
+        public static string msgFactorySettings {
+            get {
+                return ResourceManager.GetString("msgFactorySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string msgInformation {
+            get {
+                return ResourceManager.GetString("msgInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Question.
+        /// </summary>
+        public static string msgQuestion {
+            get {
+                return ResourceManager.GetString("msgQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save changed project before closing?.
+        /// </summary>
+        public static string msgSaveBeforeClose {
+            get {
+                return ResourceManager.GetString("msgSaveBeforeClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom to cursor not possible, enable both cursors first!.
+        /// </summary>
+        public static string msgZoomNotPossible {
+            get {
+                return ResourceManager.GetString("msgZoomNotPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Point in Time.
         /// </summary>
         public static string PointInTime {
@@ -1087,6 +1150,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full path to root directory containing the trained AI  models.
+        /// </summary>
+        public static string SetDescModDir {
+            get {
+                return ResourceManager.GetString("SetDescModDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimal probability to copy automated to manually set probability with copy button.
         /// </summary>
         public static string SetDescProb {
@@ -1096,11 +1168,56 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full path to python executable for executing python scripts.
+        /// </summary>
+        public static string SetDescPythonExe {
+            get {
+                return ResourceManager.GetString("SetDescPythonExe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Range for color gradient in zoom window [dB].
         /// </summary>
         public static string SetDescRangeZoomWin {
             get {
                 return ResourceManager.GetString("SetDescRangeZoomWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sampling rate needed for AI models.
+        /// </summary>
+        public static string SetDescSamplingRate {
+            get {
+                return ResourceManager.GetString("SetDescSamplingRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to full path to python script to predict bat species.
+        /// </summary>
+        public static string SetDescScriptPredict {
+            get {
+                return ResourceManager.GetString("SetDescScriptPredict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to full path to R script for determination of call parameters.
+        /// </summary>
+        public static string SetDescScriptProp {
+            get {
+                return ResourceManager.GetString("SetDescScriptProp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Csv file containing list of species supported by automatic species detection.
+        /// </summary>
+        public static string SetDescSpeciesFile {
+            get {
+                return ResourceManager.GetString("SetDescSpeciesFile", resourceCulture);
             }
         }
         

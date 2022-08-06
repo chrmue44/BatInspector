@@ -396,7 +396,7 @@ namespace BatInspector.Controls
       }
       else
       {
-        MessageBox.Show("Zoom to cursor not possible, enable both cursors first!", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);
+        MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
       }
     }
 

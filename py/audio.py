@@ -339,7 +339,7 @@ def processCalls(csvFile, outDir, modPars, audioPars, format = "npy", verbose = 
             seg = extractPart(wavFile, callFile, start, end, audioPars['saveWav'])
             if detectHardClipping(seg):
                 print("clipping detected in file:", callFile)
-                continue
+            #    continue
             data, freq, bins = graph_spectrogram(callFile, imgFile, scale = audioPars['scaleType'], withAxes = audioPars['withAxes'])
             if audioPars['denoise'] == 'threshold':
                 data_denoised = denoise(data, audioPars['threshold'])

@@ -376,6 +376,8 @@ def predict(dataName, speciesFile, report, rootDir, minSnr, modPars):
         idx = 0
         for row in reader:
             snr = float(row['snr'])
+            if idx >= y.shape[0]:
+                break
             iMax = np.argmax(y[idx])
             row['prob'] = y[idx, iMax]
             if (y[idx, iMax] < 0.5):

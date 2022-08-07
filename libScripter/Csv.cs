@@ -250,14 +250,19 @@ namespace libScripter
     public int findInCol(string val, int col)
     {
       int retVal = 0;
-      for(int row = 1; row <= _cells.Count; row++)
+      if (col >= 0)
       {
-        if((col <= _cells[row-1].Count) && (_cells[row-1][col-1] == val))
+        for (int row = 1; row <= _cells.Count; row++)
         {
-          retVal = row;
-          break;
+          if ((col <= _cells[row - 1].Count) && (_cells[row - 1][col - 1] == val))
+          {
+            retVal = row;
+            break;
+          }
         }
       }
+      else
+        retVal = 1;
       return retVal;
     }
 

@@ -168,7 +168,8 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + _prj.WavSubDir + rec.File, _settings.FftWidth, _settings.WaterfallWidth, _settings.WaterfallHeight, _settings, _colorTable);
+        Waterfall wf = new Waterfall(_selectedDir + _prj.WavSubDir + rec.File, _settings.FftWidth,
+                                     _settings.WaterfallWidth, _settings.WaterfallHeight, _settings, _colorTable);
         if (wf.Ok)
         {
           wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, _settings.FftWidth);
@@ -207,7 +208,7 @@ namespace BatInspector
     {
       if (_prj != null)
       {
-        string dirName = _selectedDir + "/Records";
+        string dirName = _selectedDir + _prj.WavSubDir;
         string delName = wavName.Replace(".wav", ".*");
         int pos = delName.LastIndexOf("/");
         int pos2 = delName.LastIndexOf("\\");
@@ -242,7 +243,7 @@ namespace BatInspector
         if ((options & OPT_INSPECT) != 0)
         {
           string scriptR = _settings.RScript; // "C:/Users/chrmu/prj/BatInspector/R/features.R";
-          string argsR = scriptR + " " + _selectedDir + "/Records " + reportName + " " + _settings.SpeciesFile + " 312500";
+          string argsR = scriptR + " " + _selectedDir + _prj.WavSubDir + " " + reportName + " " + _settings.SpeciesFile + " 312500";
           DebugLog.log("starting evaluation of calls: " + _settings.Rbin + " " + argsR, enLogType.INFO);
           if (File.Exists(reportName))
           {
@@ -265,7 +266,7 @@ namespace BatInspector
           string args = _settings.PythonScript;
           prepareFolder();
           if ((options & OPT_RESAMPLE) != 0)
-            args += " --resample " + _selectedDir + "/Records/*.wav" +
+            args += " --resample " + _selectedDir + _prj.WavSubDir + "*.wav" +
                     " --sampleRate " + _settings.SamplingRate.ToString();
           if ((options & OPT_CUT) != 0)
             args += " --cut";

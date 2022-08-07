@@ -7,5 +7,6 @@ set DIR=C:\Users\chrmu\bat\tierSta\
 set RESULT=C:\Users\chrmu\bat\tierSta\calls.csv
 set SPEC_FILE=C:\Users\chrmu\bat\tierSta\species.csv
 set SAMPLE_RATE=312500
-%TOOL% %SCRIPT% %DIR% %RESULT% %SPEC_FILE% %SAMPLE_RATE%
+%TOOL% "C:/Users/chrmu/prj/BatInspector/R/features.R" C:/Users/chrmu/bat/tierStA/Bbar/report.csv "C:/Users/chrmu/bat/tierSta/species.csv" 312500
+rem %TOOL% %SCRIPT% %DIR% %RESULT% %SPEC_FILE% %SAMPLE_RATE%
 pause

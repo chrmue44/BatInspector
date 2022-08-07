@@ -11,6 +11,7 @@ TODO
 - 95% plausibility check
 
 DONE
+- generate project file for directories filled with wavs (not coming from bat detector)
 - button "show example" of bat species in zoom tab
 - zoom amplitude in Xt view to maximum in observed interval (toggle via checkbox) 
 - GUI fully multi language

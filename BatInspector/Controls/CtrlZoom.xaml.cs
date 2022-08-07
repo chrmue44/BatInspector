@@ -327,9 +327,10 @@ namespace BatInspector.Controls
         double y = _imgXt.Margin.Top + _imgXt.ActualHeight * i / steps;
         createLine(_rulerA, _rulerA.ActualWidth - 3, y,
                             _rulerA.ActualWidth - 10, y, Brushes.Black);
-        string str = ((rData.Max - rData.Min) * (steps - i) / steps + rData.Min).ToString("0.#");
-        createText(_rulerA, _rulerA.ActualWidth - 35, y - 5, str, Colors.Black);
       }
+      double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1/2;
+      createText(_rulerA, _rulerA.ActualWidth - 35, y0 - 5, "0.0", Colors.Black);
+      createText(_rulerA, _rulerA.ActualWidth - 35, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##"), Colors.Black);
     }
     void initRulerF()
     {
@@ -481,7 +482,7 @@ namespace BatInspector.Controls
       initRulerF();
 
       _model.ZoomView.RulerDataA.limits(-1, 1);
-      initRulerF();
+      initRulerA();
     }
 
     private void createZoomImg()
@@ -573,6 +574,7 @@ namespace BatInspector.Controls
       _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + _model.Settings.ZoomOneCall / 1000.0 - pre);
       hideCursors();
       createZoomImg();
+      _cbZoomAmpl_Click(null, null);
     }
     public void calcMeanValues(int idx, object val)
     {
@@ -663,6 +665,7 @@ namespace BatInspector.Controls
       else
         _model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
       updateXtImage();
+      initRulerA();
     }
   }
 }

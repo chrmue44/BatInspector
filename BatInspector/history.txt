@@ -9,8 +9,11 @@ TODO
 
 - reports across projects (week, month year)
 - 95% plausibility check
+- remove deleted files from report
+- find bug that deletes header from report
 
 DONE
+- added Fmin, Fmax to species data (and GUI)
 - generate project file for directories filled with wavs (not coming from bat detector)
 - button "show example" of bat species in zoom tab
 - zoom amplitude in Xt view to maximum in observed interval (toggle via checkbox) 

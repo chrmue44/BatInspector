@@ -203,6 +203,29 @@ namespace BatInspector
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
+    public void removeDeletedWavsFromReport(string reportName)
+    {
+      if (File.Exists(reportName))
+      {
+        List<string> wavToDel = new List<string>();
+
+        Csv report = new Csv();
+        report.read(reportName);
+        for (int r = 1; r <= report.RowCnt; r++)
+        {
+          string wavName = report.getCell(r, Analysis.Cols.getCol(Cols.NAME));
+
+          BatExplorerProjectFileRecordsRecord rec = _prj.find(wavName);
+          if (rec == null)
+            wavToDel.Add(wavName);
+        }
+
+        foreach (string f in wavToDel)
+          Analysis.removeWavFromReport(report, f);
+
+        report.save();
+      }
+    }
 
     void deleteFile(string wavName)
     {

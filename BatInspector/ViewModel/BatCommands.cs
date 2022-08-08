@@ -24,8 +24,9 @@ namespace BatInspector
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
         new OptItem("Test", "test", 1, fctTest),
-        new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport)
-      });
+        new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
+        new OptItem("initSpecInfos","initialize species infos in settings",0,fctInitSpecInfos)
+      }) ; 
 
       _options = new Options(_features, false);
     }
@@ -40,7 +41,14 @@ namespace BatInspector
     {
       ErrText = "";
       string report = _model.PrjPath + "/report.csv";
-      _model.Analysis.removeDeletedWavsFromReport(report);
+      _model.removeDeletedWavsFromReport(report);
+      return 0;
+    }
+
+    int fctInitSpecInfos(List<string> pars, out string ErrText)
+    {
+      ErrText = "";
+      _model.Settings.initSpeciesInfos();
       return 0;
     }
 

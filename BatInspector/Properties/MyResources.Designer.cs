@@ -943,6 +943,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fmax.
+        /// </summary>
+        public static string MaxFrequency {
+            get {
+                return ResourceManager.GetString("MaxFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fmin.
+        /// </summary>
+        public static string MinFrequency {
+            get {
+                return ResourceManager.GetString("MinFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete all selected files?.
         /// </summary>
         public static string msgDeleteFiles {

@@ -132,6 +132,20 @@ namespace BatInspector
       _batExplorerPrj.Records = list.ToArray();
     }
 
+    public BatExplorerProjectFileRecordsRecord find(string fileName)
+    {
+      BatExplorerProjectFileRecordsRecord retVal = null;
+      foreach(BatExplorerProjectFileRecordsRecord r in _batExplorerPrj.Records)
+      {
+        if(fileName.Contains(r.File))
+        {
+          retVal = r;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     public void fillFromDirectory(DirectoryInfo dir)
     {
       try

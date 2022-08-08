@@ -103,6 +103,7 @@ namespace BatInspector
   public class Analysis
   {
 
+    public Cols Cols { get{ return _cols; } }
     Cols _cols;
 
     object _fileLock = new object();
@@ -301,32 +302,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public void removeDeletedWavsFromReport(string reportName)
-    {
-      if (File.Exists(reportName))
-      {
-        List<string> wavToDel = new List<string>();
-
-        Csv report = new Csv();
-        report.read(reportName);
-        for(int r = 1; r <= report.RowCnt; r++)
-        {
-          string wavName = report.getCell(r, _cols.getCol(Cols.NAME));
-          int pos = wavName.LastIndexOf("/");
-          if (pos < 0)
-            pos = wavName.LastIndexOf("\\");
-          wavName = wavName.Substring(pos + 1);
-          AnalysisFile f = AnalysisFile.find(_list, wavName);
-          if(f == null)
-            wavToDel.Add(wavName);
-        }
-
-        foreach (string f in wavToDel)
-          removeWavFromReport(report, f);
-
-        report.save();
-      }
-    }
+  
 
     public void removeFile(string reportName, string wavName)
     {
@@ -335,15 +311,8 @@ namespace BatInspector
         save(reportName);
 
         //remove from analysis file list
-        AnalysisFile fileToDelete = null;
-        foreach (AnalysisFile f in _list)
-        {
-          if (f.FileName == wavName)
-          {
-            fileToDelete = f;
-            break;
-          }
-        }
+        AnalysisFile fileToDelete = AnalysisFile.find(_list, wavName);
+        
         if (fileToDelete != null)
           _list.Remove(fileToDelete);
 
@@ -382,7 +351,7 @@ namespace BatInspector
     }
 
 
-    void removeWavFromReport(Csv report, string wavName)
+    public void removeWavFromReport(Csv report, string wavName)
     {
       int row = 0;
       do
@@ -529,15 +498,29 @@ namespace BatInspector
     {
       bool retVal = false;
       SpeciesInfos spec = SpeciesInfos.find(SpeciesAuto, species);
+      string err = "";
       if(spec != null)
       {
-        if((spec.DurationMin <= this.Duration) && (this.Duration <= spec.DurationMax) &&
-           (spec.FreqCharMin <= this.FreqMaxAmp * 1000) && (this.FreqMaxAmp <= spec.FreqCharMax * 1000))
+        if (this.Duration < spec.DurationMin)
+          err = "Dmin";
+        else if (this.Duration > spec.DurationMax)
+          err = "Dmax";
+//        else if (this.FreqMaxAmp < (spec.FreqCharMin * 1000))
+//          err = "FcMin";
+//        else if (this.FreqMaxAmp > (spec.FreqCharMax * 1000))
+//          err = "FcMax";
+        else if (this.FreqMin < (spec.FreqMinMin * 1000))
+          err = "FminMin";
+        else if (this.FreqMin > (spec.FreqMinMax * 1000))
+          err = "FminMax";
+        else if (this.FreqMax < (spec.FreqMaxMin * 1000))
+          err = "FminMin";
+   //     else if (this.FreqMax > (spec.FreqMaxMax * 1000))
+   //       err = "FmaxMax";
+        if (err == "")
            retVal = true;
         else
-        {
-          this._speciesAuto = "??C95[" + this.SpeciesAuto + "]";
-        }
+          this._speciesAuto = "??C95[" + err +"," + this.SpeciesAuto + "]";
       }
       return retVal;
     }
@@ -624,7 +607,7 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach(AnalysisFile f in list)
       {
-        if(f.FileName == fName)
+        if(f.FileName.Contains(fName))
         {
           retVal = f;
           break;

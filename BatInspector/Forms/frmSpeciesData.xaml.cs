@@ -107,6 +107,10 @@ namespace BatInspector.Forms
           _ctlSpecData1._ctFreqC.setMaxValue(si.FreqCharMax);
           _ctlSpecData1._ctCallDist.setMinValue(si.CallDistMin);
           _ctlSpecData1._ctCallDist.setMaxValue(si.CallDistMax);
+          _ctlSpecData1._ctlFmin.setMinValue(si.FreqMinMin);
+          _ctlSpecData1._ctlFmin.setMaxValue(si.FreqMinMax);
+          _ctlSpecData1._ctlFmax.setMinValue(si.FreqMaxMin);
+          _ctlSpecData1._ctlFmax.setMaxValue(si.FreqMaxMax);
           _ctlSpecData1._tbProof.Text = si.ProofSpecies;
           _ctlSpecData1._tbHabitat.Text = si.Habitat;
           _ctlSpecData1._tbDistintCalls.Text = si.CharCalls;
@@ -126,6 +130,10 @@ namespace BatInspector.Forms
           _ctlSpecData2._ctDuration.setMaxValue(si.DurationMax);
           _ctlSpecData2._ctFreqC.setMinValue(si.FreqCharMin);
           _ctlSpecData2._ctFreqC.setMaxValue(si.FreqCharMax);
+          _ctlSpecData2._ctlFmin.setMinValue(si.FreqMinMin);
+          _ctlSpecData2._ctlFmin.setMaxValue(si.FreqMinMax);
+          _ctlSpecData2._ctlFmax.setMinValue(si.FreqMaxMin);
+          _ctlSpecData2._ctlFmax.setMaxValue(si.FreqMaxMax);
           _ctlSpecData2._ctCallDist.setMinValue(si.CallDistMin);
           _ctlSpecData2._ctCallDist.setMaxValue(si.CallDistMax);
           _ctlSpecData2._tbProof.Text = si.ProofSpecies;
@@ -146,6 +154,10 @@ namespace BatInspector.Forms
           si.DurationMin = _ctlSpecData1._ctDuration.MinDouble;
           si.FreqCharMax = _ctlSpecData1._ctFreqC.MaxDouble;
           si.FreqCharMin = _ctlSpecData1._ctFreqC.MinDouble;
+          si.FreqMinMin = _ctlSpecData1._ctlFmin.MinDouble;
+          si.FreqMinMax = _ctlSpecData1._ctlFmin.MaxDouble;
+          si.FreqMaxMin = _ctlSpecData1._ctlFmax.MinDouble;
+          si.FreqMaxMax = _ctlSpecData1._ctlFmax.MaxDouble;
           si.CallDistMin = _ctlSpecData1._ctCallDist.MinDouble;
           si.CallDistMax = _ctlSpecData1._ctCallDist.MaxDouble;
           si.ProofSpecies = _ctlSpecData1._tbProof.Text;
@@ -157,6 +169,10 @@ namespace BatInspector.Forms
           si.DurationMin = _ctlSpecData2._ctDuration.MinDouble;
           si.FreqCharMax = _ctlSpecData2._ctFreqC.MaxDouble;
           si.FreqCharMin = _ctlSpecData2._ctFreqC.MinDouble;
+          si.FreqMinMin = _ctlSpecData2._ctlFmin.MinDouble;
+          si.FreqMinMax = _ctlSpecData2._ctlFmin.MaxDouble;
+          si.FreqMaxMin = _ctlSpecData2._ctlFmax.MinDouble;
+          si.FreqMaxMax = _ctlSpecData2._ctlFmax.MaxDouble;
           si.CallDistMin = _ctlSpecData2._ctCallDist.MinDouble;
           si.CallDistMax = _ctlSpecData2._ctCallDist.MaxDouble;
           si.ProofSpecies = _ctlSpecData2._tbProof.Text;

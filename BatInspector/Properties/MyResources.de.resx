@@ -627,4 +627,10 @@
   <data name="SpecDescWav" xml:space="preserve">
     <value>Vollständiger Pfad zu WAV-Beispieldatei</value>
   </data>
+  <data name="MinFrequency" xml:space="preserve">
+    <value>Fmin</value>
+  </data>
+  <data name="MaxFrequency" xml:space="preserve">
+    <value>Fmax</value>
+  </data>
 </root>

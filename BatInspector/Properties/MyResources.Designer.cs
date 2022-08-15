@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -610,6 +610,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to delete temporary files after prediction.
+        /// </summary>
+        public static string frmStartPredCleanuop {
+            get {
+                return ResourceManager.GetString("frmStartPredCleanuop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confidence test.
         /// </summary>
         public static string frmStartPredConfTest {
@@ -1078,6 +1087,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string SetCatModel {
+            get {
+                return ResourceManager.GetString("SetCatModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scripting.
         /// </summary>
         public static string SetCatScripting {
@@ -1110,6 +1128,15 @@ namespace BatInspector.Properties {
         public static string SetDescColorOfLine {
             get {
                 return ResourceManager.GetString("SetDescColorOfLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nr of epochs during training of model.
+        /// </summary>
+        public static string SetDescEpochs {
+            get {
+                return ResourceManager.GetString("SetDescEpochs", resourceCulture);
             }
         }
         
@@ -1155,6 +1182,15 @@ namespace BatInspector.Properties {
         public static string SetDescLanguage {
             get {
                 return ResourceManager.GetString("SetDescLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set the learning rate to train the model.
+        /// </summary>
+        public static string SetDescLearningRate {
+            get {
+                return ResourceManager.GetString("SetDescLearningRate", resourceCulture);
             }
         }
         

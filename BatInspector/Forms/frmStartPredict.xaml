@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.frmStartPredTitle}" Height="260" Width="325.273" ShowInTaskbar="False" ResizeMode="NoResize">
+        Title="{x:Static res:MyResources.frmStartPredTitle}" Height="280" Width="325.273" ShowInTaskbar="False" ResizeMode="NoResize">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -21,7 +21,8 @@
             <CheckBox Name ="_cbPredict2" Content="{x:Static res:MyResources.frmStartPredPredict2}"/>
             <CheckBox Name ="_cbPredict3" Content="{x:Static res:MyResources.frmStartPredPredict3}"/>
             <CheckBox Name ="_cbConf95" Content="{x:Static res:MyResources.frmStartPredConfTest}"/>
-            <TextBlock Margin ="0,10,0,10" TextWrapping="Wrap" Text="{x:Static res:MyResources.frmStartPredMsg}" />
+            <CheckBox Name ="_cbCleanup" Content="{x:Static res:MyResources.frmStartPredCleanuop}"/>
+      <TextBlock Margin ="0,10,0,10" TextWrapping="Wrap" Text="{x:Static res:MyResources.frmStartPredMsg}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Width="70" Margin="0,0,5,0"  Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Click="_btnCancel_Click"/>
                 <Button Width ="70" Name="_btnOk" Content="{x:Static res:MyResources.BtnOK}" Click="_btnOk_Click"/>

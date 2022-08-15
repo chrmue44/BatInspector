@@ -384,10 +384,6 @@ namespace BatInspector
     LocalizedDescription("SetDescScriptPredict")]
     public string PythonScript { get; set; }
 
-    [DataMember]
-    [LocalizedCategory("SetCatScripting"),
-    LocalizedDescription("SetDescModDir")]
-    public string ModelDir { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
@@ -395,9 +391,24 @@ namespace BatInspector
     public int SamplingRate { get; set; }
 
     [DataMember]
-    [LocalizedCategory("SetCatScripting"),
+    [LocalizedCategory("SetCatModel"),
+    LocalizedDescription("SetDescModDir")]
+    public string ModelDir { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatModel"),
     Description("select type of model for prediction")]
     public enModel ModelType { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatModel"),
+    LocalizedDescription("SetDescLearningRate")]
+    public double LearningRate { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatModel"),
+    LocalizedDescription("SetDescEpochs")]
+    public int Epochs { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -460,6 +471,8 @@ namespace BatInspector
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
       PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
       ModelDir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
+      Epochs = 30;
+      LearningRate = 0.00002;
 
       SamplingRate = 312500;
     }

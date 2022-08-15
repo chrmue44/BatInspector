@@ -11,6 +11,7 @@
  ********************************************************************************/
 using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -43,6 +44,7 @@ namespace BatInspector
     public const int OPT_RESAMPLE = 0x20;
     public const int OPT_PREDICT2 = 0x40;
     public const int OPT_PREDICT3 = 0x80;
+    public const int OPT_CLEANUP = 0x100;
 
     string _selectedDir;
     Project _prj;
@@ -287,6 +289,7 @@ namespace BatInspector
           string datFile = _selectedDir + "/Xdata000.npy";
           string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
           string args = _settings.PythonScript;
+          DebugLog.log("preparing files for species prediction", enLogType.INFO);
           prepareFolder();
           if ((options & OPT_RESAMPLE) != 0)
             args += " --resample " + _selectedDir + _prj.WavSubDir + "*.wav" +
@@ -306,10 +309,17 @@ namespace BatInspector
 
         if((options & OPT_CONF95) != 0)
         {
+          DebugLog.log("executing confidence test prediction", enLogType.INFO);
           _analysis.read(PrjPath + "report.csv");
           _analysis.checkConfidence(_settings.Species);
           _analysis.save(PrjPath + "report.csv");
           _analysis.read(PrjPath + "report.csv");
+        }
+
+        if ((options & OPT_CLEANUP) != 0)
+        {
+          DebugLog.log("cleaning up temporary files", enLogType.INFO);
+          cleanupTempFiles();
         }
       }
       return retVal;
@@ -383,6 +393,22 @@ namespace BatInspector
         }
       }
     }
+
+    private void removeDir(string subDir)
+    {
+      string dir = _selectedDir + "/" + subDir;
+      try
+      {
+        if (Directory.Exists(dir))
+          Directory.Delete(dir, true);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("problems deleting dir: " + dir + ", " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+
     private void prepareFolder(bool delete = true)
     {
       createDir("bat", delete);
@@ -390,6 +416,15 @@ namespace BatInspector
       createDir("dat", delete);
       createDir("log", delete);
       createDir("img", delete);
+    }
+
+    private void cleanupTempFiles()
+    {
+      removeDir("bat");
+      removeDir("wav");
+      removeDir("dat");
+      removeDir("log");
+      removeDir("img");
     }
   }
 

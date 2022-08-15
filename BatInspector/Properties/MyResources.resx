@@ -633,4 +633,16 @@
   <data name="MaxFrequency" xml:space="preserve">
     <value>Fmax</value>
   </data>
+  <data name="SetCatModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SetDescLearningRate" xml:space="preserve">
+    <value>Set the learning rate to train the model</value>
+  </data>
+  <data name="SetDescEpochs" xml:space="preserve">
+    <value>Nr of epochs during training of model</value>
+  </data>
+  <data name="frmStartPredCleanuop" xml:space="preserve">
+    <value>delete temporary files after prediction</value>
+  </data>
 </root>

@@ -11,8 +11,11 @@ TODO
 - 95% plausibility check
 - remove deleted files from report
 - find bug that deletes header from report
+- more than one model
+- prediction from call parameters (not wav)
 
 DONE
+- option to cleanup temporary files after prediction
 - added Fmin, Fmax to species data (and GUI)
 - generate project file for directories filled with wavs (not coming from bat detector)
 - button "show example" of bat species in zoom tab

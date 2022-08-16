@@ -1,0 +1,3 @@
+python "C:/Users/chrmu/prj/BatInspector/py/batclass.py" --predict --csvcalls C:/Users/chrmu/bat/Rudi/20220807/report.csv --root "C:/Users/chrmu/prj/BatInspector/mod_tsa" --specFile "C:/Users/chrmu/bat/tierSta/species.csv" --dataDir C:\Users\chrmu\bat\Rudi\20220807/ --data C:\Users\chrmu\bat\Rudi\20220807//Xdata000.npy
+rem python "C:/Users/chrmu/prj/BatInspector/py/batclass.py" --predict --csvcalls C:/Users/chrmu/bat/2022/20220610/report.csv --root "C:/Users/chrmu/prj/BatInspector/mod_tsa" --specFile "C:/Users/chrmu/bat/tierSta/species.csv" --dataDir C:\Users\chrmu\bat\2022\20220610/ --data C:\Users\chrmu\bat\2022\20220610//Xdata000.npy
+pause

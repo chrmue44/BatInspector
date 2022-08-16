@@ -67,7 +67,7 @@ def graph_spectrogram(wavFile, imgFile, withAxes = False, scale = 'log'):
     if nchannels == 1:
         pxx, freqs, bins, im = plt.specgram(data, nfft, rate, noverlap = noverlap)
     elif nchannels == 2:
-        pxx, freqs, bins, im = plt.specgram(data[:,0], nfft, fs, noverlap = noverlap)
+        pxx, freqs, bins, im = plt.specgram(data[:,0], nfft, rate, noverlap = noverlap)
     if scale == 'log':
         pxx = np.log10(pxx)
     return pxx, freqs, bins

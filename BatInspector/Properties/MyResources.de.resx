@@ -645,4 +645,28 @@
   <data name="frmStartPredCleanuop" xml:space="preserve">
     <value>temporäre Dateien nach Artbestimmung löschen</value>
   </data>
+  <data name="SetCatPrediction" xml:space="preserve">
+    <value>Artbestimmung</value>
+  </data>
+  <data name="SpecDescIdentify" xml:space="preserve">
+    <value>Identifiziere Rufe und deren Parameter</value>
+  </data>
+  <data name="SpecDescAdapt" xml:space="preserve">
+    <value>Passe die Abtastrate an die des Modells an</value>
+  </data>
+  <data name="SpecDescCutCalls" xml:space="preserve">
+    <value>Zerschneide die Aufnahmen in einzelne Ruf</value>
+  </data>
+  <data name="SpecDescPrepData" xml:space="preserve">
+    <value>Datenaufbereitung für Artbestimmung</value>
+  </data>
+  <data name="SpecDescPredict" xml:space="preserve">
+    <value>Artbestimmung durchführen</value>
+  </data>
+  <data name="SpecDescConfTest" xml:space="preserve">
+    <value>Plausibilitätstest ausführen</value>
+  </data>
+  <data name="SpecDescDelTemp" xml:space="preserve">
+    <value>Lösche temporäre Daten (wav und Daten)</value>
+  </data>
 </root>

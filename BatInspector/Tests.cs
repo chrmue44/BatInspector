@@ -8,19 +8,46 @@ using System.Threading.Tasks;
 
 namespace BatInspector
 {
+
+  struct stFormulaData
+  {
+    public stFormulaData(int i, string f, string r, string e)
+    {
+      Id = i;
+      Formula = f;
+      Result = r;
+      Error = e;
+    }
+
+    public int Id;
+    public string Formula;
+    public string Result;
+    public string Error;
+  }
+
   public class Tests
   {
     ProcessRunner _proc;
     int _errors = 0;
+    stFormulaData[] _dataForm;
 
-    public Tests()
+  public Tests()
     {
       _proc = new ProcessRunner();
+      _dataForm = new stFormulaData[]
+        {
+        new stFormulaData(1, "substr(\"ABCDE\",0,2)", "AB",""),
+        new stFormulaData(2, "substr(\"ABCDE\",3,2)", "DE",""),
+        new stFormulaData(3, "substr(\"ABCDE\",4,2)", "0","ARG2_OUT_OF_RANGE"),
+        new stFormulaData(4, "cast(2.5,\"RT_INT\"", "2",""),
+        };
+
     }
 
     public void exec()
     {
       testIf();
+      testParser();
       if (_errors == 0)
         DebugLog.log("Tests passed", enLogType.INFO);
     }
@@ -53,6 +80,31 @@ namespace BatInspector
       scr.RunScript("test_if.scr", false);
       assert(scr.getVariable("Result"), "\"AhighBlow\"");
       assert(scr.getVariable("Res2"), "\"AhighBlow\"");
+    }
+
+    int testParser()
+    {
+
+      int retVal = 0;
+      DebugLog.log("Testing parser", enLogType.INFO);
+      foreach (stFormulaData f in _dataForm)
+      {
+        string form = f.Formula;
+        Expression exp = new Expression();
+        string res = exp.parseToString(form);
+
+        if ((f.Result != res) && (exp.Errors == 0))
+        {
+          DebugLog.log("Error calculation of formula '" + f.Formula + "'.  expected: " + f.Result + ", got: " + res, enLogType.ERROR);
+          retVal++;
+        }
+        else if ((f.Error != "") && (f.Error != res))
+        {
+          DebugLog.log("wrong error message '" + f.Error + "'.  expected: " + f.Result + ", got: " + res, enLogType.ERROR);
+          retVal++;
+        }
+      }
+      return retVal;
     }
 
     private void assert(string a, string exp)

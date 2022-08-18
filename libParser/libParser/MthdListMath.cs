@@ -479,7 +479,8 @@ namespace libParser
       if (argv.Count == 2)
       {
         result.assign(argv[0]);
-        AnyType.tType Type = (AnyType.tType)(argv[1].getUint64());
+        AnyType.tType Type = AnyType.tType.RT_INT64;
+        Enum.TryParse(argv[0].getString(), out Type);
         result.changeType(Type);
       }
       else
@@ -559,14 +560,19 @@ namespace libParser
       result = new AnyType();
       if (argv.Count == 3)
       {
-        if (argv[0].getType() == AnyType.tType.RT_STR)
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string str = argv[0].getString();
+        argv[1].changeType(AnyType.tType.RT_INT64);
+        int start = (int)argv[1].getInt64();
+        argv[2].changeType(AnyType.tType.RT_INT64);
+        int len = (int)argv[2].getInt64();
+        if ((start + len) <= str.Length)
         {
-          string inStr = argv[0].getString();
-          ulong startIdx = argv[1].getUint64();
-          ulong length = argv[2].getUint64();
-          string str = inStr.Substring((int)startIdx, (int)length);
-          result.assign(str);
+          string resultStr = str.Substring(start, len);
+          result.assign(resultStr);
         }
+        else
+          err = tParseError.ARG2_OUT_OF_RANGE;
       }
       else
       {

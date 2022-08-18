@@ -300,7 +300,7 @@ namespace BatInspector
       for (int x = 0; x < _width; x++)
       {
         int idx = (idxMax - idxMin) * x / _width + idxMin;
-        int y1 = (int)((1 - (this.Samples[idx] - aMin) / (aMax - aMin)) * _heightXt);
+        int y1 = (int)((1 - (this.Samples[idx] - aMin) / (aMax - aMin)) * (_heightXt - 1));
         bmp.SetPixel(x, y1, _settings.ColorXtLine);
       }
     }

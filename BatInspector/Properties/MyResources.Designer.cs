@@ -1096,6 +1096,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prediction.
+        /// </summary>
+        public static string SetCatPrediction {
+            get {
+                return ResourceManager.GetString("SetCatPrediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scripting.
         /// </summary>
         public static string SetCatScripting {
@@ -1366,6 +1375,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adapt sample rate to trained model.
+        /// </summary>
+        public static string SpecDescAdapt {
+            get {
+                return ResourceManager.GetString("SpecDescAdapt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Definition of color gradient for color channel blue.
         /// </summary>
         public static string SpecDescColorBlue {
@@ -1389,6 +1407,42 @@ namespace BatInspector.Properties {
         public static string SpecDescColorRed {
             get {
                 return ResourceManager.GetString("SpecDescColorRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to execute confidence test.
+        /// </summary>
+        public static string SpecDescConfTest {
+            get {
+                return ResourceManager.GetString("SpecDescConfTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut recordings to single calls.
+        /// </summary>
+        public static string SpecDescCutCalls {
+            get {
+                return ResourceManager.GetString("SpecDescCutCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete temporary files (wav and data).
+        /// </summary>
+        public static string SpecDescDelTemp {
+            get {
+                return ResourceManager.GetString("SpecDescDelTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to identify calls and their parameters.
+        /// </summary>
+        public static string SpecDescIdentify {
+            get {
+                return ResourceManager.GetString("SpecDescIdentify", resourceCulture);
             }
         }
         
@@ -1434,6 +1488,24 @@ namespace BatInspector.Properties {
         public static string SpecDescMinCallDist {
             get {
                 return ResourceManager.GetString("SpecDescMinCallDist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute species prediciton.
+        /// </summary>
+        public static string SpecDescPredict {
+            get {
+                return ResourceManager.GetString("SpecDescPredict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prepare data fro prediciton.
+        /// </summary>
+        public static string SpecDescPrepData {
+            get {
+                return ResourceManager.GetString("SpecDescPrepData", resourceCulture);
             }
         }
         

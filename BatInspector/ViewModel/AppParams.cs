@@ -433,7 +433,50 @@ namespace BatInspector
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public List<ColorItem> ColorGradientBlue { get; set; } = new List<ColorItem>();
 
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+    LocalizedDescription("SpecDescIdentify")]
+    public bool PredIdentifyCalls { get; set; }
 
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+    LocalizedDescription("SpecDescAdapt")]
+    public bool PredAdaptSampleRate { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+    LocalizedDescription("SpecDescCutCalls")]
+    public bool PredCutCalls { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+    LocalizedDescription("SpecDescPrepData")]
+    public bool PredPrepData { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+    LocalizedDescription("SpecDescPredict")]
+    public bool PredPredict1 { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+    LocalizedDescription("SpecDescPredict")]
+    public bool PredPredict2 { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+     LocalizedDescription("SpecDescPredict")]
+    public bool PredPredict3 { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+     LocalizedDescription("SpecDescConfTest")]
+    public bool PredConfTest { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrediction"),
+     LocalizedDescription("SpecDescDelTemp")]
+    public bool PredDelTemp { get; set; }
 
     public AppParams()
     {
@@ -475,6 +518,16 @@ namespace BatInspector
       LearningRate = 0.00002;
 
       SamplingRate = 312500;
+
+      PredIdentifyCalls = true;
+      PredAdaptSampleRate = true;
+      PredCutCalls = true;
+      PredPrepData = true;
+      PredPredict1 = true;
+      PredPredict2 = false;
+      PredPredict3 = false;
+      PredConfTest = false;
+      PredDelTemp = true;
     }
 
     private void initFilterParams()

@@ -485,7 +485,7 @@ private void setZoomPosition()
 
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
-      frmStartPredict.showMsg(startPrediction);
+      frmStartPredict.showMsg(startPrediction, _model.Settings);
     }
 
   

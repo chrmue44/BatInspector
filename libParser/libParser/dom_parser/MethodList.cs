@@ -78,7 +78,7 @@ namespace libParser
       {
         if (name == f.pName)
         {
-          f.pFunc(pars, out result);
+          retVal = f.pFunc(pars, out result);
           found = true;
           break;
         }

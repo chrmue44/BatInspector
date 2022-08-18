@@ -56,6 +56,8 @@ namespace libParser
       AnyType v = _parser.parse(str);
       _err = _parser.getParseErrors();        
       v.changeType(AnyType.tType.RT_STR);
+      if(_parser.getParseErrors() != 0)
+        v.assign(_parser.getLastError().ToString());
       return v.getString();
     }
 

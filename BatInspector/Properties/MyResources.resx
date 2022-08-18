@@ -645,4 +645,28 @@
   <data name="frmStartPredCleanuop" xml:space="preserve">
     <value>delete temporary files after prediction</value>
   </data>
+  <data name="SetCatPrediction" xml:space="preserve">
+    <value>Prediction</value>
+  </data>
+  <data name="SpecDescIdentify" xml:space="preserve">
+    <value>identify calls and their parameters</value>
+  </data>
+  <data name="SpecDescAdapt" xml:space="preserve">
+    <value>Adapt sample rate to trained model</value>
+  </data>
+  <data name="SpecDescCutCalls" xml:space="preserve">
+    <value>Cut recordings to single calls</value>
+  </data>
+  <data name="SpecDescPrepData" xml:space="preserve">
+    <value>Prepare data fro prediciton</value>
+  </data>
+  <data name="SpecDescPredict" xml:space="preserve">
+    <value>Execute species prediciton</value>
+  </data>
+  <data name="SpecDescConfTest" xml:space="preserve">
+    <value>execute confidence test</value>
+  </data>
+  <data name="SpecDescDelTemp" xml:space="preserve">
+    <value>Delete temporary files (wav and data)</value>
+  </data>
 </root>

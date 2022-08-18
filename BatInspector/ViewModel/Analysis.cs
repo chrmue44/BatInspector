@@ -356,7 +356,7 @@ namespace BatInspector
       int row = 0;
       do
       {
-        row = report.findInCol(wavName, _cols.getCol(Cols.NAME));
+        row = report.findInCol(wavName, _cols.getCol(Cols.NAME), true);
         if (row > 0)
         {
           report.removeRow(row);

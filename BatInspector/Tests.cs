@@ -49,9 +49,32 @@ namespace BatInspector
     public void exec()
     {
       testIf();
+      testWhile();
       testParser();
       if (_errors == 0)
         DebugLog.log("Tests passed", enLogType.INFO);
+    }
+
+    private void testWhile()
+    {
+      string wrkDir = _model.Settings.ScriptDir;
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      scr.SetVariable("Limit", "9");
+      scr.SetVariable("b", "0");
+      scr.RunScript("test_while.scr", false);
+      assert(scr.getVariable("sum"), "9");
+      scr.SetVariable("Limit", "23");
+      scr.SetVariable("b", "0");
+      scr.RunScript("test_while.scr", false);
+      assert(scr.getVariable("sum"), "23");
+      scr.SetVariable("Limit", "9");
+      scr.SetVariable("b", "1");
+      scr.RunScript("test_while.scr", false);
+      assert(scr.getVariable("sum"), "5");
+      scr.SetVariable("Limit", "23");
+      scr.SetVariable("b", "1");
+      scr.RunScript("test_while.scr", false);
+      assert(scr.getVariable("sum"), "5");
     }
 
     private void testIf()

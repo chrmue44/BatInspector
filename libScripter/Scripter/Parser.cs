@@ -107,8 +107,10 @@ namespace libScripter
         new OptItem("IF", "<condition>  execute code block if condition = TRUE", 1, fctIf),
         new OptItem("ELSE", "elsefor preceeding if", 0, fctElse),
         new OptItem("END", "end of code block", 0, fctEnd),
+        new OptItem("WHILE", "<condition>", 1, fctWhile),
+        new OptItem("BREAK", "break while or for loop",0,fctBreak),
 //        new OptItem("EVAL", "<Expression> evaluate expression", 1, fctEval),
-        new OptItem("LOG","log <message> <type>", 2, fctLog)
+        new OptItem("LOG","log <message> <type>", 1, fctLog)
 
       });
 
@@ -123,15 +125,16 @@ namespace libScripter
     public static int ParsedLines { get; set; }
 
 
-    public void startParsingSection(string code)
+   /* public void startParsingSection(string code)
     {
       _codeSection = code;
       _busy = true;
-      /* Create the thread object, passing in the abc.Read() method
-      via a ThreadStart delegate. This does not start the thread. */
+      // Create the thread object, passing in the abc.Read() method
+      //via a ThreadStart delegate. This does not start the thread. 
       _oThread = new Thread(new ThreadStart(this.ParseSection));
       _oThread.Start();
     }
+  */
 
     public void StartParsing(string name)
     {
@@ -167,11 +170,12 @@ namespace libScripter
         DebugLog.log(msg, type);
     }
 
+    /*
     public void ParseSection()
     {
       log("start SCRIPT BLOCK", enLogType.INFO);
       ParseTextSection(_codeSection);
-    }
+    }*/
 
     public int ParseScript(string name)
     {
@@ -217,6 +221,7 @@ namespace libScripter
       ParseLines();
     }
 
+    /*
     /// <summary>
     /// parse a block of text
     /// </summary>
@@ -228,7 +233,7 @@ namespace libScripter
         _lines = text.Split('\n');
         ParseLines();
       }
-    }
+    } */
 
     public void ParseLines(string[] lines)
     {
@@ -240,14 +245,19 @@ namespace libScripter
       private void ParseLines()
     {
       _vars.VarList.set(ERROR_LEVEL, "0");
+      _currBlock = null;
+      _blockStack.Clear();
       findLabels();
       _actLineNr = 0;
       while (_actLineNr < _lines.Length)
       {
         string result = "0";
         if ( (_currBlock == null) ||
-             (_currBlock.Type != enBlockType.IF) || 
-            ((_currBlock.Type == enBlockType.IF) && _currBlock.Execute))
+             (((_currBlock.Type == enBlockType.FOR_IT) || (_currBlock.Type == enBlockType.WHILE) || 
+            (_currBlock.Type == enBlockType.IF)) && _currBlock.Execute) ||
+            ((_currBlock.Type != enBlockType.FOR_IT) && (_currBlock.Type == enBlockType.WHILE) &&
+            (_currBlock.Type == enBlockType.IF))            
+          )
           result = ParseLine(_lines[_actLineNr]);
         else
           result = mangeBlockLevel(_lines[_actLineNr]);
@@ -469,6 +479,8 @@ namespace libScripter
           retVal = new ForCsvCodeBlock(null, _actLineNr);
         if (_actName == "IF")
           retVal = new IfCodeBlock("",_actLineNr);
+        if (_actName == "WHILE")
+          retVal = new WhileCodeBlock("", _actLineNr);
       }
       return retVal;
     }
@@ -554,12 +566,12 @@ namespace libScripter
         for (int i = 0; i < _commands.Length; i++)
         {
           retVal = _commands[i].run(argArr, this);
-          if (retVal.IndexOf("unknown option") < 0)
+          if (retVal.IndexOf("unknown command") < 0)
             break;
         }
 
         //try script control commands
-        if (retVal.IndexOf("unknown option") >= 0)
+        if (retVal.IndexOf("unknown command") >= 0)
         {
           retVal = run(argArr, this);
         }
@@ -695,7 +707,7 @@ namespace libScripter
         case "CSV_ROWS":
           if ((_currBlock is ForCsvCodeBlock) && (_currBlock.StartLine == _actLineNr))
           {
-            _currBlock.loopStart();
+            _currBlock.loopStart(pars[1]);
           }
           else
           {
@@ -715,7 +727,7 @@ namespace libScripter
         case "ITERATOR":
           if ((_currBlock is ForItCodeBlock) && (_currBlock.StartLine == _actLineNr))
           {
-            _currBlock.loopStart();
+            _currBlock.loopStart(pars[1]);
           }
           else
           {
@@ -746,6 +758,44 @@ namespace libScripter
       {
         _currBlock = blk;
         _blockStack.Add(_currBlock);
+      }
+      return retVal;
+    }
+
+    int fctWhile(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if ((_currBlock is WhileCodeBlock) && (_currBlock.StartLine == _actLineNr))
+      {
+        _currBlock.loopStart(pars[0]);
+      }
+      else
+      {
+        WhileCodeBlock blk = new WhileCodeBlock(pars[0], _actLineNr);
+        ErrText = blk.ErrText;
+        if (ErrText == "")
+        {
+          _currBlock = blk;
+          _blockStack.Add(_currBlock);
+        }
+      }
+      return retVal;
+    }
+
+    int fctBreak(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      int last = _blockStack.Count;      
+      for(int idx = last - 1; idx >= 0; idx--)
+      {
+        if ((_blockStack[idx].Type == enBlockType.FOR_IT) ||
+           (_blockStack[idx].Type == enBlockType.WHILE))
+        {
+          _blockStack[idx].Execute = false;
+          break;
+         }
       }
       return retVal;
     }
@@ -800,7 +850,8 @@ namespace libScripter
       enLogType lType = enLogType.INFO;
       Expression exp = new Expression(_parser.VarTable.VarList);
       string res = exp.parseToString(pars[0]);
-      Enum.TryParse(pars[1], out lType);
+      if (pars.Count > 1)
+        Enum.TryParse(pars[1], out lType);
       DebugLog.log(res, lType);
       return 0;
     }

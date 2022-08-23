@@ -133,7 +133,7 @@ namespace libScripter
         if (!found)
         {
           retVal = enErrOption.OPT_NOT_FOUND;
-          ErrorText = "unknown option: " + args[i];
+          ErrorText = "unknown command: " + args[i];
           break;
         }
 

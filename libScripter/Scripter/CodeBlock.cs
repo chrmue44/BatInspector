@@ -11,7 +11,8 @@ namespace libScripter
   {
     FOR_CSV_ROWS,
     FOR_IT,
-    IF
+    IF,
+    WHILE
   }
 
   public abstract class CodeBlock
@@ -39,7 +40,7 @@ namespace libScripter
     }
 
     public abstract bool loopEnd();
-    public abstract void loopStart();
+    public abstract void loopStart(string condition);
   }
 
   public struct ColName
@@ -106,7 +107,7 @@ namespace libScripter
       return retVal;
     }
 
-    public override void loopStart()
+    public override void loopStart(string condition)
     {
     }
 
@@ -158,7 +159,7 @@ namespace libScripter
     }
 
 
-    public override void loopStart()
+    public override void loopStart(string condition)
     {
       _vars.VarList.set(_itName, _iterator);
     }
@@ -174,6 +175,33 @@ namespace libScripter
     }
   }
 
+  public class WhileCodeBlock : CodeBlock
+  {
+    bool _condition;
+    public bool Condition { get { return _condition; } }
+
+    public WhileCodeBlock(string condition, int startLine)
+                           : base(enBlockType.WHILE, null, startLine)
+    {
+      loopStart(condition);
+      _errText = "";
+    }
+
+    public override void loopStart(string condition)
+    {
+      if ((condition == "true") || (condition == "TRUE") || (condition == "1"))
+        _execute = true;
+      else
+        _execute = false;
+      _condition = _execute;
+    }
+
+    public override bool loopEnd()
+    {
+      return _execute;
+    }
+
+  }
 
   public class IfCodeBlock : CodeBlock
   {
@@ -184,17 +212,18 @@ namespace libScripter
     public IfCodeBlock(string condition, int startLine)
                            : base(enBlockType.IF, null, startLine)
     {
-        if ((condition == "true") || (condition == "TRUE") || (condition == "1"))
-          _execute = true;
-        else
-          _execute = false;
-        _condition = _execute;
+      loopStart(condition);
       _errText = "";
     }
 
 
-    public override void loopStart()
+    public override void loopStart(string condition)
     {
+      if ((condition == "true") || (condition == "TRUE") || (condition == "1"))
+        _execute = true;
+      else
+        _execute = false;
+      _condition = _execute;
     }
 
     public override bool loopEnd()

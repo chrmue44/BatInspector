@@ -1,0 +1,9 @@
+SET a 0
+SET sum 0
+WHILE =(a < Limit)
+  SET a =(a+1)
+  IF =((a > 5) && (b > 0))
+    BREAK
+  END
+  SET sum =(sum + 1)
+END

@@ -1,3 +1,5 @@
+# Test script for while loop
+# variables 'b' and 'Limit' have to be set externally
 SET a 0
 SET sum 0
 WHILE =(a < Limit)

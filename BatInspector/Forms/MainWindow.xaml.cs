@@ -89,7 +89,7 @@ namespace BatInspector.Forms
       DebugLog.setLogDelegate(_ctlLog.log);
       _ctlLog.setViewModel(_model);
 #if DEBUG
-      Tests tests = new Tests();
+      Tests tests = new Tests(_model);
       tests.exec();      
 #endif
     }
@@ -680,6 +680,12 @@ private void setZoomPosition()
     private void _grdSplitterV_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
     {
       _model.Settings.WidthFileSelector = _grdCtrl.ColumnDefinitions[0].Width.Value;
+    }
+
+    private void _btnScript_Click(object sender, RoutedEventArgs e)
+    {
+      frmRunScript frmScript = new frmRunScript(_model);
+      frmScript.Show();
     }
   }
 

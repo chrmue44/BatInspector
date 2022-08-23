@@ -96,7 +96,8 @@ namespace libScripter
         foreach (OptItem feat in _features) 
         {
           string arg = args[i].Replace(" ", "");
-          if (feat.Option == arg) {
+          if (feat.Option == arg) 
+          {
             found = true;
             OptItem optItem = new OptItem(feat);
             if (feat.ParamCount > 0)

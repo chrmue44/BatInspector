@@ -45,15 +45,15 @@ namespace BatInspector
     public Filter()
     {
       _list = new List<FilterItem>();
-      _expression = new Expression();
-      _expression.Variables.insert(VAR_NR_CALLS);
-      _expression.Variables.insert(VAR_SPECIES_AUTO);
-      _expression.Variables.insert(VAR_SPECIES_MAN);
-      _expression.Variables.insert(VAR_FREQ_MIN);
-      _expression.Variables.insert(VAR_FREQ_MAX);
-      _expression.Variables.insert(VAR_DURATION);
-      _expression.Variables.insert(VAR_PROBABILITY);
-      _expression.Variables.insert(VAR_SNR);
+      _expression = new Expression(null);
+      _expression.Variables.set(VAR_NR_CALLS, 0);
+      _expression.Variables.set(VAR_SPECIES_AUTO,"");
+      _expression.Variables.set(VAR_SPECIES_MAN,"");
+      _expression.Variables.set(VAR_FREQ_MIN,"");
+      _expression.Variables.set(VAR_FREQ_MAX,"");
+      _expression.Variables.set(VAR_DURATION,"");
+      _expression.Variables.set(VAR_PROBABILITY,"");
+      _expression.Variables.set(VAR_SNR,0.0);
     }
 
     public bool apply(FilterItem filter, AnalysisFile file)

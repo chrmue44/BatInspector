@@ -156,7 +156,7 @@ namespace libParser
     /// <param name="cell"></param>
     /// <returns></returns>
     /// 
-    public static int replaceCalculations(ref string cell, out string err, MethodList mList = null)
+    public static int replaceCalculations(ref string cell, out string err, MethodList mList = null, VarList varlist = null)
     {
       int pos;
       int retVal = 0;
@@ -172,7 +172,7 @@ namespace libParser
           {
             string formula = cell.Substring(pos + 2, pos2 - pos - 2);
             AnyType val;
-            Expression exp = new Expression();
+            Expression exp = new Expression(varlist);
             if (mList != null)
               exp.addMethodList(mList);
 

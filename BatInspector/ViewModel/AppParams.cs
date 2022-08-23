@@ -245,6 +245,16 @@ namespace BatInspector
     const string _fName = "BatInspectorSettings.json";
 
     [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescWidthFFT")]
+    public string ScriptDir { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescWidthFFT")]
+    public string ExeEditor { get; set; } = "";
+
+    [DataMember]
     [LocalizedDescription("SetDescLanguage")]
     [LocalizedCategory("SetCatApplication")]
     public enCulture Culture { get; set; } = enCulture.de_DE;
@@ -485,6 +495,8 @@ namespace BatInspector
 
     public void init()
     {
+      ScriptDir = "C:\\users\\chrmu\\prj\\BatInspector\\scripts";
+      ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;
       WaterfallWidth = 512;
       FftWidth = 512;

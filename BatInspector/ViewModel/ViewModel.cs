@@ -58,15 +58,19 @@ namespace BatInspector
     bool _extBusy = false;
     ScriptRunner _scripter = null;
     WavFile _wav;
+    string _scriptName = "";
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
     public string PrjPath { get { return _selectedDir; } }
 
+    public string ScriptName { get { return _scriptName; } }
     public string Version { get { return _version; } }
     public Analysis Analysis { get { return _analysis; } }
 
     public Project Prj { get { return _prj; } }
+
+    //public ProcessRunner ProcRunner { get { return _proc; } }
 
     public ZoomView ZoomView { get { return _zoom; } }
 
@@ -195,6 +199,24 @@ namespace BatInspector
     {
       if (_scripter != null)
         _scripter.execCmd(cmd);
+    }
+
+    public int executeScript(string path)
+    {
+      int retVal = 1;
+      _scriptName = path;
+      if (_scripter == null)
+        _scripter = new ScriptRunner(ref _proc, "", null, this);
+      retVal = _scripter.RunScript(path);
+      return retVal;
+    }
+
+    public void editScript(string name)
+    {
+      string exe = Settings.ExeEditor;
+      _scriptName = name;
+      string args = name;
+      _proc.LaunchCommandLineApp(exe, null, null, false, args, true, false);
     }
 
     public void deleteFiles(List<string> files)

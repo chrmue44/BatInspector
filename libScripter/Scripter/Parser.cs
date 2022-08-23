@@ -103,10 +103,11 @@ namespace libScripter
         new OptItem("SKIP_IF_NE","<arg1> <arg2> skip next line if arguments are not equal", 2, fctSkipIfNotEqual),
         new OptItem("RET_VALUE","<value> set return value of script", 1, fctRetValue),
         new OptItem("PAUSE", "wait for entry on console", 0, fctPause),
-        new OptItem("FOR", "<option> <arg1> <arg2> ... <argn> execute code block", 0, fctFor),
+        new OptItem("FOR", "<option> <arg1> <arg2> ... <argn> execute code block", 2, fctFor),
         new OptItem("IF", "<condition>  execute code block if condition = TRUE", 1, fctIf),
         new OptItem("ELSE", "elsefor preceeding if", 0, fctElse),
         new OptItem("END", "end of code block", 0, fctEnd),
+        new OptItem("EVAL", "<Expression> evaluate expression", 1, fctEval)
       });
 
       _options = new Options(_features, false);
@@ -236,7 +237,7 @@ namespace libScripter
 
       private void ParseLines()
     {
-      _vars.SetValue(ERROR_LEVEL, "0");
+      _vars.VarList.set(ERROR_LEVEL, "0");
       findLabels();
       _actLineNr = 0;
       while (_actLineNr < _lines.Length)
@@ -248,7 +249,7 @@ namespace libScripter
           result = ParseLine(_lines[_actLineNr]);
         else
           result = mangeBlockLevel(_lines[_actLineNr]);
-        _vars.SetValue(ERROR_LEVEL, result);
+        _vars.VarList.set(ERROR_LEVEL, result);
         _actLineNr++;
         if (_updateProgress != null)
           _updateProgress(_actLineNr * 100 / _lines.Length);
@@ -501,7 +502,7 @@ namespace libScripter
     /// </summary>
     /// <param name="line">line</param>
     /// <returns></returns>
-    string ParseLine(string line)
+    public string ParseLine(string line)
     {
       _actLine = line;
       _actPos = 0;
@@ -529,7 +530,7 @@ namespace libScripter
           args.Add(_actName);
         else if(_lastToken == enToken.FORMULA)
         {
-          Expression formula = new Expression();
+          Expression formula = new Expression(_vars.VarList);
         //  foreach (VariableItem v in _vars.VarList)
         //    formula.addVariable(v.Name, v.Value);
           string result = formula.parseToString(_actName);
@@ -587,7 +588,16 @@ namespace libScripter
     {
       int retVal = 0;
       ErrText = "";
-      _vars.SetValue(pars[0], pars[1]);
+      if (Utils.isNum(pars[1], false))
+        _vars.VarList.set(pars[0], int.Parse(pars[1]));
+      else if (Utils.isNum(pars[1], true))
+      {
+        double val = 0;
+        double.TryParse(pars[1], out val);
+        _vars.VarList.set(pars[0], val);
+      }
+      else
+        _vars.VarList.set(pars[0], pars[1]);
       return retVal;
     }
 
@@ -596,7 +606,7 @@ namespace libScripter
       int retVal = 0;
       int.TryParse(pars[0], out retVal);
       ErrText = "";
-      _vars.SetValue(RET_VALUE, retVal.ToString());
+      _vars.VarList.set(RET_VALUE, retVal);
       return 0;
     }
     int fctPause(List<string> pars, out string ErrText)
@@ -774,7 +784,18 @@ namespace libScripter
       }
       return retVal;
     }
-     
+
+    int fctEval(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      for (int i = 1; i < pars.Count; i++)
+        pars[0] += " " + pars[i];
+      string res = ParseLine(pars[0]);
+      DebugLog.log(res, enLogType.INFO);
+      return retVal;
+    }
+
     /// <summary>
     /// replace variables in actual name
     /// </summary>

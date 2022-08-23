@@ -34,6 +34,7 @@ namespace libScripter
       _execute = true;
       _blockType = type;
       _args = args;
+      _startLine = startLine;
       _lines = new List<string>();
     }
 
@@ -66,6 +67,7 @@ namespace libScripter
     {
       if (args != null)
       {
+        _errText = "";
         if (_args.Count > 0)
         {
           _csv = new Csv();
@@ -140,14 +142,16 @@ namespace libScripter
 
     public ForItCodeBlock(List<string> args, int startLine, Variables vars) 
                            : base(enBlockType.FOR_IT, args, startLine)
-    {
+    {     
       _vars = vars;
       if (_args.Count > 2)
       {
+        _errText = "";
         _itName = _args[0];
         bool ok = int.TryParse(args[1], out _itStart);
         ok |= int.TryParse(args[2], out _itEnd);
-
+        _iterator = _itStart;
+        _vars.VarList.set(_itName, _iterator);
       }
       else
         _errText = "IF: missing argument";
@@ -156,14 +160,14 @@ namespace libScripter
 
     public override void loopStart()
     {
-      _vars.SetValue(_itName, _iterator.ToString());
+      _vars.VarList.set(_itName, _iterator);
     }
 
     public override bool loopEnd()
     {
       bool retVal = true;
       _iterator++;
-      _vars.SetValue(_itName, _iterator.ToString());
+      _vars.VarList.set(_itName, _iterator);
       if (_iterator > _itEnd)
         retVal = false;
       return retVal;

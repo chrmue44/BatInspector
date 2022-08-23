@@ -9,6 +9,7 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using libParser;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -84,53 +85,53 @@ namespace libScripter
   public class Variables
   {
 
-    List<VariableItem> _list;
-    
+    VarList _list;
+
     public Variables()
     {
-      _list = new List<VariableItem>();
+      _list = new VarList();
     }
 
-    public List<VariableItem> VarList { get { return _list; } }
+    public VarList VarList { get { return _list; } }
 
-    public void SetValue(string name, string value)
+/*    public void SetValue(string name, string value)
     {
       string varName = name.Replace("%", "");
-      VariableItem item = Find(name);
-      if (item == null)
-      {
-        VariableItem var = new VariableItem(varName, value);
-        _list.Add(var);
-      }
-      else
-        item.Value = value;
+      _list.set(name, value);
     }
-
-    public string GetValue(string name)
+*/
+    public string GetValue(string name, int index = 0)
     {
-      VariableItem v = Find(name);
+      VarName v =_list.get(name);
+      string retVal = "";
       if (v != null)
-        return v.Value;
-      else
-        return "";
-    }
-
-    public VariableItem Find(string name)
-    {
-      foreach(VariableItem v in _list)
       {
-        string varName = name.Replace("%", "");
-        if (v.Name == varName)
-          return v;
+        AnyType value = new AnyType();
+        v.getValue(index, ref value);
+        value.changeType(AnyType.tType.RT_STR);
+        retVal = value.getString();
       }
-      return null;
+      return retVal;
+    } 
+
+    public VariableItem Find(string name, int index = 0)
+    {
+      VariableItem retVal = null;
+      VarName v = _list.get(name);
+      if (v != null)
+      {
+        AnyType value = new AnyType();
+        v.getValue(index, ref value);
+        value.changeType(AnyType.tType.RT_STR);
+        string valStr = value.getString();
+        retVal = new VariableItem(v.getName(), valStr);
+      }
+      return retVal;
     }
 
     public void Remove(string name)
     {
-      VariableItem v = Find(name);
-      if (v != null)
-        _list.Remove(v);
+      _list.remove(name);
     }
   }
 }

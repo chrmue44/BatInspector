@@ -9,7 +9,9 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -25,8 +27,9 @@ namespace BatInspector
       {
         new OptItem("Test", "test", 1, fctTest),
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
-        new OptItem("initSpecInfos","initialize species infos in settings",0,fctInitSpecInfos)
-      }) ; 
+        new OptItem("initSpecInfos","initialize species infos in settings",0,fctInitSpecInfos),
+        new OptItem("log","log <message> <type>", 2, fctLog)
+      }); ; 
 
       _options = new Options(_features, false);
     }
@@ -48,6 +51,18 @@ namespace BatInspector
     int fctInitSpecInfos(List<string> pars, out string ErrText)
     {
       ErrText = "";
+      _model.Settings.initSpeciesInfos();
+      return 0;
+    }
+
+    int fctLog(List<string> pars, out string ErrText)
+    {
+      ErrText = "";
+      enLogType lType = enLogType.INFO;
+      Expression exp = new Expression(_parser.VarTable.VarList);
+      string res = exp.parseToString(pars[0]);
+      Enum.TryParse(pars[1], out lType);
+      DebugLog.log(res, lType);
       _model.Settings.initSpeciesInfos();
       return 0;
     }

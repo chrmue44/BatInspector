@@ -365,7 +365,7 @@ namespace libParser
           AnyType func = new AnyType();
           AnyType funcArg = new AnyType();
           string resultString;
-          VarName nameFunc = m_Inst.m_pVarList.look(argv[0].getString());
+          VarName nameFunc = m_Inst.m_pVarList.get(argv[0].getString());
           if (nameFunc != null)
             err = (tParseError)nameFunc.getValue(0, ref func);
           else
@@ -373,7 +373,7 @@ namespace libParser
           if (err != tParseError.SUCCESS)
             break;
 
-          VarName nameFuncArg = m_Inst.m_pVarList.look(argv[1].getString());
+          VarName nameFuncArg = m_Inst.m_pVarList.get(argv[1].getString());
           if (nameFuncArg != null)
             err = (tParseError)nameFuncArg.getValue(0, ref funcArg);
           else

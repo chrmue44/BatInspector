@@ -19,11 +19,15 @@ namespace libParser
     uint _err;
     public uint Errors {  get { return _err; } }
     public VarList Variables { get { return _varList; } }
-    public Expression()
+    public Expression(VarList varlist)
     {
       _methList = new MthdListMath();
       _result = new MthdResult();
-      _varList = new VarList();
+      if (varlist != null)
+        _varList = varlist;
+      else
+        _varList = new VarList() ;           
+
       _methods = new Methods(_result);
 
       _methList.initMthdTab();
@@ -63,38 +67,17 @@ namespace libParser
 
     public void setVariable(string name, string value, int index = 0)
     {
-      VarName n = _varList.look(name);
-      if(n != null)
-      {
-        AnyType v = new AnyType();
-        v.setType(AnyType.tType.RT_STR);
-        v.assign(value);
-        n.setValue(index, v);
-      }
+      _varList.set(name, value, _methods, index);
     }
 
     public void setVariable(string name, double value, int index = 0)
     {
-      VarName n = _varList.look(name);
-      if (n != null)
-      {
-        AnyType v = new AnyType();
-        v.setType(AnyType.tType.RT_FLOAT);
-        v.assign(value);
-        n.setValue(index, v);
-      }
+      _varList.set(name, value, _methods, index) ;
     }
 
     public void setVariable(string name, int value, int index = 0)
     {
-      VarName n = _varList.look(name);
-      if (n != null)
-      {
-        AnyType v = new AnyType();
-        v.setType(AnyType.tType.RT_INT64);
-        v.assign(value);
-        n.setValue(index, v);
-      }
+      _varList.set(name, value, _methods, index);
     }
 
 

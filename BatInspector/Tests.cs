@@ -30,10 +30,12 @@ namespace BatInspector
     ProcessRunner _proc;
     int _errors = 0;
     stFormulaData[] _dataForm;
+    ViewModel _model;
 
-  public Tests()
+  public Tests(ViewModel model)
     {
       _proc = new ProcessRunner();
+      _model = model;
       _dataForm = new stFormulaData[]
         {
         new stFormulaData(1, "substr(\"ABCDE\",0,2)", "AB",""),
@@ -54,7 +56,7 @@ namespace BatInspector
 
     private void testIf()
     {
-      string wrkDir = "D:\\prj\\BatInspector\\scripts\\";
+      string wrkDir = _model.Settings.ScriptDir;
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
 
       scr.SetVariable("A", "55");
@@ -79,7 +81,7 @@ namespace BatInspector
       scr.SetVariable("B", "33");
       scr.RunScript("test_if.scr", false);
       assert(scr.getVariable("Result"), "\"AhighBlow\"");
-      assert(scr.getVariable("Res2"), "\"AhighBlow\"");
+      assert(scr.getVariable("Res2"), "\"AhighBhigh\"");
     }
 
     int testParser()
@@ -90,7 +92,7 @@ namespace BatInspector
       foreach (stFormulaData f in _dataForm)
       {
         string form = f.Formula;
-        Expression exp = new Expression();
+        Expression exp = new Expression(null);
         string res = exp.parseToString(form);
 
         if ((f.Result != res) && (exp.Errors == 0))

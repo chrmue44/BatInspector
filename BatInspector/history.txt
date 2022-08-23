@@ -3,18 +3,20 @@ TODO
 - run R scripts
 - GUI themes 
 
-- scripting engine
 - help
 - species comparison
 
 - reports across projects (week, month year)
 - 95% plausibility check
-- remove deleted files from report
 - find bug that deletes header from report
 - more than one model
 - prediction from call parameters (not wav)
+- more script commands
 
 DONE
+- icon and form to start and edit scripts
+- scripting engine
+- remove deleted files from report
 - checkboxes in predict dialog are saved in settings
 - option to cleanup temporary files after prediction
 - added Fmin, Fmax to species data (and GUI)

@@ -25,6 +25,10 @@ namespace libParser
 
   public class VarName
   {
+    string m_varName;
+    VarList m_pVarList;
+    Methods m_pMethods;
+    bool m_isConst;
 
     public VarName(VarList pVarList, Methods pMethods, bool isConst)
     {
@@ -81,18 +85,16 @@ namespace libParser
 
     //  clAnyType value;
     List<AnyType> m_Value;
-
-
-    string m_varName;
-    VarList m_pVarList;
-    Methods m_pMethods;
-    bool m_isConst;
   };
 
 
   public class VarList
   {
-    const int TBLSZ = 2500;
+    // Hash-Tabelle der Variablen
+    List<VarName> m_Table;
+
+    Methods m_pMethods;
+
 
     public VarList()
     {
@@ -107,14 +109,58 @@ namespace libParser
       var.setValue(0,val);
     }
 
+    public VarName set(string name, string value, Methods methods = null, int index = 0)
+    {
+      VarName n = insert(name, false, methods);
+      if (n != null)
+      {
+        AnyType v = new AnyType();
+        v.setType(AnyType.tType.RT_STR);
+        v.assign(value);
+        n.setValue(index, v);
+      }
+      return n;
+    }
+
+    public void set(string name, double value, Methods methods = null, int index = 0)
+    {
+      VarName n = insert(name, false, methods);
+      if (n != null)
+      {
+        AnyType v = new AnyType();
+        v.setType(AnyType.tType.RT_FLOAT);
+        v.assign(value);
+        n.setValue(index, v);
+      }
+    }
+
+
+    public void set(string name, int value, Methods methods = null, int index = 0)
+    {
+      VarName n = insert(name, false, methods);
+      if (n != null)
+      {
+        AnyType v = new AnyType();
+        v.setType(AnyType.tType.RT_INT64);
+        v.assign(value);
+        n.setValue(index, v);
+      }
+    }
+
     // erzeugt einen Neueintrag in der Liste der Variablen
-    public VarName insert(string s, bool isConst = false, Methods pMethods = null)
+    private VarName insert(string s, bool isConst = false, Methods pMethods = null)
     {
       return look(s, pMethods, isConst, 1);
     }
 
+    public VarName get(string p, Methods pMethods = null)
+    {
+      return look(p, pMethods);
+    }
+
+
     // Zugriff auf die Symboltabelle
-    public VarName look(
+    private VarName look(
       // Zeiger auf Varialennamen
       string p,
       // Zeiger auf die Methodenliste (fur RT_FORMULA)
@@ -145,18 +191,20 @@ namespace libParser
      */
     public string dumpVarList(bool isConst)
     {
+      string retVal;
+
       if (isConst)
-        m_listStr = "LIST OF CONSTANTS: \n";
+        retVal = "LIST OF CONSTANTS: \n";
       else
-        m_listStr = "LIST OF VARIABLES: \n";
+        retVal = "LIST OF VARIABLES: \n";
       foreach (VarName v in m_Table)
       {
         if (v.isConst() != isConst)
           continue;
         AnyType val = new AnyType(this, m_pMethods);
         v.getValue(0, ref val);
-        m_listStr += v.getName();
-        m_listStr += " = ";
+        retVal += v.getName();
+        retVal += " = ";
         string formulaString = "";
         bool isFormula = false;
         string type = val.getTypeString();
@@ -166,19 +214,19 @@ namespace libParser
           isFormula = true;
         }
         val.changeType(AnyType.tType.RT_STR);
-        m_listStr += val.getString();
-        m_listStr += "  ";
-        m_listStr += type;
+        retVal += val.getString();
+        retVal += "  ";
+        retVal += type;
         if (isFormula)
         {
-          m_listStr += "  { ";
-          m_listStr += formulaString;
-          m_listStr += " }";
+          retVal += "  { ";
+          retVal += formulaString;
+          retVal += " }";
         }
-        m_listStr += "\n";
+        retVal += "\n";
       }
 
-      return m_listStr;
+      return retVal;
 
     }
 
@@ -313,10 +361,11 @@ namespace libParser
       return err;
     }
 
-    // Hash-Tabelle der Variablen
-  List<VarName> m_Table;
-
-    string m_listStr;
-    Methods m_pMethods;
+    public void remove(string name)
+    {
+      VarName v = look(name);
+      if (v != null)
+        m_Table.Remove(v);
+    }
   }
 }

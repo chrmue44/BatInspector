@@ -46,16 +46,19 @@ play-button.png
 https://www.flaticon.com/free-icons/play-button" Play button icons created by Roundicons - Flaticon
 
 stop.png
-https://www.flaticon.com/free-icons/stop" Stop icons created by DinosoftLabs - Flaticon
+https://www.flaticon.com/free-icons/stop Stop icons created by DinosoftLabs - Flaticon
 
 color-palette.png
-https://www.flaticon.com/free-icons/art" Art icons created by Freepik - Flaticon
+https://www.flaticon.com/free-icons/art Art icons created by Freepik - Flaticon
 
 wav-file-format-symbol.png:
-https://www.flaticon.com/free-icons/wav" Wav icons created by Freepik - Flaticon
+https://www.flaticon.com/free-icons/wav Wav icons created by Freepik - Flaticon
 
 icons8-folder-48.png
 https://icons8.com/icons/set/folder
 
 report.png
-https://www.flaticon.com/free-icons/report" Report icons created by Good Ware  Flaticon
+https://www.flaticon.com/free-icons/report Report icons created by Good Ware  Flaticon
+
+script.png
+https://www.flaticon.com/free-icons/script Script icons created by uicon.mee - Flaticon

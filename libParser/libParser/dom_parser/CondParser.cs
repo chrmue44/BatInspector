@@ -301,7 +301,8 @@ namespace libParser
             case tToken.ASSIGN:
               {
                 Int32 Err;
-                VarName n = m_pVarList.insert(m_NameString, false, m_pMthds);
+                m_pVarList.set(m_NameString, 0, m_pMthds);
+                VarName n = m_pVarList.get(m_NameString, m_pMthds);
                 getToken();
                 if (!n.isConst())
                   n.setValue(0, expr());
@@ -352,7 +353,8 @@ namespace libParser
                 getToken();
                 if (m_CurrTok == tToken.ASSIGN)
                 {
-                  VarName n = m_pVarList.insert(Name, false, m_pMthds);
+                  m_pVarList.set(Name, 0, m_pMthds);
+                  VarName n = m_pVarList.get(Name, m_pMthds);
                   Int32 Err;
                   getToken();
                   RetVal.assign(expr());
@@ -363,7 +365,7 @@ namespace libParser
                 }
                 else
                 {
-                  VarName n = m_pVarList.look(Name);
+                  VarName n = m_pVarList.get(Name);
                   if (n != null)
                   {
                     Int32 Err;
@@ -382,7 +384,7 @@ namespace libParser
 
             default:
               {
-                VarName n = m_pVarList.look(m_NameString);
+                VarName n = m_pVarList.get(m_NameString);
                 if (n != null)
                 {
                   Int32 Err;

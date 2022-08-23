@@ -515,7 +515,7 @@ namespace libParser
         case tType.RT_COMMENT:
         case tType.RT_STR:
         case tType.RT_BOOL:
-          Error.report(tParseError.PLUS_NOT_SUPPORTED);
+          Error.report(tParseError.MUL_NOT_SUPPORTED);
           break;
         case tType.RT_COMPLEX:
           double re = s1.m_Val.Complex.re * s2.getComplexRe() - s1.m_Val.Complex.im * s2.getComplexIm();

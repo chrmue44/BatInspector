@@ -669,4 +669,13 @@
   <data name="SpecDescDelTemp" xml:space="preserve">
     <value>Delete temporary files (wav and data)</value>
   </data>
+  <data name="MainToolRunScript" xml:space="preserve">
+    <value>Run script</value>
+  </data>
+  <data name="BtnEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="BtnRun" xml:space="preserve">
+    <value>Run</value>
+  </data>
 </root>

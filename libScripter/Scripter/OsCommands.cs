@@ -63,7 +63,7 @@ namespace libScripter
       DebugLog.log(cmd + " " + args, enLogType.INFO);
       BaseCommands.EnableLog = true;
       retVal = _proc.LaunchCommandLineApp(cmd, dataHandler, WorkDir, true, args);
-      _parser.VarTable.SetValue("_DOS_RESULT", _lastDosResult);
+      _parser.VarTable.VarList.set("_DOS_RESULT", _lastDosResult);
       return retVal;
     }
 

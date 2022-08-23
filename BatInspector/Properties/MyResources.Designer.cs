@@ -88,11 +88,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string BtnEdit {
+            get {
+                return ResourceManager.GetString("BtnEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string BtnOK {
             get {
                 return ResourceManager.GetString("BtnOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run.
+        /// </summary>
+        public static string BtnRun {
+            get {
+                return ResourceManager.GetString("BtnRun", resourceCulture);
             }
         }
         
@@ -921,6 +939,15 @@ namespace BatInspector.Properties {
         public static string MainToolOpenManual {
             get {
                 return ResourceManager.GetString("MainToolOpenManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run script.
+        /// </summary>
+        public static string MainToolRunScript {
+            get {
+                return ResourceManager.GetString("MainToolRunScript", resourceCulture);
             }
         }
         

@@ -83,7 +83,7 @@ namespace BatInspector
     public void SetVariable(string name, string value)
     {
       DebugLog.log("SET " + name + " " + value, enLogType.INFO);
-      _parser.VarTable.SetValue(name, value);
+      _parser.VarTable.VarList.set(name, value);
     }
 
     public string getVariable(string name)

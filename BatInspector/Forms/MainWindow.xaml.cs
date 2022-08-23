@@ -104,8 +104,11 @@ namespace BatInspector.Forms
         DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
         trvStructure.Items.Add(CreateTreeItem(dir));
       }
-      DirectoryInfo batDataDir = new DirectoryInfo(_model.Settings.RootDataDir);
-      trvStructure.Items.Add(CreateTreeItem(batDataDir));
+      if (_model.Settings.RootDataDir != null)
+      {
+        DirectoryInfo batDataDir = new DirectoryInfo(_model.Settings.RootDataDir);
+        trvStructure.Items.Add(CreateTreeItem(batDataDir));
+      }
     }
 
     public void TreeViewItem_Expanded(object sender, RoutedEventArgs e)

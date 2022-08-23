@@ -142,7 +142,7 @@ namespace libParser
       {
         AnyType v = new AnyType();
         v.setType(AnyType.tType.RT_INT64);
-        v.assign(value);
+        v.assignInt64(value);
         n.setValue(index, v);
       }
     }

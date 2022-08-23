@@ -54,10 +54,10 @@ namespace libParser
     };
 
 
-    public CondParser(VarList pVarList, Methods pMethods)
+    public CondParser(VarList varList, Methods methods)
     {
-      m_pVarList = pVarList;
-      m_pMthds = pMethods;
+      _varList = varList;
+      _methods = methods;
     }
 
 
@@ -65,18 +65,18 @@ namespace libParser
     public AnyType parse(string Str)
     {
       Error.init();
-      m_Len = Str.Length;
-      m_Str = Str;
-      m_Pos = 0;
-      m_Errors = 0;
+      _len = Str.Length;
+      _str = Str;
+      _pos = 0;
+      _errors = 0;
       getToken();
       AnyType retVal = expr();
 
       if (Error.get() != 0)
       {
-        m_Errors++;
-        m_LastError = Error.get();
-        retVal.assign("ERROR " + m_LastError.ToString());
+        _errors++;
+        _lastError = Error.get();
+        retVal.assign("ERROR " + _lastError.ToString());
       }
       return retVal;
     }
@@ -87,8 +87,8 @@ namespace libParser
     {
       Result = new MthdResult();
       m_CharStr = null;
-      m_Len = Str.Length;
-      m_Str = Str;
+      _len = Str.Length;
+      _str = Str;
       return parseResultStr(ref Result);
     }
 
@@ -97,8 +97,8 @@ namespace libParser
     public tParseError parseResultStr(string Str, int BufLen, out MthdResult Result)
     {
       Result = new MthdResult();
-      m_Len = BufLen;
-      m_Str = null;
+      _len = BufLen;
+      _str = null;
       m_CharStr = Str;
       return parseResultStr(ref Result);
     }
@@ -107,14 +107,14 @@ namespace libParser
     // gibt die Anzahl der Fehler beim Parsen aus
     public UInt32 getParseErrors()
     {
-      return m_Errors;
+      return _errors;
     }
 
 
     // letzten Fehler fragen
     public tParseError getLastError()
     {
-      return m_LastError;
+      return _lastError;
     }
 
 
@@ -123,16 +123,16 @@ namespace libParser
     {
       bool RetVal = false;
       Label = "";
-      m_Len = Line.Length;
-      m_Str = Line;
-      m_Pos = 0;
-      m_Errors = 0;
+      _len = Line.Length;
+      _str = Line;
+      _pos = 0;
+      _errors = 0;
       getToken();
-      if (m_CurrTok == tToken.NAME)
+      if (_currTok == tToken.NAME)
       {
-        Label = m_NameString;
+        Label = _nameString;
         getToken();
-        if (m_CurrTok == tToken.LABEL)
+        if (_currTok == tToken.LABEL)
           RetVal = true;
       }
       return RetVal;
@@ -142,26 +142,26 @@ namespace libParser
   tParseError parseResultStr(ref MthdResult Result)
     {
       bool Finished = false;
-      m_Pos = 0;
-      m_Errors = 0;
-      m_LastError = 0;
+      _pos = 0;
+      _errors = 0;
+      _lastError = 0;
       bool ErrorCode = true;
       //	Result.flush();
       while (!Finished)
       {
         getToken();
-        switch (m_CurrTok)
+        switch (_currTok)
         {
           case tToken.NUMBER:
             if (ErrorCode)
             {
-              m_NumValue.changeType(AnyType.tType.RT_INT64);
-              reportError((tParseError)m_NumValue.getInt64());
+              _numValue.changeType(AnyType.tType.RT_INT64);
+              reportError((tParseError)_numValue.getInt64());
             }
-            Result.addValue(m_NumValue);
+            Result.addValue(_numValue);
             break;
           case tToken.STRING:
-            Result.addValue(m_NameString);
+            Result.addValue(_nameString);
             break;
           case tToken.END:
             Finished = true;
@@ -174,15 +174,15 @@ namespace libParser
         if (!Finished)
         {
           getToken();
-          if (m_CurrTok != tToken.KOMMA)
+          if (_currTok != tToken.KOMMA)
           {
             Finished = true;
-            if (m_CurrTok != tToken.END)
+            if (_currTok != tToken.END)
               reportError(tParseError.RESULTSTRING);
           }
         }
       }
-      return m_LastError;
+      return _lastError;
     }
 
 
@@ -192,7 +192,7 @@ namespace libParser
       AnyType left = new AnyType( term());
       for (; ; )
       {
-        switch (m_CurrTok)
+        switch (_currTok)
         {
           case tToken.PLUS:
             getToken();
@@ -223,7 +223,7 @@ namespace libParser
       left.assign(prim());
       for (; ; )
       {
-        switch (m_CurrTok)
+        switch (_currTok)
         {
           case tToken.MUL:
             getToken();
@@ -280,29 +280,29 @@ namespace libParser
     // Verarbeitung von Primaries
     AnyType prim()
     {
-      AnyType RetVal = new AnyType(m_pVarList, m_pMthds);
+      AnyType RetVal = new AnyType(_varList, _methods);
 
-      switch (m_CurrTok)
+      switch (_currTok)
       {
         case tToken.NUMBER:
           getToken();
-          RetVal.assign(m_NumValue);
+          RetVal.assign(_numValue);
           return RetVal;
 
         case tToken.STRING:
           getToken();
-          RetVal.assign(m_NameString);
+          RetVal.assign(_nameString);
           return RetVal;
 
         case tToken.NAME:
           getToken();
-          switch (m_CurrTok)
+          switch (_currTok)
           {
             case tToken.ASSIGN:
               {
                 Int32 Err;
-                m_pVarList.set(m_NameString, 0, m_pMthds);
-                VarName n = m_pVarList.get(m_NameString, m_pMthds);
+                _varList.set(_nameString, 0, _methods);
+                VarName n = _varList.get(_nameString, _methods);
                 getToken();
                 if (!n.isConst())
                   n.setValue(0, expr());
@@ -314,8 +314,8 @@ namespace libParser
               }
 
             case tToken.BRACE_OPEN:
-              RetVal = function(m_NameString);
-              if (m_CurrTok != tToken.BRACE_CLOSE)
+              RetVal = function(_nameString);
+              if (_currTok != tToken.BRACE_CLOSE)
               {
                 reportError(tParseError.BRACECLOSE);
                 RetVal.assign(1.0);
@@ -327,10 +327,10 @@ namespace libParser
               {
                 string Fname = "addLabel";
                 AnyType LabName = new AnyType();
-                LabName.assign(m_NameString);
+                LabName.assign(_nameString);
                 List<AnyType> pLabName = new List<AnyType>();
                 pLabName.Add(LabName);
-                tParseError err = m_pMthds.executeFunction(Fname, 1, pLabName, ref RetVal);
+                tParseError err = _methods.executeFunction(Fname, 1, pLabName, ref RetVal);
                 if (err != 0)
                   Error.report(err);
               }
@@ -338,23 +338,23 @@ namespace libParser
 
             case tToken.SQR_BRACK_OPEN:
               {
-                string Name = m_NameString;
+                string Name = _nameString;
                 getToken();
                 RetVal.assign(expr());
                 RetVal.changeType(AnyType.tType.RT_INT64);
                 // Index fuer Array
                 int Index = (int)RetVal.getInt64();
-                if (m_CurrTok != tToken.SQR_BRACK_CLOSE)
+                if (_currTok != tToken.SQR_BRACK_CLOSE)
                 {
                   reportError(tParseError.SQR_BRACK_CLOSE);
                   break;
                 }
 
                 getToken();
-                if (m_CurrTok == tToken.ASSIGN)
+                if (_currTok == tToken.ASSIGN)
                 {
-                  m_pVarList.set(Name, 0, m_pMthds);
-                  VarName n = m_pVarList.get(Name, m_pMthds);
+                  _varList.set(Name, 0, _methods);
+                  VarName n = _varList.get(Name, _methods);
                   Int32 Err;
                   getToken();
                   RetVal.assign(expr());
@@ -365,7 +365,7 @@ namespace libParser
                 }
                 else
                 {
-                  VarName n = m_pVarList.get(Name);
+                  VarName n = _varList.get(Name);
                   if (n != null)
                   {
                     Int32 Err;
@@ -384,7 +384,7 @@ namespace libParser
 
             default:
               {
-                VarName n = m_pVarList.get(m_NameString);
+                VarName n = _varList.get(_nameString);
                 if (n != null)
                 {
                   Int32 Err;
@@ -416,7 +416,7 @@ namespace libParser
         case tToken.BRACE_OPEN:
           getToken();
           RetVal.assign(expr());
-          if (m_CurrTok != tToken.BRACE_CLOSE)
+          if (_currTok != tToken.BRACE_CLOSE)
           {
             RetVal.assign(1.0);
             reportError(tParseError.BRACECLOSE);
@@ -431,7 +431,7 @@ namespace libParser
           break;
 
         case tToken.COMMENT:
-          RetVal.assign(m_NameString);
+          RetVal.assign(_nameString);
           RetVal.changeType(AnyType.tType.RT_COMMENT);
           break;
         /*
@@ -484,7 +484,7 @@ namespace libParser
       for (; ; )
       {
         // keine Parameter
-        if (m_CurrTok == tToken.BRACE_CLOSE)
+        if (_currTok == tToken.BRACE_CLOSE)
           break;
         // neuen Parameter erzeugen
         pPar = new ParListItem();
@@ -499,14 +499,14 @@ namespace libParser
 
         pLast = pPar;
 
-        if ((m_CurrTok != tToken.KOMMA) && (m_CurrTok != tToken.BRACE_CLOSE))
+        if ((_currTok != tToken.KOMMA) && (_currTok != tToken.BRACE_CLOSE))
         {
           reportError(tParseError.KOMMA);
           ErrorFlag = true;
           RetVal.assign(1.0);
           break;
         }
-        if (m_CurrTok == tToken.BRACE_CLOSE)
+        if (_currTok == tToken.BRACE_CLOSE)
           break;
         getToken();
       }
@@ -527,7 +527,7 @@ namespace libParser
           }
         }
 
-        tParseError err = m_pMthds.executeFunction(FuncName, ParCnt, argv, ref RetVal);
+        tParseError err = _methods.executeFunction(FuncName, ParCnt, argv, ref RetVal);
         if (err != 0)
           Error.report(err);
       }
@@ -567,12 +567,12 @@ namespace libParser
       {
         if (getNextChar(out ch) != 0)
         {
-          m_CurrTok = tToken.END;
+          _currTok = tToken.END;
           return tToken.END;
         }
         if (ch <= 0)
         {
-          m_CurrTok = tToken.END;
+          _currTok = tToken.END;
           return tToken.END;
         }
       } while (isspace(ch));
@@ -598,7 +598,7 @@ namespace libParser
             {
               Result = getNextChar(out ch);
               if (Result == 0)
-                m_NameString += ch;
+                _nameString += ch;
             }
             RetVal = tToken.COMMENT;
           }
@@ -722,25 +722,25 @@ namespace libParser
             AnyType.tType Type = AnyType.tType.RT_UINT64;
             double DoubleVal;
             UInt64 Uint64Val;
-            m_NumString = "";
+            _numString = "";
 
             if (ch == '0')
             {
-              m_NumString = "0";
+              _numString = "0";
               Result = getNextChar(out ch);
               if (Result == 0)
               {
                 // ist es eine HEX-Zahl?
                 if ((ch == 'x') || (ch == 'X'))
                 {
-                  m_NumString += 'x';
+                  _numString += 'x';
                   Type = AnyType.tType.RT_HEXVAL;
                   Result = getNextChar(out ch);
                   if (Result == 0)
                   {
-                    while (ishex(ch))
+                    while (Utils.ishex(ch))
                     {
-                      m_NumString += ch;
+                      _numString += ch;
                       Result = getNextChar(out ch);
                       if (Result != 0)
                         break;
@@ -758,7 +758,7 @@ namespace libParser
               Type = AnyType.tType.RT_UINT64;
               while (isdigit(ch) || (ch == '.'))
               {
-                m_NumString += ch;
+                _numString += ch;
                 if (ch == '.')
                   Type = AnyType.tType.RT_FLOAT;
                 Result = getNextChar(out ch);
@@ -768,21 +768,21 @@ namespace libParser
             }
             if ((ch == 'e') || (ch == 'E'))
             {
-              m_NumString += ch;
+              _numString += ch;
               Type = AnyType.tType.RT_FLOAT;
               Result = getNextChar(out ch);
               if (Result != 0)
                 break;
               if (ch == '-')
               {
-                m_NumString += ch;
+                _numString += ch;
                 Result = getNextChar(out ch);
                 if (Result != 0)
                   break;
               }
               while (isdigit(ch))
               {
-                m_NumString += ch;
+                _numString += ch;
                 Result = getNextChar(out ch);
                 if (Result != 0)
                   break;
@@ -796,29 +796,29 @@ namespace libParser
                 putBack();
             }
 
-            if (m_NumString.Length != 0)
+            if (_numString.Length != 0)
             {
               switch (Type)
               {
                 case AnyType.tType.RT_COMPLEX:
 
-                  double.TryParse(m_NumString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
-                  m_NumValue.setType(AnyType.tType.RT_COMPLEX);
-                  m_NumValue.setComplex(0, DoubleVal);
+                  double.TryParse(_numString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
+                  _numValue.setType(AnyType.tType.RT_COMPLEX);
+                  _numValue.setComplex(0, DoubleVal);
                   break;
 
                 case AnyType.tType.RT_FLOAT:
-                  double.TryParse(m_NumString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
-                  m_NumValue.assign(DoubleVal);
+                  double.TryParse(_numString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
+                  _numValue.assign(DoubleVal);
                   break;
                 case AnyType.tType.RT_UINT64:
-                  UInt64.TryParse(m_NumString, out Uint64Val);
-                  m_NumValue.assign(Uint64Val);
+                  UInt64.TryParse(_numString, out Uint64Val);
+                  _numValue.assign(Uint64Val);
                   break;
                 case AnyType.tType.RT_HEXVAL:
-                  UInt64.TryParse(m_NumString.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out Uint64Val);
-                  m_NumValue.assign(Uint64Val);
-                  m_NumValue.changeType(AnyType.tType.RT_HEXVAL);
+                  UInt64.TryParse(_numString.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out Uint64Val);
+                  _numValue.assign(Uint64Val);
+                  _numValue.changeType(AnyType.tType.RT_HEXVAL);
                   break;
 
                 //                case RT_INT32:
@@ -839,7 +839,7 @@ namespace libParser
 
         case '"':
           {
-            m_NameString = "";
+            _nameString = "";
             for (; ; )
             {
               Result = getNextChar(out ch);
@@ -857,12 +857,12 @@ namespace libParser
                   RetVal = tToken.BAD_TOKEN;
                   break;
                 }
-                m_NameString += ch;
+                _nameString += ch;
                 continue;
               }
               if (ch == '"')
                 break;
-              m_NameString += ch;
+              _nameString += ch;
             }
             RetVal = tToken.STRING;
           }
@@ -871,8 +871,8 @@ namespace libParser
         default:
           if (isalpha(ch))
           {
-            m_NameString = "";
-            m_NameString += ch;
+            _nameString = "";
+            _nameString += ch;
             for (; ; )
             {
               Result = getNextChar(out ch);
@@ -883,7 +883,7 @@ namespace libParser
                 putBack();
                 break;
               }
-              m_NameString += ch;
+              _nameString += ch;
             }
             RetVal = tToken.NAME;
           }
@@ -891,7 +891,7 @@ namespace libParser
             RetVal = tToken.BAD_TOKEN;
           break;
       }
-      m_CurrTok = RetVal;
+      _currTok = RetVal;
       if (RetVal == tToken.BAD_TOKEN)
         reportError(tParseError.BAD_TOKEN);
       return RetVal;
@@ -902,10 +902,10 @@ namespace libParser
     // holt das naechste Zeichen aus dem Puffer
     tParseError getNextChar(out char ch)
     {
-      if (m_Pos < m_Len)
+      if (_pos < _len)
       {
-        if (m_Str != null)
-          ch = m_Str[m_Pos];
+        if (_str != null)
+          ch = _str[_pos];
         /*  else if ((m_CharStr != null) && (m_Pos < m_Len))
             ch = m_CharStr[m_Pos];*/
         else
@@ -913,7 +913,7 @@ namespace libParser
           ch = '\0';
           return tParseError.PARSESTRING;
         }
-        m_Pos++;
+        _pos++;
         return tParseError.SUCCESS;
       }
       else
@@ -924,53 +924,40 @@ namespace libParser
     }
 
 
-    // prueft, ob der uebergebene Character ein erlaubter HEX-Character ist
-    bool ishex(char Ch)
-    {
-      if (
-    ((Ch >= '0') && (Ch <= '9')) ||
-    ((Ch >= 'A') && (Ch <= 'F')) ||
-    ((Ch >= 'a') && (Ch <= 'f'))
-   )
-        return true;
-      else
-        return false;
-    }
-
 
     // Schreibt Zeichen zurueck
     void putBack()
     {
-      if (m_Pos > 0)
-        m_Pos--;
+      if (_pos > 0)
+        _pos--;
     }
 
     // Fehler melden
     Int32 reportError(tParseError Err)
     {
-      m_Errors++;
-      m_LastError = Err;
+      _errors++;
+      _lastError = Err;
       Error.report(Err);
       return 1;
 
     }
     // zu parsender String (als String)
-    string m_Str = null;
+    string _str = null;
     // zu parsender String als char Buffer
     string m_CharStr = null;
-    int m_Len = 0;             ///< Laenge des Strings, der zu parsen ist
-    int m_Pos = 0;           ///< Aktuelle Position im String
-    AnyType m_NumValue = new AnyType();     ///< num. Wert
-    tToken m_CurrTok = new tToken();         ///< aktuell zu bearbeitendes Token
-    string m_NameString = "";  ///< Variablenname
-    string m_NumString = "";     ///< num. String
+    int _len = 0;             ///< Laenge des Strings, der zu parsen ist
+    int _pos = 0;           ///< Aktuelle Position im String
+    AnyType _numValue = new AnyType();     ///< num. Wert
+    tToken _currTok = new tToken();         ///< aktuell zu bearbeitendes Token
+    string _nameString = "";  ///< Variablenname
+    string _numString = "";     ///< num. String
     // zaehlt die Fehler eines Parsevorganges
-    UInt32 m_Errors;
+    UInt32 _errors;
     // letzter aufgetretener Fehler
-    tParseError m_LastError;
+    tParseError _lastError;
     // Zeiger auf die Variablenliste, die der Parser verwenden soll
-    VarList m_pVarList;
+    VarList _varList;
     // Zeiger auf Liste externer Funktionen
-    Methods m_pMthds;
+    Methods _methods;
   }
 }

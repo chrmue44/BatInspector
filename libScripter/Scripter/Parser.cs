@@ -97,17 +97,19 @@ namespace libScripter
         {
         new OptItem("SET", "<varName> <Value> set variable", 2, fctSetVar),
         new OptItem("CALL", "<scriptName> call script", 1, fctCallScript),
-        new OptItem("ON_ERROR_GOTO", "<label> ON Error goto label", 1, fctOnErrorGoto),
-        new OptItem("GOTO", "<label> goto label", 1, fctGoto),
-        new OptItem("SKIP_IF_EQUAL","<arg1> <arg2> skip next line if arguments are equal", 2, fctSkipIfEqual),
-        new OptItem("SKIP_IF_NE","<arg1> <arg2> skip next line if arguments are not equal", 2, fctSkipIfNotEqual),
+//        new OptItem("ON_ERROR_GOTO", "<label> ON Error goto label", 1, fctOnErrorGoto),
+//        new OptItem("GOTO", "<label> goto label", 1, fctGoto),
+//        new OptItem("SKIP_IF_EQUAL","<arg1> <arg2> skip next line if arguments are equal", 2, fctSkipIfEqual),
+//        new OptItem("SKIP_IF_NE","<arg1> <arg2> skip next line if arguments are not equal", 2, fctSkipIfNotEqual),
         new OptItem("RET_VALUE","<value> set return value of script", 1, fctRetValue),
-        new OptItem("PAUSE", "wait for entry on console", 0, fctPause),
+//        new OptItem("PAUSE", "wait for entry on console", 0, fctPause),
         new OptItem("FOR", "<option> <arg1> <arg2> ... <argn> execute code block", 2, fctFor),
         new OptItem("IF", "<condition>  execute code block if condition = TRUE", 1, fctIf),
         new OptItem("ELSE", "elsefor preceeding if", 0, fctElse),
         new OptItem("END", "end of code block", 0, fctEnd),
-        new OptItem("EVAL", "<Expression> evaluate expression", 1, fctEval)
+//        new OptItem("EVAL", "<Expression> evaluate expression", 1, fctEval),
+        new OptItem("LOG","log <message> <type>", 2, fctLog)
+
       });
 
       _options = new Options(_features, false);
@@ -535,7 +537,7 @@ namespace libScripter
         //    formula.addVariable(v.Name, v.Value);
           string result = formula.parseToString(_actName);
           if (formula.Errors > 0)
-            DebugLog.log("Error parsing formula: '" + _actName + "'", enLogType.ERROR);
+            DebugLog.log("Error parsing formula: '" + _actName + "', result:" + result, enLogType.ERROR);
           args.Add(result);          
         }
         else if(_lastToken == enToken.UNKNOWN)
@@ -567,6 +569,7 @@ namespace libScripter
       return retVal;
     }
 
+    /*
     int fctSkipIfEqual(List<string> pars, out string ErrText)
     {
       int retVal = 0;
@@ -583,6 +586,7 @@ namespace libScripter
         _actLineNr++;
       return retVal;
     }
+    */
 
     int fctSetVar(List<string> pars, out string ErrText)
     {
@@ -609,6 +613,8 @@ namespace libScripter
       _vars.VarList.set(RET_VALUE, retVal);
       return 0;
     }
+
+    /*
     int fctPause(List<string> pars, out string ErrText)
     {
       int retVal = 0;
@@ -616,10 +622,10 @@ namespace libScripter
       Console.ReadLine();
       ErrText = "";
       return retVal;
-    }
+    } */
 
       
-
+    /*
     /// <summary>
     /// goto line number in script
     /// </summary>
@@ -646,7 +652,9 @@ namespace libScripter
       }
       return retVal;
     }
+    */
 
+    /*
     int fctOnErrorGoto(List<string> pars, out string ErrText)
     {
       int retVal = 0;
@@ -664,6 +672,7 @@ namespace libScripter
       }
       return retVal;
     }
+    */
 
     int fctCallScript(List<string> pars, out string ErrText)
     {
@@ -783,6 +792,17 @@ namespace libScripter
         retVal = 1;
       }
       return retVal;
+    }
+
+    int fctLog(List<string> pars, out string ErrText)
+    {
+      ErrText = "";
+      enLogType lType = enLogType.INFO;
+      Expression exp = new Expression(_parser.VarTable.VarList);
+      string res = exp.parseToString(pars[0]);
+      Enum.TryParse(pars[1], out lType);
+      DebugLog.log(res, lType);
+      return 0;
     }
 
     int fctEval(List<string> pars, out string ErrText)

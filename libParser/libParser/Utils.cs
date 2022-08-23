@@ -69,6 +69,18 @@ namespace libParser
         return (c >= '0') && (c <= '9');
     }
 
+    // prueft, ob der uebergebene Character ein erlaubter HEX-Character ist
+    public static bool ishex(char Ch)
+    {
+      if (
+    ((Ch >= '0') && (Ch <= '9')) ||
+    ((Ch >= 'A') && (Ch <= 'F')) ||
+    ((Ch >= 'a') && (Ch <= 'f'))
+   )
+        return true;
+      else
+        return false;
+    }
     public static bool isWhiteSpace(char c)
     {
       return (c == ' ') || (c == '\t');

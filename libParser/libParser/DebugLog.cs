@@ -46,6 +46,8 @@ namespace libParser
 
     static public void log(string msg, enLogType type)
     {
+   //   if (type == enLogType.ERROR)
+   //     type = enLogType.ERROR;
       Inst().logMsg(msg, type);
     }
 

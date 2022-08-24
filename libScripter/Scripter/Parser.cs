@@ -67,17 +67,17 @@ namespace libScripter
     ProcessRunner _proc;
     BaseCommands[] _commands;
     string _wrkDir;
-    string _codeSection;
+    //    string _codeSection;
     CodeBlock _currBlock;
     List<CodeBlock> _blockStack;
-
+    List<MethodList> _methods;
     /// <summary>
     /// constructor
     /// </summary>
     /// <param name="proc">process executer</param>
     /// <param name="delUpd">delegate to update progress bar</param>
     /// <param name="vars">Storage for variables</param>
-    public Parser(ref ProcessRunner proc, BaseCommands[] commands, string wrkDir, 
+    public Parser(ref ProcessRunner proc, BaseCommands[] commands, string wrkDir,
           delegateUpdateProgress delUpd, Variables vars = null) : base(delUpd)
     {
       _parser = this;
@@ -92,26 +92,19 @@ namespace libScripter
         _vars = new Variables();
       else
         _vars = vars;
-
+      _methods = new List<MethodList>();
       _features = new ReadOnlyCollection<OptItem>(new[]
         {
         new OptItem("SET", "<varName> <Value> set variable", 2, fctSetVar),
         new OptItem("CALL", "<scriptName> call script", 1, fctCallScript),
-//        new OptItem("ON_ERROR_GOTO", "<label> ON Error goto label", 1, fctOnErrorGoto),
-//        new OptItem("GOTO", "<label> goto label", 1, fctGoto),
-//        new OptItem("SKIP_IF_EQUAL","<arg1> <arg2> skip next line if arguments are equal", 2, fctSkipIfEqual),
-//        new OptItem("SKIP_IF_NE","<arg1> <arg2> skip next line if arguments are not equal", 2, fctSkipIfNotEqual),
         new OptItem("RET_VALUE","<value> set return value of script", 1, fctRetValue),
-//        new OptItem("PAUSE", "wait for entry on console", 0, fctPause),
         new OptItem("FOR", "<option> <arg1> <arg2> ... <argn> execute code block", 2, fctFor),
         new OptItem("IF", "<condition>  execute code block if condition = TRUE", 1, fctIf),
         new OptItem("ELSE", "elsefor preceeding if", 0, fctElse),
         new OptItem("END", "end of code block", 0, fctEnd),
         new OptItem("WHILE", "<condition>", 1, fctWhile),
         new OptItem("BREAK", "break while or for loop",0,fctBreak),
-//        new OptItem("EVAL", "<Expression> evaluate expression", 1, fctEval),
         new OptItem("LOG","log <message> <type>", 1, fctLog)
-
       });
 
       _options = new Options(_features, false);
@@ -124,17 +117,6 @@ namespace libScripter
     public string CurrentLine { get { return _actLine; } }
     public static int ParsedLines { get; set; }
 
-
-   /* public void startParsingSection(string code)
-    {
-      _codeSection = code;
-      _busy = true;
-      // Create the thread object, passing in the abc.Read() method
-      //via a ThreadStart delegate. This does not start the thread. 
-      _oThread = new Thread(new ThreadStart(this.ParseSection));
-      _oThread.Start();
-    }
-  */
 
     public void StartParsing(string name)
     {
@@ -170,20 +152,13 @@ namespace libScripter
         DebugLog.log(msg, type);
     }
 
-    /*
-    public void ParseSection()
-    {
-      log("start SCRIPT BLOCK", enLogType.INFO);
-      ParseTextSection(_codeSection);
-    }*/
-
     public int ParseScript(string name)
     {
       _scriptName = _wrkDir + "\\" + name;
       ParseScript();
       log("exit SCRIPT: " + name, enLogType.INFO);
       int retVal;
-      int.TryParse(_parser.LastError.Substring(0,1), out retVal);
+      int.TryParse(_parser.LastError.Substring(0, 1), out retVal);
       return retVal;
     }
 
@@ -221,19 +196,6 @@ namespace libScripter
       ParseLines();
     }
 
-    /*
-    /// <summary>
-    /// parse a block of text
-    /// </summary>
-    /// <param name="text"></param>
-    public void ParseTextSection(string text)
-    {
-      if ((text != null) && (text.Length > 1))
-      {
-        _lines = text.Split('\n');
-        ParseLines();
-      }
-    } */
 
     public void ParseLines(string[] lines)
     {
@@ -241,8 +203,12 @@ namespace libScripter
       ParseLines();
     }
 
+    public void addMethodList(MethodList mthd)
+    {
+      _methods.Add(mthd);
+    }
 
-      private void ParseLines()
+    private void ParseLines()
     {
       _vars.VarList.set(ERROR_LEVEL, "0");
       _currBlock = null;
@@ -252,11 +218,11 @@ namespace libScripter
       while (_actLineNr < _lines.Length)
       {
         string result = "0";
-        if ( (_currBlock == null) ||
-             (((_currBlock.Type == enBlockType.FOR_IT) || (_currBlock.Type == enBlockType.WHILE) || 
+        if ((_currBlock == null) ||
+             (((_currBlock.Type == enBlockType.FOR) || (_currBlock.Type == enBlockType.WHILE) ||
             (_currBlock.Type == enBlockType.IF)) && _currBlock.Execute) ||
-            ((_currBlock.Type != enBlockType.FOR_IT) && (_currBlock.Type == enBlockType.WHILE) &&
-            (_currBlock.Type == enBlockType.IF))            
+            ((_currBlock.Type != enBlockType.FOR) && (_currBlock.Type == enBlockType.WHILE) &&
+            (_currBlock.Type == enBlockType.IF))
           )
           result = ParseLine(_lines[_actLineNr]);
         else
@@ -281,6 +247,7 @@ namespace libScripter
       }
       return retVal;
     }
+
     /// <summary>
     /// find all labels in scripts without executing scripts (for 1st pass)
     /// </summary>
@@ -401,7 +368,7 @@ namespace libScripter
         _lastToken = enToken.NAME;
       }
 
-      else if(c == '=')
+      else if (c == '=')
       {
         _actPos++;
         c = _actLine[_actPos];
@@ -418,7 +385,7 @@ namespace libScripter
               countBrace++;
             else if (c == ')')
               countBrace--;
-            if(countBrace == 0)
+            if (countBrace == 0)
             {
               ReplaceVariables();
               _lastToken = enToken.FORMULA;
@@ -449,14 +416,14 @@ namespace libScripter
       {
         if (_currBlock == _blockStack.Last())
         {
-            switch (_currBlock.Type)
-            {
-              case enBlockType.IF:
-                bool ok = checkForElse(line) || checkForEnd(line);
-                if (ok)
-                  retVal = ParseLine(line);
-                break;
-            }
+          switch (_currBlock.Type)
+          {
+            case enBlockType.IF:
+              bool ok = checkForElse(line) || checkForEnd(line);
+              if (ok)
+                retVal = ParseLine(line);
+              break;
+          }
         }
         else
         {
@@ -476,9 +443,9 @@ namespace libScripter
       if (GetToken() == enToken.NAME)
       {
         if (_actName == "FOR")
-          retVal = new ForCsvCodeBlock(null, _actLineNr);
+          retVal = new ForItCodeBlock(null, _actLineNr, null);
         if (_actName == "IF")
-          retVal = new IfCodeBlock("",_actLineNr);
+          retVal = new IfCodeBlock("", _actLineNr);
         if (_actName == "WHILE")
           retVal = new WhileCodeBlock("", _actLineNr);
       }
@@ -531,74 +498,73 @@ namespace libScripter
         return "0";
       if (_lastToken == enToken.LABEL)
         return "0";
-      if (_lastToken != enToken.NAME)
-        return "1";
-      cmd = _actName; //.Replace("-","");
-      args.Add(cmd);
-      _logLine = _actLine;
-
-      do
+      if (_lastToken == enToken.EOL)
+        return "0";
+      if (_lastToken == enToken.FORMULA)
       {
-        GetToken();
-        if (_lastToken == enToken.NAME)
-          args.Add(_actName);
-        else if(_lastToken == enToken.FORMULA)
-        {
-          Expression formula = new Expression(_vars.VarList);
-        //  foreach (VariableItem v in _vars.VarList)
-        //    formula.addVariable(v.Name, v.Value);
-          string result = formula.parseToString(_actName);
-          if (formula.Errors > 0)
-            DebugLog.log("Error parsing formula: '" + _actName + "', result:" + result, enLogType.ERROR);
-          args.Add(result);          
-        }
-        else if(_lastToken == enToken.UNKNOWN)
-        {
-          retVal = "1 unknown token";
-          break;
-        }
-      } while (_lastToken != enToken.EOL);
-
-      if (retVal == "0")
+        Expression formula = new Expression(_vars.VarList);
+        foreach (MethodList m in _methods)
+          formula.addMethodList(m);
+        retVal = formula.parseToString(_actName);
+        if (formula.Errors > 0)
+          DebugLog.log("Error parsing formula: '" + _actName + "', result:" + retVal, enLogType.ERROR);
+        if (GetToken() != enToken.EOL)
+          retVal = "commannds after formula not allowed";
+        return retVal;
+      }
+      else if (_lastToken == enToken.NAME)
       {
-        string[] argArr = args.ToArray<string>();
-        // try all registered commands
-        for (int i = 0; i < _commands.Length; i++)
+        cmd = _actName; //.Replace("-","");
+        args.Add(cmd);
+        _logLine = _actLine;
+
+        do
         {
-          retVal = _commands[i].run(argArr, this);
-          if (retVal.IndexOf("unknown command") < 0)
+          GetToken();
+          if (_lastToken == enToken.NAME)
+            args.Add(_actName);
+          else if (_lastToken == enToken.FORMULA)
+          {
+            Expression formula = new Expression(_vars.VarList);
+            foreach (MethodList m in _methods)
+              formula.addMethodList(m);
+            string result = formula.parseToString(_actName);
+            if (formula.Errors > 0)
+              DebugLog.log("Error parsing formula: '" + _actName + "', result:" + result, enLogType.ERROR);
+            args.Add(result);
+          }
+          else if (_lastToken == enToken.UNKNOWN)
+          {
+            retVal = "1 unknown token";
             break;
-        }
+          }
+        } while (_lastToken != enToken.EOL);
 
-        //try script control commands
-        if (retVal.IndexOf("unknown command") >= 0)
+        if (retVal == "0")
         {
-          retVal = run(argArr, this);
+          string[] argArr = args.ToArray<string>();
+          // try all registered commands
+          for (int i = 0; i < _commands.Length; i++)
+          {
+            retVal = _commands[i].run(argArr, this);
+            if (retVal.IndexOf("unknown command") < 0)
+              break;
+          }
+
+          //try script control commands
+          if (retVal.IndexOf("unknown command") >= 0)
+          {
+            retVal = run(argArr, this);
+          }
         }
       }
+      else
+        retVal = "1";
       if (retVal != "0")
         DebugLog.log(_actLine + ": " + retVal, enLogType.ERROR);
       return retVal;
     }
 
-    /*
-    int fctSkipIfEqual(List<string> pars, out string ErrText)
-    {
-      int retVal = 0;
-      ErrText = "";
-      if (pars[0] == pars[1])
-        _actLineNr++;
-      return retVal;
-    }
-
-    int fctSkipIfNotEqual(List<string> pars, out string ErrText) {
-      int retVal = 0;
-      ErrText = "";
-      if (pars[0] != pars[1])
-        _actLineNr++;
-      return retVal;
-    }
-    */
 
     int fctSetVar(List<string> pars, out string ErrText)
     {
@@ -626,71 +592,14 @@ namespace libScripter
       return 0;
     }
 
-    /*
-    int fctPause(List<string> pars, out string ErrText)
-    {
-      int retVal = 0;
-      Console.WriteLine("tye any key to continue");
-      Console.ReadLine();
-      ErrText = "";
-      return retVal;
-    } */
-
-      
-    /*
-    /// <summary>
-    /// goto line number in script
-    /// </summary>
-    /// <param name="label"></param>
-    /// <returns>error code</returns>
-      int fctGoto(List<string> pars, out string ErrText)
-    {
-      int retVal = 0;
-      ErrText = "";
-      bool found = false;
-      foreach (stLabelItem lab in _labels)
-      {
-        if (lab.Name == pars[0])
-        {
-          found = true;
-          _actLineNr = lab.LineNr - 1;  //decrement by 1 because line nr will be incremented automatically after ParseLine()
-          break;
-        }
-      }
-      if (!found)
-      {
-        retVal = 1;
-        ErrText = "1 Label '" + pars[0] + "' not found";
-      }
-      return retVal;
-    }
-    */
-
-    /*
-    int fctOnErrorGoto(List<string> pars, out string ErrText)
-    {
-      int retVal = 0;
-      ErrText = "";
-      VariableItem err = _vars.Find(ERROR_LEVEL);
-      if (err != null)
-      {
-        if (err.Value != "0")
-          retVal = fctGoto(pars, out ErrText);
-      }
-      else
-      {
-        retVal = 1;
-        ErrText = "1 variable '" + ERROR_LEVEL + "' not defined!";
-      }
-      return retVal;
-    }
-    */
 
     int fctCallScript(List<string> pars, out string ErrText)
     {
       int retVal = 0;
       ErrText = "";
       Parser p = new Parser(ref _proc, _commands, _wrkDir, _updateProgress, _vars);
+      foreach (MethodList m in _methods)
+        p.addMethodList(m);
       p.ParseScript(pars[0]);
       while (p.Busy)
         Thread.Sleep(10);
@@ -702,48 +611,19 @@ namespace libScripter
     {
       int retVal = 0;
       ErrText = "";
-      switch (pars[0])
+      if ((_currBlock is ForItCodeBlock) && (_currBlock.StartLine == _actLineNr))
       {
-        case "CSV_ROWS":
-          if ((_currBlock is ForCsvCodeBlock) && (_currBlock.StartLine == _actLineNr))
-          {
-            _currBlock.loopStart(pars[1]);
-          }
-          else
-          {
-            List<string> arg = new List<string>();
-            for (int i = 1; i < pars.Count; i++)
-              arg.Add(pars[i]);
-            ForCsvCodeBlock blk = new ForCsvCodeBlock(arg, _actLineNr);
-            ErrText = blk.ErrText;
-            if (ErrText == "")
-            {
-              _currBlock = blk;
-              _blockStack.Add(_currBlock);
-            }
-          }
-          break;
-
-        case "ITERATOR":
-          if ((_currBlock is ForItCodeBlock) && (_currBlock.StartLine == _actLineNr))
-          {
-            _currBlock.loopStart(pars[1]);
-          }
-          else
-          {
-            List<string> arg = new List<string>();
-            for (int i = 1; i < pars.Count; i++)
-              arg.Add(pars[i]);
-            ForItCodeBlock blk = new ForItCodeBlock(arg, _actLineNr, VarTable);
-            ErrText = blk.ErrText;
-            if (ErrText == "")
-            {
-              _currBlock = blk;
-              _blockStack.Add(_currBlock);
-            }
-          }
-          break;
-
+        _currBlock.loopStart(pars[0]);
+      }
+      else
+      {
+        ForItCodeBlock blk = new ForItCodeBlock(pars, _actLineNr, VarTable);
+        ErrText = blk.ErrText;
+        if (ErrText == "")
+        {
+          _currBlock = blk;
+          _blockStack.Add(_currBlock);
+        }
       }
       return retVal;
     }
@@ -787,15 +667,15 @@ namespace libScripter
     {
       int retVal = 0;
       ErrText = "";
-      int last = _blockStack.Count;      
-      for(int idx = last - 1; idx >= 0; idx--)
+      int last = _blockStack.Count;
+      for (int idx = last - 1; idx >= 0; idx--)
       {
-        if ((_blockStack[idx].Type == enBlockType.FOR_IT) ||
+        if ((_blockStack[idx].Type == enBlockType.FOR) ||
            (_blockStack[idx].Type == enBlockType.WHILE))
         {
           _blockStack[idx].Execute = false;
           break;
-         }
+        }
       }
       return retVal;
     }
@@ -831,7 +711,7 @@ namespace libScripter
     {
       int retVal = 0;
       ErrText = "";
-      if ((_currBlock != null) &&(_currBlock.Type == enBlockType.IF))
+      if ((_currBlock != null) && (_currBlock.Type == enBlockType.IF))
       {
         IfCodeBlock blk = _currBlock as IfCodeBlock;
         blk.Execute = !blk.Execute;
@@ -848,11 +728,13 @@ namespace libScripter
     {
       ErrText = "";
       enLogType lType = enLogType.INFO;
-      Expression exp = new Expression(_parser.VarTable.VarList);
-      string res = exp.parseToString(pars[0]);
+/*      Expression exp = new Expression(_parser.VarTable.VarList);
+      foreach (MethodList m in _methods)
+        exp.addMethodList(m);
+      string res = exp.parseToString(pars[0]); */
       if (pars.Count > 1)
         Enum.TryParse(pars[1], out lType);
-      DebugLog.log(res, lType);
+      DebugLog.log(pars[0], lType);
       return 0;
     }
 

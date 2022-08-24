@@ -1,0 +1,25 @@
+# Test script for while loop
+# variables 'b' and 'Limit' have to be set externally
+
+SET handle =(openCsv("testcsv.csv", 1))
+SET c23 =(getCell(handle, 2, "Col03"))
+SET c43 =(getCell(handle, 4, "Col03"))
+SET c55 =(getCell(handle, 5, "Col05"))
+SET c62 =(getCell(handle, 6, "Col02"))
+
+LOG =("C23: " + c23)
+LOG =("C43: " + c43)
+LOG =("C55: " + c55)
+LOG =("C62: " + c62)
+
+=(setCell(handle, 2, "Col03", "123"))
+SET c123 =(getCell(handle, 2, "Col03"))
+LOG  =("C123: " + c123)
+=(setCell(handle, 2, "Col03", "23"))
+LOG  =("C23: " + getCell(handle, 2, "Col03"))
+
+SET RowCnt =(getRowCount(handle))
+FOR i 2 =(RowCnt)
+  LOG =("Row " + i + ": " + getCell(handle, i, "Col03"))
+END
+=(closeCsv(handle))

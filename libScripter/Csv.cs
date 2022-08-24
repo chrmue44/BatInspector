@@ -24,15 +24,20 @@ namespace libScripter
   {
     List<List<string>> _cells;
     string _fileName;
-    char _separator = ';';
+    string _separator = ";";
     int _colCnt = 0;
+    bool _withHdr = false;
+    Dictionary<string, int> _cols;
 
     public int RowCnt {  get { return _cells.Count; } }
     public int ColCnt { get { return _colCnt; } }
 
+    public string FileName {  get { return _fileName; } }
+
     public Csv()
     {
       _cells = new List<List<string>>();
+      _cols = new Dictionary<string, int>();
     }
 
     /// <summary>
@@ -42,11 +47,12 @@ namespace libScripter
     /// <param name="file">fiel name</param>
     /// <param name="separator">separator for cells in lines</param>
     /// <returns>0: ok, 1:error</returns>
-    public int read(string file, char separator = ';')
+    public int read(string file, string separator = ";", bool withHeader = false)
     {
       int retVal = 0;
       try
       {
+        _withHdr = withHeader;
         _separator = separator;
         if (File.Exists(file))
         {
@@ -55,12 +61,14 @@ namespace libScripter
           _cells.Clear();
           foreach (string line in lines)
           {
-            string[] s = line.Split(separator);
+            string[] s = line.Split(separator[0]);
             List<string> row = s.ToList();
             _cells.Add(row);
             if (_colCnt < s.Length)
               _colCnt = s.Length;
           }
+          if(_withHdr)
+            initColNames(lines[0]);
           log("file " + file + " opened successfully", enLogType.DEBUG);
         }
         else
@@ -74,6 +82,20 @@ namespace libScripter
         log("could not open file " + file + ex.ToString(), enLogType.ERROR);
         retVal = 2;
       }
+      return retVal;
+    }
+
+    public int write()
+    {
+      int retVal = 0;
+      List<string> lines = new List<string>();
+      foreach(List<string> row in _cells)
+      {
+        string[] rowArr = row.ToArray();
+        string line = string.Join(_separator, rowArr);
+        lines.Add(line);
+      }
+      File.WriteAllLines(_fileName, lines);
       return retVal;
     }
 
@@ -132,6 +154,12 @@ namespace libScripter
       return retVal;
     }
 
+    public string getCell(int row, string colName)
+    {
+      int col = getColNr(colName);
+      return getCell(row, col);
+    }
+
     /// <summary>
     /// get call value as string
     /// </summary>
@@ -155,6 +183,12 @@ namespace libScripter
       else
         log("getCell():row " + row.ToString() + " does not exist", enLogType.ERROR);
       return retVal;
+    }
+
+    public double getCellAsDouble(int row, string colName)
+    {
+      int col = getColNr(colName);
+      return getCellAsDouble(row, col);
     }
 
     /// <summary>
@@ -182,6 +216,12 @@ namespace libScripter
     }
 
 
+    public int getCellAsInt(int row, string colName)
+    {
+      int col = getColNr(colName);
+      return getCellAsInt(row, col);
+    }
+
     /// <summary>
     /// get call value as integer value if possible
     /// </summary>
@@ -204,6 +244,12 @@ namespace libScripter
         }
       }
       return retVal;
+    }
+
+    public void setCell(int row, string colName, string value)
+    {
+      int col = getColNr(colName);
+      setCell(row, col, value);
     }
 
     /// <summary>
@@ -340,6 +386,27 @@ namespace libScripter
       }
       else
         log("removeRow: invalid row nr:" + row.ToString(), enLogType.ERROR);
+    }
+
+    int getColNr(string colName)
+    {
+      int retVal = -1;
+      try
+      {
+        if (_withHdr)
+          retVal = _cols[colName];
+        else
+          int.TryParse(colName, out retVal);
+      }
+      catch { }
+      return retVal;
+    }
+
+    void initColNames(string header)
+    {
+      string[] cols = header.Split(_separator[0]);
+      for (int i = 0; i < cols.Length; i++)
+        _cols.Add(cols[i], i + 1);
     }
 
     void log(string msg, enLogType type)

@@ -63,7 +63,7 @@ namespace libScripter
 
   public class Options
   {
-    List<OptItem> _items;
+    OptItem _execCmd;
     IList<OptItem> _features;
     bool _isCmdLineOption;
     public string ErrorText { get; set; }
@@ -74,7 +74,7 @@ namespace libScripter
     public Options(IList<OptItem> features, bool isCommandLineOption = true)
     {
       _isCmdLineOption = isCommandLineOption;
-      _items = new List<OptItem>();
+      _execCmd = null;
       _features = features;
     }
 
@@ -88,7 +88,7 @@ namespace libScripter
     {
       enErrOption retVal = enErrOption.OK;
       int i = 0;
-      _items.Clear();
+      _execCmd = null;
       ErrorText = "";
       bool found = false;
       while (i < args.Length) 
@@ -112,9 +112,6 @@ namespace libScripter
               }
             }
 
-  //          DebugLog.log(optItem.Option);
-  //            foreach(string par in optItem.Params)
-  //            DebugLog.log("Parameter: " + par);
             if ((args.Length - 1) < feat.ParamCount)
             {
               ErrorText = "not enough parameters for command " + feat.Option;
@@ -123,7 +120,7 @@ namespace libScripter
             else
             {
               ErrorText = "";
-              _items.Add(optItem);
+              _execCmd = optItem;
             }
           }
           if (i >= args.Length)
@@ -145,14 +142,11 @@ namespace libScripter
     public enErrOption execute()
     {
       enErrOption retVal = enErrOption.OK;
-      foreach (OptItem item in _items)
-      {
-        string errText;
-        int ret = item.Func(item.Params, out errText);
-        ErrorText = errText;
-        if (ret != 0)
-          retVal = enErrOption.FUNC_ERR;
-      }
+      string errText;
+      int ret = _execCmd.Func(_execCmd.Params, out errText);
+      ErrorText = errText;
+      if (ret != 0)
+        retVal = enErrOption.FUNC_ERR;
       return retVal;
     }
   }

@@ -25,7 +25,6 @@ namespace BatInspector
       _model = model;
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
-        new OptItem("Test", "test", 1, fctTest),
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
         new OptItem("initSpecInfos","initialize species infos in settings",0,fctInitSpecInfos),
       }); ; 
@@ -33,11 +32,6 @@ namespace BatInspector
       _options = new Options(_features, false);
     }
 
-    int fctTest(List<string> pars, out string ErrText)
-    {
-      ErrText = "";
-      return 0;
-    }
 
     int fctAdjustReport(List<string> pars, out string ErrText)
     {

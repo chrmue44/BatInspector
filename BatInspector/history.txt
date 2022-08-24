@@ -14,6 +14,8 @@ TODO
 - more script commands
 
 DONE
+- script commands FOR ... END, WHILE ... END
+- script commands to work with CSV files
 - icon and form to start and edit scripts
 - scripting engine
 - remove deleted files from report

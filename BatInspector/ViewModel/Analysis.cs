@@ -302,7 +302,6 @@ namespace BatInspector
       return retVal;
     }
 
-  
 
     public void removeFile(string reportName, string wavName)
     {

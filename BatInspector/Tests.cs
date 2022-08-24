@@ -51,8 +51,21 @@ namespace BatInspector
       testIf();
       testWhile();
       testParser();
+      testCsvFuncs();
       if (_errors == 0)
         DebugLog.log("Tests passed", enLogType.INFO);
+    }
+
+    private void testCsvFuncs()
+    {
+      string wrkDir = _model.Settings.ScriptDir;
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      scr.RunScript("test_csv.scr", false);
+      assert(scr.getVariable("c23"), "23");
+      assert(scr.getVariable("c123"), "123");
+      assert(scr.getVariable("c43"), "43");
+      assert(scr.getVariable("c55"), "55");
+      assert(scr.getVariable("c62"), "62");
     }
 
     private void testWhile()
@@ -136,7 +149,7 @@ namespace BatInspector
     {
       if( a != exp)
       {
-        DebugLog.log("error", enLogType.ERROR);
+        DebugLog.log("assertion error: " + exp + " != " + a, enLogType.ERROR);
         _errors++;
       }
     }

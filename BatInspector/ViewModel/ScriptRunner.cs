@@ -12,6 +12,7 @@ namespace BatInspector
     Parser _parser;
     BaseCommands[] _cmds;
     string _wrkDir;
+    MthdListScript _mthdListScript;
 
     public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
     {
@@ -24,10 +25,11 @@ namespace BatInspector
       os.WorkDir = wrkDir;
       _wrkDir = wrkDir;
       _cmds[1] = os;
-
+      _mthdListScript = new MthdListScript(model, wrkDir);
       _parser = new Parser(ref _proc, _cmds, wrkDir, _updProgress);
-
+      _parser.addMethodList(_mthdListScript);
     }
+
     public bool IsBusy {  get { return _parser.Busy; } }
 
     public void execCmd(string cmd)

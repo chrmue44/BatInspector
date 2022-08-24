@@ -145,6 +145,7 @@ namespace BatInspector
         it.IsForAllCalls = p.isForAllCalls;
         _filter.Items.Add(it);
       }
+      _scripter = new ScriptRunner(ref _proc, _settings.ScriptDir, null, this);
     }
 
     public void saveSettings()
@@ -197,16 +198,13 @@ namespace BatInspector
 
     public void executeCmd(string cmd)
     {
-      if (_scripter != null)
-        _scripter.execCmd(cmd);
+      _scripter.execCmd(cmd);
     }
 
     public int executeScript(string path)
     {
       int retVal = 1;
       _scriptName = path;
-      if (_scripter == null)
-        _scripter = new ScriptRunner(ref _proc, "", null, this);
       retVal = _scripter.RunScript(path);
       return retVal;
     }

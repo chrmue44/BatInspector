@@ -1,0 +1,5 @@
+FOR i 1 5
+  FOR j 1 5
+    LOG =("i: " + i + ", j:" + j)
+  END
+END

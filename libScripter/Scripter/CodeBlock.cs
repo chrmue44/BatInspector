@@ -1,16 +1,24 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace libScripter
 {
 
   public enum enBlockType
   {
-    FOR_CSV_ROWS,
-    FOR_IT,
+    FOR,
     IF,
     WHILE
   }
@@ -55,84 +63,6 @@ namespace libScripter
     }
   }
 
-  public class ForCsvCodeBlock : CodeBlock
-  {
-    int _actRow;
-    int _endRow;
-    Csv _csv;
-    List<ColName> _cols;
-
-
-    public ForCsvCodeBlock(List<string> args, int startLine) 
-                  : base(enBlockType.FOR_CSV_ROWS, args, startLine)
-    {
-      if (args != null)
-      {
-        _errText = "";
-        if (_args.Count > 0)
-        {
-          _csv = new Csv();
-          _cols = new List<ColName>();
-          int ret = _csv.read(_args[0]);
-          if (ret == 0)
-          {
-            _actRow = 2;
-            _endRow = _csv.RowCnt;
-            initColNames();
-          }
-          else
-            _errText = "FOR CSV_ROWS: error opening file: " + _args[0];
-        }
-        else
-          _errText = "FOR: CSV_ROW : missing argument";
-      }
-    }
-
-    public string getCell(string name)
-    {
-      string retVal = "";
-      if (_csv != null)
-      {
-        foreach (ColName col in _cols)
-        {
-          if (name == col.Name)
-          {
-            retVal = _csv.getCell(_actRow, col.ColNr);
-            break;
-          }
-        }
-      }
-      else
-        _errText = "Error reading cell: " + name;
-      return retVal;
-    }
-
-    public override void loopStart(string condition)
-    {
-    }
-
-
-    public override bool loopEnd()
-    {
-      bool retVal = false;
-      if (_actRow < _endRow)
-      {
-        _actRow++;
-        retVal = true;
-      }
-      return retVal;
-    }
-
-    private void initColNames()
-    {
-      for(int i = 1; i <= _csv.ColCnt; i++)
-      {
-        ColName col = new ColName(_csv.getCell(1, i), i);
-        _cols.Add(col);        
-      }
-    }
-  }
-
   public class ForItCodeBlock : CodeBlock
   {
     int _iterator;
@@ -142,7 +72,7 @@ namespace libScripter
     Variables _vars;
 
     public ForItCodeBlock(List<string> args, int startLine, Variables vars) 
-                           : base(enBlockType.FOR_IT, args, startLine)
+                           : base(enBlockType.FOR, args, startLine)
     {     
       _vars = vars;
       if (_args.Count > 2)

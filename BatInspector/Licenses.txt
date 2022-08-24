@@ -62,3 +62,7 @@ https://www.flaticon.com/free-icons/report Report icons created by Good Ware  Fl
 
 script.png
 https://www.flaticon.com/free-icons/script Script icons created by uicon.mee - Flaticon
+
+cancel_77947.png:
+https://icon-icons.com/icon/cancel/77947#48
+License: https://creativecommons.org/licenses/by/4.0/

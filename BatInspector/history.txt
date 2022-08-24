@@ -12,6 +12,7 @@ TODO
 - more than one model
 - prediction from call parameters (not wav)
 - more script commands
+- stop button to kill running script
 
 DONE
 - script commands FOR ... END, WHILE ... END

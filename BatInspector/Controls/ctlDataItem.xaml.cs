@@ -36,7 +36,7 @@ namespace BatInspector.Controls
 
     public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, bool edit = false, dlgValueChanged dlgValChange = null)
     {
-      _lbl.Content= label;
+      _lbl.Text = label;
       _lbl.Focusable = false;
       _type = type;
       _decimals = decimals;
@@ -55,7 +55,7 @@ namespace BatInspector.Controls
         _tb.Text = val.ToString();
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
     }
 
     public void setValue (int val)
@@ -66,7 +66,7 @@ namespace BatInspector.Controls
         _tb.Text = val.ToString();
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
     }
     public void setValue(double val)
     {
@@ -79,7 +79,7 @@ namespace BatInspector.Controls
         _tb.Text = val.ToString(format);
       }
       else
-        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
 
     }
     public void setValue(string val)
@@ -90,7 +90,7 @@ namespace BatInspector.Controls
         _valString = val;
       }
       else
-        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
 
     }
 

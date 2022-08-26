@@ -60,6 +60,218 @@ namespace BatInspector
       addMethod(new FuncTabItem("getRowCount", getRowCount));
       _scriptHelpTab.Add(new HelpTabItem("getRowCount", "get row count of a previously opened csv file",
                       new List<string> { "1: handle"}, new List<string> { "1: nr of rows (including header)" }));
+      addMethod(new FuncTabItem("getPrjFileCount", getPrjFileCount));
+      _scriptHelpTab.Add(new HelpTabItem("getPrjFileCount", "get row file count of open project",
+                      new List<string> { "" }, new List<string> { "1: nr of files in project" }));
+      addMethod(new FuncTabItem("getCallCount", getCallCount));
+      _scriptHelpTab.Add(new HelpTabItem("getCallCount", "get number of calls for spec. file in open project",
+                      new List<string> { "1: file index (0..n)" }, new List<string> { "1: nr of calls for selected file" }));
+      addMethod(new FuncTabItem("getCallInfo", getCallInfo));
+      _scriptHelpTab.Add(new HelpTabItem("getCallCount", "get number of calls for spec. file in open project",
+                      new List<string> { "1: file index (0..n)", "2: call index (0..n)" }, new List<string> { "1: species auto", "2:species man" }));
+      addMethod(new FuncTabItem("getNrOfSpecies", getNrOfSpecies));
+      _scriptHelpTab.Add(new HelpTabItem("getNrOfSpecies", "get number of auto detected species for spec. file in open project",
+                      new List<string> { "1: file index (0..n)" }, new List<string> { "1: nr of species in recording" }));
+      addMethod(new FuncTabItem("getRankSpecies", getRankSpecies));
+      _scriptHelpTab.Add(new HelpTabItem("getRankSpecies", "get the species name for the specified rank in specified file in open project",
+                      new List<string> { "1: file index (0..n)","2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
+      addMethod(new FuncTabItem("getRankCount", getRankCount));
+      _scriptHelpTab.Add(new HelpTabItem("getRankCount", "get the number of calls of a species for the specified rank in specified file in open project",
+                      new List<string> { "1: file index (0..n)", "2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
+    }
+
+    static tParseError getPrjFileCount(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        int nr = _inst._model.Prj.Records.Length;
+        result.assignInt64(nr);
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    static tParseError getCallCount(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 1)
+        {
+          int maxIdx = _inst._model.Analysis.Files.Count;
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          int idx = (int)argv[0].getUint64();
+          if (idx < maxIdx)
+          {
+            int nr = _inst._model.Analysis.Files[idx].Calls.Count;
+            result.assignInt64(nr);
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    static tParseError getRankSpecies(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 1)
+        {
+          int maxIdx = _inst._model.Analysis.Files.Count;
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_UINT64);
+          int idx = (int)argv[0].getUint64();
+          int rank = (int)argv[1].getUint64();
+          if (idx < maxIdx)
+          {
+            int cnt = _inst._model.Analysis.Files[idx].getNrOfAutoSpecies();
+            if ((rank > 0) && (rank <= cnt))
+            {
+              KeyValuePair<string, int> spec = _inst._model.Analysis.Files[idx].getSpecies(rank);
+              result.assign(spec.Key);
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    static tParseError getRankCount(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 1)
+        {
+          int maxIdx = _inst._model.Analysis.Files.Count;
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_UINT64);
+          int idx = (int)argv[0].getUint64();
+          int rank = (int)argv[1].getUint64();
+          if (idx < maxIdx)
+          {
+            int cnt = _inst._model.Analysis.Files[idx].getNrOfAutoSpecies();
+            if ((rank > 0) && (rank <= cnt))
+            {
+              KeyValuePair<string, int> spec = _inst._model.Analysis.Files[idx].getSpecies(rank);
+              result.assign(spec.Value);
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    static tParseError getNrOfSpecies(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 1)
+        {
+          int maxIdx = _inst._model.Analysis.Files.Count;
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          int idx = (int)argv[0].getUint64();
+          if (idx < maxIdx)
+          {
+            int nr = _inst._model.Analysis.Files[idx].getNrOfAutoSpecies();
+            result.assignInt64(nr);
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    enum enCallInfo
+    {
+      SPEC_AUTO,
+      SPEC_MAN
+    }
+
+    static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 3)
+        {
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_UINT64);
+          argv[2].changeType(AnyType.tType.RT_STR);
+          int idxF = (int)argv[0].getUint64();
+          int idxC = (int)argv[1].getUint64();
+          int maxIdxF = _inst._model.Analysis.Files.Count;
+          if(idxF < maxIdxF)
+          { 
+            int maxIdxC = _inst._model.Analysis.Files[idxF].Calls.Count;
+            if (idxC < maxIdxC)
+            {
+              enCallInfo callInfo;
+              bool ok = Enum.TryParse(argv[2].getString(), out callInfo);
+              if (ok)
+              {
+                switch (callInfo)
+                {
+                  case enCallInfo.SPEC_AUTO:
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesAuto);
+                    break;
+                  case enCallInfo.SPEC_MAN:
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan);
+                    break;
+                }
+              }
+              else
+                err = tParseError.ARG3_OUT_OF_RANGE;
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
     }
 
     static tParseError openCsv(List<AnyType> argv, out AnyType result)

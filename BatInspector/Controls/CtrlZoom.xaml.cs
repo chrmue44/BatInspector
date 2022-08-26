@@ -69,21 +69,23 @@ namespace BatInspector.Controls
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
-      _ctlSelectCall.setup(MyResources.CtlWavCall +" Nr.", 0, 60, 60, ctlSelCallChanged);
-      _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
-      _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
-      _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
-      _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlSnr.setup(MyResources.Snr +": ", enDataType.DOUBLE, 1, 130);
-      _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
+      _ctlSelectCall.setup(MyResources.CtlWavCall +" Nr.", 0, 50, 40, ctlSelCallChanged);
+      _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130, 50);
+      _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130, 50);
+      _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130, 50);
+      _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130, 50);
+      _ctlSnr.setup(MyResources.Snr +": ", enDataType.DOUBLE, 1, 130, 50);
+      _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130, 50);
+      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 130, 50);
+      _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, enDataType.STRING, 1, 130, 50);
 
-      _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 50, 50, calcMeanValues);
-      _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 50, 50, calcMeanValues);
-      _ctlMeanDist.setup(MyResources.CtlZoomDistToPrev, enDataType.DOUBLE, 1, 130);
-      _ctlMeanDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlMeanFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
-      _ctlMeanFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
-      _ctlMeanFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
+      _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 40, 40, calcMeanValues);
+      _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 40, 40, calcMeanValues);
+      _ctlMeanDist.setup(MyResources.CtlZoomDistToPrev, enDataType.DOUBLE, 1, 130, 50);
+      _ctlMeanDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130, 50);
+      _ctlMeanFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130, 50);
+      _ctlMeanFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130, 50);
+      _ctlMeanFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130, 50);
       
 
       int wt = 140;
@@ -623,6 +625,8 @@ namespace BatInspector.Controls
         _ctlDuration.setValue(_analysis.Calls[idx].Duration);
         _ctlSnr.setValue(_analysis.Calls[idx].Snr);
         _ctlDist.setValue(_analysis.Calls[idx].DistToPrev);
+        _ctlSpecAuto.setValue(_analysis.Calls[idx].SpeciesAuto);
+        _ctlSpecMan.setValue(_analysis.Calls[idx].SpeciesMan);
         if (idx > 0)
         {
         }

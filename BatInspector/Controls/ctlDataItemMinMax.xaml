@@ -9,8 +9,8 @@
   <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
     <Label Name="_lbl" HorizontalAlignment="Right" VerticalAlignment="Top" Width = "80">.</Label>
     <Label Name="_lblmin" HorizontalAlignment="Right" VerticalAlignment="Top" Width = "40">min.:</Label>
-    <TextBox Name= "_tbMin" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" Width = "80" Height ="25" TextChanged="_tb_TextChangedMin">-</TextBox>
+    <TextBox Name= "_tbMin" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" Width = "80" Height ="22" TextChanged="_tb_TextChangedMin">-</TextBox>
     <Label Name="_lblmax" HorizontalAlignment="Right" VerticalAlignment="Top" Width = "40">max.:</Label>
-    <TextBox Name= "_tbMax" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" Width = "80" Height ="25" TextChanged="_tb_TextChangedMax">-</TextBox>
+    <TextBox Name= "_tbMax" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" Width = "80" Height ="22" TextChanged="_tb_TextChangedMax">-</TextBox>
   </StackPanel>
 </UserControl>

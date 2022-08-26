@@ -678,4 +678,13 @@
   <data name="BtnRun" xml:space="preserve">
     <value>Run</value>
   </data>
+  <data name="CtlZoomSpeciesAuto" xml:space="preserve">
+    <value>Species Auto</value>
+  </data>
+  <data name="CtlZoomSpeciesMan" xml:space="preserve">
+    <value>Species Manual</value>
+  </data>
+  <data name="MainToolCancelScript" xml:space="preserve">
+    <value>Cancel running script</value>
+  </data>
 </root>

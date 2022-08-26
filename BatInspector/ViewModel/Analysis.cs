@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using libParser;
 using libScripter;
 
@@ -107,6 +108,8 @@ namespace BatInspector
     Cols _cols;
 
     object _fileLock = new object();
+
+    public List<AnalysisFile> Files { get { return _list; } }
 
     List<AnalysisFile> _list;
     List<ReportItem> _report;
@@ -233,7 +236,7 @@ namespace BatInspector
           double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
           AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
                                                probability, speciesMan, snr, distToPrev);
-          file.Calls.Add(call);
+          file.addCall(call);
 
           ReportItem rItem = new ReportItem();
           rItem.FileName = fName;
@@ -548,17 +551,21 @@ namespace BatInspector
       }
     }
 
+    Dictionary<string, int> _specFound;
+
     public List<AnalysisCall> Calls { get { return _calls; } }
 
     public AnalysisFile()
     {
       _calls = new List<AnalysisCall>();
+      _specFound = new Dictionary<string, int>();
     }
 
     public AnalysisFile(string name)
     {
       FileName = name;
       _calls = new List<AnalysisCall>();
+      _specFound = new Dictionary<string, int>();
     }
 
     /// <summary>
@@ -612,6 +619,31 @@ namespace BatInspector
           break;
         }
       }
+      return retVal;
+    }
+
+    public void addCall(AnalysisCall call)
+    {
+      _calls.Add(call);
+      if (_specFound.ContainsKey(call.SpeciesAuto))
+        _specFound[call.SpeciesAuto] += 1;
+      else
+        _specFound.Add(call.SpeciesAuto, 1);
+    }
+
+    public int getNrOfAutoSpecies()
+    {
+      return _specFound.Count;
+    }
+
+    public KeyValuePair<string,int> getSpecies(int rank)
+    {
+      KeyValuePair<string, int> retVal = new KeyValuePair<string, int>("????", 0);
+      var myList = _specFound.ToList();
+      myList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+      int len = myList.Count;
+      if (len >= rank)
+        retVal = myList[len - rank];
       return retVal;
     }
   }

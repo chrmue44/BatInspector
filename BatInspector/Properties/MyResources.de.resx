@@ -678,4 +678,13 @@
   <data name="BtnRun" xml:space="preserve">
     <value>Ausführen</value>
   </data>
+  <data name="CtlZoomSpeciesMan" xml:space="preserve">
+    <value>Art Manuell</value>
+  </data>
+  <data name="CtlZoomSpeciesAuto" xml:space="preserve">
+    <value>Art Automatisch</value>
+  </data>
+  <data name="MainToolCancelScript" xml:space="preserve">
+    <value>Stoppe Ausführung laufender Skriptdatei</value>
+  </data>
 </root>

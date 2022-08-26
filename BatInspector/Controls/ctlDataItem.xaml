@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <StackPanel Orientation="Horizontal">
-    <Label Name="_lbl" HorizontalAlignment="Left" VerticalAlignment="Top" Width = "80" Height="25" FontStyle="Italic">.</Label>
-    <TextBox Name= "_tb" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1" Width = "80" Height="25" TextChanged="_tb_TextChanged">-</TextBox>
+    <TextBlock Name="_lbl" HorizontalAlignment="Right" VerticalAlignment="Top" Width = "80" Height="20">lbl1</TextBlock>
+    <TextBox Name= "_tb" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" BorderThickness="1" Width = "80" Height="20" TextChanged="_tb_TextChanged">-</TextBox>
   </StackPanel>
 </UserControl>

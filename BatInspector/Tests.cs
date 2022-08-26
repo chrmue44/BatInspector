@@ -48,17 +48,17 @@ namespace BatInspector
 
     public void exec()
     {
-      testIf();
-      testWhile();
+      string wrkDir = _model.Settings.ScriptDir == null ? "" : _model.Settings.ScriptDir;
+      testIf(wrkDir);
+      testWhile(wrkDir);
       testParser();
-      testCsvFuncs();
+      testCsvFuncs(wrkDir);
       if (_errors == 0)
         DebugLog.log("Tests passed", enLogType.INFO);
     }
 
-    private void testCsvFuncs()
+    private void testCsvFuncs(string wrkDir)
     {
-      string wrkDir = _model.Settings.ScriptDir;
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
       scr.RunScript("test_csv.scr", false);
       assert(scr.getVariable("c23"), "23");
@@ -68,9 +68,8 @@ namespace BatInspector
       assert(scr.getVariable("c62"), "62");
     }
 
-    private void testWhile()
+    private void testWhile(string wrkDir)
     {
-      string wrkDir = _model.Settings.ScriptDir;
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
       scr.SetVariable("Limit", "9");
       scr.SetVariable("b", "0");
@@ -90,9 +89,8 @@ namespace BatInspector
       assert(scr.getVariable("sum"), "5");
     }
 
-    private void testIf()
+    private void testIf(string wrkDir)
     {
-      string wrkDir = _model.Settings.ScriptDir;
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
 
       scr.SetVariable("A", "55");

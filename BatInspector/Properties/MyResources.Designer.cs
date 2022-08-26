@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -390,6 +390,24 @@ namespace BatInspector.Properties {
         public static string CtlZoomRecTime {
             get {
                 return ResourceManager.GetString("CtlZoomRecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Species Auto.
+        /// </summary>
+        public static string CtlZoomSpeciesAuto {
+            get {
+                return ResourceManager.GetString("CtlZoomSpeciesAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Species Manual.
+        /// </summary>
+        public static string CtlZoomSpeciesMan {
+            get {
+                return ResourceManager.GetString("CtlZoomSpeciesMan", resourceCulture);
             }
         }
         
@@ -858,6 +876,15 @@ namespace BatInspector.Properties {
         public static string MainSelectFolder {
             get {
                 return ResourceManager.GetString("MainSelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel running script.
+        /// </summary>
+        public static string MainToolCancelScript {
+            get {
+                return ResourceManager.GetString("MainToolCancelScript", resourceCulture);
             }
         }
         

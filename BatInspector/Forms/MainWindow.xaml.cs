@@ -690,6 +690,11 @@ private void setZoomPosition()
       frmRunScript frmScript = new frmRunScript(_model);
       frmScript.Show();
     }
+
+    private void _btnCancelScript_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 
   public enum enWinType 

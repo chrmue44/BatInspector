@@ -13,8 +13,12 @@ TODO
 - prediction from call parameters (not wav)
 - more script commands
 - stop button to kill running script
+- test script commands
+
 
 DONE
+- added species information to zoom control
+- script commands for getting infos about project files (untested)
 - script commands FOR ... END, WHILE ... END
 - script commands to work with CSV files
 - icon and form to start and edit scripts

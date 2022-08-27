@@ -72,26 +72,36 @@ namespace BatInspector.Controls
 
     public int Index { get { return _index; } set { _index = value; } }
     public string WavName { get { return _wavName; } }
-    public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath)
+
+    public void updateCallInformations(AnalysisFile analysis)
+    {
+      _analysis = analysis;
+      for(int i = 0; i < _analysis.Calls.Count; i++)
+      {
+        AnalysisCall call = _analysis.Calls[i];
+        ctlDataItem it = _spDataAuto.Children[i] as ctlDataItem; 
+        it.setValue(call.SpeciesAuto + "(" + ((int)(call.Probability * 100 + 0.5)).ToString() + "%)");
+        ctlSelectItem im = _spDataMan.Children[i] as ctlSelectItem;
+        im.setValue(call.SpeciesMan);
+      }
+      _cbSel.IsChecked = _analysis.Selected;
+
+    }
+
+    public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath, List<string> spec)
     {
       _analysis = analysis;
       _wavFilePath = wavFilePath;
       _wavName = Name;
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
-      List<string> spec = new List<string>();
-      foreach(SpeciesInfos si in _model.Settings.Species)
-      {
-        if(si.Show)
-          spec.Add(si.Abbreviation);
-      }
-      spec.Add("todo");
-      spec.Add("?");
-      spec.Add("---");
+     
       if (analysis != null)
       {
       //  _sampleRate.setValue(_analysis.SampleRate);
       //  _duration.setValue(_analysis.Duration);
         int callNr = 1;
+        _spDataAuto.Children.Clear();
+        _spDataMan.Children.Clear();
         foreach (AnalysisCall call in _analysis.Calls)
         {
           ctlDataItem it = new ctlDataItem();
@@ -118,6 +128,7 @@ namespace BatInspector.Controls
     public void toggleCheckBox()
     {
       _cbSel.IsChecked = !_cbSel.IsChecked;
+      _analysis.Selected = _cbSel.IsChecked == true;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -190,6 +201,11 @@ namespace BatInspector.Controls
         ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
         ctlm.setValue("---");
       }
+    }
+
+    private void _cbSel_Click(object sender, RoutedEventArgs e)
+    {
+      _analysis.Selected = _cbSel.IsChecked == true;
     }
   }
 }

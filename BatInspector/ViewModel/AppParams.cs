@@ -189,6 +189,20 @@ namespace BatInspector
     [DataMember]
     [LocalizedDescription("SpecDescWav")]
     public string WavExample { get; set; }
+
+    public static bool isInList(List<SpeciesInfos> list,  string species)
+    {
+      bool retVal = false;
+      foreach(SpeciesInfos s in list)
+      {
+        if((species.ToUpper() == s.Abbreviation.ToUpper()) && s.Show)
+        {
+          retVal = true;
+          break;
+        }
+      }
+      return retVal;
+    }
   }
 
   [TypeConverter(typeof(ExpandableObjectConverter))]

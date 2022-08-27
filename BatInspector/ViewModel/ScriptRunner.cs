@@ -66,19 +66,8 @@ namespace BatInspector
       return retVal;
     }
 
-    public void CancelExecution()
+    public void cancelExecution()
     {
-      _proc.Stop();
-      foreach (var process in Process.GetProcessesByName("PrjConsoleClient"))
-        process.Kill();
-      int myProcId = Process.GetCurrentProcess().Id;
-      foreach (var process in Process.GetProcessesByName("PrjConsole"))
-      {
-        if (process.Id != myProcId)
-          process.Kill();
-      }
-      DebugLog.log("script execution canceled", enLogType.INFO);
-
       _parser.StopParsing();
     }
 

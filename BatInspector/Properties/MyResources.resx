@@ -687,4 +687,7 @@
   <data name="MainToolCancelScript" xml:space="preserve">
     <value>Cancel running script</value>
   </data>
+  <data name="MainToolRefresh" xml:space="preserve">
+    <value>Refresh views</value>
+  </data>
 </root>

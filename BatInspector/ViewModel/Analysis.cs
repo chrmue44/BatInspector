@@ -104,24 +104,31 @@ namespace BatInspector
   public class Analysis
   {
 
-    public Cols Cols { get{ return _cols; } }
     Cols _cols;
-
+    List<SpeciesInfos> _specList;
     object _fileLock = new object();
-
-    public List<AnalysisFile> Files { get { return _list; } }
-
     List<AnalysisFile> _list;
     List<ReportItem> _report;
 
+    public List<AnalysisFile> Files { get { return _list; } }
+    public Cols Cols { get { return _cols; } }
+
     public List<ReportItem> Report { get { return _report; } }
+
+    public Analysis(List<SpeciesInfos> specList)
+    {
+      _list = new List<AnalysisFile>();
+      _report = null;
+      _cols = new Cols();
+      _specList = specList;
+    }
 
     public AnalysisFile find(string name)
     {
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        if (f.FileName == name)
+        if (f.FileName.IndexOf(name) >= 0)
         {
           retVal = f;
           break;
@@ -152,13 +159,6 @@ namespace BatInspector
         }
         return retVal;
       }
-    }
-
-    public Analysis()
-    {
-      _list = new List<AnalysisFile>();
-      _report = null;
-      _cols = new Cols();
     }
 
     public void read(string fileName)
@@ -236,7 +236,9 @@ namespace BatInspector
           double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
           AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
                                                probability, speciesMan, snr, distToPrev);
-          file.addCall(call);
+
+          bool isInList = SpeciesInfos.isInList(_specList, call.SpeciesAuto);
+          file.addCall(call, isInList);
 
           ReportItem rItem = new ReportItem();
           rItem.FileName = fName;
@@ -461,16 +463,8 @@ namespace BatInspector
 
     public double Snr { get; }
 
-    public string SpeciesAuto { get { return _speciesAuto; } }
-    public string SpeciesMan
-    {
-      get { return _speciesMan; }
-      set
-      {
-        _speciesMan = value;
-        _changed = true;
-      }
-    }
+    public string SpeciesAuto { get { return _speciesAuto; } set { _speciesAuto = value;  _changed = true; } }
+    public string SpeciesMan { get { return _speciesMan; } set { _speciesMan = value; _changed = true; } }
 
     public bool Changed { get { return _changed; } }
 
@@ -537,6 +531,7 @@ namespace BatInspector
     public int SampleRate { get; set; }
     public double Duration { get; set; }
     public string Remarks { get; set; }
+    public bool Selected { get; set; } = false;
 
     public bool Changed
     {
@@ -622,13 +617,16 @@ namespace BatInspector
       return retVal;
     }
 
-    public void addCall(AnalysisCall call)
+    public void addCall(AnalysisCall call, bool isInList)
     {
       _calls.Add(call);
-      if (_specFound.ContainsKey(call.SpeciesAuto))
-        _specFound[call.SpeciesAuto] += 1;
-      else
-        _specFound.Add(call.SpeciesAuto, 1);
+      if (isInList)
+      {
+        if (_specFound.ContainsKey(call.SpeciesAuto))
+          _specFound[call.SpeciesAuto] += 1;
+        else
+          _specFound.Add(call.SpeciesAuto, 1);
+      }
     }
 
     public int getNrOfAutoSpecies()

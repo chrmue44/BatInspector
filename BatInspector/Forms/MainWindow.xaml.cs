@@ -291,6 +291,16 @@ private void setZoomPosition()
 
     private void updateWavControls()
     {
+      List<string> spec = new List<string>();
+      foreach (SpeciesInfos si in _model.Settings.Species)
+      {
+        if (si.Show)
+          spec.Add(si.Abbreviation);
+      }
+      spec.Add("todo");
+      spec.Add("?");
+      spec.Add("---");
+
       foreach (ctlWavFile ctl in _spSpectrums.Children)
       {
         if (ctl.Analysis != null)
@@ -298,7 +308,7 @@ private void setZoomPosition()
           string name = ctl.Analysis.FileName;
           AnalysisFile anaF = _model.Analysis.find(name);
           if (anaF != null)
-            ctl.setFileInformations(ctl.Analysis.FileName, anaF, ctl.WavFilePath);
+            ctl.updateCallInformations(anaF);
         }
       }
     }
@@ -359,6 +369,17 @@ private void setZoomPosition()
       {
         _spSpectrums.Children.Clear();
         _cbFocus = -1;
+
+        List<string> spec = new List<string>();
+        foreach (SpeciesInfos si in _model.Settings.Species)
+        {
+          if (si.Show)
+            spec.Add(si.Abbreviation);
+        }
+        spec.Add("todo");
+        spec.Add("?");
+        spec.Add("---");
+
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this);
@@ -366,7 +387,7 @@ private void setZoomPosition()
           bool newImage;
           ctl._img.Source = _model.getFtImage(rec, out newImage);
           ctl._img.MaxHeight = _imgHeight;
-          ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath);
+          ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, spec);
           ctl.InfoVisible = !_model.Settings.HideInfos;
           _spSpectrums.Dispatcher.Invoke(() =>
           {
@@ -398,6 +419,7 @@ private void setZoomPosition()
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = true;
+        ctl.Analysis.Selected = true;
       }
       DebugLog.log("select all files", enLogType.INFO);
     }
@@ -408,6 +430,7 @@ private void setZoomPosition()
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = false;
+        ctl.Analysis.Selected = false;
       }
       DebugLog.log("deselect all files", enLogType.INFO);
     }
@@ -451,10 +474,9 @@ private void setZoomPosition()
 
     private void _btnHideUnSelected_Click(object sender, RoutedEventArgs e)
     {
-      foreach (ctlWavFile ctl in _spSpectrums.Children)
-      
+      foreach (ctlWavFile ctl in _spSpectrums.Children)      
         ctl.Visibility = ctl._cbSel.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-        DebugLog.log("hide unselected files", enLogType.INFO);
+      DebugLog.log("hide unselected files", enLogType.INFO);
       showStatus();
     }
 
@@ -693,7 +715,14 @@ private void setZoomPosition()
 
     private void _btnCancelScript_Click(object sender, RoutedEventArgs e)
     {
+      _model.cancelScript();
+    }
 
+    private void _btnRefresh_Click(object sender, RoutedEventArgs e)
+    {
+      updateWavControls();
+      _spSpectrums.UpdateLayout();
+      DebugLog.log("update done", enLogType.INFO);
     }
   }
 

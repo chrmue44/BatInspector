@@ -451,5 +451,8 @@
   <ItemGroup>
     <Resource Include="images\cancel_77947.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\vcsupdaterequired_93493.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

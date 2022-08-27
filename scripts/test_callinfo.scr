@@ -1,0 +1,21 @@
+SET NrFiles =(getPrjFileCount())
+SET FileNr 1
+SET NrCalls =(getCallCount(FileNr) - 1)
+SET NrOfSpecies =(getNrOfSpecies(FileNr))
+IF =(NrOfSpecies >= 1)
+  SET Rank1Spec =(getRankSpecies(FileNr, 1))
+  SET Rank1Cnt =(getRankCount(FileNr, 1))
+  IF =(NrOfSpecies >= 2)
+    SET Rank2Spec =(getRankSpecies(FileNr, 2))
+    SET Rank2Cnt =(getRankCount(FileNr, 2))
+    IF =((Rank2Cnt < 2) && (Rank1Cnt > 3))
+	  =(setFileInfo(FileNr, "SELECT", "TRUE"))
+      =(setCallInfo(FileNr, 0, "SPEC_MAN", Rank1Spec))
+	  FOR i 1 NrCalls
+        =(setCallInfo(FileNr, i, "SPEC_MAN", ""))
+		LOG =(NrCalls)
+		LOG =(i)
+	  END
+	END
+  END
+END

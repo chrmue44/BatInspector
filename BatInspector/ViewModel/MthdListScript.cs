@@ -63,12 +63,18 @@ namespace BatInspector
       addMethod(new FuncTabItem("getPrjFileCount", getPrjFileCount));
       _scriptHelpTab.Add(new HelpTabItem("getPrjFileCount", "get row file count of open project",
                       new List<string> { "" }, new List<string> { "1: nr of files in project" }));
+      addMethod(new FuncTabItem("setFileInfo", setFileInfo));
+      _scriptHelpTab.Add(new HelpTabItem("setFileInfo", "set specific data for specified file",
+                      new List<string> { "1: file index (0..n)","2: file info type","3:data" }, new List<string> { "" }));
       addMethod(new FuncTabItem("getCallCount", getCallCount));
       _scriptHelpTab.Add(new HelpTabItem("getCallCount", "get number of calls for spec. file in open project",
                       new List<string> { "1: file index (0..n)" }, new List<string> { "1: nr of calls for selected file" }));
       addMethod(new FuncTabItem("getCallInfo", getCallInfo));
-      _scriptHelpTab.Add(new HelpTabItem("getCallCount", "get number of calls for spec. file in open project",
-                      new List<string> { "1: file index (0..n)", "2: call index (0..n)" }, new List<string> { "1: species auto", "2:species man" }));
+      _scriptHelpTab.Add(new HelpTabItem("getCallInfo", "get specific data for specified call",
+                      new List<string> { "1: file index (0..n)", "2: call index (0..n)", "3: type of information" }, new List<string> { "1: call data" }));
+      addMethod(new FuncTabItem("setCallInfo", setCallInfo));
+      _scriptHelpTab.Add(new HelpTabItem("setCallInfo", "set specific data for specified call",
+                      new List<string> { "1: file index (0..n)", "2: call index (0..n)", "3: type of information","4: data to set" }, new List<string> { "1: call data" }));
       addMethod(new FuncTabItem("getNrOfSpecies", getNrOfSpecies));
       _scriptHelpTab.Add(new HelpTabItem("getNrOfSpecies", "get number of auto detected species for spec. file in open project",
                       new List<string> { "1: file index (0..n)" }, new List<string> { "1: nr of species in recording" }));
@@ -93,6 +99,56 @@ namespace BatInspector
         err = tParseError.ARG1_OUT_OF_RANGE;
       return err;
     }
+
+    enum enFileInfo
+    {
+      SAMPLE_RATE,
+      DURATION,
+      SELECT
+    }
+
+    static tParseError setFileInfo(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 3)
+        {
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_STR);
+          int idxF = (int)argv[0].getUint64();
+          int maxIdxF = _inst._model.Analysis.Files.Count;
+          if (idxF < maxIdxF)
+          {
+            enFileInfo fileInfo;
+            bool ok = Enum.TryParse(argv[1].getString(), out fileInfo);
+            if (ok)
+            {
+              switch (fileInfo)
+              {
+                  case enFileInfo.SELECT:
+                    argv[2].changeType(AnyType.tType.RT_BOOL);
+                    _inst._model.Analysis.Files[idxF].Selected = argv[2].getBool();
+                    break;
+                  case enFileInfo.SAMPLE_RATE:
+                    break;
+              }
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
 
     static tParseError getCallCount(List<AnyType> argv, out AnyType result)
     {
@@ -140,7 +196,7 @@ namespace BatInspector
             if ((rank > 0) && (rank <= cnt))
             {
               KeyValuePair<string, int> spec = _inst._model.Analysis.Files[idx].getSpecies(rank);
-              result.assign(spec.Key);
+              result.assign(spec.Key.ToUpper());
             }
             else
               err = tParseError.ARG2_OUT_OF_RANGE;
@@ -175,7 +231,7 @@ namespace BatInspector
             if ((rank > 0) && (rank <= cnt))
             {
               KeyValuePair<string, int> spec = _inst._model.Analysis.Files[idx].getSpecies(rank);
-              result.assign(spec.Value);
+              result.assignInt64(spec.Value);
             }
             else
               err = tParseError.ARG2_OUT_OF_RANGE;
@@ -218,6 +274,7 @@ namespace BatInspector
       return err;
     }
 
+
     enum enCallInfo
     {
       SPEC_AUTO,
@@ -254,6 +311,58 @@ namespace BatInspector
                     break;
                   case enCallInfo.SPEC_MAN:
                     result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan);
+                    break;
+                }
+              }
+              else
+                err = tParseError.ARG3_OUT_OF_RANGE;
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    static tParseError setCallInfo(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 4)
+        {
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_UINT64);
+          argv[2].changeType(AnyType.tType.RT_STR);
+          int idxF = (int)argv[0].getUint64();
+          int idxC = (int)argv[1].getUint64();
+          int maxIdxF = _inst._model.Analysis.Files.Count;
+          if (idxF < maxIdxF)
+          {
+            int maxIdxC = _inst._model.Analysis.Files[idxF].Calls.Count;
+            if (idxC < maxIdxC)
+            {
+              enCallInfo callInfo;
+              bool ok = Enum.TryParse(argv[2].getString(), out callInfo);
+              if (ok)
+              {
+                switch (callInfo)
+                {
+                  case enCallInfo.SPEC_AUTO:
+                    argv[3].changeType(AnyType.tType.RT_STR);
+                    _inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesAuto = argv[3].getString();
+                    break;
+                  case enCallInfo.SPEC_MAN:
+                    argv[3].changeType(AnyType.tType.RT_STR);
+                    _inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan = argv[3].getString();
                     break;
                 }
               }

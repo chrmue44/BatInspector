@@ -215,7 +215,7 @@ namespace libScripter
       _blockStack.Clear();
       findLabels();
       _actLineNr = 0;
-      while (_actLineNr < _lines.Length)
+      while ((_actLineNr < _lines.Length) && _busy)
       {
         string result = "0";
         if ((_currBlock == null) ||

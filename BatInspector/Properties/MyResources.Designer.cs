@@ -970,6 +970,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh views.
+        /// </summary>
+        public static string MainToolRefresh {
+            get {
+                return ResourceManager.GetString("MainToolRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run script.
         /// </summary>
         public static string MainToolRunScript {

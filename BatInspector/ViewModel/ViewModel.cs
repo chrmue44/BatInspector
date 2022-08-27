@@ -88,12 +88,12 @@ namespace BatInspector
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin, string version)
     {
-      _analysis = new Analysis();
       _proc = new ProcessRunner();
       _mainWin = mainWin;
       _prj = new Project();
       _filter = new Filter();
       _settings = new AppParams();
+      _analysis = new Analysis(Settings.Species);
       _version = version;
       _colorTable = new ColorTable(this);
       _colorTable.createColorLookupTable();
@@ -146,6 +146,7 @@ namespace BatInspector
         _filter.Items.Add(it);
       }
       _scripter = new ScriptRunner(ref _proc, _settings.ScriptDir, null, this);
+      _analysis = new Analysis(Settings.Species);
     }
 
     public void saveSettings()
@@ -207,6 +208,12 @@ namespace BatInspector
       _scriptName = path;
       retVal = _scripter.RunScript(path);
       return retVal;
+    }
+
+    public void cancelScript()
+    {
+      _scripter.cancelExecution();
+      DebugLog.log("script execution cancelled manually", enLogType.INFO);
     }
 
     public void editScript(string name)

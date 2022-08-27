@@ -66,3 +66,7 @@ https://www.flaticon.com/free-icons/script Script icons created by uicon.mee - F
 cancel_77947.png:
 https://icon-icons.com/icon/cancel/77947#48
 License: https://creativecommons.org/licenses/by/4.0/
+
+vcsupdaterequired_93493.png
+https://icon-icons.com/icon/update-refresh/93493
+Free for commercial use

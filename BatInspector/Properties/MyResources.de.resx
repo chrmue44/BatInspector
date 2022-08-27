@@ -687,4 +687,7 @@
   <data name="MainToolCancelScript" xml:space="preserve">
     <value>Stoppe Ausführung laufender Skriptdatei</value>
   </data>
+  <data name="MainToolRefresh" xml:space="preserve">
+    <value>Aktualisiere Bildschirm</value>
+  </data>
 </root>

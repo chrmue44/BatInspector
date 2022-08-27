@@ -57,6 +57,9 @@
                     <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Image Source="../images/cancel_77947.png"></Image>
                     </Button>
+                    <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Image Source="../images/vcsupdaterequired_93493.png"></Image>
+                    </Button>
 
                     <Button x:Name="_btnHelp" Click="_btnHelp_Click"  ToolTip="{x:Static res:MyResources.MainToolOpenManual}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Button_Help_icon_32.png"></Image>

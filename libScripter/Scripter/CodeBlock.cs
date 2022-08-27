@@ -11,6 +11,7 @@
  ********************************************************************************/
 
 using System.Collections.Generic;
+using libParser;
 
 
 namespace libScripter
@@ -79,8 +80,14 @@ namespace libScripter
       {
         _errText = "";
         _itName = _args[0];
-        bool ok = int.TryParse(args[1], out _itStart);
-        ok |= int.TryParse(args[2], out _itEnd);
+        Expression exp = new Expression(vars.VarList);
+        AnyType start = exp.parse(args[1]);
+        start.changeType(AnyType.tType.RT_INT64);
+        _itStart = (int)start.getInt64();
+        AnyType end = exp.parse(args[2]);
+        end.changeType(AnyType.tType.RT_INT64);
+        _itEnd = (int)end.getInt64();
+
         _iterator = _itStart;
         _vars.VarList.set(_itName, _iterator);
       }

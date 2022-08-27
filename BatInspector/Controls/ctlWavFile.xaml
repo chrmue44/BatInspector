@@ -15,7 +15,7 @@
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <CheckBox Grid.Column="0" Name="_cbSel" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+            <CheckBox Grid.Column="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
       <StackPanel>
         <Button Name="_btnCopy"  Margin="0,40,0,0" Click="_btnCopy_Click">-></Button>
       <Button Name="_btnIgnore" Margin="0,20,0,0"  Click="_btnIgnore_Click">Ign</Button>

@@ -307,10 +307,10 @@ namespace BatInspector
                 switch (callInfo)
                 {
                   case enCallInfo.SPEC_AUTO:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesAuto);
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesAuto.ToUpper());
                     break;
                   case enCallInfo.SPEC_MAN:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan);
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan.ToUpper());
                     break;
                 }
               }

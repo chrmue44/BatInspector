@@ -65,6 +65,8 @@ namespace BatInspector
     public string PrjPath { get { return _selectedDir; } }
 
     public string ScriptName { get { return _scriptName; } }
+
+    public ScriptRunner Scripter {  get { return _scripter; } }
     public string Version { get { return _version; } }
     public Analysis Analysis { get { return _analysis; } }
 

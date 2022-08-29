@@ -194,6 +194,7 @@ namespace libScripter
         return;
       }
       ParseLines();
+      DebugLog.log("execution of script " + _scriptName + " completed", enLogType.INFO);
     }
 
 

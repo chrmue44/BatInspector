@@ -14,6 +14,7 @@ namespace BatInspector
     string _wrkDir;
     MthdListScript _mthdListScript;
 
+    public VarList VarList { get { return _parser.VarTable.VarList; } }
     public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
     {
       _proc = proc;
@@ -46,6 +47,7 @@ namespace BatInspector
       string ext = Path.GetExtension(fileName);
       if (ext.ToLower() == ".scr")
       {
+        _parser.VarTable.VarList.init();
         SetVariable("WRK_DIR", _wrkDir);
         if (background)
           _parser.StartParsing(fileName);

@@ -100,6 +100,9 @@
     <Compile Include="Controls\CtlSumReport.xaml.cs">
       <DependentUpon>CtlSumReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlVarTable.xaml.cs">
+      <DependentUpon>ctlVarTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CtrlZoom.xaml.cs">
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
     </Compile>
@@ -111,6 +114,9 @@
     </Compile>
     <Compile Include="Forms\FrmColorMap.xaml.cs">
       <DependentUpon>FrmColorMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDebug.xaml.cs">
+      <DependentUpon>frmDebug.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmFilter.xaml.cs">
       <DependentUpon>FrmFilter.xaml</DependentUpon>
@@ -213,6 +219,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ctlVarTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ctlWavFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmColorMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmDebug.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -453,6 +467,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\vcsupdaterequired_93493.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\debug.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

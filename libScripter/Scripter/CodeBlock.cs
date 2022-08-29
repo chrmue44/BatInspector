@@ -76,7 +76,7 @@ namespace libScripter
                            : base(enBlockType.FOR, args, startLine)
     {     
       _vars = vars;
-      if (_args.Count > 2)
+      if ((_args != null) && (_args.Count > 2))
       {
         _errText = "";
         _itName = _args[0];

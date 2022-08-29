@@ -51,12 +51,18 @@
           <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
-          <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+          <Separator/>
+                    <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/script.png"></Image>
           </Button>
                     <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Image Source="../images/cancel_77947.png"></Image>
                     </Button>
+                    <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Image Source="../images/debug.png"></Image>
+                    </Button>
+                    <Separator/>
+
                     <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                     </Button>

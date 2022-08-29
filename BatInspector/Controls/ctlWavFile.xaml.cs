@@ -175,7 +175,8 @@ namespace BatInspector.Controls
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-          if (_analysis.Calls[i].Probability >= _model.Settings.ProbabilityMin)
+          if ((_analysis.Calls[i].Probability >= _model.Settings.ProbabilityMin) &&
+               SpeciesInfos.isInList(_model.Settings.Species, Analysis.Calls[i].SpeciesAuto))
             ctlm.setValue(Analysis.Calls[i].SpeciesAuto.ToUpper());
           else
             ctlm.setValue("");

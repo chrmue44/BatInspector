@@ -10,11 +10,13 @@ IF =(NrOfSpecies >= 1)
     SET Rank2Cnt =(getRankCount(FileNr, 2))
     IF =((Rank2Cnt < 2) && (Rank1Cnt > 3))
 	  =(setFileInfo(FileNr, "SELECT", "TRUE"))
-      =(setCallInfo(FileNr, 0, "SPEC_MAN", Rank1Spec))
-	  FOR i 1 NrCalls
-        =(setCallInfo(FileNr, i, "SPEC_MAN", ""))
-		LOG =(NrCalls)
-		LOG =(i)
+	  FOR i 0 NrCalls
+	    SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
+		IF =(specAuto == Rank1Spec)
+          =(setCallInfo(FileNr, i, "SPEC_MAN", Rank1Spec))
+		ELSE
+          =(setCallInfo(FileNr, i, "SPEC_MAN", ""))
+		END
 	  END
 	END
   END

@@ -70,3 +70,6 @@ License: https://creativecommons.org/licenses/by/4.0/
 vcsupdaterequired_93493.png
 https://icon-icons.com/icon/update-refresh/93493
 Free for commercial use
+
+debug.png
+https://www.flaticon.com/free-icons/debug Debug icons created by Blaze150 - Flaticon

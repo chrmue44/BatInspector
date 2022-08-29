@@ -101,6 +101,11 @@ namespace libParser
       m_Table = new List<VarName>();
     }
 
+    public void init()
+    {
+      m_Table.Clear();
+    }
+
     public void addConstant(string name, double value)
     {
       VarName var = insert(name, true, m_pMethods);

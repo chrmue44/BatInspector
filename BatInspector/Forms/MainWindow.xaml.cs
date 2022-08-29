@@ -419,7 +419,8 @@ private void setZoomPosition()
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = true;
-        ctl.Analysis.Selected = true;
+        if(ctl.Analysis != null)
+          ctl.Analysis.Selected = true;
       }
       DebugLog.log("select all files", enLogType.INFO);
     }
@@ -430,7 +431,8 @@ private void setZoomPosition()
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = false;
-        ctl.Analysis.Selected = false;
+        if(ctl.Analysis != null)
+          ctl.Analysis.Selected = false;
       }
       DebugLog.log("deselect all files", enLogType.INFO);
     }
@@ -723,6 +725,12 @@ private void setZoomPosition()
       updateWavControls();
       _spSpectrums.UpdateLayout();
       DebugLog.log("update done", enLogType.INFO);
+    }
+
+    private void _btnDebug_Click(object sender, RoutedEventArgs e)
+    {
+      frmDebug frm = new frmDebug(_model);
+      frm.Show();
     }
   }
 

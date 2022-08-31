@@ -10,7 +10,10 @@
         Title="BatInspector" Height="900" Width="1400"
         Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
-  <DockPanel>
+    <Window.DataContext>
+        <controls:DropDownCmds />
+    </Window.DataContext>
+    <DockPanel>
     <StatusBar DockPanel.Dock="Bottom" Background="#FF40508D">
       <TextBlock Name="_lblProject" Text="---" Foreground="White"></TextBlock>
       <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="White"></TextBlock>
@@ -67,9 +70,27 @@
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                     </Button>
 
-                    <Button x:Name="_btnHelp" Click="_btnHelp_Click"  ToolTip="{x:Static res:MyResources.MainToolOpenManual}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/Button_Help_icon_32.png"></Image>
-          </Button>
+                    <controls:DropDownButton BorderThickness="0" Background="#FFCCD5F0" Margin="3"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      >
+                        <ContentControl BorderThickness="0">
+                            <Image Source="../images/Button_Help_icon_32.png"></Image>
+                        </ContentControl>
+                        <controls:DropDownButton.Menu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding ShowHelp}"
+                      CommandParameter="{Binding}"
+                      Header="Software Manual" />
+                                <MenuItem Command="{Binding ShowBatInfo}"
+                      CommandParameter="{Binding}"
+                      Header="Fledermausbestimmung" />
+                                <MenuItem Command="{Binding MoveCommand}"
+                      CommandParameter="{Binding}"
+                      Header="BlaBla" />
+                            </ContextMenu>
+                        </controls:DropDownButton.Menu>
+                    </controls:DropDownButton>
           <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="{x:Static res:MyResources.MainToolShowSoftwareInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Actions_help_about_icon.png"></Image>
           </Button>

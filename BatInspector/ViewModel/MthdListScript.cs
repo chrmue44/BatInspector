@@ -61,7 +61,7 @@ namespace BatInspector
       _scriptHelpTab.Add(new HelpTabItem("getRowCount", "get row count of a previously opened csv file",
                       new List<string> { "1: handle"}, new List<string> { "1: nr of rows (including header)" }));
       addMethod(new FuncTabItem("getPrjFileCount", getPrjFileCount));
-      _scriptHelpTab.Add(new HelpTabItem("getPrjFileCount", "get row file count of open project",
+      _scriptHelpTab.Add(new HelpTabItem("getPrjFileCount", "get nr of files of open project",
                       new List<string> { "" }, new List<string> { "1: nr of files in project" }));
       addMethod(new FuncTabItem("setFileInfo", setFileInfo));
       _scriptHelpTab.Add(new HelpTabItem("setFileInfo", "set specific data for specified file",

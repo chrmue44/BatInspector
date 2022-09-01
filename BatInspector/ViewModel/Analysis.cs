@@ -308,11 +308,12 @@ namespace BatInspector
     }
 
 
-    public void removeFile(string reportName, string wavName)
+    public void removeFile(string reportName, string wavName, bool doReadSave = true, Csv report = null)
     {
       lock (_fileLock)
       {
-        save(reportName);
+        if(doReadSave)
+          save(reportName);
 
         //remove from analysis file list
         AnalysisFile fileToDelete = AnalysisFile.find(_list, wavName);
@@ -323,10 +324,14 @@ namespace BatInspector
         // remove from report file
         if (File.Exists(reportName))
         {
-          Csv report = new Csv();
-          report.read(reportName);
+          if (doReadSave)
+          {
+            report = new Csv();
+            report.read(reportName);
+          }
           removeWavFromReport(report, wavName);
-          report.save();
+          if(doReadSave)
+            report.save();
         }
         else
         {

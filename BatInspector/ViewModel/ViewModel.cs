@@ -229,8 +229,15 @@ namespace BatInspector
     public void deleteFiles(List<string> files)
     {
       DebugLog.log("start deleting files", enLogType.INFO);
+      _prj.writePrjFile();
+      string reportName = _selectedDir + "/report.csv";
+      _analysis.save(reportName);
+      Csv report = new Csv();
+      report.read(reportName);
+
       foreach (string f in files)
-        deleteFile(f);
+        deleteFile(f, report);
+      report.save(true);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
@@ -258,7 +265,7 @@ namespace BatInspector
       }
     }
 
-    void deleteFile(string wavName)
+    void deleteFile(string wavName, Csv report)
     {
       if (_prj != null)
       {
@@ -279,7 +286,7 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _analysis.removeFile(_selectedDir +"/report.csv", wavName);
+        _analysis.removeFile(_selectedDir +"/report.csv", wavName, false, report);
       }
     }
 
@@ -454,6 +461,11 @@ namespace BatInspector
       removeDir("dat");
       removeDir("log");
       removeDir("img");
+      var dir = new DirectoryInfo(_selectedDir);
+      foreach (var file in dir.EnumerateFiles("*.npy"))
+      {
+        file.Delete();
+      }
     }
   }
 

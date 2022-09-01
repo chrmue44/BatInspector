@@ -206,7 +206,8 @@ namespace BatInspector.Controls
 
     private void _cbSel_Click(object sender, RoutedEventArgs e)
     {
-      _analysis.Selected = _cbSel.IsChecked == true;
+      if(_analysis != null)
+        _analysis.Selected = _cbSel.IsChecked == true;
     }
   }
 }

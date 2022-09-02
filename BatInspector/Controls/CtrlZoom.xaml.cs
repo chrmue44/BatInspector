@@ -57,7 +57,7 @@ namespace BatInspector.Controls
       _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3,100);
       _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1,100);
       _duration.setup(MyResources.Duration+ " [s]", enDataType.DOUBLE, 3,100);
-      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 0,100);
+      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1,100);
       _wavFilePath = wavFilePath;
       string wavName = File.Exists(analysis.FileName) ? analysis.FileName : _wavFilePath + analysis.FileName;
 

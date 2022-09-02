@@ -571,9 +571,9 @@ namespace libScripter
     {
       int retVal = 0;
       ErrText = "";
-      if (Utils.isNum(pars[1], false))
-        _vars.VarList.set(pars[0], int.Parse(pars[1]));
-      else if (Utils.isNum(pars[1], true))
+      if (Utils.isNum(pars[1], false) && (pars[1].Length > 0))
+        _vars.VarList.set(pars[0], int. Parse(pars[1]));
+      else if (Utils.isNum(pars[1], true) && (pars[1].Length > 0))
       {
         double val = 0;
         double.TryParse(pars[1], out val);

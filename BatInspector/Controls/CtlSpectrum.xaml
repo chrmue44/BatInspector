@@ -13,7 +13,7 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Canvas Name ="_cvSpec" Grid.Row="0" ToolTipService.InitialShowDelay="5" 
-ToolTipService.ShowDuration="500" 
+ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="5" MouseMove="_cvSpec_MouseMove"
 ToolTip="This is a tool tip." />
     <Canvas Name ="_cvRulerF" Grid.Row="1"  ></Canvas>

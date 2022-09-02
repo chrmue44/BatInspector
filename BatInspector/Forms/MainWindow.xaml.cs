@@ -361,6 +361,18 @@ private void setZoomPosition()
       }
     }
 
+   /* bool IsUserVisible(this UIElement element)
+    {
+      if (!element.IsVisible)
+        return false;
+      var container = VisualTreeHelper.GetParent(element) as FrameworkElement;
+      if (container == null) throw new ArgumentNullException("container");
+
+      Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.RenderSize.Width, element.RenderSize.Height));
+      Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+      return rect.IntersectsWith(bounds);
+    }*/
+
     internal async Task createFftImages()
     {
       int index = 0;
@@ -385,19 +397,32 @@ private void setZoomPosition()
         {
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this);
           DockPanel.SetDock(ctl, Dock.Bottom);
-          bool newImage;
-          ctl._img.Source = _model.getFtImage(rec, out newImage);
-          ctl._img.MaxHeight = _imgHeight;
-          ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, spec);
-          ctl.InfoVisible = !_model.Settings.HideInfos;
           _spSpectrums.Dispatcher.Invoke(() =>
           {
             _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
           });
+
+     /*     if (ctl.IsVisible)
+          {
+            var container = VisualTreeHelper.GetParent(ctl) as FrameworkElement;
+            if (container == null) throw new ArgumentNullException("container");
+
+            Rect bounds = ctl.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, ctl.RenderSize.Width, ctl.RenderSize.Height));
+            Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+
+            if (rect.IntersectsWith(bounds))
+            { */
+              bool newImage;
+              ctl._img.Source = _model.getFtImage(rec, out newImage);
+              ctl._img.MaxHeight = _imgHeight;
+              ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, spec);
+              ctl.InfoVisible = !_model.Settings.HideInfos;
+              setStatus("loading [" + i.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
+        /*    }
+          } */
           i++;
          await Task.Delay(1);
-          setStatus("loading [" + i.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
         }
         DebugLog.log("project opened", enLogType.INFO);
         showStatus();

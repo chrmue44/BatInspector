@@ -81,7 +81,10 @@ namespace BatInspector.Controls
         int i = (int)((double)_spectrum.Amplitude.Length / w * x * _spectrum.RulerDataF.Max/_spectrum.Fmax);
         double a =  _spectrum.getMeanAmpl(i, n);
         int y2 = h - (int)(a/(max - min) * h);
-        CtrlZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);
+        if(_cbMode.SelectedIndex == 0)
+          CtrlZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);
+        else
+          CtrlZoom.createLine(_cvSpec, x, y1, x, y2, Brushes.Cyan);
       }
     }
 

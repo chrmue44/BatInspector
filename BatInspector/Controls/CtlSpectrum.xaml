@@ -8,10 +8,18 @@
              d:DesignHeight="200" d:DesignWidth="300">
    <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="*"></RowDefinition>
-      <RowDefinition Height="40"></RowDefinition>
-    </Grid.RowDefinitions>
-    <Canvas Name ="_cvSpec" Grid.Row="0"  ></Canvas>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Canvas Name ="_cvSpec" Grid.Row="0" ToolTipService.InitialShowDelay="50" 
+ToolTipService.ShowDuration="2000" 
+ToolTipService.BetweenShowDelay="50" MouseMove="_cvSpec_MouseMove"
+ToolTip="This is a tool tip." />
     <Canvas Name ="_cvRulerF" Grid.Row="1"  ></Canvas>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <ComboBox Width="75" x:Name="_cbMode" SelectionChanged="_cbModeChanged" />
+            <local:ctlDataItemMinMax x:Name="_ctlTime"></local:ctlDataItemMinMax>
+        </StackPanel>
    </Grid>
 </UserControl>

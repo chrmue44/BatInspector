@@ -610,7 +610,7 @@
     <value>Abtastrate, die zur Bestimmung durch die KI-Modelle benötigt wird</value>
   </data>
   <data name="msgZoomNotPossible" xml:space="preserve">
-    <value>Zoom nicht möglich, bitte erst beide Cursor setzen!</value>
+    <value>Bitte erst beide Cursor setzen!</value>
   </data>
   <data name="msgInformation" xml:space="preserve">
     <value>Information</value>
@@ -689,5 +689,8 @@
   </data>
   <data name="MainToolRefresh" xml:space="preserve">
     <value>Aktualisiere Bildschirm</value>
+  </data>
+  <data name="CtlSpectrumTimeSpan" xml:space="preserve">
+    <value>Zeitraum</value>
   </data>
 </root>

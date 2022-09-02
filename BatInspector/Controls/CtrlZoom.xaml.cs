@@ -571,7 +571,7 @@ namespace BatInspector.Controls
       double tStart = _analysis.getStartTime(idx);
       double tEnd = _analysis.getEndTime(idx);
       _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
-      _model.ZoomView.RulerDataF.setRange(0, 100);
+      _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate/2000);
       double pre = 0.01;
       _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + _model.Settings.ZoomOneCall / 1000.0 - pre);
       hideCursors();
@@ -630,8 +630,35 @@ namespace BatInspector.Controls
         if (idx > 0)
         {
         }
-        _ctlSpectrum.init(_model.ZoomView.Spectrum, 100);
+        _ctlSpectrum.init(_model.ZoomView.Spectrum, _analysis.SampleRate/2000, changeSpectrumMode);
       }
+    }
+
+    private int changeSpectrumMode(int mode)
+    {
+      int retVal = 0;
+      ZoomView z = _model.ZoomView;
+      switch (mode)
+      {
+        case 0:
+          {
+            double tStart = _analysis.getStartTime(_oldCallIdx);
+            double tEnd = _analysis.getEndTime(_oldCallIdx);
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
+          }
+          break;
+
+        case 1:
+          if (z.Cursor1.Visible && z.Cursor2.Visible)
+          {
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, _analysis.SampleRate);
+            retVal = 1;
+          }
+          else
+            MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+          break;
+      }
+      return retVal;
     }
 
     private void _btnPrev_Click(object sender, RoutedEventArgs e)

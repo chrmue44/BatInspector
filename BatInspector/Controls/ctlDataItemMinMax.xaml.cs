@@ -26,9 +26,9 @@ namespace BatInspector.Controls
 
     // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, dlgValueChanged dlgValChange = null)
+    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, int height = 22, dlgValueChanged dlgValChange = null)
     {
-      _lbl.Content= label;
+      _lbl.Text= label;
       _lbl.Focusable = false;
       _type = type;
       _decimals = decimals;
@@ -36,6 +36,11 @@ namespace BatInspector.Controls
       _tbMin.Width = widthTb;
       _tbMax.Width = widthTb;
       _lbl.Width = widthLbl;
+      _lbl.Height = height;
+      _tbMin.Height = Height;
+      _tbMax.Height = height;
+      _lblmin.Height = Height;
+      _lblmax.Height = Height;
     }
 
     public void setMinValue(int val)
@@ -66,7 +71,7 @@ namespace BatInspector.Controls
         tb.Text = newVal.ToString();
       }
       else
-        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
     }
 
 
@@ -81,7 +86,7 @@ namespace BatInspector.Controls
         tb.Text = newVal.ToString(format);
       }
       else
-        DebugLog.log("wrong data type for ctlDataItemMinMax: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItemMinMax: " + _lbl.Text, enLogType.ERROR);
     }
 
     private void setValue(string newVal, ref string val, TextBox tb)
@@ -92,7 +97,7 @@ namespace BatInspector.Controls
         val = newVal;
       }
       else
-        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Content, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
     }
 
 

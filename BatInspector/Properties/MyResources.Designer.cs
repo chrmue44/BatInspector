@@ -250,6 +250,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time span.
+        /// </summary>
+        public static string CtlSpectrumTimeSpan {
+            get {
+                return ResourceManager.GetString("CtlSpectrumTimeSpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string CtlSumReportEndDate {
@@ -1078,7 +1087,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zoom to cursor not possible, enable both cursors first!.
+        ///   Looks up a localized string similar to Enable both cursors first!.
         /// </summary>
         public static string msgZoomNotPossible {
             get {

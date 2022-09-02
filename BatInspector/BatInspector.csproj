@@ -106,7 +106,7 @@
     <Compile Include="Controls\CtrlZoom.xaml.cs">
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DrowpDownButton.cs" />
+    <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\RelayCommand.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>

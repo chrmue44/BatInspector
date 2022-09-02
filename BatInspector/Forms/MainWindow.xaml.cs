@@ -380,6 +380,7 @@ private void setZoomPosition()
         spec.Add("?");
         spec.Add("---");
 
+        int i = 0;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this);
@@ -394,7 +395,9 @@ private void setZoomPosition()
             _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
           });
+          i++;
          await Task.Delay(1);
+          setStatus("loading [" + i.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
         }
         DebugLog.log("project opened", enLogType.INFO);
         showStatus();
@@ -609,15 +612,14 @@ private void setZoomPosition()
     }
 
     private void _btnCallInfo_Click(object sender, RoutedEventArgs e)
-    {
+    { 
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+        ctl.InfoVisible = !ctl.InfoVisible;
       if (_spSpectrums.Children.Count > 0)
       {
         ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
         _model.Settings.HideInfos = !ctl0.InfoVisible;
       }
-      
-      foreach (ctlWavFile ctl in _spSpectrums.Children)
-        ctl.InfoVisible = !ctl.InfoVisible;
     }
 
     private void _btnDel_Click(object sender, RoutedEventArgs e)

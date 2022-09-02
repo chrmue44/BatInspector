@@ -610,7 +610,7 @@
     <value>Sampling rate needed for AI models</value>
   </data>
   <data name="msgZoomNotPossible" xml:space="preserve">
-    <value>Zoom to cursor not possible, enable both cursors first!</value>
+    <value>Enable both cursors first!</value>
   </data>
   <data name="msgInformation" xml:space="preserve">
     <value>Information</value>
@@ -689,5 +689,8 @@
   </data>
   <data name="MainToolRefresh" xml:space="preserve">
     <value>Refresh views</value>
+  </data>
+  <data name="CtlSpectrumTimeSpan" xml:space="preserve">
+    <value>Time span</value>
   </data>
 </root>

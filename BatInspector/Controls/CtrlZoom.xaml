@@ -87,11 +87,16 @@
         <ColumnDefinition Width="220"></ColumnDefinition>
       </Grid.ColumnDefinitions>
 
-      <Image Name="_imgXt" Grid.Row="0" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill">
+            <Image Name="_imgXt" Grid.Row="0" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
+ToolTipService.ShowDuration="8000" 
+ToolTipService.BetweenShowDelay="50" MouseMove="_imgXt_MouseMove"
+ToolTip="This is a tool tip." >
       </Image>
       <Canvas Name ="_rulerA" Grid.Row="0" Grid.Column="0" ></Canvas>
             <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="2" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="10" />
-            <Image Name="_imgFt" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill" MouseMove="_imgFt_MouseMove">
+            <Image Name="_imgFt" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
+ToolTipService.ShowDuration="8000" 
+ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_imgFt_MouseMove">
       </Image>
       <Line Name="_cursorX1" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
       <Line Name="_cursorY1" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />

@@ -12,9 +12,9 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <Canvas Name ="_cvSpec" Grid.Row="0" ToolTipService.InitialShowDelay="50" 
-ToolTipService.ShowDuration="2000" 
-ToolTipService.BetweenShowDelay="50" MouseMove="_cvSpec_MouseMove"
+        <Canvas Name ="_cvSpec" Grid.Row="0" ToolTipService.InitialShowDelay="5" 
+ToolTipService.ShowDuration="500" 
+ToolTipService.BetweenShowDelay="5" MouseMove="_cvSpec_MouseMove"
 ToolTip="This is a tool tip." />
     <Canvas Name ="_cvRulerF" Grid.Row="1"  ></Canvas>
         <StackPanel Grid.Row="2" Orientation="Horizontal">

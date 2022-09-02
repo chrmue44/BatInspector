@@ -546,6 +546,11 @@ namespace BatInspector.Controls
     private void _imgFt_MouseMove(object sender, MouseEventArgs e)
     {
       Point p = e.GetPosition(_imgFt);
+      double f = _model.ZoomView.RulerDataF.Min +
+                 (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
+      double t = _model.ZoomView.RulerDataT.Min +
+      p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
+     _imgFt.ToolTip = f.ToString("#.#") + "[kHz]/" + t.ToString("#.###" + "[s]");
     }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
@@ -697,6 +702,14 @@ namespace BatInspector.Controls
         _model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
       updateXtImage();
       initRulerA();
+    }
+
+    private void _imgXt_MouseMove(object sender, MouseEventArgs e)
+    {
+      Point pos = e.GetPosition(_imgXt);
+      double t = _model.ZoomView.RulerDataT.Min +
+      pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
+      _imgXt.ToolTip = t.ToString("#.###" + "[s]");
     }
   }
 }

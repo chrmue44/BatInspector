@@ -17,6 +17,7 @@ TODO
 
 
 DONE
+- tooltips in Zoom View in Ft, Xt and Spectrum
 - additional mode "Cursor" for spectrum added
 - added species information to zoom control
 - script commands for getting infos about project files (untested)

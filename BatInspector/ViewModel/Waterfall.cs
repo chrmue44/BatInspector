@@ -99,26 +99,29 @@ namespace BatInspector
       if (_ok)
       {
         _spec.Clear();
-        uint idxStart = (uint)(startTime * _samplingRate);
+        int idxStart = (int)(startTime * _samplingRate);
         if (idxStart > _samples.Length)
-          idxStart = (uint)_samples.Length;
-        uint idxEnd = (uint)(EndTime * _samplingRate);
+          idxStart = (int)_samples.Length;
+        int idxEnd = (int)(EndTime * _samplingRate);
         if (idxEnd > _samples.Length)
-          idxEnd = (uint)_samples.Length;
-        uint step = (idxEnd - idxStart) / width;
+          idxEnd = (int)_samples.Length;
+        int step = (idxEnd - idxStart) /(int)width;
         if (step == 0)
           step = 1;
         if (step > _fftSize)
-          step = _fftSize;
+          step = (int)_fftSize;
 
          int max = (int)(idxEnd - idxStart) / (int)step;
          for (int i = 0; i < max; i++)
            _spec.Add(null);
          Parallel.For(0, max, i =>
          {
-           uint idx = idxStart + (uint)i * step;
-           double[] sp = generateFft(idx, _fftSize, _settings.FftWindow);
-           _spec[i] = sp;
+           int idx = idxStart + i * step;
+           if (idx >= 0)
+           {
+             double[] sp = generateFft(idx, (int)_fftSize, _settings.FftWindow);
+             _spec[i] = sp;
+           }
          });
       }
       else
@@ -148,28 +151,28 @@ namespace BatInspector
     //  http://web-tech.ga-usa.com/2012/05/creating-a-custom-hot-to-cold-temperature-color-gradient-for-use-with-rrdtool/index.html
  
 
-    public double[] generateFft(UInt32 idx, UInt32 length, DSP.Window.Type window = DSP.Window.Type.Hanning)
+    public double[] generateFft(int idx, int length, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
       bool logarithmic = _settings.WaterfallLogarithmic;
       //   double amplitude = 1.0; double frequency = 20000.5;
-      UInt32 zeroPadding = 0; // NOTE: Zero Padding
+      int zeroPadding = 0; // NOTE: Zero Padding
   //    _maxAmplitude = -100;
       if(idx + length > _samples.Length)
       {
-        length = (UInt32)_samples.Length - idx - 1;
+        length = _samples.Length - idx - 1;
 //        zeroPadding = _fftSize - length;
       }
-      zeroPadding = _fftSize - length;
+      zeroPadding = (int)_fftSize - length;
       double[] inputSignal = new double[length];
       Array.Copy(_samples, idx, inputSignal, 0, length);
       // Apply window to the Input Data & calculate Scale Factor
-      double[] wCoefs = DSP.Window.Coefficients(window, length);
+      double[] wCoefs = DSP.Window.Coefficients(window, (uint)length);
       double[] wInputData = DSP.Math.Multiply(inputSignal, wCoefs);
       double wScaleFactor = DSP.Window.ScaleFactor.Signal(wCoefs);
 
       // Instantiate & Initialize a new DFT
       FFT fft = new FFT();
-      fft.Initialize(length, zeroPadding); // NOTE: Zero Padding
+      fft.Initialize((uint)length, (uint)zeroPadding); // NOTE: Zero Padding
 
       // Call the DFT and get the scaled spectrum back
       Complex[] cSpectrum = fft.Execute(wInputData);
@@ -219,11 +222,14 @@ namespace BatInspector
            //   int idxFreq2 = (int)((double)_spec[0].Length / (double)_height * (double)y);
               double f = (fMax - fMin) * y / _heightFt + fMin;
               int idxFreq =(int)( f * 2000 /(double) _samplingRate * _fftSize / 2);
-              if (idxFreq >= _spec[idxSpec].Length)
-                idxFreq = _spec[idxSpec].Length - 1;
-              double val = _spec[idxSpec][idxFreq];
-              Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
-              bmp.SetPixel(x, _heightFt - 1 - y, col);
+              if (_spec[idxSpec] != null)
+              {
+                if (idxFreq >= _spec[idxSpec].Length)
+                  idxFreq = _spec[idxSpec].Length - 1;
+                double val = _spec[idxSpec][idxFreq];
+                Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
+                bmp.SetPixel(x, _heightFt - 1 - y, col);
+              }
             }
           }
         }

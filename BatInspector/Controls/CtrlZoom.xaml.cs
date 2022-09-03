@@ -490,7 +490,8 @@ namespace BatInspector.Controls
     private void createZoomImg()
     {
       updateRuler();
-      _model.ZoomView.Waterfall.generateFtDiagram(_model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, _model.Settings.FftWidth);
+      double dt = (double)_model.Settings.FftWidth / _model.ZoomView.Waterfall.SamplingRate;
+      _model.ZoomView.Waterfall.generateFtDiagram(_model.ZoomView.RulerDataT.Min - dt, _model.ZoomView.RulerDataT.Max - dt, _model.Settings.FftWidth);
       updateImage();
     }
 

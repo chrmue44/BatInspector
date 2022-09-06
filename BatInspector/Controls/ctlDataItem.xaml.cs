@@ -104,6 +104,11 @@ namespace BatInspector.Controls
       return _valUInt;
     }
 
+    public double getDoubleValue()
+    {
+      return _valDouble;
+    }
+
     public string getValue()
     {
       switch(_type)

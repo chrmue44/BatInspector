@@ -6,21 +6,56 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.FindBatNarrowDown}" Height="414.912" Width="617.309">
-    <StackPanel>
-    <StackPanel Orientation="Horizontal" Margin="5,10,0,0">
-      <local:ctlDataItem x:Name="_ctlCharFreq" ></local:ctlDataItem>
-      <CheckBox Name="_cbCharFreq" Content="enable" Margin="10,5,0,0"></CheckBox>
-    </StackPanel>
-    <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
-      <local:ctlDataItem x:Name="_ctlDuration" ></local:ctlDataItem>
-      <CheckBox Name="_cbDuration" Content="enable" Margin="10,5,0,0"></CheckBox>
-    </StackPanel>
-    <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
-      <local:ctlDataItem x:Name="_ctlCallDist" ></local:ctlDataItem>
-      <CheckBox Name="_cbCallDist" Content="enable" Margin="10,5,0,0"></CheckBox>
-    </StackPanel>
-    <Label Content="{x:Static res:MyResources.FindBatPossibleSpecies}" Margin="5,10"></Label>
-    <DataGrid Name="_dgSpecies" Height="269"></DataGrid>
+        Title="{x:Static res:MyResources.FindBatNarrowDown}" Height="400" Width="800">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+
+        <StackPanel Grid.Column="0" Grid.Row="1">
+        <GroupBox Header="Position" Margin="5">
+            <StackPanel>
+                    <local:ctlDataItem x:Name="_ctlLat" Margin="5,10,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlLon" Margin="5,5,0,0"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Messdaten" Margin="5">
+            <StackPanel>
+                    <local:ctlDataItem x:Name="_ctlFstart" Margin="5,10,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlFend" Margin="5,5,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlFME" Margin="5,5,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlDuration" Margin="5,5,0,0" />
+            </StackPanel>
+        </GroupBox>
   </StackPanel>
+        <GroupBox Header="Eigenschaften" Margin="5" Grid.Column="1" Grid.Row="1">
+        <StackPanel>
+                <local:ctlSelectItem x:Name="_ctlSigStruct" Margin="5,10,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlProgStart" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlExpStart" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlAbsPeak" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlFinalWhack" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlAlternating" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlNasalSon" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlWhistledSon" Margin="5,5,0,0"/>
+                <local:ctlSelectItem x:Name="_ctlHockeyStick" Margin="5,5,0,0"/>
+
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="mögliche Arten" Margin="5" Grid.Column ="2" Grid.Row="1">
+            <TextBlock x:Name="_tbSpecies" Margin="0,10,0,0">
+                
+            </TextBlock>
+        </GroupBox>
+        <Button x:Name="_btnReset" Grid.Row="0" Grid.Column="1" Content="Reset" Margin="30,0" Click="_btnReset_Click"/>
+        <Button x:Name="_btnCheck" Grid.Row="0" Grid.Column="2" Content="Check" Margin="30,0" Click="_btnCheck_Click"/>
+    </Grid>
 </Window>

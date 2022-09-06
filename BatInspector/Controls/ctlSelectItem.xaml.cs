@@ -24,6 +24,7 @@ namespace BatInspector.Controls
     string _valString;
     dlgSelItemChanged _dlgValChange = null;
     int _index;
+    Brush _brushDefault;
     
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
@@ -36,7 +37,17 @@ namespace BatInspector.Controls
       _index = index;
       _lbl.Width = widthLbl;
       _cb.Width = widthTb;
+      _brushDefault = _lbl.Background;
+    }
 
+    public void setAlert(bool on)
+    {
+      if (on)
+      {
+        _lbl.Background = Brushes.DarkOrange;
+      }
+      else
+        _lbl.Background = _brushDefault;
     }
 
     public void setValue(string val)
@@ -56,6 +67,11 @@ namespace BatInspector.Controls
     public string getValue()
     {
       return _valString;
+    }
+
+    public int getSelectedIndex()
+    {
+      return _cb.SelectedIndex;
     }
 
     public ctlSelectItem()

@@ -59,6 +59,7 @@ namespace BatInspector
     ScriptRunner _scripter = null;
     WavFile _wav;
     string _scriptName = "";
+    ClassifierBarataud _clsBarataud;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
@@ -70,6 +71,7 @@ namespace BatInspector
     public string Version { get { return _version; } }
     public Analysis Analysis { get { return _analysis; } }
 
+    public ClassifierBarataud Classifier { get { return _clsBarataud; } }
     public Project Prj { get { return _prj; } }
 
     //public ProcessRunner ProcRunner { get { return _proc; } }
@@ -101,6 +103,7 @@ namespace BatInspector
       _colorTable.createColorLookupTable();
       _zoom = new ZoomView(_colorTable);
       _wav = new WavFile();
+      _clsBarataud = new ClassifierBarataud();
     }
 
     public void updateReport()

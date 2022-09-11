@@ -53,6 +53,7 @@ namespace BatInspector
       testWhile(wrkDir);
       testParser();
       testCsvFuncs(wrkDir);
+      testClassifier();
       if (_errors == 0)
         DebugLog.log("Tests passed", enLogType.INFO);
     }
@@ -143,6 +144,31 @@ namespace BatInspector
       return retVal;
     }
 
+    private int testClassifier()
+    {
+      int retVal = 0;
+      List<ParLocation> locs = new List<ParLocation>();
+      locs.Add(new ParLocation(49.963175, 8.563220));
+      locs.Add(new ParLocation(49.727209, 8.539645));
+      locs.Add(new ParLocation(49.728493, 8.788927));
+      locs.Add(new ParLocation(49.839054, 9.030958));
+      locs.Add(new ParLocation(49.995876, 9.010885));
+
+      ParLocation pos = new ParLocation(49.753933, 8.632084);
+      bool ret = _model.Classifier.inside(pos, locs);
+      assert("loc inside", ret == true);
+      pos = new ParLocation(50.1, 8.632084);
+      ret = _model.Classifier.inside(pos, locs);
+      assert("loc inside", ret == false);
+      pos = new ParLocation(49.8, 9.1);
+      ret = _model.Classifier.inside(pos, locs);
+      assert("loc inside", ret == false);
+      pos = new ParLocation(49.8, 8.4);
+      ret = _model.Classifier.inside(pos, locs);
+      assert("loc inside", ret == false);
+
+      return retVal;
+    }
     private void assert(string a, string exp)
     {
       if( a != exp)
@@ -151,5 +177,15 @@ namespace BatInspector
         _errors++;
       }
     }
+
+    private void assert(string a, bool exp)
+    {
+      if (!exp)
+      {
+        DebugLog.log("assertion error: " + a, enLogType.ERROR);
+        _errors++;
+      }
+    }
+
   }
 }

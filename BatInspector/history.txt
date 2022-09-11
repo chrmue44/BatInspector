@@ -14,6 +14,7 @@ TODO
 
 
 DONE
+- classifier Barataud
 - offset between xt and ft image in zoom view eliminated
 - tooltips in Zoom View in Ft, Xt and Spectrum
 - additional mode "Cursor" for spectrum added

@@ -152,6 +152,7 @@
     <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
     <Compile Include="ViewModel\BatRecord.cs" />
+    <Compile Include="ViewModel\BatSpeciesRegions.cs" />
     <Compile Include="ViewModel\ClassifierBarataud.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\Filter.cs" />

@@ -120,8 +120,17 @@ namespace BatInspector
     UNKNOWN,
   }
 
+ 
+
   public class ClassifierBarataud
   {
+    BatSpeciesRegions _batSpecRegions;
+
+    public ClassifierBarataud()
+    {
+      _batSpecRegions = BatSpeciesRegions.load();    
+    }
+
     public List<enSpec> classify(CallParams pars, ref MissingInfo info, out List<int> steps)
     {
       info.init();
@@ -407,6 +416,28 @@ namespace BatInspector
       bool retVal = true;
       //TODO
       return retVal;
+    }
+
+    // Is p0 inside p?  Polygon 
+    public bool inside(ParLocation p0, List<ParLocation> p)
+    {
+      int n = p.Count;
+      bool result = false;
+      for (int i = 0; i < n; ++i)
+      {
+         int j = (i + 1) % n;
+         if (
+        // Does p0.y lies in half open y range of edge.
+        // N.B., horizontal edges never contribute
+           ((p[j].Lat <= p0.Lat && p0.Lat < p[i].Lat) || 
+          (p[i].Lat <= p0.Lat && p0.Lat<p[j].Lat) ) &&
+        // is p to the left of edge?
+        (p0.Lon<p[j].Lon + (p[i].Lon - p[j].Lon) * (p0.Lat - p[j].Lat) /
+          (p[i].Lat - p[j].Lat) )
+        )
+        result = !result;
+      }
+      return result;
     }
   }
 }

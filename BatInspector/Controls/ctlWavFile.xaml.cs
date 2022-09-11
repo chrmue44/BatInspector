@@ -33,8 +33,14 @@ namespace BatInspector.Controls
     dlgSetFocus _dlgFocus;
     ViewModel _model;
     MainWindow _parent;
+    bool _initialized = false;
 
     public string WavFilePath {  get { return _wavFilePath; } }
+    public bool WavInit { get { return _initialized; } }
+    public AnalysisFile Analysis { get { return _analysis; } }
+    public int Index { get { return _index; } set { _index = value; } }
+    public string WavName { get { return _wavName; } }
+
     public bool InfoVisible
     {
       get { return _grpInfoAuto.Visibility == Visibility.Visible; }
@@ -57,7 +63,6 @@ namespace BatInspector.Controls
       }
     }
 
-    public AnalysisFile Analysis { get { return _analysis; } }
     public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model, MainWindow parent)
     {
       _index = index;
@@ -70,8 +75,6 @@ namespace BatInspector.Controls
       Visibility = Visibility.Visible;
     }
 
-    public int Index { get { return _index; } set { _index = value; } }
-    public string WavName { get { return _wavName; } }
 
     public void updateCallInformations(AnalysisFile analysis)
     {
@@ -118,6 +121,7 @@ namespace BatInspector.Controls
           callNr++;
         }
       }
+      _initialized = true;
     }
 
     public void setFocus()

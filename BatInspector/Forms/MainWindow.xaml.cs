@@ -46,6 +46,7 @@ namespace BatInspector.Forms
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
+    List<string> _specList = new List<string>();
 
     System.Windows.Threading.DispatcherTimer _dispatcherTimer;
 
@@ -288,6 +289,17 @@ private void setZoomPosition()
       return item;
     }
 
+    private void initSpecList()
+    {
+      foreach (SpeciesInfos si in _model.Settings.Species)
+      {
+        if (si.Show)
+          _specList.Add(si.Abbreviation);
+      }
+      _specList.Add("todo");
+      _specList.Add("?");
+      _specList.Add("---");
+    }
 
     private void updateWavControls()
     {
@@ -382,16 +394,6 @@ private void setZoomPosition()
         _spSpectrums.Children.Clear();
         _cbFocus = -1;
 
-        List<string> spec = new List<string>();
-        foreach (SpeciesInfos si in _model.Settings.Species)
-        {
-          if (si.Show)
-            spec.Add(si.Abbreviation);
-        }
-        spec.Add("todo");
-        spec.Add("?");
-        spec.Add("---");
-
         int i = 0;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
@@ -403,24 +405,15 @@ private void setZoomPosition()
             _spSpectrums.Children.Add(ctl);
           });
 
-     /*     if (ctl.IsVisible)
+          bool newImage;
+          if (ctl.Index < 5)
           {
-            var container = VisualTreeHelper.GetParent(ctl) as FrameworkElement;
-            if (container == null) throw new ArgumentNullException("container");
-
-            Rect bounds = ctl.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, ctl.RenderSize.Width, ctl.RenderSize.Height));
-            Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-
-            if (rect.IntersectsWith(bounds))
-            { */
-              bool newImage;
-              ctl._img.Source = _model.getFtImage(rec, out newImage);
-              ctl._img.MaxHeight = _imgHeight;
-              ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, spec);
-              ctl.InfoVisible = !_model.Settings.HideInfos;
-              setStatus("loading [" + i.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
-        /*    }
-          } */
+            ctl._img.Source = _model.getFtImage(rec, out newImage);
+            ctl._img.MaxHeight = _imgHeight;
+            ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, _specList);
+            ctl.InfoVisible = !_model.Settings.HideInfos;
+//            setStatus("loading [" + i.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
+          }
           i++;
          await Task.Delay(1);
         }
@@ -758,6 +751,33 @@ private void setZoomPosition()
     {
       frmDebug frm = new frmDebug(_model);
       frm.Show();
+    }
+
+    private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+    {
+      double h = e.ExtentHeight;
+      double p = e.VerticalOffset;
+      int k = (int)((double)_spSpectrums.Children.Count * p / h);
+      for (int i = k - 2; i < k + 3; i++)
+      {
+        if ((i >= 0) && (i < _spSpectrums.Children.Count))
+        {
+          ctlWavFile w = _spSpectrums.Children[i] as ctlWavFile;
+          if ((i < _model.Prj.Records.Length) && (i < _model.Analysis.Files.Count))
+          {
+            if (!w.WavInit)
+            {
+              bool newImage;
+              BatExplorerProjectFileRecordsRecord rec = _model.Prj.Records[i];
+              w._img.Source = _model.getFtImage(rec, out newImage);
+              w._img.MaxHeight = _imgHeight;
+              w.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, _specList);
+              w.InfoVisible = !_model.Settings.HideInfos;
+            }
+            w.UpdateLayout();
+          }
+        }
+      }
     }
   }
 

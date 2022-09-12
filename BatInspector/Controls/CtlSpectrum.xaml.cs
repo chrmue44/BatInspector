@@ -1,6 +1,7 @@
 ﻿using BatInspector.Forms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace BatInspector.Controls
         for (int i = 0; i <= 10; i++)
         {
           CtrlZoom.createLine(_cvRulerF, _cvRulerF.ActualWidth * i / 10, 3, _cvRulerF.ActualWidth * i / 10, 10, Brushes.Black);
-          string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.0");
+          string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.0", CultureInfo.InvariantCulture);
           if ((i % 2) == 0)
             CtrlZoom.createText(_cvRulerF, _cvRulerF.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
         }
@@ -109,7 +110,7 @@ namespace BatInspector.Controls
     {
       Point pos = e.GetPosition(this);
       double f = _spectrum.RulerDataF.Min + (pos.X / _cvSpec.ActualWidth) * (_spectrum.RulerDataF.Max - _spectrum.RulerDataF.Min);
-      _cvSpec.ToolTip = f.ToString("#.#") + "[kHz]";
+      _cvSpec.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]";
     }
   }
 }

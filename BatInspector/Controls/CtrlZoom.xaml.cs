@@ -21,6 +21,7 @@ using libParser;
 using BatInspector.Properties;
 using System;
 using System.IO;
+using System.Globalization;
 
 namespace BatInspector.Controls
 {
@@ -332,7 +333,7 @@ namespace BatInspector.Controls
       }
       double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1/2;
       createText(_rulerA, _rulerA.ActualWidth - 35, y0 - 5, "0.0", Colors.Black);
-      createText(_rulerA, _rulerA.ActualWidth - 35, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##"), Colors.Black);
+      createText(_rulerA, _rulerA.ActualWidth - 35, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
     }
     void initRulerF()
     {
@@ -345,7 +346,7 @@ namespace BatInspector.Controls
         double y = _imgFt.Margin.Top + _imgFt.ActualHeight * i / 10;
         createLine(_rulerF, _rulerF.ActualWidth - 3, y,
                             _rulerF.ActualWidth - 10, y, Brushes.Black);
-        string str = ((rData.Max - rData.Min) * (10 - i) / 10 + rData.Min).ToString("0.#");
+        string str = ((rData.Max - rData.Min) * (10 - i) / 10 + rData.Min).ToString("0.#", CultureInfo.InvariantCulture);
         createText(_rulerF, _rulerF.ActualWidth - 35, y - 5, str, Colors.Black);
       }
     }
@@ -358,7 +359,7 @@ namespace BatInspector.Controls
       for (int i = 0; i <= 10; i++)
       {
         createLine(_rulerT, _rulerT.ActualWidth * i / 10, 3, _rulerT.ActualWidth * i / 10, 10, Brushes.Black);
-        string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.###");
+        string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.###", CultureInfo.InvariantCulture);
         createText(_rulerT, _rulerT.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
       }
     }
@@ -551,7 +552,8 @@ namespace BatInspector.Controls
                  (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
       double t = _model.ZoomView.RulerDataT.Min +
       p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-     _imgFt.ToolTip = f.ToString("#.#") + "[kHz]/" + t.ToString("#.###" + "[s]");
+     _imgFt.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" + 
+                      t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
     }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
@@ -572,6 +574,7 @@ namespace BatInspector.Controls
 
     private void changeCall(int idx)
     {
+      _model.ZoomView.SelectedCallIdx = idx;
       _oldCallIdx = idx;
       setupCallData(idx);
       double tStart = _analysis.getStartTime(idx);
@@ -710,7 +713,7 @@ namespace BatInspector.Controls
       Point pos = e.GetPosition(_imgXt);
       double t = _model.ZoomView.RulerDataT.Min +
       pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-      _imgXt.ToolTip = t.ToString("#.###" + "[s]");
+      _imgXt.ToolTip = t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
     }
   }
 }

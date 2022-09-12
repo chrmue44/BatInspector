@@ -2,6 +2,7 @@
 using libParser;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,7 +77,7 @@ namespace BatInspector.Controls
       if (_type == enDataType.DOUBLE)
       {
         _valDouble = val;
-        _tb.Text = val.ToString(format);
+        _tb.Text = val.ToString(format, CultureInfo.InvariantCulture);
       }
       else
         DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
@@ -147,7 +148,7 @@ namespace BatInspector.Controls
           break;
 
         case enDataType.DOUBLE:
-          double.TryParse(_tb.Text, out _valDouble);
+          double.TryParse(_tb.Text, NumberStyles.Any,  CultureInfo.InvariantCulture, out _valDouble);
           if (_dlgValChange != null)
             _dlgValChange(enDataType.DOUBLE, _valDouble);
           break;

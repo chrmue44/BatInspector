@@ -1,6 +1,7 @@
 ﻿
 using BatInspector.Forms;
 using libParser;
+using System.Globalization;
 using System.Windows.Controls;
 
 namespace BatInspector.Controls
@@ -83,7 +84,7 @@ namespace BatInspector.Controls
       if (_type == enDataType.DOUBLE)
       {
         val = newVal;
-        tb.Text = newVal.ToString(format);
+        tb.Text = newVal.ToString(format, CultureInfo.InvariantCulture);
       }
       else
         DebugLog.log("wrong data type for ctlDataItemMinMax: " + _lbl.Text, enLogType.ERROR);

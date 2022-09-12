@@ -69,8 +69,11 @@ namespace BatInspector.Controls
       _dlgFocus = setFocus;
       _model = model;
       _parent = parent;
+      _analysis = _model.Analysis.Files[index];
+      _wavName = _model.Prj.Records[index].File;
       InitializeComponent();
-
+      if (_analysis.FileName.IndexOf(_wavName) < 0)
+        DebugLog.log("WAV name mismatch to Report for " + _wavName, enLogType.ERROR);
       _cbSel.Focusable = true;
       Visibility = Visibility.Visible;
     }
@@ -88,17 +91,15 @@ namespace BatInspector.Controls
         im.setValue(call.SpeciesMan);
       }
       _cbSel.IsChecked = _analysis.Selected;
-
     }
 
-    public void setFileInformations(string Name, AnalysisFile analysis, string wavFilePath, List<string> spec)
+    public void setFileInformations(string Name, string wavFilePath, List<string> spec)
     {
-      _analysis = analysis;
       _wavFilePath = wavFilePath;
       _wavName = Name;
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
      
-      if (analysis != null)
+      if (_analysis != null)
       {
       //  _sampleRate.setValue(_analysis.SampleRate);
       //  _duration.setValue(_analysis.Duration);

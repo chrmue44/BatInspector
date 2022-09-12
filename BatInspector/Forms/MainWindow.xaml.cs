@@ -47,6 +47,8 @@ namespace BatInspector.Forms
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
     List<string> _specList = new List<string>();
+    List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
+    bool _fastOpen = true;
 
     System.Windows.Threading.DispatcherTimer _dispatcherTimer;
 
@@ -89,9 +91,10 @@ namespace BatInspector.Forms
       _dispatcherTimer.Start();
       DebugLog.setLogDelegate(_ctlLog.log);
       _ctlLog.setViewModel(_model);
+      initSpecList();
 #if DEBUG
       Tests tests = new Tests(_model);
-      tests.exec();      
+      tests.exec();
 #endif
     }
 
@@ -207,7 +210,7 @@ namespace BatInspector.Forms
 
     public void closeWindow(enWinType w)
     {
-      switch(w)
+      switch (w)
       {
         case enWinType.ZOOM:
           _frmZoom = null;
@@ -239,10 +242,10 @@ namespace BatInspector.Forms
 
     public void setZoom(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
     {
-      if(_model.Settings.ZoomSeparateWin)
+      if (_model.Settings.ZoomSeparateWin)
       {
         if (_frmZoom == null)
-          _frmZoom = new FrmZoom(_model,closeWindow);
+          _frmZoom = new FrmZoom(_model, closeWindow);
         _frmZoom.setup(name, analysis, wavFilePath, img);
         setZoomPosition();
         _frmZoom.Show();
@@ -271,7 +274,7 @@ namespace BatInspector.Forms
       }
     }
 
-private void setZoomPosition()
+    private void setZoomPosition()
     {
       if (_frmZoom != null)
       {
@@ -356,7 +359,7 @@ private void setZoomPosition()
 
     private void createImageFiles(object sender, DoWorkEventArgs e)
     {
-      if ((_model.Prj!= null) && ( _model.Prj.Ok))
+      if ((_model.Prj != null) && (_model.Prj.Ok))
       {
         _model.Busy = true;
         Parallel.ForEach(_model.Prj.Records, rec =>
@@ -373,17 +376,17 @@ private void setZoomPosition()
       }
     }
 
-   /* bool IsUserVisible(this UIElement element)
-    {
-      if (!element.IsVisible)
-        return false;
-      var container = VisualTreeHelper.GetParent(element) as FrameworkElement;
-      if (container == null) throw new ArgumentNullException("container");
 
-      Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.RenderSize.Width, element.RenderSize.Height));
-      Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-      return rect.IntersectsWith(bounds);
-    }*/
+    void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec)
+    {
+      bool newImage;
+      ctl._img.Source = _model.getFtImage(rec, out newImage);
+      ctl._img.MaxHeight = _imgHeight;
+      ctl.setFileInformations(rec.File, _model.WavFilePath, _specList);
+      ctl.InfoVisible = !_model.Settings.HideInfos;
+      if(!_fastOpen)
+         setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
+    }
 
     internal async Task createFftImages()
     {
@@ -394,7 +397,6 @@ private void setZoomPosition()
         _spSpectrums.Children.Clear();
         _cbFocus = -1;
 
-        int i = 0;
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this);
@@ -405,16 +407,10 @@ private void setZoomPosition()
             _spSpectrums.Children.Add(ctl);
           });
 
-          bool newImage;
-          if (ctl.Index < 5)
+          if (!_fastOpen || (ctl.Index < 5))
           {
-            ctl._img.Source = _model.getFtImage(rec, out newImage);
-            ctl._img.MaxHeight = _imgHeight;
-            ctl.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, _specList);
-            ctl.InfoVisible = !_model.Settings.HideInfos;
-//            setStatus("loading [" + i.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
+            initCtlWav(ctl, rec);
           }
-          i++;
          await Task.Delay(1);
         }
         DebugLog.log("project opened", enLogType.INFO);
@@ -598,10 +594,12 @@ private void setZoomPosition()
       FilterItem filter = _model.Filter.getFilter(_cbFilter.Text);
       if (filter != null)
       {
+        _filteredWavs.Clear();
         foreach (ctlWavFile c in _spSpectrums.Children)
         {
           bool res = _model.Filter.apply(filter, c.Analysis);
           c._cbSel.IsChecked = res;
+          _filteredWavs.Add(c);
         }
         DebugLog.log("filter '" + filter.Name + "' applied", enLogType.INFO);
       }
@@ -753,29 +751,34 @@ private void setZoomPosition()
       frm.Show();
     }
 
+    private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
+    {
+      //https://stackoverflow.com/questions/1517743/in-wpf-how-can-i-determine-whether-a-control-is-visible-to-the-user
+      if (!element.IsVisible)
+        return false;
+
+      Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
+      Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+//      return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+      return rect.IntersectsWith(bounds);
+    }
+
     private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
+      if (!_fastOpen)
+        return;
+      
       double h = e.ExtentHeight;
       double p = e.VerticalOffset;
       int k = (int)((double)_spSpectrums.Children.Count * p / h);
-      for (int i = k - 2; i < k + 3; i++)
+
+      foreach(ctlWavFile c in _spSpectrums.Children)
       {
-        if ((i >= 0) && (i < _spSpectrums.Children.Count))
+        if (IsUserVisible(c, this) && !c.WavInit)
         {
-          ctlWavFile w = _spSpectrums.Children[i] as ctlWavFile;
-          if ((i < _model.Prj.Records.Length) && (i < _model.Analysis.Files.Count))
-          {
-            if (!w.WavInit)
-            {
-              bool newImage;
-              BatExplorerProjectFileRecordsRecord rec = _model.Prj.Records[i];
-              w._img.Source = _model.getFtImage(rec, out newImage);
-              w._img.MaxHeight = _imgHeight;
-              w.setFileInformations(rec.File, _model.Analysis.getAnalysis(rec.File), _model.WavFilePath, _specList);
-              w.InfoVisible = !_model.Settings.HideInfos;
-            }
-            w.UpdateLayout();
-          }
+          if (c.Index < _model.Prj.Records.Length)
+            initCtlWav(c, _model.Prj.Records[c.Index]);
+          c.UpdateLayout();
         }
       }
     }

@@ -1,8 +1,19 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
+using libParser;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+
 
 namespace BatInspector
 {
@@ -126,20 +137,24 @@ namespace BatInspector
   {
     BatSpeciesRegions _batSpecRegions;
 
+    public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
     public ClassifierBarataud()
     {
       _batSpecRegions = BatSpeciesRegions.load();    
     }
 
-    public List<enSpec> classify(CallParams pars, ref MissingInfo info, out List<int> steps)
+    public List<enSpec> classify(CallParams pars, ref MissingInfo info, out List<string> steps)
     {
       info.init();
       List<enSpec> retVal = new List<enSpec>();
-      steps = new List<int>();
+      steps = new List<string>();
       int step = 1;
+      int lastStep = 1;
       while (retVal.Count == 0)
       {
-        steps.Add(step);
+        if (steps.Count > 10)
+          retVal.Add(enSpec.UNKNOWN);
+        string infoStr = "";
         switch (step)
         {
           case 1:
@@ -165,6 +180,7 @@ namespace BatInspector
                 step = 16;
                 break;
             }
+            infoStr = "sigStruct: " + pars.SigStructure.ToString();
             break;
 
           case 6:
@@ -186,6 +202,7 @@ namespace BatInspector
               retVal.Add(enSpec.RHIP);
             else
               retVal.Add(enSpec.UNKNOWN);
+            infoStr = "FME: " + pars.FME;
             break;
 
           case 7:
@@ -196,6 +213,8 @@ namespace BatInspector
               retVal.Add(enSpec.BBAR);
             else
               retVal.Add(enSpec.UNKNOWN);
+            infoStr = "duration: " + pars.Duration.ToString("#.#", CultureInfo.InvariantCulture) + " FME: " 
+                      + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 8:
@@ -203,6 +222,7 @@ namespace BatInspector
               step = 9;
             else
               step = 12;
+            infoStr = "FME: " + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 9:
@@ -213,6 +233,7 @@ namespace BatInspector
             }
             else
               step = 11;
+            infoStr = "Alternating: " + pars.Alternating.ToString();
             break;
 
           case 10:
@@ -224,6 +245,7 @@ namespace BatInspector
               retVal.Add(enSpec.NLEI);
             else
               retVal.Add(enSpec.UNKNOWN);
+            infoStr = "FME: " + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 11:
@@ -235,10 +257,12 @@ namespace BatInspector
                      (18 <= pars.Duration) && (pars.Duration <= 24) && occurrence(pars, enSpec.VMUR))
               retVal.Add(enSpec.VMUR);
             else if ((27 < pars.FME) && (pars.FME <= 30) &&
-                    (26.5 < pars.EndF) && (pars.EndF < 29) && occurrence(pars, enSpec.ENIL))
+                    (26.5 <= pars.EndF) && (pars.EndF < 29) && occurrence(pars, enSpec.ENIL))
               retVal.Add(enSpec.ENIL);
             else
               retVal.Add(enSpec.UNKNOWN);  //social call of NLEI not considered
+            infoStr = "duration: " + pars.Duration.ToString("#.#", CultureInfo.InvariantCulture) +
+                      " FME:" + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 12:
@@ -256,6 +280,8 @@ namespace BatInspector
             else if ((51 <= pars.FME) && (pars.FME <= 57) &&
                      (pars.Duration < 9) && occurrence(pars, enSpec.PPYG))
               retVal.Add(enSpec.PPYG);
+            infoStr = "duration: " + pars.Duration.ToString("#.#", CultureInfo.InvariantCulture) +
+                      " FME:" + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 13:
@@ -263,6 +289,7 @@ namespace BatInspector
               step = 14;
             else
               step = 15;
+            infoStr = "FME: " + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 14:
@@ -270,22 +297,35 @@ namespace BatInspector
               retVal.Add(enSpec.ENIL);
             else if ((22 <= pars.FME) && (pars.FME <= 30))
             {
-              if(occurrence(pars, enSpec.Eptesicus))
+              bool found = false;
+              if (occurrence(pars, enSpec.Eptesicus))
+              {
+                found = true;
                 retVal.Add(enSpec.Eptesicus);
+              }
               if (occurrence(pars, enSpec.Vespertilio))
+              {
+                found = true;
                 retVal.Add(enSpec.Vespertilio);
+              }
               if (occurrence(pars, enSpec.Nyctalus))
+              {
+                found = true;
                 retVal.Add(enSpec.Nyctalus);
+              }
+              if (!found)
+                retVal.Add(enSpec.UNKNOWN);
             }
             else
               retVal.Add(enSpec.UNKNOWN);
+            infoStr = "FME: " + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;
          
           case 15:
-            if ((32 <= pars.FME) && (pars.FME <= 34) && 
+            if ((32 <= pars.FME) && (pars.FME <= 34) &&
                 ((pars.StartF - pars.EndF) < 30) && occurrence(pars, enSpec.HSAV))
               retVal.Add(enSpec.HSAV);
-            else if((32 <= pars.FME) && (pars.FME <= 44) && (pars.EndF > 27) && 
+            else if ((32 <= pars.FME) && (pars.FME <= 44) && (pars.EndF > 27) &&
                     ((pars.StartF - pars.EndF) > 30) && occurrence(pars, enSpec.ESER))
               retVal.Add(enSpec.ESER);
             else if ((37 <= pars.FME) && (pars.FME <= 39) && occurrence(pars, enSpec.PKUH))
@@ -303,7 +343,11 @@ namespace BatInspector
                      (10 <= pars.Duration) && (pars.Duration <= 18) &&
                       occurrence(pars, enSpec.MDAS))
               retVal.Add(enSpec.MDAS);
-
+            else
+              retVal.Add(enSpec.UNKNOWN);
+            infoStr = "FME: " + pars.FME.ToString("#.#", CultureInfo.InvariantCulture) +
+                      " duration:" + pars.Duration.ToString("#.#", CultureInfo.InvariantCulture) +
+                      " FEnd: " + pars.EndF.ToString("#.#", CultureInfo.InvariantCulture);
             break;
 
           case 16:
@@ -319,7 +363,8 @@ namespace BatInspector
             else if (pars.WhistledSonority == enBoolDC.YES)
               step = 18;
             else
-              retVal.Add(enSpec.UNKNOWN);             
+              retVal.Add(enSpec.UNKNOWN);
+            infoStr = "FME, StartF, EndF, alt, Nasal, Whistled";
             break;
 
           case 17:
@@ -335,7 +380,9 @@ namespace BatInspector
                 retVal.Add(enSpec.Plecotus);
               else
                 retVal.Add(enSpec.UNKNOWN);
-            }  
+            }
+            infoStr = "Prog: " + pars.ProgressiveStart.ToString() +
+                      "Expl:" + pars.ExplosiveStart.ToString();
             break;
 
           case 18:
@@ -355,6 +402,7 @@ namespace BatInspector
             }
             else
               step = 19;
+            infoStr = "Hockestick:" + pars.HockeyStick.ToString();
             break;
 
           case 19:
@@ -400,8 +448,11 @@ namespace BatInspector
             }
             if (retVal.Count == 0)
               retVal.Add(enSpec.Myotis);
+            infoStr = "TODO";
             break;
         }
+        steps.Add(lastStep.ToString() + ": " + infoStr);
+        lastStep = step;
       }
       return retVal;
     }
@@ -411,33 +462,30 @@ namespace BatInspector
       return occurrence(spec, pars.Latitude, pars.Longitude);
     }
 
+    /// <summary>
+    /// checks if occurrance of the species is possible at the location.
+    /// If the point belongs to a region specified in the regions file, the
+    /// species is checked against the possible species in the region. If the
+    /// location does not belong to a specified region the retunr value is 
+    /// always true
+    /// </summary>
+    /// <param name="spec"></param>
+    /// <param name="lat"></param>
+    /// <param name="lon"></param>
+    /// <returns></returns>
     bool occurrence(enSpec spec, double lat, double lon)
     {
       bool retVal = true;
-      //TODO
-      return retVal;
-    }
-
-    // Is p0 inside p?  Polygon 
-    public bool inside(ParLocation p0, List<ParLocation> p)
-    {
-      int n = p.Count;
-      bool result = false;
-      for (int i = 0; i < n; ++i)
+      ParRegion reg = Regions.findRegion(lat, lon);
+      if(reg != null)
       {
-         int j = (i + 1) % n;
-         if (
-        // Does p0.y lies in half open y range of edge.
-        // N.B., horizontal edges never contribute
-           ((p[j].Lat <= p0.Lat && p0.Lat < p[i].Lat) || 
-          (p[i].Lat <= p0.Lat && p0.Lat<p[j].Lat) ) &&
-        // is p to the left of edge?
-        (p0.Lon<p[j].Lon + (p[i].Lon - p[j].Lon) * (p0.Lat - p[j].Lat) /
-          (p[i].Lat - p[j].Lat) )
-        )
-        result = !result;
+        string sp = spec.ToString();
+        retVal = reg.Species.Contains(sp);
+        DebugLog.log("detected location: " + reg.Name, enLogType.INFO);
       }
-      return result;
+      else
+        DebugLog.log("unrecognized location: " + lat.ToString(CultureInfo.InvariantCulture) + " " + lon.ToString(CultureInfo.InvariantCulture), enLogType.INFO);
+      return retVal;
     }
   }
 }

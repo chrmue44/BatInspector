@@ -124,6 +124,8 @@ namespace BatInspector
 
     public Waterfall Waterfall {  get { return _wf; } }
 
+    public int SelectedCallIdx { get; set; }
+
     public void initWaterfallDiagram(string wavName, uint fftSize, int w, int h, AppParams settings)
     {
       _wf = new Waterfall(wavName, fftSize, w, h, settings, _colorTable);

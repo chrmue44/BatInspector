@@ -155,16 +155,16 @@ namespace BatInspector
       locs.Add(new ParLocation(49.995876, 9.010885));
 
       ParLocation pos = new ParLocation(49.753933, 8.632084);
-      bool ret = _model.Classifier.inside(pos, locs);
+      bool ret = _model.Classifier.Regions.inside(pos, locs);
       assert("loc inside", ret == true);
       pos = new ParLocation(50.1, 8.632084);
-      ret = _model.Classifier.inside(pos, locs);
+      ret = _model.Classifier.Regions.inside(pos, locs);
       assert("loc inside", ret == false);
       pos = new ParLocation(49.8, 9.1);
-      ret = _model.Classifier.inside(pos, locs);
+      ret = _model.Classifier.Regions.inside(pos, locs);
       assert("loc inside", ret == false);
       pos = new ParLocation(49.8, 8.4);
-      ret = _model.Classifier.inside(pos, locs);
+      ret = _model.Classifier.Regions.inside(pos, locs);
       assert("loc inside", ret == false);
 
       return retVal;

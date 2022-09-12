@@ -1,13 +1,21 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using libParser;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BatInspector
 {
@@ -33,16 +41,16 @@ namespace BatInspector
   public class ParRegion
   {
     [DataMember]
-    string Name { get;set; }
+    public string Name { get;set; }
 
     [DataMember]
-    string InformationSource { get; set; }
+    public string InformationSource { get; set; }
 
     [DataMember]
-    List<ParLocation> Location { get; set; }
+    public List<ParLocation> Location { get; set; }
 
     [DataMember]
-    List<string> Species { get; set; }
+    public List<string> Species { get; set; }
 
     public ParRegion()
     {
@@ -128,5 +136,40 @@ namespace BatInspector
       }
     }
 
+    public ParRegion findRegion(double lat, double lon)
+    {
+      ParRegion retVal = null;
+      foreach(ParRegion  r in Regions)
+      {
+        ParLocation l = new ParLocation(lat, lon);
+        if (inside(l, r.Location))
+        {
+          retVal = r; 
+        }
+      }
+      return retVal;
+    }
+
+    // Is p0 inside p?  Polygon 
+    public bool inside(ParLocation p0, List<ParLocation> p)
+    {
+      int n = p.Count;
+      bool result = false;
+      for (int i = 0; i < n; ++i)
+      {
+        int j = (i + 1) % n;
+        if (
+          // Does p0.y lies in half open y range of edge.
+          // N.B., horizontal edges never contribute
+          ((p[j].Lat <= p0.Lat && p0.Lat < p[i].Lat) ||
+         (p[i].Lat <= p0.Lat && p0.Lat < p[j].Lat)) &&
+       // is p to the left of edge?
+       (p0.Lon < p[j].Lon + (p[i].Lon - p[j].Lon) * (p0.Lat - p[j].Lat) /
+         (p[i].Lat - p[j].Lat))
+       )
+          result = !result;
+      }
+      return result;
+    }
   }
 }

@@ -1,9 +1,20 @@
 ﻿
+/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
 using System.Windows;
-using BatInspector.Properties;
 using BatInspector.Controls;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace BatInspector.Forms
 {
@@ -104,7 +115,7 @@ namespace BatInspector.Forms
       pars.SigStructure = sigStr;
       MissingInfo info = new MissingInfo();
       setInfo(info);
-      List<int> steps;
+      List<string> steps;
       List<enSpec> specs = _model.Classifier.classify(pars, ref info, out steps);
       setInfo(info);
       _tbSpecies.Text = "";
@@ -112,9 +123,9 @@ namespace BatInspector.Forms
       {
         _tbSpecies.Text += sp.ToString() + "\n";
       }
-      _tbSpecies.Text += "\n\n steps Barataud: ";
-      foreach (int s in steps)
-        _tbSpecies.Text += s.ToString() + ", ";
+      _tbSpecies.Text += "\n\n steps Barataud:\n";
+      foreach (string s in steps)
+        _tbSpecies.Text += s + "\n";
     }
 
     void setInfo(MissingInfo info)
@@ -139,6 +150,33 @@ namespace BatInspector.Forms
       _ctlNasalSon.setValue(_strUndef);
       _ctlWhistledSon.setValue(_strUndef);
       _ctlProgStart.setValue(_strUndef);
+    }
+
+    private void _btnGet_Click(object sender, RoutedEventArgs e)
+    {
+      AnalysisFile a = _model.Analysis.getAnalysis(_model.ZoomView.FileInfo.FileName);
+      if (a != null)
+      {
+        int idx = _model.ZoomView.SelectedCallIdx;
+        if ((idx >= 0) && (idx < a.Calls.Count))
+        {
+          AnalysisCall c = a.Calls[idx];
+          string[] pos = _model.ZoomView.FileInfo.GPS.Position.Split(' ');
+          if (pos.Length == 2)
+          {
+            double lat = 0.0;
+            double lon = 0.0;
+            double.TryParse(pos[0], NumberStyles.Any, CultureInfo.InvariantCulture, out lat);
+            double.TryParse(pos[1], NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
+            _ctlLat.setValue(lat);
+            _ctlLon.setValue(lon);
+          }
+          _ctlFstart.setValue(c.FreqMax / 1000.0);
+          _ctlFend.setValue(c.FreqMin / 1000.0);
+          _ctlFME.setValue(c.FreqMaxAmp / 1000.0);
+          _ctlDuration.setValue(c.Duration);
+        }
+      }
     }
   }
 }

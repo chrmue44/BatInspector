@@ -246,13 +246,13 @@ namespace BatInspector
           if (callNr < 2)
             rItem.Remarks = file.Remarks;
           callNr++;
-          rItem.FreqMin = (fMin / 1000).ToString("0.#");
-          rItem.FreqMax = (fMax / 1000).ToString("0.#");
-          rItem.FreqMaxAmp = (fMaxAmp / 1000).ToString("0.#");
-          rItem.Duration = duration.ToString("0.#");
+          rItem.FreqMin = (fMin / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.FreqMax = (fMax / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.FreqMaxAmp = (fMaxAmp / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.Duration = duration.ToString("0.#", CultureInfo.InvariantCulture);
           rItem.StartTime = startTime;
           rItem.SpeciesAuto = species;
-          rItem.Probability = probability.ToString("0.###");
+          rItem.Probability = probability.ToString("0.###", CultureInfo.InvariantCulture);
           rItem.Snr = snr.ToString();
           rItem.SpeciesMan = speciesMan;
           _report.Add(rItem);

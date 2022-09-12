@@ -55,6 +55,7 @@
                 
             </TextBlock>
         </GroupBox>
+        <Button x:Name="_btnGet" Grid.Row="0" Grid.Column="0" Content="Get Values from Zoom Window" Margin="30,0" Click="_btnGet_Click"/>
         <Button x:Name="_btnReset" Grid.Row="0" Grid.Column="1" Content="Reset" Margin="30,0" Click="_btnReset_Click"/>
         <Button x:Name="_btnCheck" Grid.Row="0" Grid.Column="2" Content="Check" Margin="30,0" Click="_btnCheck_Click"/>
     </Grid>

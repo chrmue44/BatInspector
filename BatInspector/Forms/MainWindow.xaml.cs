@@ -294,7 +294,7 @@ namespace BatInspector.Forms
 
     private void initSpecList()
     {
-      foreach (SpeciesInfos si in _model.Settings.Species)
+      foreach (SpeciesInfos si in _model.SpeciesInfos)
       {
         if (si.Show)
           _specList.Add(si.Abbreviation);
@@ -307,7 +307,7 @@ namespace BatInspector.Forms
     private void updateWavControls()
     {
       List<string> spec = new List<string>();
-      foreach (SpeciesInfos si in _model.Settings.Species)
+      foreach (SpeciesInfos si in _model.SpeciesInfos)
       {
         if (si.Show)
           spec.Add(si.Abbreviation);

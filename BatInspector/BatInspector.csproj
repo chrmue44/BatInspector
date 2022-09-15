@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
+    <Compile Include="ViewModel\BatInfo.cs" />
     <Compile Include="ViewModel\BatRecord.cs" />
     <Compile Include="ViewModel\BatSpeciesRegions.cs" />
     <Compile Include="ViewModel\ClassifierBarataud.cs" />
@@ -329,7 +330,31 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MyResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="dat\Bbar_13.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="doc\BatInspector.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\batinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">
@@ -478,5 +503,6 @@
   <ItemGroup>
     <Resource Include="images\debug.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,6 +9,7 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using System;
 using System.Windows;
 
 namespace BatInspector.Forms
@@ -36,7 +37,7 @@ namespace BatInspector.Forms
       _ctlSpecData1.setDelegate(showSpecExample);
       _ctlSpecData2.setDelegate(showSpecExample);
 
-      foreach (SpeciesInfos si in _model.Settings.Species)
+      foreach (SpeciesInfos si in _model.SpeciesInfos)
       {
         _ctlSelSpecies1._cb.Items.Add(si.Latin);
         _ctlSelSpecies2._cb.Items.Add(si.Latin);
@@ -55,7 +56,7 @@ namespace BatInspector.Forms
 
     private void showSpecExample(string locSpecName)
     {
-      foreach(SpeciesInfos spec in _model.Settings.Species)
+      foreach(SpeciesInfos spec in _model.SpeciesInfos)
       {
         if(spec.Local == locSpecName)
         {
@@ -71,11 +72,11 @@ namespace BatInspector.Forms
             else
               wavName = spec.WavExample;
 
-
-            AnalysisFile ana = new AnalysisFile(spec.WavExample);
+            string fullName = Environment.CurrentDirectory + "/" + spec.WavExample;
+            AnalysisFile ana = new AnalysisFile(fullName);
             ana.SampleRate = _model.Settings.SamplingRate;
             ana.Duration = 3.001;
-            _parent.setZoom(wavName, ana, spec.WavExample, null);
+            _parent.setZoom(wavName, ana, fullName, null);
           }
         }
       }
@@ -94,7 +95,7 @@ namespace BatInspector.Forms
 
     private void species1Changed(int idx, string val)
     {
-      foreach (SpeciesInfos si in _model.Settings.Species)
+      foreach (SpeciesInfos si in _model.SpeciesInfos)
       {
         if(si.Latin == val)
         {
@@ -119,7 +120,7 @@ namespace BatInspector.Forms
 
     private void species2Changed(int idx, string val)
     {
-      foreach (SpeciesInfos si in _model.Settings.Species)
+      foreach (SpeciesInfos si in _model.SpeciesInfos)
       {
         if (si.Latin == val)
         {
@@ -144,7 +145,7 @@ namespace BatInspector.Forms
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
-      foreach (SpeciesInfos si in _model.Settings.Species)
+      foreach (SpeciesInfos si in _model.SpeciesInfos)
       {
         if (si.Latin == _ctlSelSpecies1._cb.Text)
         {

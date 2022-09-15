@@ -60,6 +60,7 @@ namespace BatInspector
     WavFile _wav;
     string _scriptName = "";
     ClassifierBarataud _clsBarataud;
+    List<SpeciesInfos> _species;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
@@ -88,6 +89,7 @@ namespace BatInspector
 
     public WavFile WavFile { get { return _wav; } }
 
+    public List<SpeciesInfos> SpeciesInfos { get { return _species; } }
     public System.Windows.Input.Key LastKey { get; set; }
     public System.Windows.Input.Key KeyPressed { get; set; }
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -97,7 +99,8 @@ namespace BatInspector
       _prj = new Project();
       _filter = new Filter();
       _settings = new AppParams();
-      _analysis = new Analysis(Settings.Species);
+      _species = BatInfo.load().Species;
+      _analysis = new Analysis(_species);
       _version = version;
       _colorTable = new ColorTable(this);
       _colorTable.createColorLookupTable();
@@ -151,7 +154,7 @@ namespace BatInspector
         _filter.Items.Add(it);
       }
       _scripter = new ScriptRunner(ref _proc, _settings.ScriptDir, null, this);
-      _analysis = new Analysis(Settings.Species);
+      _analysis = new Analysis(SpeciesInfos);
     }
 
     public void saveSettings()
@@ -350,7 +353,7 @@ namespace BatInspector
         {
           DebugLog.log("executing confidence test prediction", enLogType.INFO);
           _analysis.read(PrjPath + "report.csv");
-          _analysis.checkConfidence(_settings.Species);
+          _analysis.checkConfidence(_species);
           _analysis.save(PrjPath + "report.csv");
           _analysis.read(PrjPath + "report.csv");
         }
@@ -368,7 +371,7 @@ namespace BatInspector
     {
       List<SpeciesItem> retVal = new List<SpeciesItem>();
 
-      foreach(SpeciesInfos s in _settings.Species)
+      foreach(SpeciesInfos s in _species)
       {
         if(
             (s.FreqCharMin <= charFreq) && (charFreq <= s.FreqCharMax) &&

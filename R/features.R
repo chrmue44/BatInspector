@@ -48,7 +48,7 @@ setwd("C:/Users/chrmu/prj/BatInspector/R")
 filesToTest <- dir(dataDir, recursive = TRUE, full.names = TRUE, pattern = "[.]wav$")
 calls = 0
 cat("name", "nr","Species","sampleRate","FileLen","freq_max_amp","freq_min","freq_max","freq_knee","duration", "start", "bandwidth","",file=resultFile, sep = ";")
-cat("freq_start", "freq_center","freq_end", "fc", "freq_bw_knee_fc", "bin_max_amp","pc_freq_max_amp", "pc_freq_max", "",file=resultFile, sep = ";", append=TRUE)
+cat("freq_start", "freq_25","freq_center","freq_75","freq_end", "fc", "freq_bw_knee_fc", "bin_max_amp","pc_freq_max_amp", "pc_freq_max", "",file=resultFile, sep = ";", append=TRUE)
 cat("pc_freq_min","pc_knee", "temp_bw_knee_fc", "slope", "kalman_slope", "", file=resultFile, sep = ";", append=TRUE)
 cat("curve_neg", "curve_pos_start", "curve_pos_end", "mid_offset", "smoothness", "snr","SpeciesMan","prob","remarks","----", file=resultFile, sep = ";", append=TRUE)
 for (sp in species) {
@@ -68,10 +68,11 @@ cat("", "\n", file=resultFile, sep = ";", append=TRUE)
         min_dur = 1.5, 
         max_dur = 80, 
         min_TBE = 30, 
-        max_TBE = Inf,
+        max_TBE = 1e100,
         LPF = 120000, 
         HPF = 10000, 
         FFT_size = 256, 
+		FFT_overlap = 0.875,
         start_thr = 30, 
         end_thr = 35, 
         SNR_thr = 5, 
@@ -80,6 +81,7 @@ cat("", "\n", file=resultFile, sep = ";", append=TRUE)
         spectro_dir = NULL,
         NWS = 100, 
         KPE = 0.00001, 
+		KME = 0.0001,
         time_scale = 2, 
         EDG = 0.996
         ),
@@ -105,7 +107,7 @@ cat("", "\n", file=resultFile, sep = ";", append=TRUE)
           cat(sampleRate, 3.001, file=resultFile,"", sep = ";", append=TRUE)
           cat(EvDat$freq_max_amp[i],EvDat$freq_min[i],EvDat$freq_max[i],"",file=resultFile, sep = ";", append=TRUE)
           cat(EvDat$freq_knee[i], EvDat$duration[i], EvDat$starting_time[i],"",file=resultFile, sep = ";", append=TRUE)
-          cat(EvDat$bandwidth[i], EvDat$freq_start[i], EvDat$freq_center[i], EvDat$freq_end[i],"",file=resultFile, sep = ";", append=TRUE)
+          cat(EvDat$bandwidth[i], EvDat$freq_start[i],EvDat$freq_25[i], EvDat$freq_center[i], EvDat$freq_75[i],EvDat$freq_end[i],"",file=resultFile, sep = ";", append=TRUE)
           cat(EvDat$fc[i], EvDat$freq_bw_knee_fc[i], EvDat$bin_max_amp[i], EvDat$pc_freq_max_amp[i], EvDat$pc_freq_max[i],"",file=resultFile, sep = ";", append=TRUE) 
           cat(EvDat$pc_freq_min[i], EvDat$pc_knee[i], EvDat$temp_bw_knee_fc[i], EvDat$slope[i],EvDat$kalman_slope[i],"",file=resultFile, sep = ";", append=TRUE)
           cat(EvDat$curve_neg[i],EvDat$curve_pos_start[i], EvDat$curve_pos_end[i], EvDat$mid_offset[i], EvDat$smoothness[i],"",file=resultFile, sep = ";", append=TRUE)            

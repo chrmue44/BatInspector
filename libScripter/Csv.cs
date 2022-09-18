@@ -40,6 +40,12 @@ namespace libScripter
       _cols = new Dictionary<string, int>();
     }
 
+    public void clear()
+    {
+      _cells.Clear();
+      _cols.Clear();
+    }
+
     /// <summary>
     /// read a file and close it.
     /// The complete file content is copied to memory. When the method exits, the file will be closed
@@ -99,6 +105,13 @@ namespace libScripter
       return retVal;
     }
 
+    public void addRow()
+    {
+      List<string> row = new List<string>();
+      row.Capacity = _colCnt;
+      _cells.Add(row);
+
+    }
     /// <summary>
     /// find a value in a row
     /// </summary>
@@ -125,6 +138,11 @@ namespace libScripter
       return retVal;
     }
 
+    public int saveAs(string name, bool withBackup = true)
+    {
+      _fileName = name;
+      return save(withBackup);
+    }
 
     /// <summary>
     /// save file
@@ -136,7 +154,7 @@ namespace libScripter
       int retVal = 0;
       if (_fileName != null)
       {
-          if (withBackup)
+          if (withBackup && File.Exists(_fileName))
           {
             string bakName = _fileName + ".bak";
             if (File.Exists(bakName))
@@ -244,6 +262,20 @@ namespace libScripter
         }
       }
       return retVal;
+    }
+
+    public void setCell(int row, string colName, int value)
+    {
+      int col = getColNr(colName);
+      string valStr = value.ToString(CultureInfo.InvariantCulture);
+      setCell(row, col, valStr);
+    }
+
+    public void setCell(int row, string colName, double value)
+    {
+      int col = getColNr(colName);
+      string valStr = value.ToString(CultureInfo.InvariantCulture);
+      setCell(row, col, valStr);
     }
 
     public void setCell(int row, string colName, string value)
@@ -365,10 +397,14 @@ namespace libScripter
             row.Insert(col - 1, ins);
           else
           {
-            while (row.Count < col-1)
+            while (row.Count < col - 1)
+            {
               row.Add("");
+              _colCnt++;
+            }
             row.Add(ins);
           }
+          _colCnt++;
         }
       }
       else
@@ -402,11 +438,16 @@ namespace libScripter
       return retVal;
     }
 
-    void initColNames(string header)
+    public void initColNames(string header, bool createCols = false)
     {
+      _withHdr = true;
       string[] cols = header.Split(_separator[0]);
       for (int i = 0; i < cols.Length; i++)
+      {
         _cols.Add(cols[i], i + 1);
+        if(createCols)
+          insertCol(i + 1, cols[i]);
+      }
     }
 
     void log(string msg, enLogType type)

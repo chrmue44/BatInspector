@@ -2,9 +2,7 @@
 using libScripter;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BatInspector
 {
@@ -49,6 +47,7 @@ namespace BatInspector
     public void exec()
     {
       string wrkDir = _model.Settings.ScriptDir == null ? "" : _model.Settings.ScriptDir;
+      testBioAcoustics();
       testIf(wrkDir);
       testWhile(wrkDir);
       testParser();
@@ -142,6 +141,16 @@ namespace BatInspector
         }
       }
       return retVal;
+    }
+
+    private int testBioAcoustics()
+    {
+      //  string wavFile = "C:/Users/chrmu/bat/2022/20220816/Records/20220816_0027.wav";
+      string wavFile = "C:/Users/chrmu/bat/2022/20220906/Records/20220906_0005.wav";
+      int sampleRate = 0;
+      double duration = 0;
+      ThresholdDetectItem[]items = BioAcoustics.analyzeCalls(wavFile, out sampleRate, out duration);
+      return 0;
     }
 
     private int testClassifier()

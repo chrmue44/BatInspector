@@ -213,7 +213,7 @@ namespace BatInspector
       for (int i= 0; i < len/2; i++)
       {
         int s = (int)(sbyte)data[offs+1] << 8;
-        s |= (int)(sbyte)data[offs ];
+        s |= (int)(byte)data[offs ];
         WaveData[i] = (short)s;
         offs += 2;
       }
@@ -250,6 +250,7 @@ namespace BatInspector
     public int BitsPerSample { get { return _format.BitsPerSample; } }
     public uint SamplingRate { get { return _format.Frequency; } set { _format.Frequency = value; } }
 
+    public short[] AudioSamples {  get { return _data.WaveData; } }
     public WavFile()
     {
       _audio = new Audio();

@@ -309,6 +309,7 @@ namespace BatInspector
 
         if ((options & OPT_INSPECT) != 0)
         {
+          /*
           string scriptR = _settings.RScript; // "C:/Users/chrmu/prj/BatInspector/R/features.R";
           string argsR = scriptR + " " + _selectedDir + _prj.WavSubDir + " " + reportName + " " + _settings.SpeciesFile + " 312500";
           DebugLog.log("starting evaluation of calls: " + _settings.Rbin + " " + argsR, enLogType.INFO);
@@ -324,6 +325,12 @@ namespace BatInspector
             catch { }
           }
           retVal = _proc.LaunchCommandLineApp(_settings.Rbin, null, _selectedDir, true, argsR, true, true);
+          */
+          //internal:
+          string dir = _selectedDir + _prj.WavSubDir;
+          string rep = _selectedDir + "report.csv";
+          rep = rep.Replace("\\", "/");
+          BioAcoustics.analyzeFiles(rep, dir);
         }
 
         if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1 | OPT_RESAMPLE)) != 0)

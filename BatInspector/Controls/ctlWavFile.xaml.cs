@@ -69,11 +69,15 @@ namespace BatInspector.Controls
       _dlgFocus = setFocus;
       _model = model;
       _parent = parent;
-      _analysis = _model.Analysis.Files[index];
-      _wavName = _model.Prj.Records[index].File;
       InitializeComponent();
-      if (_analysis.FileName.IndexOf(_wavName) < 0)
-        DebugLog.log("WAV name mismatch to Report for " + _wavName, enLogType.ERROR);
+      if (_model.Analysis.Files.Count > index)
+      {
+        _analysis = _model.Analysis.Files[index];
+        int pos = _analysis.FileName.LastIndexOf('/');
+        _wavName = _analysis.FileName.Substring(pos + 1);
+        if (_analysis.FileName.IndexOf(_wavName) < 0)
+          DebugLog.log("WAV name mismatch to Report for " + _wavName, enLogType.ERROR);
+      }
       _cbSel.Focusable = true;
       Visibility = Visibility.Visible;
     }

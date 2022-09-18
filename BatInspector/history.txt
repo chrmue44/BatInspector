@@ -11,9 +11,13 @@ TODO
 - more than one model
 - prediction from call parameters (not wav)
 - stop button to kill running script
+- Zoom View: Spectrum left side of waterfall 
+- check consistency between report and prj file (in 20220610 are some...)
 
 
 DONE
+- backport of WavX bioacoustics package to C++ (no longer dependent on R!)
+- bat species information moved from appSettings to separate file
 - classifier Barataud
 - offset between xt and ft image in zoom view eliminated
 - tooltips in Zoom View in Ft, Xt and Spectrum

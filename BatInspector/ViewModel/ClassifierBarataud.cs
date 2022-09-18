@@ -274,12 +274,14 @@ namespace BatInspector
               retVal.Add(enSpec.PNAT);
             else if ((42 < pars.FME) && (pars.FME <= 48) && occurrence(pars, enSpec.PPIP))
               retVal.Add(enSpec.PPIP);
-            else if ((50 <= pars.FME) && (pars.FME <= 53) && 
+            else if ((50 <= pars.FME) && (pars.FME <= 53) &&
                      (pars.Duration < 9) && occurrence(pars, enSpec.MSCH))
               retVal.Add(enSpec.MSCH);
             else if ((51 <= pars.FME) && (pars.FME <= 57) &&
                      (pars.Duration < 9) && occurrence(pars, enSpec.PPYG))
               retVal.Add(enSpec.PPYG);
+            else
+              retVal.Add(enSpec.UNKNOWN);
             infoStr = "duration: " + pars.Duration.ToString("#.#", CultureInfo.InvariantCulture) +
                       " FME:" + pars.FME.ToString("#.#", CultureInfo.InvariantCulture);
             break;

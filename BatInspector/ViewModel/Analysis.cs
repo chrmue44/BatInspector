@@ -584,8 +584,12 @@ namespace BatInspector
           string s = _calls[idx].StartTime.Substring(pos + 1);
           s = s.Replace(".", "");
           s = s.Replace(",", "");
-          double.TryParse(s, out retVal);
+          double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture,  out retVal);
           retVal /= 1000;
+        }
+        else
+        {
+          double.TryParse(_calls[idx].StartTime, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
         }
       }
       return retVal;

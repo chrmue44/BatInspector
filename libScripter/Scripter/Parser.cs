@@ -16,6 +16,7 @@ using System.Linq;
 using System.Threading;
 using System.Collections.ObjectModel;
 using libParser;
+using System.Globalization;
 
 namespace libScripter
 {
@@ -576,7 +577,7 @@ namespace libScripter
       else if (Utils.isNum(pars[1], true) && (pars[1].Length > 0))
       {
         double val = 0;
-        double.TryParse(pars[1], out val);
+        double.TryParse(pars[1], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
         _vars.VarList.set(pars[0], val);
       }
       else

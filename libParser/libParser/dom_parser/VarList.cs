@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Globalization;
 
 namespace libParser
 {
@@ -333,7 +334,7 @@ namespace libParser
             {
               case AnyType.tType.RT_FLOAT:
 
-                Double.TryParse(tokens[3], out varDouble);
+                Double.TryParse(tokens[3], NumberStyles.Any, CultureInfo.InvariantCulture, out varDouble);
                 var.assign(varDouble);
                 break;
               case AnyType.tType.RT_INT64:
@@ -349,8 +350,8 @@ namespace libParser
                 var.setString(tokens[3]);
                 break;
               case AnyType.tType.RT_COMPLEX:
-                Double.TryParse(tokens[3], out valRe);
-                Double.TryParse(tokens[4], out valIm);
+                Double.TryParse(tokens[3], NumberStyles.Any, CultureInfo.InvariantCulture, out valRe);
+                Double.TryParse(tokens[4], NumberStyles.Any, CultureInfo.InvariantCulture, out valIm);
                 var.setComplex(valRe, valIm);
                 break;
             }

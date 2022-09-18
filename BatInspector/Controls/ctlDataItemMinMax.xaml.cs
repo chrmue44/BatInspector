@@ -146,7 +146,7 @@ namespace BatInspector.Controls
           break;
 
         case enDataType.DOUBLE:
-          double.TryParse(_tbMin.Text, out _minValDouble);
+          double.TryParse(_tbMin.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _minValDouble);
           if (_dlgValChange != null)
             _dlgValChange(enDataType.DOUBLE, _minValDouble);
           break;
@@ -169,7 +169,7 @@ namespace BatInspector.Controls
           break;
 
         case enDataType.DOUBLE:
-          double.TryParse(_tbMax.Text, out _maxValDouble);
+          double.TryParse(_tbMax.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _maxValDouble);
           if (_dlgValChange != null)
             _dlgValChange(enDataType.DOUBLE, _maxValDouble);
           break;

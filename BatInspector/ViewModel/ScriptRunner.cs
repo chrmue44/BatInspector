@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using libParser;
 using libScripter;
@@ -81,7 +82,7 @@ namespace BatInspector
       else if (Utils.isNum(value, true))
       {
         double val = 0;
-        double.TryParse(value, out val);
+        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out val);
         _parser.VarTable.VarList.set(name, val);
       }
       else

@@ -205,11 +205,14 @@ namespace BatInspector.Controls
 
     private void _btnIgnore_Click(object sender, RoutedEventArgs e)
     {
-      for (int i = 0; i < _analysis.Calls.Count; i++)
+      if (_analysis != null)
       {
-        _analysis.Calls[i].SpeciesMan = "---";
-        ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-        ctlm.setValue("---");
+        for (int i = 0; i < _analysis.Calls.Count; i++)
+        {
+          _analysis.Calls[i].SpeciesMan = "---";
+          ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
+          ctlm.setValue("---");
+        }
       }
     }
 

@@ -66,7 +66,7 @@ namespace BatInspector
   [DataContract]
   public class BatSpeciesRegions
   {
-    const string _fName = "BatSpeciesRegions.json";
+    const string _fName = "dat/BatSpeciesRegions.json";
     [DataMember]
     List<ParRegion> Regions { get; set; }
 
@@ -79,7 +79,7 @@ namespace BatInspector
     {
       BatSpeciesRegions retVal = null;
       FileStream file = null;
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      string fPath = Environment.CurrentDirectory + "/" + _fName;
       try
       {
         if (File.Exists(fPath))

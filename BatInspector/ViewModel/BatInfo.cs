@@ -148,7 +148,7 @@ namespace BatInspector
 
     public void save()
     {
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      string fPath = Environment.CurrentDirectory + "/" + _fName;
       try
       {
         StreamWriter file = new StreamWriter(fPath);

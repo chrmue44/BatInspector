@@ -44,10 +44,12 @@ namespace libParser
     List<stLogEntry> _list;
     delegateLogEntry _dlgLog = null;
 
-    static public void log(string msg, enLogType type)
+    static public void log(string msg, enLogType type, bool beep = false)
     {
-   //   if (type == enLogType.ERROR)
-   //     type = enLogType.ERROR;
+      //   if (type == enLogType.ERROR)
+      //     type = enLogType.ERROR;
+      if (beep)
+        Console.Beep();
       Inst().logMsg(msg, type);
     }
 

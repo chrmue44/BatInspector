@@ -122,11 +122,15 @@ namespace BatInspector
         _selectedDir = dir.FullName + "/";
         if (File.Exists(_selectedDir + "report.csv"))
           _analysis.read(_selectedDir + "report.csv");
+        else
+          _analysis = new Analysis(_species);
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
           _prj = new Project();
         _prj.readPrjFile(files[0]);
+        if (_analysis.Report != null)
+          checkProject();
         _scripter = new ScriptRunner(ref _proc, _selectedDir, null, this);
       }
       else if (Project.containsWavs(dir))
@@ -139,6 +143,34 @@ namespace BatInspector
       else
         _prj = null;
     }
+
+    void checkProject()
+    {
+      bool ok = true;
+      foreach(BatExplorerProjectFileRecordsRecord rec in _prj.Records)
+      {
+        AnalysisFile a = _analysis.find(rec.File);
+        if (a == null)
+        {
+          DebugLog.log("mismatch Prj against Report, missing file " + rec.File + " in report", enLogType.ERROR);
+          ok = false;
+        }
+      }
+      foreach (AnalysisFile a in _analysis.Files)
+      {
+        BatExplorerProjectFileRecordsRecord r  = _prj.find(a.FileName);
+        if (r == null)
+        {
+          DebugLog.log("mismatch Prj against Report, missing file " + a.FileName + " in project", enLogType.ERROR);
+          ok = false;
+        }
+      }
+      if (ok)
+        DebugLog.log("report.csv and project file are consistent", enLogType.INFO);
+      else
+        DebugLog.log("mismatch between project file and report, please check", enLogType.ERROR, true);
+    }
+
 
     public void loadSettings()
     {

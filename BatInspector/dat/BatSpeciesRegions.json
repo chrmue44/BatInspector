@@ -1,0 +1,107 @@
+{
+	"Regions": [{
+		"Name": "Darmstadt-Dieburg",
+		"Location": [{
+				"Lat": 49.963175,
+				"Lon": 8.563220
+			},
+			{
+				"Lat": 49.727209,
+				"Lon": 8.539645
+			},
+			{
+				"Lat": 49.728493,
+				"Lon": 8.788927
+			},
+			{
+				"Lat": 49.839054,
+				"Lon": 9.030958
+			},
+			{
+				"Lat": 49.995876,
+				"Lon": 9.010885
+			}
+		],
+		"Species": [
+			"MMYO",
+			"MBEC",
+			"MNAT",
+			"MMYS",
+			"MBRA",
+			"MALC",
+			"MDAU",
+			"NNOC",
+			"NLEI",
+			"ESER",
+			"ENIL",
+			"VMUR",
+			"PPIP",
+			"PPYG",
+			"PNAT",
+			"BBAR",
+			"PAUR",
+			"PAUS",
+			"Eptesicus",
+			"Vespertilio",
+			"Nyctalus"
+		],
+		"InformationSource": "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm"
+	},
+	{
+		"Name": "Norway",
+		"Location": [{
+				"Lat": 58.03315047073381,
+				"Lon": 7.27678231645965
+			},
+			{
+				"Lat": 59.64141461545502, 
+				"Lon": 4.988287311243992
+			},
+			{
+				"Lat": 62.10627175787673, 
+				"Lon": 4.434672775646467
+			},
+			{
+				"Lat": 71.72799336070543,
+				"Lon": 25.381615291901824
+			},
+			{
+				"Lat": 69.79114374529098,
+				"Lon": 32.16566376889443
+			},
+			{
+				"Lat": 68.50180138485125,
+				"Lon": 24.717826186995556
+			},
+			{
+				"Lat": 68.08832864271665,
+				"Lon": 18.357576864552833
+			},
+			{
+				"Lat": 64.1026052585473,
+				"Lon": 13.845134278292283
+			},
+			{
+				"Lat": 58.88181859511196,
+				"Lon": 11.65020431757494
+			}
+		],
+		"Species": [
+			"ENIL",
+			"MBRA",
+			"MDAU",
+			"MMYS",
+			"MNAT",
+			"NNOC",
+			"PNAT",
+			"PPYG",
+			"PAUR",
+			"VMUR",
+			"Eptesicus",
+			"Vespertilio",
+			"Nyctalus"
+		],
+		"InformationSource": "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway"
+	   }
+	]
+}

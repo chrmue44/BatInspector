@@ -148,6 +148,13 @@ namespace BatInspector
       info.init();
       List<enSpec> retVal = new List<enSpec>();
       steps = new List<string>();
+
+      ParRegion reg = Regions.findRegion(pars.Latitude, pars.Longitude);
+      if (reg != null)
+         steps.Add("region: " + reg.Name);
+      else
+        steps.Add("region unrecognized");
+
       int step = 1;
       int lastStep = 1;
       while (retVal.Count == 0)

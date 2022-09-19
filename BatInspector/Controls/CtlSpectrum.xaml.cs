@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 
 namespace BatInspector.Controls
 {
-
-  public delegate int dlgSpectrumMode(int mode);
-
   /// <summary>
   /// Interaktionslogik für CtlSpectrum.xaml
   /// </summary>
@@ -27,83 +24,54 @@ namespace BatInspector.Controls
   {
     bool _initFlag = false;
     Spectrum _spectrum;
-    dlgSpectrumMode _dlgSpecMode;
+    int _mode;
+   
+    public bool InitFlag { get { return _initFlag; } set { _initFlag = value; }  }
+    
     public CtlSpectrum()
     {
       InitializeComponent();
     }
 
-    public void init(Spectrum sp, double maxF, dlgSpectrumMode dlg)
+    public void init(Spectrum sp, double maxF)
     {
       _spectrum = sp;
-      _dlgSpecMode = dlg;
       _spectrum.RulerDataF.setRange(0, maxF);
-      initRulerF();
-      _ctlTime.setup(BatInspector.Properties.MyResources.CtlSpectrumTimeSpan, enDataType.DOUBLE, 3, 50, 50, 20);
-      _cbMode.Items.Clear();
-      _cbMode.Items.Add("Call");
-      _cbMode.Items.Add("Cursor");
       _initFlag = true;
-      _cbMode.SelectedIndex = 0;
     }
 
-    public void initRulerF()
+
+    public void createFftImage(double[] samples, double tStart, double tEnd, int samplingRate, int mode)
     {
-      if (Visibility == Visibility.Visible)
-      {
-        _cvRulerF.Children.Clear();
-        CtrlZoom.createLine(_cvRulerF, 0, 3, _cvRulerF.ActualWidth, 3, Brushes.Black);
-        RulerData rData = _spectrum.RulerDataF;
-        for (int i = 0; i <= 10; i++)
-        {
-          CtrlZoom.createLine(_cvRulerF, _cvRulerF.ActualWidth * i / 10, 3, _cvRulerF.ActualWidth * i / 10, 10, Brushes.Black);
-          string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.0", CultureInfo.InvariantCulture);
-          if ((i % 2) == 0)
-            CtrlZoom.createText(_cvRulerF, _cvRulerF.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
-        }
-      }
+      _spectrum.create(samples, tStart, tEnd, samplingRate);
+      _mode = mode;
+      drawSpectrum(mode);
     }
 
-    public void createFftImage(double[] samples, double tStart, double tEnd, int samplingRate)
+    private void drawSpectrum(int mode)
     {
       _cvSpec.Children.Clear();
-      _spectrum.create(samples, tStart, tEnd, samplingRate);
-      _ctlTime.setMinValue(tStart);
-      _ctlTime.setMaxValue(tEnd);
-      double min = _spectrum.findMinAmplitude();
-      double max = _spectrum.findMaxAmplitude();
-      int w = (int)_cvSpec.ActualWidth;
-      int h = (int)_cvSpec.ActualHeight;
-      int n = _spectrum.Amplitude.Length / h + 1;
-
-      for (int x = 0; x < w; x++)
+      if (_spectrum.Amplitude != null)
       {
-        int y1 = (int)(_cvSpec.ActualHeight);
-        int i = (int)((double)_spectrum.Amplitude.Length / w * x * _spectrum.RulerDataF.Max/_spectrum.Fmax);
-        double a =  _spectrum.getMeanAmpl(i, n);
-        int y2 = h - (int)(a/(max - min) * h);
-        if(_cbMode.SelectedIndex == 0)
-          CtrlZoom.createLine(_cvSpec, x, y1, x , y2, Brushes.Blue);
-        else
-          CtrlZoom.createLine(_cvSpec, x, y1, x, y2, Brushes.Cyan);
-      }
-    }
+        double min = _spectrum.findMinAmplitude();
+        double max = _spectrum.findMaxAmplitude();
+        int w = (int)_cvSpec.ActualWidth;
+        int h = (int)_cvSpec.ActualHeight;
+        int n = h > 0 ? _spectrum.Amplitude.Length / h + 1 : 1;
 
-    public void setTimeLimits(double tMin, double tMax)
-    {
-      _ctlTime.setMinValue(tMin);
-      _ctlTime.setMaxValue(tMax);
-    }
+        for (int y = h; y > 0; y--)
+        {
+          int i = (int)((double)_spectrum.Amplitude.Length / h * (h - y) * _spectrum.RulerDataF.Max / _spectrum.Fmax);
+          double a = _spectrum.getMeanAmpl(i, n);
+          int x1 = w;
+          int x2 = w - (int)(w * (a / (max - min)));
+          if (mode == 0)
+            CtrlZoom.createLine(_cvSpec, x1, y, x2, y, Brushes.Blue);
+          else
+            CtrlZoom.createLine(_cvSpec, x1, y, x2, y, Brushes.Cyan);
 
-    private void _cbModeChanged(object sender, SelectionChangedEventArgs e)
-    {
-      if (!_initFlag)
-      {
-        int idx = _dlgSpecMode(_cbMode.SelectedIndex);
-        _cbMode.SelectedIndex = idx;
+        }
       }
-      else
-        _initFlag = false;
     }
 
     private void _cvSpec_MouseMove(object sender, MouseEventArgs e)
@@ -111,6 +79,11 @@ namespace BatInspector.Controls
       Point pos = e.GetPosition(this);
       double f = _spectrum.RulerDataF.Min + (pos.X / _cvSpec.ActualWidth) * (_spectrum.RulerDataF.Max - _spectrum.RulerDataF.Min);
       _cvSpec.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]";
+    }
+
+    private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+      drawSpectrum(_mode);
     }
   }
 }

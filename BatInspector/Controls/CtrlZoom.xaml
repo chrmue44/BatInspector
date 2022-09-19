@@ -7,178 +7,177 @@
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1050">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="44"></RowDefinition>
-      <RowDefinition Height="*"></RowDefinition>
-      <RowDefinition Height="200"></RowDefinition>
-    </Grid.RowDefinitions>
-    <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" VerticalAlignment="Top">
-      <ToolBar x:Name="_tb" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-        <Button x:Name="_btnZoomCursor"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomCursor_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomToCursor}">
-          <Image Source="../images/icons8-zoom-in-cursor-64.png"></Image>
-        </Button>
-        <Button x:Name="_btnZoomTotal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomTotal_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutTotal}">
-          <Image Source="../images/icons8-enlarge-maximum.png"></Image>
-        </Button>
-        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInV_Click" ToolTip="{x:Static res:MyResources.TooltipZoomInX2V}">
-          <Image Source="../images/icons8-zoom-in-v-64.png"></Image>
-        </Button>
-        <Button x:Name="_btnZoomOutV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutV_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutX2V}">
-          <Image Source="../images/icons8-zoom-out-v-64.png"></Image>
-        </Button>
-        <Button x:Name="_btnmoveUp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveUp_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveUpF}">
-          <Image Source="../images/icons8-arrow-up.png"></Image>
-        </Button>
-        <Button x:Name="_btnmoveDown"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveDown_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveDownF}">
-          <Image Source="../images/icons8-arrow-down.png"></Image>
-        </Button>
-        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomInX2H}">
-          <Image Source="../images/icons8-zoom-in-h-64.png"></Image>
-        </Button>
-        <Button x:Name="_btnZoomOutH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutX2Horizontally}">
-          <Image Source="../images/icons8-zoom-out-h-64.png"></Image>
-        </Button>
-        <Button x:Name="_btnmoveLeft"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveLeft_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveLeftT}">
-          <Image Source="../images/icons8-arrow-left-64.png"></Image>
-        </Button>
-        <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveRightIT}">
-          <Image Source="../images/icons8-arrow-right-64.png"></Image>
-        </Button>
-        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <GroupBox VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
-          <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
-        </GroupBox>
-        <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
-          <Image Source="../images/icons8-plus-+-48.png"></Image>
-        </Button>
-        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
-          <Image Source="../images/icons8-minus-48.png"></Image>
-        </Button>
-        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
-          <Image Source="../images/play-button.png"></Image>
-        </Button>
-        <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection10x}">
-          <Image Source="../images/play-button-10x.png"></Image>
-        </Button>
-        <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
-          <Image Source="../images/play-button-20x.png"></Image>
-        </Button>
-        <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
-          <Image Source="../images/stop.png"></Image>
-        </Button>
-        <ComboBox x:Name="_cbWindow" Width="100" SelectionChanged="_cbWindow_SelectionChanged"></ComboBox>
-        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-      </ToolBar>
-    </ToolBarTray>
-    <Grid Name ="_gridXt" Grid.Row="1">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="1*"></RowDefinition>
-        <RowDefinition Height="5*"></RowDefinition>
-        <RowDefinition Height="50"></RowDefinition>
-      </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="200"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" VerticalAlignment="Top">
+            <ToolBar x:Name="_tb" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
+                <Button x:Name="_btnZoomCursor"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomCursor_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomToCursor}">
+                    <Image Source="../images/icons8-zoom-in-cursor-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnZoomTotal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomTotal_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutTotal}">
+                    <Image Source="../images/icons8-enlarge-maximum.png"></Image>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInV_Click" ToolTip="{x:Static res:MyResources.TooltipZoomInX2V}">
+                    <Image Source="../images/icons8-zoom-in-v-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnZoomOutV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutV_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutX2V}">
+                    <Image Source="../images/icons8-zoom-out-v-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnmoveUp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveUp_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveUpF}">
+                    <Image Source="../images/icons8-arrow-up.png"></Image>
+                </Button>
+                <Button x:Name="_btnmoveDown"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveDown_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveDownF}">
+                    <Image Source="../images/icons8-arrow-down.png"></Image>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomInX2H}">
+                    <Image Source="../images/icons8-zoom-in-h-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnZoomOutH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomOutH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutX2Horizontally}">
+                    <Image Source="../images/icons8-zoom-out-h-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnmoveLeft"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveLeft_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveLeftT}">
+                    <Image Source="../images/icons8-arrow-left-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveRightIT}">
+                    <Image Source="../images/icons8-arrow-right-64.png"></Image>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <GroupBox VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
+                    <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
+                </GroupBox>
+                <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
+                    <Image Source="../images/icons8-plus-+-48.png"></Image>
+                </Button>
+                <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
+                    <Image Source="../images/icons8-minus-48.png"></Image>
+                </Button>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
+                    <Image Source="../images/play-button.png"></Image>
+                </Button>
+                <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection10x}">
+                    <Image Source="../images/play-button-10x.png"></Image>
+                </Button>
+                <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
+                    <Image Source="../images/play-button-20x.png"></Image>
+                </Button>
+                <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
+                    <Image Source="../images/stop.png"></Image>
+                </Button>
+                <ComboBox x:Name="_cbWindow" Width="100" SelectionChanged="_cbWindow_SelectionChanged"></ComboBox>
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Name ="_gridXt" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
 
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="70"></ColumnDefinition>
-        <ColumnDefinition Width="*"></ColumnDefinition>
-        <ColumnDefinition Width="220"></ColumnDefinition>
-      </Grid.ColumnDefinitions>
-
-            <Image Name="_imgXt" Grid.Row="0" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90"></ColumnDefinition>
+                <ColumnDefinition Width="45"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="220"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+                <local:CtlSpectrum x:Name ="_ctlSpectrum" Grid.Row="1" Grid.Column="0" Margin="5,10,0,0" VerticalAlignment="Stretch"/>
+            <Image Name="_imgXt" Grid.Row="0" Grid.Column="2" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="50" MouseMove="_imgXt_MouseMove"
 ToolTip="This is a tool tip." >
-      </Image>
-      <Canvas Name ="_rulerA" Grid.Row="0" Grid.Column="0" ></Canvas>
-            <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="2" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="10" />
-            <Image Name="_imgFt" Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
+            </Image>
+            <Canvas Name ="_rulerA" Grid.Row="0" Grid.Column="1" ></Canvas>
+            <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="3" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="10" />
+            <Image Name="_imgFt" Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_imgFt_MouseMove">
-      </Image>
-      <Line Name="_cursorX1" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
-      <Line Name="_cursorY1" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
-      <Line Name="_cursorX2" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
-      <Line Name="_cursorY2" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
-      <Canvas Name ="_rulerF" Grid.Row="1" Grid.Column="0" ></Canvas>
-      <StackPanel Grid.Column="2" Grid.Row="1">
-        <GroupBox Name="_grpData" Header="Info" Margin="5" Padding="2">
-          <StackPanel>
-            <local:ctlDataItem x:Name="_sampleRate" />
-            <local:ctlDataItem x:Name="_duration" />
-          </StackPanel>
-        </GroupBox>
-        <GroupBox Name="_grpCursor1" Header="Cursor 1" Margin="5" Padding="2" Visibility="Hidden">
-          <StackPanel>
-            <local:ctlDataItem x:Name="_time1" />
-            <local:ctlDataItem x:Name="_freq1" />
-          </StackPanel>
-        </GroupBox>
-        <GroupBox  Name="_grpCursor2" Header="Cursor 2" Margin="5" Padding="2" Visibility="Hidden">
-          <StackPanel>
-            <local:ctlDataItem x:Name="_time2" />
-            <local:ctlDataItem x:Name="_freq2" />
-            <local:ctlDataItem x:Name="_deltaT" />
-          </StackPanel>
-        </GroupBox>
-      </StackPanel>
-      <Canvas Name ="_rulerT" Grid.Row="2" Grid.Column="1" ></Canvas>
-    </Grid>
-    <StackPanel Orientation="Horizontal" Grid.Row="2">
-      <GroupBox Header="{x:Static res:MyResources.CallInformation}"  >
-        <Grid >
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"></ColumnDefinition>
-            <ColumnDefinition Width="36"/>
-            <ColumnDefinition Width="299"/>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-          </Grid.ColumnDefinitions>
-
-          <local:CtlSpectrum x:Name ="_ctlSpectrum" Margin="5,5,15,5"  Grid.Column="1" Grid.ColumnSpan="2"/>
-          <StackPanel Orientation="Vertical" Grid.Column="3" Name ="_spCallInfo">
-            <StackPanel Orientation="Horizontal">
-              <Button Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click">&lt;-</Button>
-              <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-              <Button Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click">-&gt;</Button>
-            </StackPanel>
-            <local:ctlDataItem x:Name="_ctlFMin"/>
-            <local:ctlDataItem x:Name="_ctlFMax"/>
-            <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
-            <local:ctlDataItem x:Name="_ctlDuration"/>
-            <local:ctlDataItem x:Name="_ctlSnr"/>
-            <local:ctlDataItem x:Name="_ctlDist"/>
-            <local:ctlDataItem x:Name="_ctlSpecAuto"/>
-            <local:ctlDataItem x:Name="_ctlSpecMan"/>
+            </Image>
+            <ComboBox  Grid.Row="2" Grid.Column="0" x:Name="_cbMode" Height ="20" Margin ="5,0,0,0" SelectionChanged="_cbModeChanged" />
+            <Line Name="_cursorX1" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
+            <Line Name="_cursorY1" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
+            <Line Name="_cursorX2" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
+            <Line Name="_cursorY2" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
+            <Canvas Name ="_rulerF" Grid.Row="1" Grid.Column="1" ></Canvas>
+            <StackPanel Grid.Column="3" Grid.Row="1">
+                <GroupBox Name="_grpData" Header="Info" Margin="5" Padding="2">
+                    <StackPanel>
+                        <local:ctlDataItem x:Name="_sampleRate" />
+                        <local:ctlDataItem x:Name="_duration" />
                     </StackPanel>
+                </GroupBox>
+                <GroupBox Name="_grpCursor1" Header="Cursor 1" Margin="5" Padding="2" Visibility="Hidden">
+                    <StackPanel>
+                        <local:ctlDataItem x:Name="_time1" />
+                        <local:ctlDataItem x:Name="_freq1" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox  Name="_grpCursor2" Header="Cursor 2" Margin="5" Padding="2" Visibility="Hidden">
+                    <StackPanel>
+                        <local:ctlDataItem x:Name="_time2" />
+                        <local:ctlDataItem x:Name="_freq2" />
+                        <local:ctlDataItem x:Name="_deltaT" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+            <Canvas Name ="_rulerT" Grid.Row="2" Grid.Column="2" ></Canvas>
         </Grid>
-      </GroupBox>
-      
-      <GroupBox Header="{x:Static res:MyResources.CtrlZoomMeanValues}">
-        <StackPanel>
-          <StackPanel Orientation="Horizontal">
-            <local:ctlSelectItem x:Name="_ctlMeanCallMin" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-            <local:ctlSelectItem x:Name="_ctlMeanCallMax" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-          </StackPanel>
-          <local:ctlDataItem x:Name="_ctlMeanFMin"/>
-          <local:ctlDataItem x:Name="_ctlMeanFMax"/>
-          <local:ctlDataItem x:Name="_ctlMeanFMaxAmpl"/>
-          <local:ctlDataItem x:Name="_ctlMeanDuration"/>
-          <local:ctlDataItem x:Name="_ctlMeanDist"/>
-         </StackPanel>  
-      </GroupBox>
-      <GroupBox Header="{x:Static res:MyResources.CtlZoomFileInfo}">
-        <StackPanel>
-          <local:ctlDataItem x:Name="_ctlDateTime" />
-          <local:ctlDataItem x:Name="_ctlGpsPos" />
-          <local:ctlDataItem x:Name="_ctlGain" />
-          <local:ctlDataItem x:Name="_ctlTrigLevel" />
-          <local:ctlDataItem x:Name="_ctlTrigFilter" />
-          <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2" >
+            <GroupBox Header="Spectrum">
+                <StackPanel Orientation="Vertical"  Margin="5,5,5,5">
+                <local:ctlDataItem x:Name="_ctlTimeMin"/>
+                <local:ctlDataItem x:Name="_ctlTimeMax"/>
+            </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{x:Static res:MyResources.CallInformation}"  >
 
+                <StackPanel Orientation="Vertical" Grid.Column="1" x:Name ="_spCallInfo">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click" Content="&lt;-"/>
+                        <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <Button x:Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click" Content="-&gt;"/>
+                    </StackPanel>
+                    <local:ctlDataItem x:Name="_ctlFMin"/>
+                    <local:ctlDataItem x:Name="_ctlFMax"/>
+                    <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
+                    <local:ctlDataItem x:Name="_ctlDuration"/>
+                    <local:ctlDataItem x:Name="_ctlSnr"/>
+                    <local:ctlDataItem x:Name="_ctlDist"/>
+                    <local:ctlDataItem x:Name="_ctlSpecAuto"/>
+                    <local:ctlDataItem x:Name="_ctlSpecMan"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="{x:Static res:MyResources.CtrlZoomMeanValues}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <local:ctlSelectItem x:Name="_ctlMeanCallMin" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <local:ctlSelectItem x:Name="_ctlMeanCallMax" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <local:ctlDataItem x:Name="_ctlMeanFMin"/>
+                    <local:ctlDataItem x:Name="_ctlMeanFMax"/>
+                    <local:ctlDataItem x:Name="_ctlMeanFMaxAmpl"/>
+                    <local:ctlDataItem x:Name="_ctlMeanDuration"/>
+                    <local:ctlDataItem x:Name="_ctlMeanDist"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{x:Static res:MyResources.CtlZoomFileInfo}">
+                <StackPanel>
+                    <local:ctlDataItem x:Name="_ctlDateTime" />
+                    <local:ctlDataItem x:Name="_ctlGpsPos" />
+                    <local:ctlDataItem x:Name="_ctlGain" />
+                    <local:ctlDataItem x:Name="_ctlTrigLevel" />
+                    <local:ctlDataItem x:Name="_ctlTrigFilter" />
+                    <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
+
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
-      </GroupBox>
-    </StackPanel>
-  </Grid>
+    </Grid>
 </UserControl>

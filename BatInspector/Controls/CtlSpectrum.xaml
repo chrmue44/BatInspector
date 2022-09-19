@@ -5,21 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300">
+             d:DesignHeight="200" d:DesignWidth="300" SizeChanged="UserControl_SizeChanged">
    <Grid>
-    <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="25"/>
-        </Grid.RowDefinitions>
         <Canvas Name ="_cvSpec" Grid.Row="0" ToolTipService.InitialShowDelay="5" 
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="5" MouseMove="_cvSpec_MouseMove"
 ToolTip="This is a tool tip." />
-    <Canvas Name ="_cvRulerF" Grid.Row="1"  ></Canvas>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <ComboBox Width="75" x:Name="_cbMode" SelectionChanged="_cbModeChanged" />
-            <local:ctlDataItemMinMax x:Name="_ctlTime"></local:ctlDataItemMinMax>
-        </StackPanel>
    </Grid>
 </UserControl>

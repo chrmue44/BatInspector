@@ -690,7 +690,4 @@
   <data name="MainToolRefresh" xml:space="preserve">
     <value>Refresh views</value>
   </data>
-  <data name="CtlSpectrumTimeSpan" xml:space="preserve">
-    <value>Time span</value>
-  </data>
 </root>

@@ -46,8 +46,6 @@ namespace libParser
 
     static public void log(string msg, enLogType type, bool beep = false)
     {
-      //   if (type == enLogType.ERROR)
-      //     type = enLogType.ERROR;
       if (beep)
         Console.Beep();
       Inst().logMsg(msg, type);

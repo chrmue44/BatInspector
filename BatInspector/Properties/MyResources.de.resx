@@ -690,7 +690,4 @@
   <data name="MainToolRefresh" xml:space="preserve">
     <value>Aktualisiere Bildschirm</value>
   </data>
-  <data name="CtlSpectrumTimeSpan" xml:space="preserve">
-    <value>Zeitraum</value>
-  </data>
 </root>

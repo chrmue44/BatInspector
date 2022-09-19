@@ -250,15 +250,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time span.
-        /// </summary>
-        public static string CtlSpectrumTimeSpan {
-            get {
-                return ResourceManager.GetString("CtlSpectrumTimeSpan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string CtlSumReportEndDate {

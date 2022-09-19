@@ -87,7 +87,6 @@ namespace BatInspector.Controls
       _ctlMeanFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130, 50);
       _ctlMeanFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130, 50);
       _ctlMeanFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130, 50);
-      
 
       int wt = 140;
       int wv = 130;
@@ -127,6 +126,15 @@ namespace BatInspector.Controls
 
       update();
       _btnZoomTotal_Click(null, null);
+
+      _ctlTimeMin.setup("tMin[s]", enDataType.DOUBLE, 3, 50, 40);
+      _ctlTimeMax.setup("tMax[s]", enDataType.DOUBLE, 3, 50, 40);
+
+      _cbMode.Items.Clear();
+      _cbMode.Items.Add("Call");
+      _cbMode.Items.Add("Cursor");
+      _cbMode.SelectedIndex = 0;
+
     }
 
     void initWindows()
@@ -159,6 +167,8 @@ namespace BatInspector.Controls
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
       _ctlSelectCall.Visibility = vis;
       _ctlSpectrum.Visibility = vis;
+      _ctlTimeMin.Visibility = vis;
+      _ctlTimeMax.Visibility = vis;
       _btnNext.Visibility = vis;
       _btnPrev.Visibility = vis;
       _ctlFMax.Visibility = vis;
@@ -181,8 +191,6 @@ namespace BatInspector.Controls
         initRulerF();
         initRulerT();
         initRulerA();
-        if(_ctlSpectrum.Visibility == Visibility.Visible)
-          _ctlSpectrum.initRulerF();
 
         _ctlSelectCall._cb.SelectedIndex = 0;
       }
@@ -203,7 +211,11 @@ namespace BatInspector.Controls
     }
 
 
-
+    public void setTimeLimits(double tMin, double tMax)
+    {
+      _ctlTimeMin.setValue(tMin);
+      _ctlTimeMax.setValue(tMax);
+    }
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
     {
       _model.ZoomView.Waterfall.Range += 1.0;
@@ -301,7 +313,6 @@ namespace BatInspector.Controls
       initRulerF();
       initRulerT();
       initRulerA();
-      _ctlSpectrum.initRulerF();
       drawCursor(_cursorX1, _cursorY1, _model.ZoomView.Cursor1);
       drawCursor(_cursorX2, _cursorY2, _model.ZoomView.Cursor2);
     }
@@ -332,8 +343,8 @@ namespace BatInspector.Controls
                             _rulerA.ActualWidth - 10, y, Brushes.Black);
       }
       double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1/2;
-      createText(_rulerA, _rulerA.ActualWidth - 35, y0 - 5, "0.0", Colors.Black);
-      createText(_rulerA, _rulerA.ActualWidth - 35, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
+      createText(_rulerA, _rulerA.ActualWidth - 40, y0 - 5, "0.0", Colors.Black);
+      createText(_rulerA, _rulerA.ActualWidth - 40, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
     }
     void initRulerF()
     {
@@ -347,7 +358,7 @@ namespace BatInspector.Controls
         createLine(_rulerF, _rulerF.ActualWidth - 3, y,
                             _rulerF.ActualWidth - 10, y, Brushes.Black);
         string str = ((rData.Max - rData.Min) * (10 - i) / 10 + rData.Min).ToString("0.#", CultureInfo.InvariantCulture);
-        createText(_rulerF, _rulerF.ActualWidth - 35, y - 5, str, Colors.Black);
+        createText(_rulerF, _rulerF.ActualWidth - 40, y - 5, str, Colors.Black);
       }
     }
 
@@ -476,6 +487,17 @@ namespace BatInspector.Controls
       }
     }
 
+    private void _cbModeChanged(object sender, SelectionChangedEventArgs e)
+    {
+      if (!_ctlSpectrum.InitFlag)
+      {
+        int idx = changeSpectrumMode(_cbMode.SelectedIndex);
+        _cbMode.SelectedIndex = idx;
+      }
+      else
+        _ctlSpectrum.InitFlag = false;
+    }
+
     private void updateRuler()
     {
       _model.ZoomView.RulerDataT.limits(0, _model.ZoomView.Waterfall.Duration);
@@ -579,7 +601,9 @@ namespace BatInspector.Controls
       setupCallData(idx);
       double tStart = _analysis.getStartTime(idx);
       double tEnd = _analysis.getEndTime(idx);
-      _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
+      _ctlTimeMin.setValue(tStart);
+      _ctlTimeMax.setValue(tEnd);
+      _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate,_cbMode.SelectedIndex);
       _model.ZoomView.RulerDataF.setRange(0, _analysis.SampleRate/2000);
       double pre = 0.01;
       _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + _model.Settings.ZoomOneCall / 1000.0 - pre);
@@ -639,7 +663,7 @@ namespace BatInspector.Controls
         if (idx > 0)
         {
         }
-        _ctlSpectrum.init(_model.ZoomView.Spectrum, _analysis.SampleRate/2000, changeSpectrumMode);
+        _ctlSpectrum.init(_model.ZoomView.Spectrum, _analysis.SampleRate/2000);
       }
     }
 
@@ -653,14 +677,18 @@ namespace BatInspector.Controls
           {
             double tStart = _analysis.getStartTime(_oldCallIdx);
             double tEnd = _analysis.getEndTime(_oldCallIdx);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate);
+            _ctlTimeMin.setValue(tStart);
+            _ctlTimeMax.setValue(tEnd);
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, _analysis.SampleRate, _cbMode.SelectedIndex);
           }
           break;
 
         case 1:
           if (z.Cursor1.Visible && z.Cursor2.Visible)
           {
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, _analysis.SampleRate);
+            _ctlTimeMin.setValue(z.Cursor1.Time);
+            _ctlTimeMax.setValue(z.Cursor2.Time);
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, _analysis.SampleRate, _cbMode.SelectedIndex);
             retVal = 1;
           }
           else

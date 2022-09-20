@@ -61,6 +61,7 @@ namespace BatInspector
     string _scriptName = "";
     ClassifierBarataud _clsBarataud;
     List<SpeciesInfos> _species;
+    SumReport _sumReport;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
@@ -90,8 +91,13 @@ namespace BatInspector
     public WavFile WavFile { get { return _wav; } }
 
     public List<SpeciesInfos> SpeciesInfos { get { return _species; } }
+    
     public System.Windows.Input.Key LastKey { get; set; }
+    
     public System.Windows.Input.Key KeyPressed { get; set; }
+
+    public SumReport SumReport { get { return _sumReport; } }
+
     public ViewModel(Forms.MainWindow mainWin, string version)
     {
       _proc = new ProcessRunner();
@@ -107,6 +113,7 @@ namespace BatInspector
       _zoom = new ZoomView(_colorTable);
       _wav = new WavFile();
       _clsBarataud = new ClassifierBarataud();
+      _sumReport = new SumReport(_species);
     }
 
     public void updateReport()

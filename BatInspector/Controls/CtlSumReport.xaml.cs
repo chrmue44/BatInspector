@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace BatInspector.Controls
 {
@@ -20,9 +11,38 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlSumReport : UserControl
   {
+    ViewModel _model = null;
+
     public CtlSumReport()
     {
       InitializeComponent();
+    }
+
+    public void setModel(ViewModel model)
+    {
+      _model = model;
+    }
+
+    private void btnSetDir_Click(object sender, RoutedEventArgs e)
+    {
+      FolderPicker dlg = new FolderPicker();
+      if(dlg.ShowDialog() == true)
+      {
+        _tbRootDir.Text = dlg.ResultPath;
+      }
+    }
+
+    private void _btnCreate_Click(object sender, RoutedEventArgs e)
+    {
+      if ((_dtStart.SelectedDate != null) && (_dtEnd.SelectedDate != null))
+      {
+        DateTime start = (DateTime)_dtStart.SelectedDate;
+        DateTime end = (DateTime)_dtEnd.SelectedDate;
+        enPeriod period = (enPeriod)_cbPeriod.SelectedIndex;
+        _model.SumReport.createReport(start, end, period, _tbRootDir.Text);
+      }
+      else
+        MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
     }
   }
 }

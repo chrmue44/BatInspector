@@ -89,9 +89,10 @@ namespace BatInspector.Forms
       _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
       _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
       _dispatcherTimer.Start();
-      DebugLog.setLogDelegate(_ctlLog.log);
+      DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
       _ctlLog.setViewModel(_model);
       initSpecList();
+      _ctlSum.setModel(_model);
 #if DEBUG
       Tests tests = new Tests(_model);
       tests.exec();

@@ -690,4 +690,7 @@
   <data name="MainToolRefresh" xml:space="preserve">
     <value>Aktualisiere Bildschirm</value>
   </data>
+  <data name="CtlSumReportRootDirectory" xml:space="preserve">
+    <value>Wurzelverzeichnis</value>
+  </data>
 </root>

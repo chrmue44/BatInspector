@@ -58,7 +58,18 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnClear_Click(object sender, RoutedEventArgs e)
+    public void clearLog()
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.Invoke(new delegateLogClear(clearLog));
+        return;
+      }
+      _spEntries.Children.Clear();
+    }
+
+
+      private void _btnClear_Click(object sender, RoutedEventArgs e)
     {
       _spEntries.Children.Clear();
     }

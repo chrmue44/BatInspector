@@ -133,32 +133,39 @@ namespace BatInspector
     public static ThresholdDetectItem[]  analyzeCalls(string wavFile, out int sampleRate, out double duration)
     {
       WavFile wav = new WavFile();
-      wav.readFile(wavFile);
-      sampleRate = (int)wav.SamplingRate;
-      duration = wav.AudioSamples.Length / wav.SamplingRate;
-      int evCount = threshold_detection(
-       wav.AudioSamples, wav.AudioSamples.Length, (int)wav.SamplingRate,
-        5,   // threshold
-        1.5, // min_d
-        80,  // max_d
-        30, //min_TBE
-        1e100,  //max_TBE
-        0.996,  //EDG
-        120000, //LPF
-        10000,  //HPF
-        80,    //dur_t
-        5,     //snr_t
-        125,   //angl_t
-        256,   //FFT_size
-        0.875,   //FFT_overlap
-        30,      // start_t
-        35,      // end_t
-        100,     // NWS
-        1e-5,    //KPE
-        1e-4     //KME
-        );
-
+      int evCount = 0;
       ThresholdDetectItem[] items = new ThresholdDetectItem[evCount];
+      sampleRate = 0;
+      duration = 0;
+
+      int ret = wav.readFile(wavFile);
+
+      if (ret == 0)
+      {
+        sampleRate = (int)wav.SamplingRate;
+        duration = wav.AudioSamples.Length / wav.SamplingRate;
+        evCount = threshold_detection(
+         wav.AudioSamples, wav.AudioSamples.Length, (int)wav.SamplingRate,
+          5,   // threshold
+          1.5, // min_d
+          80,  // max_d
+          30, //min_TBE
+          1e100,  //max_TBE
+          0.996,  //EDG
+          120000, //LPF
+          10000,  //HPF
+          80,    //dur_t
+          5,     //snr_t
+          125,   //angl_t
+          256,   //FFT_size
+          0.875,   //FFT_overlap
+          30,      // start_t
+          35,      // end_t
+          100,     // NWS
+          1e-5,    //KPE
+          1e-4     //KME
+          );
+      }
       for (int i = 0; i < evCount; i++)
       {
         IntPtr Ptr = getEvalItem(i);

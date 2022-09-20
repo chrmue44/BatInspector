@@ -9,12 +9,17 @@
              d:DesignHeight="450" d:DesignWidth="800">
   <StackPanel>
     <StackPanel Orientation="Horizontal">
+      <Label Content="{x:Static res:MyResources.CtlSumReportRootDirectory}" HorizontalContentAlignment="Right" Width="150"/>
+      <TextBox Name="_tbRootDir" Width="500" />
+      <Button Name="_btnSelDir" Content="..." Width="30" Margin="5,0,0,0" Click="btnSetDir_Click"/>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal">
       <Label Content="Filter" HorizontalContentAlignment="Right" Width="150"/>
       <ComboBox Name="_cbFilter" Width="150"></ComboBox>
     </StackPanel>
     <StackPanel Orientation="Horizontal">
       <Label Content="{x:Static res:MyResources.CtlSumReportTimespan}" HorizontalContentAlignment="Right" Width="150"/>
-      <ComboBox Width="150">
+      <ComboBox Width="150" Name="_cbPeriod">
         <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsDaily}" />
         <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsWeekly}" />
         <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsMonthly}" />
@@ -22,12 +27,12 @@
     </StackPanel>
     <StackPanel Orientation="Horizontal">
       <Label Content="{x:Static res:MyResources.CtlSumReportStartDate}" HorizontalContentAlignment="Right" Width="150"/>
-      <DatePicker></DatePicker>
+      <DatePicker Name="_dtStart" />
     </StackPanel>
     <StackPanel Orientation="Horizontal">
       <Label Content="{x:Static res:MyResources.CtlSumReportEndDate}" HorizontalContentAlignment="Right" Width="150"/>
-      <DatePicker></DatePicker>
-      <Button Content="{x:Static res:MyResources.CtlReportCreate}" Width="150"  Margin="100,0,0,0" HorizontalAlignment="Right"></Button>
+      <DatePicker Name="_dtEnd" />
+      <Button Content="{x:Static res:MyResources.CtlReportCreate}" Name="_btnCreate"  Width="150"  Margin="100,0,0,0" HorizontalAlignment="Right" Click="_btnCreate_Click"></Button>
     </StackPanel>
   </StackPanel>
 </UserControl>

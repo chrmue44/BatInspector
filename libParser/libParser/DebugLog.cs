@@ -35,14 +35,16 @@ namespace libParser
     public DateTime Time;
   }
 
-  public delegate void delegateLogMsg(string Text, enLogType logType);
+//  public delegate void delegateLogMsg(string Text, enLogType logType);
   public delegate void delegateLogEntry(stLogEntry entry, List<stLogEntry> list);
+  public delegate void delegateLogClear();
 
   public class DebugLog
   {
     static DebugLog _inst = null;
     List<stLogEntry> _list;
     delegateLogEntry _dlgLog = null;
+    delegateLogClear _dlgClear = null;
 
     static public void log(string msg, enLogType type, bool beep = false)
     {
@@ -51,9 +53,16 @@ namespace libParser
       Inst().logMsg(msg, type);
     }
 
-    static public void setLogDelegate(delegateLogEntry dlg)
+    static public void setLogDelegate(delegateLogEntry dlg, delegateLogClear dlgClear)
     {
       Inst()._dlgLog = dlg;
+      Inst()._dlgClear = dlgClear;
+    }
+
+    static public void clear()
+    {
+      Inst()._list.Clear();
+      Inst()._dlgClear();
     }
 
     DebugLog()

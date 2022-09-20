@@ -690,4 +690,7 @@
   <data name="MainToolRefresh" xml:space="preserve">
     <value>Refresh views</value>
   </data>
+  <data name="CtlSumReportRootDirectory" xml:space="preserve">
+    <value>Root Directory</value>
+  </data>
 </root>

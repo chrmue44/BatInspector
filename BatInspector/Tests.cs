@@ -47,14 +47,60 @@ namespace BatInspector
     public void exec()
     {
       string wrkDir = _model.Settings.ScriptDir == null ? "" : _model.Settings.ScriptDir;
-      testBioAcoustics();
+  //    testBioAcoustics();
       testIf(wrkDir);
       testWhile(wrkDir);
       testParser();
       testCsvFuncs(wrkDir);
       testClassifier();
+      testSumReport();
       if (_errors == 0)
+      {
+        DebugLog.clear();
         DebugLog.log("Tests passed", enLogType.INFO);
+      }
+      else
+        DebugLog.log("Tests failed", enLogType.INFO);
+
+    }
+
+
+    private void testSumReport()
+    {
+      // calcDays()
+      SumReport rep = new SumReport(null);
+      DateTime dat = new DateTime(2022, 09, 15);
+      DateTime end = new DateTime(2022, 09, 30);
+      int days = rep.calcDays(dat, end, enPeriod.DAILY);
+      assert("check daily", days == 1);
+      days = rep.calcDays(dat, end, enPeriod.WEEKLY);
+      assert("check full week", days == 7);
+      end = new DateTime(2022, 09, 20);
+      days = rep.calcDays(dat, end, enPeriod.WEEKLY);
+      assert("check part week", days == 5);
+      end = new DateTime(2022, 10, 01);
+      days = rep.calcDays(dat, end, enPeriod.MONTHLY);
+      assert("check part month", days == 16);
+      dat = new DateTime(2022, 10, 01);
+      end = new DateTime(2022, 11, 05);
+      days = rep.calcDays(dat, end, enPeriod.MONTHLY);
+      assert("check full month", days == 31);
+
+      //incrementDate
+      dat = new DateTime(2022, 07, 15);
+      DateTime exp = new DateTime(2022, 07, 16);
+      end = rep.incrementDate(dat, enPeriod.DAILY);
+      assert("check inc day", end == exp);
+      dat = new DateTime(2022, 10, 27);
+      exp = new DateTime(2022, 11, 03);
+      end = rep.incrementDate(dat, enPeriod.WEEKLY);
+      assert("check inc week", end == exp);
+      dat = new DateTime(2022, 11, 05);
+      exp = new DateTime(2022, 12, 01);
+      end = rep.incrementDate(dat, enPeriod.MONTHLY);
+      assert("check inc month", end == exp);
+
+
     }
 
     private void testCsvFuncs(string wrkDir)
@@ -73,19 +119,19 @@ namespace BatInspector
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
       scr.SetVariable("Limit", "9");
       scr.SetVariable("b", "0");
-      scr.RunScript("test_while.scr", false);
+      scr.RunScript("test_while.scr", false, false);
       assert(scr.getVariable("sum"), "9");
       scr.SetVariable("Limit", "23");
       scr.SetVariable("b", "0");
-      scr.RunScript("test_while.scr", false);
+      scr.RunScript("test_while.scr", false, false);
       assert(scr.getVariable("sum"), "23");
       scr.SetVariable("Limit", "9");
       scr.SetVariable("b", "1");
-      scr.RunScript("test_while.scr", false);
+      scr.RunScript("test_while.scr", false, false);
       assert(scr.getVariable("sum"), "5");
       scr.SetVariable("Limit", "23");
       scr.SetVariable("b", "1");
-      scr.RunScript("test_while.scr", false);
+      scr.RunScript("test_while.scr", false, false);
       assert(scr.getVariable("sum"), "5");
     }
 
@@ -95,25 +141,25 @@ namespace BatInspector
 
       scr.SetVariable("A", "55");
       scr.SetVariable("B", "34");
-      scr.RunScript("test_if.scr", false);
+      scr.RunScript("test_if.scr", false, false);
       assert(scr.getVariable("Result"), "\"AlowBhigh\"");
       assert(scr.getVariable("Res2"), "\"AlowBhigh\"");
 
       scr.SetVariable("A", "55");
       scr.SetVariable("B", "32");
-      scr.RunScript("test_if.scr", false);
+      scr.RunScript("test_if.scr", false, false);
       assert(scr.getVariable("Result"), "\"AlowBlow\"");
       assert(scr.getVariable("Res2"), "\"AlowBlow\"");
 
       scr.SetVariable("A", "101");
       scr.SetVariable("B", "34");
-      scr.RunScript("test_if.scr", false);
+      scr.RunScript("test_if.scr", false, false);
       assert(scr.getVariable("Result"), "\"AhighBhigh\"");
       assert(scr.getVariable("Res2"), "\"AhighBhigh\"");
 
       scr.SetVariable("A", "101");
       scr.SetVariable("B", "33");
-      scr.RunScript("test_if.scr", false);
+      scr.RunScript("test_if.scr", false, false);
       assert(scr.getVariable("Result"), "\"AhighBlow\"");
       assert(scr.getVariable("Res2"), "\"AhighBhigh\"");
     }

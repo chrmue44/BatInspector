@@ -259,6 +259,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Root Directory.
+        /// </summary>
+        public static string CtlSumReportRootDirectory {
+            get {
+                return ResourceManager.GetString("CtlSumReportRootDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Date.
         /// </summary>
         public static string CtlSumReportStartDate {

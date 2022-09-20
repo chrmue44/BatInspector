@@ -169,7 +169,7 @@
                 <ColumnDefinition Width="907*"/>
               </Grid.ColumnDefinitions>
               <Grid.RowDefinitions>
-                <RowDefinition Height="125"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
               <controls:CtlSumReport x:Name="_ctlSum" Grid.Row="0" Margin="0,10,0,0" Grid.ColumnSpan="3"></controls:CtlSumReport>

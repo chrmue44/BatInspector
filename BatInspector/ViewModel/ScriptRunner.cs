@@ -42,13 +42,14 @@ namespace BatInspector
       string res = _parser.VarTable.GetValue(Parser.ERROR_LEVEL);
       DebugLog.log("ConsoleCmd:" + cmd + ": " + res, enLogType.INFO);
     }
-    public int RunScript(string fileName, bool background = true)
+    public int RunScript(string fileName, bool background = true, bool initVars = true)
     {
       int retVal = 0;
       string ext = Path.GetExtension(fileName);
       if (ext.ToLower() == ".scr")
       {
-        _parser.VarTable.VarList.init();
+        if(initVars)
+          _parser.VarTable.VarList.init();
         SetVariable("WRK_DIR", _wrkDir);
         if (background)
           _parser.StartParsing(fileName);

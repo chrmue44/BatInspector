@@ -34,10 +34,11 @@ namespace libScripter
 
     public string FileName {  get { return _fileName; } }
 
-    public Csv()
+    public Csv(bool withHdr = false)
     {
       _cells = new List<List<string>>();
       _cols = new Dictionary<string, int>();
+      _withHdr = withHdr;
     }
 
     public void clear()

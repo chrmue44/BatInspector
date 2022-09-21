@@ -94,7 +94,7 @@ namespace BatInspector
 
         TextReader reader = new StringReader(xml);
         _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-        if (_batExplorerPrj.Type == "Elekon")
+        if (_batExplorerPrj.Type.IndexOf("Elekon") >= 0)
           _wavSubDir = "/Records/";
         else
           _wavSubDir = "/";

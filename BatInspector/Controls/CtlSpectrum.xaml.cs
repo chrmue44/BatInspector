@@ -25,6 +25,8 @@ namespace BatInspector.Controls
     bool _initFlag = false;
     Spectrum _spectrum;
     int _mode;
+    double _fMin;
+    double _fMax;
    
     public bool InitFlag { get { return _initFlag; } set { _initFlag = value; }  }
     
@@ -41,14 +43,16 @@ namespace BatInspector.Controls
     }
 
 
-    public void createFftImage(double[] samples, double tStart, double tEnd, int samplingRate, int mode)
+    public void createFftImage(double[] samples, double tStart, double tEnd, double fMin, double fMax, int samplingRate, int mode)
     {
+      _fMax = fMax;
+      _fMin = fMin;
       _spectrum.create(samples, tStart, tEnd, samplingRate);
       _mode = mode;
-      drawSpectrum(mode);
+      drawSpectrum(mode, fMin, fMax);
     }
 
-    private void drawSpectrum(int mode)
+    private void drawSpectrum(int mode, double fMin, double fMax)
     {
       _cvSpec.Children.Clear();
       if (_spectrum.Amplitude != null)
@@ -61,7 +65,8 @@ namespace BatInspector.Controls
 
         for (int y = h; y > 0; y--)
         {
-          int i = (int)((double)_spectrum.Amplitude.Length / h * (h - y) * _spectrum.RulerDataF.Max / _spectrum.Fmax);
+          double f = fMin + (double)(h - y) / h * (fMax - fMin); 
+          int i = (int)(_spectrum.Amplitude.Length * f /_spectrum.RulerDataF.Max);
           double a = _spectrum.getMeanAmpl(i, n);
           int x1 = w;
           int x2 = w - (int)(w * (a / (max - min)));
@@ -83,7 +88,7 @@ namespace BatInspector.Controls
 
     private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-      drawSpectrum(_mode);
+      drawSpectrum(_mode, _fMin, _fMax);
     }
   }
 }

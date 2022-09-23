@@ -49,6 +49,13 @@ namespace BatInspector
 
   
 
+  public enum enWIN_TYPE
+  {
+    BLACKMAN_HARRIS_4 = 0,
+    BLACKMAN_HARRIS_7 = 1,
+    HANN = 2
+  }
+
   public class BioAcoustics
   {
 
@@ -74,6 +81,12 @@ namespace BatInspector
         if (items.Length == 0)
         {
           File.Delete(fName);
+          string png = fName.Replace(".wav", ".png");
+          if (File.Exists(png))
+            File.Delete(png);
+          string xml = fName.Replace(".wav", ".xml");
+          if (File.Exists(xml))
+            File.Delete(xml);
           DebugLog.log(fName + " deleted, no calls", enLogType.INFO);
         }
         else
@@ -165,6 +178,7 @@ namespace BatInspector
           1e-5,    //KPE
           1e-4     //KME
           );
+        items = new ThresholdDetectItem[evCount];
       }
       for (int i = 0; i < evCount; i++)
       {
@@ -180,6 +194,27 @@ namespace BatInspector
       return items;
     }
 
+    //https://learn.microsoft.com/de-de/dotnet/framework/interop/marshalling-different-types-of-arrays
+
+    public static double[] calculateFft(int size, enWIN_TYPE window, int[] samples)
+    {
+      double[] retVal = new double[size / 2];
+      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal));
+      calcFftInt(size, window, samples, ref buffer);
+      Marshal.Copy(buffer, retVal, 0, size);
+      Marshal.FreeCoTaskMem(buffer);
+      return retVal;
+    }
+
+    public static double[] calculateFft(int size, enWIN_TYPE window, double[] samples)
+    {
+      double[] retVal = new double[size / 2];
+      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size/2 + 100);
+      calcFftDouble(size, window, samples, ref buffer);
+      Marshal.Copy(buffer, retVal, 0, size/2);
+      Marshal.FreeCoTaskMem(buffer);
+      return retVal;
+    }
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
     static extern int threshold_detection(
@@ -211,5 +246,11 @@ namespace BatInspector
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
     static extern void releaseMemory();
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static extern void calcFftInt(int size, enWIN_TYPE win, int[] samples, ref IntPtr spectrum);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static extern void calcFftDouble(int size, enWIN_TYPE win, double[] samples, ref IntPtr spectrum);
   }
 }

@@ -202,6 +202,7 @@ namespace libScripter
     public void ParseLines(string[] lines)
     {
       _lines = lines;
+      _busy = true;
       ParseLines();
     }
 

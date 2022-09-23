@@ -161,6 +161,7 @@
     <Compile Include="ViewModel\BioAcoustics.cs" />
     <Compile Include="ViewModel\ClassifierBarataud.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
+    <Compile Include="ViewModel\ElekonInfoFile.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />

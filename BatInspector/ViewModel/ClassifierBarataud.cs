@@ -137,10 +137,9 @@ namespace BatInspector
   {
     BatSpeciesRegions _batSpecRegions;
 
-    public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
-    public ClassifierBarataud()
+    public ClassifierBarataud(BatSpeciesRegions regions)
     {
-      _batSpecRegions = BatSpeciesRegions.load();    
+      _batSpecRegions = regions;
     }
 
     public List<enSpec> classify(CallParams pars, ref MissingInfo info, out List<string> steps)
@@ -149,7 +148,7 @@ namespace BatInspector
       List<enSpec> retVal = new List<enSpec>();
       steps = new List<string>();
 
-      ParRegion reg = Regions.findRegion(pars.Latitude, pars.Longitude);
+      ParRegion reg = _batSpecRegions.findRegion(pars.Latitude, pars.Longitude);
       if (reg != null)
          steps.Add("region: " + reg.Name);
       else
@@ -485,7 +484,7 @@ namespace BatInspector
     bool occurrence(enSpec spec, double lat, double lon)
     {
       bool retVal = true;
-      ParRegion reg = Regions.findRegion(lat, lon);
+      ParRegion reg = _batSpecRegions.findRegion(lat, lon);
       if(reg != null)
       {
         string sp = spec.ToString();

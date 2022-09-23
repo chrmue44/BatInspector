@@ -23,6 +23,8 @@ namespace BatInspector
 {
   public class Waterfall
   {
+    const bool FFT_W3 = false;
+
     string _wavName;
     UInt32 _fftSize;
     double[] _samples;
@@ -165,20 +167,30 @@ namespace BatInspector
       zeroPadding = (int)_fftSize - length;
       double[] inputSignal = new double[length];
       Array.Copy(_samples, idx, inputSignal, 0, length);
-      // Apply window to the Input Data & calculate Scale Factor
-      double[] wCoefs = DSP.Window.Coefficients(window, (uint)length);
-      double[] wInputData = DSP.Math.Multiply(inputSignal, wCoefs);
-      double wScaleFactor = DSP.Window.ScaleFactor.Signal(wCoefs);
+      double[] lmSpectrum;
+      double wScaleFactor;
+      if (FFT_W3)
+      {
+        wScaleFactor = 1;
+        lmSpectrum = BioAcoustics.calculateFft((int)_fftSize, enWIN_TYPE.BLACKMAN_HARRIS_7, inputSignal);
+      }
+      else
+      {
+        // Apply window to the Input Data & calculate Scale Factor
+        double[] wCoefs = DSP.Window.Coefficients(window, (uint)length);
+        double[] wInputData = DSP.Math.Multiply(inputSignal, wCoefs);
+        wScaleFactor = DSP.Window.ScaleFactor.Signal(wCoefs);
 
-      // Instantiate & Initialize a new DFT
-      FFT fft = new FFT();
-      fft.Initialize((uint)length, (uint)zeroPadding); // NOTE: Zero Padding
+        // Instantiate & Initialize a new DFT
+        FFT fft = new FFT();
+        fft.Initialize((uint)length, (uint)zeroPadding); // NOTE: Zero Padding
 
-      // Call the DFT and get the scaled spectrum back
-      Complex[] cSpectrum = fft.Execute(wInputData);
+        // Call the DFT and get the scaled spectrum back
+        Complex[] cSpectrum = fft.Execute(wInputData);
 
-      // Convert the complex spectrum to note: Magnitude Format
-      double[] lmSpectrum = DSPLib.DSP.ConvertComplex.ToMagnitude(cSpectrum);
+        // Convert the complex spectrum to note: Magnitude Format
+        lmSpectrum = DSPLib.DSP.ConvertComplex.ToMagnitude(cSpectrum);
+      }
       for (int i = 0; i < lmSpectrum.Length; i++)
       {
         if (logarithmic)

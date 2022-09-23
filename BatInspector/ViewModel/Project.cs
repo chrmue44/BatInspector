@@ -14,8 +14,6 @@ using libScripter;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -26,13 +24,24 @@ namespace BatInspector
     string _prjFileName;
     string _wavSubDir;
     bool _ok;
+    List<string> _speciesList;
+    List<SpeciesInfos> _speciesInfo;
+    string _selectedDir;
 
     public bool Ok {get {return _ok;} }
 
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _batExplorerPrj.Records; } }
     public string Name { get{ return _prjFileName; } }
     public string WavSubDir { get { return _wavSubDir; } }
+    public List<string> Species {  get { return _speciesList; } }
+    BatSpeciesRegions _batSpecRegions;
 
+    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    {
+      _batSpecRegions = regions;
+      _speciesList = new List<string>();
+      _speciesInfo = speciesInfo;
+    }
 
     public static bool containsProject(DirectoryInfo dir)
     {
@@ -89,13 +98,17 @@ namespace BatInspector
       try
       {
         _prjFileName = fName;
+        _selectedDir = Path.GetDirectoryName(fName);
         string xml = File.ReadAllText(fName);
         var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-
+        _speciesList.Clear();
         TextReader reader = new StringReader(xml);
         _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
         if (_batExplorerPrj.Type.IndexOf("Elekon") >= 0)
+        {
           _wavSubDir = "/Records/";
+          initSpeciesList();
+        }
         else
           _wavSubDir = "/";
         _ok = true;
@@ -172,6 +185,30 @@ namespace BatInspector
       }
       catch { }
 
+    }
+
+    void initSpeciesList()
+    {
+      if(_batExplorerPrj.Records.Length > 0)
+      {
+        string fName =_selectedDir + _wavSubDir + _batExplorerPrj.Records[0].File.Replace(".wav", ".xml");
+        BatRecord info = ElekonInfoFile.read(fName);
+        ElekonInfoFile.parsePosition(info, out double lat, out double lon);
+        ParRegion reg = _batSpecRegions.findRegion(lat, lon);
+        if(reg != null)
+        {
+          _speciesList = reg.Species;
+        }
+          else
+        {
+          _speciesList = new List<string>();
+          foreach (SpeciesInfos sp in _speciesInfo)
+            _speciesList.Add(sp.Abbreviation);
+        }
+        _speciesList.Add("----");
+        _speciesList.Add("?");
+        _speciesList.Add("todo");
+      }
     }
   }
 }

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using BatInspector.Properties;
+using System.IO;
 
 namespace BatInspector.Controls
 {
@@ -102,7 +103,7 @@ namespace BatInspector.Controls
       _wavFilePath = wavFilePath;
       _wavName = Name;
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
-     
+      _analysis = _model.Analysis.find(_wavName);
       if (_analysis != null)
       {
       //  _sampleRate.setValue(_analysis.SampleRate);
@@ -142,17 +143,22 @@ namespace BatInspector.Controls
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      if (_analysis != null)
+      if (File.Exists(_wavFilePath + _wavName))
       {
-        _parent.setZoom(_wavName, _analysis, _wavFilePath, _img.Source);
+        if (_analysis != null)
+        {
+          _parent.setZoom(_wavName, _analysis, _wavFilePath, _img.Source);
+        }
+        else
+        {
+          AnalysisFile ana = new AnalysisFile(_wavName);
+          ana.SampleRate = 383500;
+          ana.Duration = 3.001;
+          _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
+        }
       }
       else
-      {
-        AnalysisFile ana = new AnalysisFile(_wavName);
-        ana.SampleRate = 383500;
-        ana.Duration = 3.001;
-        _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
-      }
+        DebugLog.log("Zoom not possible, file '" + _wavName + "' does not exist", enLogType.ERROR);
     }
 
     private void selItemChanged(int index, string val)

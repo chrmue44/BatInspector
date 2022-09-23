@@ -13,6 +13,8 @@ TODO
 - stop button to kill running script
 
 DONE
+- using fftw3 dll instead of DSPlib (not finished yet)
+- species list in project view is now location sensitive, it depends on location of first file in project
 - Zoom View: Spectrum left side of waterfall 
 - check consistency between report and prj file (in 20220610 are some...)
 - backport of WavX bioacoustics package to C++ (no longer dependent on R!)

@@ -38,6 +38,7 @@ namespace BatInspector
     {
       string[] lines = new string[1];
       lines[0] = cmd;
+  
       _parser.ParseLines(lines);
       string res = _parser.VarTable.GetValue(Parser.ERROR_LEVEL);
       DebugLog.log("ConsoleCmd:" + cmd + ": " + res, enLogType.INFO);

@@ -46,7 +46,6 @@ namespace BatInspector.Forms
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
-    List<string> _specList = new List<string>();
     List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
     bool _fastOpen = true;
 
@@ -91,7 +90,6 @@ namespace BatInspector.Forms
       _dispatcherTimer.Start();
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
       _ctlLog.setViewModel(_model);
-      initSpecList();
       _ctlSum.setModel(_model);
 #if DEBUG
       Tests tests = new Tests(_model);
@@ -176,6 +174,7 @@ namespace BatInspector.Forms
       DirectoryInfo dir = item.Tag as DirectoryInfo;
       {
         DebugLog.log("start to open project", enLogType.DEBUG);
+        _scrlViewer.ScrollToVerticalOffset(0);
         checkSavePrj();
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;
@@ -293,17 +292,6 @@ namespace BatInspector.Forms
       return item;
     }
 
-    private void initSpecList()
-    {
-      foreach (SpeciesInfos si in _model.SpeciesInfos)
-      {
-        if (si.Show)
-          _specList.Add(si.Abbreviation);
-      }
-      _specList.Add("todo");
-      _specList.Add("?");
-      _specList.Add("---");
-    }
 
     private void updateWavControls()
     {
@@ -383,7 +371,7 @@ namespace BatInspector.Forms
       bool newImage;
       ctl._img.Source = _model.getFtImage(rec, out newImage);
       ctl._img.MaxHeight = _imgHeight;
-      ctl.setFileInformations(rec.File, _model.WavFilePath, _specList);
+      ctl.setFileInformations(rec.File, _model.WavFilePath, _model.Prj.Species);
       ctl.InfoVisible = !_model.Settings.HideInfos;
       if(!_fastOpen)
          setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");

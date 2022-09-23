@@ -46,7 +46,7 @@ namespace BatInspector
     public const int OPT_PREDICT3 = 0x80;
     public const int OPT_CLEANUP = 0x100;
 
-    string _selectedDir;
+    string _selectedDir = "";
     Project _prj;
     string _version;
     Analysis _analysis;
@@ -60,8 +60,9 @@ namespace BatInspector
     WavFile _wav;
     string _scriptName = "";
     ClassifierBarataud _clsBarataud;
-    List<SpeciesInfos> _species;
+    List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
+    BatSpeciesRegions _batSpecRegions;
 
     Forms.MainWindow _mainWin;
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
@@ -90,7 +91,7 @@ namespace BatInspector
 
     public WavFile WavFile { get { return _wav; } }
 
-    public List<SpeciesInfos> SpeciesInfos { get { return _species; } }
+    public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfos; } }
     
     public System.Windows.Input.Key LastKey { get; set; }
     
@@ -98,22 +99,25 @@ namespace BatInspector
 
     public SumReport SumReport { get { return _sumReport; } }
 
+    public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
+
     public ViewModel(Forms.MainWindow mainWin, string version)
     {
+      _batSpecRegions = BatSpeciesRegions.load();
       _proc = new ProcessRunner();
       _mainWin = mainWin;
-      _prj = new Project();
       _filter = new Filter();
       _settings = new AppParams();
-      _species = BatInfo.load().Species;
-      _analysis = new Analysis(_species);
+      _speciesInfos = BatInfo.load().Species;
+      _analysis = new Analysis(_speciesInfos);
       _version = version;
       _colorTable = new ColorTable(this);
       _colorTable.createColorLookupTable();
       _zoom = new ZoomView(_colorTable);
       _wav = new WavFile();
-      _clsBarataud = new ClassifierBarataud();
-      _sumReport = new SumReport(_species);
+      _clsBarataud = new ClassifierBarataud(_batSpecRegions);
+      _sumReport = new SumReport(_speciesInfos);
+      _prj = new Project(_batSpecRegions, _speciesInfos);
     }
 
     public void updateReport()
@@ -130,11 +134,11 @@ namespace BatInspector
         if (File.Exists(_selectedDir + "report.csv"))
           _analysis.read(_selectedDir + "report.csv");
         else
-          _analysis = new Analysis(_species);
+          _analysis = new Analysis(_speciesInfos);
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
-          _prj = new Project();
+          _prj = new Project(_batSpecRegions, _speciesInfos);
         _prj.readPrjFile(files[0]);
         if (_analysis.Report != null)
           checkProject();
@@ -142,7 +146,7 @@ namespace BatInspector
       }
       else if (Project.containsWavs(dir))
       {
-        _prj = new Project();
+        _prj = new Project(_batSpecRegions, _speciesInfos);
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName + "/";
         _scripter = new ScriptRunner(ref _proc, _selectedDir, null, this);
@@ -399,7 +403,7 @@ namespace BatInspector
         {
           DebugLog.log("executing confidence test prediction", enLogType.INFO);
           _analysis.read(PrjPath + "report.csv");
-          _analysis.checkConfidence(_species);
+          _analysis.checkConfidence(_speciesInfos);
           _analysis.save(PrjPath + "report.csv");
           _analysis.read(PrjPath + "report.csv");
         }
@@ -417,7 +421,7 @@ namespace BatInspector
     {
       List<SpeciesItem> retVal = new List<SpeciesItem>();
 
-      foreach(SpeciesInfos s in _species)
+      foreach(SpeciesInfos s in _speciesInfos)
       {
         if(
             (s.FreqCharMin <= charFreq) && (charFreq <= s.FreqCharMax) &&
@@ -506,6 +510,7 @@ namespace BatInspector
       createDir("img", delete);
     }
 
+
     private void cleanupTempFiles()
     {
       removeDir("bat");
@@ -520,5 +525,4 @@ namespace BatInspector
       }
     }
   }
-
 }

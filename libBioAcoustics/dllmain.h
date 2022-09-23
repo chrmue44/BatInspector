@@ -38,4 +38,10 @@ namespace libBioAcoustics
     extern "C" DLL_API void __cdecl  releaseMemory();
 
     extern "C" DLL_API stRetEvalData * __cdecl getEvalItem(int i);
+
+    extern "C" DLL_API void __cdecl calcFftInt(int size, FFT::WIN_TYPE win, int* samples, double** spectrum);
+
+    extern "C" DLL_API void __cdecl calcFftDouble(int size, FFT::WIN_TYPE win, double* samples, double** spectrum);
+
+
 }

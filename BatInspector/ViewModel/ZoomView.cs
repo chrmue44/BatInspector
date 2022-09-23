@@ -130,14 +130,7 @@ namespace BatInspector
     {
       _wf = new Waterfall(wavName, fftSize, w, h, settings, _colorTable);
       string infoName = wavName.Replace(".wav", ".xml");
-      if (File.Exists(infoName))
-      {
-        string xml = File.ReadAllText(infoName);
-        var serializer = new XmlSerializer(typeof(BatRecord));
-        TextReader reader = new StringReader(xml);
-        _fileInfo = (BatRecord)serializer.Deserialize(reader);
-      }
-      initUninitializedValues();
+      _fileInfo = ElekonInfoFile.read(infoName);
     }
 
     public void zoomInV()
@@ -210,36 +203,7 @@ namespace BatInspector
       return retVal;
     }
 
-    //TODO: very ugly: find a better way to do this
-    private void initUninitializedValues()
-    {
-      if (_fileInfo.DateTime == null)
-        _fileInfo.DateTime = "";
-      if (_fileInfo.Duration == null)
-        _fileInfo.Duration = "";
-      if (_fileInfo.FileName == null)
-        _fileInfo.FileName = "";
-      if (_fileInfo.Gain == null)
-        _fileInfo.Gain = "";
-      if (_fileInfo.GPS == null)
-        _fileInfo.GPS = new BatRecordGPS();
-      if (_fileInfo.GPS.Position == null)
-        _fileInfo.GPS.Position = "";
-      if (_fileInfo.InputFilter == null)
-        _fileInfo.InputFilter = "";
-      if (_fileInfo.PeakValue == null)
-        _fileInfo.PeakValue = "";
-      if (_fileInfo.Samplerate == null)
-        _fileInfo.Samplerate = "";
-      if (_fileInfo.Trigger == null)
-        _fileInfo.Trigger = new BatRecordTrigger();
-      if (_fileInfo.Trigger.Filter == null)
-        _fileInfo.Trigger.Filter = "";
-      if (_fileInfo.Trigger.Frequency == null)
-        _fileInfo.Trigger.Frequency = "";
-      if (_fileInfo.Trigger.Level == null)
-        _fileInfo.Trigger.Level = "";
-    }
+
 
     public void findMaxAmplitude()
     {

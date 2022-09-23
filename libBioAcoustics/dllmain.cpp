@@ -136,4 +136,30 @@ namespace libBioAcoustics
         }
         return nullptr;
     }
+
+    DLL_API void calcFftInt(int size, FFT::WIN_TYPE win, int* samples, double** spectrum)
+    {
+        std::vector<int> audio_vector;
+        audio_vector.resize(size);
+        for (int i = 0; i < size; i++)
+            audio_vector[i] = samples[i];
+
+        FFT fft(size, win);
+        fft.impl(0, audio_vector);
+        for(int i = 0; i < size/2; i++)
+          (*spectrum)[i] = fft.magnitude[i];
+    }
+
+    DLL_API void calcFftDouble(int size, FFT::WIN_TYPE win, double* samples, double** spectrum)
+    {
+        std::vector<int> audio_vector;
+        audio_vector.resize(size);
+        for (int i = 0; i < size; i++)
+            audio_vector[i] = samples[i] * 35768;
+        FFT fft(size, win);
+        fft.impl(0, audio_vector);
+        for (int i = 0; i < size / 2; i++)
+            (*spectrum)[i] = fft.magnitude[i];
+    }
+
 }

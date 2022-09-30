@@ -42,8 +42,9 @@
 			"PAUR",
 			"PAUS",
 			"Eptesicus",
-			"Vespertilio",
-			"Nyctalus"
+			"Nyctalus",
+			"Myotis",
+			"Vespertilio"
 		],
 		"InformationSource": "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm"
 	},
@@ -98,8 +99,9 @@
 			"PAUR",
 			"VMUR",
 			"Eptesicus",
-			"Vespertilio",
-			"Nyctalus"
+			"Myotis",
+			"Nyctalus",
+			"Vespertilio"
 		],
 		"InformationSource": "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway"
 	   }

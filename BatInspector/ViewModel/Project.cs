@@ -210,13 +210,14 @@ namespace BatInspector
         BatRecord info = ElekonInfoFile.read(fName);
         ElekonInfoFile.parsePosition(info, out double lat, out double lon);
         ParRegion reg = _batSpecRegions.findRegion(lat, lon);
-        if(reg != null)
+        _speciesList = new List<string>();
+        if (reg != null)
         {
-          _speciesList = reg.Species;
+          foreach (string sp in reg.Species)
+            _speciesList.Add(sp);
         }
-          else
+        else
         {
-          _speciesList = new List<string>();
           foreach (SpeciesInfos sp in _speciesInfo)
             _speciesList.Add(sp.Abbreviation);
         }

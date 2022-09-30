@@ -329,8 +329,15 @@ namespace BatInspector
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
         foreach (string f in delFiles)
         {
-          File.Delete(f);
-          DebugLog.log("delete file " + f, enLogType.DEBUG);
+          try
+          {
+            File.Delete(f);
+            DebugLog.log("delete file " + f, enLogType.DEBUG);
+          }
+          catch
+          {
+          }
+
         }
 
         _prj.removeFile(wavName);

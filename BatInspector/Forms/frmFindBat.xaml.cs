@@ -161,7 +161,7 @@ namespace BatInspector.Forms
         if ((idx >= 0) && (idx < a.Calls.Count))
         {
           AnalysisCall c = a.Calls[idx];
-          ElekonInfoFile.parsePosition(_model.ZoomView.FileInfo, out double lon, out double lat);
+          ElekonInfoFile.parsePosition(_model.ZoomView.FileInfo, out double lat, out double lon);
           _ctlLat.setValue(lat);
           _ctlLon.setValue(lon);
           _ctlFstart.setValue(c.FreqMax / 1000.0);

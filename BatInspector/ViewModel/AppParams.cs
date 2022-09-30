@@ -132,6 +132,16 @@ namespace BatInspector
   [DataContract]
   public class AppParams
   {
+    public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
+    public const string PRJ_REPORT = "report.csv";        // report name for project report
+    public const string EXT_WAV = ".wav";                 // file extension for wav files 
+    public const string EXT_IMG = ".png";                 // file extension for image files of recordings
+    public const string EXT_INFO = ".xml";                // file extension for info files in Elekon projects
+    public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
+    public const string CSV_SEPARATOR = ";";              // CSV separator
+
+
+
     const string _fName = "BatInspectorSettings.json";
 
     [DataMember]

@@ -45,16 +45,31 @@ namespace BatInspector
 
     public static bool containsProject(DirectoryInfo dir)
     {
-      bool retVal = false;
       try
       {
-        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);
         if (files.Length > 0)
-          retVal = true;
+          return  true;
       }
       catch { }
-      return retVal;
+      return false;
+    }
+
+    public static string containsReport(DirectoryInfo dir)
+    {
+      try
+      {
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.*" ,
+                         System.IO.SearchOption.TopDirectoryOnly);
+        foreach(string file in files)
+        {
+          if (file.IndexOf(AppParams.PRJ_REPORT) >= 0)
+            return file;
+        }
+      }
+      catch { }
+      return "";
     }
 
     public static bool containsWavs(DirectoryInfo dir)
@@ -62,7 +77,7 @@ namespace BatInspector
       bool retVal = false;
       try
       {
-        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.wav",
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_WAV,
                          System.IO.SearchOption.TopDirectoryOnly);
         if (files.Length > 0)
           retVal = true;
@@ -74,7 +89,7 @@ namespace BatInspector
     public static bool evaluationDone(DirectoryInfo dir)
     {
       bool retVal = false;
-      string fName = dir.FullName + "\\report.csv";
+      string fName = dir.FullName + "/" + AppParams.PRJ_REPORT;
       if (File.Exists(fName))
       {
         Csv csv = new Csv();
@@ -191,7 +206,7 @@ namespace BatInspector
     {
       if(_batExplorerPrj.Records.Length > 0)
       {
-        string fName =_selectedDir + _wavSubDir + _batExplorerPrj.Records[0].File.Replace(".wav", ".xml");
+        string fName =_selectedDir + _wavSubDir + _batExplorerPrj.Records[0].File.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         BatRecord info = ElekonInfoFile.read(fName);
         ElekonInfoFile.parsePosition(info, out double lat, out double lon);
         ParRegion reg = _batSpecRegions.findRegion(lat, lon);

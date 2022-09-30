@@ -248,7 +248,7 @@ namespace BatInspector.Controls
         if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
         {
           _model.ZoomView.Cursor1.set(t, f, true);
-          drawCursor(_cursorX1, _cursorY1, _model.ZoomView.Cursor1);
+          drawCursor(1);
           setFileInformations();
         }
       }
@@ -257,7 +257,7 @@ namespace BatInspector.Controls
         if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
         {
           _model.ZoomView.Cursor2.set(t, f, true);
-          drawCursor(_cursorX2, _cursorY2, _model.ZoomView.Cursor2);
+          drawCursor(2);
           setFileInformations();
         }
       }
@@ -293,10 +293,23 @@ namespace BatInspector.Controls
       else
         _deltaT.Visibility = Visibility.Hidden;
     }
-    private void drawCursor(Line lx, Line ly, Cursor cursor)
+    private void drawCursor(int cursorNr)
     {
+      Line lx = _cursorX1;
+      Line ly = _cursorY1;
+      Line la = _cursorA1;
+      Cursor cursor = _model.ZoomView.Cursor1;
+      if (cursorNr == 2)
+      {
+        lx = _cursorX2;
+        ly = _cursorY2;
+        la = _cursorA2;
+        cursor = _model.ZoomView.Cursor2;
+      }
       lx.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       ly.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
+      la.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
+
       int x = (int)(_imgFt.Margin.Left + (cursor.Time - _model.ZoomView.RulerDataT.Min) /
                        (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) * _imgFt.ActualWidth);
       int y = (int)(_imgFt.Margin.Top + (1.0 - (cursor.Freq - _model.ZoomView.RulerDataF.Min) /
@@ -309,6 +322,13 @@ namespace BatInspector.Controls
       ly.Y1 = y;
       ly.X2 = _imgFt.ActualWidth + _imgFt.Margin.Left;
       ly.Y2 = y;
+
+      la.X1 = x;
+      la.Y1 = _imgXt.Margin.Top;
+      la.X2 = x;
+      la.Y2 = _imgXt.ActualHeight + _imgXt.Margin.Top;
+
+      _ctlSpectrum.drawCursor(cursorNr, cursor);
     }
 
     private void ctrlZoom_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -316,8 +336,8 @@ namespace BatInspector.Controls
       initRulerF();
       initRulerT();
       initRulerA();
-      drawCursor(_cursorX1, _cursorY1, _model.ZoomView.Cursor1);
-      drawCursor(_cursorX2, _cursorY2, _model.ZoomView.Cursor2);
+      drawCursor(1);
+      drawCursor(2);
     }
 
     private void hideCursors()
@@ -327,8 +347,8 @@ namespace BatInspector.Controls
       _grpCursor1.Visibility = Visibility.Hidden;
       _grpCursor2.Visibility = Visibility.Hidden;
       _deltaT.Visibility = Visibility.Hidden;
-      drawCursor(_cursorX1, _cursorY1, _model.ZoomView.Cursor1);
-      drawCursor(_cursorX2, _cursorY2, _model.ZoomView.Cursor2);
+      drawCursor(1);
+      drawCursor(2);
     }
 
 

@@ -81,10 +81,10 @@ namespace BatInspector
         if (items.Length == 0)
         {
           File.Delete(fName);
-          string png = fName.Replace(".wav", ".png");
+          string png = fName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
           if (File.Exists(png))
             File.Delete(png);
-          string xml = fName.Replace(".wav", ".xml");
+          string xml = fName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
           if (File.Exists(xml))
             File.Delete(xml);
           DebugLog.log(fName + " deleted, no calls", enLogType.INFO);

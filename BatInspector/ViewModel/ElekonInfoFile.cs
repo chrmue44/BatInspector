@@ -39,8 +39,33 @@ namespace BatInspector
       }
     }
 
-  //TODO: very ugly: find a better way to do this
-  private static void initUninitializedValues(ref BatRecord rec)
+    public static DateTime parseDate(string datStr)
+    {
+      DateTime retVal = new DateTime();
+      string[] str = datStr.Split(' ');
+      if (str.Length == 2)
+      {
+        string[] date = str[0].Split('.');
+        if (date.Length == 3)
+        {
+          string[] tim = str[1].Split(':');
+          if(tim.Length == 3)
+          {
+            bool ok = int.TryParse(date[0], out int dd);
+            ok &= int.TryParse(date[1], out int mm);
+            ok &= int.TryParse(date[2], out int yyyy);
+            ok &= int.TryParse(tim[0], out int hh);
+            ok &= int.TryParse(tim[1], out int min);
+            if (ok)
+              retVal = new DateTime(yyyy, mm, dd, hh, min, 0);
+          }
+        }
+      }
+      return retVal;
+    }
+
+    //TODO: very ugly: find a better way to do this
+    private static void initUninitializedValues(ref BatRecord rec)
     {
       if (rec.DateTime == null)
         rec.DateTime = "";

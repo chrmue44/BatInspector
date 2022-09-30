@@ -13,6 +13,8 @@ TODO
 - stop button to kill running script
 
 DONE
+- part of implementation sum report
+- show cursors in spectrum and XT diagram as well
 - using fftw3 dll instead of DSPlib (not finished yet)
 - species list in project view is now location sensitive, it depends on location of first file in project
 - Zoom View: Spectrum left side of waterfall 

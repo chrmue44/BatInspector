@@ -122,8 +122,8 @@ namespace BatInspector
 
     public void updateReport()
     {
-      if (File.Exists(_selectedDir + "report.csv"))
-        _analysis.read(_selectedDir + "report.csv");
+      if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
+        _analysis.read(_selectedDir + AppParams.PRJ_REPORT);
     }
 
     public void initProject(DirectoryInfo dir)
@@ -131,8 +131,8 @@ namespace BatInspector
       if (Project.containsProject(dir))
       {
         _selectedDir = dir.FullName + "/";
-        if (File.Exists(_selectedDir + "report.csv"))
-          _analysis.read(_selectedDir + "report.csv");
+        if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
+          _analysis.read(_selectedDir + AppParams.PRJ_REPORT);
         else
           _analysis = new Analysis(_speciesInfos);
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
@@ -217,7 +217,7 @@ namespace BatInspector
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
       string fullName = _selectedDir + _prj.WavSubDir + rec.File;
-      string pngName = fullName.Replace(".wav", ".png");
+      string pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       Bitmap bmp = null;
       BitmapImage bImg = null;
       newImage = false;
@@ -240,7 +240,7 @@ namespace BatInspector
         {
            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
           _prj.removeFile(rec.File);
-          _analysis.removeFile(_selectedDir + "/report.csv", rec.File);
+          _analysis.removeFile(_selectedDir + "/" + AppParams.PRJ_REPORT, rec.File);
         }
       }
       if(bmp != null)
@@ -279,7 +279,7 @@ namespace BatInspector
     {
       DebugLog.log("start deleting files", enLogType.INFO);
       _prj.writePrjFile();
-      string reportName = _selectedDir + "/report.csv";
+      string reportName = _selectedDir + "/" + AppParams.PRJ_REPORT;
       _analysis.save(reportName);
       Csv report = new Csv();
       report.read(reportName);
@@ -319,7 +319,7 @@ namespace BatInspector
       if (_prj != null)
       {
         string dirName = _selectedDir + _prj.WavSubDir;
-        string delName = wavName.Replace(".wav", ".*");
+        string delName = wavName.Replace(AppParams.EXT_WAV, ".*");
         int pos = delName.LastIndexOf("/");
         int pos2 = delName.LastIndexOf("\\");
         if ((pos >= 0) && (pos > pos2))
@@ -335,7 +335,7 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _analysis.removeFile(_selectedDir +"/report.csv", wavName, false, report);
+        _analysis.removeFile(_selectedDir +"/" + AppParams.PRJ_REPORT, wavName, false, report);
       }
     }
 
@@ -347,7 +347,7 @@ namespace BatInspector
       int retVal = 2;
       if(Prj != null)
       {
-        string reportName = _selectedDir + "report.csv";
+        string reportName = _selectedDir + AppParams.PRJ_REPORT;
         reportName = reportName.Replace("\\", "/");
 
         if ((options & OPT_INSPECT) != 0)
@@ -371,7 +371,7 @@ namespace BatInspector
           */
           //internal:
           string dir = _selectedDir + _prj.WavSubDir;
-          string rep = _selectedDir + "report.csv";
+          string rep = _selectedDir + AppParams.PRJ_REPORT;
           rep = rep.Replace("\\", "/");
           BioAcoustics.analyzeFiles(rep, dir);
         }
@@ -402,10 +402,10 @@ namespace BatInspector
         if((options & OPT_CONF95) != 0)
         {
           DebugLog.log("executing confidence test prediction", enLogType.INFO);
-          _analysis.read(PrjPath + "report.csv");
+          _analysis.read(PrjPath + AppParams.PRJ_REPORT);
           _analysis.checkConfidence(_speciesInfos);
-          _analysis.save(PrjPath + "report.csv");
-          _analysis.read(PrjPath + "report.csv");
+          _analysis.save(PrjPath + AppParams.PRJ_REPORT);
+          _analysis.read(PrjPath + AppParams.PRJ_REPORT);
         }
 
         if ((options & OPT_CLEANUP) != 0)

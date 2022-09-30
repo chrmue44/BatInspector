@@ -25,21 +25,33 @@ namespace BatInspector
     }
   }
 
+  public struct stReport
+  {
+    public string FileName;
+    public DateTime Start;
+    public DateTime End;
+  }
+
   public class SumReport
   {
     const string COL_DATE = "Date";
 
     List<SpeciesInfos> _species;
     Csv _rep;
+    string _rootDir;
+    DirectoryInfo _dirInfo;
+    List<stReport> _reports;
 
     public SumReport(List<SpeciesInfos> species)
     {
       _species = species;
       _rep = new Csv(true);
+      _reports = new List<stReport>();
     }
 
     public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir)
     {
+      initDirTree(rootDir);
       _rep.clear();
       _rep.addRow();
       int col = 1;
@@ -57,7 +69,7 @@ namespace BatInspector
 
       if (Directory.Exists(rootDir))
       {
-        string fileName = rootDir + "/" + "sum_report.csv";
+        string fileName = rootDir + "/" + AppParams.SUM_REPORT;
         _rep.saveAs(fileName);
       }
       else
@@ -113,6 +125,39 @@ namespace BatInspector
           break;
       }
       return date;
+    }
+
+    void initDirTree(string rootDir)
+    {
+      _rootDir = rootDir;
+      _dirInfo = new DirectoryInfo(rootDir);
+      foreach (DirectoryInfo subDir in _dirInfo.GetDirectories())
+      {
+        string prjFile = Project.containsReport(subDir);
+        if ( prjFile != "")
+        {
+          Csv csv = new Csv();
+          csv.read(prjFile, AppParams.CSV_SEPARATOR, true);
+          stReport rec = new stReport();
+          rec.FileName = prjFile;
+
+          rec.Start = getStartTime(subDir.Name, csv.getCell(2, Cols.NAME));
+          rec.End = getStartTime(subDir.Name, csv.getCell(csv.RowCnt, Cols.NAME));
+          _reports.Add(rec);
+        }
+      }
+    }
+
+    DateTime getStartTime(string prjDir, string fileName)
+    {
+      DateTime retVal = new DateTime();
+      if (!Path.IsPathRooted(fileName))
+        fileName = _rootDir + "/" + prjDir + "/Records/" + fileName;
+
+      string infoFile = fileName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+      BatRecord rec = ElekonInfoFile.read(infoFile);
+      retVal = ElekonInfoFile.parseDate(rec.DateTime);
+      return retVal;
     }
 
     void addEntry(DateTime date, int days, List<SpecCnt> list)

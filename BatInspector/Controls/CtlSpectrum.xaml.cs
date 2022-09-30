@@ -55,7 +55,7 @@ namespace BatInspector.Controls
     private void drawSpectrum(int mode, double fMin, double fMax)
     {
       _cvSpec.Children.Clear();
-      if (_spectrum.Amplitude != null)
+      if ((_spectrum != null) && (_spectrum.Amplitude != null))
       {
         double min = _spectrum.findMinAmplitude();
         double max = _spectrum.findMaxAmplitude();
@@ -89,6 +89,18 @@ namespace BatInspector.Controls
     private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
     {
       drawSpectrum(_mode, _fMin, _fMax);
+    }
+
+    public void drawCursor(int cursorNr, Cursor cursorI)
+    {
+      Line cursorL = _cursor1;
+      if (cursorNr == 2)
+        cursorL = _cursor2;
+      cursorL.Visibility = cursorI.Visible ? Visibility.Visible : Visibility.Hidden;
+      cursorL.X1 = 0;
+      cursorL.X2 = ActualWidth;
+      cursorL.Y1 = (1.0 - (cursorI.Freq / (_spectrum.RulerDataF.Max - _spectrum.RulerDataF.Min) - _spectrum.RulerDataF.Min)) * ActualHeight;
+      cursorL.Y2 = cursorL.Y1;
     }
   }
 }

@@ -269,7 +269,7 @@ namespace BatInspector.Forms
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
-            _model.Analysis.save(_model.PrjPath + "report.csv");
+            _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
         }
       }
     }
@@ -326,7 +326,7 @@ namespace BatInspector.Forms
       worker.DoWork += createImageFiles;
       worker.ProgressChanged += worker_ProgressChanged;
       worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-      worker.RunWorkerAsync(10000);
+      worker.RunWorkerAsync();
     }
 
     void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -600,7 +600,7 @@ namespace BatInspector.Forms
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
       _model.saveSettings();
-      _model.Analysis.save(_model.PrjPath + "report.csv");
+      _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
       _model.Prj.writePrjFile();
       DebugLog.log("project '" + _model.Prj.Name + "' saved", enLogType.INFO);
     }

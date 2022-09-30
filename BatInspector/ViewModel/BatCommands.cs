@@ -35,7 +35,7 @@ namespace BatInspector
     int fctAdjustReport(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      string report = _model.PrjPath + "/report.csv";
+      string report = _model.PrjPath + "/" + AppParams.PRJ_REPORT;
       _model.removeDeletedWavsFromReport(report);
       return 0;
     }

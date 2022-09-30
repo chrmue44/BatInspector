@@ -11,5 +11,7 @@
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="5" MouseMove="_cvSpec_MouseMove"
 ToolTip="This is a tool tip." />
-   </Grid>
+    <Line Name="_cursor1"  Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
+    <Line Name="_cursor2"  Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
+  </Grid>
 </UserControl>

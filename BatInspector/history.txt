@@ -12,7 +12,10 @@ TODO
 - prediction from call parameters (not wav)
 - stop button to kill running script
 
+
 DONE
+- bugfix: rescale SamplingRate does not work for some files (save wav?)
+- new script function: getFileName
 - part of implementation sum report
 - show cursors in spectrum and XT diagram as well
 - using fftw3 dll instead of DSPlib (not finished yet)

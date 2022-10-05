@@ -21,6 +21,8 @@ using Microsoft.VisualBasic.Devices;
 namespace BatInspector
 {
   //https://www.codeguru.com/dotnet/making-sounds-with-waves-using-c/
+  //https://isip.piconepress.com/projects/speech/software/tutorials/production/fundamentals/v1.0/section_02/s02_01_p05.html
+  
   public class WaveHeader
   {
     private const string FILE_TYPE_ID = "RIFF";
@@ -278,7 +280,7 @@ namespace BatInspector
         _format = new FormatChunk(format);
 
         int pos = 12;
-        while (!(_waveData[pos] == 100 && _waveData[pos + 1] == 97 && _waveData[pos + 2] == 116 && _waveData[pos + 3] == 97))
+        while (!(_waveData[pos] == 'd' && _waveData[pos + 1] == 'a' && _waveData[pos + 2] == 't' && _waveData[pos + 3] == 'a'))
         {
           pos += 4;
           int chunkSize = _waveData[pos] + _waveData[pos + 1] * 256 + _waveData[pos + 2] * 65536 + _waveData[pos + 3] * 16777216;
@@ -307,8 +309,14 @@ namespace BatInspector
         {
           FileStream f = File.OpenWrite(_fName);
           List<Byte> tempBytes = new List<byte>();
+       //   _header.FileLength = 4 + _format.Length() + _data.Length();
           tempBytes.AddRange(_header.GetBytes());
           tempBytes.AddRange(_format.GetBytes());
+          if(_format.ChunkSize > 16)
+          {
+            byte[] dummy = new byte[_format.ChunkSize - 16];
+            tempBytes.AddRange(dummy);
+          }
           tempBytes.AddRange(_data.GetBytes());
           _waveData = tempBytes.ToArray();
           foreach (byte b in _waveData)

@@ -66,6 +66,12 @@ namespace BatInspector
       addMethod(new FuncTabItem("setFileInfo", setFileInfo));
       _scriptHelpTab.Add(new HelpTabItem("setFileInfo", "set specific data for specified file",
                       new List<string> { "1: file index (0..n)","2: file info type","3:data" }, new List<string> { "" }));
+      addMethod(new FuncTabItem("getFileName", getFileName));
+      _scriptHelpTab.Add(new HelpTabItem("getFileName", "get file name for specified file index",
+                      new List<string> { "1: file index (0..n)", "2: file info type" }, new List<string> { "" }));
+      addMethod(new FuncTabItem("getFileInfo", getFileInfo));
+      _scriptHelpTab.Add(new HelpTabItem("getFileInfo", "get specific data for specified file",
+                      new List<string> { "1: file index (0..n)", "2: file info type" }, new List<string> { "" }));
       addMethod(new FuncTabItem("getCallCount", getCallCount));
       _scriptHelpTab.Add(new HelpTabItem("getCallCount", "get number of calls for spec. file in open project",
                       new List<string> { "1: file index (0..n)" }, new List<string> { "1: nr of calls for selected file" }));
@@ -104,7 +110,8 @@ namespace BatInspector
     {
       SAMPLE_RATE,
       DURATION,
-      SELECT
+      SELECT,
+      NAME
     }
 
     static tParseError setFileInfo(List<AnyType> argv, out AnyType result)
@@ -133,6 +140,82 @@ namespace BatInspector
                     break;
                   case enFileInfo.SAMPLE_RATE:
                     break;
+              }
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+    static tParseError getFileName(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 1)
+        {
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          int idxF = (int)argv[0].getUint64();
+          int maxIdxF = _inst._model.Prj.Records.Length;
+          if (idxF < maxIdxF)
+          {
+            result.assign(_inst._model.PrjPath + _inst._model.Prj.WavSubDir + 
+                          _inst._model.Prj.Records[idxF].File);
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
+      return err;
+    }
+
+
+    static tParseError getFileInfo(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 2)
+        {
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_STR);
+          int idxF = (int)argv[0].getUint64();
+          int maxIdxF = _inst._model.Analysis.Files.Count;
+          if (idxF < maxIdxF)
+          {
+            enFileInfo fileInfo;
+            bool ok = Enum.TryParse(argv[1].getString(), out fileInfo);
+            if (ok)
+            {
+              switch (fileInfo)
+              {
+                case enFileInfo.NAME:
+                  result.assign(_inst._model.Analysis.Files[idxF].FileName);
+                  break;
+                case enFileInfo.SAMPLE_RATE:
+                  result.assignInt64(_inst._model.Analysis.Files[idxF].SampleRate);
+                  break;
+                case enFileInfo.DURATION:
+                  result.assign(_inst._model.Analysis.Files[idxF].Duration);
+                  break;
+                default:
+                  result.assign("ERROR: supported data type: " + argv[1].getString());
+                  break;
               }
             }
             else

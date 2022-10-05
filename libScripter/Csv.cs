@@ -15,8 +15,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace libScripter
 {
@@ -330,7 +328,7 @@ namespace libScripter
     public int findInCol(string val, int col, bool subStr = false)
     {
       int retVal = 0;
-      if (col >= 0)
+      if (col > 0)
       {
         if (subStr)
         {

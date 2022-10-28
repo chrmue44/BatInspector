@@ -155,10 +155,10 @@ namespace BatInspector
 
       if (ret == 0)
       {
-        sampleRate = (int)wav.SamplingRate;
-        duration = wav.AudioSamples.Length / wav.SamplingRate;
+        sampleRate = (int)wav.FormatChunk.Frequency;
+        duration = wav.AudioSamples.Length / wav.FormatChunk.Frequency;
         evCount = threshold_detection(
-         wav.AudioSamples, wav.AudioSamples.Length, (int)wav.SamplingRate,
+         wav.AudioSamples, wav.AudioSamples.Length, (int)wav.FormatChunk.Frequency,
           5,   // threshold
           1.5, // min_d
           80,  // max_d

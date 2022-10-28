@@ -10,3 +10,5 @@
 /mod*
 /py/__pycache__
 /libBioAcoustics/x64
+/BatInspector/ViewModel/*.bak
+/x64/Debug

@@ -20,88 +20,210 @@ using System.Xml.Serialization;
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class BatExplorerProjectFile {
-    
-    private string nameField;
-    
-    private string typeField;
-    
-    private BatExplorerProjectFileRecordsRecord[] recordsField;
-    
-    private string fileVersionField;
-    
-    private string originatorField;
-    public BatExplorerProjectFile()
-    {
-    }
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+public partial class BatExplorerProjectFile
+{
 
-    public BatExplorerProjectFile(string name, int fileCount)
-    {
-      nameField = name;
-      recordsField = new BatExplorerProjectFileRecordsRecord[fileCount];
-      for (int i = 0; i < recordsField.Length; i++)
-        recordsField[i] = new BatExplorerProjectFileRecordsRecord();
-      typeField = "";
-      originatorField = "";
-    }
+  private string nameField;
 
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public string Name {
-        get {
-            return this.nameField;
-        }
-        set {
-            this.nameField = value;
-        }
+  private string createdField;
+
+  private string notesField;
+
+  private string autoProcessField;
+
+  private string tracksField;
+
+  private string disSpeciesField;
+
+  private BatExplorerProjectFileRecordsRecord[] recordsField;
+
+  private string fileVersionField;
+
+  private string typeField;
+
+  public BatExplorerProjectFile()
+  {
+  }
+  public BatExplorerProjectFile(string name, int fileCount)
+  {
+    nameField = name;
+    recordsField = new BatExplorerProjectFileRecordsRecord[fileCount];
+    for (int i = 0; i < recordsField.Length; i++)
+      recordsField[i] = new BatExplorerProjectFileRecordsRecord();
+    typeField = "";
+    //originatorField = "";
+  }
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Name
+  {
+    get
+    {
+      return this.nameField;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public string Type {
-        get {
-            return this.typeField;
-        }
-        set {
-            this.typeField = value;
-        }
+    set
+    {
+      this.nameField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
-    public BatExplorerProjectFileRecordsRecord[] Records {
-        get {
-            return this.recordsField;
-        }
-        set {
-            this.recordsField = value;
-        }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Created
+  {
+    get
+    {
+      return this.createdField;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string FileVersion {
-        get {
-            return this.fileVersionField;
-        }
-        set {
-            this.fileVersionField = value;
-        }
+    set
+    {
+      this.createdField = value;
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string Originator {
-        get {
-            return this.originatorField;
-        }
-        set {
-            this.originatorField = value;
-        }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Notes
+  {
+    get
+    {
+      return this.notesField;
     }
+    set
+    {
+      this.notesField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string AutoProcess
+  {
+    get
+    {
+      return this.autoProcessField;
+    }
+    set
+    {
+      this.autoProcessField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Tracks
+  {
+    get
+    {
+      return this.tracksField;
+    }
+    set
+    {
+      this.tracksField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string DisSpecies
+  {
+    get
+    {
+      return this.disSpeciesField;
+    }
+    set
+    {
+      this.disSpeciesField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
+  public BatExplorerProjectFileRecordsRecord[] Records
+  {
+    get
+    {
+      return this.recordsField;
+    }
+    set
+    {
+      this.recordsField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  public string FileVersion
+  {
+    get
+    {
+      return this.fileVersionField;
+    }
+    set
+    {
+      this.fileVersionField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Type
+  {
+    get
+    {
+      return this.typeField;
+    }
+    set
+    {
+      this.typeField = value;
+    }
+  }
+}
+
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class BatExplorerProjectFileRecordsRecord
+{
+
+  private string fileField;
+
+  private string nameField;
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  public string File
+  {
+    get
+    {
+      return this.fileField;
+    }
+    set
+    {
+      this.fileField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  public string Name
+  {
+    get
+    {
+      return this.nameField;
+    }
+    set
+    {
+      this.nameField = value;
+    }
+  }
 }
 
 /// <remarks/>
@@ -109,55 +231,24 @@ public partial class BatExplorerProjectFile {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class BatExplorerProjectFileRecordsRecord {
-    
-    private string fileField;
-    
-    private string nameField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string File {
-        get {
-            return this.fileField;
-        }
-        set {
-            this.fileField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string Name {
-        get {
-            return this.nameField;
-        }
-        set {
-            this.nameField = value;
-        }
-    }
-}
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+public partial class NewDataSet
+{
 
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class NewDataSet {
-    
-    private BatExplorerProjectFile[] itemsField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("BatExplorerProjectFile")]
-    public BatExplorerProjectFile[] Items {
-        get {
-            return this.itemsField;
-        }
-        set {
-            this.itemsField = value;
-        }
+  private BatExplorerProjectFile[] itemsField;
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute("BatExplorerProjectFile")]
+  public BatExplorerProjectFile[] Items
+  {
+    get
+    {
+      return this.itemsField;
     }
+    set
+    {
+      this.itemsField = value;
+    }
+  }
 }

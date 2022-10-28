@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
  *
  *              Licence:
  * 
@@ -11,6 +11,7 @@
  ********************************************************************************/
 using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -119,7 +120,8 @@ namespace BatInspector
         _speciesList.Clear();
         TextReader reader = new StringReader(xml);
         _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-        if (_batExplorerPrj.Type.IndexOf("Elekon") >= 0)
+        if ((_batExplorerPrj.Type != null) && (_batExplorerPrj.Type.IndexOf("Elekon") >= 0) ||
+            Directory.Exists(_selectedDir + "/Records"))
         {
           _wavSubDir = "/Records/";
           initSpeciesList();
@@ -128,9 +130,9 @@ namespace BatInspector
           _wavSubDir = "/";
         _ok = true;
       }
-      catch
+      catch (Exception ex)
       {
-        DebugLog.log("error reading project file: " + fName, enLogType.ERROR);
+        DebugLog.log("error reading project file: " + fName + " :" + ex.ToString() , enLogType.ERROR);
         _ok = false;
       }
     }
@@ -139,6 +141,7 @@ namespace BatInspector
     {
       if (_batExplorerPrj != null)
       {
+        _batExplorerPrj.FileVersion = "3";
         var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
         TextWriter writer = new StreamWriter(_prjFileName);
         serializer.Serialize(writer, _batExplorerPrj);
@@ -181,7 +184,7 @@ namespace BatInspector
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.wav",
                          System.IO.SearchOption.TopDirectoryOnly);
         _batExplorerPrj = new BatExplorerProjectFile("wavs", files.Length);
-        _batExplorerPrj.Originator = "BatInspector";
+      //  _batExplorerPrj.Originator = "BatInspector";
         _batExplorerPrj.Type = "BatInspector";
         
         for (int i = 0; i < files.Length; i++)

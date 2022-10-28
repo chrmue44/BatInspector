@@ -115,7 +115,7 @@
         <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
         <TabControl  Grid.Column="2" x:Name="_tbMain"  GotFocus="_tbReport_GotFocus" BorderThickness="0" Margin="0,10,0,0" Background="#FF5D6B99" Template="{DynamicResource TabControlCm}">
 
-          <TabItem Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0" BorderThickness="0" >
+          <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0" BorderThickness="0" >
             <Grid Grid.Column="2" Margin="0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -152,7 +152,7 @@
               </ScrollViewer>
             </Grid>
           </TabItem>
-          <TabItem Header="{x:Static res:MyResources.MainReportProject}" Margin="0,0,0,0" >
+          <TabItem Name="_tbReport" Header="{x:Static res:MyResources.MainReportProject}" Margin="0,0,0,0" >
             <Grid >
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="51*"/>
@@ -161,7 +161,7 @@
               <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" />
             </Grid>
           </TabItem>
-          <TabItem Header="{x:Static res:MyResources.MainReportTimespan}" Margin="0" >
+          <TabItem Name="_tbStat" Header="{x:Static res:MyResources.MainReportTimespan}" Margin="0" >
             <Grid >
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="204*"/>

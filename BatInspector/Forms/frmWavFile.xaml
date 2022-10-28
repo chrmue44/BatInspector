@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Controls"        
         mc:Ignorable="d"
-        Title="frmWavFile" Height="450" Width="800">
+        Title="frmWavFile" Height="500" Width="800">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="44"/>
       <RowDefinition/>
-      <RowDefinition/>
+
     </Grid.RowDefinitions>
     <ToolBarTray Grid.Row="0" Height="44">
       <ToolBar>
@@ -27,14 +27,31 @@
             </ToolBar>
     </ToolBarTray>
     <StackPanel Orientation="Vertical" Grid.Row="1">
-      <local:ctlDataItem x:Name="_ctlFileName"/>
-    <GroupBox Header="Header">
+            <local:ctlDataItem x:Name="_ctlFileName" Margin="15,15,0,0" />
+            <GroupBox Header="WaveHeader" Margin="10,10,10,0">
+                <StackPanel Orientation="Vertical">
+                    <local:ctlDataItem x:Name="_ctlFileType"/>
+                    <local:ctlDataItem x:Name="_ctlFileLength"/>
+                    <local:ctlDataItem x:Name="_ctlMediaTypeId"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="FormatChunk" Margin="10,10,10,0">
       <StackPanel Orientation="Vertical">
-                    <local:ctlDataItem x:Name="_ctlSamplingRate"/>
+                    <local:ctlDataItem x:Name="_ctlChunkId"/>
+                    <local:ctlDataItem x:Name="_ctlChunkSize"/>
+                    <local:ctlDataItem x:Name="_ctlFormatTag"/>
                     <local:ctlDataItem x:Name="_ctlChannels"/>
-        <local:ctlDataItem x:Name="_ctlBitsPerSample"/>
+                    <local:ctlDataItem x:Name="_ctlSamplingRate"/>
+                    <local:ctlDataItem x:Name="_ctlAvgBytesPerSec"/>
+                    <local:ctlDataItem x:Name="_ctlBlockAlign"/>
+                    <local:ctlDataItem x:Name="_ctlBitsPerSample"/>
       </StackPanel>
     </GroupBox>
-    </StackPanel>
+            <GroupBox Header="Samples" Margin="10,10,10,0">
+                <StackPanel Orientation="Vertical">
+                    <local:ctlDataItem x:Name="_ctlSamples"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
   </Grid>
 </Window>

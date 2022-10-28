@@ -56,7 +56,7 @@ namespace BatInspector.Controls
         _tb.Text = val.ToString();
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
     }
 
     public void setValue (int val)
@@ -67,7 +67,7 @@ namespace BatInspector.Controls
         _tb.Text = val.ToString();
       }
       else
-        DebugLog.log("wring data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
+        DebugLog.log("wrong data type for ctlDataItem: " + _lbl.Text, enLogType.ERROR);
     }
     public void setValue(double val)
     {

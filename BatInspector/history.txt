@@ -14,6 +14,8 @@ TODO
 
 
 DONE
+- improved WAV tool
+- Project file compatible to Elekon FileVersion=3
 - bugfix: rescale SamplingRate does not work for some files (save wav?)
 - new script function: getFileName
 - part of implementation sum report

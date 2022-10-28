@@ -25,11 +25,23 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _model = model;
-      _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, 110, 400);
-      _ctlBitsPerSample.setup("Bits per Chan", Controls.enDataType.INT, 0, 110);
-      _ctlChannels.setup("Channel count.", Controls.enDataType.INT, 0, 110);
-      _ctlSamplingRate.setup("Sampling rate", Controls.enDataType.UINT, 0, 110, 80, true, samplingRateChanged);
+      int wLbl = 110;
+      _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, wLbl, 600);
 
+      _ctlFileType.setup("File Type ID", enDataType.STRING, 0, wLbl);
+      _ctlFileLength.setup("File length", enDataType.UINT, 0, wLbl);
+      _ctlMediaTypeId.setup("Media Type ID", enDataType.STRING, 0, wLbl);
+
+      _ctlChunkId.setup("Chunk ID", enDataType.STRING, 0, wLbl);
+      _ctlChunkSize.setup("Chunk Size", enDataType.UINT, 0, wLbl);
+      _ctlFormatTag.setup("Format Tag", enDataType.UINT, 0, wLbl);
+      _ctlChannels.setup("Channel count.", Controls.enDataType.UINT, 0, wLbl);
+      _ctlSamplingRate.setup("Sampling rate", Controls.enDataType.UINT, 0, wLbl, 80, true, samplingRateChanged);
+      _ctlAvgBytesPerSec.setup("Avg Bytes/sec", enDataType.UINT, 0, wLbl);
+      _ctlBlockAlign.setup("Block Align", enDataType.UINT, 0, wLbl);
+      _ctlBitsPerSample.setup("Bits per Chan", Controls.enDataType.UINT, 0, wLbl);
+
+      _ctlSamples.setup("Nr of Samples", enDataType.INT, 0, wLbl);
     }
   
     private void _btnOpen_Click(object sender, RoutedEventArgs e)
@@ -40,9 +52,21 @@ namespace BatInspector.Forms
       {
         _model.WavFile.readFile(openFileDialog.FileName);
         _ctlFileName.setValue(openFileDialog.FileName);
-        _ctlBitsPerSample.setValue(_model.WavFile.BitsPerSample);
-        _ctlChannels.setValue(_model.WavFile.Channels);
-        _ctlSamplingRate.setValue(_model.WavFile.SamplingRate);
+
+        _ctlFileType.setValue(_model.WavFile.WavHeader.FileTypeId);
+        _ctlFileLength.setValue(_model.WavFile.WavHeader.FileLength);
+        _ctlMediaTypeId.setValue(_model.WavFile.WavHeader.MediaTypeId);
+
+        _ctlChunkId.setValue(_model.WavFile.FormatChunk.ChunkId);
+        _ctlChunkSize.setValue(_model.WavFile.FormatChunk.ChunkSize);
+        _ctlFormatTag.setValue((uint)_model.WavFile.FormatChunk.FormatTag);
+        _ctlChannels.setValue((uint)_model.WavFile.FormatChunk.Channels);
+        _ctlSamplingRate.setValue(_model.WavFile.FormatChunk.Frequency);
+        _ctlAvgBytesPerSec.setValue(_model.WavFile.FormatChunk.AverageBytesPerSec);
+        _ctlBlockAlign.setValue((uint)_model.WavFile.FormatChunk.BlockAlign);
+        _ctlBitsPerSample.setValue((uint)_model.WavFile.FormatChunk.BitsPerSample);
+
+        _ctlSamples.setValue(_model.WavFile.AudioSamples.Length);
       }
     }
 
@@ -59,7 +83,7 @@ namespace BatInspector.Forms
     private void samplingRateChanged(enDataType type, object val)
     {
       int sr = _ctlSamplingRate.getIntValue();
-      _model.WavFile.SamplingRate = (uint)sr;
+      _model.WavFile.FormatChunk.Frequency = (uint)sr;
     }
   }
 }

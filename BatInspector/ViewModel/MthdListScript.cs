@@ -626,7 +626,7 @@ namespace BatInspector
         {
           WavFile wav = new WavFile();
           wav.readFile(fName);
-          wav.SamplingRate = (uint)sampleRate;
+          wav.FormatChunk.Frequency= (uint)sampleRate;
           wav.saveFile();
         }
         else
@@ -651,8 +651,8 @@ namespace BatInspector
         {
           WavFile wav = new WavFile();
           wav.readFile(fName);
-          result.assignInt64((long)(fact * wav.SamplingRate));
-          wav.SamplingRate = (uint)result.getInt64();
+          result.assignInt64((long)(fact * wav.FormatChunk.Frequency));
+          wav.FormatChunk.Frequency = (uint)result.getInt64();
           wav.saveFile();
         }
         else
@@ -676,7 +676,7 @@ namespace BatInspector
         {
           WavFile wav = new WavFile();
           wav.readFile(fName);
-          result.assignInt64((long)wav.SamplingRate);
+          result.assignInt64((long)wav.FormatChunk.Frequency);
         }
         else
           err = tParseError.ARG1_OUT_OF_RANGE;

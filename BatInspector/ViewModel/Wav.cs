@@ -22,7 +22,7 @@ namespace BatInspector
 {
   //https://www.codeguru.com/dotnet/making-sounds-with-waves-using-c/
   //https://isip.piconepress.com/projects/speech/software/tutorials/production/fundamentals/v1.0/section_02/s02_01_p05.html
-  
+
   public class WaveHeader
   {
     private const string FILE_TYPE_ID = "RIFF";
@@ -44,7 +44,7 @@ namespace BatInspector
       FileTypeId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
       MediaTypeId = System.Text.Encoding.ASCII.GetString(data, 8, 4);
       // Minimum size is always 4 bytes
-      FileLength = BitConverter.ToUInt32(data, 4); 
+      FileLength = BitConverter.ToUInt32(data, 4);
     }
 
     public byte[] GetBytes()
@@ -81,7 +81,7 @@ namespace BatInspector
     }
 
     public UInt32 AverageBytesPerSec { get; private set; }
-    
+
     public UInt16 BlockAlign { get; private set; }
 
     public UInt16 BitsPerSample
@@ -212,10 +212,10 @@ namespace BatInspector
     public void AddSampleData(byte[] data, int offs, int len)
     {
       WaveData = new short[len / 2];
-      for (int i= 0; i < len/2; i++)
+      for (int i = 0; i < len / 2; i++)
       {
-        int s = (int)(sbyte)data[offs+1] << 8;
-        s |= (int)(byte)data[offs ];
+        int s = (int)(sbyte)data[offs + 1] << 8;
+        s |= (int)(byte)data[offs];
         WaveData[i] = (short)s;
         offs += 2;
       }
@@ -247,10 +247,10 @@ namespace BatInspector
     Audio _audio;
     string _fName;
     bool _isOpen;
-   
-    public int Channels { get { return _format.Channels; } }
-    public int BitsPerSample { get { return _format.BitsPerSample; } }
-    public uint SamplingRate { get { return _format.Frequency; } set { _format.Frequency = value; } }
+
+    public WaveHeader WavHeader { get { return _header;} }
+
+    public FormatChunk FormatChunk {  get {  return _format;} }
 
     public short[] AudioSamples {  get { return _data.WaveData; } }
     public WavFile()

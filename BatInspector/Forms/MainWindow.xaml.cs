@@ -91,6 +91,10 @@ namespace BatInspector.Forms
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
       _ctlLog.setViewModel(_model);
       _ctlSum.setModel(_model);
+      _tbReport.IsSelected = false;
+      _tbStat.IsSelected = false;
+      _tbPrj.IsSelected = true;
+//      Dispatcher.BeginInvoke((Action)(() => _tbPrj.IsSelected = true));
 #if DEBUG
       Tests tests = new Tests(_model);
       tests.exec();
@@ -236,7 +240,8 @@ namespace BatInspector.Forms
         _tbMain.Items.Add(_tbZoom);
         _ctlZoom = new CtrlZoom();
         _tbZoom.Content = _ctlZoom;
-        _tbMain.SelectedIndex = 0;
+        _tbZoom.IsSelected = false;
+ //       _tbMain.SelectedIndex = 0;
       }
     }
 

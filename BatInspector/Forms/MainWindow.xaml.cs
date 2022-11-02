@@ -182,6 +182,11 @@ namespace BatInspector.Forms
         checkSavePrj();
         _model.initProject(dir);
         _lblProject.Text = dir.FullName;
+        if (_model.Prj != null)
+        {
+          _ctlPrjInfo._tbCreated.Text = _model.Prj.Created;
+          _ctlPrjInfo._tbNotes.Text = _model.Prj.Notes;
+        }
         setStatus("   loading...");
         populateFiles();
       }
@@ -604,10 +609,12 @@ namespace BatInspector.Forms
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
+      if((_model.Prj != null) &&(_model.Prj.Notes != null))
+        _model.Prj.Notes = _ctlPrjInfo._tbNotes.Text;
       _model.saveSettings();
-      _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
+      if(_model.Analysis.Report != null)
+        _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
       _model.Prj.writePrjFile();
-      DebugLog.log("project '" + _model.Prj.Name + "' saved", enLogType.INFO);
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)

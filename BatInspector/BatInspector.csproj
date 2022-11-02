@@ -85,6 +85,9 @@
     <Compile Include="Controls\CtlLog.xaml.cs">
       <DependentUpon>CtlLog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlPrjInfo.xaml.cs">
+      <DependentUpon>ctlPrjInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CtlSelectFile.xaml.cs">
       <DependentUpon>CtlSelectFile.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CtlLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlPrjInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

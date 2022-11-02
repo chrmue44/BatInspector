@@ -693,4 +693,13 @@
   <data name="CtlSumReportRootDirectory" xml:space="preserve">
     <value>Root Directory</value>
   </data>
+  <data name="ctlPrjInfoNotes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ctlPrjInfoCreated" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="ctlProjectInfo" xml:space="preserve">
+    <value>Project Information</value>
+  </data>
 </root>

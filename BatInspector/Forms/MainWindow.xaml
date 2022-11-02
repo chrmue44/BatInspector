@@ -109,8 +109,15 @@
           </Grid.RowDefinitions>
 
           <Label Grid.Row="0" Content="{x:Static res:MyResources.MainSelectFolder}" Background="#FF5D6B99" Foreground="White" VerticalContentAlignment="Center"/>
-          <TreeView Grid.Row="1" Name="trvStructure" BorderThickness="0"  TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5">
-          </TreeView>
+          <Grid  Grid.Row="1">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="155"/>
+            </Grid.RowDefinitions>
+            <TreeView  Name="trvStructure" BorderThickness="0" Grid.Row="0"  TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5"/>
+
+            <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="1"/>
+          </Grid>
         </Grid>
         <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
         <TabControl  Grid.Column="2" x:Name="_tbMain"  GotFocus="_tbReport_GotFocus" BorderThickness="0" Margin="0,10,0,0" Background="#FF5D6B99" Template="{DynamicResource TabControlCm}">

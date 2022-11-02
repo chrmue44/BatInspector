@@ -34,6 +34,8 @@ namespace BatInspector
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _batExplorerPrj.Records; } }
     public string Name { get{ return _prjFileName; } }
     public string WavSubDir { get { return _wavSubDir; } }
+    public string Notes { get { return _batExplorerPrj != null ?_batExplorerPrj.Notes : ""; } set { if(_batExplorerPrj!= null) _batExplorerPrj.Notes = value; } }
+    public string Created { get { return _batExplorerPrj.Created; }  set { _batExplorerPrj.Created = value; } }
     public List<string> Species {  get { return _speciesList; } }
     BatSpeciesRegions _batSpecRegions;
 
@@ -120,7 +122,11 @@ namespace BatInspector
         _speciesList.Clear();
         TextReader reader = new StringReader(xml);
         _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-        if ((_batExplorerPrj.Type != null) && (_batExplorerPrj.Type.IndexOf("Elekon") >= 0) ||
+        if (_batExplorerPrj.Created == null)
+          _batExplorerPrj.Created = "";
+        if (_batExplorerPrj.Notes == null)
+          _batExplorerPrj.Notes = "";
+        if (/*(_batExplorerPrj.Type != null) && (_batExplorerPrj.Type.IndexOf("Elekon") >= 0) || */
             Directory.Exists(_selectedDir + "/Records"))
         {
           _wavSubDir = "/Records/";
@@ -145,7 +151,8 @@ namespace BatInspector
         var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
         TextWriter writer = new StreamWriter(_prjFileName);
         serializer.Serialize(writer, _batExplorerPrj);
-        writer.Close();        
+        writer.Close();
+        DebugLog.log("project '" + _prjFileName + "' saved", enLogType.INFO);
       }
     }
 
@@ -185,7 +192,7 @@ namespace BatInspector
                          System.IO.SearchOption.TopDirectoryOnly);
         _batExplorerPrj = new BatExplorerProjectFile("wavs", files.Length);
       //  _batExplorerPrj.Originator = "BatInspector";
-        _batExplorerPrj.Type = "BatInspector";
+//        _batExplorerPrj.Type = "BatInspector";
         
         for (int i = 0; i < files.Length; i++)
         {

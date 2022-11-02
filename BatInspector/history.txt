@@ -1,5 +1,4 @@
 TODO
-- run R scripts
 - GUI themes 
 
 - help
@@ -14,6 +13,7 @@ TODO
 
 
 DONE
+- added project information: Created, Notes (editable)
 - improved WAV tool
 - Project file compatible to Elekon FileVersion=3
 - bugfix: rescale SamplingRate does not work for some files (save wav?)

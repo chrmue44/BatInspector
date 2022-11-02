@@ -33,15 +33,13 @@ public partial class BatExplorerProjectFile
 
   private string autoProcessField;
 
-  private string tracksField;
-
   private string disSpeciesField;
 
   private BatExplorerProjectFileRecordsRecord[] recordsField;
 
   private string fileVersionField;
 
-  private string typeField;
+  //private string typeField;
 
   public BatExplorerProjectFile()
   {
@@ -52,7 +50,10 @@ public partial class BatExplorerProjectFile
     recordsField = new BatExplorerProjectFileRecordsRecord[fileCount];
     for (int i = 0; i < recordsField.Length; i++)
       recordsField[i] = new BatExplorerProjectFileRecordsRecord();
-    typeField = "";
+      notesField = "";
+    createdField = "";
+    autoProcessField = "true";
+    //typeField = "";
     //originatorField = "";
   }
   /// <remarks/>
@@ -111,19 +112,6 @@ public partial class BatExplorerProjectFile
     }
   }
 
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Tracks
-  {
-    get
-    {
-      return this.tracksField;
-    }
-    set
-    {
-      this.tracksField = value;
-    }
-  }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -169,7 +157,7 @@ public partial class BatExplorerProjectFile
   }
 
   /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+ /* [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string Type
   {
     get
@@ -180,7 +168,7 @@ public partial class BatExplorerProjectFile
     {
       this.typeField = value;
     }
-  }
+  }*/
 }
 
 

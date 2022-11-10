@@ -111,6 +111,9 @@ namespace libScripter
       _cells.Add(row);
 
     }
+
+
+
     /// <summary>
     /// find a value in a row
     /// </summary>
@@ -318,14 +321,21 @@ namespace libScripter
         log("setCell():row number must not be lower than 1", enLogType.ERROR);
     }
 
-    /// <summary>
-    /// find a value in a column
-    /// </summary>
-    /// <param name="val">value to find</param>
-    /// <param name="col">column nr (1..n)</param>
-    /// <param name="subStr">true: search for val as substring in cell</param>
-    /// <returns>row number containing the value, or 0 if not found</returns>
-    public int findInCol(string val, int col, bool subStr = false)
+
+    public int findInCol(string val, string colstr, bool subStr = false)
+    {
+      int col = getColNr(colstr);
+      return findInCol(val, col, subStr);
+    }
+
+      /// <summary>
+      /// find a value in a column
+      /// </summary>
+      /// <param name="val">value to find</param>
+      /// <param name="col">column nr (1..n)</param>
+      /// <param name="subStr">true: search for val as substring in cell</param>
+      /// <returns>row number containing the value, or 0 if not found</returns>
+      public int findInCol(string val, int col, bool subStr = false)
     {
       int retVal = 0;
       if (col > 0)
@@ -359,13 +369,19 @@ namespace libScripter
       return retVal;
     }
 
-    /// <summary>
-    /// find two values in two columns
-    /// </summary>
-    /// <param name="val">value to find</param>
-    /// <param name="col">column nr (1..n)</param>
-    /// <returns>row number containing the values, or 0 if not found</returns>
-    public int findInCol(string val1, int col1, string val2, int col2)
+    public int findInCol(string val1, string col1str, string val2, string col2str)
+    {
+      int col1 = getColNr(col1str);
+      int col2 = getColNr(col2str);
+      return findInCol(val1, col1, val2, col2);
+    }
+      /// <summary>
+      /// find two values in two columns
+      /// </summary>
+      /// <param name="val">value to find</param>
+      /// <param name="col">column nr (1..n)</param>
+      /// <returns>row number containing the values, or 0 if not found</returns>
+      public int findInCol(string val1, int col1, string val2, int col2)
     {
       int retVal = 0;
       for (int row = 1; row <= _cells.Count; row++)
@@ -385,7 +401,7 @@ namespace libScripter
     /// </summary>
     /// <param name="col">column r (1..n)</param>
     /// <param name="ins">value to insert</param>
-    public void insertCol(int col, string ins = "")
+    public void insertCol(int col, string ins = "", string colHdr = "")
     {
       bool err = false;
       if (col > 0)
@@ -405,6 +421,11 @@ namespace libScripter
           }
           _colCnt++;
         }
+        if((colHdr != "") && _withHdr)
+        {
+          setCell(1, 2, colHdr);
+          initColNames(_cells[0].ToArray());
+        }
       }
       else
         err = true;
@@ -423,7 +444,7 @@ namespace libScripter
         log("removeRow: invalid row nr:" + row.ToString(), enLogType.ERROR);
     }
 
-    int getColNr(string colName)
+    public int getColNr(string colName)
     {
       int retVal = -1;
       try
@@ -436,17 +457,22 @@ namespace libScripter
       catch { }
       return retVal;
     }
+    public void initColNames(string[] cols, bool createCols = false)
+    {
+      _cols.Clear();
+      for (int i = 0; i < cols.Length; i++)
+      {
+        _cols.Add(cols[i], i + 1);
+        if (createCols)
+          insertCol(i + 1, cols[i]);
+      }
+    }
 
     public void initColNames(string header, bool createCols = false)
     {
       _withHdr = true;
       string[] cols = header.Split(_separator[0]);
-      for (int i = 0; i < cols.Length; i++)
-      {
-        _cols.Add(cols[i], i + 1);
-        if(createCols)
-          insertCol(i + 1, cols[i]);
-      }
+      initColNames(cols, createCols);
     }
 
     void log(string msg, enLogType type)

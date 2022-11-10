@@ -13,6 +13,8 @@ TODO
 
 
 DONE
+- new number format RT_TIME available in parser
+- recording time now part of report file (filled out automatically from xml files if missing)
 - added project information: Created, Notes (editable)
 - improved WAV tool
 - Project file compatible to Elekon FileVersion=3

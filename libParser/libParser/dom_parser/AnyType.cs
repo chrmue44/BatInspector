@@ -24,6 +24,7 @@ namespace libParser
     const int TYPEFLAG_CPLX = 0x80;
     const int TYPEFLAG_FORM = 0x100;
     const int TYPEFLAG_STRING = 0x800;
+    const int TYPEFLAG_TIME = 0x1000;
 
     public enum tType
     {
@@ -38,6 +39,7 @@ namespace libParser
       RT_COMMENT = TYPEFLAG_STRING | 0x01,
       RT_STR = TYPEFLAG_STRING | 0x02,
       RT_FORMULA = TYPEFLAG_FORM | 0x01,
+      RT_TIME = TYPEFLAG_TIME | 0x01,
     };
 
 
@@ -55,8 +57,19 @@ namespace libParser
       public UInt64 Uint64;   ///< Wert als uint64
       public bool Bool;         ///< Wert als Bool
       public string String;
-    }
 
+      public void deepCopy(tValue v)
+      {
+        Complex.im = v.Complex.im;
+        Complex.re = v.Complex.re;
+        Double = v.Double;
+        Int64 = v.Int64;
+        Uint64 = v.Uint64;
+        Bool = v.Bool;
+        String = v.String;
+      }
+    }
+  
 
     // Klasse zur Darstellung von Zahlen in verschiedenen Typen und zur 
     // Konvertierung von einem Typ in den anderen. 
@@ -148,6 +161,7 @@ namespace libParser
           break;
 
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
           Result = (a1.m_Val.Double < a2.getFloat());
           break;
         case tType.RT_STR:
@@ -189,6 +203,7 @@ namespace libParser
           break;
 
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
           Result = (a1.m_Val.Double > a2.getFloat());
           break;
         case tType.RT_STR:
@@ -248,6 +263,7 @@ namespace libParser
           break;
 
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
           Result = (a1.m_Val.Double == a2.getFloat());
           break;
 
@@ -308,6 +324,7 @@ namespace libParser
         case tType.RT_COMMENT:
         case tType.RT_FORMULA:
         case tType.RT_COMPLEX:
+        case tType.RT_TIME:
           Error.report(tParseError.AND_NOT_SUPPORTED);
           break;
       }
@@ -393,6 +410,7 @@ namespace libParser
           break;
 
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
           s1.m_Val.Double += s2.getFloat();
           break;
 
@@ -444,6 +462,7 @@ namespace libParser
           break;
 
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
           s1.m_Val.Double -= s2.getFloat();
           break;
 
@@ -454,8 +473,8 @@ namespace libParser
           Error.report(tParseError.MINUS_NOT_SUPPORTED);
           break;
         case tType.RT_COMPLEX:
-          s1.m_Val.Complex.re += s2.getComplexRe();
-          s1.m_Val.Complex.im += s2.getComplexIm();
+          s1.m_Val.Complex.re -= s2.getComplexRe();
+          s1.m_Val.Complex.im -= s2.getComplexIm();
           break;
       }
       return s1;
@@ -515,6 +534,7 @@ namespace libParser
         case tType.RT_COMMENT:
         case tType.RT_STR:
         case tType.RT_BOOL:
+        case tType.RT_TIME:
           Error.report(tParseError.MUL_NOT_SUPPORTED);
           break;
         case tType.RT_COMPLEX:
@@ -565,6 +585,7 @@ namespace libParser
         case tType.RT_COMMENT:
         case tType.RT_STR:
         case tType.RT_BOOL:
+        case tType.RT_TIME:
           Error.report(tParseError.PLUS_NOT_SUPPORTED);
           break;
         case tType.RT_COMPLEX:
@@ -692,6 +713,7 @@ namespace libParser
             case tType.RT_FORMULA:
             case tType.RT_COMPLEX:
             case tType.RT_COMMENT:
+            case tType.RT_TIME:
               Error.report(tParseError.TYPE_CONVERSION);
               break;
           }
@@ -713,6 +735,7 @@ namespace libParser
               m_Val.String = m_Val.Int64.ToString();
               break;
             case tType.RT_FLOAT:
+            case tType.RT_TIME:
               m_Val.Double = (double)(m_Val.Int64);
               break;
             case tType.RT_COMPLEX:
@@ -747,6 +770,7 @@ namespace libParser
                 m_Val.String = "0x" + m_Val.Uint64.ToString("x");
               break;
             case tType.RT_FLOAT:
+            case tType.RT_TIME:
               m_Val.Int64 = (Int64)(m_Val.Uint64);
               m_Val.Double = (double)(m_Val.Int64);
               break;
@@ -785,6 +809,9 @@ namespace libParser
               UInt64.TryParse(m_Val.String, out m_Val.Uint64);
               break;
             case tType.RT_STR:
+              break;
+            case tType.RT_TIME:
+              m_Val.Double = parseTimeString(m_Val.String);
               break;
             case tType.RT_FLOAT:
               try
@@ -826,6 +853,7 @@ namespace libParser
               break;
 
             case tType.RT_FLOAT:
+            case tType.RT_TIME:
               break;
 
             case tType.RT_COMPLEX:
@@ -860,6 +888,7 @@ namespace libParser
                 m_Val.Uint64 = resu.getUint64();
                 break;
               case tType.RT_FLOAT:
+              case tType.RT_TIME:
                 m_Val.Double = resu.getFloat();
                 break;
               case tType.RT_STR:
@@ -890,6 +919,24 @@ namespace libParser
             m_Val.String += "i";
           }
           break;
+
+        case tType.RT_TIME:
+          {
+            switch(NewType)
+            {
+              case tType.RT_STR:
+                m_Val.String = getTimeString(m_Val.Double);
+                break;
+              case tType.RT_FLOAT:
+                break;
+
+              default:
+                Error.report(tParseError.TYPE_CONVERSION);
+                break;
+
+            }
+          }
+          break;
       }
 
       m_Type = NewType;
@@ -905,6 +952,7 @@ namespace libParser
         case tType.RT_UINT64:
         case tType.RT_HEXVAL:
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
         case tType.RT_COMPLEX:
         case tType.RT_FORMULA:
           m_Val.String = "";
@@ -941,6 +989,7 @@ namespace libParser
           m_Val.Uint64 = res.getUint64();
           break;
         case tType.RT_FLOAT:
+        case tType.RT_TIME:
           m_Val.Double = res.getFloat();
           break;
         case tType.RT_BOOL:
@@ -1000,7 +1049,7 @@ namespace libParser
       m_Type = val.m_Type;
       m_pMethods = val.m_pMethods;
       m_pVarList = val.m_pVarList;
-      m_Val = val.m_Val;
+      m_Val.deepCopy(val.m_Val);
     }
 
     public void negate()
@@ -1032,6 +1081,15 @@ namespace libParser
     {
       m_Type = tType.RT_INT64;
       m_Val.Int64 = val;
+    }
+
+    public void assignTime(int y, int mo, int d, int h, int min, int s)
+    {
+      DateTime t = new DateTime(y, mo, d, h, min, s, DateTimeKind.Utc);
+      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+      TimeSpan diff = t - origin;
+      m_Val.Double = Math.Floor(diff.TotalSeconds);
+      m_Type = tType.RT_TIME;
     }
 
     public void assignBool(bool val)
@@ -1152,7 +1210,10 @@ namespace libParser
         case tType.RT_STR:
           return m_Val.String;
         case tType.RT_HEXVAL:
-          return m_Val.Uint64.ToString(); ;
+          return m_Val.Uint64.ToString();
+        case tType.RT_TIME:
+          return getTimeString(m_Val.Double);
+
       }
     }
 
@@ -1180,6 +1241,8 @@ namespace libParser
           return "STRING";
         case tType.RT_HEXVAL:
           return "HEX";
+        case tType.RT_TIME:
+          return "TIME";
       }
     }
 
@@ -1212,9 +1275,9 @@ namespace libParser
 
     public static tType stringToType(string typeString)
     {
-      if ("INT64" == typeString)
+      if ("INT" == typeString)
         return tType.RT_INT64;
-      else if ("UINT64" == typeString)
+      else if ("UINT" == typeString)
         return tType.RT_UINT64;
       else if ("FLOAT" == typeString)
         return tType.RT_FLOAT;
@@ -1230,8 +1293,47 @@ namespace libParser
         return tType.RT_STR;
       else if ("HEX" == typeString)
         return tType.RT_HEXVAL;
+      else if ("TIME" == typeString)
+        return tType.RT_TIME;
 
       return tType.RT_FLOAT;
+    }
+
+    public static double parseTimeString(string str)
+    {
+      double retVal = -1;
+      DateTime date = getDate(str);
+      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+      TimeSpan diff = date - origin;
+      retVal = Math.Floor(diff.TotalSeconds);
+      return retVal;
+    }
+
+    public static DateTime getDate(string str)
+    {
+      DateTime date = new DateTime();
+      try
+      {
+        str = str.Replace("0t", "");
+        date = DateTime.ParseExact(str, "yy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+      }
+      catch
+      { }
+      return date;
+    }
+
+    public static string getTimeString(double t)
+    {
+      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+      DateTime date = origin.AddSeconds(t);
+      string retVal = "0t" + date.ToString("yy-MM-ddTHH:mm:ss");
+      return retVal;
+    }
+
+    public static string getTimeString(DateTime t)
+    {
+      string retVal = "0t" + t.ToString("yy-MM-ddTHH:mm:ss");
+      return retVal;
     }
 
     // Datentyp

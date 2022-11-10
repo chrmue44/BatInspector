@@ -11,6 +11,7 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -56,11 +57,12 @@ namespace BatInspector
     public const string CURVE_POS_END = "curve_pos_end";
     public const string MID_OFFSET = "mid_offset";
     public const string SMOTTHNESS = "smoothness";
+    public const string REC_TIME = "recTime";
 
-    Dictionary<string, int> _cols = new Dictionary<string, int>();
+//    Dictionary<string, int> _cols = new Dictionary<string, int>();
 
 
-    public void init(Csv csv)
+  /*  public void init(Csv csv)
     {
       _cols.Clear();
       _cols.Add(SAMPLERATE, csv.findInRow(1, SAMPLERATE));
@@ -87,7 +89,7 @@ namespace BatInspector
       if (!ok)
         DebugLog.log("unknown column id " + id, enLogType.ERROR);
       return retVal;
-    }
+    } 
 
     public void Add(string id, int val)
     {
@@ -99,8 +101,9 @@ namespace BatInspector
       {
         DebugLog.log("id '" + id + "'already present in dictionary", enLogType.ERROR);
       }
-    }
+    } */
   }
+
   public class Analysis
   {
 
@@ -166,73 +169,71 @@ namespace BatInspector
       lock (_fileLock)
       {
         Csv csv = new Csv();
-        int ret = csv.read(fileName);
-        _cols.init(csv);
+        int ret = csv.read(fileName, ";", true);
+        //_cols.init(csv);
 
         //@@@ temporary
         if (ret == 0)
         {
-          if (_cols.getCol(Cols.SAMPLERATE) == 0)
+          if (csv.getColNr(Cols.SAMPLERATE) < 1)
           {
-            _cols.Add(Cols.SAMPLERATE, 3);
-            _cols.Add(Cols.FILE_LEN, 4);
-            if (csv.getCellAsInt(2, 2) != 383500)
-            {
-              csv.insertCol(_cols.getCol(Cols.SAMPLERATE), "383500");
-              csv.insertCol(_cols.getCol(Cols.FILE_LEN), "3.001");
-            }
-            csv.setCell(1, _cols.getCol(Cols.SAMPLERATE), Cols.SAMPLERATE);
-            csv.setCell(1, _cols.getCol(Cols.FILE_LEN), Cols.FILE_LEN);
+            csv.insertCol(2, "383500", Cols.SAMPLERATE);
             csv.save();
           }
-          if (_cols.getCol(Cols.SPECIES_MAN) == 0)
+          if (csv.getColNr(Cols.FILE_LEN) < 1)
           {
-            int col = csv.ColCnt + 1;
-            csv.insertCol(col, "todo");
-            csv.setCell(1, col, Cols.SPECIES_MAN);
-            _cols.Add(Cols.SPECIES_MAN, col);
+            csv.insertCol(3, "3.001", Cols.FILE_LEN);
             csv.save();
           }
-          if (_cols.getCol(Cols.REMARKS) == 0)
+          if (csv.getColNr(Cols.SPECIES_MAN) < 1)
           {
             int col = csv.ColCnt + 1;
-            csv.insertCol(col, "");
-            csv.setCell(1, col, Cols.REMARKS);
-            _cols.Add(Cols.REMARKS, col);
+            csv.insertCol(col, "todo", Cols.SPECIES_MAN);
+            csv.save();
+          }
+          if (csv.getColNr(Cols.REMARKS) < 1)
+          {
+            int col = csv.ColCnt + 1;
+            csv.insertCol(col, "", Cols.REMARKS);
             csv.save();
           }
         }
+        if (csv.getColNr(Cols.REC_TIME) < 1)
+          filloutRecTime(csv);
 
         _list.Clear();
-        string lastFileName = "";
-        AnalysisFile file = new AnalysisFile();
+        string lastFileName = "$$$";
         int callNr = 1;
         _report = new List<ReportItem>();
 
+        AnalysisFile file = null;
         for (int row = 2; row <= csv.RowCnt; row++)
         {
-          string fName = csv.getCell(row, _cols.getCol(Cols.NAME));
+          string fName = csv.getCell(row, Cols.NAME);
+          string timStr = csv.getCell(row, Cols.REC_TIME);
+          DateTime recTime = AnyType.getDate(timStr); 
           if (fName != lastFileName)
           {
             lastFileName = fName;
             file = new AnalysisFile(fName);
+            file.RecTime = recTime;
             _list.Add(file);
             callNr = 1;
           }
-          file.SampleRate = csv.getCellAsInt(row, _cols.getCol(Cols.SAMPLERATE));
-          file.Duration = csv.getCellAsDouble(row, _cols.getCol(Cols.FILE_LEN));
-          double fMaxAmp = csv.getCellAsDouble(row, _cols.getCol(Cols.F_MAX_AMP));
-          int nr = csv.getCellAsInt(row, _cols.getCol(Cols.NR));
-          double fMin = csv.getCellAsDouble(row, _cols.getCol(Cols.F_MIN));
-          double fMax = csv.getCellAsDouble(row, _cols.getCol(Cols.F_MAX));
-          double fKnee = csv.getCellAsDouble(row, _cols.getCol(Cols.F_KNEE));
-          double duration = csv.getCellAsDouble(row, _cols.getCol(Cols.DURATION));
-          string startTime = csv.getCell(row, _cols.getCol(Cols.START_TIME));
-          string species = csv.getCell(row, _cols.getCol(Cols.SPECIES));
-          double probability = csv.getCellAsDouble(row, _cols.getCol(Cols.PROBABILITY));
-          double snr = csv.getCellAsDouble(row, _cols.getCol(Cols.SNR));
-          string speciesMan = csv.getCell(row, _cols.getCol(Cols.SPECIES_MAN));
-          file.Remarks = csv.getCell(row, _cols.getCol(Cols.REMARKS));
+          file.SampleRate = csv.getCellAsInt(row, Cols.SAMPLERATE);
+          file.Duration = csv.getCellAsDouble(row, Cols.FILE_LEN);
+          double fMaxAmp = csv.getCellAsDouble(row, Cols.F_MAX_AMP);
+          int nr = csv.getCellAsInt(row, Cols.NR);
+          double fMin = csv.getCellAsDouble(row, Cols.F_MIN);
+          double fMax = csv.getCellAsDouble(row, Cols.F_MAX);
+          double fKnee = csv.getCellAsDouble(row, Cols.F_KNEE);
+          double duration = csv.getCellAsDouble(row, Cols.DURATION);
+          string startTime = csv.getCell(row, Cols.START_TIME);
+          string species = csv.getCell(row, Cols.SPECIES);
+          double probability = csv.getCellAsDouble(row, Cols.PROBABILITY);
+          double snr = csv.getCellAsDouble(row, Cols.SNR);
+          string speciesMan = csv.getCell(row, Cols.SPECIES_MAN);
+          file.Remarks = csv.getCell(row, Cols.REMARKS);
           double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
           AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
                                                probability, speciesMan, snr, distToPrev);
@@ -272,13 +273,13 @@ namespace BatInspector
         {
           foreach (AnalysisCall c in f.Calls)
           {
-            int row = csv.findInCol(f.FileName, _cols.getCol(Cols.NAME), c.Nr.ToString(), _cols.getCol(Cols.NR));
-            csv.setCell(row, _cols.getCol(Cols.SPECIES_MAN), c.SpeciesMan);
-            csv.setCell(row, _cols.getCol(Cols.SPECIES), c.SpeciesAuto);
+            int row = csv.findInCol(f.FileName, Cols.NAME, c.Nr.ToString(), Cols.NR);
+            csv.setCell(row, Cols.SPECIES_MAN, c.SpeciesMan);
+            csv.setCell(row, Cols.SPECIES, c.SpeciesAuto);
             if (c.Nr < 2)
-              csv.setCell(row, _cols.getCol(Cols.REMARKS), f.Remarks);
+              csv.setCell(row, Cols.REMARKS, f.Remarks);
             else
-              csv.setCell(row, _cols.getCol(Cols.REMARKS), "");
+              csv.setCell(row, Cols.REMARKS, "");
             c.resetChanged();
           }
         }
@@ -365,7 +366,7 @@ namespace BatInspector
       int row = 0;
       do
       {
-        row = report.findInCol(wavName, _cols.getCol(Cols.NAME), true);
+        row = report.findInCol(wavName, Cols.NAME, true);
         if (row > 0)
         {
           report.removeRow(row);
@@ -393,6 +394,42 @@ namespace BatInspector
         retVal = Math.Abs(t1 - t2) * 1000;
       }
       return retVal;
+    }
+
+
+    void filloutRecTime(Csv csv)
+    {
+      csv.insertCol(2, "", Cols.REC_TIME);
+      string oldF = "$$$";
+      DateTime time = new DateTime();
+      string dateStr = "";
+
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+      for (int r = 2; r <= csv.RowCnt; r++)
+      {
+        string fName = csv.getCell(r, Cols.NAME);
+        if (fName != oldF)
+        {
+          string xmlName = fName.Replace(".wav", ".xml");
+          BatRecord rec = ElekonInfoFile.read(xmlName);
+          if (rec != null)
+          {
+            try
+            {
+              time = DateTime.ParseExact(rec.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            }
+            catch { }
+            dateStr = AnyType.getTimeString(time);
+          }
+          else
+            DebugLog.log("error reading file: " + xmlName, enLogType.ERROR);
+        }
+        csv.setCell(r, Cols.REC_TIME, dateStr);
+      }
+      csv.save();
+      sw.Stop();
+      DebugLog.log("read out start time of recordings, exec time: " + sw.Elapsed.ToString(), enLogType.INFO);
     }
 
     void restChanged()
@@ -537,6 +574,7 @@ namespace BatInspector
     public double Duration { get; set; }
     public string Remarks { get; set; }
     public bool Selected { get; set; } = false;
+    public DateTime RecTime { get; set; }
 
     public bool Changed
     {
@@ -555,11 +593,11 @@ namespace BatInspector
 
     public List<AnalysisCall> Calls { get { return _calls; } }
 
-    public AnalysisFile()
+   /* public AnalysisFile()
     {
       _calls = new List<AnalysisCall>();
       _specFound = new Dictionary<string, int>();
-    }
+    } */
 
     public AnalysisFile(string name)
     {

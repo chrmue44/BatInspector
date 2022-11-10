@@ -38,8 +38,22 @@ namespace BatInspector
         {
         new stFormulaData(1, "substr(\"ABCDE\",0,2)", "AB",""),
         new stFormulaData(2, "substr(\"ABCDE\",3,2)", "DE",""),
-        new stFormulaData(3, "substr(\"ABCDE\",4,2)", "0","ARG2_OUT_OF_RANGE"),
-        new stFormulaData(4, "cast(2.5,\"RT_INT\"", "2",""),
+        new stFormulaData(3, "substr(\"ABCDE\",4,2)", "ARG2_OUT_OF_RANGE","ARG2_OUT_OF_RANGE"),
+        new stFormulaData(4, "cast(2.5,\"INT\")", "2",""),
+        new stFormulaData(5, "1+3+4", "8",""),
+        new stFormulaData(6, "-1+3+4", "6",""),
+        new stFormulaData(7, "-5.0*(3.1 + 2.9)", "-30.0000",""),
+        new stFormulaData(8, "a=0t22-11-10T13:45:00", "0t22-11-10T13:45:00",""),
+        new stFormulaData(9, "a=0t22+11-10T13:45:00", "BAD_TOKEN","BAD_TOKEN"),
+        new stFormulaData(10, "0t22-11-10T13:45:00 + 60", "0t22-11-10T13:46:00",""),
+        new stFormulaData(11, "0t22-11-10T13:45:00 - 2", "0t22-11-10T13:44:58",""),
+        new stFormulaData(12, "0t22-11-10T13:45:00 < 0t22-11-10T13:46:00", "TRUE",""),
+        new stFormulaData(13, "0t22-11-10T13:45:00 < 0t22-11-10T13:44:00", "FALSE",""),
+        new stFormulaData(14, "0t22-11-10T13:45:00 < 0t22-11-10T13:45:00", "FALSE",""),
+        new stFormulaData(15, "0t22-11-10T13:45:00 > 0t22-11-10T13:46:00", "FALSE",""),
+        new stFormulaData(16, "0t22-11-10T13:45:00 > 0t22-11-10T13:44:00", "TRUE",""),
+        new stFormulaData(17, "0t22-11-10T13:45:00 > 0t22-11-10T13:45:00", "FALSE",""),
+        new stFormulaData(18, "1 + 4i + 2 - 2i", "3.0000 + 2.0000i",""),
         };
 
     }
@@ -99,8 +113,6 @@ namespace BatInspector
       exp = new DateTime(2022, 12, 01);
       end = rep.incrementDate(dat, enPeriod.MONTHLY);
       assert("check inc month", end == exp);
-
-
     }
 
     private void testCsvFuncs(string wrkDir)
@@ -173,17 +185,14 @@ namespace BatInspector
       {
         string form = f.Formula;
         Expression exp = new Expression(null);
+        if (f.Id == 18)
+          retVal = 0;
         string res = exp.parseToString(form);
-
-        if ((f.Result != res) && (exp.Errors == 0))
+        if((f.Result != res) || ((f.Error != res) && (exp.Errors > 0)))
         {
           DebugLog.log("Error calculation of formula '" + f.Formula + "'.  expected: " + f.Result + ", got: " + res, enLogType.ERROR);
           retVal++;
-        }
-        else if ((f.Error != "") && (f.Error != res))
-        {
-          DebugLog.log("wrong error message '" + f.Error + "'.  expected: " + f.Result + ", got: " + res, enLogType.ERROR);
-          retVal++;
+          _errors++;
         }
       }
       return retVal;

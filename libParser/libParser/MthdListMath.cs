@@ -480,7 +480,7 @@ namespace libParser
       {
         result.assign(argv[0]);
         AnyType.tType Type = AnyType.tType.RT_INT64;
-        Enum.TryParse(argv[0].getString(), out Type);
+        Type = AnyType.stringToType(argv[1].getString());
         result.changeType(Type);
       }
       else

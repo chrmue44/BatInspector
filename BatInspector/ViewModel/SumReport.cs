@@ -55,7 +55,7 @@ namespace BatInspector
       _rep.clear();
       _rep.addRow();
       int col = 1;
-      _rep.insertCol(col++, COL_DATE);
+      _rep.insertCol(col++, "", COL_DATE);
 
       List<SpecCnt> list;
       DateTime date = start;

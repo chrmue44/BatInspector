@@ -37,6 +37,8 @@ namespace BatInspector
     const string VAR_DURATION = "DurationCall";
     const string VAR_PROBABILITY = "Probability";
     const string VAR_SNR = "Snr";
+    const string VAR_REMARKS = "Remarks";
+    const string VAR_TIME = "RecTime";
 
     List<FilterItem> _list;
     Expression _expression;
@@ -53,6 +55,8 @@ namespace BatInspector
       _expression.Variables.set(VAR_FREQ_MAX,"");
       _expression.Variables.set(VAR_DURATION,"");
       _expression.Variables.set(VAR_PROBABILITY,"");
+      _expression.Variables.set(VAR_REMARKS, "");
+      _expression.Variables.set(VAR_TIME, 0);
       _expression.Variables.set(VAR_SNR,0.0);
     }
 
@@ -74,6 +78,7 @@ namespace BatInspector
           _expression.setVariable(VAR_DURATION, call.Duration);
           _expression.setVariable(VAR_PROBABILITY, call.Probability);
           _expression.setVariable(VAR_SNR, call.Snr);
+          _expression.setVariable(VAR_TIME, AnyType.getTimeString(file.RecTime));
           AnyType res = _expression.parse(filter.Expression);
           if (filter.IsForAllCalls)
           {

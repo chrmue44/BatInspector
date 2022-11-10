@@ -137,9 +137,9 @@ namespace libParser
       }
       return RetVal;
     }
- 
 
-  tParseError parseResultStr(ref MthdResult Result)
+
+    tParseError parseResultStr(ref MthdResult Result)
     {
       bool Finished = false;
       _pos = 0;
@@ -189,7 +189,7 @@ namespace libParser
     // Verarbeitung von Ausdruecken
     AnyType expr()
     {
-      AnyType left = new AnyType( term());
+      AnyType left = new AnyType(term());
       for (; ; )
       {
         switch (_currTok)
@@ -250,7 +250,7 @@ namespace libParser
             left.assignBool(left <= prim());
             break;
 
-            case tToken.GREATER:
+          case tToken.GREATER:
             getToken();
             left.assignBool(left > prim());
             break;
@@ -304,14 +304,17 @@ namespace libParser
                 _varList.set(_nameString, 0, _methods);
                 VarName n = _varList.get(_nameString, _methods);
                 getToken();
-                if (!n.isConst())
-                  n.setValue(0, expr());
-                else
-                  Error.report(tParseError.ASSIGN_CONST);
-                Err = n.getValue(0, ref RetVal);
-                Debug.Assert(Err == 0, "clCondParser:Error reading variable");
-                break;
+                if (_currTok != tToken.BAD_TOKEN)
+                {
+                  if (!n.isConst())
+                    n.setValue(0, expr());
+                  else
+                    Error.report(tParseError.ASSIGN_CONST);
+                  Err = n.getValue(0, ref RetVal);
+                  Debug.Assert(Err == 0, "clCondParser:Error reading variable");
+                }
               }
+              break;
 
             case tToken.BRACE_OPEN:
               RetVal = function(_nameString);
@@ -410,7 +413,7 @@ namespace libParser
         case tToken.MINUS:
           getToken();
           RetVal.assign(prim());
-          RetVal.negate(); 
+          RetVal.negate();
           break;
 
         case tToken.BRACE_OPEN:
@@ -557,407 +560,461 @@ namespace libParser
       return isalpha(ch) || isdigit(ch);
     }
 
-    // holt das naechste Token
-    tToken getToken()
+    bool isTime(char ch)
     {
-      tToken RetVal = tToken.BAD_TOKEN;
-      tParseError Result = 0;
-      char ch;
-      do
+      return isdigit(ch) || (ch == 'T') || (ch == '-') || (ch == ':');
+    }
+
+
+    tToken parseTime()
+    {
+      tToken retVal = tToken.BAD_TOKEN;
+      for (; ; )
       {
-        if (getNextChar(out ch) != 0)
-        {
-          _currTok = tToken.END;
-          return tToken.END;
-        }
-        if (ch <= 0)
-        {
-          _currTok = tToken.END;
-          return tToken.END;
-        }
-      } while (isspace(ch));
-      switch (ch)
+        tParseError res = getNextChar();
+        if (isTime(_nextCh) && (res == tParseError.SUCCESS))
+          _numString += _nextCh;
+        else
+          break;
+      }
+      double t = AnyType.parseTimeString(_numString);
+      if (t >= 0)
       {
-        case ',':
-          RetVal = tToken.KOMMA;
-          break;
+        _numValue.assign(t);
+        _numValue.setType(AnyType.tType.RT_TIME);
+        retVal = tToken.NUMBER;
+      }
+      else
+      {
+        retVal = tToken.BAD_TOKEN;
+      }
 
-        case '+':
-          RetVal = tToken.PLUS;
-          break;
+      return retVal;
+    }
 
-        case '*':
-          RetVal = tToken.MUL;
-          break;
 
-        case '/':
-          Result = getNextChar(out ch);
-          if ((Result == tParseError.SUCCESS) && (ch == '/'))
+    /// <summary>
+    /// parse a number: integer, hexval, float, complex, date and time
+    /// </summary>
+    /// <param name="ch"></param>
+    /// <returns></returns>
+    tToken parseNumber()
+    {
+      tToken retVal;
+      AnyType.tType Type = AnyType.tType.RT_UINT64;
+      double DoubleVal;
+      UInt64 Uint64Val;
+      tParseError Result;
+
+      _numString = "";
+
+      if (_nextCh == '0')
+      {
+        _numString = "0";
+        Result = getNextChar();
+        if (Result == 0)
+        {
+          // ist es eine HEX-Zahl?
+          if ((_nextCh == 'x') || (_nextCh == 'X'))
           {
-            while (Result == 0)
+            _numString += 'x';
+            Type = AnyType.tType.RT_HEXVAL;
+            Result = getNextChar();
+            if (Result == 0)
             {
-              Result = getNextChar(out ch);
-              if (Result == 0)
-                _nameString += ch;
-            }
-            RetVal = tToken.COMMENT;
-          }
-          else
-          {
-            putBack();
-            RetVal = tToken.DIV;
-          }
-          break;
-
-        case '-':
-          RetVal = tToken.MINUS;
-          break;
-
-        case '(':
-          RetVal = tToken.BRACE_OPEN;
-          break;
-
-        case ')':
-          RetVal = tToken.BRACE_CLOSE;
-          break;
-
-        case '[':
-          RetVal = tToken.SQR_BRACK_OPEN;
-          break;
-
-        case ']':
-          RetVal = tToken.SQR_BRACK_CLOSE;
-          break;
-        /*
-            case '{':
-                 RetVal = CRL_BRACE_OPEN;
-                 break;
-
-            case '}':
-                 RetVal = CRL_BRACE_CLOSE;
-                 break;
-        */
-        case '<':
-          Result = getNextChar(out ch);
-          if ((Result == 0) && (ch == '='))
-            RetVal = tToken.LESSER_EQUAL;
-          else
-          {
-            putBack();
-            RetVal = tToken.LESSER;
-          }
-          break;
-
-        case '>':
-          Result = getNextChar(out ch);
-          if ((Result == 0) && (ch == '='))
-            RetVal = tToken.GREATER_EQUAL;
-          else
-          {
-            putBack();
-            RetVal = tToken.GREATER;
-          }
-          break;
-
-        case '!':
-          Result = getNextChar(out ch);
-          if ((Result == 0) && (ch == '='))
-            RetVal = tToken.UNEQUAL;
-          else
-          {
-            putBack();
-            RetVal = tToken.NOT;
-          }
-          break;
-
-        case '=':
-          Result = getNextChar(out ch);
-          if ((Result == 0) && (ch == '='))
-            RetVal = tToken.EQUAL;
-          else
-          {
-            putBack();
-            RetVal = tToken.ASSIGN;
-          }
-          break;
-
-        case '&':
-          Result = getNextChar(out ch);
-          if ((Result == 0) && (ch == '&'))
-            RetVal = tToken.AND;
-          else
-          {
-            putBack();
-            RetVal = tToken.BAD_TOKEN;
-          }
-          break;
-
-        case '|':
-          Result = getNextChar(out ch);
-          if ((Result == 0) && (ch == '|'))
-            RetVal = tToken.OR;
-          else
-          {
-            putBack();
-            RetVal = tToken.BAD_TOKEN;
-          }
-          break;
-
-        case ':':
-          RetVal = tToken.LABEL;
-          break;
-
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '.':
-          {
-            AnyType.tType Type = AnyType.tType.RT_UINT64;
-            double DoubleVal;
-            UInt64 Uint64Val;
-            _numString = "";
-
-            if (ch == '0')
-            {
-              _numString = "0";
-              Result = getNextChar(out ch);
-              if (Result == 0)
+              while (Utils.ishex(_nextCh))
               {
-                // ist es eine HEX-Zahl?
-                if ((ch == 'x') || (ch == 'X'))
-                {
-                  _numString += 'x';
-                  Type = AnyType.tType.RT_HEXVAL;
-                  Result = getNextChar(out ch);
-                  if (Result == 0)
-                  {
-                    while (Utils.ishex(ch))
-                    {
-                      _numString += ch;
-                      Result = getNextChar(out ch);
-                      if (Result != 0)
-                        break;
-                    }
-                  }
-                }
-                else
-                {
-                  Type = AnyType.tType.RT_UINT64;
-                }
-              }
-            }
-            if (Type != AnyType.tType.RT_HEXVAL)
-            {
-              Type = AnyType.tType.RT_UINT64;
-              while (isdigit(ch) || (ch == '.'))
-              {
-                _numString += ch;
-                if (ch == '.')
-                  Type = AnyType.tType.RT_FLOAT;
-                Result = getNextChar(out ch);
+                _numString += _nextCh;
+                Result = getNextChar();
                 if (Result != 0)
                   break;
               }
             }
-            if ((ch == 'e') || (ch == 'E'))
+          }
+          else if ((_nextCh == 't') || ((_nextCh == 'T')))
+          {
+            _numString += 't';
+            retVal = parseTime();
+            return retVal;
+          }
+          else
+          {
+            Type = AnyType.tType.RT_UINT64;
+          }
+        }
+      }
+      if ((Type != AnyType.tType.RT_HEXVAL) && (Type != AnyType.tType.RT_TIME))
+      {
+        Type = AnyType.tType.RT_UINT64;
+        while (isdigit(_nextCh) || (_nextCh == '.'))
+        {
+          _numString += _nextCh;
+          if (_nextCh == '.')
+            Type = AnyType.tType.RT_FLOAT;
+          Result = getNextChar();
+          if (Result != 0)
+            break;
+        }
+      }
+      if ((_nextCh == 'e') || (_nextCh == 'E'))
+      {
+        _numString += _nextCh;
+        Type = AnyType.tType.RT_FLOAT;
+        Result = getNextChar();
+        if (Result != 0)
+          return tToken.BAD_TOKEN;
+        if (_nextCh == '-')
+        {
+          _numString += _nextCh;
+          Result = getNextChar();
+          if (Result != 0)
+            return tToken.BAD_TOKEN;
+        }
+        while (isdigit(_nextCh))
+        {
+          _numString += _nextCh;
+          Result = getNextChar();
+          if (Result != 0)
+            break;
+        }
+      }
+      if (_nextCh == 'i')
+        Type = AnyType.tType.RT_COMPLEX;
+      else if(_nextCh != 0)
+        putBack();
+
+      if (_numString.Length != 0)
+      {
+        switch (Type)
+        {
+          case AnyType.tType.RT_COMPLEX:
+
+            double.TryParse(_numString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
+            _numValue.setType(AnyType.tType.RT_COMPLEX);
+            _numValue.setComplex(0, DoubleVal);
+            break;
+
+          case AnyType.tType.RT_FLOAT:
+            double.TryParse(_numString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
+            _numValue.assign(DoubleVal);
+            break;
+          case AnyType.tType.RT_UINT64:
+            UInt64.TryParse(_numString, out Uint64Val);
+            _numValue.assign(Uint64Val);
+            break;
+          case AnyType.tType.RT_HEXVAL:
+            UInt64.TryParse(_numString.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out Uint64Val);
+            _numValue.assign(Uint64Val);
+            _numValue.changeType(AnyType.tType.RT_HEXVAL);
+            break;
+
+          //                case RT_INT32:
+          //                case RT_UINT32:
+          case AnyType.tType.RT_INT64:
+          case AnyType.tType.RT_BOOL:
+          case AnyType.tType.RT_STR:
+          case AnyType.tType.RT_COMMENT:
+          case AnyType.tType.RT_FORMULA:
+            break;
+        }
+        retVal = tToken.NUMBER;
+      }
+      else
+        retVal = tToken.BAD_TOKEN;
+
+      return retVal;
+    }
+  
+
+  // holt das naechste Token
+  tToken getToken()
+  {
+    tToken RetVal = tToken.BAD_TOKEN;
+    tParseError Result = 0;
+    do
+    {
+      if (getNextChar() != 0)
+      {
+        _currTok = tToken.END;
+        return tToken.END;
+      }
+      if (_nextCh <= 0)
+      {
+        _currTok = tToken.END;
+        return tToken.END;
+      }
+    } while (isspace(_nextCh));
+    switch (_nextCh)
+    {
+      case ',':
+        RetVal = tToken.KOMMA;
+        break;
+
+      case '+':
+        RetVal = tToken.PLUS;
+        break;
+
+      case '*':
+        RetVal = tToken.MUL;
+        break;
+
+      case '/':
+        Result = getNextChar();
+        if ((Result == tParseError.SUCCESS) && (_nextCh == '/'))
+        {
+          while (Result == 0)
+          {
+            Result = getNextChar();
+            if (Result == 0)
+              _nameString += _nextCh;
+          }
+          RetVal = tToken.COMMENT;
+        }
+        else
+        {
+          putBack();
+          RetVal = tToken.DIV;
+        }
+        break;
+
+      case '-':
+        RetVal = tToken.MINUS;
+        break;
+
+      case '(':
+        RetVal = tToken.BRACE_OPEN;
+        break;
+
+      case ')':
+        RetVal = tToken.BRACE_CLOSE;
+        break;
+
+      case '[':
+        RetVal = tToken.SQR_BRACK_OPEN;
+        break;
+
+      case ']':
+        RetVal = tToken.SQR_BRACK_CLOSE;
+        break;
+      /*
+          case '{':
+               RetVal = CRL_BRACE_OPEN;
+               break;
+
+          case '}':
+               RetVal = CRL_BRACE_CLOSE;
+               break;
+      */
+      case '<':
+        Result = getNextChar();
+        if ((Result == 0) && (_nextCh == '='))
+          RetVal = tToken.LESSER_EQUAL;
+        else
+        {
+          putBack();
+          RetVal = tToken.LESSER;
+        }
+        break;
+
+      case '>':
+        Result = getNextChar();
+        if ((Result == 0) && (_nextCh == '='))
+          RetVal = tToken.GREATER_EQUAL;
+        else
+        {
+          putBack();
+          RetVal = tToken.GREATER;
+        }
+        break;
+
+      case '!':
+        Result = getNextChar();
+        if ((Result == 0) && (_nextCh == '='))
+          RetVal = tToken.UNEQUAL;
+        else
+        {
+          putBack();
+          RetVal = tToken.NOT;
+        }
+        break;
+
+      case '=':
+        Result = getNextChar();
+        if ((Result == 0) && (_nextCh == '='))
+          RetVal = tToken.EQUAL;
+        else
+        {
+          putBack();
+          RetVal = tToken.ASSIGN;
+        }
+        break;
+
+      case '&':
+        Result = getNextChar();
+        if ((Result == 0) && (_nextCh == '&'))
+          RetVal = tToken.AND;
+        else
+        {
+          putBack();
+          RetVal = tToken.BAD_TOKEN;
+        }
+        break;
+
+      case '|':
+        Result = getNextChar();
+        if ((Result == 0) && (_nextCh == '|'))
+          RetVal = tToken.OR;
+        else
+        {
+          putBack();
+          RetVal = tToken.BAD_TOKEN;
+        }
+        break;
+
+      case ':':
+        RetVal = tToken.LABEL;
+        break;
+
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+      case '.':
+          RetVal = parseNumber();
+          break;
+
+      case '"':
+        {
+          _nameString = "";
+          for (; ; )
+          {
+            Result = getNextChar();
+
+            if (Result != 0)
             {
-              _numString += ch;
-              Type = AnyType.tType.RT_FLOAT;
-              Result = getNextChar(out ch);
-              if (Result != 0)
-                break;
-              if (ch == '-')
-              {
-                _numString += ch;
-                Result = getNextChar(out ch);
-                if (Result != 0)
-                  break;
-              }
-              while (isdigit(ch))
-              {
-                _numString += ch;
-                Result = getNextChar(out ch);
-                if (Result != 0)
-                  break;
-              }
-            }
-            if (ch == 'i')
-              Type = AnyType.tType.RT_COMPLEX;
-            else
-            {
-              if (Result == 0)
-                putBack();
-            }
-
-            if (_numString.Length != 0)
-            {
-              switch (Type)
-              {
-                case AnyType.tType.RT_COMPLEX:
-
-                  double.TryParse(_numString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
-                  _numValue.setType(AnyType.tType.RT_COMPLEX);
-                  _numValue.setComplex(0, DoubleVal);
-                  break;
-
-                case AnyType.tType.RT_FLOAT:
-                  double.TryParse(_numString, NumberStyles.Any, CultureInfo.InvariantCulture, out DoubleVal);
-                  _numValue.assign(DoubleVal);
-                  break;
-                case AnyType.tType.RT_UINT64:
-                  UInt64.TryParse(_numString, out Uint64Val);
-                  _numValue.assign(Uint64Val);
-                  break;
-                case AnyType.tType.RT_HEXVAL:
-                  UInt64.TryParse(_numString.Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out Uint64Val);
-                  _numValue.assign(Uint64Val);
-                  _numValue.changeType(AnyType.tType.RT_HEXVAL);
-                  break;
-
-                //                case RT_INT32:
-                //                case RT_UINT32:
-                case AnyType.tType.RT_INT64:
-                case AnyType.tType.RT_BOOL:
-                case AnyType.tType.RT_STR:
-                case AnyType.tType.RT_COMMENT:
-                case AnyType.tType.RT_FORMULA:
-                  break;
-              }
-              RetVal = tToken.NUMBER;
-            }
-            else
               RetVal = tToken.BAD_TOKEN;
-          }
-          break;
-
-        case '"':
-          {
-            _nameString = "";
-            for (; ; )
+              break;
+            }
+            if (_nextCh == '\\')
             {
-              Result = getNextChar(out ch);
-
+              Result = getNextChar();
               if (Result != 0)
               {
                 RetVal = tToken.BAD_TOKEN;
                 break;
               }
-              if (ch == '\\')
-              {
-                Result = getNextChar(out ch);
-                if (Result != 0)
-                {
-                  RetVal = tToken.BAD_TOKEN;
-                  break;
-                }
-                _nameString += ch;
-                continue;
-              }
-              if (ch == '"')
-                break;
-              _nameString += ch;
+              _nameString += _nextCh;
+              continue;
             }
-            RetVal = tToken.STRING;
+            if (_nextCh == '"')
+              break;
+            _nameString += _nextCh;
           }
-          break;
-
-        default:
-          if (isalpha(ch))
-          {
-            _nameString = "";
-            _nameString += ch;
-            for (; ; )
-            {
-              Result = getNextChar(out ch);
-              if (Result != 0)
-                break;
-              if (!isalnum(ch))
-              {
-                putBack();
-                break;
-              }
-              _nameString += ch;
-            }
-            RetVal = tToken.NAME;
-          }
-          else
-            RetVal = tToken.BAD_TOKEN;
-          break;
-      }
-      _currTok = RetVal;
-      if (RetVal == tToken.BAD_TOKEN)
-        reportError(tParseError.BAD_TOKEN);
-      return RetVal;
-
-    }
-
-
-    // holt das naechste Zeichen aus dem Puffer
-    tParseError getNextChar(out char ch)
-    {
-      if (_pos < _len)
-      {
-        if (_str != null)
-          ch = _str[_pos];
-        /*  else if ((m_CharStr != null) && (m_Pos < m_Len))
-            ch = m_CharStr[m_Pos];*/
-        else
-        {
-          ch = '\0';
-          return tParseError.PARSESTRING;
+          RetVal = tToken.STRING;
         }
-        _pos++;
-        return tParseError.SUCCESS;
-      }
+        break;
+
+      default:
+        if (isalpha(_nextCh))
+        {
+          _nameString = "";
+          _nameString += _nextCh;
+          for (; ; )
+          {
+            Result = getNextChar();
+            if (Result != 0)
+              break;
+            if (!isalnum(_nextCh))
+            {
+              putBack();
+              break;
+            }
+            _nameString += _nextCh;
+          }
+          RetVal = tToken.NAME;
+        }
+        else
+          RetVal = tToken.BAD_TOKEN;
+        break;
+    }
+    _currTok = RetVal;
+    if (RetVal == tToken.BAD_TOKEN)
+      reportError(tParseError.BAD_TOKEN);
+    return RetVal;
+
+  }
+
+
+  /// <summary>
+  /// get next character from buffer and stroe it to _nextCh
+  /// </summary>
+  /// <returns>error code</returns>
+  tParseError getNextChar()
+  {
+    if (_pos < _len)
+    {
+      if (_str != null)
+        _nextCh = _str[_pos];
+      /*  else if ((m_CharStr != null) && (m_Pos < m_Len))
+          ch = m_CharStr[m_Pos];*/
       else
       {
-        ch = '\0';
-        return tParseError.PARSESTRING_END;
+          _nextCh = '\0';
+        return tParseError.PARSESTRING;
       }
+      _pos++;
+      return tParseError.SUCCESS;
     }
-
-
-
-    // Schreibt Zeichen zurueck
-    void putBack()
+    else
     {
-      if (_pos > 0)
-        _pos--;
+      _nextCh = '\0';
+      return tParseError.PARSESTRING_END;
     }
+  }
 
-    // Fehler melden
-    Int32 reportError(tParseError Err)
-    {
-      _errors++;
-      _lastError = Err;
-      Error.report(Err);
-      return 1;
 
-    }
-    // zu parsender String (als String)
-    string _str = null;
-    // zu parsender String als char Buffer
-    string m_CharStr = null;
-    int _len = 0;             ///< Laenge des Strings, der zu parsen ist
-    int _pos = 0;           ///< Aktuelle Position im String
-    AnyType _numValue = new AnyType();     ///< num. Wert
-    tToken _currTok = new tToken();         ///< aktuell zu bearbeitendes Token
-    string _nameString = "";  ///< Variablenname
-    string _numString = "";     ///< num. String
+
+  // Schreibt Zeichen zurueck
+  void putBack()
+  {
+    if (_pos > 0)
+      _pos--;
+  }
+
+  // Fehler melden
+  Int32 reportError(tParseError Err)
+  {
+    _errors++;
+    _lastError = Err;
+    Error.report(Err);
+    return 1;
+
+  }
+  // zu parsender String (als String)
+  string _str = null;
+  // zu parsender String als char Buffer
+  string m_CharStr = null;
+  int _len = 0;             ///< Laenge des Strings, der zu parsen ist
+  int _pos = 0;           ///< Aktuelle Position im String
+  AnyType _numValue = new AnyType();     ///< num. Wert
+  tToken _currTok = new tToken();         ///< aktuell zu bearbeitendes Token
+  string _nameString = "";  ///< Variablenname
+  string _numString = "";     ///< num. String
+   char _nextCh;         ///< <summary> next character for generating a token</summary>
+
     // zaehlt die Fehler eines Parsevorganges
     UInt32 _errors;
-    // letzter aufgetretener Fehler
-    tParseError _lastError;
-    // Zeiger auf die Variablenliste, die der Parser verwenden soll
-    VarList _varList;
-    // Zeiger auf Liste externer Funktionen
-    Methods _methods;
-  }
+  // letzter aufgetretener Fehler
+  tParseError _lastError;
+  // Zeiger auf die Variablenliste, die der Parser verwenden soll
+  VarList _varList;
+  // Zeiger auf Liste externer Funktionen
+  Methods _methods;
+}
 }

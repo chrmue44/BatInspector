@@ -300,7 +300,7 @@ namespace BatInspector
         report.read(reportName);
         for (int r = 1; r <= report.RowCnt; r++)
         {
-          string wavName = report.getCell(r, Analysis.Cols.getCol(Cols.NAME));
+          string wavName = report.getCell(r, Cols.NAME);
 
           BatExplorerProjectFileRecordsRecord rec = _prj.find(wavName);
           if (rec == null)

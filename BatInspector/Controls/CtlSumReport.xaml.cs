@@ -32,6 +32,15 @@ namespace BatInspector.Controls
       }
     }
 
+    private void btnSetDestDir_Click(object sender, RoutedEventArgs e)
+    {
+      FolderPicker dlg = new FolderPicker();
+      if (dlg.ShowDialog() == true)
+      {
+        _tbDstDir.Text = dlg.ResultPath;
+      }
+    }
+
     private void _btnCreate_Click(object sender, RoutedEventArgs e)
     {
       if ((_dtStart.SelectedDate != null) && (_dtEnd.SelectedDate != null))

@@ -218,6 +218,7 @@ namespace BatInspector
             file = new AnalysisFile(fName);
             file.RecTime = recTime;
             _list.Add(file);
+            file.Remarks = csv.getCell(row, Cols.REMARKS);
             callNr = 1;
           }
           file.SampleRate = csv.getCellAsInt(row, Cols.SAMPLERATE);
@@ -233,7 +234,6 @@ namespace BatInspector
           double probability = csv.getCellAsDouble(row, Cols.PROBABILITY);
           double snr = csv.getCellAsDouble(row, Cols.SNR);
           string speciesMan = csv.getCell(row, Cols.SPECIES_MAN);
-          file.Remarks = csv.getCell(row, Cols.REMARKS);
           double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
           AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
                                                probability, speciesMan, snr, distToPrev);

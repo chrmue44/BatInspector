@@ -819,10 +819,8 @@ namespace libParser
                 m_Val.Double = double.Parse(m_Val.String,CultureInfo.InvariantCulture);
               }
               catch
-              {
-
-              }
-              break;
+              {    }
+              break;              
             case tType.RT_COMPLEX:
             case tType.RT_FORMULA:
             case tType.RT_COMMENT:
@@ -1085,11 +1083,18 @@ namespace libParser
 
     public void assignTime(int y, int mo, int d, int h, int min, int s)
     {
-      DateTime t = new DateTime(y, mo, d, h, min, s, DateTimeKind.Utc);
-      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-      TimeSpan diff = t - origin;
-      m_Val.Double = Math.Floor(diff.TotalSeconds);
-      m_Type = tType.RT_TIME;
+      try
+      {
+        DateTime t = new DateTime(y, mo, d, h, min, s, DateTimeKind.Utc);
+        DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        TimeSpan diff = t - origin;
+        m_Val.Double = Math.Floor(diff.TotalSeconds);
+        m_Type = tType.RT_TIME;
+      }
+      catch 
+      {
+        Error.report(tParseError.ARG1_OUT_OF_RANGE);
+      }
     }
 
     public void assignBool(bool val)
@@ -1314,25 +1319,44 @@ namespace libParser
       DateTime date = new DateTime();
       try
       {
-        str = str.Replace("0t", "");
+        if (str[1] == 'd')
+          str = str.Replace("0d", "");
+        else if (str[1] == 't')
+        {
+          str = str.Replace("0t", "");
+          str = "70-01-01T" + str;
+        }
         date = DateTime.ParseExact(str, "yy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
       }
       catch
-      { }
+      {
+        DebugLog.log("error parsing date: " + str, enLogType.ERROR);
+      }
       return date;
+    }
+
+    public static DateTime getDate(double t)
+    {
+      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+      DateTime retVal = origin.AddSeconds(t);
+      return retVal;
     }
 
     public static string getTimeString(double t)
     {
-      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-      DateTime date = origin.AddSeconds(t);
-      string retVal = "0t" + date.ToString("yy-MM-ddTHH:mm:ss");
-      return retVal;
+      DateTime date = getDate(t);
+      return getTimeString(date);
     }
 
     public static string getTimeString(DateTime t)
     {
-      string retVal = "0t" + t.ToString("yy-MM-ddTHH:mm:ss");
+      DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+      TimeSpan diff = t - origin;
+      string retVal = "";
+      if (diff.TotalSeconds < 24*3600)
+        retVal = "0t" + t.ToString("HH:mm:ss");
+      else
+        retVal = "0d" + t.ToString("yy-MM-ddTHH:mm:ss");
       return retVal;
     }
 

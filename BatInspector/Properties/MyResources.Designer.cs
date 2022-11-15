@@ -19,7 +19,7 @@ namespace BatInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MyResources {
@@ -273,6 +273,15 @@ namespace BatInspector.Properties {
         public static string CtlSpecProofSpecies {
             get {
                 return ResourceManager.GetString("CtlSpecProofSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Directory.
+        /// </summary>
+        public static string CtlSumReportDstDirectory {
+            get {
+                return ResourceManager.GetString("CtlSumReportDstDirectory", resourceCulture);
             }
         }
         
@@ -1015,6 +1024,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Report.
+        /// </summary>
+        public static string MainToolReport {
+            get {
+                return ResourceManager.GetString("MainToolReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run script.
         /// </summary>
         public static string MainToolRunScript {
@@ -1605,15 +1623,6 @@ namespace BatInspector.Properties {
         public static string SpecDescPrepData {
             get {
                 return ResourceManager.GetString("SpecDescPrepData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to full path to binary &apos;Rscript&apos; to execute R scripts.
-        /// </summary>
-        public static string SpecDescRexe {
-            get {
-                return ResourceManager.GetString("SpecDescRexe", resourceCulture);
             }
         }
         

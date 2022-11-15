@@ -9,12 +9,14 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace BatInspector
 {
@@ -68,6 +70,8 @@ namespace BatInspector
 
       if (file != null)
       {
+        _expression.setVariable(VAR_REMARKS, file.Remarks);
+        _expression.setVariable(VAR_TIME, AnyType.getTimeString(file.RecTime));
         foreach (AnalysisCall call in file.Calls)
         {
           _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
@@ -78,7 +82,6 @@ namespace BatInspector
           _expression.setVariable(VAR_DURATION, call.Duration);
           _expression.setVariable(VAR_PROBABILITY, call.Probability);
           _expression.setVariable(VAR_SNR, call.Snr);
-          _expression.setVariable(VAR_TIME, AnyType.getTimeString(file.RecTime));
           AnyType res = _expression.parse(filter.Expression);
           if (filter.IsForAllCalls)
           {
@@ -92,6 +95,25 @@ namespace BatInspector
           }
         }
       }
+      return retVal;
+    }
+
+    public bool apply(FilterItem filter, AnalysisCall call)
+    {
+      bool retVal = false;
+
+      _expression.setVariable(VAR_SPECIES_AUTO, call.SpeciesAuto);
+      _expression.setVariable(VAR_SPECIES_MAN, call.SpeciesMan);
+      _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
+      _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
+      _expression.setVariable(VAR_DURATION, call.Duration);
+      _expression.setVariable(VAR_PROBABILITY, call.Probability);
+      _expression.setVariable(VAR_SNR, call.Snr);
+      AnyType res = _expression.parse(filter.Expression);
+      
+      if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
+        retVal = true;
+
       return retVal;
     }
 
@@ -117,6 +139,19 @@ namespace BatInspector
         retVal += v.name + "\n";
       }
       return retVal;
+    }
+
+    public static void populateFilterComboBox(ComboBox fiBox, ViewModel model)
+    {
+      fiBox.Items.Clear();
+      fiBox.Items.Add(MyResources.MainFilterNone);
+      foreach (FilterItem f in model.Filter.Items)
+      {
+        string name = f.Name;
+        fiBox.Items.Add(name);
+      }
+      if (fiBox.Items.Count > 0)
+        fiBox.Text = (string)fiBox.Items[0];
     }
   }
 }

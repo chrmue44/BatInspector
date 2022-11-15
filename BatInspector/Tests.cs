@@ -43,17 +43,25 @@ namespace BatInspector
         new stFormulaData(5, "1+3+4", "8",""),
         new stFormulaData(6, "-1+3+4", "6",""),
         new stFormulaData(7, "-5.0*(3.1 + 2.9)", "-30.0000",""),
-        new stFormulaData(8, "a=0t22-11-10T13:45:00", "0t22-11-10T13:45:00",""),
-        new stFormulaData(9, "a=0t22+11-10T13:45:00", "BAD_TOKEN","BAD_TOKEN"),
-        new stFormulaData(10, "0t22-11-10T13:45:00 + 60", "0t22-11-10T13:46:00",""),
-        new stFormulaData(11, "0t22-11-10T13:45:00 - 2", "0t22-11-10T13:44:58",""),
-        new stFormulaData(12, "0t22-11-10T13:45:00 < 0t22-11-10T13:46:00", "TRUE",""),
-        new stFormulaData(13, "0t22-11-10T13:45:00 < 0t22-11-10T13:44:00", "FALSE",""),
-        new stFormulaData(14, "0t22-11-10T13:45:00 < 0t22-11-10T13:45:00", "FALSE",""),
-        new stFormulaData(15, "0t22-11-10T13:45:00 > 0t22-11-10T13:46:00", "FALSE",""),
-        new stFormulaData(16, "0t22-11-10T13:45:00 > 0t22-11-10T13:44:00", "TRUE",""),
-        new stFormulaData(17, "0t22-11-10T13:45:00 > 0t22-11-10T13:45:00", "FALSE",""),
+        new stFormulaData(8, "a=0d22-11-10T13:45:00", "0d22-11-10T13:45:00",""),
+        new stFormulaData(9, "a=0d22+11-10T13:45:00", "BAD_TOKEN","BAD_TOKEN"),
+        new stFormulaData(10, "0d22-11-10T13:45:00 + 60", "0d22-11-10T13:46:00",""),
+        new stFormulaData(11, "0d22-11-10T13:45:00 - 2", "0d22-11-10T13:44:58",""),
+        new stFormulaData(12, "0d22-11-10T13:45:00 < 0d22-11-10T13:46:00", "TRUE",""),
+        new stFormulaData(13, "0d22-11-10T13:45:00 < 0d22-11-10T13:44:00", "FALSE",""),
+        new stFormulaData(14, "0d22-11-10T13:45:00 < 0d22-11-10T13:45:00", "FALSE",""),
+        new stFormulaData(15, "0d22-11-10T13:45:00 > 0d22-11-10T13:46:00", "FALSE",""),
+        new stFormulaData(16, "0d22-11-10T13:45:00 > 0d22-11-10T13:44:00", "TRUE",""),
+        new stFormulaData(17, "0d22-11-10T13:45:00 > 0d22-11-10T13:45:00", "FALSE",""),
         new stFormulaData(18, "1 + 4i + 2 - 2i", "3.0000 + 2.0000i",""),
+        new stFormulaData(19, "0t13:45:00 > 0t13:44:00", "TRUE",""),
+        new stFormulaData(20, "0t13:45:00 - 0t13:41:00", "0t00:04:00",""),
+        new stFormulaData(21, "tod(\"0d22-11-10T17:48:22\")", "0t17:48:22",""),
+        new stFormulaData(22, "0t13:45:00 + 0t01:01:02", "0t14:46:02",""),
+        new stFormulaData(23, "0d22-11-10T13:45:00 - 0t02:00:01", "0d22-11-10T11:44:59",""),
+        new stFormulaData(24, "indexOf(\"abcdef\",\"cde\")","2",""),
+        new stFormulaData(25, "indexOf(\"abcdef\",\"efg\")","-1",""),
+
         };
 
     }
@@ -185,7 +193,7 @@ namespace BatInspector
       {
         string form = f.Formula;
         Expression exp = new Expression(null);
-        if (f.Id == 18)
+        if (f.Id == 22)
           retVal = 0;
         string res = exp.parseToString(form);
         if((f.Result != res) || ((f.Error != res) && (exp.Errors > 0)))

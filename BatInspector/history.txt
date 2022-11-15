@@ -5,14 +5,13 @@ TODO
 - species comparison
 
 - reports across projects (week, month year)
-- 95% plausibility check
 - find bug that deletes header from report
 - more than one model
-- prediction from call parameters (not wav)
 - stop button to kill running script
 
 
 DONE
+- scatter diagrams
 - new number format RT_TIME available in parser
 - recording time now part of report file (filled out automatically from xml files if missing)
 - added project information: Created, Notes (editable)

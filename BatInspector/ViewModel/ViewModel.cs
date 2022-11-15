@@ -30,8 +30,6 @@ namespace BatInspector
     public double DurationMax { get; set; }
     public double CallDistMin { get; set; }
     public double CallDistMax { get; set; }
-
-
   }
 
   public class ViewModel
@@ -63,34 +61,38 @@ namespace BatInspector
     List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
     BatSpeciesRegions _batSpecRegions;
+    //ScatterDiagram _scatterDiagram;
 
     Forms.MainWindow _mainWin;
+    
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
+    
     public string PrjPath { get { return _selectedDir; } }
-
+    
     public string ScriptName { get { return _scriptName; } }
-
+    
     public ScriptRunner Scripter {  get { return _scripter; } }
+    
     public string Version { get { return _version; } }
+    
     public Analysis Analysis { get { return _analysis; } }
-
+    
     public ClassifierBarataud Classifier { get { return _clsBarataud; } }
+    
     public Project Prj { get { return _prj; } }
-
-    //public ProcessRunner ProcRunner { get { return _proc; } }
-
+    
     public ZoomView ZoomView { get { return _zoom; } }
-
+    
     public Filter Filter { get { return _filter; } }
-
+    
     public AppParams Settings { get { return _settings; }  }
-
+    
     public ColorTable ColorTable { get { return _colorTable; } }
-
+    
     public bool Busy { get { return isBusy(); } set { _extBusy = value; } }
-
+    
     public WavFile WavFile { get { return _wav; } }
-
+    
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfos; } }
     
     public System.Windows.Input.Key LastKey { get; set; }
@@ -100,6 +102,8 @@ namespace BatInspector
     public SumReport SumReport { get { return _sumReport; } }
 
     public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
+
+  //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
     public ViewModel(Forms.MainWindow mainWin, string version)
     {
@@ -153,6 +157,12 @@ namespace BatInspector
       }
       else
         _prj = null;
+      if (_prj != null)
+      {
+        double maxFreq = 150;
+        if ((_analysis != null) && (_analysis.Report != null) && (_analysis.Files.Count > 0))
+          maxFreq = _analysis.Files[0].SampleRate / 2000;
+      }
     }
 
     void checkProject()

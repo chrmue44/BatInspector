@@ -6,12 +6,15 @@
         xmlns:res="clr-namespace:BatInspector.Properties" 
         xmlns:forms="clr-namespace:BatInspector.Forms"
         xmlns:controls="clr-namespace:BatInspector.Controls"
+        xmlns:viewmodel="clr-namespace:BatInspector"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400"
         Icon="../images/Bat_icon-icons.com_75012.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
     <Window.DataContext>
-        <controls:DropDownCmds />
+    <!--    <controls:DropDownCmds /> -->
+        <viewmodel:ScatterDiagram x:Name="_scattDiagram"/>
     </Window.DataContext>
     <DockPanel>
     <StatusBar DockPanel.Dock="Bottom" Background="#FF40508D">
@@ -51,7 +54,7 @@
           <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/report.png"></Image>
           </Button>
-          <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
           <Separator/>
@@ -168,21 +171,44 @@
               <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" />
             </Grid>
           </TabItem>
-          <TabItem Name="_tbStat" Header="{x:Static res:MyResources.MainReportTimespan}" Margin="0" >
-            <Grid >
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="204*"/>
-                <ColumnDefinition Width="39*"/>
-                <ColumnDefinition Width="907*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="*"/>
-              </Grid.RowDefinitions>
-              <controls:CtlSumReport x:Name="_ctlSum" Grid.Row="0" Margin="0,10,0,0" Grid.ColumnSpan="3"></controls:CtlSumReport>
-              <DataGrid x:Name="_dgDataSum" Margin="0,0,0,10" Grid.Row="1" Grid.ColumnSpan="3"/>
-            </Grid>
-          </TabItem>
+          <TabItem Name="_tbScatter" Header="Scatter Diagram" Margin="0,0,0,0"  >
+              <Grid Background="AliceBlue">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                                    <Label Content="X-Axis:" Width="80" HorizontalContentAlignment="Right"/>
+                                    <ComboBox Name="_cbXaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                                    <CheckBox Name="_cbFreezeAxis" Content="Freeze Axes" Margin="200,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y-Axis:" Width="80" HorizontalContentAlignment="Right" />
+                                    <ComboBox Name="_cbYaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right"/>
+                                    <ComboBox Name="_cbFilterScatter" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <oxy:PlotView Model="{Binding PlotModel}" x:Name="_scatterModel" Grid.Row="1">
+                                <oxy:PlotView.DefaultTrackerTemplate>
+                                    <ControlTemplate>
+                                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                                            <oxy:TrackerControl.Background>
+                                                <SolidColorBrush Color="LightBlue" />
+                                            </oxy:TrackerControl.Background>
+                                            <oxy:TrackerControl.Content>
+                                                <TextBlock Text="{Binding}" Margin="7" Foreground="Black" />
+                                            </oxy:TrackerControl.Content>
+                                        </oxy:TrackerControl>
+                                    </ControlTemplate>
+                                </oxy:PlotView.DefaultTrackerTemplate>
+                            </oxy:PlotView> 
+                        </Grid>
+
+                    </TabItem>
         </TabControl>
       </Grid>
       <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" Margin="0" BorderThickness="0" DragCompleted="_grdSplitterH_DragCompleted"/>

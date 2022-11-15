@@ -105,6 +105,12 @@ namespace libParser
       MathHelpTab.Add(new HelpTabItem("substr", "returns substring if the variable type is STRING otherwise 0",
                       new List<string> { "1: a string", "2:index of first char", "3: length of substring" }, new List<string> { "1: length of string" }));
       addMethod(new FuncTabItem("substr", substr));
+      MathHelpTab.Add(new HelpTabItem("tod", "returns the time of day of a date/time variable",
+                      new List<string> { "1: a day/time value" }, new List<string> { "1: time of day" }));
+      addMethod(new FuncTabItem("tod", tod));
+      MathHelpTab.Add(new HelpTabItem("indexOf", "returns the start index of a search string in a string",
+                      new List<string> { "1: a string", "2:string to search for" }, new List<string> { "1: index of start of search string (0..n), -1 if not found" }));
+      addMethod(new FuncTabItem("indexOf", indexOf));
     }
 
     // Ueberschrift fuer Hilfe zur Methodenliste
@@ -554,6 +560,24 @@ namespace libParser
       return err;
     }
 
+    static tParseError indexOf(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 2)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        int pos = argv[0].getString().IndexOf(argv[1].getString());
+        result.assignInt64(pos);
+      }
+      else
+      {
+        err = tParseError.NR_OF_ARGUMENTS;
+      }
+      return err;
+    }
+
     static tParseError substr(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
@@ -598,6 +622,23 @@ namespace libParser
           result.assign(split[i-1]);
         else
           err = tParseError.ARG3_OUT_OF_RANGE;
+      }
+      else
+      {
+        err = tParseError.NR_OF_ARGUMENTS;
+      }
+      return err;
+    }
+
+    static tParseError tod(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_TIME);
+        DateTime t = AnyType.getDate(argv[0].getFloat());
+        result.assignTime(70, 1, 1, t.Hour, t.Minute, t.Second);
       }
       else
       {

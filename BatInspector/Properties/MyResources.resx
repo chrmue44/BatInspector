@@ -555,9 +555,6 @@
   <data name="SetCatScripting" xml:space="preserve">
     <value>Scripting</value>
   </data>
-  <data name="SpecDescRexe" xml:space="preserve">
-    <value>full path to binary 'Rscript' to execute R scripts</value>
-  </data>
   <data name="CtlLogCommand" xml:space="preserve">
     <value>Command:</value>
   </data>
@@ -701,5 +698,11 @@
   </data>
   <data name="ctlProjectInfo" xml:space="preserve">
     <value>Project Information</value>
+  </data>
+  <data name="CtlSumReportDstDirectory" xml:space="preserve">
+    <value>Destination Directory</value>
+  </data>
+  <data name="MainToolReport" xml:space="preserve">
+    <value>Create Report</value>
   </data>
 </root>

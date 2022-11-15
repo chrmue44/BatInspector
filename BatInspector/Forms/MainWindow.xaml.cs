@@ -90,11 +90,9 @@ namespace BatInspector.Forms
       _dispatcherTimer.Start();
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
       _ctlLog.setViewModel(_model);
-      _ctlSum.setModel(_model);
       _tbReport.IsSelected = false;
-      _tbStat.IsSelected = false;
       _tbPrj.IsSelected = true;
-//      Dispatcher.BeginInvoke((Action)(() => _tbPrj.IsSelected = true));
+      //      Dispatcher.BeginInvoke((Action)(() => _tbPrj.IsSelected = true));
 #if DEBUG
       Tests tests = new Tests(_model);
       tests.exec();
@@ -180,12 +178,21 @@ namespace BatInspector.Forms
         DebugLog.log("start to open project", enLogType.DEBUG);
         _scrlViewer.ScrollToVerticalOffset(0);
         checkSavePrj();
+    //    _model.ScatterDiagram = _scattDiagram;
         _model.initProject(dir);
+        double fMax = 312000 / 2;
+        if ((_model.Analysis != null) && (_model.Analysis.Files.Count > 0))
+          fMax = _model.Analysis.Files[0].SampleRate / 2;
         _lblProject.Text = dir.FullName;
         if (_model.Prj != null)
         {
           _ctlPrjInfo._tbCreated.Text = _model.Prj.Created;
           _ctlPrjInfo._tbNotes.Text = _model.Prj.Notes;
+          foreach (stAxisItem it in _scattDiagram.AxisItems)
+          {
+            _cbXaxis.Items.Add(it.Name);
+            _cbYaxis.Items.Add(it.Name);
+          }
         }
         setStatus("   loading...");
         populateFiles();
@@ -199,23 +206,12 @@ namespace BatInspector.Forms
 
     public void populateFilterComboBoxes()
     {
-      populateFilterComboBox(_cbFilter);
-      populateFilterComboBox(_ctlSum._cbFilter);
+      Filter.populateFilterComboBox(_cbFilter, _model);
+      Filter.populateFilterComboBox(_cbFilterScatter, _model);
 
+      //      populateFilterComboBox(_ctlSum._cbFilter);
     }
 
-    public void populateFilterComboBox(ComboBox fiBox)
-    {
-      fiBox.Items.Clear();
-      fiBox.Items.Add(MyResources.MainFilterNone);
-      foreach (FilterItem f in _model.Filter.Items)
-      {
-        string name = f.Name;
-        fiBox.Items.Add(name);
-      }
-      if (fiBox.Items.Count > 0)
-        fiBox.Text = (string)fiBox.Items[0];
-    }
 
     public void closeWindow(enWinType w)
     {
@@ -698,7 +694,9 @@ namespace BatInspector.Forms
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)
     {
-
+      frmCreateReport frm = new frmCreateReport();
+      Filter.populateFilterComboBox(frm._ctlReport._cbFilter, _model);
+      frm.Show();
     }
 
     private void _btnFindSpecies_Click(object sender, RoutedEventArgs e)
@@ -781,6 +779,24 @@ namespace BatInspector.Forms
             initCtlWav(c, _model.Prj.Records[c.Index]);
           c.UpdateLayout();
         }
+      }
+    }
+
+    private void _btnSumReport_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void _cbXaxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      if ((_cbXaxis.Items.Count > 0) && (_cbXaxis.SelectedItem != null) && (_cbYaxis.SelectedItem != null) && (_cbFilterScatter.SelectedItem != null))
+      {
+        stAxisItem x = _scattDiagram.findAxisItem(_cbXaxis.SelectedItem.ToString());
+        stAxisItem y = _scattDiagram.findAxisItem(_cbYaxis.SelectedItem.ToString());
+        FilterItem filter = _model.Filter.getFilter(_cbFilterScatter.SelectedItem.ToString());
+
+        _scattDiagram.createScatterDiagram(x, y, _model, filter, _cbFreezeAxis.IsChecked == true);
+        _scatterModel.InvalidatePlot();
       }
     }
   }

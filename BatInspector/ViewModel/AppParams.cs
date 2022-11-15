@@ -266,16 +266,6 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    LocalizedDescription("SpecDescRexe")]
-    public string Rbin { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatScripting"),
-    LocalizedDescription("SetDescScriptProp")]
-    public string RScript { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatScripting"),
     LocalizedDescription("SetDescSpeciesFile")]
     public string SpeciesFile { get; set; }
 
@@ -414,8 +404,6 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       RootDataDir = "C:/users/chrmu/bat";
-      Rbin = "\"C:/Program Files/R/R-4.2.0/bin/Rscript.exe\"";
-      RScript = "C:/Users/chrmu/prj/BatInspector/R/features.R";
       SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
       PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";

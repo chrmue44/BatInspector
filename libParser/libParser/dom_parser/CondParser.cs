@@ -560,7 +560,7 @@ namespace libParser
       return isalpha(ch) || isdigit(ch);
     }
 
-    bool isTime(char ch)
+    bool isTimeChar(char ch)
     {
       return isdigit(ch) || (ch == 'T') || (ch == '-') || (ch == ':');
     }
@@ -572,7 +572,7 @@ namespace libParser
       for (; ; )
       {
         tParseError res = getNextChar();
-        if (isTime(_nextCh) && (res == tParseError.SUCCESS))
+        if (isTimeChar(_nextCh) && (res == tParseError.SUCCESS))
           _numString += _nextCh;
         else
           break;
@@ -634,6 +634,12 @@ namespace libParser
           else if ((_nextCh == 't') || ((_nextCh == 'T')))
           {
             _numString += 't';
+            retVal = parseTime();
+            return retVal;
+          }
+          else if ((_nextCh == 'd') || ((_nextCh == 'D')))
+          {
+            _numString += 'd';
             retVal = parseTime();
             return retVal;
           }
@@ -796,15 +802,7 @@ namespace libParser
       case ']':
         RetVal = tToken.SQR_BRACK_CLOSE;
         break;
-      /*
-          case '{':
-               RetVal = CRL_BRACE_OPEN;
-               break;
-
-          case '}':
-               RetVal = CRL_BRACE_CLOSE;
-               break;
-      */
+ 
       case '<':
         Result = getNextChar();
         if ((Result == 0) && (_nextCh == '='))

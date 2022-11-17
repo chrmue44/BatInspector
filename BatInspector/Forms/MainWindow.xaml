@@ -171,7 +171,7 @@
               <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" />
             </Grid>
           </TabItem>
-          <TabItem Name="_tbScatter" Header="Scatter Diagram" Margin="0,0,0,0"  >
+          <TabItem Name="_tbScatter" Header="{x:Static res:MyResources.frmMainScatterDiagram}" Margin="0,0,0,0"  >
               <Grid Background="AliceBlue">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100"/>
@@ -179,12 +179,12 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0">
                                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                    <Label Content="X-Axis:" Width="80" HorizontalContentAlignment="Right"/>
+                                    <Label Content="{x:Static res:MyResources.frmMainXAxis}" Width="80" HorizontalContentAlignment="Right"/>
                                     <ComboBox Name="_cbXaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                                    <CheckBox Name="_cbFreezeAxis" Content="Freeze Axes" Margin="200,0,0,0"/>
+                                    <CheckBox Name="_cbFreezeAxis" Content="{x:Static res:MyResources.frmMainFreezeAxes}" Margin="200,0,0,0"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Y-Axis:" Width="80" HorizontalContentAlignment="Right" />
+                                    <Label Content="{x:Static res:MyResources.frmMainYAxis}" Width="80" HorizontalContentAlignment="Right" />
                                     <ComboBox Name="_cbYaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">

@@ -705,4 +705,16 @@
   <data name="MainToolReport" xml:space="preserve">
     <value>Erzeuge Auswertung</value>
   </data>
+  <data name="frmMainFreezeAxes" xml:space="preserve">
+    <value>Maßstab beibehalten</value>
+  </data>
+  <data name="frmMainXAxis" xml:space="preserve">
+    <value>X-Achse:</value>
+  </data>
+  <data name="frmMainYAxis" xml:space="preserve">
+    <value>Y-Achse:</value>
+  </data>
+  <data name="frmMainScatterDiagram" xml:space="preserve">
+    <value>Streudiagramm</value>
+  </data>
 </root>

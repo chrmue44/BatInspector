@@ -97,7 +97,7 @@ namespace BatInspector
       {
         Csv csv = new Csv();
         {
-          csv.read(fName);
+          csv.read(fName, ";", true);
           int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
           if (colSp > 0)
           {

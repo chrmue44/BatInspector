@@ -90,10 +90,13 @@ namespace BatInspector.Controls
       for(int i = 0; i < _analysis.Calls.Count; i++)
       {
         AnalysisCall call = _analysis.Calls[i];
-        ctlDataItem it = _spDataAuto.Children[i] as ctlDataItem; 
-        it.setValue(call.SpeciesAuto + "(" + ((int)(call.Probability * 100 + 0.5)).ToString() + "%)");
-        ctlSelectItem im = _spDataMan.Children[i] as ctlSelectItem;
-        im.setValue(call.SpeciesMan);
+        if (i < _spDataAuto.Children.Count)
+        {
+          ctlDataItem it = _spDataAuto.Children[i] as ctlDataItem;
+          it.setValue(call.SpeciesAuto + "(" + ((int)(call.Probability * 100 + 0.5)).ToString() + "%)");
+          ctlSelectItem im = _spDataMan.Children[i] as ctlSelectItem;
+          im.setValue(call.SpeciesMan);
+        }
       }
       _cbSel.IsChecked = _analysis.Selected;
     }

@@ -292,7 +292,7 @@ namespace BatInspector
       string reportName = _selectedDir + "/" + AppParams.PRJ_REPORT;
       _analysis.save(reportName);
       Csv report = new Csv();
-      report.read(reportName);
+      report.read(reportName, ";", true);
 
       foreach (string f in files)
         deleteFile(f, report);
@@ -307,7 +307,7 @@ namespace BatInspector
         List<string> wavToDel = new List<string>();
 
         Csv report = new Csv();
-        report.read(reportName);
+        report.read(reportName, ";", true);
         for (int r = 1; r <= report.RowCnt; r++)
         {
           string wavName = report.getCell(r, Cols.NAME);
@@ -317,10 +317,12 @@ namespace BatInspector
             wavToDel.Add(wavName);
         }
 
+        bool res = false;
         foreach (string f in wavToDel)
-          Analysis.removeWavFromReport(report, f);
+          res |= Analysis.removeWavFromReport(report, f);
 
-        report.save();
+        if(res)
+          report.save();
       }
     }
 
@@ -395,6 +397,7 @@ namespace BatInspector
 
         if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1 | OPT_RESAMPLE)) != 0)
         {
+          addSpeciesColsToReport(reportName, _settings.SpeciesFile);
           string datFile = _selectedDir + "/Xdata000.npy";
           string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
           string args = _settings.PythonScript;
@@ -481,6 +484,29 @@ namespace BatInspector
 
       retVal = _proc.IsRunning | _extBusy;
       return retVal;
+    }
+
+    private void addSpeciesColsToReport(string report, string speciesFile)
+    {
+      Csv spec = new Csv();
+      Csv rep = new Csv();
+      spec.read(speciesFile, ";", true);
+      rep.read(report, ";", true);
+      if (rep.findInRow(1, "----") < 1)
+      {
+        int c = rep.ColCnt + 1;
+        rep.insertCol(c, "", "----");
+      }
+      for (int r = 2; r <= spec.RowCnt; r++)
+      {
+        string species = spec.getCell(r, 1);
+        if (rep.findInRow(1, species) < 1)
+        {
+          int c = rep.ColCnt + 1;
+          rep.insertCol(c, "", species);
+        }
+      }
+      rep.save();
     }
 
     private void createDir(string subDir, bool delete)

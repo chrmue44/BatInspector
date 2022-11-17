@@ -234,8 +234,9 @@ namespace BatInspector
           double probability = csv.getCellAsDouble(row, Cols.PROBABILITY);
           double snr = csv.getCellAsDouble(row, Cols.SNR);
           string speciesMan = csv.getCell(row, Cols.SPECIES_MAN);
+          double fc = csv.getCellAsDouble(row, Cols.FC);
           double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
-          AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, duration, startTime, species,
+          AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, fc, duration, startTime, species,
                                                probability, speciesMan, snr, distToPrev);
 
           bool isInList = SpeciesInfos.isInList(_specList, call.SpeciesAuto);
@@ -268,7 +269,7 @@ namespace BatInspector
       lock (_fileLock)
       {
         Csv csv = new Csv();
-        csv.read(fileName);
+        csv.read(fileName, ";", true);
         foreach (AnalysisFile f in _list)
         {
           foreach (AnalysisCall c in f.Calls)
@@ -328,10 +329,10 @@ namespace BatInspector
           if (doReadSave)
           {
             report = new Csv();
-            report.read(reportName);
+            report.read(reportName,";",true);
           }
-          removeWavFromReport(report, wavName);
-          if(doReadSave)
+          bool res = removeWavFromReport(report, wavName);
+          if(res && doReadSave)
             report.save();
         }
         else
@@ -361,17 +362,20 @@ namespace BatInspector
     }
 
 
-    public void removeWavFromReport(Csv report, string wavName)
+    public bool removeWavFromReport(Csv report, string wavName)
     {
       int row = 0;
+      bool retVal = false;
       do
       {
         row = report.findInCol(wavName, Cols.NAME, true);
         if (row > 0)
         {
           report.removeRow(row);
+          retVal = true;
         }
       } while (row > 0);
+      return retVal;
     }
 
     /// <summary>
@@ -498,25 +502,25 @@ namespace BatInspector
     public double FreqMin { get; }
     public double FreqMax { get; }
     public double FreqKnee { get; }
+    public double Fc { get; }
     public double Duration { get; }
     public double DistToPrev { get; }
     public String StartTime { get; }
     public double Probability { get; }
-
     public double Snr { get; }
-
     public string SpeciesAuto { get { return _speciesAuto; } set { _speciesAuto = value;  _changed = true; } }
     public string SpeciesMan { get { return _speciesMan; } set { _speciesMan = value; _changed = true; } }
 
     public bool Changed { get { return _changed; } }
 
-    public AnalysisCall(int nr, double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double duration, string start, string speciesAuto, double probability, string speciesMan, double snr, double distToPrev)
+    public AnalysisCall(int nr, double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double fc, double duration, string start, string speciesAuto, double probability, string speciesMan, double snr, double distToPrev)
     {
       Nr = nr;
       FreqMaxAmp = freqMaxAmp;
       FreqMin = freqMin;
       FreqMax = freqMax;
       FreqKnee = freqKnee;
+      Fc = fc;
       Duration = duration;
       DistToPrev = distToPrev;
       StartTime = start;

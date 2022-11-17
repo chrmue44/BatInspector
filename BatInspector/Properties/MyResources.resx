@@ -705,4 +705,16 @@
   <data name="MainToolReport" xml:space="preserve">
     <value>Create Report</value>
   </data>
+  <data name="frmMainFreezeAxes" xml:space="preserve">
+    <value>Freeze Axes</value>
+  </data>
+  <data name="frmMainXAxis" xml:space="preserve">
+    <value>X-Axis:</value>
+  </data>
+  <data name="frmMainYAxis" xml:space="preserve">
+    <value>Y-Axis:</value>
+  </data>
+  <data name="frmMainScatterDiagram" xml:space="preserve">
+    <value>Scatter Diagram</value>
+  </data>
 </root>

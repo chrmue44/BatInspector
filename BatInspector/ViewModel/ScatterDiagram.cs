@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using BatInspector.Properties;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
@@ -15,7 +16,8 @@ namespace BatInspector
     FreqMax,
     FreqKnee,
     Duration,
-    DistToPrev
+    DistToPrev,
+    Fc
   }
 
   public struct stAxisItem
@@ -42,7 +44,7 @@ namespace BatInspector
     public ScatterDiagram()
     {
       _axisItems = new List<stAxisItem>();
-      _plotModel = new PlotModel { Title = "Scatter-Diagram" };
+      _plotModel = new PlotModel { Title = MyResources.frmMainScatterDiagram };
       initPlotModel();
   //    dummyDiag();
     }
@@ -55,6 +57,7 @@ namespace BatInspector
       _axisItems.Add(new stAxisItem(enScatterAxis.FreqMin, "Hz"));
       _axisItems.Add(new stAxisItem(enScatterAxis.FreqMax, "Hz"));
       _axisItems.Add(new stAxisItem(enScatterAxis.FreqKnee, "Hz"));
+      _axisItems.Add(new stAxisItem(enScatterAxis.Fc, "Hz"));
       _axisItems.Add(new stAxisItem(enScatterAxis.Duration, "ms"));
       _axisItems.Add(new stAxisItem(enScatterAxis.DistToPrev, "ms"));
 /*      _axisItems.Add(new stAxisItem("bandwidth", fMax, "kHz"));
@@ -185,6 +188,9 @@ namespace BatInspector
           break;
         case enScatterAxis.DistToPrev:
           retVal = call.DistToPrev;
+          break;
+        case enScatterAxis.Fc:
+          retVal = call.Fc;
           break;
         default:
           retVal = 0;

@@ -26,6 +26,7 @@ namespace libScripter
     int _colCnt = 0;
     bool _withHdr = false;
     Dictionary<string, int> _cols;
+    bool _changed = false;
 
     public int RowCnt {  get { return _cells.Count; } }
     public int ColCnt { get { return _colCnt; } }
@@ -59,6 +60,7 @@ namespace libScripter
       {
         _withHdr = withHeader;
         _separator = separator;
+        file = file.Replace("\"", "");
         if (File.Exists(file))
         {
           _fileName = file;
@@ -109,7 +111,7 @@ namespace libScripter
       List<string> row = new List<string>();
       row.Capacity = _colCnt;
       _cells.Add(row);
-
+      _changed = true;
     }
 
 
@@ -154,7 +156,7 @@ namespace libScripter
     public int save(bool withBackup = true)
     {
       int retVal = 0;
-      if (_fileName != null)
+      if ((_fileName != null) && _changed)
       {
           if (withBackup && File.Exists(_fileName))
           {
@@ -170,6 +172,7 @@ namespace libScripter
             lines[rowNr] = String.Join(sep, _cells[rowNr]);
 
           File.WriteAllLines(_fileName, lines);
+        _changed = false;
       }
       return retVal;
     }
@@ -319,6 +322,7 @@ namespace libScripter
       }
       else
         log("setCell():row number must not be lower than 1", enLogType.ERROR);
+      _changed = true;
     }
 
 
@@ -431,7 +435,8 @@ namespace libScripter
         err = true;
       if(err)
         log("insertCol: invalid col nr:" + col.ToString(), enLogType.ERROR);
-    }
+       _changed = true;
+     }
 
     public void removeRow(int row)
     {
@@ -439,6 +444,7 @@ namespace libScripter
       {
         List<string> r = _cells[row - 1];
         _cells.Remove(r);
+        _changed = true;
       }
       else
         log("removeRow: invalid row nr:" + row.ToString(), enLogType.ERROR);

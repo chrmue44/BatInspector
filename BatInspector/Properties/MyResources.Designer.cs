@@ -682,6 +682,42 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Freeze Axes.
+        /// </summary>
+        public static string frmMainFreezeAxes {
+            get {
+                return ResourceManager.GetString("frmMainFreezeAxes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scatter Diagram.
+        /// </summary>
+        public static string frmMainScatterDiagram {
+            get {
+                return ResourceManager.GetString("frmMainScatterDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X-Axis:.
+        /// </summary>
+        public static string frmMainXAxis {
+            get {
+                return ResourceManager.GetString("frmMainXAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y-Axis:.
+        /// </summary>
+        public static string frmMainYAxis {
+            get {
+                return ResourceManager.GetString("frmMainYAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prepare data.
         /// </summary>
         public static string frmPredPrepare {

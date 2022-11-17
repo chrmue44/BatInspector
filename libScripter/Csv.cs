@@ -415,15 +415,15 @@ namespace libScripter
             while (row.Count < col - 1)
             {
               row.Add("");
-              _colCnt++;
             }
             row.Add(ins);
           }
-          _colCnt++;
+          if(_colCnt < row.Count)
+            _colCnt = row.Count;
         }
         if((colHdr != "") && _withHdr)
         {
-          setCell(1, 2, colHdr);
+          setCell(1, col, colHdr);
           initColNames(_cells[0].ToArray());
         }
       }
@@ -462,7 +462,17 @@ namespace libScripter
       _cols.Clear();
       for (int i = 0; i < cols.Length; i++)
       {
-        _cols.Add(cols[i], i + 1);
+        string colName = cols[i];
+        try
+        {
+          if(colName.Length == 0)
+            colName= "_colHeader" + i.ToString();   
+          _cols.Add(colName, i + 1);
+        }
+        catch
+        {
+          DebugLog.log("initColNames: col name already present: '" + colName + "'", enLogType.ERROR);
+        }
         if (createCols)
           insertCol(i + 1, cols[i]);
       }

@@ -93,6 +93,9 @@
     <Compile Include="Controls\ctlDataItemMinMax.xaml.cs">
       <DependentUpon>ctlDataItemMinMax.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlScriptItem.xaml.cs">
+      <DependentUpon>ctlScriptItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CtlLog.xaml.cs">
       <DependentUpon>CtlLog.xaml</DependentUpon>
     </Compile>
@@ -141,6 +144,9 @@
     <Compile Include="Forms\frmDebug.xaml.cs">
       <DependentUpon>frmDebug.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmScript.xaml.cs">
+      <DependentUpon>FrmScript.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmFilter.xaml.cs">
       <DependentUpon>FrmFilter.xaml</DependentUpon>
     </Compile>
@@ -149,9 +155,6 @@
     </Compile>
     <Compile Include="Forms\FrmHelpFilter.xaml.cs">
       <DependentUpon>FrmHelpFilter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmRunScript.xaml.cs">
-      <DependentUpon>frmRunScript.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmSettings.xaml.cs">
       <DependentUpon>frmSettings.xaml</DependentUpon>
@@ -214,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ctlDataItemMinMax.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ctlScriptItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -285,6 +292,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\FrmScript.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Forms\FrmFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -294,10 +305,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmLog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\frmRunScript.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -398,6 +405,15 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="scripts\auto_to_man.scr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\junk.scr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\reset_man.scr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

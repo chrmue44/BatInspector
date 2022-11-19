@@ -11,6 +11,7 @@ TODO
 
 
 DONE
+- improved script management
 - scatter diagrams
 - new number format RT_TIME available in parser
 - recording time now part of report file (filled out automatically from xml files if missing)

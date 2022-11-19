@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using libParser;
@@ -6,6 +7,8 @@ using libScripter;
 
 namespace BatInspector
 {
+ 
+
   public class ScriptRunner
   {
     ProcessRunner _proc;
@@ -14,8 +17,10 @@ namespace BatInspector
     BaseCommands[] _cmds;
     string _wrkDir;
     MthdListScript _mthdListScript;
+    ViewModel _model;
 
     public VarList VarList { get { return _parser.VarTable.VarList; } }
+    public List<ScriptItem> Scripts { get { return _model.Settings.Scripts; } }
     public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
     {
       _proc = proc;
@@ -30,6 +35,7 @@ namespace BatInspector
       _mthdListScript = new MthdListScript(model, wrkDir);
       _parser = new Parser(ref _proc, _cmds, wrkDir, _updProgress);
       _parser.addMethodList(_mthdListScript);
+      _model = model;
     }
 
     public bool IsBusy {  get { return _parser.Busy; } }
@@ -102,6 +108,35 @@ namespace BatInspector
     public void RemoveVariable(string name)
     {
       _parser.VarTable.Remove(name);
+    }
+
+
+    public List<ScriptItem> getScripts()
+    {
+      List<ScriptItem> retVal = new List<ScriptItem>();
+      foreach (ScriptItem sItem in _model.Settings.Scripts)
+          retVal.Add(sItem);
+      return retVal;
+    }
+
+    public void setScripts(List<ScriptItem> list)
+    {
+      foreach(ScriptItem sItem in _model.Settings.Scripts)
+      {
+        bool foundFile = false;
+        foreach(ScriptItem lItem in list)
+        {
+          if(lItem.Name == sItem.Name)
+          {
+            foundFile = true;
+            break;
+          }
+        }
+        if (!foundFile && File.Exists(sItem.Name))
+          File.Delete(sItem.Name);
+      }
+
+      _model.Settings.Scripts = list;
     }
 
     void outputDataHandler(object sender, DataReceivedEventArgs ev)

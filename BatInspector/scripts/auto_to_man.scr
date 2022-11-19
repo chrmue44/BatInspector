@@ -1,5 +1,4 @@
-#set manual species to automatically detected species
-#if 
+#take over all unambiguously automatically recognized species
 SET NrFiles =(getPrjFileCount() - 1)
 FOR FileNr 0 NrFiles
   SET NrCalls =(getCallCount(FileNr) - 1)

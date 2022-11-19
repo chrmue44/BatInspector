@@ -717,4 +717,16 @@
   <data name="frmMainScatterDiagram" xml:space="preserve">
     <value>Scatter Diagram</value>
   </data>
+  <data name="FrmScriptDescription" xml:space="preserve">
+    <value>Script Description</value>
+  </data>
+  <data name="FrmScriptName" xml:space="preserve">
+    <value>Script Name</value>
+  </data>
+  <data name="FrmScriptTitle" xml:space="preserve">
+    <value>Manage, edit and execute scripts</value>
+  </data>
+  <data name="FrmScriptTtipAdd" xml:space="preserve">
+    <value>add a new script to the list</value>
+  </data>
 </root>

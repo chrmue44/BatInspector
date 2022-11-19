@@ -128,6 +128,26 @@ namespace BatInspector
     public int Value { get; set; }
   }
 
+  [DataContract]
+  public class ScriptItem
+  {
+    public ScriptItem(int index, string name, string description)
+    {
+      Index = index;
+      Name = name;
+      Description = description;
+    }
+
+    [DataMember]
+    public int Index { get; set; }
+
+    [DataMember]
+    public string Name { get; set; }
+
+    [DataMember]
+    public string Description { get; set; }
+  }
+
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
   public class AppParams
@@ -139,7 +159,7 @@ namespace BatInspector
     public const string EXT_INFO = ".xml";                // file extension for info files in Elekon projects
     public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
     public const string CSV_SEPARATOR = ";";              // CSV separator
-
+    public const string PATH_SCRIPT = "scripts";          // sub directory containig scripts
 
 
     const string _fName = "BatInspectorSettings.json";
@@ -286,6 +306,11 @@ namespace BatInspector
     public int SamplingRate { get; set; }
 
     [DataMember]
+    [LocalizedCategory("SetCatScripting"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
+
+    [DataMember]
     [LocalizedCategory("SetCatModel"),
     LocalizedDescription("SetDescModDir")]
     public string ModelDir { get; set; }
@@ -403,6 +428,7 @@ namespace BatInspector
       Culture = enCulture.de_DE;
       initFilterParams();
       initColorGradient();
+      initScripts();
       RootDataDir = "C:/users/chrmu/bat";
       SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
@@ -433,6 +459,20 @@ namespace BatInspector
       p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);
+    }
+
+    private void initScripts()
+    {
+      string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+      string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+      strWorkPath += "/" + PATH_SCRIPT + "/";
+      Scripts = new List<ScriptItem>();
+      Scripts.Add(new ScriptItem(0, strWorkPath + "auto_to_man.scr",
+                  "take over all unambiguously automatically recognized species"));
+      Scripts.Add(new ScriptItem(1, strWorkPath + "reset_man.scr",
+                  "reset all manual species to 'todo'"));
+      Scripts.Add(new ScriptItem(2, strWorkPath + "junk.scr",
+                  "select all recordings that seem to contain only junk"));
     }
 
     public void save()
@@ -472,6 +512,8 @@ namespace BatInspector
             DebugLog.log("settings file not well formed!", enLogType.ERROR);
           if (retVal.ColorGradientBlue == null)
             retVal.initColorGradient();
+          if (retVal.Scripts == null)
+            retVal.initScripts();
         }
         else
         {

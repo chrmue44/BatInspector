@@ -728,7 +728,7 @@ namespace BatInspector.Forms
 
     private void _btnScript_Click(object sender, RoutedEventArgs e)
     {
-      frmRunScript frmScript = new frmRunScript(_model);
+      FrmScript frmScript = new FrmScript(_model);
       frmScript.Show();
     }
 

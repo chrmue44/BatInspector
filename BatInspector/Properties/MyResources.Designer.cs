@@ -718,11 +718,47 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prepare data.
+        ///   Looks up a localized string similar to Add a script to .
         /// </summary>
         public static string frmPredPrepare {
             get {
                 return ResourceManager.GetString("frmPredPrepare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Description.
+        /// </summary>
+        public static string FrmScriptDescription {
+            get {
+                return ResourceManager.GetString("FrmScriptDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Name.
+        /// </summary>
+        public static string FrmScriptName {
+            get {
+                return ResourceManager.GetString("FrmScriptName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage, edit and execute scripts.
+        /// </summary>
+        public static string FrmScriptTitle {
+            get {
+                return ResourceManager.GetString("FrmScriptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add a new script to the list.
+        /// </summary>
+        public static string FrmScriptTtipAdd {
+            get {
+                return ResourceManager.GetString("FrmScriptTtipAdd", resourceCulture);
             }
         }
         

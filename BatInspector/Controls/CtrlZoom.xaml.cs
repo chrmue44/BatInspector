@@ -60,7 +60,8 @@ namespace BatInspector.Controls
       _duration.setup(MyResources.Duration+ " [s]", enDataType.DOUBLE, 3,100);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1,100);
       _wavFilePath = wavFilePath;
-      string wavName = File.Exists(analysis.FileName) ? analysis.FileName : _wavFilePath + analysis.FileName;
+      string fName = analysis.getString(Cols.NAME);
+      string wavName = File.Exists(fName) ? fName : _wavFilePath + fName;
 
       _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256, _model.Settings);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
@@ -267,7 +268,7 @@ namespace BatInspector.Controls
     {
       ZoomView z = _model.ZoomView;
       _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
-      _duration.setValue(_analysis.Duration);
+      _duration.setValue(_analysis.getDouble(Cols.DURATION));
       if (z.Cursor1.Visible)
       {
         _grpCursor1.Visibility = Visibility.Visible;
@@ -665,10 +666,10 @@ namespace BatInspector.Controls
           {
             for (int i = min; i <= max; i++)
             {
-              fMin += _analysis.Calls[i].FreqMin / count;
-              fMax += _analysis.Calls[i].FreqMax / count;
-              fMaxAmpl += _analysis.Calls[i].FreqMaxAmp / count;
-              duration += _analysis.Calls[i].Duration / count;
+              fMin += _analysis.Calls[i].getDouble(Cols.F_MIN) / count;
+              fMax += _analysis.Calls[i].getDouble(Cols.F_MAX) / count;
+              fMaxAmpl += _analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
+              duration += _analysis.Calls[i].getDouble(Cols.DURATION) / count;
               callDist += _analysis.Calls[i].DistToPrev / countDistPrev;
             }
             _ctlMeanDist.setValue(callDist);
@@ -684,14 +685,14 @@ namespace BatInspector.Controls
     {
       if (idx < _analysis.Calls.Count)
       {
-        _ctlFMin.setValue(_analysis.Calls[idx].FreqMin / 1000);
-        _ctlFMax.setValue(_analysis.Calls[idx].FreqMax / 1000);
-        _ctlFMaxAmpl.setValue(_analysis.Calls[idx].FreqMaxAmp / 1000);
-        _ctlDuration.setValue(_analysis.Calls[idx].Duration);
-        _ctlSnr.setValue(_analysis.Calls[idx].Snr);
+        _ctlFMin.setValue(_analysis.Calls[idx].getDouble(Cols.F_MIN) / 1000);
+        _ctlFMax.setValue(_analysis.Calls[idx].getDouble(Cols.F_MAX)/ 1000);
+        _ctlFMaxAmpl.setValue(_analysis.Calls[idx].getDouble(Cols.F_MAX_AMP) / 1000);
+        _ctlDuration.setValue(_analysis.Calls[idx].getDouble(Cols.DURATION));
+        _ctlSnr.setValue(_analysis.Calls[idx].getDouble(Cols.SNR));
         _ctlDist.setValue(_analysis.Calls[idx].DistToPrev);
-        _ctlSpecAuto.setValue(_analysis.Calls[idx].SpeciesAuto);
-        _ctlSpecMan.setValue(_analysis.Calls[idx].SpeciesMan);
+        _ctlSpecAuto.setValue(_analysis.Calls[idx].getString(Cols.SPECIES));
+        _ctlSpecMan.setValue(_analysis.Calls[idx].getString(Cols.SPECIES_MAN));
         if (idx > 0)
         {
         }

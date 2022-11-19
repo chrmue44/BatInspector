@@ -100,7 +100,7 @@ namespace BatInspector
             if (x > xMax) xMax = x;
             y = getAxisValue(yAxis.Name, c);
             if (y > yMax) yMax = y;
-            string str = f.FileName + "_" + c.Nr.ToString();
+            string str = f.getString(Cols.NAME) + "_" + c.getInt(Cols.NR).ToString();
             scatterSeries.Points.Add(new ScatterPoint(x, y, size, color, str));
           }
         }
@@ -172,25 +172,25 @@ namespace BatInspector
       switch (type)
       {
         case enScatterAxis.FreqMaxAmp:
-          retVal = call.FreqMaxAmp;
+          retVal = call.getDouble (Cols.F_MAX_AMP);
           break;
         case enScatterAxis.FreqMin:
-          retVal = call.FreqMin;
+          retVal = call.getDouble(Cols.F_MIN);
           break;
         case enScatterAxis.FreqMax:
-          retVal = call.FreqMax;
+          retVal = call.getDouble(Cols.F_MAX);
           break;
         case enScatterAxis.FreqKnee:
-          retVal = call.FreqKnee;
+          retVal = call.getDouble(Cols.F_KNEE);
           break;
         case enScatterAxis.Duration:
-          retVal = call.Duration;
+          retVal = call.getDouble(Cols.DURATION);
           break;
         case enScatterAxis.DistToPrev:
           retVal = call.DistToPrev;
           break;
         case enScatterAxis.Fc:
-          retVal = call.Fc;
+          retVal = call.getDouble(Cols.FC);
           break;
         default:
           retVal = 0;

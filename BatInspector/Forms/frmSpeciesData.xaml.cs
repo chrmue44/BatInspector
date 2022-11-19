@@ -73,9 +73,7 @@ namespace BatInspector.Forms
               wavName = spec.WavExample;
 
             string fullName = Environment.CurrentDirectory + "/" + spec.WavExample;
-            AnalysisFile ana = new AnalysisFile(fullName);
-            ana.SampleRate = _model.Settings.SamplingRate;
-            ana.Duration = 3.001;
+            AnalysisFile ana = new AnalysisFile(fullName, _model.Settings.SamplingRate, 3.001);
             _parent.setZoom(wavName, ana, fullName, null);
           }
         }

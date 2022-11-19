@@ -74,9 +74,10 @@ namespace BatInspector.Controls
       if (_model.Analysis.Files.Count > index)
       {
         _analysis = _model.Analysis.Files[index];
-        int pos = _analysis.FileName.LastIndexOf('/');
-        _wavName = _analysis.FileName.Substring(pos + 1);
-        if (_analysis.FileName.IndexOf(_wavName) < 0)
+        string fName = _analysis.getString(Cols.NAME);
+        int pos = fName.LastIndexOf('/');
+        _wavName = fName.Substring(pos + 1);
+        if (fName.IndexOf(_wavName) < 0)
           DebugLog.log("WAV name mismatch to Report for " + _wavName, enLogType.ERROR);
       }
       _cbSel.Focusable = true;
@@ -93,9 +94,9 @@ namespace BatInspector.Controls
         if (i < _spDataAuto.Children.Count)
         {
           ctlDataItem it = _spDataAuto.Children[i] as ctlDataItem;
-          it.setValue(call.SpeciesAuto + "(" + ((int)(call.Probability * 100 + 0.5)).ToString() + "%)");
+          it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           ctlSelectItem im = _spDataMan.Children[i] as ctlSelectItem;
-          im.setValue(call.SpeciesMan);
+          im.setValue(call.getString(Cols.SPECIES_MAN));
         }
       }
       _cbSel.IsChecked = _analysis.Selected;
@@ -109,8 +110,6 @@ namespace BatInspector.Controls
       _analysis = _model.Analysis.find(_wavName);
       if (_analysis != null)
       {
-      //  _sampleRate.setValue(_analysis.SampleRate);
-      //  _duration.setValue(_analysis.Duration);
         int callNr = 1;
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();
@@ -119,13 +118,13 @@ namespace BatInspector.Controls
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
           it.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", enDataType.STRING, 0, 60, 100);
-          it.setValue(call.SpeciesAuto + "(" + ((int)(call.Probability * 100 + 0.5)).ToString() + "%)");
+          it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
           im.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", callNr - 1, 60, 65, selItemChanged);
           im.setItems(spec.ToArray());
-          im.setValue(call.SpeciesMan);
+          im.setValue(call.getString(Cols.SPECIES_MAN));
           _spDataMan.Children.Add(im);
           callNr++;
         }
@@ -154,10 +153,8 @@ namespace BatInspector.Controls
         }
         else
         {
-          AnalysisFile ana = new AnalysisFile(_wavName);
-          ana.SampleRate = 383500;
-          ana.Duration = 3.001;
-          _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
+          AnalysisFile ana = new AnalysisFile(_wavName, 383500, 3.001);
+           _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
         }
       }
       else
@@ -169,7 +166,7 @@ namespace BatInspector.Controls
       if (_analysis != null)
       {
         if ((index >= 0) && (index < _analysis.Calls.Count))
-          _analysis.Calls[index].SpeciesMan = val;
+          _analysis.Calls[index].setString(Cols.SPECIES_MAN, val);
         else
           DebugLog.log("ctlWavFile.selItemChanged(): index error", enLogType.ERROR);
       }
@@ -193,12 +190,12 @@ namespace BatInspector.Controls
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-          if ((_analysis.Calls[i].Probability >= _model.Settings.ProbabilityMin) &&
-               SpeciesInfos.isInList(_model.SpeciesInfos, Analysis.Calls[i].SpeciesAuto))
-            ctlm.setValue(Analysis.Calls[i].SpeciesAuto.ToUpper());
+          if ((_analysis.Calls[i].getDouble(Cols.PROBABILITY) >= _model.Settings.ProbabilityMin) &&
+               SpeciesInfos.isInList(_model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
+            ctlm.setValue(Analysis.Calls[i].getString(Cols.SPECIES).ToUpper());
           else
             ctlm.setValue("");
-          _analysis.Calls[i].SpeciesMan = ctlm.getValue();
+          _analysis.Calls[i].setString(Cols.SPECIES_MAN, ctlm.getValue());
         }
       }
       catch (Exception ex)
@@ -209,7 +206,7 @@ namespace BatInspector.Controls
 
     private void _tbRemarks_TextChanged(object sender, TextChangedEventArgs e)
     {
-      _analysis.Remarks = _tbRemarks.Text;
+      _analysis.setString(Cols.REMARKS, _tbRemarks.Text);
     }
 
     private void _btnIgnore_Click(object sender, RoutedEventArgs e)
@@ -218,7 +215,7 @@ namespace BatInspector.Controls
       {
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {
-          _analysis.Calls[i].SpeciesMan = "---";
+          _analysis.Calls[i].setString(Cols.SPECIES_MAN, "---");
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
           ctlm.setValue("---");
         }

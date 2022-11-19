@@ -205,13 +205,13 @@ namespace BatInspector
               switch (fileInfo)
               {
                 case enFileInfo.NAME:
-                  result.assign(_inst._model.Analysis.Files[idxF].FileName);
+                  result.assign(_inst._model.Analysis.Files[idxF].getString(Cols.NAME));
                   break;
                 case enFileInfo.SAMPLE_RATE:
-                  result.assignInt64(_inst._model.Analysis.Files[idxF].SampleRate);
+                  result.assignInt64(_inst._model.Analysis.Files[idxF].getInt(Cols.SAMPLERATE));
                   break;
                 case enFileInfo.DURATION:
-                  result.assign(_inst._model.Analysis.Files[idxF].Duration);
+                  result.assign(_inst._model.Analysis.Files[idxF].getDouble(Cols.DURATION));
                   break;
                 default:
                   result.assign("ERROR: supported data type: " + argv[1].getString());
@@ -390,10 +390,10 @@ namespace BatInspector
                 switch (callInfo)
                 {
                   case enCallInfo.SPEC_AUTO:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesAuto.ToUpper());
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES).ToUpper());
                     break;
                   case enCallInfo.SPEC_MAN:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan.ToUpper());
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN).ToUpper());
                     break;
                 }
               }
@@ -441,11 +441,11 @@ namespace BatInspector
                 {
                   case enCallInfo.SPEC_AUTO:
                     argv[3].changeType(AnyType.tType.RT_STR);
-                    _inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesAuto = argv[3].getString();
+                    _inst._model.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES, argv[3].getString());
                     break;
                   case enCallInfo.SPEC_MAN:
                     argv[3].changeType(AnyType.tType.RT_STR);
-                    _inst._model.Analysis.Files[idxF].Calls[idxC].SpeciesMan = argv[3].getString();
+                    _inst._model.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES_MAN, argv[3].getString());
                     break;
                 }
               }

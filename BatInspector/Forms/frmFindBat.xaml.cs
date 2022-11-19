@@ -164,10 +164,10 @@ namespace BatInspector.Forms
           ElekonInfoFile.parsePosition(_model.ZoomView.FileInfo, out double lat, out double lon);
           _ctlLat.setValue(lat);
           _ctlLon.setValue(lon);
-          _ctlFstart.setValue(c.FreqMax / 1000.0);
-          _ctlFend.setValue(c.FreqMin / 1000.0);
-          _ctlFME.setValue(c.FreqMaxAmp / 1000.0);
-          _ctlDuration.setValue(c.Duration);
+          _ctlFstart.setValue(c.getDouble(Cols.F_MAX) / 1000.0);
+          _ctlFend.setValue(c.getDouble(Cols.F_MIN) / 1000.0);
+          _ctlFME.setValue(c.getDouble(Cols.F_MAX_AMP) / 1000.0);
+          _ctlDuration.setValue(c.getDouble(Cols.DURATION));
         }
       }
     }

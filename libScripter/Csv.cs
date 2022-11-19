@@ -33,11 +33,26 @@ namespace libScripter
 
     public string FileName {  get { return _fileName; } }
 
-    public Csv(bool withHdr = false)
+    public bool Changed { get { return _changed; } }
+
+    public Dictionary<string, int> Cols { get { return _cols; } }
+
+    public Csv(bool withHdr = true)
     {
       _cells = new List<List<string>>();
-      _cols = new Dictionary<string, int>();
       _withHdr = withHdr;
+      _cols = new Dictionary<string, int>();
+    }
+
+    public Csv(string header, char separator = ';')
+    {
+      _cells = new List<List<string>>();
+      string[] cols = header.Split(separator); 
+      _cells.Add(cols.ToList());
+
+      _cols = new Dictionary<string, int>();
+      _withHdr = true;
+      initColNames(header, true);
     }
 
     public void clear()
@@ -115,6 +130,15 @@ namespace libScripter
     }
 
 
+    public List<string> getRow(int row)
+    {
+      List<string> retVal = null;
+      if((row > 0) && (row <= _cells.Count))
+      {
+        retVal = _cells[row];
+      }
+      return retVal;
+    }
 
     /// <summary>
     /// find a value in a row

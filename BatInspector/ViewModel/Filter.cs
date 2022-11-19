@@ -70,18 +70,18 @@ namespace BatInspector
 
       if (file != null)
       {
-        _expression.setVariable(VAR_REMARKS, file.Remarks);
+        _expression.setVariable(VAR_REMARKS, file.getString(Cols.REMARKS));
         _expression.setVariable(VAR_TIME, AnyType.getTimeString(file.RecTime));
         foreach (AnalysisCall call in file.Calls)
         {
           _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
-          _expression.setVariable(VAR_SPECIES_AUTO, call.SpeciesAuto);
-          _expression.setVariable(VAR_SPECIES_MAN, call.SpeciesMan);
-          _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
-          _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
-          _expression.setVariable(VAR_DURATION, call.Duration);
-          _expression.setVariable(VAR_PROBABILITY, call.Probability);
-          _expression.setVariable(VAR_SNR, call.Snr);
+          _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));
+          _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
+          _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
+          _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MAX));
+          _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
+          _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
+          _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
           AnyType res = _expression.parse(filter.Expression);
           if (filter.IsForAllCalls)
           {
@@ -102,13 +102,13 @@ namespace BatInspector
     {
       bool retVal = false;
 
-      _expression.setVariable(VAR_SPECIES_AUTO, call.SpeciesAuto);
-      _expression.setVariable(VAR_SPECIES_MAN, call.SpeciesMan);
-      _expression.setVariable(VAR_FREQ_MIN, call.FreqMin);
-      _expression.setVariable(VAR_FREQ_MIN, call.FreqMax);
-      _expression.setVariable(VAR_DURATION, call.Duration);
-      _expression.setVariable(VAR_PROBABILITY, call.Probability);
-      _expression.setVariable(VAR_SNR, call.Snr);
+      _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));
+      _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
+      _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
+      _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MAX));
+      _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
+      _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
+      _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
       AnyType res = _expression.parse(filter.Expression);
       
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())

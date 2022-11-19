@@ -161,7 +161,7 @@ namespace BatInspector
       {
         double maxFreq = 150;
         if ((_analysis != null) && (_analysis.Report != null) && (_analysis.Files.Count > 0))
-          maxFreq = _analysis.Files[0].SampleRate / 2000;
+          maxFreq = _analysis.Files[0].getInt(Cols.SAMPLERATE) / 2000;
       }
     }
 
@@ -179,10 +179,10 @@ namespace BatInspector
       }
       foreach (AnalysisFile a in _analysis.Files)
       {
-        BatExplorerProjectFileRecordsRecord r  = _prj.find(a.FileName);
+        BatExplorerProjectFileRecordsRecord r  = _prj.find(a.getString(Cols.NAME));
         if (r == null)
         {
-          DebugLog.log("mismatch Prj against Report, missing file " + a.FileName + " in project", enLogType.ERROR);
+          DebugLog.log("mismatch Prj against Report, missing file " + a.getString(Cols.NAME) + " in project", enLogType.ERROR);
           ok = false;
         }
       }

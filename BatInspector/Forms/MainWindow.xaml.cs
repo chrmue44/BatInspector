@@ -182,7 +182,7 @@ namespace BatInspector.Forms
         _model.initProject(dir);
         double fMax = 312000 / 2;
         if ((_model.Analysis != null) && (_model.Analysis.Files.Count > 0))
-          fMax = _model.Analysis.Files[0].SampleRate / 2;
+          fMax = _model.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
         _lblProject.Text = dir.FullName;
         if (_model.Prj != null)
         {
@@ -315,7 +315,7 @@ namespace BatInspector.Forms
       {
         if (ctl.Analysis != null)
         {
-          string name = ctl.Analysis.FileName;
+          string name = ctl.Analysis.getString(Cols.NAME);
           AnalysisFile anaF = _model.Analysis.find(name);
           if (anaF != null)
             ctl.updateCallInformations(anaF);

@@ -58,50 +58,6 @@ namespace BatInspector
     public const string MID_OFFSET = "mid_offset";
     public const string SMOTTHNESS = "smoothness";
     public const string REC_TIME = "recTime";
-
-//    Dictionary<string, int> _cols = new Dictionary<string, int>();
-
-
-  /*  public void init(Csv csv)
-    {
-      _cols.Clear();
-      _cols.Add(SAMPLERATE, csv.findInRow(1, SAMPLERATE));
-      _cols.Add(FILE_LEN, csv.findInRow(1, FILE_LEN));
-      _cols.Add(NAME, csv.findInRow(1, NAME));
-      _cols.Add(NR, csv.findInRow(1, NR));
-      _cols.Add(F_MAX_AMP, csv.findInRow(1, F_MAX_AMP));
-      _cols.Add(F_MAX, csv.findInRow(1, F_MAX));
-      _cols.Add(F_MIN, csv.findInRow(1, F_MIN));
-      _cols.Add(F_KNEE, csv.findInRow(1, F_KNEE));
-      _cols.Add(DURATION, csv.findInRow(1, DURATION));
-      _cols.Add(START_TIME, csv.findInRow(1, START_TIME));
-      _cols.Add(SPECIES, csv.findInRow(1, SPECIES));
-      _cols.Add(PROBABILITY, csv.findInRow(1, PROBABILITY));
-      _cols.Add(SNR, csv.findInRow(1, SNR));
-      _cols.Add(SPECIES_MAN, csv.findInRow(1, SPECIES_MAN));
-      _cols.Add(REMARKS, csv.findInRow(1, REMARKS));
-    }
-
-    public int getCol(string id)
-    {
-      int retVal = 0;
-      bool ok = _cols.TryGetValue(id, out retVal);
-      if (!ok)
-        DebugLog.log("unknown column id " + id, enLogType.ERROR);
-      return retVal;
-    } 
-
-    public void Add(string id, int val)
-    {
-      try
-      {
-        _cols.Add(id, val);
-      }
-      catch 
-      {
-        DebugLog.log("id '" + id + "'already present in dictionary", enLogType.ERROR);
-      }
-    } */
   }
 
   public class Analysis
@@ -112,6 +68,7 @@ namespace BatInspector
     object _fileLock = new object();
     List<AnalysisFile> _list;
     List<ReportItem> _report;
+    Csv _csv;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
@@ -123,6 +80,7 @@ namespace BatInspector
       _list = new List<AnalysisFile>();
       _report = null;
       _cols = new Cols();
+      _csv = new Csv();
       _specList = specList;
     }
 
@@ -131,7 +89,8 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        if (f.FileName.IndexOf(name) >= 0)
+        string fName = f.getString(Cols.NAME);
+        if (fName.IndexOf(name) >= 0)
         {
           retVal = f;
           break;
@@ -144,14 +103,7 @@ namespace BatInspector
     {
       get
       {
-        bool retVal = false;
-        if (_list != null)
-        {
-          foreach (AnalysisFile f in _list)
-          {
-            retVal |= f.Changed;
-          }
-        }
+        bool retVal = _csv.Changed;
 
         if (_report != null)
         {
@@ -168,95 +120,89 @@ namespace BatInspector
     {
       lock (_fileLock)
       {
-        Csv csv = new Csv();
-        int ret = csv.read(fileName, ";", true);
+        _csv = new Csv();
+        int ret = _csv.read(fileName, ";", true);
+
         //_cols.init(csv);
 
         //@@@ temporary
         if (ret == 0)
         {
-          if (csv.getColNr(Cols.SAMPLERATE) < 1)
+          if (_csv.getColNr(Cols.SAMPLERATE) < 1)
           {
-            csv.insertCol(2, "383500", Cols.SAMPLERATE);
-            csv.save();
+            _csv.insertCol(2, "383500", Cols.SAMPLERATE);
+            _csv.save();
           }
-          if (csv.getColNr(Cols.FILE_LEN) < 1)
+          if (_csv.getColNr(Cols.FILE_LEN) < 1)
           {
-            csv.insertCol(3, "3.001", Cols.FILE_LEN);
-            csv.save();
+            _csv.insertCol(3, "3.001", Cols.FILE_LEN);
+            _csv.save();
           }
-          if (csv.getColNr(Cols.SPECIES_MAN) < 1)
+          if (_csv.getColNr(Cols.SPECIES_MAN) < 1)
           {
-            int col = csv.ColCnt + 1;
-            csv.insertCol(col, "todo", Cols.SPECIES_MAN);
-            csv.save();
+            int col = _csv.ColCnt + 1;
+            _csv.insertCol(col, "todo", Cols.SPECIES_MAN);
+            _csv.save();
           }
-          if (csv.getColNr(Cols.REMARKS) < 1)
+          if (_csv.getColNr(Cols.REMARKS) < 1)
           {
-            int col = csv.ColCnt + 1;
-            csv.insertCol(col, "", Cols.REMARKS);
-            csv.save();
+            int col = _csv.ColCnt + 1;
+            _csv.insertCol(col, "", Cols.REMARKS);
+            _csv.save();
           }
         }
-        if (csv.getColNr(Cols.REC_TIME) < 1)
-          filloutRecTime(csv);
+        if (_csv.getColNr(Cols.REC_TIME) < 1)
+          filloutRecTime(_csv);
 
         _list.Clear();
         string lastFileName = "$$$";
         int callNr = 1;
         _report = new List<ReportItem>();
-
+        double oldStartTime = 0.0;
         AnalysisFile file = null;
-        for (int row = 2; row <= csv.RowCnt; row++)
+        for (int row = 2; row <= _csv.RowCnt; row++)
         {
-          string fName = csv.getCell(row, Cols.NAME);
-          string timStr = csv.getCell(row, Cols.REC_TIME);
+          string fName = _csv.getCell(row, Cols.NAME);
+          string timStr = _csv.getCell(row, Cols.REC_TIME);
+          double startTime = _csv.getCellAsDouble(row, Cols.START_TIME);
           DateTime recTime = AnyType.getDate(timStr); 
           if (fName != lastFileName)
           {
             lastFileName = fName;
-            file = new AnalysisFile(fName);
-            file.RecTime = recTime;
+            file = new AnalysisFile(_csv, row, recTime);
             _list.Add(file);
-            file.Remarks = csv.getCell(row, Cols.REMARKS);
             callNr = 1;
           }
-          file.SampleRate = csv.getCellAsInt(row, Cols.SAMPLERATE);
-          file.Duration = csv.getCellAsDouble(row, Cols.FILE_LEN);
-          double fMaxAmp = csv.getCellAsDouble(row, Cols.F_MAX_AMP);
-          int nr = csv.getCellAsInt(row, Cols.NR);
-          double fMin = csv.getCellAsDouble(row, Cols.F_MIN);
-          double fMax = csv.getCellAsDouble(row, Cols.F_MAX);
-          double fKnee = csv.getCellAsDouble(row, Cols.F_KNEE);
-          double duration = csv.getCellAsDouble(row, Cols.DURATION);
-          string startTime = csv.getCell(row, Cols.START_TIME);
-          string species = csv.getCell(row, Cols.SPECIES);
-          double probability = csv.getCellAsDouble(row, Cols.PROBABILITY);
-          double snr = csv.getCellAsDouble(row, Cols.SNR);
-          string speciesMan = csv.getCell(row, Cols.SPECIES_MAN);
-          double fc = csv.getCellAsDouble(row, Cols.FC);
-          double distToPrev = (callNr == 1) ? 0.0 : calcDistToPrev(startTime, file.Calls[callNr - 2].StartTime);
-          AnalysisCall call = new AnalysisCall(nr, fMaxAmp, fMin, fMax, fKnee, fc, duration, startTime, species,
-                                               probability, speciesMan, snr, distToPrev);
-
-          bool isInList = SpeciesInfos.isInList(_specList, call.SpeciesAuto);
+         
+          AnalysisCall call = new AnalysisCall(_csv, row);
+          if(callNr == 1)
+          {
+            oldStartTime = 0;
+            call.DistToPrev = 0;
+          }
+          else
+          {
+            call.DistToPrev = startTime - oldStartTime;
+            oldStartTime = startTime;
+          }
+          bool isInList = SpeciesInfos.isInList(_specList, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
           ReportItem rItem = new ReportItem();
           rItem.FileName = fName;
           rItem.CallNr = callNr.ToString();
           if (callNr < 2)
-            rItem.Remarks = file.Remarks;
+            rItem.Remarks = file.getString(Cols.REMARKS);
           callNr++;
-          rItem.FreqMin = (fMin / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.FreqMax = (fMax / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.FreqMaxAmp = (fMaxAmp / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.Duration = duration.ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.StartTime = startTime;
-          rItem.SpeciesAuto = species;
-          rItem.Probability = probability.ToString("0.###", CultureInfo.InvariantCulture);
-          rItem.Snr = snr.ToString();
-          rItem.SpeciesMan = speciesMan;
+          rItem.FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP)/ 1000).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
+          rItem.StartTime = call.getString(Cols.START_TIME);
+          rItem.SpeciesAuto = call.getString(Cols.SPECIES);
+          rItem.Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
+          rItem.Snr = call.getDouble(Cols.SNR).ToString();
+          rItem.SpeciesMan = call.getString(Cols.SPECIES_MAN);
           _report.Add(rItem);
         }
         restChanged();
@@ -268,23 +214,7 @@ namespace BatInspector
     {
       lock (_fileLock)
       {
-        Csv csv = new Csv();
-        csv.read(fileName, ";", true);
-        foreach (AnalysisFile f in _list)
-        {
-          foreach (AnalysisCall c in f.Calls)
-          {
-            int row = csv.findInCol(f.FileName, Cols.NAME, c.Nr.ToString(), Cols.NR);
-            csv.setCell(row, Cols.SPECIES_MAN, c.SpeciesMan);
-            csv.setCell(row, Cols.SPECIES, c.SpeciesAuto);
-            if (c.Nr < 2)
-              csv.setCell(row, Cols.REMARKS, f.Remarks);
-            else
-              csv.setCell(row, Cols.REMARKS, "");
-            c.resetChanged();
-          }
-        }
-        csv.save();
+        _csv.save();
         if (_report != null)
         {
           foreach (ReportItem r in _report)
@@ -300,7 +230,8 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        if (f.FileName.IndexOf(fileName) >= 0)
+        string fName = f.getString(Cols.NAME);
+        if (fName.IndexOf(fileName) >= 0)
         {
           retVal = f;
           break;
@@ -438,13 +369,6 @@ namespace BatInspector
 
     void restChanged()
     {
-      foreach (AnalysisFile f in _list)
-      {
-        foreach (AnalysisCall c in f.Calls)
-        {
-          c.resetChanged();
-        }
-      }
       if (_report != null)
       {
         foreach (ReportItem r in _report)
@@ -493,76 +417,72 @@ namespace BatInspector
 
   public class AnalysisCall
   {
+    Csv _csv;
+    int _row;
+   
+    public double DistToPrev { get; set; }
 
-    bool _changed = false;
-    string _speciesMan;
-    string _speciesAuto;
-    public int Nr { get; }
-    public double FreqMaxAmp { get; }
-    public double FreqMin { get; }
-    public double FreqMax { get; }
-    public double FreqKnee { get; }
-    public double Fc { get; }
-    public double Duration { get; }
-    public double DistToPrev { get; }
-    public String StartTime { get; }
-    public double Probability { get; }
-    public double Snr { get; }
-    public string SpeciesAuto { get { return _speciesAuto; } set { _speciesAuto = value;  _changed = true; } }
-    public string SpeciesMan { get { return _speciesMan; } set { _speciesMan = value; _changed = true; } }
-
-    public bool Changed { get { return _changed; } }
-
-    public AnalysisCall(int nr, double freqMaxAmp, double freqMin, double freqMax, double freqKnee, double fc, double duration, string start, string speciesAuto, double probability, string speciesMan, double snr, double distToPrev)
+    public AnalysisCall(Csv csv, int row)
     {
-      Nr = nr;
-      FreqMaxAmp = freqMaxAmp;
-      FreqMin = freqMin;
-      FreqMax = freqMax;
-      FreqKnee = freqKnee;
-      Fc = fc;
-      Duration = duration;
-      DistToPrev = distToPrev;
-      StartTime = start;
-      _speciesAuto = speciesAuto;
-      Probability = probability;
-      _speciesMan = speciesMan;
-      Snr = snr;
-      _changed = false;
+      _csv = csv;
+      _row = row;
     }
 
-    public void resetChanged()
+    public double getDouble(string key)
     {
-      _changed = false;
+      return _csv.getCellAsDouble(_row, key);
     }
+
+    public int getInt(string key)
+    {
+      return _csv.getCellAsInt(_row, key);  
+    }
+
+    public string getString(string key)
+    {
+      return _csv.getCell(_row, key);
+    }
+
+    public void setString(string key, string value)
+    {
+      _csv.setCell(_row, key, value);
+    }
+
 
     public bool checkConfidence(List<SpeciesInfos> species)
     {
       bool retVal = false;
-      SpeciesInfos spec = SpeciesInfos.find(SpeciesAuto, species);
+      string speciesAuto = getString(Cols.SPECIES);
+      double duration = getDouble(Cols.DURATION);
+      double fMin = getDouble(Cols.F_MIN);
+      double fMax = getDouble(Cols.F_MAX);
+      SpeciesInfos spec = SpeciesInfos.find(speciesAuto, species);
       string err = "";
       if(spec != null)
       {
-        if (this.Duration < spec.DurationMin)
+        if (duration < spec.DurationMin)
           err = "Dmin";
-        else if (this.Duration > spec.DurationMax)
+        else if (duration > spec.DurationMax)
           err = "Dmax";
 //        else if (this.FreqMaxAmp < (spec.FreqCharMin * 1000))
 //          err = "FcMin";
 //        else if (this.FreqMaxAmp > (spec.FreqCharMax * 1000))
 //          err = "FcMax";
-        else if (this.FreqMin < (spec.FreqMinMin * 1000))
+        else if (fMin < (spec.FreqMinMin * 1000))
           err = "FminMin";
-        else if (this.FreqMin > (spec.FreqMinMax * 1000))
+        else if (fMin > (spec.FreqMinMax * 1000))
           err = "FminMax";
-        else if (this.FreqMax < (spec.FreqMaxMin * 1000))
+        else if (fMax < (spec.FreqMaxMin * 1000))
           err = "FminMin";
-   //     else if (this.FreqMax > (spec.FreqMaxMax * 1000))
-   //       err = "FmaxMax";
+        //     else if (this.FreqMax > (spec.FreqMaxMax * 1000))
+        //       err = "FmaxMax";
         if (err == "")
-           retVal = true;
+          retVal = true;
         else
-          this._speciesAuto = "??C95[" + err +"," + this.SpeciesAuto + "]";
+        {
+          speciesAuto = "??C95[" + err + "," + speciesAuto + "]";
+          _csv.setCell(_row, Cols.SPECIES, speciesAuto);
+        }
       }
       return retVal;
     }
@@ -573,41 +493,63 @@ namespace BatInspector
   {
     List<AnalysisCall> _calls;
 
-    public string FileName { get; set; }
-    public int SampleRate { get; set; }
-    public double Duration { get; set; }
-    public string Remarks { get; set; }
-    public bool Selected { get; set; } = false;
-    public DateTime RecTime { get; set; }
+    int _startRow;
 
-    public bool Changed
-    {
-      get
-      {
-        bool retVal = false;
-        foreach (AnalysisCall c in _calls)
-        {
-          retVal |= c.Changed;
-        }
-        return retVal;
-      }
-    }
+    Csv _csv;
+    DateTime _recTime;
+
+    public bool Selected { get; set; } = false;
+
+    public DateTime RecTime { get;  }
 
     Dictionary<string, int> _specFound;
 
     public List<AnalysisCall> Calls { get { return _calls; } }
 
-   /* public AnalysisFile()
-    {
-      _calls = new List<AnalysisCall>();
-      _specFound = new Dictionary<string, int>();
-    } */
 
-    public AnalysisFile(string name)
+    // fake analysis for projects without report
+    public AnalysisFile(string name, int sampleRate, double duration)
     {
-      FileName = name;
       _calls = new List<AnalysisCall>();
       _specFound = new Dictionary<string, int>();
+      string header = Cols.NAME + ";" + Cols.SAMPLERATE + ";" + Cols.DURATION;
+      _csv = new Csv(header);
+      _csv.addRow();
+      _startRow = 2;
+      _csv.setCell(_startRow, Cols.NAME, name);
+      _csv.setCell(_startRow, Cols.DURATION, duration);
+      _csv.setCell(_startRow, Cols.SAMPLERATE,sampleRate);
+    }
+
+
+
+    public AnalysisFile(Csv csv, int startRow, DateTime recTime)
+    {
+      _calls = new List<AnalysisCall>();
+      _specFound = new Dictionary<string, int>();
+      _startRow = startRow;
+      _csv = csv;
+      _recTime = recTime;
+    }
+
+    public void setString(string key, string value)
+    {
+       _csv.setCell(_startRow, key, value);
+    }
+
+    public string getString(string key)
+    {
+      return _csv.getCell(_startRow, key);
+    }
+
+    public double getDouble(string key)
+    {
+      return _csv.getCellAsDouble(_startRow, key);
+    }
+
+    public int getInt(string key)
+    {
+      return _csv.getCellAsInt(_startRow, key);
     }
 
     /// <summary>
@@ -618,12 +560,13 @@ namespace BatInspector
     public double getStartTime(int idx)
     {
       double retVal = 0;
+      string startTime = _calls[idx].getString(Cols.START_TIME);
       if ((idx >= 0) && (idx < _calls.Count))
       {
-        int pos = _calls[idx].StartTime.LastIndexOf(':');
+        int pos = startTime.LastIndexOf(':');
         if (pos >= 0)
         {
-          string s = _calls[idx].StartTime.Substring(pos + 1);
+          string s = startTime.Substring(pos + 1);
           s = s.Replace(".", "");
           s = s.Replace(",", "");
           double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture,  out retVal);
@@ -631,7 +574,7 @@ namespace BatInspector
         }
         else
         {
-          double.TryParse(_calls[idx].StartTime, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
+          double.TryParse(startTime, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
         }
       }
       return retVal;
@@ -643,7 +586,7 @@ namespace BatInspector
       if ((idx >= 0) && (idx < _calls.Count))
       {
         retVal = getStartTime(idx);
-        retVal += _calls[idx].Duration / 1000;
+        retVal += _calls[idx].getDouble(Cols.DURATION) / 1000;
       }
       return retVal;
     }
@@ -659,7 +602,8 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach(AnalysisFile f in list)
       {
-        if(f.FileName.Contains(fName))
+        string fileName = f.getString(Cols.NAME);
+        if(fileName.Contains(fName))
         {
           retVal = f;
           break;
@@ -673,10 +617,11 @@ namespace BatInspector
       _calls.Add(call);
       if (isInList)
       {
-        if (_specFound.ContainsKey(call.SpeciesAuto))
-          _specFound[call.SpeciesAuto] += 1;
+        string spec = call.getString(Cols.SPECIES);
+        if (_specFound.ContainsKey(spec))
+          _specFound[spec] += 1;
         else
-          _specFound.Add(call.SpeciesAuto, 1);
+          _specFound.Add(spec, 1);
       }
     }
 

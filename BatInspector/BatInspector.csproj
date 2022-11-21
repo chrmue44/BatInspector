@@ -165,6 +165,9 @@
     <Compile Include="Forms\frmStartPredict.xaml.cs">
       <DependentUpon>frmStartPredict.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmTools.xaml.cs">
+      <DependentUpon>FrmTools.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmWavFile.xaml.cs">
       <DependentUpon>frmWavFile.xaml</DependentUpon>
     </Compile>
@@ -320,6 +323,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Forms\FrmTools.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\frmWavFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -414,6 +421,7 @@
     <Content Include="scripts\reset_man.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="scripts\tool_all_unknown.scr" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

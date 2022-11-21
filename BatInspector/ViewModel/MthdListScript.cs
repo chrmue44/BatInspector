@@ -93,19 +93,43 @@ namespace BatInspector
       addMethod(new FuncTabItem("calcProbabilityRatios", calcProbabilityRatios));
       _scriptHelpTab.Add(new HelpTabItem("calcProbabilityRatios", "calculate the probability ratio for each call for 1st and 2nd rank in open project",
                       new List<string> { }, new List<string> { "1: error code" }));
+      addMethod(new FuncTabItem("getFileIndex", getFileIndex));
+      _scriptHelpTab.Add(new HelpTabItem("getFileIndex", "get file index in opended project",
+                      new List<string> { "1: file name"}, new List<string> { "1: index (-1: not found)" }));
+    }
+
+    static tParseError getFileIndex(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        if (_inst._model.Analysis != null)
+        {
+          string name = argv[0].getString();
+          int index = _inst._model.Analysis.getIndex(name);
+          result.assignInt64(index);
+        }
+        else
+          err = tParseError.ARG1_OUT_OF_RANGE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
     }
 
     static tParseError getPrjFileCount(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
       result = new AnyType();
-      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
-      {
-        int nr = _inst._model.Prj.Records.Length;
-        result.assignInt64(nr);
-      }
-      else
-        err = tParseError.ARG1_OUT_OF_RANGE;
+        if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+        {
+          int nr = _inst._model.Prj.Records.Length;
+          result.assignInt64(nr);
+        }
+        else
+          err = tParseError.ARG1_OUT_OF_RANGE;
       return err;
     }
 

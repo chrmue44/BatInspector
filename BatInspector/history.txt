@@ -8,9 +8,10 @@ TODO
 - find bug that deletes header from report
 - more than one model
 - stop button to kill running script
-
+- find bug : delete file does not work in report.csv
 
 DONE
+- mini tools to manipulate single file informations
 - improved script management
 - scatter diagrams
 - new number format RT_TIME available in parser

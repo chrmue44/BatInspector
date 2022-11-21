@@ -209,16 +209,28 @@ namespace BatInspector.Controls
       _analysis.setString(Cols.REMARKS, _tbRemarks.Text);
     }
 
+    private void update()
+    {
+      updateCallInformations(_analysis);
+      this.InvalidateVisual();
+      this.UpdateLayout();
+    }
+
     private void _btnIgnore_Click(object sender, RoutedEventArgs e)
     {
       if (_analysis != null)
       {
+        FrmTools frm = new FrmTools(update, _wavName, _model);
+        frm.Show();
+
+        /*
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {
           _analysis.Calls[i].setString(Cols.SPECIES_MAN, "---");
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
           ctlm.setValue("---");
         }
+        */
       }
     }
 

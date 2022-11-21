@@ -263,11 +263,11 @@ namespace BatInspector
       _scripter.execCmd(cmd);
     }
 
-    public int executeScript(string path)
+    public int executeScript(string path, bool  initVars = true)
     {
       int retVal = 1;
       _scriptName = path;
-      retVal = _scripter.RunScript(path);
+      retVal = _scripter.RunScript(path, true, initVars);
       return retVal;
     }
 

@@ -326,25 +326,21 @@ namespace BatInspector
       return retVal;
     }
 
-    /// <summary>
-    /// calculates the time difference bewtween to times
-    /// </summary>
-    /// <param name="time1"></param>
-    /// <param name="time2"></param>
-    /// <returns>time difference in ms</returns>
-    double calcDistToPrev(string time1, string time2)
+
+    public int getIndex(string fileName)
     {
-      double retVal = 0.0;
-      string[] split1 = time1.Split(':');
-      string[] split2 = time2.Split(':');
-      if ((split1.Length == 3) && (split2.Length == 3))
+      int retVal = -1;
+
+      for (int i = 0;  i < Files.Count; i++)
       {
-        double t1 = 0.0;
-        double.TryParse(split1[2], NumberStyles.Any, CultureInfo.InvariantCulture, out t1);
-        double t2 = 0.0;
-        double.TryParse(split2[2], NumberStyles.Any, CultureInfo.InvariantCulture, out t2);
-        retVal = Math.Abs(t1 - t2) * 1000;
+        string fName = Files[i].getString(Cols.NAME);
+        if (fName.IndexOf(fileName) >= 0)
+        {
+          retVal = i;
+          break;
+        }
       }
+
       return retVal;
     }
 
@@ -644,6 +640,7 @@ namespace BatInspector
       foreach (AnalysisCall c in _calls)
         c.checkConfidence(species);
     }
+
 
     static public AnalysisFile find(List<AnalysisFile> list, string fName)
     {

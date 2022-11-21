@@ -24,6 +24,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="25" />
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="25" />
@@ -36,7 +37,8 @@
        <TextBlock Grid.Row="0" Grid.Column="0">Idx</TextBlock>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static res:MyResources.FrmScriptDescription}" />
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static res:MyResources.FrmScriptName}" />
-       <StackPanel Name="_sp" Grid.Row="1" Grid.ColumnSpan="7">
+            <TextBlock Grid.Row="0" Grid.Column="4" Text="Tool" />
+            <StackPanel Name="_sp" Grid.Row="1" Grid.ColumnSpan="8">
          <local:ctlScriptItem/>
        </StackPanel>
     </Grid>

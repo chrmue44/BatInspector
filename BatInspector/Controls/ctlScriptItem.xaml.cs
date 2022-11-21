@@ -18,6 +18,7 @@ namespace BatInspector.Forms
     public int Index {  get { return _index; } }
     public string ScriptName {  get { return _tbScriptName.Text; } } 
     public string Description { get { return _tbDescription.Text; } }
+    public bool IsTool {  get { return _cbTool.IsChecked == true; } }
 
     public ctlScriptItem()
     {
@@ -31,6 +32,7 @@ namespace BatInspector.Forms
       _dlgDelete = del;
       _tbScriptName.Text = script.Name;
       _tbDescription.Text = script.Description;
+      _cbTool.IsChecked = script.IsTool;
       _lblIdx.Text = _index.ToString();
     }
 

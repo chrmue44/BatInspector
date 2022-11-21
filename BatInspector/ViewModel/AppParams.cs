@@ -131,11 +131,12 @@ namespace BatInspector
   [DataContract]
   public class ScriptItem
   {
-    public ScriptItem(int index, string name, string description)
+    public ScriptItem(int index, string name, string description, bool isTool)
     {
       Index = index;
       Name = name;
       Description = description;
+      IsTool = isTool;
     }
 
     [DataMember]
@@ -146,6 +147,9 @@ namespace BatInspector
 
     [DataMember]
     public string Description { get; set; }
+
+    [DataMember]
+    public bool IsTool { get; set; }
   }
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
@@ -468,11 +472,11 @@ namespace BatInspector
       strWorkPath += "/" + PATH_SCRIPT + "/";
       Scripts = new List<ScriptItem>();
       Scripts.Add(new ScriptItem(0, strWorkPath + "auto_to_man.scr",
-                  "take over all unambiguously automatically recognized species"));
+                  "take over all unambiguously automatically recognized species", false));
       Scripts.Add(new ScriptItem(1, strWorkPath + "reset_man.scr",
-                  "reset all manual species to 'todo'"));
+                  "reset all manual species to 'todo'", false));
       Scripts.Add(new ScriptItem(2, strWorkPath + "junk.scr",
-                  "select all recordings that seem to contain only junk"));
+                  "select all recordings that seem to contain only junk", false));
     }
 
     public void save()

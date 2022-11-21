@@ -174,7 +174,7 @@ namespace BatInspector
             callNr = 1;
           }
          
-          AnalysisCall call = new AnalysisCall(_csv, row);
+          AnalysisCall call = new AnalysisCall(_csv, row, _specList);
           if(callNr == 1)
           {
             oldStartTime = 0;
@@ -292,6 +292,23 @@ namespace BatInspector
         f.checkConfidence(species);
     }
 
+
+    public void calcProbabilityRatios(string speciesFile)
+    {
+      List<string> species = new List<string>();
+      Csv spec = new Csv();
+      spec.read(speciesFile, ";", true);
+      for (int r = 2; r <= spec.RowCnt; r++)
+        species.Add(spec.getCell(r, 1));
+
+      foreach(AnalysisFile f in _list)
+      {
+        foreach(AnalysisCall c in f.Calls)
+        {
+          c.calcProbabilityRatio(species);
+        }
+      }
+    }
 
     public bool removeWavFromReport(Csv report, string wavName)
     {
@@ -419,14 +436,17 @@ namespace BatInspector
   {
     Csv _csv;
     int _row;
-   
+    double _firstToSecond;
+
+   public double FirstToSecond { get { return _firstToSecond; } }
     public double DistToPrev { get; set; }
 
-    public AnalysisCall(Csv csv, int row)
+    public AnalysisCall(Csv csv, int row, List<SpeciesInfos> specList)
     {
       _csv = csv;
       _row = row;
     }
+
 
     public double getDouble(string key)
     {
@@ -486,6 +506,32 @@ namespace BatInspector
       }
       return retVal;
     }
+
+    /// <summary>
+    /// compare probability of detected species to the 2nd rank
+    /// </summary>
+    /// <param name="specList"></param>
+    public void calcProbabilityRatio(List<string> specList)
+    {
+      double prob = getDouble(Cols.PROBABILITY);
+      double prob2nd = 0.0;
+      foreach(string spec in specList)  
+      {
+        char[] arr = new char[4];
+        arr[0] = (char)(spec[0] & 0xDF);
+        for(int i=1; i < 4; i++)
+          arr[i] = (char)(spec[i] | 0x20);
+        string specName = new string(arr);
+
+        if (getString(Cols.SPECIES).ToUpper().IndexOf(specName.ToUpper()) < 0)
+        {
+          double pSpec = getDouble(specName);
+          if (pSpec > prob2nd)
+            prob2nd = pSpec;
+        }
+      }
+      _firstToSecond = prob / prob2nd;
+    }
   }
 
 
@@ -512,13 +558,15 @@ namespace BatInspector
     {
       _calls = new List<AnalysisCall>();
       _specFound = new Dictionary<string, int>();
-      string header = Cols.NAME + ";" + Cols.SAMPLERATE + ";" + Cols.DURATION;
+      string header = Cols.NAME + ";" + Cols.SAMPLERATE + ";" + Cols.DURATION + ";" + Cols.START_TIME;
       _csv = new Csv(header);
       _csv.addRow();
       _startRow = 2;
       _csv.setCell(_startRow, Cols.NAME, name);
       _csv.setCell(_startRow, Cols.DURATION, duration);
       _csv.setCell(_startRow, Cols.SAMPLERATE,sampleRate);
+      _csv.setCell(_startRow, Cols.START_TIME, 0);
+
     }
 
 
@@ -560,9 +608,9 @@ namespace BatInspector
     public double getStartTime(int idx)
     {
       double retVal = 0;
-      string startTime = _calls[idx].getString(Cols.START_TIME);
       if ((idx >= 0) && (idx < _calls.Count))
       {
+        string startTime = _calls[idx].getString(Cols.START_TIME);
         int pos = startTime.LastIndexOf(':');
         if (pos >= 0)
         {

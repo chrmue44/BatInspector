@@ -53,20 +53,22 @@ namespace libParser
 
     public static bool isNum(string val, bool withDecimalPoint = false)
     {
+      bool atLeastOneDigit = false;
       foreach(char c in val)
       {
+        atLeastOneDigit |= ((c >= '0') && (c <= '9'));
         if (!isNum(c, withDecimalPoint))
           return false;
       }
-      return true;
+      return atLeastOneDigit;
     }
 
     public static bool isNum(char c, bool withDecimalPoint = false)
     {
+     bool retVal = ((c >= '0') && (c <= '9')) || (c=='-') || (c=='+') ;
       if (withDecimalPoint)
-        return ((c >= '0') && (c <= '9')) || (c == '.');
-      else
-        return (c >= '0') && (c <= '9');
+        retVal  = retVal || (c == '.') || (c == 'e') || (c == 'E');
+      return retVal;
     }
 
     // prueft, ob der uebergebene Character ein erlaubter HEX-Character ist

@@ -669,7 +669,7 @@ namespace libParser
         Result = getNextChar();
         if (Result != 0)
           return tToken.BAD_TOKEN;
-        if (_nextCh == '-')
+        if ((_nextCh == '-') || (_nextCh == '+'))
         {
           _numString += _nextCh;
           Result = getNextChar();

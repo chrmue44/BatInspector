@@ -90,6 +90,9 @@ namespace BatInspector
       addMethod(new FuncTabItem("getRankCount", getRankCount));
       _scriptHelpTab.Add(new HelpTabItem("getRankCount", "get the number of calls of a species for the specified rank in specified file in open project",
                       new List<string> { "1: file index (0..n)", "2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
+      addMethod(new FuncTabItem("calcProbabilityRatios", calcProbabilityRatios));
+      _scriptHelpTab.Add(new HelpTabItem("calcProbabilityRatios", "calculate the probability ratio for each call for 1st and 2nd rank in open project",
+                      new List<string> { }, new List<string> { "1: error code" }));
     }
 
     static tParseError getPrjFileCount(List<AnyType> argv, out AnyType result)
@@ -361,7 +364,8 @@ namespace BatInspector
     enum enCallInfo
     {
       SPEC_AUTO,
-      SPEC_MAN
+      SPEC_MAN,
+      PROB_RATIO
     }
 
     static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
@@ -394,6 +398,9 @@ namespace BatInspector
                     break;
                   case enCallInfo.SPEC_MAN:
                     result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN).ToUpper());
+                    break;
+                  case enCallInfo.PROB_RATIO:
+                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].FirstToSecond);
                     break;
                 }
               }
@@ -663,6 +670,22 @@ namespace BatInspector
       return err;
     }
 
+
+    static tParseError calcProbabilityRatios(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if((_inst._model.Prj != null) && (_inst._model.Analysis != null))
+      {
+        _inst._model.Analysis.calcProbabilityRatios(_inst._model.Settings.SpeciesFile);
+      }
+      else
+      {
+        err = tParseError.ARG1_OUT_OF_RANGE;
+        result.assign(1);
+      }
+      return err;
+    }
 
     static tParseError getSampleRate(List<AnyType> argv, out AnyType result)
     {

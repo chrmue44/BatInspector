@@ -250,14 +250,9 @@ namespace libScripter
       double retVal = 0;
       if (str != "")
       {
-        try
-        {
-          retVal = double.Parse(str, CultureInfo.InvariantCulture);
-        }
-        catch
-        {
+        bool ok = double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
+        if(!ok)  
           log("value: '" + str + "' in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed double", enLogType.ERROR);
-        }
       }
       return retVal;
     }
@@ -281,14 +276,9 @@ namespace libScripter
       int retVal = 0;
       if (str != "")
       {
-        try
-        {
-          retVal = int.Parse(str, CultureInfo.InvariantCulture);
-        }
-        catch
-        {
+        bool ok = int.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
+        if (!ok)
           log("value: '" + str + "' in row " + row.ToString() + ", col " + col.ToString() + " is not a well formed integer", enLogType.ERROR);
-        }
       }
       return retVal;
     }
@@ -477,14 +467,11 @@ namespace libScripter
     public int getColNr(string colName)
     {
       int retVal = -1;
-      try
-      {
-        if (_withHdr)
-          retVal = _cols[colName];
-        else
-          int.TryParse(colName, out retVal);
-      }
-      catch { }
+      bool ok;
+      if (_withHdr)
+        ok = _cols.TryGetValue(colName, out retVal);
+      else
+        ok = int.TryParse(colName, out retVal);
       return retVal;
     }
     public void initColNames(string[] cols, bool createCols = false)

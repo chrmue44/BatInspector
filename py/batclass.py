@@ -41,7 +41,8 @@ modPars = {
       'dirBatch' : 'bat',        #sub directory for the batches
       'dirWeights' : 'wgt',      #sub directory to store the weights file     
       'dirLogs': 'log',          #sub directory for log files   
-      'logName': 'log_'          #base name for generated log files for good and bad samples during test of model
+      'logName': 'log_',         #base name for generated log files for good and bad samples during test of model
+      'predCol': 'Species'       #name of the column in the report for the prediction result
 }
 
 def printModelPars(modPars):
@@ -92,6 +93,7 @@ def printHelp():
     --outFile <outfile>
     --stretch <factor> stretch factor during resampling operation
     --minSnr <snr> min value for SNR to accept prediction of recording
+    --predCol <name> column name for prediction result in report
     Examples:
     cut all recordings listed in call file to wav-files containing 1 call:
     
@@ -104,7 +106,7 @@ def parseArguments(argv):
         opts, args = getopt.getopt(argv,"d:eg:hp:s:t", ['data=','predict','prepPredict','img','clean',
                                                         'root=', 'check', 'run', 'train', 'specFile=', 'prepTrain',
                                                         'wav','model=','cut','axes','csvcalls=','epochs=', 'minSnr=',
-                                                        'resample=','sampleRate=', 'outFile=', 'dataDir=', 'stretch='])
+                                                        'resample=','sampleRate=', 'outFile=', 'dataDir=', 'stretch=', 'predCol='])
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -134,6 +136,8 @@ def parseArguments(argv):
             audioPars['withImg'] = True
         elif opt == '--model':
             modPars['modelName'] = arg
+        elif opt == '--predCol':
+            modPars['predCol'] = arg
         elif opt == '--root':
             env['rootDir'] = arg
         elif opt == '--specFile':

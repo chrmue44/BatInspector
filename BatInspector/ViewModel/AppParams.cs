@@ -322,8 +322,13 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatModel"),
     Description("select type of model for prediction")]
-    public enModel ModelType { get; set; }
+    public enModel ModelType1 { get; set; }
 
+    [DataMember]
+    [LocalizedCategory("SetCatModel"),
+    Description("select type of model for prediction")]
+    public enModel ModelType2 { get; set; }
+ 
     [DataMember]
     [LocalizedCategory("SetCatModel"),
     LocalizedDescription("SetDescLearningRate")]

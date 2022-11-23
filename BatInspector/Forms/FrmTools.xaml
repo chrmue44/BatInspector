@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
-        Title="Tools for current File" Height="383" Width="194">
+        Title="Tools for current File" Height="383" Width="400">
     <Grid>
         <StackPanel Name ="_sp" Orientation="Vertical">
             <Button></Button>

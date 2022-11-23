@@ -35,6 +35,7 @@ namespace BatInspector
     public const string START_TIME = "start";
     public const string SNR = "snr";
     public const string SPECIES = "Species";
+    public const string SPECIES2 = "Species2";
     public const string SPECIES_MAN = "SpeciesMan";
     public const string PROBABILITY = "prob";
     public const string REMARKS = "remarks";
@@ -200,6 +201,7 @@ namespace BatInspector
           rItem.Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
           rItem.StartTime = call.getString(Cols.START_TIME);
           rItem.SpeciesAuto = call.getString(Cols.SPECIES);
+          rItem.SpeciesAuto2 = call.getString(Cols.SPECIES2);
           rItem.Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
           rItem.Snr = call.getDouble(Cols.SNR).ToString();
           rItem.SpeciesMan = call.getString(Cols.SPECIES_MAN);
@@ -344,6 +346,11 @@ namespace BatInspector
       return retVal;
     }
 
+    public void updateSpeciesCount()
+    {
+      foreach(AnalysisFile f in Files)
+        f.updateFoundSpecies(_specList);
+    }
 
     void filloutRecTime(Csv csv)
     {
@@ -408,6 +415,7 @@ namespace BatInspector
     public string FreqMaxAmp { get; set; }
 
     public string SpeciesAuto { get; set; }
+    public string SpeciesAuto2 { get; set; }
 
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
@@ -639,6 +647,22 @@ namespace BatInspector
     {
       foreach (AnalysisCall c in _calls)
         c.checkConfidence(species);
+    }
+
+    public void updateFoundSpecies(List <SpeciesInfos> specList)
+    {
+      _specFound.Clear();
+      foreach (AnalysisCall c in Calls)
+      {
+        string spec = c.getString(Cols.SPECIES);
+        if (SpeciesInfos.isInList(specList, spec))
+        {
+          if (_specFound.ContainsKey(spec))
+            _specFound[spec]++;
+          else
+            _specFound.Add(spec, 1);
+        }
+      }
     }
 
 

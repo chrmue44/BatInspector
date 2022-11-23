@@ -33,6 +33,8 @@ namespace BatInspector.Forms
       _tbScriptName.Text = script.Name;
       _tbDescription.Text = script.Description;
       _cbTool.IsChecked = script.IsTool;
+      if (_cbTool.IsChecked == true)
+        _btnRun.Visibility = Visibility.Hidden;
       _lblIdx.Text = _index.ToString();
     }
 
@@ -59,6 +61,11 @@ namespace BatInspector.Forms
     private void _btnEdit_Click(object sender, RoutedEventArgs e)
     {
       _model.editScript(_tbScriptName.Text);
+    }
+
+    private void _cbTool_Click(object sender, RoutedEventArgs e)
+    {
+      _btnRun.Visibility = _cbTool.IsChecked == true ? Visibility.Hidden : Visibility.Visible;
     }
   }
 }

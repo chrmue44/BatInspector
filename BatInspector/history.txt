@@ -11,6 +11,8 @@ TODO
 - find bug : delete file does not work in report.csv
 
 DONE
+- enabled 2nd classifier
+- update UI automatically after running a script
 - mini tools to manipulate single file informations
 - improved script management
 - scatter diagrams

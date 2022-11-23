@@ -9,6 +9,7 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using BatInspector.Properties;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -19,14 +20,12 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmTools : Window
   {
-    dlgUpdate _dlgUpdate;
     string _fileName;
     ViewModel _model;
 
-    public FrmTools(dlgUpdate update, string fileName, ViewModel model)
+    public FrmTools(string fileName, ViewModel model)
     {
       InitializeComponent();
-      _dlgUpdate = update;
       _fileName = fileName;
       _model = model;
       Title = "Tools for " + fileName;
@@ -38,11 +37,18 @@ namespace BatInspector.Forms
           b.Content = s.Description;
           b.Tag = s.Index;
           b.Click += btnCklick;
-          b.Margin = new Thickness(10, 2, 10, 2);
+          b.Margin = new Thickness(50, 2, 50, 2);
           b.Height = 30;
           _sp.Children.Add(b);
         }
       }
+      Button btnC = new Button();
+      btnC.Content = MyResources.BtnCancel;
+      btnC.Tag = -1;
+      btnC.Click += btnCklick;
+      btnC.Margin = new Thickness(50, 2, 50, 2);
+      btnC.Height = 30;
+      _sp.Children.Add(btnC);
     }
 
     private void btnCklick(object sender, RoutedEventArgs e)
@@ -55,7 +61,7 @@ namespace BatInspector.Forms
         {
           _model.Scripter.VarList.set("VAR_FILE_NAME", _fileName);
           _model.executeScript(_model.Settings.Scripts[index].Name, false);
-          _dlgUpdate();
+          this.DialogResult = true;
         }
       }
       this.Close();

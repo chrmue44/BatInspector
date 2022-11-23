@@ -605,12 +605,14 @@ namespace BatInspector.Forms
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
-      if((_model.Prj != null) &&(_model.Prj.Notes != null))
+      if ((_model.Prj != null) && (_model.Prj.Notes != null))
+      {
         _model.Prj.Notes = _ctlPrjInfo._tbNotes.Text;
+        _model.Prj.writePrjFile();
+      }
       _model.saveSettings();
       if(_model.Analysis.Report != null)
         _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
-      _model.Prj.writePrjFile();
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
@@ -690,6 +692,13 @@ namespace BatInspector.Forms
       {
         Mouse.OverrideCursor = _model.Busy ? Cursors.Wait : null;
       });
+      if(_model.UpdateUi)
+      {
+        if (_model.Analysis != null)
+          _model.Analysis.updateSpeciesCount();
+        updateWavControls();
+        _model.UpdateUi = false;
+      }
     }
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)

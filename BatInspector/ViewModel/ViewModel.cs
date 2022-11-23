@@ -103,6 +103,8 @@ namespace BatInspector
 
     public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
 
+    public bool UpdateUi { get; set; }
+
   //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -122,6 +124,7 @@ namespace BatInspector
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
       _sumReport = new SumReport(_speciesInfos);
       _prj = new Project(_batSpecRegions, _speciesInfos);
+      UpdateUi = false;
     }
 
     public void updateReport()
@@ -129,6 +132,7 @@ namespace BatInspector
       if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
         _analysis.read(_selectedDir + AppParams.PRJ_REPORT);
     }
+
 
     public void initProject(DirectoryInfo dir)
     {
@@ -146,14 +150,14 @@ namespace BatInspector
         _prj.readPrjFile(files[0]);
         if (_analysis.Report != null)
           checkProject();
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, null, this);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
       }
       else if (Project.containsWavs(dir))
       {
         _prj = new Project(_batSpecRegions, _speciesInfos);
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName + "/";
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, null, this);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
       }
       else
         _prj = null;
@@ -163,6 +167,12 @@ namespace BatInspector
         if ((_analysis != null) && (_analysis.Report != null) && (_analysis.Files.Count > 0))
           maxFreq = _analysis.Files[0].getInt(Cols.SAMPLERATE) / 2000;
       }
+    }
+
+    void updateProgress(int percent)
+    {
+      if (percent == 100)
+        UpdateUi = true;
     }
 
     void checkProject()
@@ -206,7 +216,7 @@ namespace BatInspector
         it.IsForAllCalls = p.isForAllCalls;
         _filter.Items.Add(it);
       }
-      _scripter = new ScriptRunner(ref _proc, _settings.ScriptDir, null, this);
+      _scripter = new ScriptRunner(ref _proc, _settings.ScriptDir, updateProgress, this);
       _analysis = new Analysis(SpeciesInfos);
     }
 
@@ -368,26 +378,13 @@ namespace BatInspector
       {
         string reportName = _selectedDir + AppParams.PRJ_REPORT;
         reportName = reportName.Replace("\\", "/");
+        addSpeciesColsToReport(reportName, _settings.SpeciesFile);
+        string datFile = _selectedDir + "/Xdata000.npy";
+        string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
+        string args = _settings.PythonScript;
 
         if ((options & OPT_INSPECT) != 0)
         {
-          /*
-          string scriptR = _settings.RScript; // "C:/Users/chrmu/prj/BatInspector/R/features.R";
-          string argsR = scriptR + " " + _selectedDir + _prj.WavSubDir + " " + reportName + " " + _settings.SpeciesFile + " 312500";
-          DebugLog.log("starting evaluation of calls: " + _settings.Rbin + " " + argsR, enLogType.INFO);
-          if (File.Exists(reportName))
-          {
-            DebugLog.log("backup file: " + reportName, enLogType.INFO);
-            try
-            {
-              File.Delete(reportName + "_old");
-              File.Copy(reportName, reportName + "_old");
-              File.Delete(reportName);
-            }
-            catch { }
-          }
-          retVal = _proc.LaunchCommandLineApp(_settings.Rbin, null, _selectedDir, true, argsR, true, true);
-          */
           //internal:
           string dir = _selectedDir + _prj.WavSubDir;
           string rep = _selectedDir + AppParams.PRJ_REPORT;
@@ -397,10 +394,6 @@ namespace BatInspector
 
         if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1 | OPT_RESAMPLE)) != 0)
         {
-          addSpeciesColsToReport(reportName, _settings.SpeciesFile);
-          string datFile = _selectedDir + "/Xdata000.npy";
-          string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
-          string args = _settings.PythonScript;
           DebugLog.log("preparing files for species prediction", enLogType.INFO);
           prepareFolder();
           if ((options & OPT_RESAMPLE) != 0)
@@ -415,11 +408,27 @@ namespace BatInspector
           args += " --csvcalls " + reportName +
                " --root " + _settings.ModelDir + " --specFile " + _settings.SpeciesFile +
                " --dataDir " + _selectedDir +
-               " --data " + datFile;
+               " --data " + datFile +
+               " --model " + _settings.ModelType1.ToString() +
+               " --predCol " + Cols.SPECIES;
           retVal = _proc.LaunchCommandLineApp(_settings.PythonBin, null, wrkDir, true, args, true, true);
         }
 
-        if((options & OPT_CONF95) != 0)
+        if ((options & OPT_PREDICT2) != 0)
+        {
+          DebugLog.log("species prediction with model 2", enLogType.INFO);
+          if ((options & OPT_PREDICT2) != 0)
+            args += " --predict";
+          args += " --csvcalls " + reportName +
+               " --root " + _settings.ModelDir + " --specFile " + _settings.SpeciesFile +
+               " --dataDir " + _selectedDir +
+               " --data " + datFile +
+               " --model " + _settings.ModelType2.ToString() +
+               " --predCol " + Cols.SPECIES2;
+          retVal = _proc.LaunchCommandLineApp(_settings.PythonBin, null, wrkDir, true, args, true, true);
+        }
+
+        if ((options & OPT_CONF95) != 0)
         {
           DebugLog.log("executing confidence test prediction", enLogType.INFO);
           _analysis.read(PrjPath + AppParams.PRJ_REPORT);
@@ -497,6 +506,17 @@ namespace BatInspector
         int c = rep.ColCnt + 1;
         rep.insertCol(c, "", "----");
       }
+      if (rep.findInRow(1, Cols.SPECIES) < 1)
+      {
+        int c = rep.ColCnt + 1;
+        rep.insertCol(c, "", Cols.SPECIES);
+      }
+      if (rep.findInRow(1, Cols.SPECIES2) < 1)
+      {
+        int c = rep.findInRow(1, Cols.SPECIES) + 1;
+        rep.insertCol(c, "", Cols.SPECIES2);
+      }
+
       for (int r = 2; r <= spec.RowCnt; r++)
       {
         string species = spec.getCell(r, 1);

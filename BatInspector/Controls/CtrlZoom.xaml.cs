@@ -542,7 +542,7 @@ namespace BatInspector.Controls
       double fMin = _model.ZoomView.RulerDataF.Min;
       double fMax = _model.ZoomView.RulerDataF.Max;
       int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
-      if((tEnd - tStart) < 0.2)
+      if(((tEnd - tStart) > 0) && ((tEnd - tStart) < 0.2))
         _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex);
 
       double dt = (double)_model.Settings.FftWidth / samplingRate;

@@ -343,6 +343,7 @@ def predict(dataName, speciesFile, report, rootDir, minSnr, modPars):
     report - name of the report 
     rootDir - root directory where the model file is stored
     minSnr - min SNR value to accept a prediction
+    modPars - model parameter
     """
     print("#### predict #####")
     listSpec = readSpeciesInfo(speciesFile)
@@ -381,11 +382,11 @@ def predict(dataName, speciesFile, report, rootDir, minSnr, modPars):
             iMax = np.argmax(y[idx])
             row['prob'] = y[idx, iMax]
             if (y[idx, iMax] < 0.5):
-                row['Species'] = '??PRO[' + listSpec[iMax] + ']'
+                row[modPars['predCol']] = '??PRO[' + listSpec[iMax] + ']'
             elif (snr < minSnr):
-                row['Species'] = '??SNR[' + f'{snr:.1f}' + ',' + listSpec[iMax] + ']'
+                row[modPars['predCol']] = '??SNR[' + f'{snr:.1f}' + ',' + listSpec[iMax] + ']'
             else:
-                row['Species'] = listSpec[iMax]
+                row[modPars['predCol']] = listSpec[iMax]
             spIdx = 0
             for species in listSpec:
                 row[species] = y[idx, spIdx]

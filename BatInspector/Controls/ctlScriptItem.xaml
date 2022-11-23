@@ -21,7 +21,7 @@
     <TextBox Name="_tbDescription" Grid.Column="1"  Margin="0,2,2,0"></TextBox>
     <TextBox Name="_tbScriptName" Grid.Column="2"  Margin="0,2,2,0"></TextBox>
         <Button Name ="_btnSel" Grid.Column="3" Click="_btnSel_Click" Content="..." Margin="0,2,2,0"/>
-        <CheckBox Name= "_cbTool" Grid.Column="4" Margin="2,5,2,0"></CheckBox>
+        <CheckBox Name= "_cbTool" Grid.Column="4" Click="_cbTool_Click" Margin="2,5,2,0"></CheckBox>
         <Button Name ="_btnRun" Grid.Column="5" Click="_btnRun_Click" Content="Run" Margin="0,2,2,0"/>
     <Button Name ="_btnEdit" Grid.Column="6" Click="_btnEdit_Click" Content="Edit" Margin="0,2,2,0"/>
 

@@ -197,6 +197,7 @@ namespace libScripter
 
           File.WriteAllLines(_fileName, lines);
         _changed = false;
+        log(_fileName + " saved", enLogType.INFO);
       }
       return retVal;
     }

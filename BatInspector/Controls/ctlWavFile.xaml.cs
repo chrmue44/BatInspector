@@ -220,9 +220,10 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        FrmTools frm = new FrmTools(update, _wavName, _model);
-        frm.Show();
-
+        FrmTools frm = new FrmTools(_wavName, _model);
+        bool upd = frm.ShowDialog() == true;
+        if (upd)
+          update();
         /*
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {

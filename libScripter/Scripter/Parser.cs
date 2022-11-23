@@ -195,6 +195,8 @@ namespace libScripter
         return;
       }
       ParseLines();
+      if (_updateProgress != null)
+        _updateProgress(100);
       DebugLog.log("execution of script " + _scriptName + " completed", enLogType.INFO);
     }
 

@@ -13,7 +13,7 @@ verbose = False    #show more infos on console
 
 
 
-def extractPart(srcFile, dstFile, start, end, save = True):
+def extractPart(srcFile, dstFile, start, end, newSampleRate, save = True, verbose = False):
     """
     extract a part from a wav file and save it as a file
     
@@ -21,6 +21,7 @@ def extractPart(srcFile, dstFile, start, end, save = True):
     srcFile - name of the source file (full path )
     dstFile - name of the destination file (full path)
     start - start time from the beginning of srcFile [ms]
+    newSampleRate - new sampling rate
     end - end time from the beginning of srcFile [ms]
     """
     recording = AudioSegment.from_wav(srcFile)
@@ -29,6 +30,13 @@ def extractPart(srcFile, dstFile, start, end, save = True):
     if end > recording.duration_seconds * 1000:
         end = recording.duration_seconds * 1000 - 1
     call = recording[start:end]
+    
+    if int(recording.frame_rate) != int(newSampleRate):
+        if verbose:
+            print("resampling from", recording.frame_rate, "to", newSampleRate, dstFile)
+        #samples.frame_rate = newRate
+        newS = call.set_frame_rate(newSampleRate)
+        call = newS
     if save:
         call.export(dstFile, format="wav")
     return call
@@ -336,7 +344,7 @@ def processCalls(csvFile, outDir, modPars, audioPars, format = "npy", verbose = 
         count = 0
         for row in reader:
             wavFile, imgFile, callFile, datFile, start, end = readFileInfos(row, outDir, modPars, audioPars)
-            seg = extractPart(wavFile, callFile, start, end, audioPars['saveWav'])
+            seg = extractPart(wavFile, callFile, start, end, modPars['sampleRate'], audioPars['saveWav'], verbose)
             if detectHardClipping(seg):
                 print("clipping detected in file:", callFile)
             #    continue

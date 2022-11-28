@@ -18,7 +18,7 @@
             <CheckBox Grid.Column="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
       <StackPanel>
         <Button Name="_btnCopy"  Margin="0,40,0,0" Click="_btnCopy_Click">-></Button>
-      <Button Name="_btnIgnore" Margin="0,20,0,0"  Click="_btnIgnore_Click">Ign</Button>
+                <Button Name="_btnIgnore" Margin="0,20,0,0"  Click="_btnIgnore_Click">...</Button>
       </StackPanel>
       <GroupBox Name ="_grpInfoAuto" Grid.Column="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}">
       <StackPanel Name="_spDataAuto">

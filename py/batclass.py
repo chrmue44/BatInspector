@@ -42,6 +42,7 @@ modPars = {
       'dirWeights' : 'wgt',      #sub directory to store the weights file     
       'dirLogs': 'log',          #sub directory for log files   
       'logName': 'log_',         #base name for generated log files for good and bad samples during test of model
+      'sampleRate': 312500,      #sampling rate of training data for model
       'predCol': 'Species'       #name of the column in the report for the prediction result
 }
 
@@ -64,6 +65,7 @@ audioPars = {
        'scaleType': 'lin',       #scale type for spectrogram
        'mrgBefore': 10,          #added time before call [ms] when cutting out single calls
        'mrgAfter': 20            #added timetime after call [ms] when cutting out single calls
+
 }
 def printHelp():
     print
@@ -154,7 +156,7 @@ def parseArguments(argv):
             env['resample'] = True
             env['inDirMask'] = arg
         elif opt == '--resample':
-            env['sampleRate'] = int(arg)
+            modPars['sampleRate'] = int(arg)
         elif opt == '--outFile':
             env['outFile'] = arg
         elif opt == '--epochs':
@@ -170,12 +172,12 @@ def parseArguments(argv):
 
 def execute():
     print("**** bat classification running ****")
-    if env['resample']:
-        print('********* resample WAV file ***********')
-        print('*          input:', env['inDirMask'])      
-        print('*    sample rate:', env['sampleRate'])
-        print('* stretch factor:', env['stretchFactor'])
-        audio.resampleWavFiles(env['inDirMask'], env['sampleRate'], env['stretchFactor'])
+#    if env['resample']:
+#        print('********* resample WAV file ***********')
+#        print('*          input:', env['inDirMask'])      
+#        print('*    sample rate:', env['sampleRate'])
+#        print('* stretch factor:', env['stretchFactor'])
+#        audio.resampleWavFiles(env['inDirMask'], env['sampleRate'], env['stretchFactor'])
 
     if env['cut']:
         print ("**** cutting audio files ****")

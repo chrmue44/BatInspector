@@ -11,6 +11,7 @@ TODO
 - find bug : delete file does not work in report.csv
 
 DONE
+- rescaling is now applied to the intermediate call files, original recordings untouched
 - enabled 2nd classifier
 - update UI automatically after running a script
 - mini tools to manipulate single file informations

@@ -62,7 +62,7 @@ namespace BatInspector
     SumReport _sumReport;
     BatSpeciesRegions _batSpecRegions;
     //ScatterDiagram _scatterDiagram;
-
+    int _evalOptions;
     Forms.MainWindow _mainWin;
     
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
@@ -374,6 +374,8 @@ namespace BatInspector
     public int startEvaluation(int options)
     {
       int retVal = 2;
+      _evalOptions = options;
+      
       if(Prj != null)
       {
         string reportName = _selectedDir + AppParams.PRJ_REPORT;
@@ -396,11 +398,10 @@ namespace BatInspector
         {
           DebugLog.log("preparing files for species prediction", enLogType.INFO);
           prepareFolder();
-          if ((options & OPT_RESAMPLE) != 0)
-            args += " --resample " + _selectedDir + _prj.WavSubDir + "*.wav" +
-                    " --sampleRate " + _settings.SamplingRate.ToString();
+  //        if ((options & OPT_RESAMPLE) != 0)
+  //          args += " --resample " + _selectedDir + _prj.WavSubDir + "*.wav";
           if ((options & OPT_CUT) != 0)
-            args += " --cut";
+            args += " --cut --sampleRate " + _settings.SamplingRate.ToString();
           if ((options & OPT_PREPARE) != 0)
             args += " --prepPredict";
           if ((options & OPT_PREDICT1) != 0)

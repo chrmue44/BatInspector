@@ -137,7 +137,7 @@ namespace BatInspector.Controls
       _cbMode.Items.Add("Call");
       _cbMode.Items.Add("Cursor");
       _cbMode.SelectedIndex = 0;
-
+      _oldCallIdx = -1;
     }
 
     void initWindows()

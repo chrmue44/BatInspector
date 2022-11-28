@@ -183,7 +183,7 @@ namespace BatInspector
           }
           else
           {
-            call.DistToPrev = startTime - oldStartTime;
+            call.DistToPrev = (startTime - oldStartTime)*1000;
             oldStartTime = startTime;
           }
           bool isInList = SpeciesInfos.isInList(_specList, call.getString(Cols.SPECIES));
@@ -443,7 +443,11 @@ namespace BatInspector
     double _firstToSecond;
 
    public double FirstToSecond { get { return _firstToSecond; } }
-    public double DistToPrev { get; set; }
+    
+   /// <summary>
+   /// distance to previous call [ms]
+   /// </summary>
+   public double DistToPrev { get; set; }
 
     public AnalysisCall(Csv csv, int row, List<SpeciesInfos> specList)
     {

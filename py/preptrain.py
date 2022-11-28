@@ -178,6 +178,7 @@ def preparePrediction(speciesFile, logDir, pathFiles, outPath):
     listSpecies = readSpeciesInfo(speciesFile)
     listSamples = glob.glob(pathFiles)
     size = int(len(listSamples))
+    print("Data files", pathFiles)
     print("number of calls:", size)
     print("gen data set")
     checkFile = logDir + '/checkprediction.csv'

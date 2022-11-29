@@ -543,7 +543,7 @@ namespace BatInspector.Controls
       double fMax = _model.ZoomView.RulerDataF.Max;
       int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
       if(((tEnd - tStart) > 0) && ((tEnd - tStart) < 0.2))
-        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex);
+        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, _model.Settings.ZoomSpectrumLogarithmic);
 
       double dt = (double)_model.Settings.FftWidth / samplingRate;
       _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, _model.Settings.FftWidth);
@@ -713,7 +713,8 @@ namespace BatInspector.Controls
           {
             _ctlTimeMin.setValue(tStart);
             _ctlTimeMax.setValue(tEnd);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex);
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax,
+                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, _model.Settings.ZoomSpectrumLogarithmic);
           }
           break;
 
@@ -722,7 +723,8 @@ namespace BatInspector.Controls
           {
             _ctlTimeMin.setValue(z.Cursor1.Time);
             _ctlTimeMax.setValue(z.Cursor2.Time);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax, _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex);
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax, 
+                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, _model.Settings.ZoomSpectrumLogarithmic);
             retVal = 1;
           }
           else

@@ -11,6 +11,8 @@ TODO
 - find bug : delete file does not work in report.csv
 
 DONE
+- removed rescaling option in frmStartPredict (because this must be done always, it is now an implicite operation during OPTION_CUT)
+- Display of spectrum for single call can now be switched between logarithmic and linear scale
 - rescaling is now applied to the intermediate call files, original recordings untouched
 - enabled 2nd classifier
 - update UI automatically after running a script
@@ -69,7 +71,7 @@ DONE
 - Zoom window: one window side by side to main window
 - alternatively (controllable per parameter in settings) Zoom window: as additional tab
 - CtrlZoom as control
-- settings wndow
+- settings window
 - species information as parameter in settings
 - find bug: apply filter after closing filter window -> crash
 - spectrum for each call

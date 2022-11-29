@@ -14,7 +14,6 @@
         </Grid.RowDefinitions>
         <StackPanel Margin="10,10,10,10" Grid.RowSpan="2">
             <CheckBox Name="_cbInspect" Content="{x:Static res:MyResources.frmStartPredInspect}"/>
-            <CheckBox Name="_cbResample" Content="{x:Static res:MyResources.frmStartPredResample}"/>
             <CheckBox Name="_cbCut" Content="{x:Static res:MyResources.frmStartPredCut}"/>
             <CheckBox Name="_cbPrepare" Content="{x:Static res:MyResources.frmPredPrepare}"/>
             <CheckBox Name ="_cbPredict1" Content="{x:Static res:MyResources.frmStartPredPredict1}"/>

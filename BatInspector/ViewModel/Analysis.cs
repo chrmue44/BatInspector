@@ -370,11 +370,14 @@ namespace BatInspector
           BatRecord rec = ElekonInfoFile.read(xmlName);
           if (rec != null)
           {
-            try
+            if (rec.DateTime.Length > 3)
             {
-              time = DateTime.ParseExact(rec.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+              try
+              {
+                time = DateTime.ParseExact(rec.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+              }
+              catch { }
             }
-            catch { }
             dateStr = AnyType.getTimeString(time);
           }
           else

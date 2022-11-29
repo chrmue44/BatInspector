@@ -29,7 +29,6 @@ namespace BatInspector.Forms
       InitializeComponent();
       _dlg = startPrediction;
       _pars = pars;
-      _cbResample.IsChecked = _pars.PredAdaptSampleRate;
       _cbInspect.IsChecked = _pars.PredIdentifyCalls;
       _cbCut.IsChecked = _pars.PredCutCalls;
       _cbPredict1.IsChecked = _pars.PredPredict1;
@@ -54,9 +53,7 @@ namespace BatInspector.Forms
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
       int options = 0;
-      if (_cbResample.IsChecked == true)
-        options |= ViewModel.OPT_RESAMPLE;
-      _pars.PredAdaptSampleRate = (bool)_cbResample.IsChecked;
+
       if (_cbInspect.IsChecked == true)
         options |= ViewModel.OPT_INSPECT;
       _pars.PredIdentifyCalls = (bool)_cbInspect.IsChecked;

@@ -113,6 +113,7 @@ namespace BatInspector.Controls
         int callNr = 1;
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();
+        _tbRemarks.Text = _analysis.getString(Cols.REMARKS);
         foreach (AnalysisCall call in _analysis.Calls)
         {
           ctlDataItem it = new ctlDataItem();

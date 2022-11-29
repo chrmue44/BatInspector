@@ -43,22 +43,22 @@ namespace BatInspector.Controls
     }
 
 
-    public void createFftImage(double[] samples, double tStart, double tEnd, double fMin, double fMax, int samplingRate, int mode)
+    public void createFftImage(double[] samples, double tStart, double tEnd, double fMin, double fMax, int samplingRate, int mode, bool logarithmic)
     {
       _fMax = fMax;
       _fMin = fMin;
-      _spectrum.create(samples, tStart, tEnd, samplingRate);
+      _spectrum.create(samples, tStart, tEnd, samplingRate, logarithmic);
       _mode = mode;
-      drawSpectrum(mode, fMin, fMax);
+      drawSpectrum(mode, fMin, fMax, logarithmic);
     }
 
-    private void drawSpectrum(int mode, double fMin, double fMax)
+    private void drawSpectrum(int mode, double fMin, double fMax, bool logarithmic)
     {
       _cvSpec.Children.Clear();
       if ((_spectrum != null) && (_spectrum.Amplitude != null))
       {
-        double min = _spectrum.findMinAmplitude();
-        double max = _spectrum.findMaxAmplitude();
+        double min = _spectrum.findMinAmplitude(logarithmic);
+        double max = _spectrum.findMaxAmplitude(logarithmic);
         int w = (int)_cvSpec.ActualWidth;
         int h = (int)_cvSpec.ActualHeight;
         int n = h > 0 ? _spectrum.Amplitude.Length / h + 1 : 1;
@@ -67,7 +67,7 @@ namespace BatInspector.Controls
         {
           double f = fMin + (double)(h - y) / h * (fMax - fMin); 
           int i = (int)(_spectrum.Amplitude.Length * f /_spectrum.RulerDataF.Max);
-          double a = _spectrum.getMeanAmpl(i, n);
+          double a = _spectrum.getMeanAmpl(i, n, logarithmic);
           int x1 = w;
           int x2 = w - (int)(w * (a / (max - min)));
           if (mode == 0)
@@ -88,7 +88,7 @@ namespace BatInspector.Controls
 
     private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-      drawSpectrum(_mode, _fMin, _fMax);
+      drawSpectrum(_mode, _fMin, _fMax, false);
     }
 
     public void drawCursor(int cursorNr, Cursor cursorI)

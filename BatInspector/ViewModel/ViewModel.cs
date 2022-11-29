@@ -39,7 +39,6 @@ namespace BatInspector
     public const int OPT_PREPARE = 0x04;
     public const int OPT_PREDICT1 = 0x08;
     public const int OPT_CONF95 = 0x10;
-    public const int OPT_RESAMPLE = 0x20;
     public const int OPT_PREDICT2 = 0x40;
     public const int OPT_PREDICT3 = 0x80;
     public const int OPT_CLEANUP = 0x100;
@@ -394,12 +393,10 @@ namespace BatInspector
           BioAcoustics.analyzeFiles(rep, dir);
         }
 
-        if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1 | OPT_RESAMPLE)) != 0)
+        if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)
         {
           DebugLog.log("preparing files for species prediction", enLogType.INFO);
           prepareFolder();
-  //        if ((options & OPT_RESAMPLE) != 0)
-  //          args += " --resample " + _selectedDir + _prj.WavSubDir + "*.wav";
           if ((options & OPT_CUT) != 0)
             args += " --cut --sampleRate " + _settings.SamplingRate.ToString();
           if ((options & OPT_PREPARE) != 0)

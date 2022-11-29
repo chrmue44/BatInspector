@@ -9,15 +9,18 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+
+//#define FFT_W3
+
 using DSPLib;
 using System;
 using System.Numerics;
+using System.Runtime.ExceptionServices;
 
 namespace BatInspector
 {
   public class Spectrum
   {
-    const bool FFT_W3 = false;
 
     double[] _samples;
     RulerData _rulerDataF;
@@ -35,7 +38,7 @@ namespace BatInspector
       _rulerDataF = new RulerData();
     }
 
-    public void create(double[] samples, double tStart, double tEnd, int samplingRate)
+    public void create(double[] samples, double tStart, double tEnd, int samplingRate, bool logarithmic)
     {
       uint idxStart = (uint)(tStart * samplingRate);
       uint idxEnd = (uint)(tEnd *samplingRate);
@@ -45,11 +48,11 @@ namespace BatInspector
       _fftSize = 256;
       while (_fftSize < len)
         _fftSize <<= 1;
-      _ampl = generateFft(idxStart, len, DSP.Window.Type.Hanning);
+      _ampl = generateFft(idxStart, len, logarithmic, DSP.Window.Type.Hanning);
     }
 
 
-    double[] generateFft(UInt32 idx, UInt32 length, DSP.Window.Type window = DSP.Window.Type.Hanning)
+    double[] generateFft(UInt32 idx, UInt32 length, bool logarithmic, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
       //   double amplitude = 1.0; double frequency = 20000.5;
       UInt32 zeroPadding = 0; // NOTE: Zero Padding
@@ -62,16 +65,13 @@ namespace BatInspector
       double[] inputSignal = new double[_fftSize];
       Array.Copy(_samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
-      if (FFT_W3)
-      {
+#if (FFT_W3)
         for (uint i = length; i < _fftSize; i++)
           inputSignal[i] = 0;
         lmSpectrum = BioAcoustics.calculateFft((int)_fftSize, enWIN_TYPE.BLACKMAN_HARRIS_7, inputSignal);
-      }
-      else
-      {
-        // Apply window to the Input Data & calculate Scale Factor
-        double[] wCoefs = DSP.Window.Coefficients(window, (uint)inputSignal.Length);
+#else
+      // Apply window to the Input Data & calculate Scale Factor
+      double[] wCoefs = DSP.Window.Coefficients(window, (uint)inputSignal.Length);
         double[] wInputData = DSP.Math.Multiply(inputSignal, wCoefs);
         double wScaleFactor = DSP.Window.ScaleFactor.Signal(wCoefs);
         // Instantiate & Initialize a new DFT
@@ -86,19 +86,27 @@ namespace BatInspector
         // Properly scale the spectrum for the added window
         lmSpectrum = DSP.Math.Multiply(lmSpectrum, wScaleFactor);
 
-      }
-      for (int i = 0; i < lmSpectrum.Length; i++)
+#endif
+      int first = 3;
+      if (logarithmic)
       {
-        lmSpectrum[i] = Math.Log(lmSpectrum[i]);        
+        for (int i = 0; i < lmSpectrum.Length; i++)
+        {
+          lmSpectrum[i] = Math.Log(lmSpectrum[i]);
+        }
+        for(int i = 0; i < first; i++)
+          lmSpectrum[i] = -100; //DC offset
       }
-      lmSpectrum[0] = -100; //DC offset
-      lmSpectrum[1] = -100; //DC offset
-      lmSpectrum[2] = -100; //DC offset
+      else
+      {
+        for (int i = 0; i < first; i++)
+          lmSpectrum[i] = 0; //DC offset
+      }
 
       return lmSpectrum;
     }
 
-    public double findMinAmplitude()
+    public double findMinAmplitude(bool logarithmic)
     {
       double min = 100000;
       foreach(double a in _ampl)
@@ -106,10 +114,13 @@ namespace BatInspector
         if (min > a)
           min = a;
       }
-      return Math.Pow(10, min / 10);
+      if(logarithmic)
+        return Math.Pow(10, min / 10);
+      else
+        return min; 
     }
 
-    public double findMaxAmplitude()
+    public double findMaxAmplitude(bool logarithmic)
     {
       double max = -100000;
       foreach (double a in _ampl)
@@ -117,10 +128,13 @@ namespace BatInspector
         if (max < a)
           max = a;
       }
-      return Math.Pow(10, max / 10);
+      if (logarithmic)
+        return Math.Pow(10, max / 10);
+      else
+        return max;
     }
 
-    public double getMeanAmpl(int idx, int n)
+    public double getMeanAmpl(int idx, int n, bool logarithmic)
     {
       double retVal = 0;
       if(idx >= 0)
@@ -128,7 +142,12 @@ namespace BatInspector
         for(int i = idx; i < (idx + n); i++)
         {
           if (i < _ampl.Length)
-            retVal += Math.Pow(10, _ampl[i]/10);
+          {
+            if (logarithmic)
+              retVal += Math.Pow(10, _ampl[i] / 10);
+            else
+              retVal += _ampl[i];
+          }
           else
             n--;
         }

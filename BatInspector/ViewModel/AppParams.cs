@@ -205,6 +205,10 @@ namespace BatInspector
     [LocalizedDescription("SpecDescShowZoom")]
     public bool ZoomSeparateWin { get; set; } = false;
 
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescZoomLogarithmic")]
+    public bool ZoomSpectrumLogarithmic { get; set; } = false;
+
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescLengthZoomMs")]
@@ -369,11 +373,6 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
-    LocalizedDescription("SpecDescAdapt")]
-    public bool PredAdaptSampleRate { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescCutCalls")]
     public bool PredCutCalls { get; set; }
 
@@ -449,7 +448,6 @@ namespace BatInspector
       SamplingRate = 312500;
 
       PredIdentifyCalls = true;
-      PredAdaptSampleRate = true;
       PredCutCalls = true;
       PredPrepData = true;
       PredPredict1 = true;

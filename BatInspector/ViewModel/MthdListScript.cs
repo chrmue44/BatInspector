@@ -232,7 +232,7 @@ namespace BatInspector
               switch (fileInfo)
               {
                 case enFileInfo.NAME:
-                  result.assign(_inst._model.Analysis.Files[idxF].getString(Cols.NAME));
+                  result.assign(_inst._model.Analysis.Files[idxF].Name);
                   break;
                 case enFileInfo.SAMPLE_RATE:
                   result.assignInt64(_inst._model.Analysis.Files[idxF].getInt(Cols.SAMPLERATE));

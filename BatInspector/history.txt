@@ -8,9 +8,10 @@ TODO
 - find bug that deletes header from report
 - more than one model
 - stop button to kill running script
-- find bug : delete file does not work in report.csv
 
 DONE
+- move deleted files in sub folder del
+- species prediction now done in worker thread
 - removed rescaling option in frmStartPredict (because this must be done always, it is now an implicite operation during OPTION_CUT)
 - Display of spectrum for single call can now be switched between logarithmic and linear scale
 - rescaling is now applied to the intermediate call files, original recordings untouched

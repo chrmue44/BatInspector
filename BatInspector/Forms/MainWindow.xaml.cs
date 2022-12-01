@@ -48,8 +48,9 @@ namespace BatInspector.Forms
     frmSpeciesData _frmSpecies = null;
     List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
     bool _fastOpen = true;
-
-    System.Windows.Threading.DispatcherTimer _dispatcherTimer;
+    Thread _worker = null;
+    System.Windows.Threading.DispatcherTimer _timer;
+    int _predictionOptions;
 
 
     public MainWindow()
@@ -84,10 +85,10 @@ namespace BatInspector.Forms
       }
       this.Top = _model.Settings.MainWindowPosX;
       this.Left = _model.Settings.MainWindowPosY;
-      _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-      _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-      _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-      _dispatcherTimer.Start();
+      _timer = new System.Windows.Threading.DispatcherTimer();
+      _timer.Tick += new EventHandler(timer_Tick);
+      _timer.Interval = new TimeSpan(0, 0, 1);
+      _timer.Start();
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
       _ctlLog.setViewModel(_model);
       _tbReport.IsSelected = false;
@@ -315,7 +316,7 @@ namespace BatInspector.Forms
       {
         if (ctl.Analysis != null)
         {
-          string name = ctl.Analysis.getString(Cols.NAME);
+          string name = ctl.Analysis.Name;
           AnalysisFile anaF = _model.Analysis.find(name);
           if (anaF != null)
             ctl.updateCallInformations(anaF);
@@ -512,14 +513,16 @@ namespace BatInspector.Forms
       }
     }
 
+    private void workerPrediction()
+    {
+      _model.startEvaluation(_predictionOptions);
+    }
+
     private void startPrediction(int options)
     {
-      Thread.Sleep(100);
-      if (_model.startEvaluation(options) == 0)
-      {
-        _model.updateReport();
-        updateWavControls();
-      }
+      _predictionOptions = options;
+      _worker = new Thread(new ThreadStart(workerPrediction));   
+      _worker.Start();  
     }
 
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
@@ -686,7 +689,7 @@ namespace BatInspector.Forms
       _model.Settings.MainWindowHeight = this.Height;
     }
 
-    private void dispatcherTimer_Tick(object sender, EventArgs e)
+    private void timer_Tick(object sender, EventArgs e)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
@@ -698,6 +701,13 @@ namespace BatInspector.Forms
           _model.Analysis.updateSpeciesCount();
         updateWavControls();
         _model.UpdateUi = false;
+      }
+
+      if((_worker != null) && (!_worker.IsAlive))
+      {
+        _worker = null;
+         _model.updateReport();
+         updateWavControls();
       }
     }
 

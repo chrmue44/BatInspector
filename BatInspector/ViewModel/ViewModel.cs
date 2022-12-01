@@ -188,10 +188,10 @@ namespace BatInspector
       }
       foreach (AnalysisFile a in _analysis.Files)
       {
-        BatExplorerProjectFileRecordsRecord r  = _prj.find(a.getString(Cols.NAME));
+        BatExplorerProjectFileRecordsRecord r  = _prj.find(a.Name);
         if (r == null)
         {
-          DebugLog.log("mismatch Prj against Report, missing file " + a.getString(Cols.NAME) + " in project", enLogType.ERROR);
+          DebugLog.log("mismatch Prj against Report, missing file " + a.Name + " in project", enLogType.ERROR);
           ok = false;
         }
       }
@@ -302,6 +302,7 @@ namespace BatInspector
       foreach (string f in files)
         deleteFile(f);
 
+      _analysis.save(PrjPath + AppParams.PRJ_REPORT);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
@@ -316,18 +317,17 @@ namespace BatInspector
       if (_prj != null)
       {
         string dirName = _selectedDir + _prj.WavSubDir;
-        string delName = wavName.Replace(AppParams.EXT_WAV, ".*");
-        int pos = delName.LastIndexOf("/");
-        int pos2 = delName.LastIndexOf("\\");
-        if ((pos >= 0) && (pos > pos2))
-          delName = delName.Substring(pos + 1);
-        else if (pos2 >= 0)
-          delName = delName.Substring(pos2 + 1);
+        string delName = Path.GetFileName(wavName);
+        delName = delName.Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
+        string destDir = PrjPath + "/del";
+        if(!Directory.Exists(destDir))
+          Directory.CreateDirectory(destDir);
         foreach (string f in delFiles)
         {
           try
-          {
+          { 
+            File.Copy(f, destDir + "/" + Path.GetFileName(f));
             File.Delete(f);
             DebugLog.log("delete file " + f, enLogType.DEBUG);
           }

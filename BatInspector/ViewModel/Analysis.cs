@@ -41,7 +41,9 @@ namespace BatInspector
     public const string REMARKS = "remarks";
     public const string BANDWIDTH = "bandwidth";
     public const string F_START = "freq_start";
+    public const string F_25 = "freq_25";
     public const string F_CENTER = "freq_center";
+    public const string F_75 = "freq_75";
     public const string F_END = "freq_end";
     public const string FC = "fc";
     public const string F_BW_KNEE_FC = "freq_bw_knee_fc";
@@ -53,12 +55,58 @@ namespace BatInspector
     public const string TEMP_BW_KNEE_FC = "temp_bw_knee_fc";
     public const string SLOPE = "slope";
     public const string KALMAN_SLOPE = "kalman_slope";
-    public const string CURVE_NEW = "curve_neg";
+    public const string CURVE_NEG = "curve_neg";
     public const string CURVE_POS_START = "curve_pos_start";
     public const string CURVE_POS_END = "curve_pos_end";
     public const string MID_OFFSET = "mid_offset";
     public const string SMOTTHNESS = "smoothness";
     public const string REC_TIME = "recTime";
+
+    public static Csv createReport()
+    {
+      Csv csv = new Csv();
+      csv.clear();
+      csv.addRow();
+      string header = NAME + ";" +
+                      NR + ";" +
+                      SPECIES + ";" +
+                      SPECIES2 + ";" +
+                      SAMPLERATE + ";" +
+                      FILE_LEN + ";" + 
+                      F_MAX_AMP + ";" + 
+                      F_MIN + ";" + 
+                      F_MAX + ";" + 
+                      F_KNEE + ";" + 
+                      DURATION + ";" + 
+                      START_TIME + ";" + 
+                      BANDWIDTH + ";" + 
+                      F_START + ";" +
+                      F_25 + ";" +
+                      F_CENTER + ";" +
+                      F_75 + ";" +
+                      F_END + ";" +
+                      FC + ";" +
+                      F_BW_KNEE_FC + ";" +
+                      BIN_MAX_AMP + ";" +
+                      PC_F_MAX_AMP + ";" +
+                      PC_F_MAX + ";" +
+                      PC_F_MIN + ";" +
+                      PC_KNEE + ";" +
+                      TEMP_BW_KNEE_FC + ";" +
+                      SLOPE + ";" +
+                      KALMAN_SLOPE + ";" +
+                      CURVE_NEG + ";" +
+                      CURVE_POS_START + ";" +
+                      CURVE_POS_END + ";" +
+                      MID_OFFSET + ";" +
+                      SMOTTHNESS + ";" +
+                      SNR + ";" +
+                      SPECIES_MAN +";" +
+                      PROBABILITY + ";" +
+                      REMARKS;
+      csv.initColNames(header, true);
+      return csv;
+    }
   }
 
   public class Analysis
@@ -90,8 +138,7 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        string fName = f.getString(Cols.NAME);
-        if (fName.IndexOf(name) >= 0)
+        if (f.Name.IndexOf(name) >= 0)
         {
           retVal = f;
           break;
@@ -151,9 +198,17 @@ namespace BatInspector
             _csv.insertCol(col, "", Cols.REMARKS);
             _csv.save();
           }
+          if (_csv.getColNr(Cols.SPECIES2) < 1)
+          {
+            int col = _csv.getColNr(Cols.SPECIES) + 1;
+            if (col < 1)
+              col = _csv.ColCnt + 1;
+            _csv.insertCol(col, "", Cols.SPECIES2);
+            _csv.save();
+          }
         }
         if (_csv.getColNr(Cols.REC_TIME) < 1)
-          filloutRecTime(_csv);
+          filloutRecTime();
 
         _list.Clear();
         string lastFileName = "$$$";
@@ -170,7 +225,7 @@ namespace BatInspector
           if (fName != lastFileName)
           {
             lastFileName = fName;
-            file = new AnalysisFile(_csv, row, recTime);
+            file = new AnalysisFile(_csv, fName, row, recTime);
             _list.Add(file);
             callNr = 1;
           }
@@ -263,10 +318,6 @@ namespace BatInspector
     {
       lock (_fileLock)
       {
-        //if(doReadSave)
-        //  save(reportName);
-
-        //remove from analysis file list
         AnalysisFile fileToDelete = AnalysisFile.find(_list, wavName);
         
         if (fileToDelete != null)
@@ -275,14 +326,7 @@ namespace BatInspector
         // remove from report file
         if (File.Exists(reportName))
         {
-      /*    if (doReadSave)
-          {
-            report = new Csv();
-            report.read(reportName,";",true);
-          } */
           bool res = removeWavFromReport(wavName);
-//          if(res && doReadSave)
-//            report.save();
         }
         else
         {
@@ -341,6 +385,7 @@ namespace BatInspector
           retVal = true;
         }
       } while (row > 0);
+      updateRowNumbers();
       return retVal;
     }
 
@@ -351,7 +396,7 @@ namespace BatInspector
 
       for (int i = 0;  i < Files.Count; i++)
       {
-        string fName = Files[i].getString(Cols.NAME);
+        string fName = Files[i].Name;
         if (fName.IndexOf(fileName) >= 0)
         {
           retVal = i;
@@ -368,18 +413,28 @@ namespace BatInspector
         f.updateFoundSpecies(_specList);
     }
 
-    void filloutRecTime(Csv csv)
+    void updateRowNumbers()
     {
-      csv.insertCol(2, "", Cols.REC_TIME);
+      foreach(AnalysisFile f in _list)
+      {
+        int row = _csv.findInCol(f.Name, Cols.NAME, true);
+        if (row > 0)
+          f.updateRow(row);
+      }
+    }
+
+    void filloutRecTime()
+    {
+      _csv.insertCol(2, "", Cols.REC_TIME);
       string oldF = "$$$";
       DateTime time = new DateTime();
       string dateStr = "";
 
       Stopwatch sw = new Stopwatch();
       sw.Start();
-      for (int r = 2; r <= csv.RowCnt; r++)
+      for (int r = 2; r <= _csv.RowCnt; r++)
       {
-        string fName = csv.getCell(r, Cols.NAME);
+        string fName = _csv.getCell(r, Cols.NAME);
         if (fName != oldF)
         {
           string xmlName = fName.Replace(".wav", ".xml");
@@ -399,9 +454,9 @@ namespace BatInspector
           else
             DebugLog.log("error reading file: " + xmlName, enLogType.ERROR);
         }
-        csv.setCell(r, Cols.REC_TIME, dateStr);
+        _csv.setCell(r, Cols.REC_TIME, dateStr);
       }
-      csv.save();
+      _csv.save();
       sw.Stop();
       DebugLog.log("read out start time of recordings, exec time: " + sw.Elapsed.ToString(), enLogType.INFO);
     }
@@ -474,6 +529,10 @@ namespace BatInspector
       _row = row;
     }
 
+    public void updateRow(int row)
+    {
+      _row = row;
+    }
 
     public double getDouble(string key)
     {
@@ -570,9 +629,10 @@ namespace BatInspector
 
     Csv _csv;
     DateTime _recTime;
-
+    string _name;
     public bool Selected { get; set; } = false;
 
+    public string Name { get { return _name; } }
     public DateTime RecTime { get;  }
 
     Dictionary<string, int> _specFound;
@@ -589,22 +649,28 @@ namespace BatInspector
       _csv = new Csv(header);
       _csv.addRow();
       _startRow = 2;
-      _csv.setCell(_startRow, Cols.NAME, name);
+      _name = name;
       _csv.setCell(_startRow, Cols.DURATION, duration);
       _csv.setCell(_startRow, Cols.SAMPLERATE,sampleRate);
       _csv.setCell(_startRow, Cols.START_TIME, 0);
-
     }
 
 
-
-    public AnalysisFile(Csv csv, int startRow, DateTime recTime)
+    public AnalysisFile(Csv csv, string name, int startRow, DateTime recTime)
     {
+      _name = name;
       _calls = new List<AnalysisCall>();
       _specFound = new Dictionary<string, int>();
       _startRow = startRow;
       _csv = csv;
       _recTime = recTime;
+    }
+
+    public void updateRow(int row)
+    {
+      _startRow = row;
+      for(int i = 0; i < _calls.Count; i++)
+        _calls[i].updateRow(row + i);
     }
 
     public void setString(string key, string value)

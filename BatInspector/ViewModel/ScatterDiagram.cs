@@ -100,7 +100,7 @@ namespace BatInspector
             if (x > xMax) xMax = x;
             y = getAxisValue(yAxis.Name, c);
             if (y > yMax) yMax = y;
-            string str = f.getString(Cols.NAME) + "_" + c.getInt(Cols.NR).ToString();
+            string str = f.Name + "_" + c.getInt(Cols.NR).ToString();
             scatterSeries.Points.Add(new ScatterPoint(x, y, size, color, str));
           }
         }

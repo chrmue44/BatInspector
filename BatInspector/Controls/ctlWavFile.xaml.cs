@@ -74,7 +74,7 @@ namespace BatInspector.Controls
       if (_model.Analysis.Files.Count > index)
       {
         _analysis = _model.Analysis.Files[index];
-        string fName = _analysis.getString(Cols.NAME);
+        string fName = _analysis.Name;
         int pos = fName.LastIndexOf('/');
         _wavName = fName.Substring(pos + 1);
         if (fName.IndexOf(_wavName) < 0)

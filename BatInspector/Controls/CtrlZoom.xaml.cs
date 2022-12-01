@@ -60,7 +60,7 @@ namespace BatInspector.Controls
       _duration.setup(MyResources.Duration+ " [s]", enDataType.DOUBLE, 3,100);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1,100);
       _wavFilePath = wavFilePath;
-      string fName = analysis.getString(Cols.NAME);
+      string fName = analysis.Name;
       string wavName = File.Exists(fName) ? fName : _wavFilePath + fName;
 
       _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256, _model.Settings);

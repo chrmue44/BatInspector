@@ -59,20 +59,10 @@ namespace BatInspector
   public class BioAcoustics
   {
 
-    static Csv createReport()
-    {
-      Csv csv = new Csv();
-      csv.clear();
-      csv.addRow();
-      string header = "name;nr;Species;sampleRate;FileLen;freq_max_amp;freq_min;freq_max;freq_knee;duration;start;bandwidth;freq_start;freq_25;freq_center;freq_75;freq_end;fc;freq_bw_knee_fc;bin_max_amp;pc_freq_max_amp;pc_freq_max;pc_freq_min;pc_knee;temp_bw_knee_fc;slope;kalman_slope;curve_neg;curve_pos_start;curve_pos_end;mid_offset;smoothness;snr;SpeciesMan;prob;remarks";
-      csv.initColNames(header, true);
-      return csv;
-    }
-
     public static void analyzeFiles(string reportName, string path)
     {
       string[] files = Directory.GetFiles(path, "*.wav");
-      Csv csv = createReport();
+      Csv csv = Cols.createReport();
       foreach (string fName in files)
       {
         int sampleRate;

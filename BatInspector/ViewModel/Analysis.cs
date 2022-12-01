@@ -227,6 +227,22 @@ namespace BatInspector
       }
     }
 
+    public void removeDeletedWavsFromReport(Project prj)
+    {
+      bool res = false;
+      for (int r = 1; r <= _csv.RowCnt; r++)
+      {
+        string wavName = _csv.getCell(r, Cols.NAME);
+
+        BatExplorerProjectFileRecordsRecord rec = prj.find(wavName);
+        if (rec == null)
+          res |= removeWavFromReport(wavName);
+      }
+
+      if (res)
+        _csv.save();
+    }
+
     public AnalysisFile getAnalysis(string fileName)
     {
       AnalysisFile retVal = null;
@@ -243,12 +259,12 @@ namespace BatInspector
     }
 
 
-    public void removeFile(string reportName, string wavName, bool doReadSave = true, Csv report = null)
+    public void removeFile(string reportName, string wavName)
     {
       lock (_fileLock)
       {
-        if(doReadSave)
-          save(reportName);
+        //if(doReadSave)
+        //  save(reportName);
 
         //remove from analysis file list
         AnalysisFile fileToDelete = AnalysisFile.find(_list, wavName);
@@ -259,14 +275,14 @@ namespace BatInspector
         // remove from report file
         if (File.Exists(reportName))
         {
-          if (doReadSave)
+      /*    if (doReadSave)
           {
             report = new Csv();
             report.read(reportName,";",true);
-          }
-          bool res = removeWavFromReport(report, wavName);
-          if(res && doReadSave)
-            report.save();
+          } */
+          bool res = removeWavFromReport(wavName);
+//          if(res && doReadSave)
+//            report.save();
         }
         else
         {
@@ -312,16 +328,16 @@ namespace BatInspector
       }
     }
 
-    public bool removeWavFromReport(Csv report, string wavName)
+    public bool removeWavFromReport(string wavName)
     {
       int row = 0;
       bool retVal = false;
       do
       {
-        row = report.findInCol(wavName, Cols.NAME, true);
+        row = _csv.findInCol(wavName, Cols.NAME, true);
         if (row > 0)
         {
-          report.removeRow(row);
+          _csv.removeRow(row);
           retVal = true;
         }
       } while (row > 0);

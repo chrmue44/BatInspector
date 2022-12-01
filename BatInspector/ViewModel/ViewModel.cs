@@ -298,44 +298,20 @@ namespace BatInspector
     {
       DebugLog.log("start deleting files", enLogType.INFO);
       _prj.writePrjFile();
-      string reportName = _selectedDir + "/" + AppParams.PRJ_REPORT;
-      _analysis.save(reportName);
-      Csv report = new Csv();
-      report.read(reportName, ";", true);
 
       foreach (string f in files)
-        deleteFile(f, report);
-      report.save(true);
+        deleteFile(f);
+
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
     public void removeDeletedWavsFromReport(string reportName)
     {
-      if (File.Exists(reportName))
-      {
-        List<string> wavToDel = new List<string>();
-
-        Csv report = new Csv();
-        report.read(reportName, ";", true);
-        for (int r = 1; r <= report.RowCnt; r++)
-        {
-          string wavName = report.getCell(r, Cols.NAME);
-
-          BatExplorerProjectFileRecordsRecord rec = _prj.find(wavName);
-          if (rec == null)
-            wavToDel.Add(wavName);
-        }
-
-        bool res = false;
-        foreach (string f in wavToDel)
-          res |= Analysis.removeWavFromReport(report, f);
-
-        if(res)
-          report.save();
-      }
+      if (_analysis != null)
+        _analysis.removeDeletedWavsFromReport(_prj);
     }
 
-    void deleteFile(string wavName, Csv report)
+    void deleteFile(string wavName)
     {
       if (_prj != null)
       {
@@ -363,7 +339,7 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _analysis.removeFile(_selectedDir +"/" + AppParams.PRJ_REPORT, wavName, false, report);
+        _analysis.removeFile(_selectedDir +"/" + AppParams.PRJ_REPORT, wavName);
       }
     }
 
@@ -390,7 +366,11 @@ namespace BatInspector
           string dir = _selectedDir + _prj.WavSubDir;
           string rep = _selectedDir + AppParams.PRJ_REPORT;
           rep = rep.Replace("\\", "/");
+          if (File.Exists(rep))
+            File.Delete(rep);
           BioAcoustics.analyzeFiles(rep, dir);
+          _analysis = new Analysis(_speciesInfos);
+          _analysis.read(rep);
         }
 
         if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)

@@ -682,6 +682,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bat Species Determination.
+        /// </summary>
+        public static string FrmMainBatDetermination {
+            get {
+                return ResourceManager.GetString("FrmMainBatDetermination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Freeze Axes.
         /// </summary>
         public static string frmMainFreezeAxes {
@@ -696,6 +705,15 @@ namespace BatInspector.Properties {
         public static string frmMainScatterDiagram {
             get {
                 return ResourceManager.GetString("frmMainScatterDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software Manual.
+        /// </summary>
+        public static string frmMainSoftwareManual {
+            get {
+                return ResourceManager.GetString("frmMainSoftwareManual", resourceCulture);
             }
         }
         
@@ -718,7 +736,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a script to .
+        ///   Looks up a localized string similar to Prepare data.
         /// </summary>
         public static string frmPredPrepare {
             get {

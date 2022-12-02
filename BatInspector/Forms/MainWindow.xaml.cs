@@ -25,6 +25,8 @@ using System;
 using libParser;
 using System.Threading;
 using BatInspector.Properties;
+using System.Windows.Controls.Primitives;
+using System.Diagnostics;
 
 namespace BatInspector.Forms
 {
@@ -51,6 +53,7 @@ namespace BatInspector.Forms
     Thread _worker = null;
     System.Windows.Threading.DispatcherTimer _timer;
     int _predictionOptions;
+    bool _switchTabToPrj = false;
 
 
     public MainWindow()
@@ -91,12 +94,10 @@ namespace BatInspector.Forms
       _timer.Start();
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
       _ctlLog.setViewModel(_model);
-      _tbReport.IsSelected = false;
-      _tbPrj.IsSelected = true;
-      //      Dispatcher.BeginInvoke((Action)(() => _tbPrj.IsSelected = true));
 #if DEBUG
       Tests tests = new Tests(_model);
       tests.exec();
+      _switchTabToPrj = true;
 #endif
     }
 
@@ -179,7 +180,6 @@ namespace BatInspector.Forms
         DebugLog.log("start to open project", enLogType.DEBUG);
         _scrlViewer.ScrollToVerticalOffset(0);
         checkSavePrj();
-    //    _model.ScatterDiagram = _scattDiagram;
         _model.initProject(dir);
         double fMax = 312000 / 2;
         if ((_model.Analysis != null) && (_model.Analysis.Files.Count > 0))
@@ -195,6 +195,7 @@ namespace BatInspector.Forms
             _cbYaxis.Items.Add(it.Name);
           }
         }
+        _switchTabToPrj = true;
         setStatus("   loading...");
         populateFiles();
       }
@@ -709,6 +710,11 @@ namespace BatInspector.Forms
          _model.updateReport();
          updateWavControls();
       }
+      if (_switchTabToPrj)
+      {
+        _tbPrj.IsSelected = true;
+        _switchTabToPrj = false;
+      }
     }
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)
@@ -817,6 +823,47 @@ namespace BatInspector.Forms
         _scattDiagram.createScatterDiagram(x, y, _model, filter, _cbFreezeAxis.IsChecked == true);
         _scatterModel.InvalidatePlot();
       }
+    }
+
+    private void DropdownButton_Checked(object sender, RoutedEventArgs e)
+    {
+      var menu = (sender as ToggleButton).ContextMenu;
+      menu.PlacementTarget = sender as ToggleButton;
+      menu.Placement = PlacementMode.Bottom;
+      menu.IsOpen = true;
+    }
+
+    private void ContextMenu_Closed(object sender, RoutedEventArgs e)
+    {
+      ((sender as ContextMenu).PlacementTarget as ToggleButton).IsChecked = false;
+    }
+
+    private void DropdownButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+    {
+      e.Handled = true;
+    }
+
+    private void showPdf(string name)
+    {
+      string helpFileName = AppDomain.CurrentDomain.BaseDirectory + name;
+      try
+      {
+        Process.Start(helpFileName);
+      }
+      catch
+      {
+        DebugLog.log("could not open help file: " + helpFileName, enLogType.ERROR);
+      }
+    }
+
+    private void _mnHelpSw_Click(object sender, RoutedEventArgs e)
+    {
+      showPdf(AppParams.HELP_FILE);
+    }
+
+    private void _mnBat_Click(object sender, RoutedEventArgs e)
+    {
+      showPdf(AppParams.BAT_INFO_PDF);
     }
   }
 

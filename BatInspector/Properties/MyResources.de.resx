@@ -729,4 +729,10 @@
   <data name="FrmScriptTtipAdd" xml:space="preserve">
     <value>Füge der Liste ein neues Skript hinzu</value>
   </data>
+  <data name="frmMainSoftwareManual" xml:space="preserve">
+    <value>Bedienungsanleitung</value>
+  </data>
+  <data name="FrmMainBatDetermination" xml:space="preserve">
+    <value>Fledermausbestimmung</value>
+  </data>
 </root>

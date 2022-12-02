@@ -38,6 +38,7 @@ namespace BatInspector
     public string Created { get { return _batExplorerPrj.Created; }  set { _batExplorerPrj.Created = value; } }
     public List<string> Species {  get { return _speciesList; } }
     BatSpeciesRegions _batSpecRegions;
+    bool _changed = false;
 
     public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
     {
@@ -46,6 +47,11 @@ namespace BatInspector
       _speciesInfo = speciesInfo;
     }
 
+    /// <summary>
+    /// checks wether a directory contains a project
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public static bool containsProject(DirectoryInfo dir)
     {
       try
@@ -59,6 +65,11 @@ namespace BatInspector
       return false;
     }
 
+    /// <summary>
+    /// checks if a directory contains a report
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public static string containsReport(DirectoryInfo dir)
     {
       try
@@ -75,6 +86,11 @@ namespace BatInspector
       return "";
     }
 
+    /// <summary>
+    /// checks wether a directory contains wav files
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public static bool containsWavs(DirectoryInfo dir)
     {
       bool retVal = false;
@@ -89,6 +105,11 @@ namespace BatInspector
       return retVal;
     }
 
+    /// <summary>
+    /// checks wether the manual evaluation of calls is completed (no more todo entries) or not
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public static bool evaluationDone(DirectoryInfo dir)
     {
       bool retVal = false;
@@ -135,6 +156,7 @@ namespace BatInspector
         else
           _wavSubDir = "/";
         _ok = true;
+        _changed = false;
       }
       catch (Exception ex)
       {
@@ -145,13 +167,14 @@ namespace BatInspector
 
     public void writePrjFile()
     {
-      if (_batExplorerPrj != null)
+      if ((_batExplorerPrj != null) && _changed)
       {
         _batExplorerPrj.FileVersion = "3";
         var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
         TextWriter writer = new StreamWriter(_prjFileName);
         serializer.Serialize(writer, _batExplorerPrj);
         writer.Close();
+        _changed = false;
         DebugLog.log("project '" + _prjFileName + "' saved", enLogType.INFO);
       }
     }
@@ -164,12 +187,18 @@ namespace BatInspector
         if (rec.File == wavName)
         {
           list.Remove(rec);
+          _changed = true;
           break;
         }
       }
       _batExplorerPrj.Records = list.ToArray();
     }
 
+    /// <summary>
+    /// find a file in the project
+    /// </summary>
+    /// <param name="fileName">name of the file (full path or just file name)</param>
+    /// <returns>record containing the file information</returns>
     public BatExplorerProjectFileRecordsRecord find(string fileName)
     {
       BatExplorerProjectFileRecordsRecord retVal = null;
@@ -184,6 +213,10 @@ namespace BatInspector
       return retVal;
     }
 
+    /// <summary>
+    /// create an elekon compatible project from a directory that contains wav files
+    /// </summary>
+    /// <param name="dir"></param>
     public void fillFromDirectory(DirectoryInfo dir)
     {
       try
@@ -206,12 +239,17 @@ namespace BatInspector
         _prjFileName = Path.GetFileName(dir.FullName);
         _batExplorerPrj.Name = _prjFileName;
         _prjFileName = dir.FullName + "/" + _prjFileName +".bpr";
+        _changed = true;
         writePrjFile();
       }
       catch { }
 
     }
 
+    /// <summary>
+    /// init the list of species valid for the project.
+    /// The list is depending on the region where the first file of the project was recorded
+    /// </summary>
     void initSpeciesList()
     {
       if(_batExplorerPrj.Records.Length > 0)

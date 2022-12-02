@@ -1,8 +1,19 @@
-﻿using BatInspector.Properties;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2022-11-10                                       
+ *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
+using BatInspector.Properties;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
 using System.Collections.Generic;
 
 
@@ -131,28 +142,6 @@ namespace BatInspector
       }
       _plotModel.Series.Add(scatterSeries);
     }
-
-    
-    void dummyDiag()
-    {
-      ScatterSeries scatterSeries = new ScatterSeries { MarkerType = MarkerType.Square };
-      _plotModel.Axes.Clear();
-      _plotModel.Series.Clear();
-
-      double color = 75;
-      double size = 2;
-      var r = new Random(314);
-        for (int i = 0; i < 100; i++)
-        {
-          var x = r.NextDouble() * 10;
-          var y = r.NextDouble() * 2 - 1;
-          size = 2; // r.Next(5, 15);
-          color = 75; // r.Next(100, 1000);
-        scatterSeries.Points.Add(new ScatterPoint(x, y, size, color));
-      }
-      _plotModel.Series.Add(scatterSeries);
-
-    } 
     
 
     public stAxisItem findAxisItem(string name)

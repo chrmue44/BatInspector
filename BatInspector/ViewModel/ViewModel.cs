@@ -68,8 +68,6 @@ namespace BatInspector
     
     public string PrjPath { get { return _selectedDir; } }
     
-    public string ScriptName { get { return _scriptName; } }
-    
     public ScriptRunner Scripter {  get { return _scripter; } }
     
     public string Version { get { return _version; } }
@@ -421,6 +419,7 @@ namespace BatInspector
           cleanupTempFiles();
         }
       }
+      _evalOptions = 0;
       return retVal;
     }
 
@@ -469,7 +468,7 @@ namespace BatInspector
     {
       bool retVal = false;
 
-      retVal = _proc.IsRunning | _extBusy;
+      retVal = _proc.IsRunning | _extBusy | (_evalOptions > 0);
       return retVal;
     }
 

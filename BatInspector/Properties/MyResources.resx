@@ -729,4 +729,10 @@
   <data name="FrmScriptTtipAdd" xml:space="preserve">
     <value>add a new script to the list</value>
   </data>
+  <data name="frmMainSoftwareManual" xml:space="preserve">
+    <value>Software Manual</value>
+  </data>
+  <data name="FrmMainBatDetermination" xml:space="preserve">
+    <value>Bat Species Determination</value>
+  </data>
 </root>

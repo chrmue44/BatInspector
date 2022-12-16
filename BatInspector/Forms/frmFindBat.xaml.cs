@@ -168,6 +168,9 @@ namespace BatInspector.Forms
           _ctlFend.setValue(c.getDouble(Cols.F_MIN) / 1000.0);
           _ctlFME.setValue(c.getDouble(Cols.F_MAX_AMP) / 1000.0);
           _ctlDuration.setValue(c.getDouble(Cols.DURATION));
+          double[] f = c.getFreqPoints();
+          enSigStructure sig = ClassifierBarataud.getSigStructure(f);
+          _ctlSigStruct.setValue(sig.ToString());
         }
       }
     }

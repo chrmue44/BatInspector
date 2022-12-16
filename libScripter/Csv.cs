@@ -425,6 +425,8 @@ namespace libScripter
       bool err = false;
       if (col > 0)
       {
+        if(_cells.Count == 0)
+          _cells.Add(new List<string>());
         foreach (List<string> row in _cells)
         {
           if (col <= row.Count)
@@ -492,7 +494,7 @@ namespace libScripter
           DebugLog.log("initColNames: col name already present: '" + colName + "'", enLogType.ERROR);
         }
         if (createCols)
-          insertCol(i + 1, cols[i]);
+          insertCol(i + 1, cols[i], colName);
       }
     }
 

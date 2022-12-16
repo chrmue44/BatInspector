@@ -76,6 +76,7 @@ namespace BatInspector
       testCsvFuncs(wrkDir);
       testClassifier();
       testSumReport();
+  //    testSignalForm();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -241,6 +242,38 @@ namespace BatInspector
 
       return retVal;
     }
+
+    private int testSignalForm()
+    {
+      Csv csv = new Csv();
+      csv.read("E:/bat/2022/20220905/report.csv", ";", true);
+      
+      Csv res = new Csv();
+      res.initColNames("F00;F25;F50;F75;F100;Form", true);
+
+      int rows = csv.RowCnt;
+      for(int r = 2; r <= rows; r++)
+      {
+        double[] f = new double[5];
+        f[0] = csv.getCellAsDouble(r, Cols.F_START);
+        f[1] = csv.getCellAsDouble(r, Cols.F_25);
+        f[2] = csv.getCellAsDouble(r, Cols.F_CENTER);
+        f[3] = csv.getCellAsDouble(r, Cols.F_75);
+        f[4] = csv.getCellAsDouble(r, Cols.F_END);
+        enSigStructure sig = ClassifierBarataud.getSigStructure(f);
+        res.addRow();
+        res.setCell(r, "F00", f[0]);
+        res.setCell(r, "F25", f[1]);
+        res.setCell(r, "F50", f[2]);
+        res.setCell(r, "F75", f[3]);
+        res.setCell(r, "F100", f[4]);
+        res.setCell(r, "Form", sig.ToString());
+      }
+      res.saveAs("sig.csv");
+
+      return 0;
+    }
+
     private void assert(string a, string exp)
     {
       if( a != exp)

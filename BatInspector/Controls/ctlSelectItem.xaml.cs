@@ -52,8 +52,16 @@ namespace BatInspector.Controls
 
     public void setValue(string val)
     {
-       _valString = val;
+      _valString = val;
       _cb.Text = val;
+      foreach(object o in _cb.Items)
+      {
+        if(o.ToString() == val)
+        {
+          _cb.SelectedItem = o;
+          break;
+        }
+      }
     }
 
     public void setItems(string[] items)

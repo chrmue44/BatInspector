@@ -11,6 +11,7 @@
  ********************************************************************************/
 
 using libParser;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -24,7 +25,8 @@ namespace BatInspector
     QCF_FM,
     QCF,
     FM_QCF,
-    FM
+    FM,
+    UNKNOWN
   }
 
   public enum enBoolDC
@@ -131,7 +133,6 @@ namespace BatInspector
     UNKNOWN,
   }
 
- 
 
   public class ClassifierBarataud
   {
@@ -493,6 +494,48 @@ namespace BatInspector
       }
       else
         DebugLog.log("unrecognized location: " + lat.ToString(CultureInfo.InvariantCulture) + " " + lon.ToString(CultureInfo.InvariantCulture), enLogType.INFO);
+      return retVal;
+    }
+
+    /// <summary>
+    /// get signal form
+    /// </summary>
+    /// <param name="f">5 frequencies in Hz</param>
+    /// <returns>signal form</returns>
+    public static enSigStructure getSigStructure(double[] f)
+    {
+      double fqcf1 = 5000;
+      double min = 100000;
+      double max = 0;
+      foreach (double f2 in f)
+      {
+        min = f2 < min ? f2 : min;
+        max = f2 > max ? f2 : max;
+      }
+      double bw = max - min;
+      double fqcf2 = bw / 10;
+      enSigStructure retVal = enSigStructure.UNKNOWN;
+
+      if(f.Length != 5)
+        return retVal;
+
+      if (bw < fqcf1)
+        return enSigStructure.QCF;
+
+      if ((f[0] < f[1] + 3000)  && 
+          (Math.Abs(f[1] - f[2]) < 2000) && (Math.Abs(f[2] - f[3]) < 2000) && 
+          (f[3] > f[4] + 3000))
+        return enSigStructure.FMa_CF_FMe;
+
+      if ((Math.Abs(f[4] - f[3]) < fqcf2) && (Math.Abs(f[0] - f[3]) > fqcf1))
+        return enSigStructure.FM_QCF;
+
+      if ((Math.Abs(f[0] - f[1]) < fqcf2) && (Math.Abs(f[1] - f[4]) > fqcf1))
+        return enSigStructure.QCF_FM;
+
+      if ((f[4] < f[3]) && (f[3] < f[2]) && (f[2] < f[1]) && (f[1] < f[0]))  //fm
+        return enSigStructure.FM;
+
       return retVal;
     }
   }

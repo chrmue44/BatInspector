@@ -618,6 +618,21 @@ namespace BatInspector
       }
       _firstToSecond = prob / prob2nd;
     }
+
+    /// <summary>
+    /// retrun the 5 characteristic frequency points
+    /// </summary>
+    /// <returns></returns>
+    public double[] getFreqPoints()
+    {
+      double[] f = new double[5];
+      f[0] = getDouble(Cols.F_START);
+      f[1] = getDouble(Cols.F_25);
+      f[2] = getDouble(Cols.F_CENTER);
+      f[3] = getDouble(Cols.F_75);
+      f[4] = getDouble(Cols.F_END);
+      return f;
+    }
   }
 
 

@@ -77,6 +77,7 @@ namespace BatInspector
       testClassifier();
       testSumReport();
   //    testSignalForm();
+      testSimCall();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -272,6 +273,22 @@ namespace BatInspector
       res.saveAs("sig.csv");
 
       return 0;
+    }
+
+    private void testSimCall()
+    {
+      List<FreqItem> l = new List<FreqItem>();
+      l.Add(new FreqItem(100000, 0, 0));
+      l.Add(new FreqItem(100000, 5e-3, 0));
+      l.Add(new FreqItem(95000, 7e-3, 0.02));
+      l.Add(new FreqItem(80000, 10e-3, 0.05));
+      l.Add(new FreqItem(60000, 15e-3, 0.08));
+      l.Add(new FreqItem(40000, 25e-3, 0.1));
+      l.Add(new FreqItem(25000, 28e-3, 0.08));
+      l.Add(new FreqItem(22000, 29e-3, 0));
+      l.Add(new FreqItem(22000, 500e-3, 0));
+      SimCall call = new SimCall(l, 384000);
+
     }
 
     private void assert(string a, string exp)

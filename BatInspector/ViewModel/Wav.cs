@@ -300,6 +300,12 @@ namespace BatInspector
       return retVal;
     }
 
+    public int saveFileAs(string name)
+    {
+      _fName = name;
+      return saveFile();
+    }
+
     public int saveFile()
     {
       int retVal = 0;
@@ -331,7 +337,7 @@ namespace BatInspector
       return retVal;
     }
     
-    void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
     {
       _header = new WaveHeader();
       _format = new FormatChunk(chanCount, (uint)sampleRate);
@@ -347,6 +353,7 @@ namespace BatInspector
       tempBytes.AddRange(_format.GetBytes());
       tempBytes.AddRange(_data.GetBytes());
       _waveData = tempBytes.ToArray();
+      _isOpen = true;
     }
 
     public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)

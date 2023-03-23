@@ -189,6 +189,7 @@
     <Compile Include="ViewModel\MthdListScript.cs" />
     <Compile Include="ViewModel\ScatterDiagram.cs" />
     <Compile Include="ViewModel\ScriptRunner.cs" />
+    <Compile Include="ViewModel\SimCall.cs" />
     <Compile Include="ViewModel\Spectrum.cs" />
     <Compile Include="ViewModel\SumReport.cs" />
     <Compile Include="ViewModel\Wav.cs" />

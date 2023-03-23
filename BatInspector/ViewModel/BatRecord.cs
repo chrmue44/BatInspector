@@ -43,6 +43,12 @@ public partial class BatRecord
 
   private BatRecordGPS gPSField;
 
+  public BatRecord()
+  {
+    gPSField = new BatRecordGPS();
+    triggerField = new BatRecordTrigger();
+  }
+
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string FileName

@@ -610,6 +610,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter missing information to create XML info files for this project.
+        /// </summary>
+        public static string frmCreateXmlInfo {
+            get {
+                return ResourceManager.GetString("frmCreateXmlInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create XML Info Files.
+        /// </summary>
+        public static string frmCreateXmlTitle {
+            get {
+                return ResourceManager.GetString("frmCreateXmlTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter Expression.
         /// </summary>
         public static string FrmFilterFilterExpression {
@@ -880,11 +898,47 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        public static string Latitude {
+            get {
+                return ResourceManager.GetString("Latitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude format error: .
+        /// </summary>
+        public static string LatitudeFormatError {
+            get {
+                return ResourceManager.GetString("LatitudeFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Licenses.
         /// </summary>
         public static string Licenses {
             get {
                 return ResourceManager.GetString("Licenses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        public static string Longitude {
+            get {
+                return ResourceManager.GetString("Longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude format error: .
+        /// </summary>
+        public static string LongitudeFormatError {
+            get {
+                return ResourceManager.GetString("LongitudeFormatError", resourceCulture);
             }
         }
         
@@ -1083,6 +1137,15 @@ namespace BatInspector.Properties {
         public static string MainToolFindSpeciesInfo {
             get {
                 return ResourceManager.GetString("MainToolFindSpeciesInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate xml information files for current project.
+        /// </summary>
+        public static string MainToolGenXmlFiles {
+            get {
+                return ResourceManager.GetString("MainToolGenXmlFiles", resourceCulture);
             }
         }
         

@@ -51,10 +51,13 @@
           <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>
+          <Button x:Name="_btnXmlTool" Click="_btnXmlTool_Click"  ToolTip="{x:Static res:MyResources.MainToolGenXmlFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+             <Image Source="../images/xml-dateiformatsymbol.png"></Image>
+          </Button>
           <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/report.png"></Image>
           </Button>
-                    <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+          <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
           <Separator/>

@@ -334,7 +334,16 @@ namespace BatInspector
     // Returns left and right double arrays. 'right' will be null if sound is mono.
     public void openWav(string filename, out double[] left, out double[] right, out int samplingRate)
     {
+      left = null;
+      right = null; 
+      samplingRate = 0;
+
       byte[] wav = File.ReadAllBytes(filename);
+      if (wav.Length < 256)
+      {
+        DebugLog.log("could not open WAV: " + filename, enLogType.ERROR);
+        return;
+      }
 
       // Determine if mono or stereo
       int bitsPerSample = wav[34] + wav[35] * 0x100;

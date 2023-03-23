@@ -333,5 +333,31 @@ namespace libParser
                matchPattern(pattern, name.Substring(1));
       return false;
     }
+
+    public static string latToString(double lat)
+    {
+      string hem = " N";
+      if (lat < 0)
+      {
+        lat *= -1;
+        hem = " S";
+      }
+      int deg = (int)lat;
+      double min = (lat - deg) * 60;
+      return deg.ToString() + "° " + min.ToString("0.000") + hem;
+    }
+
+    public static string lonToString(double lon)
+    {
+      string hem = " E";
+      if (lon < 0)
+      {
+        lon *= -1;
+        hem = " W";
+      }
+      int deg = (int)lon;
+      double min = (lon - deg) * 60;
+      return deg.ToString() + "° " + min.ToString("0.000") + hem;
+    }
   }
 }

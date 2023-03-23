@@ -140,6 +140,9 @@
     <Compile Include="Forms\frmCreateReport.xaml.cs">
       <DependentUpon>frmCreateReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmCreateXmlInfos.xaml.cs">
+      <DependentUpon>FrmCreateXmlInfos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmDebug.xaml.cs">
       <DependentUpon>frmDebug.xaml</DependentUpon>
     </Compile>
@@ -291,6 +294,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\FrmCreateXmlInfos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Forms\frmDebug.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -372,6 +379,7 @@
     <EmbeddedResource Include="Properties\MyResources.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MyResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\MyResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -415,6 +423,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="images\xml-dateiformatsymbol.png" />
     <Content Include="scripts\auto_to_man.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

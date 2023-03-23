@@ -865,6 +865,12 @@ namespace BatInspector.Forms
     {
       showPdf(AppParams.BAT_INFO_PDF);
     }
+
+    private void _btnXmlTool_Click(object sender, RoutedEventArgs e)
+    {
+      FrmCreateXmlInfos frm = new FrmCreateXmlInfos(_model);
+      frm.Show();
+    }
   }
 
   public enum enWinType 

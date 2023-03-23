@@ -735,4 +735,25 @@
   <data name="FrmMainBatDetermination" xml:space="preserve">
     <value>Fledermausbestimmung</value>
   </data>
+  <data name="MainToolGenXmlFiles" xml:space="preserve">
+    <value>Erzeuge XML informations-Dateien für das aktuelle Projekt</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>geographische Breite</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>geografische Länge</value>
+  </data>
+  <data name="frmCreateXmlInfo" xml:space="preserve">
+    <value>Bitte die fehlenden Informationen zum Erstellen der XML-Info-Dateien ergänzen</value>
+  </data>
+  <data name="frmCreateXmlTitle" xml:space="preserve">
+    <value>Erzeuge XML Infodateien</value>
+  </data>
+  <data name="LatitudeFormatError" xml:space="preserve">
+    <value>Formatfehler Geografische Breite: </value>
+  </data>
+  <data name="LongitudeFormatError" xml:space="preserve">
+    <value>Formatfehler Geografische Länge: </value>
+  </data>
 </root>

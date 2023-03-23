@@ -735,4 +735,25 @@
   <data name="FrmMainBatDetermination" xml:space="preserve">
     <value>Bat Species Determination</value>
   </data>
+  <data name="MainToolGenXmlFiles" xml:space="preserve">
+    <value>Generate xml information files for current project</value>
+  </data>
+  <data name="frmCreateXmlInfo" xml:space="preserve">
+    <value>Please enter missing information to create XML info files for this project</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="frmCreateXmlTitle" xml:space="preserve">
+    <value>Create XML Info Files</value>
+  </data>
+  <data name="LatitudeFormatError" xml:space="preserve">
+    <value>Latitude format error: </value>
+  </data>
+  <data name="LongitudeFormatError" xml:space="preserve">
+    <value>Longitude format error: </value>
+  </data>
 </root>

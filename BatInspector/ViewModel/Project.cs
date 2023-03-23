@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -243,7 +244,32 @@ namespace BatInspector
         writePrjFile();
       }
       catch { }
+    }
 
+    public void createXmlInfoFiles(double lat, double lon)
+    {
+      bool replaceAll = false;
+      foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
+      {
+        bool create = replaceAll;
+        string fullName = _selectedDir + _wavSubDir + record.File;
+        if(File.Exists(fullName))
+        {
+          if (!replaceAll && File.Exists(fullName.Replace(".wav", ".xml")))
+          {
+            MessageBoxResult res = MessageBox.Show("Replace all existing info files in this project?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (res == MessageBoxResult.Yes)
+            {
+              replaceAll = true;
+              create = true;
+            }
+          }
+          else
+            create = true;
+          if(create)
+            ElekonInfoFile.create(fullName, lat, lon);
+        }
+      }
     }
 
     /// <summary>

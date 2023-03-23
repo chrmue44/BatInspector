@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -25,6 +26,32 @@ namespace BatInspector
         retVal = new BatRecord();
       initUninitializedValues(ref retVal);
       return retVal;
+    }
+
+    public static void write(string infoName, BatRecord record)
+    {
+      var serializer = new XmlSerializer(typeof(BatRecord));
+      TextWriter writer = new StringWriter();
+      serializer.Serialize(writer, record);
+      File.WriteAllText(infoName, writer.ToString());
+    }
+
+    public static void create(string fileName, double lat, double lon)
+    {
+      BatRecord batRecord = new BatRecord();
+      batRecord.FileName = Path.GetFileName(fileName);
+      // string position = Utils.latToString(lat) + " " + Utils.lonToString(lon);
+      string position = lat.ToString(CultureInfo.InvariantCulture) + " " + lon.ToString(CultureInfo.InvariantCulture);
+      batRecord.GPS.Position = position;
+      WavFile wavFile = new WavFile();
+      wavFile.readFile(fileName);
+      batRecord.Samplerate = wavFile.FormatChunk.Frequency.ToString() + " Hz";
+      double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
+      batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
+      DateTime lastModified = System.IO.File.GetLastWriteTime(fileName);
+      batRecord.DateTime = lastModified.ToString("dd.MM.yyyy HH:mm:ss");
+      string infoName = fileName.Replace(".wav", ".xml");
+      ElekonInfoFile.write(infoName, batRecord);
     }
 
     public static void parsePosition(BatRecord rec, out double lat, out double lon)

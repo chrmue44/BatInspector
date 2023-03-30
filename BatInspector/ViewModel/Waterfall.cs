@@ -81,8 +81,7 @@ namespace BatInspector
       _maxAmplitude = _minAmplitude;
       if (File.Exists(_wavName))
       {
-        openWav(wavName, out _samples, out dummy, out _samplingRate);
-        _ok = true;
+        _ok = openWav(wavName, out _samples, out dummy, out _samplingRate);
       }
       else
       {
@@ -332,7 +331,7 @@ namespace BatInspector
     }
 
     // Returns left and right double arrays. 'right' will be null if sound is mono.
-    public void openWav(string filename, out double[] left, out double[] right, out int samplingRate)
+    public bool openWav(string filename, out double[] left, out double[] right, out int samplingRate)
     {
       left = null;
       right = null; 
@@ -342,7 +341,7 @@ namespace BatInspector
       if (wav.Length < 256)
       {
         DebugLog.log("could not open WAV: " + filename, enLogType.ERROR);
-        return;
+        return false;
       }
 
       // Determine if mono or stereo
@@ -409,6 +408,7 @@ namespace BatInspector
           i++;
         }
       }
+      return true;
     }
   }
 }

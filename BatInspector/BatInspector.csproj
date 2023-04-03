@@ -179,6 +179,7 @@
       <DependentUpon>MyResources.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Tests.cs" />
+    <Compile Include="ViewModel\BaseModel.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
     <Compile Include="ViewModel\BatInfo.cs" />
     <Compile Include="ViewModel\BatRecord.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="ViewModel\ElekonInfoFile.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
+    <Compile Include="ViewModel\ModelBateDetect2.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />
     <Compile Include="ViewModel\ScatterDiagram.cs" />
     <Compile Include="ViewModel\ScriptRunner.cs" />

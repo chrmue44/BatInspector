@@ -298,6 +298,16 @@ namespace libScripter
       setCell(row, col, valStr);
     }
 
+    public void setCell(int row, string colName, double value, int decimals)
+    {
+      int col = getColNr(colName);
+      string fmt = "0.";
+      for (int i = 0; i < decimals; i++)
+        fmt += "0";
+      string valStr = value.ToString(fmt,CultureInfo.InvariantCulture);
+      setCell(row, col, valStr);
+    }
+
     public void setCell(int row, string colName, string value)
     {
       int col = getColNr(colName);

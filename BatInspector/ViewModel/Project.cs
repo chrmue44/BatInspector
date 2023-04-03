@@ -38,6 +38,7 @@ namespace BatInspector
     public string Notes { get { return _batExplorerPrj != null ?_batExplorerPrj.Notes : ""; } set { if(_batExplorerPrj!= null) _batExplorerPrj.Notes = value; } }
     public string Created { get { return _batExplorerPrj.Created; }  set { _batExplorerPrj.Created = value; } }
     public List<string> Species {  get { return _speciesList; } }
+    public string PrjDir { get { return _selectedDir; } }
     BatSpeciesRegions _batSpecRegions;
     bool _changed = false;
 

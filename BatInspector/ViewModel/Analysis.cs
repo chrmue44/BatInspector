@@ -562,7 +562,7 @@ namespace BatInspector
       double duration = getDouble(Cols.DURATION);
       double fMin = getDouble(Cols.F_MIN);
       double fMax = getDouble(Cols.F_MAX);
-      SpeciesInfos spec = SpeciesInfos.find(speciesAuto, species);
+      SpeciesInfos spec = SpeciesInfos.findAbbreviation(speciesAuto, species);
       string err = "";
       if(spec != null)
       {

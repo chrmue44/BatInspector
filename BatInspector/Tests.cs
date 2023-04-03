@@ -78,6 +78,7 @@ namespace BatInspector
       testSumReport();
   //    testSignalForm();
       testSimCall();
+      testReportModelBatdetect2();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -289,6 +290,18 @@ namespace BatInspector
       l.Add(new FreqItem(22000, 500e-3, 0));
       SimCall call = new SimCall(l, 384000);
 
+    }
+
+    private void testReportModelBatdetect2()
+    {
+      List <SpeciesInfos> species = BatInfo.load().Species;
+      ViewModel viewmodel = new ViewModel(null, "");
+      viewmodel.loadSettings();
+      ModelBateDetect2 model = new ModelBateDetect2(species, viewmodel);
+      model.WavDir = "D:\\prj\\pr\\bat\\data\\wav";
+      model.AnnotationDir = "D:\\prj\\pr\\bat\\data\\ann";
+      model.ReportPath = "report.csv";
+      model.createReportFromAnnotations(0.5);
     }
 
     private void assert(string a, string exp)

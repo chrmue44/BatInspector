@@ -34,12 +34,26 @@ namespace BatInspector
       CharCalls = "TODO";
     }
 
-    public static SpeciesInfos find(string abbreviation, List<SpeciesInfos> list)
+    public static SpeciesInfos findAbbreviation(string abbreviation, List<SpeciesInfos> list)
     {
       SpeciesInfos retVal = null;
       foreach (SpeciesInfos s in list)
       {
         if (abbreviation.ToLower() == s.Abbreviation.ToLower())
+        {
+          retVal = s;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public static SpeciesInfos findLatin(string latin, List<SpeciesInfos> list)
+    {
+      SpeciesInfos retVal = null;
+      foreach (SpeciesInfos s in list)
+      {
+        if (latin.ToLower() == s.Latin.ToLower())
         {
           retVal = s;
           break;

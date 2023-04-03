@@ -165,7 +165,8 @@ namespace BatInspector
     public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
     public const string CSV_SEPARATOR = ";";              // CSV separator
     public const string PATH_SCRIPT = "scripts";          // sub directory containig scripts
-    public const string BAT_INFO_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection
+    public const string BAT_INFO1_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection
+    public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE = "/doc/BatInspector.pdf"; // software manual
     const string _fName = "BatInspectorSettings.json";
 

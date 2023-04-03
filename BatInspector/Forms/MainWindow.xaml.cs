@@ -861,9 +861,14 @@ namespace BatInspector.Forms
       showPdf(AppParams.HELP_FILE);
     }
 
-    private void _mnBat_Click(object sender, RoutedEventArgs e)
+    private void _mnBat1_Click(object sender, RoutedEventArgs e)
     {
-      showPdf(AppParams.BAT_INFO_PDF);
+      showPdf(AppParams.BAT_INFO1_PDF);
+    }
+
+    private void _mnBat2_Click(object sender, RoutedEventArgs e)
+    {
+      showPdf(AppParams.BAT_INFO2_PDF);
     }
 
     private void _btnXmlTool_Click(object sender, RoutedEventArgs e)

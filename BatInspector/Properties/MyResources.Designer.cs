@@ -700,11 +700,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bat Species Determination.
+        ///   Looks up a localized string similar to Bat Species Determination, part 1.
         /// </summary>
-        public static string FrmMainBatDetermination {
+        public static string FrmMainBatDetermination1 {
             get {
-                return ResourceManager.GetString("FrmMainBatDetermination", resourceCulture);
+                return ResourceManager.GetString("FrmMainBatDetermination1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bat Species Determination, part 2.
+        /// </summary>
+        public static string FrmMainBatDetermination2 {
+            get {
+                return ResourceManager.GetString("FrmMainBatDetermination2", resourceCulture);
             }
         }
         

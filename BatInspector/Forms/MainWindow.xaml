@@ -87,7 +87,8 @@
                         <ToggleButton.ContextMenu>
                             <ContextMenu Closed="ContextMenu_Closed">
                                 <MenuItem Header="{x:Static res:MyResources.frmMainSoftwareManual}" Name="_mnHelpSw" Click="_mnHelpSw_Click" />
-                                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination}" Name="_mnBat" Click="_mnBat_Click" />
+                                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
+                                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
                             </ContextMenu>
                         </ToggleButton.ContextMenu>
                     </ToggleButton>

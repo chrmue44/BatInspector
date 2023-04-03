@@ -732,8 +732,8 @@
   <data name="frmMainSoftwareManual" xml:space="preserve">
     <value>Bedienungsanleitung</value>
   </data>
-  <data name="FrmMainBatDetermination" xml:space="preserve">
-    <value>Fledermausbestimmung</value>
+  <data name="FrmMainBatDetermination1" xml:space="preserve">
+    <value>Fledermausbestimmung, Teil 1</value>
   </data>
   <data name="MainToolGenXmlFiles" xml:space="preserve">
     <value>Erzeuge XML informations-Dateien für das aktuelle Projekt</value>
@@ -755,5 +755,8 @@
   </data>
   <data name="LongitudeFormatError" xml:space="preserve">
     <value>Formatfehler Geografische Länge: </value>
+  </data>
+  <data name="FrmMainBatDetermination2" xml:space="preserve">
+    <value>Fledermausbestimmung, Teil 2</value>
   </data>
 </root>

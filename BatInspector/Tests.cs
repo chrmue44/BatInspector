@@ -78,7 +78,7 @@ namespace BatInspector
       testSumReport();
   //    testSignalForm();
       testSimCall();
-      testReportModelBatdetect2();
+  //    testReportModelBatdetect2();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -295,9 +295,7 @@ namespace BatInspector
     private void testReportModelBatdetect2()
     {
       List <SpeciesInfos> species = BatInfo.load().Species;
-      ViewModel viewmodel = new ViewModel(null, "");
-      viewmodel.loadSettings();
-      ModelBateDetect2 model = new ModelBateDetect2(species, viewmodel);
+      ModelBateDetect2 model = new ModelBateDetect2(species, _model);
       model.WavDir = "D:\\prj\\pr\\bat\\data\\wav";
       model.AnnotationDir = "D:\\prj\\pr\\bat\\data\\ann";
       model.ReportPath = "report.csv";

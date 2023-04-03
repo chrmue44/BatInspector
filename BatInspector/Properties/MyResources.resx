@@ -732,8 +732,8 @@
   <data name="frmMainSoftwareManual" xml:space="preserve">
     <value>Software Manual</value>
   </data>
-  <data name="FrmMainBatDetermination" xml:space="preserve">
-    <value>Bat Species Determination</value>
+  <data name="FrmMainBatDetermination1" xml:space="preserve">
+    <value>Bat Species Determination, part 1</value>
   </data>
   <data name="MainToolGenXmlFiles" xml:space="preserve">
     <value>Generate xml information files for current project</value>
@@ -755,5 +755,8 @@
   </data>
   <data name="LongitudeFormatError" xml:space="preserve">
     <value>Longitude format error: </value>
+  </data>
+  <data name="FrmMainBatDetermination2" xml:space="preserve">
+    <value>Bat Species Determination, part 2</value>
   </data>
 </root>

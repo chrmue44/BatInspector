@@ -63,11 +63,11 @@ namespace BatInspector.Controls
       string fName = analysis.Name;
       string wavName = File.Exists(fName) ? fName : _wavFilePath + fName;
 
-      _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256, _model.Settings);
+      _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
       _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
       _ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);
-      _ctlRange.setValue(_model.Settings.GradientRange);
+      _ctlRange.setValue(AppParams.Inst.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
@@ -164,7 +164,7 @@ namespace BatInspector.Controls
         if(_cbWindow.Items[i].ToString() ==)
       }*/
 
-      _cbWindow.SelectedItem = _model.Settings.FftWindow.ToString();
+      _cbWindow.SelectedItem = AppParams.Inst.FftWindow.ToString();
     }
     void setVisabilityCallData(bool on)
     {
@@ -543,10 +543,10 @@ namespace BatInspector.Controls
       double fMax = _model.ZoomView.RulerDataF.Max;
       int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
       if(((tEnd - tStart) > 0) && ((tEnd - tStart) < 0.2))
-        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, _model.Settings.ZoomSpectrumLogarithmic);
+        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
-      double dt = (double)_model.Settings.FftWidth / samplingRate;
-      _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, _model.Settings.FftWidth);
+      double dt = (double)AppParams.Inst.FftWidth / samplingRate;
+      _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.FftWidth);
       updateImage();
     }
 
@@ -639,7 +639,7 @@ namespace BatInspector.Controls
       //_ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, samplingRate,_cbMode.SelectedIndex);
       _model.ZoomView.RulerDataF.setRange(0, samplingRate/2000);
       double pre = 0.01;
-      _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + _model.Settings.ZoomOneCall / 1000.0 - pre);
+      _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + AppParams.Inst.ZoomOneCall / 1000.0 - pre);
       hideCursors();
       createZoomImg();
       _cbZoomAmpl_Click(null, null);
@@ -714,7 +714,7 @@ namespace BatInspector.Controls
             _ctlTimeMin.setValue(tStart);
             _ctlTimeMax.setValue(tEnd);
             _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax,
-                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, _model.Settings.ZoomSpectrumLogarithmic);
+                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
           }
           break;
 
@@ -724,7 +724,7 @@ namespace BatInspector.Controls
             _ctlTimeMin.setValue(z.Cursor1.Time);
             _ctlTimeMax.setValue(z.Cursor2.Time);
             _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax, 
-                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, _model.Settings.ZoomSpectrumLogarithmic);
+                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
             retVal = 1;
           }
           else
@@ -760,7 +760,7 @@ namespace BatInspector.Controls
       if ((_cbWindow.SelectedIndex >= 0) && (_cbWindow.SelectedIndex < _cbWindow.Items.Count))
       {
         Enum.TryParse(_cbWindow.Items[_cbWindow.SelectedIndex].ToString(), out wType);
-        _model.Settings.FftWindow = wType;
+        AppParams.Inst.FftWindow = wType;
         createZoomImg();
       }
     }

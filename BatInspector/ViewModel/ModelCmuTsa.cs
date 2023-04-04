@@ -1,0 +1,189 @@
+﻿using libParser;
+using libScripter;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Permissions;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BatInspector
+{
+  public class ModelCmuTsa : BaseModel
+  {
+    public const int OPT_INSPECT = 0x01;
+    public const int OPT_CUT = 0x02;
+    public const int OPT_PREPARE = 0x04;
+    public const int OPT_PREDICT1 = 0x08;
+    public const int OPT_CONF95 = 0x10;
+    public const int OPT_PREDICT2 = 0x40;
+    public const int OPT_PREDICT3 = 0x80;
+    public const int OPT_CLEANUP = 0x100;
+
+    public ModelCmuTsa(int index) :
+      base(index, enModel.rnn6aModel)
+    {
+
+    }
+
+
+    public override int classify(int options, Project prj)
+    {
+      int retVal = 0;
+      
+      string reportName = prj.PrjDir + AppParams.PRJ_REPORT;
+      reportName = reportName.Replace("\\", "/");
+      addSpeciesColsToReport(reportName, AppParams.Inst.SpeciesFile);
+      string datFile = prj.PrjDir + "/Xdata000.npy";
+      string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
+      ModelItem modPar = AppParams.Inst.Models[this.Index];
+      string args = modPar.PythonScript;
+
+      if ((options & OPT_INSPECT) != 0)
+      {
+        //internal:
+        string dir = prj.PrjDir + prj.WavSubDir;
+        string rep = prj.PrjDir + AppParams.PRJ_REPORT;
+        rep = rep.Replace("\\", "/");
+        if (File.Exists(rep))
+          File.Delete(rep);
+        BioAcoustics.analyzeFiles(rep, dir);
+        prj.Analysis.read(rep);
+      }
+
+      if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)
+      {
+        DebugLog.log("preparing files for species prediction", enLogType.INFO);
+        prepareFolder(prj.PrjDir);
+        if ((options & OPT_CUT) != 0)
+          args += " --cut --sampleRate " + AppParams.Inst.SamplingRate.ToString();
+        if ((options & OPT_PREPARE) != 0)
+          args += " --prepPredict";
+        if ((options & OPT_PREDICT1) != 0)
+          args += " --predict";
+        args += " --csvcalls " + reportName +
+             " --root " + modPar.Dir + " --specFile " + AppParams.Inst.SpeciesFile +
+             " --dataDir " + prj.PrjDir +
+             " --data " + datFile +
+             " --model " + this.Name +
+             " --predCol " + Cols.SPECIES;
+        retVal = _proc.LaunchCommandLineApp(AppParams.Inst.PythonBin, null, wrkDir, true, args, true, true);
+      }
+
+      if ((options & OPT_CONF95) != 0)
+      {
+        DebugLog.log("executing confidence test prediction", enLogType.INFO);
+        prj.Analysis.read(prj.PrjDir + AppParams.PRJ_REPORT);
+        prj.Analysis.checkConfidence(prj.SpeciesInfos);
+        prj.Analysis.save(prj.PrjDir + AppParams.PRJ_REPORT);
+        prj.Analysis.read(prj.PrjDir + AppParams.PRJ_REPORT);
+      }
+
+      if ((options & OPT_CLEANUP) != 0)
+      {
+        DebugLog.log("cleaning up temporary files", enLogType.INFO);
+        cleanupTempFiles(prj.PrjDir);
+      }
+      return retVal;
+    }
+
+    public override void train()
+    {
+      throw new NotImplementedException();
+    }
+
+    private void prepareFolder(string dirName, bool delete = true)
+    {
+      createDir(dirName, "bat", delete);
+      createDir(dirName, "wav", delete);
+      createDir(dirName, "dat", delete);
+      createDir(dirName, "log", delete);
+      createDir(dirName, "img", delete);
+    }
+
+
+    private void addSpeciesColsToReport(string report, string speciesFile)
+    {
+      Csv spec = new Csv();
+      Csv rep = new Csv();
+      spec.read(speciesFile, ";", true);
+      rep.read(report, ";", true);
+      if (rep.findInRow(1, "----") < 1)
+      {
+        int c = rep.ColCnt + 1;
+        rep.insertCol(c, "", "----");
+      }
+      if (rep.findInRow(1, Cols.SPECIES) < 1)
+      {
+        int c = rep.ColCnt + 1;
+        rep.insertCol(c, "", Cols.SPECIES);
+      }
+      if (rep.findInRow(1, Cols.SPECIES2) < 1)
+      {
+        int c = rep.findInRow(1, Cols.SPECIES) + 1;
+        rep.insertCol(c, "", Cols.SPECIES2);
+      }
+
+      for (int r = 2; r <= spec.RowCnt; r++)
+      {
+        string species = spec.getCell(r, 1);
+        if (rep.findInRow(1, species) < 1)
+        {
+          int c = rep.ColCnt + 1;
+          rep.insertCol(c, "", species);
+        }
+      }
+      rep.save();
+    }
+
+    private void cleanupTempFiles(string dirName)
+    {
+      removeDir(dirName, "bat");
+      removeDir(dirName, "wav");
+      removeDir(dirName, "dat");
+      removeDir(dirName, "log");
+      removeDir(dirName, "img");
+      var dir = new DirectoryInfo(dirName);
+      foreach (var file in dir.EnumerateFiles("*.npy"))
+      {
+        file.Delete();
+      }
+    }
+
+    private void createDir(string rootDir, string subDir, bool delete)
+    {
+      string dir = rootDir + "/" + subDir;
+      if (!Directory.Exists(dir))
+        Directory.CreateDirectory(dir);
+      if (delete)
+      {
+        System.IO.DirectoryInfo di = new DirectoryInfo(dir);
+
+        foreach (FileInfo file in di.GetFiles())
+        {
+          file.Delete();
+        }
+        foreach (DirectoryInfo d in di.GetDirectories())
+        {
+          d.Delete(true);
+        }
+      }
+    }
+
+    private void removeDir(string rootDir, string subDir)
+    {
+      string dir = rootDir + "/" + subDir;
+      try
+      {
+        if (Directory.Exists(dir))
+          Directory.Delete(dir, true);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("problems deleting dir: " + dir + ", " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+  }
+}

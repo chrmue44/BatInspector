@@ -34,23 +34,13 @@ namespace BatInspector
 
   public class ViewModel
   {
-    public const int OPT_INSPECT = 0x01;
-    public const int OPT_CUT = 0x02;
-    public const int OPT_PREPARE = 0x04;
-    public const int OPT_PREDICT1 = 0x08;
-    public const int OPT_CONF95 = 0x10;
-    public const int OPT_PREDICT2 = 0x40;
-    public const int OPT_PREDICT3 = 0x80;
-    public const int OPT_CLEANUP = 0x100;
 
     string _selectedDir = "";
     Project _prj;
     string _version;
-    Analysis _analysis;
     ProcessRunner _proc;
     ZoomView _zoom;
     Filter _filter;
-    AppParams _settings;
     ColorTable _colorTable;
     bool _extBusy = false;
     ScriptRunner _scripter = null;
@@ -63,6 +53,7 @@ namespace BatInspector
     //ScatterDiagram _scatterDiagram;
     int _evalOptions;
     Forms.MainWindow _mainWin;
+    List<BaseModel> _models;
     
     public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
     
@@ -71,8 +62,7 @@ namespace BatInspector
     public ScriptRunner Scripter {  get { return _scripter; } }
     
     public string Version { get { return _version; } }
-    
-    public Analysis Analysis { get { return _analysis; } }
+   
     
     public ClassifierBarataud Classifier { get { return _clsBarataud; } }
     
@@ -81,8 +71,6 @@ namespace BatInspector
     public ZoomView ZoomView { get { return _zoom; } }
     
     public Filter Filter { get { return _filter; } }
-    
-    public AppParams Settings { get { return _settings; }  }
     
     public ColorTable ColorTable { get { return _colorTable; } }
     
@@ -110,9 +98,7 @@ namespace BatInspector
       _proc = new ProcessRunner();
       _mainWin = mainWin;
       _filter = new Filter();
-      _settings = new AppParams();
       _speciesInfos = BatInfo.load().Species;
-      _analysis = new Analysis(_speciesInfos);
       _version = version;
       _colorTable = new ColorTable(this);
       _colorTable.createColorLookupTable();
@@ -121,13 +107,20 @@ namespace BatInspector
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
       _sumReport = new SumReport(_speciesInfos);
       _prj = new Project(_batSpecRegions, _speciesInfos);
+      _models = new List<BaseModel>();
+      int index = 0;
+      foreach(ModelItem m in AppParams.Inst.Models)
+      {
+        _models.Add(BaseModel.Create(index, m.ModelType));
+        index++;
+      }
       UpdateUi = false;
     }
 
     public void updateReport()
     {
       if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
-        _analysis.read(_selectedDir + AppParams.PRJ_REPORT);
+        _prj.Analysis.read(_selectedDir + AppParams.PRJ_REPORT);
     }
 
 
@@ -136,16 +129,16 @@ namespace BatInspector
       if (Project.containsProject(dir))
       {
         _selectedDir = dir.FullName + "/";
-        if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
-          _analysis.read(_selectedDir + AppParams.PRJ_REPORT);
-        else
-          _analysis = new Analysis(_speciesInfos);
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
           _prj = new Project(_batSpecRegions, _speciesInfos);
         _prj.readPrjFile(files[0]);
-        if (_analysis.Report != null)
+        if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
+          _prj.Analysis.read(_selectedDir + AppParams.PRJ_REPORT);
+        else
+          _prj.Analysis.init(_prj.SpeciesInfos);
+        if (_prj.Analysis.Report != null)
           checkProject();
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
       }
@@ -161,8 +154,8 @@ namespace BatInspector
       if (_prj != null)
       {
         double maxFreq = 150;
-        if ((_analysis != null) && (_analysis.Report != null) && (_analysis.Files.Count > 0))
-          maxFreq = _analysis.Files[0].getInt(Cols.SAMPLERATE) / 2000;
+        if ((_prj.Analysis != null) && (_prj.Analysis.Report != null) && (_prj.Analysis.Files.Count > 0))
+          maxFreq = _prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2000;
       }
     }
 
@@ -177,14 +170,14 @@ namespace BatInspector
       bool ok = true;
       foreach(BatExplorerProjectFileRecordsRecord rec in _prj.Records)
       {
-        AnalysisFile a = _analysis.find(rec.File);
+        AnalysisFile a = _prj.Analysis.find(rec.File);
         if (a == null)
         {
           DebugLog.log("mismatch Prj against Report, missing file " + rec.File + " in report", enLogType.ERROR);
           ok = false;
         }
       }
-      foreach (AnalysisFile a in _analysis.Files)
+      foreach (AnalysisFile a in _prj.Analysis.Files)
       {
         BatExplorerProjectFileRecordsRecord r  = _prj.find(a.Name);
         if (r == null)
@@ -202,9 +195,9 @@ namespace BatInspector
 
     public void loadSettings()
     {
-      _settings = AppParams.load();
+      AppParams.load();
       _filter.Items.Clear();
-      foreach(FilterParams p in _settings.Filter)
+      foreach(FilterParams p in AppParams.Inst.Filter)
       {
         FilterItem it = new FilterItem();
         it.Index = _filter.Items.Count;
@@ -213,22 +206,22 @@ namespace BatInspector
         it.IsForAllCalls = p.isForAllCalls;
         _filter.Items.Add(it);
       }
-      _scripter = new ScriptRunner(ref _proc, _settings.ScriptDir, updateProgress, this);
-      _analysis = new Analysis(SpeciesInfos);
+      _scripter = new ScriptRunner(ref _proc, AppParams.Inst.ScriptDir, updateProgress, this);
+      _prj.Analysis.init(_prj.SpeciesInfos);
     }
 
     public void saveSettings()
     {
-      _settings.Filter.Clear();
+      AppParams.Inst.Filter.Clear();
       foreach(FilterItem fItem in _filter.Items)
       {
         FilterParams fPar = new FilterParams();
         fPar.Expression = fItem.Expression;
         fPar.Name = fItem.Name;
         fPar.isForAllCalls = fItem.IsForAllCalls;
-        _settings.Filter.Add(fPar);
+        AppParams.Inst.Filter.Add(fPar);
       }
-      _settings.save();
+      AppParams.Inst.save();
     }
 
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
@@ -244,11 +237,11 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + _prj.WavSubDir + rec.File, _settings.FftWidth,
-                                     _settings.WaterfallWidth, _settings.WaterfallHeight, _settings, _colorTable);
+        Waterfall wf = new Waterfall(_selectedDir + _prj.WavSubDir + rec.File, AppParams.Inst.FftWidth,
+                                     AppParams.Inst.WaterfallWidth, AppParams.Inst.WaterfallHeight,  _colorTable);
         if (wf.Ok)
         {
-          wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, _settings.FftWidth);
+          wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, AppParams.Inst.FftWidth);
           bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
           bmp.Save(pngName);
           newImage = true;
@@ -257,7 +250,7 @@ namespace BatInspector
         {
            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
           _prj.removeFile(rec.File);
-          _analysis.removeFile(_selectedDir + "/" + AppParams.PRJ_REPORT, rec.File);
+          _prj.Analysis.removeFile(_selectedDir + "/" + AppParams.PRJ_REPORT, rec.File);
         }
       }
       if(bmp != null)
@@ -286,7 +279,7 @@ namespace BatInspector
 
     public void editScript(string name)
     {
-      string exe = Settings.ExeEditor;
+      string exe = AppParams.Inst.ExeEditor;
       _scriptName = name;
       string args = name;
       _proc.LaunchCommandLineApp(exe, null, null, false, args, true, false);
@@ -300,14 +293,14 @@ namespace BatInspector
       foreach (string f in files)
         deleteFile(f);
 
-      _analysis.save(PrjPath + AppParams.PRJ_REPORT);
+      _prj.Analysis.save(PrjPath + AppParams.PRJ_REPORT);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
     public void removeDeletedWavsFromReport(string reportName)
     {
-      if (_analysis != null)
-        _analysis.removeDeletedWavsFromReport(_prj);
+      if (_prj.Analysis != null)
+        _prj.Analysis.removeDeletedWavsFromReport(_prj);
     }
 
     void deleteFile(string wavName)
@@ -337,7 +330,7 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _analysis.removeFile(_selectedDir +"/" + AppParams.PRJ_REPORT, wavName);
+        _prj.Analysis.removeFile(_selectedDir +"/" + AppParams.PRJ_REPORT, wavName);
       }
     }
 
@@ -351,73 +344,7 @@ namespace BatInspector
       
       if(Prj != null)
       {
-        string reportName = _selectedDir + AppParams.PRJ_REPORT;
-        reportName = reportName.Replace("\\", "/");
-        addSpeciesColsToReport(reportName, _settings.SpeciesFile);
-        string datFile = _selectedDir + "/Xdata000.npy";
-        string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
-        string args = _settings.PythonScript;
-
-        if ((options & OPT_INSPECT) != 0)
-        {
-          //internal:
-          string dir = _selectedDir + _prj.WavSubDir;
-          string rep = _selectedDir + AppParams.PRJ_REPORT;
-          rep = rep.Replace("\\", "/");
-          if (File.Exists(rep))
-            File.Delete(rep);
-          BioAcoustics.analyzeFiles(rep, dir);
-          _analysis = new Analysis(_speciesInfos);
-          _analysis.read(rep);
-        }
-
-        if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)
-        {
-          DebugLog.log("preparing files for species prediction", enLogType.INFO);
-          prepareFolder();
-          if ((options & OPT_CUT) != 0)
-            args += " --cut --sampleRate " + _settings.SamplingRate.ToString();
-          if ((options & OPT_PREPARE) != 0)
-            args += " --prepPredict";
-          if ((options & OPT_PREDICT1) != 0)
-            args += " --predict";
-          args += " --csvcalls " + reportName +
-               " --root " + _settings.ModelDir + " --specFile " + _settings.SpeciesFile +
-               " --dataDir " + _selectedDir +
-               " --data " + datFile +
-               " --model " + _settings.ModelType1.ToString() +
-               " --predCol " + Cols.SPECIES;
-          retVal = _proc.LaunchCommandLineApp(_settings.PythonBin, null, wrkDir, true, args, true, true);
-        }
-
-        if ((options & OPT_PREDICT2) != 0)
-        {
-          DebugLog.log("species prediction with model 2", enLogType.INFO);
-          if ((options & OPT_PREDICT2) != 0)
-            args += " --predict";
-          args += " --csvcalls " + reportName +
-               " --root " + _settings.ModelDir + " --specFile " + _settings.SpeciesFile +
-               " --dataDir " + _selectedDir +
-               " --data " + datFile +
-               " --model " + _settings.ModelType2.ToString() +
-               " --predCol " + Cols.SPECIES2;
-          retVal = _proc.LaunchCommandLineApp(_settings.PythonBin, null, wrkDir, true, args, true, true);
-        }
-
-        if ((options & OPT_CONF95) != 0)
-        {
-          DebugLog.log("executing confidence test prediction", enLogType.INFO);
-          _analysis.read(PrjPath + AppParams.PRJ_REPORT);
-          _analysis.checkConfidence(_speciesInfos);
-          _analysis.save(PrjPath + AppParams.PRJ_REPORT);
-          _analysis.read(PrjPath + AppParams.PRJ_REPORT);
-        }
-
-        if ((options & OPT_CLEANUP) != 0)
-        {
-          DebugLog.log("cleaning up temporary files", enLogType.INFO);
-          cleanupTempFiles();
-        }
+        retVal = _models[0].classify(options, Prj);
       }
       _evalOptions = 0;
       return retVal;
@@ -470,99 +397,6 @@ namespace BatInspector
 
       retVal = _proc.IsRunning | _extBusy | (_evalOptions > 0);
       return retVal;
-    }
-
-    private void addSpeciesColsToReport(string report, string speciesFile)
-    {
-      Csv spec = new Csv();
-      Csv rep = new Csv();
-      spec.read(speciesFile, ";", true);
-      rep.read(report, ";", true);
-      if (rep.findInRow(1, "----") < 1)
-      {
-        int c = rep.ColCnt + 1;
-        rep.insertCol(c, "", "----");
-      }
-      if (rep.findInRow(1, Cols.SPECIES) < 1)
-      {
-        int c = rep.ColCnt + 1;
-        rep.insertCol(c, "", Cols.SPECIES);
-      }
-      if (rep.findInRow(1, Cols.SPECIES2) < 1)
-      {
-        int c = rep.findInRow(1, Cols.SPECIES) + 1;
-        rep.insertCol(c, "", Cols.SPECIES2);
-      }
-
-      for (int r = 2; r <= spec.RowCnt; r++)
-      {
-        string species = spec.getCell(r, 1);
-        if (rep.findInRow(1, species) < 1)
-        {
-          int c = rep.ColCnt + 1;
-          rep.insertCol(c, "", species);
-        }
-      }
-      rep.save();
-    }
-
-    private void createDir(string subDir, bool delete)
-    {
-      string dir = _selectedDir + "/" + subDir;
-      if (!Directory.Exists(dir))
-        Directory.CreateDirectory(dir);
-      if (delete)
-      {
-        System.IO.DirectoryInfo di = new DirectoryInfo(dir);
-
-        foreach (FileInfo file in di.GetFiles())
-        {
-          file.Delete();
-        }
-        foreach (DirectoryInfo d in di.GetDirectories())
-        {
-          d.Delete(true);
-        }
-      }
-    }
-
-    private void removeDir(string subDir)
-    {
-      string dir = _selectedDir + "/" + subDir;
-      try
-      {
-        if (Directory.Exists(dir))
-          Directory.Delete(dir, true);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("problems deleting dir: " + dir + ", " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
-
-    private void prepareFolder(bool delete = true)
-    {
-      createDir("bat", delete);
-      createDir("wav", delete);
-      createDir("dat", delete);
-      createDir("log", delete);
-      createDir("img", delete);
-    }
-
-
-    private void cleanupTempFiles()
-    {
-      removeDir("bat");
-      removeDir("wav");
-      removeDir("dat");
-      removeDir("log");
-      removeDir("img");
-      var dir = new DirectoryInfo(_selectedDir);
-      foreach (var file in dir.EnumerateFiles("*.npy"))
-      {
-        file.Delete();
-      }
     }
   }
 }

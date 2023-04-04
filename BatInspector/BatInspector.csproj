@@ -190,7 +190,8 @@
     <Compile Include="ViewModel\ElekonInfoFile.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
-    <Compile Include="ViewModel\ModelBateDetect2.cs" />
+    <Compile Include="ViewModel\ModelBatDetect2.cs" />
+    <Compile Include="ViewModel\ModelCmuTsa.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />
     <Compile Include="ViewModel\ScatterDiagram.cs" />
     <Compile Include="ViewModel\ScriptRunner.cs" />

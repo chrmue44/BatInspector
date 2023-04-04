@@ -71,9 +71,9 @@ namespace BatInspector.Controls
       _model = model;
       _parent = parent;
       InitializeComponent();
-      if (_model.Analysis.Files.Count > index)
+      if (_model.Prj.Analysis.Files.Count > index)
       {
-        _analysis = _model.Analysis.Files[index];
+        _analysis = _model.Prj.Analysis.Files[index];
         string fName = _analysis.Name;
         int pos = fName.LastIndexOf('/');
         _wavName = fName.Substring(pos + 1);
@@ -107,7 +107,7 @@ namespace BatInspector.Controls
       _wavFilePath = wavFilePath;
       _wavName = Name;
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
-      _analysis = _model.Analysis.find(_wavName);
+      _analysis = _model.Prj.Analysis.find(_wavName);
       if (_analysis != null)
       {
         int callNr = 1;
@@ -191,7 +191,7 @@ namespace BatInspector.Controls
         for (int i = 0; i < _analysis.Calls.Count; i++)
         {
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-          if ((_analysis.Calls[i].getDouble(Cols.PROBABILITY) >= _model.Settings.ProbabilityMin) &&
+          if ((_analysis.Calls[i].getDouble(Cols.PROBABILITY) >= AppParams.Inst.ProbabilityMin) &&
                SpeciesInfos.isInList(_model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
             ctlm.setValue(Analysis.Calls[i].getString(Cols.SPECIES).ToUpper());
           else

@@ -32,9 +32,9 @@ namespace BatInspector
       _colorTable = new Color[100];
       for (int i = 0; i < _colorTable.Length; i++)
       {
-        int r = getColorFromGradient((double)i, _model.Settings.ColorGradientRed);
-        int g = getColorFromGradient((double)i, _model.Settings.ColorGradientGreen);
-        int b = getColorFromGradient((double)i, _model.Settings.ColorGradientBlue);
+        int r = getColorFromGradient((double)i, AppParams.Inst.ColorGradientRed);
+        int g = getColorFromGradient((double)i, AppParams.Inst.ColorGradientGreen);
+        int b = getColorFromGradient((double)i, AppParams.Inst.ColorGradientBlue);
         _colorTable[i] = Color.FromArgb(r, g, b);
       }
     }

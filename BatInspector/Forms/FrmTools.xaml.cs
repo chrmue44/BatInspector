@@ -29,7 +29,7 @@ namespace BatInspector.Forms
       _fileName = fileName;
       _model = model;
       Title = "Tools for " + fileName;
-      foreach(ScriptItem s in _model.Settings.Scripts)
+      foreach(ScriptItem s in AppParams.Inst.Scripts)
       {
         if(s.IsTool)
         {
@@ -55,12 +55,12 @@ namespace BatInspector.Forms
     {
       Button b = e.Source as Button;
       int index = (int)b.Tag;
-      if ((index >= 0) && (index < _model.Settings.Scripts.Count))
+      if ((index >= 0) && (index < AppParams.Inst.Scripts.Count))
       {
-        if (_model.Settings.Scripts[index].IsTool)
+        if (AppParams.Inst.Scripts[index].IsTool)
         {
           _model.Scripter.VarList.set("VAR_FILE_NAME", _fileName);
-          _model.executeScript(_model.Settings.Scripts[index].Name, false);
+          _model.executeScript(AppParams.Inst.Scripts[index].Name, false);
           this.DialogResult = true;
         }
       }

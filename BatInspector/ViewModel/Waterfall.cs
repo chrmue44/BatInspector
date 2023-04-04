@@ -67,14 +67,13 @@ namespace BatInspector
     public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
-    public Waterfall(string wavName, UInt32 fftSize, int w, int h, AppParams settings, ColorTable colorTable)
+    public Waterfall(string wavName, UInt32 fftSize, int w, int h, ColorTable colorTable)
     {
       _width = w;
       _heightFt = h;
       _heightXt = h / 5;
       _wavName = wavName;
       _fftSize = fftSize;
-      _settings = settings;
       _colorTable = colorTable;
       double[] dummy;
       _spec = new List<double[]>();

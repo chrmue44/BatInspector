@@ -29,6 +29,7 @@ namespace BatInspector
     List<string> _speciesList;
     List<SpeciesInfos> _speciesInfo;
     string _selectedDir;
+    Analysis _analysis;
 
     public bool Ok {get {return _ok;} }
 
@@ -38,7 +39,11 @@ namespace BatInspector
     public string Notes { get { return _batExplorerPrj != null ?_batExplorerPrj.Notes : ""; } set { if(_batExplorerPrj!= null) _batExplorerPrj.Notes = value; } }
     public string Created { get { return _batExplorerPrj.Created; }  set { _batExplorerPrj.Created = value; } }
     public List<string> Species {  get { return _speciesList; } }
-    public string PrjDir { get { return _selectedDir; } }
+    public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
+    public string PrjDir { get { return _selectedDir + "/"; } }
+
+    public Analysis Analysis { get { return _analysis; }  }
+
     BatSpeciesRegions _batSpecRegions;
     bool _changed = false;
 
@@ -47,6 +52,7 @@ namespace BatInspector
       _batSpecRegions = regions;
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
+      _analysis = new Analysis(speciesInfo);
     }
 
     /// <summary>

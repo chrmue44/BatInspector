@@ -32,7 +32,7 @@ namespace BatInspector
     ViewModel _model;
 
     public VarList VarList { get { return _parser.VarTable.VarList; } }
-    public List<ScriptItem> Scripts { get { return _model.Settings.Scripts; } }
+    public List<ScriptItem> Scripts { get { return AppParams.Inst.Scripts; } }
     public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
     {
       _proc = proc;
@@ -126,14 +126,14 @@ namespace BatInspector
     public List<ScriptItem> getScripts()
     {
       List<ScriptItem> retVal = new List<ScriptItem>();
-      foreach (ScriptItem sItem in _model.Settings.Scripts)
+      foreach (ScriptItem sItem in AppParams.Inst.Scripts)
           retVal.Add(sItem);
       return retVal;
     }
 
     public void setScripts(List<ScriptItem> list)
     {
-      foreach(ScriptItem sItem in _model.Settings.Scripts)
+      foreach(ScriptItem sItem in AppParams.Inst.Scripts)
       {
         bool foundFile = false;
         foreach(ScriptItem lItem in list)
@@ -148,7 +148,7 @@ namespace BatInspector
           File.Delete(sItem.Name);
       }
 
-      _model.Settings.Scripts = list;
+      AppParams.Inst.Scripts = list;
     }
 
     void outputDataHandler(object sender, DataReceivedEventArgs ev)

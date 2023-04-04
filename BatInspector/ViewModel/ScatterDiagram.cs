@@ -100,7 +100,7 @@ namespace BatInspector
       double y = 0;
       double xMax = 10;
       double yMax = 10;
-      foreach (AnalysisFile f in model.Analysis.Files)
+      foreach (AnalysisFile f in model.Prj.Analysis.Files)
       {
         foreach(AnalysisCall c in f.Calls)
         {

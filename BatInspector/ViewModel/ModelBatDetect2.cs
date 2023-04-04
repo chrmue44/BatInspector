@@ -9,32 +9,28 @@ using System.Windows.Media.Animation;
 
 namespace BatInspector
 {
-  public class ModelBateDetect2 : BaseModel
+  public class ModelBatDetect2 : BaseModel
   {
     string _wavDir;
     string _annDir;
     string _reportPath;
     double _minProb = 0.5;
-    List<SpeciesInfos> _speciesInfos;
-    ViewModel _model;
 
-    public override string Name { get; }
     public string WavDir { get { return _wavDir; } set { _wavDir = value; } }
     public string AnnotationDir { get { return _annDir; } set{ _annDir = value; } }
     public string ReportPath { get { return _reportPath; } set { _reportPath = value; } } 
     public double MinProb {  get { return _minProb; } set { _minProb = value; } }
 
-    public ModelBateDetect2(List<SpeciesInfos> speciesInfos, ViewModel model) 
+    public ModelBatDetect2(int index) : 
+      base(index, enModel.BAT_DETECT2)
     {
-      Name = enModel.BAT_DETECT2.ToString();
-      _speciesInfos = speciesInfos;
-      _model = model;
     }
 
-    public override void classify()
+    public override int classify(int options, Project prj)
     {
       string args = _wavDir + " " + _annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture );
-      int retVal = _proc.LaunchCommandLineApp(_model.Settings.PythonBin, null,  _model.Prj.PrjDir, true, args, true, true);
+      int retVal = _proc.LaunchCommandLineApp(AppParams.Inst.PythonBin, null,  prj.PrjDir, true, args, true, true);
+      return retVal;
     }
 
     public override void train()
@@ -42,7 +38,7 @@ namespace BatInspector
       throw new NotImplementedException();
     }
 
-    public void createReportFromAnnotations(double minProb)
+    public void createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos)
     {
       Csv report = new Csv();
       string[] header = { "name", "recTime", "nr", "Species", "sampleRate", "FileLen", "freq_min", "freq_max", "duration","start","SpeciesMan","prob","remarks"};
@@ -95,7 +91,7 @@ namespace BatInspector
           string abbr = "";
           if (prob < minProb)
             abbr = "??PRO[";
-          SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, _speciesInfos);
+          SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
           if(info != null) 
             abbr += specInfo.Abbreviation;
           if (prob < minProb)

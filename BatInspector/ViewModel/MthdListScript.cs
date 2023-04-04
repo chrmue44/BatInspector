@@ -105,10 +105,10 @@ namespace BatInspector
       if (argv.Count >= 1)
       {
         argv[0].changeType(AnyType.tType.RT_STR);
-        if (_inst._model.Analysis != null)
+        if (_inst._model.Prj.Analysis != null)
         {
           string name = argv[0].getString();
-          int index = _inst._model.Analysis.getIndex(name);
+          int index = _inst._model.Prj.Analysis.getIndex(name);
           result.assignInt64(index);
         }
         else
@@ -152,7 +152,7 @@ namespace BatInspector
           argv[0].changeType(AnyType.tType.RT_UINT64);
           argv[1].changeType(AnyType.tType.RT_STR);
           int idxF = (int)argv[0].getUint64();
-          int maxIdxF = _inst._model.Analysis.Files.Count;
+          int maxIdxF = _inst._model.Prj.Analysis.Files.Count;
           if (idxF < maxIdxF)
           {
             enFileInfo fileInfo;
@@ -163,7 +163,7 @@ namespace BatInspector
               {
                   case enFileInfo.SELECT:
                     argv[2].changeType(AnyType.tType.RT_BOOL);
-                    _inst._model.Analysis.Files[idxF].Selected = argv[2].getBool();
+                    _inst._model.Prj.Analysis.Files[idxF].Selected = argv[2].getBool();
                     break;
                   case enFileInfo.SAMPLE_RATE:
                     break;
@@ -222,7 +222,7 @@ namespace BatInspector
           argv[0].changeType(AnyType.tType.RT_UINT64);
           argv[1].changeType(AnyType.tType.RT_STR);
           int idxF = (int)argv[0].getUint64();
-          int maxIdxF = _inst._model.Analysis.Files.Count;
+          int maxIdxF = _inst._model.Prj.Analysis.Files.Count;
           if (idxF < maxIdxF)
           {
             enFileInfo fileInfo;
@@ -232,13 +232,13 @@ namespace BatInspector
               switch (fileInfo)
               {
                 case enFileInfo.NAME:
-                  result.assign(_inst._model.Analysis.Files[idxF].Name);
+                  result.assign(_inst._model.Prj.Analysis.Files[idxF].Name);
                   break;
                 case enFileInfo.SAMPLE_RATE:
-                  result.assignInt64(_inst._model.Analysis.Files[idxF].getInt(Cols.SAMPLERATE));
+                  result.assignInt64(_inst._model.Prj.Analysis.Files[idxF].getInt(Cols.SAMPLERATE));
                   break;
                 case enFileInfo.DURATION:
-                  result.assign(_inst._model.Analysis.Files[idxF].getDouble(Cols.DURATION));
+                  result.assign(_inst._model.Prj.Analysis.Files[idxF].getDouble(Cols.DURATION));
                   break;
                 default:
                   result.assign("ERROR: supported data type: " + argv[1].getString());
@@ -268,12 +268,12 @@ namespace BatInspector
       {
         if (argv.Count >= 1)
         {
-          int maxIdx = _inst._model.Analysis.Files.Count;
+          int maxIdx = _inst._model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
           if (idx < maxIdx)
           {
-            int nr = _inst._model.Analysis.Files[idx].Calls.Count;
+            int nr = _inst._model.Prj.Analysis.Files[idx].Calls.Count;
             result.assignInt64(nr);
           }
           else
@@ -295,17 +295,17 @@ namespace BatInspector
       {
         if (argv.Count >= 1)
         {
-          int maxIdx = _inst._model.Analysis.Files.Count;
+          int maxIdx = _inst._model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           argv[1].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
           int rank = (int)argv[1].getUint64();
           if (idx < maxIdx)
           {
-            int cnt = _inst._model.Analysis.Files[idx].getNrOfAutoSpecies();
+            int cnt = _inst._model.Prj.Analysis.Files[idx].getNrOfAutoSpecies();
             if ((rank > 0) && (rank <= cnt))
             {
-              KeyValuePair<string, int> spec = _inst._model.Analysis.Files[idx].getSpecies(rank);
+              KeyValuePair<string, int> spec = _inst._model.Prj.Analysis.Files[idx].getSpecies(rank);
               result.assign(spec.Key.ToUpper());
             }
             else
@@ -330,17 +330,17 @@ namespace BatInspector
       {
         if (argv.Count >= 1)
         {
-          int maxIdx = _inst._model.Analysis.Files.Count;
+          int maxIdx = _inst._model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           argv[1].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
           int rank = (int)argv[1].getUint64();
           if (idx < maxIdx)
           {
-            int cnt = _inst._model.Analysis.Files[idx].getNrOfAutoSpecies();
+            int cnt = _inst._model.Prj.Analysis.Files[idx].getNrOfAutoSpecies();
             if ((rank > 0) && (rank <= cnt))
             {
-              KeyValuePair<string, int> spec = _inst._model.Analysis.Files[idx].getSpecies(rank);
+              KeyValuePair<string, int> spec = _inst._model.Prj.Analysis.Files[idx].getSpecies(rank);
               result.assignInt64(spec.Value);
             }
             else
@@ -365,12 +365,12 @@ namespace BatInspector
       {
         if (argv.Count >= 1)
         {
-          int maxIdx = _inst._model.Analysis.Files.Count;
+          int maxIdx = _inst._model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
           if (idx < maxIdx)
           {
-            int nr = _inst._model.Analysis.Files[idx].getNrOfAutoSpecies();
+            int nr = _inst._model.Prj.Analysis.Files[idx].getNrOfAutoSpecies();
             result.assignInt64(nr);
           }
           else
@@ -406,10 +406,10 @@ namespace BatInspector
           argv[2].changeType(AnyType.tType.RT_STR);
           int idxF = (int)argv[0].getUint64();
           int idxC = (int)argv[1].getUint64();
-          int maxIdxF = _inst._model.Analysis.Files.Count;
+          int maxIdxF = _inst._model.Prj.Analysis.Files.Count;
           if(idxF < maxIdxF)
           { 
-            int maxIdxC = _inst._model.Analysis.Files[idxF].Calls.Count;
+            int maxIdxC = _inst._model.Prj.Analysis.Files[idxF].Calls.Count;
             if (idxC < maxIdxC)
             {
               enCallInfo callInfo;
@@ -419,16 +419,16 @@ namespace BatInspector
                 switch (callInfo)
                 {
                   case enCallInfo.SPEC_AUTO:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES).ToUpper());
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES).ToUpper());
                     break;
                   case enCallInfo.SPEC_AUTO2:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES2).ToUpper());
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES2).ToUpper());
                     break;
                   case enCallInfo.SPEC_MAN:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN).ToUpper());
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN).ToUpper());
                     break;
                   case enCallInfo.PROB_RATIO:
-                    result.assign(_inst._model.Analysis.Files[idxF].Calls[idxC].FirstToSecond);
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].FirstToSecond);
                     break;
                 }
               }
@@ -462,10 +462,10 @@ namespace BatInspector
           argv[2].changeType(AnyType.tType.RT_STR);
           int idxF = (int)argv[0].getUint64();
           int idxC = (int)argv[1].getUint64();
-          int maxIdxF = _inst._model.Analysis.Files.Count;
+          int maxIdxF = _inst._model.Prj.Analysis.Files.Count;
           if (idxF < maxIdxF)
           {
-            int maxIdxC = _inst._model.Analysis.Files[idxF].Calls.Count;
+            int maxIdxC = _inst._model.Prj.Analysis.Files[idxF].Calls.Count;
             if (idxC < maxIdxC)
             {
               enCallInfo callInfo;
@@ -476,15 +476,15 @@ namespace BatInspector
                 {
                   case enCallInfo.SPEC_AUTO:
                     argv[3].changeType(AnyType.tType.RT_STR);
-                    _inst._model.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES, argv[3].getString());
+                    _inst._model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES, argv[3].getString());
                     break;
                   case enCallInfo.SPEC_AUTO2:
                     argv[3].changeType(AnyType.tType.RT_STR);
-                    _inst._model.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES2, argv[3].getString());
+                    _inst._model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES2, argv[3].getString());
                     break;
                   case enCallInfo.SPEC_MAN:
                     argv[3].changeType(AnyType.tType.RT_STR);
-                    _inst._model.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES_MAN, argv[3].getString());
+                    _inst._model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES_MAN, argv[3].getString());
                     break;
                 }
               }
@@ -707,9 +707,9 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if((_inst._model.Prj != null) && (_inst._model.Analysis != null))
+      if((_inst._model.Prj != null) && (_inst._model.Prj.Analysis != null))
       {
-        _inst._model.Analysis.calcProbabilityRatios(_inst._model.Settings.SpeciesFile);
+        _inst._model.Prj.Analysis.calcProbabilityRatios(AppParams.Inst.SpeciesFile);
       }
       else
       {

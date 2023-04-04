@@ -62,8 +62,8 @@ namespace BatInspector.Forms
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-      _model.Settings.ZoomWindowHeight = this.Height;
-      _model.Settings.ZoomWindowWidth = this.Width;
+      AppParams.Inst.ZoomWindowHeight = this.Height;
+      AppParams.Inst.ZoomWindowWidth = this.Width;
     }
 
     private void Window_Closing(object sender, CancelEventArgs e)

@@ -154,7 +154,7 @@ namespace BatInspector.Forms
 
     private void _btnGet_Click(object sender, RoutedEventArgs e)
     {
-      AnalysisFile a = _model.Analysis.getAnalysis(_model.ZoomView.FileInfo.FileName);
+      AnalysisFile a = _model.Prj.Analysis.getAnalysis(_model.ZoomView.FileInfo.FileName);
       if (a != null)
       {
         int idx = _model.ZoomView.SelectedCallIdx;

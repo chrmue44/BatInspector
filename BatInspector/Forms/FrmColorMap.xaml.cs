@@ -26,49 +26,49 @@ namespace BatInspector.Forms
     {
       _model = model;
       InitializeComponent();
-      _ctlB.setup(MyResources.ColorMapBlue, _model.Settings.ColorGradientBlue);
-      _ctlG.setup(MyResources.ColorMapGreen, _model.Settings.ColorGradientGreen);
-      _ctlR.setup(MyResources.ColorMapRed, _model.Settings.ColorGradientRed);
+      _ctlB.setup(MyResources.ColorMapBlue, AppParams.Inst.ColorGradientBlue);
+      _ctlG.setup(MyResources.ColorMapGreen, AppParams.Inst.ColorGradientGreen);
+      _ctlR.setup(MyResources.ColorMapRed, AppParams.Inst.ColorGradientRed);
     }
 
 
     private void readValuesFromScreen()
     {
-      _model.Settings.ColorGradientBlue[0].Value = _ctlB._ctlVal1.getIntValue();
-      _model.Settings.ColorGradientBlue[1].Value = _ctlB._ctlVal2.getIntValue();
-      _model.Settings.ColorGradientBlue[2].Value = _ctlB._ctlVal3.getIntValue();
-      _model.Settings.ColorGradientBlue[3].Value = _ctlB._ctlVal4.getIntValue();
-      _model.Settings.ColorGradientBlue[4].Value = _ctlB._ctlVal5.getIntValue();
+      AppParams.Inst.ColorGradientBlue[0].Value = _ctlB._ctlVal1.getIntValue();
+      AppParams.Inst.ColorGradientBlue[1].Value = _ctlB._ctlVal2.getIntValue();
+      AppParams.Inst.ColorGradientBlue[2].Value = _ctlB._ctlVal3.getIntValue();
+      AppParams.Inst.ColorGradientBlue[3].Value = _ctlB._ctlVal4.getIntValue();
+      AppParams.Inst.ColorGradientBlue[4].Value = _ctlB._ctlVal5.getIntValue();
 
-      _model.Settings.ColorGradientBlue[0].Color = _ctlB._ctlCol1.getIntValue();
-      _model.Settings.ColorGradientBlue[1].Color = _ctlB._ctlCol2.getIntValue();
-      _model.Settings.ColorGradientBlue[2].Color = _ctlB._ctlCol3.getIntValue();
-      _model.Settings.ColorGradientBlue[3].Color = _ctlB._ctlCol4.getIntValue();
-      _model.Settings.ColorGradientBlue[4].Color = _ctlB._ctlCol5.getIntValue();
+      AppParams.Inst.ColorGradientBlue[0].Color = _ctlB._ctlCol1.getIntValue();
+      AppParams.Inst.ColorGradientBlue[1].Color = _ctlB._ctlCol2.getIntValue();
+      AppParams.Inst.ColorGradientBlue[2].Color = _ctlB._ctlCol3.getIntValue();
+      AppParams.Inst.ColorGradientBlue[3].Color = _ctlB._ctlCol4.getIntValue();
+      AppParams.Inst.ColorGradientBlue[4].Color = _ctlB._ctlCol5.getIntValue();
 
-      _model.Settings.ColorGradientGreen[0].Value = _ctlG._ctlVal1.getIntValue();
-      _model.Settings.ColorGradientGreen[1].Value = _ctlG._ctlVal2.getIntValue();
-      _model.Settings.ColorGradientGreen[2].Value = _ctlG._ctlVal3.getIntValue();
-      _model.Settings.ColorGradientGreen[3].Value = _ctlG._ctlVal4.getIntValue();
-      _model.Settings.ColorGradientGreen[4].Value = _ctlG._ctlVal5.getIntValue();
+      AppParams.Inst.ColorGradientGreen[0].Value = _ctlG._ctlVal1.getIntValue();
+      AppParams.Inst.ColorGradientGreen[1].Value = _ctlG._ctlVal2.getIntValue();
+      AppParams.Inst.ColorGradientGreen[2].Value = _ctlG._ctlVal3.getIntValue();
+      AppParams.Inst.ColorGradientGreen[3].Value = _ctlG._ctlVal4.getIntValue();
+      AppParams.Inst.ColorGradientGreen[4].Value = _ctlG._ctlVal5.getIntValue();
 
-      _model.Settings.ColorGradientGreen[0].Color = _ctlG._ctlCol1.getIntValue();
-      _model.Settings.ColorGradientGreen[1].Color = _ctlG._ctlCol2.getIntValue();
-      _model.Settings.ColorGradientGreen[2].Color = _ctlG._ctlCol3.getIntValue();
-      _model.Settings.ColorGradientGreen[3].Color = _ctlG._ctlCol4.getIntValue();
-      _model.Settings.ColorGradientGreen[4].Color = _ctlG._ctlCol5.getIntValue();
+      AppParams.Inst.ColorGradientGreen[0].Color = _ctlG._ctlCol1.getIntValue();
+      AppParams.Inst.ColorGradientGreen[1].Color = _ctlG._ctlCol2.getIntValue();
+      AppParams.Inst.ColorGradientGreen[2].Color = _ctlG._ctlCol3.getIntValue();
+      AppParams.Inst.ColorGradientGreen[3].Color = _ctlG._ctlCol4.getIntValue();
+      AppParams.Inst.ColorGradientGreen[4].Color = _ctlG._ctlCol5.getIntValue();
 
-      _model.Settings.ColorGradientRed[0].Value = _ctlR._ctlVal1.getIntValue();
-      _model.Settings.ColorGradientRed[1].Value = _ctlR._ctlVal2.getIntValue();
-      _model.Settings.ColorGradientRed[2].Value = _ctlR._ctlVal3.getIntValue();
-      _model.Settings.ColorGradientRed[3].Value = _ctlR._ctlVal4.getIntValue();
-      _model.Settings.ColorGradientRed[4].Value = _ctlR._ctlVal5.getIntValue();
+      AppParams.Inst.ColorGradientRed[0].Value = _ctlR._ctlVal1.getIntValue();
+      AppParams.Inst.ColorGradientRed[1].Value = _ctlR._ctlVal2.getIntValue();
+      AppParams.Inst.ColorGradientRed[2].Value = _ctlR._ctlVal3.getIntValue();
+      AppParams.Inst.ColorGradientRed[3].Value = _ctlR._ctlVal4.getIntValue();
+      AppParams.Inst.ColorGradientRed[4].Value = _ctlR._ctlVal5.getIntValue();
 
-      _model.Settings.ColorGradientRed[0].Color = _ctlR._ctlCol1.getIntValue();
-      _model.Settings.ColorGradientRed[1].Color = _ctlR._ctlCol2.getIntValue();
-      _model.Settings.ColorGradientRed[2].Color = _ctlR._ctlCol3.getIntValue();
-      _model.Settings.ColorGradientRed[3].Color = _ctlR._ctlCol4.getIntValue();
-      _model.Settings.ColorGradientRed[4].Color = _ctlR._ctlCol5.getIntValue();
+      AppParams.Inst.ColorGradientRed[0].Color = _ctlR._ctlCol1.getIntValue();
+      AppParams.Inst.ColorGradientRed[1].Color = _ctlR._ctlCol2.getIntValue();
+      AppParams.Inst.ColorGradientRed[2].Color = _ctlR._ctlCol3.getIntValue();
+      AppParams.Inst.ColorGradientRed[3].Color = _ctlR._ctlCol4.getIntValue();
+      AppParams.Inst.ColorGradientRed[4].Color = _ctlR._ctlCol5.getIntValue();
     }
 
     private void _btnApply_Click(object sender, RoutedEventArgs e)

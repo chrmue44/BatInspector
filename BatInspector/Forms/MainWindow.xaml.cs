@@ -79,15 +79,15 @@ namespace BatInspector.Forms
       populateFilterComboBoxes();
       initZoomWindow();
       this.Title = "BatInspector V" + version.ToString();
-      if ((_model.Settings.MainWindowWidth > 100) && (_model.Settings.MainWindowHeight > 100))
+      if ((AppParams.Inst.MainWindowWidth > 100) && (AppParams.Inst.MainWindowHeight > 100))
       {
-        this.Width = _model.Settings.MainWindowWidth;
-        this.Height = _model.Settings.MainWindowHeight;
-        _grdMain.RowDefinitions[3].Height = new GridLength(_model.Settings.LogControlHeight);
-        _grdCtrl.ColumnDefinitions[0].Width = new GridLength(_model.Settings.WidthFileSelector);
+        this.Width = AppParams.Inst.MainWindowWidth;
+        this.Height = AppParams.Inst.MainWindowHeight;
+        _grdMain.RowDefinitions[3].Height = new GridLength(AppParams.Inst.LogControlHeight);
+        _grdCtrl.ColumnDefinitions[0].Width = new GridLength(AppParams.Inst.WidthFileSelector);
       }
-      this.Top = _model.Settings.MainWindowPosX;
-      this.Left = _model.Settings.MainWindowPosY;
+      this.Top = AppParams.Inst.MainWindowPosX;
+      this.Left = AppParams.Inst.MainWindowPosY;
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 1);
@@ -111,9 +111,9 @@ namespace BatInspector.Forms
         DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
         trvStructure.Items.Add(CreateTreeItem(dir));
       }
-      if (_model.Settings.RootDataDir != null)
+      if (AppParams.Inst.RootDataDir != null)
       {
-        DirectoryInfo batDataDir = new DirectoryInfo(_model.Settings.RootDataDir);
+        DirectoryInfo batDataDir = new DirectoryInfo(AppParams.Inst.RootDataDir);
         trvStructure.Items.Add(CreateTreeItem(batDataDir));
       }
     }
@@ -161,7 +161,7 @@ namespace BatInspector.Forms
 
     private void setLanguage()
     {
-      string culture = _model.Settings.Culture.ToString().Replace('_', '-');
+      string culture = AppParams.Inst.Culture.ToString().Replace('_', '-');
       Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
       Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
     }
@@ -182,8 +182,8 @@ namespace BatInspector.Forms
         checkSavePrj();
         _model.initProject(dir);
         double fMax = 312000 / 2;
-        if ((_model.Analysis != null) && (_model.Analysis.Files.Count > 0))
-          fMax = _model.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
+        if ((_model.Prj != null) && (_model.Prj.Analysis != null) && (_model.Prj.Analysis.Files.Count > 0))
+          fMax = _model.Prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
         _lblProject.Text = dir.FullName;
         if (_model.Prj != null)
         {
@@ -230,11 +230,11 @@ namespace BatInspector.Forms
 
     private void initZoomWindow()
     {
-      if (_model.Settings.ZoomSeparateWin)
+      if (AppParams.Inst.ZoomSeparateWin)
       {
         _frmZoom = new FrmZoom(_model, closeWindow);
-        _frmZoom.Width = _model.Settings.ZoomWindowWidth;
-        _frmZoom.Height = _model.Settings.ZoomWindowHeight;
+        _frmZoom.Width = AppParams.Inst.ZoomWindowWidth;
+        _frmZoom.Height = AppParams.Inst.ZoomWindowHeight;
       }
       else
       {
@@ -250,7 +250,7 @@ namespace BatInspector.Forms
 
     public void setZoom(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
     {
-      if (_model.Settings.ZoomSeparateWin)
+      if (AppParams.Inst.ZoomSeparateWin)
       {
         if (_frmZoom == null)
           _frmZoom = new FrmZoom(_model, closeWindow);
@@ -273,11 +273,11 @@ namespace BatInspector.Forms
     {
       if (_model.Prj != null)
       {
-        if (_model.Analysis.Changed)
+        if (_model.Prj.Analysis.Changed)
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
-            _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
+            _model.Prj.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
         }
       }
     }
@@ -318,7 +318,7 @@ namespace BatInspector.Forms
         if (ctl.Analysis != null)
         {
           string name = ctl.Analysis.Name;
-          AnalysisFile anaF = _model.Analysis.find(name);
+          AnalysisFile anaF = _model.Prj.Analysis.find(name);
           if (anaF != null)
             ctl.updateCallInformations(anaF);
         }
@@ -380,7 +380,7 @@ namespace BatInspector.Forms
       ctl._img.Source = _model.getFtImage(rec, out newImage);
       ctl._img.MaxHeight = _imgHeight;
       ctl.setFileInformations(rec.File, _model.WavFilePath, _model.Prj.Species);
-      ctl.InfoVisible = !_model.Settings.HideInfos;
+      ctl.InfoVisible = !AppParams.Inst.HideInfos;
       if(!_fastOpen)
          setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
     }
@@ -417,7 +417,7 @@ namespace BatInspector.Forms
 
     void showStatus()
     {
-      string report = _model.Analysis.Report != null ? "report available" : "no report";
+      string report = _model.Prj.Analysis.Report != null ? "report available" : "no report";
       int vis = 0;
       foreach(ctlWavFile c in _spSpectrums.Children)
       {
@@ -528,7 +528,7 @@ namespace BatInspector.Forms
 
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
-      frmStartPredict.showMsg(startPrediction, _model.Settings);
+      frmStartPredict.showMsg(startPrediction, AppParams.Inst);
     }
 
   
@@ -566,8 +566,8 @@ namespace BatInspector.Forms
 
     private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
     {
-      if (_model.Analysis.Report != null)
-        _dgData.ItemsSource = _model.Analysis.Report;
+      if (_model.Prj.Analysis.Report != null)
+        _dgData.ItemsSource = _model.Prj.Analysis.Report;
 
     }
 
@@ -615,8 +615,8 @@ namespace BatInspector.Forms
         _model.Prj.writePrjFile();
       }
       _model.saveSettings();
-      if(_model.Analysis.Report != null)
-        _model.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
+      if(_model.Prj.Analysis.Report != null)
+        _model.Prj.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
@@ -637,7 +637,7 @@ namespace BatInspector.Forms
       if (_spSpectrums.Children.Count > 0)
       {
         ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
-        _model.Settings.HideInfos = !ctl0.InfoVisible;
+        AppParams.Inst.HideInfos = !ctl0.InfoVisible;
       }
     }
 
@@ -656,7 +656,7 @@ namespace BatInspector.Forms
 
     private void _btnSettings_Click(object sender, RoutedEventArgs e)
     {
-      frmSettings frm = new frmSettings(_model.Settings);
+      frmSettings frm = new frmSettings(AppParams.Inst);
       frm.Show();
     }
 
@@ -678,16 +678,16 @@ namespace BatInspector.Forms
     private void Window_LocationChanged(object sender, System.EventArgs e)
     {
       setZoomPosition();
-      _model.Settings.MainWindowPosX = this.Top;
-      _model.Settings.MainWindowPosY = this.Left;
+      AppParams.Inst.MainWindowPosX = this.Top;
+      AppParams.Inst.MainWindowPosY = this.Left;
 
     }
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
       setZoomPosition ();
-      _model.Settings.MainWindowWidth = this.Width;
-      _model.Settings.MainWindowHeight = this.Height;
+      AppParams.Inst.MainWindowWidth = this.Width;
+      AppParams.Inst.MainWindowHeight = this.Height;
     }
 
     private void timer_Tick(object sender, EventArgs e)
@@ -698,8 +698,8 @@ namespace BatInspector.Forms
       });
       if(_model.UpdateUi)
       {
-        if (_model.Analysis != null)
-          _model.Analysis.updateSpeciesCount();
+        if (_model.Prj.Analysis != null)
+          _model.Prj.Analysis.updateSpeciesCount();
         updateWavControls();
         _model.UpdateUi = false;
       }
@@ -743,12 +743,12 @@ namespace BatInspector.Forms
 
     private void _grdSplitterH_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
     {
-      _model.Settings.LogControlHeight = _grdMain.RowDefinitions[3].Height.Value;
+      AppParams.Inst.LogControlHeight = _grdMain.RowDefinitions[3].Height.Value;
     }
 
     private void _grdSplitterV_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
     {
-      _model.Settings.WidthFileSelector = _grdCtrl.ColumnDefinitions[0].Width.Value;
+      AppParams.Inst.WidthFileSelector = _grdCtrl.ColumnDefinitions[0].Width.Value;
     }
 
     private void _btnScript_Click(object sender, RoutedEventArgs e)

@@ -21,11 +21,9 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmSettings : Window
   {
-    AppParams _settings;
     public frmSettings(AppParams settings)
     {
       InitializeComponent();
-      _settings = settings;
       _pg.SelectedObject= settings;
       Title = MyResources.Settings;
     }
@@ -36,20 +34,20 @@ namespace BatInspector.Forms
       if (res == MessageBoxResult.Yes)
       {
          DebugLog.log("application settings reset to factory settings", enLogType.INFO);
-        _settings.init();
+        AppParams.Inst.init();
       }
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
-      _settings = AppParams.load();
+      AppParams.load();
       DebugLog.log("Change of application settings cancelled", enLogType.INFO);
       this.Close();
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      _settings.save();
+      AppParams.Inst.save();
       setLanguage();
 
       DebugLog.log("Application Settings changed and saved", enLogType.INFO);
@@ -57,7 +55,7 @@ namespace BatInspector.Forms
     }
     private void setLanguage()
     {
-      string culture = _settings.Culture.ToString().Replace('_', '-');
+      string culture = AppParams.Inst.Culture.ToString().Replace('_', '-');
       Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
       Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
     }

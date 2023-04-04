@@ -68,7 +68,7 @@ namespace BatInspector
 
     public void exec()
     {
-      string wrkDir = _model.Settings.ScriptDir == null ? "" : _model.Settings.ScriptDir;
+      string wrkDir = AppParams.Inst.ScriptDir == null ? "" : AppParams.Inst.ScriptDir;
   //    testBioAcoustics();
       testIf(wrkDir);
       testWhile(wrkDir);
@@ -295,11 +295,11 @@ namespace BatInspector
     private void testReportModelBatdetect2()
     {
       List <SpeciesInfos> species = BatInfo.load().Species;
-      ModelBateDetect2 model = new ModelBateDetect2(species, _model);
+      ModelBatDetect2 model = new ModelBatDetect2(0);
       model.WavDir = "D:\\prj\\pr\\bat\\data\\wav";
       model.AnnotationDir = "D:\\prj\\pr\\bat\\data\\ann";
       model.ReportPath = "report.csv";
-      model.createReportFromAnnotations(0.5);
+      model.createReportFromAnnotations(0.5, species);
     }
 
     private void assert(string a, string exp)

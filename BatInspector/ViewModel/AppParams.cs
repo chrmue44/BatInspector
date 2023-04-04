@@ -153,6 +153,36 @@ namespace BatInspector
     public bool IsTool { get; set; }
   }
 
+  [DataContract]
+  public class ModelItem
+  {
+    [DataMember,
+    Description("select type of model for prediction")]
+    public enModel ModelType { get; set; }
+
+    [DataMember]
+    public bool Active { get; set; }
+
+
+    [DataMember,
+    LocalizedDescription("SetDescModDir")]
+    public string Dir { get; set; }
+
+    [DataMember,
+    LocalizedDescription("SetDescLearningRate")]
+    public double LearningRate { get; set; }
+
+    [DataMember,
+    LocalizedDescription("SetDescEpochs")]
+    public int Epochs { get; set; }
+
+    [DataMember,
+    LocalizedDescription("SetDescScriptPredict")]
+    public string PythonScript { get; set; }
+
+  }
+
+
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
   public class AppParams
@@ -169,6 +199,17 @@ namespace BatInspector
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE = "/doc/BatInspector.pdf"; // software manual
     const string _fName = "BatInspectorSettings.json";
+
+    static AppParams _inst = null;
+    public static AppParams Inst 
+    { 
+      get 
+      {
+        if (_inst == null)
+          AppParams.load();
+        return _inst;
+      }
+    }
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -306,12 +347,6 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
-    LocalizedDescription("SetDescScriptPredict")]
-    public string PythonScript { get; set; }
-
-
-    [DataMember]
-    [LocalizedCategory("SetCatScripting"),
     LocalizedDescription("SetDescSamplingRate")]
     public int SamplingRate { get; set; }
 
@@ -321,33 +356,10 @@ namespace BatInspector
     public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
 
     [DataMember]
-    [LocalizedCategory("SetCatModel"),
-    LocalizedDescription("SetDescModDir")]
-    public string ModelDir { get; set; }
+    [LocalizedCategory("SetCatModel")]
+    public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
 
     [DataMember]
-    [LocalizedCategory("SetCatModel"),
-    Description("select type of model for prediction")]
-    public enModel ModelType1 { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatModel"),
-    Description("select type of model for prediction")]
-    public enModel ModelType2 { get; set; }
- 
-    [DataMember]
-    [LocalizedCategory("SetCatModel"),
-    LocalizedDescription("SetDescLearningRate")]
-    public double LearningRate { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatModel"),
-    LocalizedDescription("SetDescEpochs")]
-    public int Epochs { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatApplication")]
-//    [LocalizedDescription("SetDescWfLog")]
     public DSPLib.DSP.Window.Type FftWindow { get; set; }
 
     [DataMember]
@@ -442,11 +454,7 @@ namespace BatInspector
       RootDataDir = "C:/users/chrmu/bat";
       SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
-      PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
-      ModelDir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
-      Epochs = 30;
-      LearningRate = 0.00002;
-
+      initModels();
       SamplingRate = 312500;
 
       PredIdentifyCalls = true;
@@ -484,6 +492,18 @@ namespace BatInspector
                   "select all recordings that seem to contain only junk", false));
     }
 
+    private void initModels()
+    {
+      Models = new List<ModelItem>();
+      Models.Add(new ModelItem());
+      Models[0].Active = true;
+      Models[0].PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
+      Models[0].Dir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
+      Models[0].Epochs = 30;
+      Models[0].LearningRate = 0.00002;
+
+    }
+
     public void save()
     {
       string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
@@ -505,7 +525,7 @@ namespace BatInspector
       }
     }
 
-    public static AppParams load()
+    public static void load()
     {
       AppParams retVal = null;
       FileStream file = null;
@@ -523,6 +543,8 @@ namespace BatInspector
             retVal.initColorGradient();
           if (retVal.Scripts == null)
             retVal.initScripts();
+          if (retVal.Models == null)
+            retVal.initModels();
         }
         else
         {
@@ -541,8 +563,7 @@ namespace BatInspector
         if (file != null)
           file.Close();
       }
-
-      return retVal;
+      _inst = retVal;
     }
 
 

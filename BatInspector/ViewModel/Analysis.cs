@@ -126,11 +126,7 @@ namespace BatInspector
 
     public Analysis(List<SpeciesInfos> specList)
     {
-      _list = new List<AnalysisFile>();
-      _report = null;
-      _cols = new Cols();
-      _csv = new Csv();
-      _specList = specList;
+      init(specList);
     }
 
     public AnalysisFile find(string name)
@@ -164,8 +160,18 @@ namespace BatInspector
       }
     }
 
+    public void init(List<SpeciesInfos> specList)
+    {
+      _list = new List<AnalysisFile>();
+      _report = null;
+      _cols = new Cols();
+      _csv = new Csv();
+      _specList = specList;
+    }
+
     public void read(string fileName)
     {
+      init(_specList);
       lock (_fileLock)
       {
         _csv = new Csv();

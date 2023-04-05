@@ -51,7 +51,6 @@ namespace BatInspector
     SumReport _sumReport;
     BatSpeciesRegions _batSpecRegions;
     //ScatterDiagram _scatterDiagram;
-    int _evalOptions;
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     
@@ -187,7 +186,7 @@ namespace BatInspector
         }
       }
       if (ok)
-        DebugLog.log("report.csv and project file are consistent", enLogType.INFO);
+        DebugLog.log("report and project file are consistent", enLogType.INFO);
       else
         DebugLog.log("mismatch between project file and report, please check", enLogType.ERROR, true);
     }
@@ -337,16 +336,20 @@ namespace BatInspector
     /// <summary>
     /// start evaluation of bat species
     /// </summary>
-    public int startEvaluation(int options)
+    public int startEvaluation()
     {
       int retVal = 2;
-      _evalOptions = options;
       
       if(Prj != null)
       {
-        retVal = _models[0].classify(options, Prj);
+        for(int i = 0; i < AppParams.Inst.Models.Count; i++)
+        {
+          if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
+          {
+            retVal = _models[i].classify(Prj);
+          }
+        }
       }
-      _evalOptions = 0;
       return retVal;
     }
 
@@ -395,7 +398,7 @@ namespace BatInspector
     {
       bool retVal = false;
 
-      retVal = _proc.IsRunning | _extBusy | (_evalOptions > 0);
+      retVal = _proc.IsRunning | _extBusy;
       return retVal;
     }
   }

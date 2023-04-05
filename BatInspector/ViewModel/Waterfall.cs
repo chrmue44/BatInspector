@@ -37,7 +37,6 @@ namespace BatInspector
     int _width;
     int _heightFt;
     int _heightXt;
-    AppParams _settings;
     WavFile _wav = null;
 
     public double Duration 
@@ -57,10 +56,10 @@ namespace BatInspector
 
     public double Range 
     {
-      get { return _settings.GradientRange; }
+      get { return AppParams.Inst.GradientRange; }
       set
       {
-        _settings.GradientRange = value;
+        AppParams.Inst.GradientRange = value;
         calcMinAmplitude();
       }
     }
@@ -119,7 +118,7 @@ namespace BatInspector
            int idx = idxStart + i * step;
            if (idx >= 0)
            {
-             double[] sp = generateFft(idx, (int)_fftSize, _settings.FftWindow);
+             double[] sp = generateFft(idx, (int)_fftSize, AppParams.Inst.FftWindow);
              _spec[i] = sp;
            }
          });
@@ -153,7 +152,7 @@ namespace BatInspector
 
     public double[] generateFft(int idx, int length, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
-      bool logarithmic = _settings.WaterfallLogarithmic;
+      bool logarithmic = AppParams.Inst.WaterfallLogarithmic;
       //   double amplitude = 1.0; double frequency = 20000.5;
       int zeroPadding = 0; // NOTE: Zero Padding
   //    _maxAmplitude = -100;
@@ -197,7 +196,7 @@ namespace BatInspector
           if (lmSpectrum[i] > _maxAmplitude)
           {
             _maxAmplitude = lmSpectrum[i];
-            _minAmplitude = _maxAmplitude - _settings.GradientRange;
+            _minAmplitude = _maxAmplitude - AppParams.Inst.GradientRange;
           }
         }
         else
@@ -252,7 +251,7 @@ namespace BatInspector
       Bitmap bmp = new Bitmap(_width, _heightXt);
       for (int x = 0; x < _width; x++)
         for (int y = 0; y < _heightXt; y++)
-          bmp.SetPixel(x, y, _settings.ColorXtBackground);
+          bmp.SetPixel(x, y, AppParams.Inst.ColorXtBackground);
 
       if (_ok)
       {
@@ -278,7 +277,7 @@ namespace BatInspector
     void drawLine(int x, int ymin, int ymax, Bitmap bmp) 
     {
       for (int y = ymin; y <= ymax; y++)
-        bmp.SetPixel(x, y, _settings.ColorXtLine);
+        bmp.SetPixel(x, y, AppParams.Inst.ColorXtLine);
     }
 
 
@@ -317,16 +316,16 @@ namespace BatInspector
       {
         int idx = (idxMax - idxMin) * x / _width + idxMin;
         int y1 = (int)((1 - (this.Samples[idx] - aMin) / (aMax - aMin)) * (_heightXt - 1));
-        bmp.SetPixel(x, y1, _settings.ColorXtLine);
+        bmp.SetPixel(x, y1, AppParams.Inst.ColorXtLine);
       }
     }
 
     void calcMinAmplitude()
     {
-      if (_settings.WaterfallLogarithmic)
-        _minAmplitude = _maxAmplitude - _settings.GradientRange;
+      if (AppParams.Inst.WaterfallLogarithmic)
+        _minAmplitude = _maxAmplitude - AppParams.Inst.GradientRange;
       else
-        _minAmplitude = _maxAmplitude / Math.Pow(10, _settings.GradientRange / 20);
+        _minAmplitude = _maxAmplitude / Math.Pow(10, AppParams.Inst.GradientRange / 20);
     }
 
     // Returns left and right double arrays. 'right' will be null if sound is mono.

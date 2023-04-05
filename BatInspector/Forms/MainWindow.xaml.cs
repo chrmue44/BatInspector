@@ -27,6 +27,7 @@ using System.Threading;
 using BatInspector.Properties;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
+using libScripter;
 
 namespace BatInspector.Forms
 {
@@ -52,7 +53,6 @@ namespace BatInspector.Forms
     bool _fastOpen = true;
     Thread _worker = null;
     System.Windows.Threading.DispatcherTimer _timer;
-    int _predictionOptions;
     bool _switchTabToPrj = false;
 
 
@@ -516,22 +516,17 @@ namespace BatInspector.Forms
 
     private void workerPrediction()
     {
-      _model.startEvaluation(_predictionOptions);
+      _model.startEvaluation();
     }
 
-    private void startPrediction(int options)
-    {
-      _predictionOptions = options;
-      _worker = new Thread(new ThreadStart(workerPrediction));   
-      _worker.Start();  
-    }
 
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
-      frmStartPredict.showMsg(startPrediction, AppParams.Inst);
+      _worker = new Thread(new ThreadStart(workerPrediction));
+      _worker.Start();
     }
 
-  
+
     private void _btnSize_Click(object sender, RoutedEventArgs e)
     {
       _imgHeight >>= 1;

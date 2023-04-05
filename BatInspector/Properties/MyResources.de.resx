@@ -759,4 +759,10 @@
   <data name="FrmMainBatDetermination2" xml:space="preserve">
     <value>Fledermausbestimmung, Teil 2</value>
   </data>
+  <data name="SetDescReportColumn" xml:space="preserve">
+    <value>Spaltenname im Report für die automatisch detektierte Spezies</value>
+  </data>
+  <data name="SetDescRootPath" xml:space="preserve">
+    <value>Wurzelverzeichnis der Anwndung</value>
+  </data>
 </root>

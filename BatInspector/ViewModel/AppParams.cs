@@ -163,7 +163,6 @@ namespace BatInspector
     [DataMember]
     public bool Active { get; set; }
 
-
     [DataMember,
     LocalizedDescription("SetDescModDir")]
     public string Dir { get; set; }
@@ -178,7 +177,15 @@ namespace BatInspector
 
     [DataMember,
     LocalizedDescription("SetDescScriptPredict")]
-    public string PythonScript { get; set; }
+    public string Script { get; set; }
+
+    [DataMember,
+    LocalizedDescription("SetDescReportColumn")]
+    public string ReportColumn { get; set; }
+
+    [DataMember]
+    public string ReportName { get; set; } 
+
 
   }
 
@@ -188,7 +195,8 @@ namespace BatInspector
   public class AppParams
   {
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
-    public const string PRJ_REPORT = "report.csv";        // report name for project report
+  //  public const string PRJ_REPORT = "report.csv";        // report name for project report
+    public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings
     public const string EXT_INFO = ".xml";                // file extension for info files in Elekon projects
@@ -210,6 +218,11 @@ namespace BatInspector
         return _inst;
       }
     }
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescRootPath")]
+    public string RootPath { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -427,6 +440,7 @@ namespace BatInspector
 
     public void init()
     {
+      RootPath = AppDomain.CurrentDomain.BaseDirectory;
       ScriptDir = "C:\\users\\chrmu\\prj\\BatInspector\\scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;
@@ -497,10 +511,12 @@ namespace BatInspector
       Models = new List<ModelItem>();
       Models.Add(new ModelItem());
       Models[0].Active = true;
-      Models[0].PythonScript = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
+      Models[0].Script = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
       Models[0].Dir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
       Models[0].Epochs = 30;
       Models[0].LearningRate = 0.00002;
+      Models[0].ReportColumn = "Species";
+      Models[0].ReportName = "report.csv";
 
     }
 

@@ -194,8 +194,15 @@ namespace libScripter
           string sep = _separator.ToString();
           for (int rowNr = 0; rowNr < lines.Length; rowNr++)
             lines[rowNr] = String.Join(sep, _cells[rowNr]);
-
+        try
+        {
           File.WriteAllLines(_fileName, lines);
+        }
+        catch
+        {
+          log("could not save file " + _fileName, enLogType.ERROR);
+        }
+
         _changed = false;
         log(_fileName + " saved", enLogType.INFO);
       }

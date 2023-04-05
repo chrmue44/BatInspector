@@ -1,6 +1,16 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2023-04-04                                       
+ *   Copyright (C) 2023: christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
 using libScripter;
-using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,14 +21,7 @@ namespace BatInspector
 {
   public class ModelBatDetect2 : BaseModel
   {
-    string _wavDir;
-    string _annDir;
-    string _reportPath;
     double _minProb = 0.5;
-
-    public string WavDir { get { return _wavDir; } set { _wavDir = value; } }
-    public string AnnotationDir { get { return _annDir; } set{ _annDir = value; } }
-    public string ReportPath { get { return _reportPath; } set { _reportPath = value; } } 
     public double MinProb {  get { return _minProb; } set { _minProb = value; } }
 
     public ModelBatDetect2(int index) : 
@@ -26,10 +29,17 @@ namespace BatInspector
     {
     }
 
-    public override int classify(int options, Project prj)
+    public override int classify(Project prj)
     {
-      string args = _wavDir + " " + _annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture );
-      int retVal = _proc.LaunchCommandLineApp(AppParams.Inst.PythonBin, null,  prj.PrjDir, true, args, true, true);
+      string wavDir = prj.PrjDir + prj.WavSubDir;
+      string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
+      string args = wavDir + " " + annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
+      string wrkDir = AppParams.Inst.RootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
+      string cmd = AppParams.Inst.RootPath + "/" + AppParams.Inst.Models[this.Index].Script;
+      int retVal = _proc.LaunchCommandLineApp(cmd, null,  wrkDir, true, args, true, true);
+      string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
+      createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);
+      cleanup(prj.PrjDir);
       return retVal;
     }
 
@@ -38,19 +48,20 @@ namespace BatInspector
       throw new NotImplementedException();
     }
 
-    public void createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos)
+    public void createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName)
     {
       Csv report = new Csv();
-      string[] header = { "name", "recTime", "nr", "Species", "sampleRate", "FileLen", "freq_min", "freq_max", "duration","start","SpeciesMan","prob","remarks"};
+      string colSpecies = AppParams.Inst.Models[this.Index].ReportColumn;
+      string[] header = { "name", "recTime", "nr", colSpecies, "sampleRate", "FileLen", "freq_max_amp","freq_min", "freq_max", "duration","callInterval","start","SpeciesMan","prob","remarks"};
     
       report.initColNames(header, true);
 
-      string[] files = Directory.GetFiles(_annDir, "*.csv", SearchOption.AllDirectories);
+      string[] files = Directory.GetFiles(annDir, "*.wav.csv", SearchOption.AllDirectories);
       foreach (string file in files) 
       {
         // read infoFile
-        string wavName = _wavDir + "/" + Path.GetFileName(file).Replace(".csv", "");
-        string infoName = _wavDir + "/" + Path.GetFileName(file).Replace(".wav.csv", ".xml");
+        string wavName = wavDir + "/" + Path.GetFileName(file).Replace(".csv", "");
+        string infoName = wavDir + "/" + Path.GetFileName(file).Replace(".wav.csv", ".xml");
         string sampleRate = "?";
         string fileLen = "?";
         string recTime = "?";
@@ -63,9 +74,16 @@ namespace BatInspector
         }
 
         // read annontation for one wav file
-        Csv csv = new Csv();
-        csv.read(file, ",", true);
-        int rowcnt = csv.RowCnt;
+        Csv csvAnn = new Csv();
+        csvAnn.read(file, ",", true);
+        string fileFeat = file.Replace("wav.csv", "wav_spec_features.csv");
+        Csv csvFeat = null;
+        if (File.Exists(fileFeat))
+        {
+          csvFeat = new Csv();
+          csvFeat.read(fileFeat, ",", true);
+        }
+        int rowcnt = csvAnn.RowCnt;
         for(int row = 2; row <= rowcnt; row++) 
         {
           report.addRow();
@@ -74,33 +92,52 @@ namespace BatInspector
           report.setCell(repRow, "FileLen", fileLen);
           report.setCell(repRow, "recTime", recTime);
           report.setCell(repRow, "name", wavName);
-          int id = csv.getCellAsInt(row, "id");
+          int id = csvAnn.getCellAsInt(row, "id");
           report.setCell(repRow, "nr", id + 1);
-          double startTime = csv.getCellAsDouble(row, "start_time");
+          double startTime = csvAnn.getCellAsDouble(row, "start_time");
           report.setCell(repRow, "start", startTime, 3);
-          double endTime = csv.getCellAsDouble(row, "end_time");
-          double duration = (endTime - startTime)*1000;
-          report.setCell(repRow, "duration", duration, 1);
-          double fMin = csv.getCellAsDouble(row, "low_freq");
+          double duration = -1;
+          double callInterval = -0.001;
+          if (csvFeat != null)
+          {
+            double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power");
+            report.setCell(repRow, "freq_max_amp", fMaxAmp);
+            duration = csvFeat.getCellAsDouble(row, "duration");
+            callInterval = csvFeat.getCellAsDouble(row, "call_interval");
+            if (callInterval < 0)
+              callInterval = -0.001;
+          }
+          else
+          {
+            double endTime = csvAnn.getCellAsDouble(row, "end_time");
+            duration = (endTime - startTime);
+          }
+          report.setCell(repRow, "callInterval", callInterval * 1000, 1);
+          report.setCell(repRow, "duration", duration * 1000, 1);
+          double fMin = csvAnn.getCellAsDouble(row, "low_freq");
           report.setCell(repRow, "freq_min", fMin, 1);
-          double fMax = csv.getCellAsDouble(row, "high_freq");
+          double fMax = csvAnn.getCellAsDouble(row, "high_freq");
           report.setCell(repRow, "freq_max", fMax, 1);
-          string latin = csv.getCell(row, "class");
-          double prob = csv.getCellAsDouble(row, "class_prob");
+          string latin = csvAnn.getCell(row, "class");
+          double prob = csvAnn.getCellAsDouble(row, "class_prob");
           report.setCell(repRow, "prob", prob);
           string abbr = "";
           if (prob < minProb)
             abbr = "??PRO[";
           SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
-          if(info != null) 
+          if((info != null) && (specInfo != null))
             abbr += specInfo.Abbreviation;
           if (prob < minProb)
             abbr += "]";
-          report.setCell(repRow, "Species", abbr);
+          report.setCell(repRow, colSpecies, abbr);
         }
       }
+      report.saveAs(reportName);
+    }
 
-      report.saveAs(ReportPath);
+    void cleanup(string root)
+    {
+      removeDir(root, AppParams.ANNOTATION_SUBDIR);
     }
   }
 }

@@ -21,28 +21,25 @@ namespace BatInspector.Forms
   public partial class frmStartPredict : Window
   {
     static frmStartPredict _frm = null;
-    dlgStartPrediction _dlg;
-    AppParams _pars;
+    public static int Options { get; set; }
 
-    public frmStartPredict(dlgStartPrediction startPrediction, AppParams pars)
+    public frmStartPredict()
     {
       InitializeComponent();
-      _dlg = startPrediction;
-      _pars = pars;
-      _cbInspect.IsChecked = _pars.PredIdentifyCalls;
-      _cbCut.IsChecked = _pars.PredCutCalls;
-      _cbPredict1.IsChecked = _pars.PredPredict1;
-      _cbPredict2.IsChecked = _pars.PredPredict2;
-      _cbPredict3.IsChecked = _pars.PredPredict3;
-      _cbPrepare.IsChecked = _pars.PredPrepData;
-      _cbConf95.IsChecked = _pars.PredConfTest;
-      _cbCleanup.IsChecked = _pars.PredDelTemp;
+      _cbInspect.IsChecked = AppParams.Inst.PredIdentifyCalls;
+      _cbCut.IsChecked = AppParams.Inst.PredCutCalls;
+      _cbPredict1.IsChecked = AppParams.Inst.PredPredict1;
+      _cbPredict2.IsChecked = AppParams.Inst.PredPredict2;
+      _cbPredict3.IsChecked = AppParams.Inst.PredPredict3;
+      _cbPrepare.IsChecked = AppParams.Inst.PredPrepData;
+      _cbConf95.IsChecked = AppParams.Inst.PredConfTest;
+      _cbCleanup.IsChecked = AppParams.Inst.PredDelTemp;
     }
 
-    public static void showMsg(dlgStartPrediction dlg, AppParams pars)
+    public static void showMsg()
     {
-      _frm = new frmStartPredict(dlg, pars);
-      _frm.Show();
+      _frm = new frmStartPredict();
+      _frm.ShowDialog();
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
@@ -56,30 +53,30 @@ namespace BatInspector.Forms
 
       if (_cbInspect.IsChecked == true)
         options |= ModelCmuTsa.OPT_INSPECT;
-      _pars.PredIdentifyCalls = (bool)_cbInspect.IsChecked;
+      AppParams.Inst.PredIdentifyCalls = (bool)_cbInspect.IsChecked;
       if (_cbCut.IsChecked == true)
         options |= ModelCmuTsa.OPT_CUT;
-      _pars.PredCutCalls = (bool)_cbCut.IsChecked;
+      AppParams.Inst.PredCutCalls = (bool)_cbCut.IsChecked;
       if (_cbPrepare.IsChecked == true)
         options |= ModelCmuTsa.OPT_PREPARE;
-      _pars.PredPrepData = (bool)_cbPrepare.IsChecked;
+      AppParams.Inst.PredPrepData = (bool)_cbPrepare.IsChecked;
       if (_cbPredict1.IsChecked == true)
         options |= ModelCmuTsa.OPT_PREDICT1;
-      _pars.PredPredict1 = (bool)_cbPredict1.IsChecked;
+      AppParams.Inst.PredPredict1 = (bool)_cbPredict1.IsChecked;
       if (_cbPredict2.IsChecked == true)
         options |= ModelCmuTsa.OPT_PREDICT2;
-      _pars.PredPredict2 = (bool)_cbPredict2.IsChecked;
+      AppParams.Inst.PredPredict2 = (bool)_cbPredict2.IsChecked;
       if (_cbPredict3.IsChecked == true)
         options |= ModelCmuTsa.OPT_PREDICT3;
-      _pars.PredPredict3 = (bool)_cbPredict3.IsChecked;
+      AppParams.Inst.PredPredict3 = (bool)_cbPredict3.IsChecked;
       if (_cbConf95.IsChecked == true)
         options |= ModelCmuTsa.OPT_CONF95;
-      _pars.PredConfTest = (bool)_cbConf95.IsChecked;
+      AppParams.Inst.PredConfTest = (bool)_cbConf95.IsChecked;
       if (_cbCleanup.IsChecked == true)
         options |= ModelCmuTsa.OPT_CLEANUP;
-      _pars.PredDelTemp = (bool)_cbCleanup.IsChecked;
+      AppParams.Inst.PredDelTemp = (bool)_cbCleanup.IsChecked;
+      Options = options;
       _frm.Close();
-      _dlg(options);
     }
   }
 }

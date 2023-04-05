@@ -122,13 +122,14 @@
       <OutputFile>$(ProjectDir)x64\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PreBuildEvent>
-      <Command>XCOPY "$(ProjectDir)\lib\libfftw3-3.dll" "$(SolutionDir)\BatInspector\bin\$(Configuration)" /D /K /Y</Command>
+      <Command>C:\Windows\System32\XCOPY "$(ProjectDir)\lib\libfftw3-3.dll" "$(SolutionDir)\BatInspector\bin\$(Configuration)" /D /K /Y</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Copy DLLs to Target Directory</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>XCOPY $(ProjectDir)\x64\$(Configuration)\libBioAcoustics.dll  $(SolutionDir)\BatInspector\bin\$(Configuration) /D /K /Y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

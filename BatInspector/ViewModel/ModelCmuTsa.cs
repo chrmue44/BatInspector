@@ -1,4 +1,5 @@
-﻿using libParser;
+﻿using BatInspector.Forms;
+using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
@@ -28,28 +29,30 @@ namespace BatInspector
     }
 
 
-    public override int classify(int options, Project prj)
+    public override int classify(Project prj)
     {
       int retVal = 0;
-      
-      string reportName = prj.PrjDir + AppParams.PRJ_REPORT;
+
+      frmStartPredict.showMsg();
+      int options = frmStartPredict.Options;
+      string reportName = prj.PrjDir + AppParams.Inst.Models[this.Index].ReportName;
       reportName = reportName.Replace("\\", "/");
       addSpeciesColsToReport(reportName, AppParams.Inst.SpeciesFile);
       string datFile = prj.PrjDir + "/Xdata000.npy";
       string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
       ModelItem modPar = AppParams.Inst.Models[this.Index];
-      string args = modPar.PythonScript;
+      string args = modPar.Script;
 
       if ((options & OPT_INSPECT) != 0)
       {
         //internal:
         string dir = prj.PrjDir + prj.WavSubDir;
-        string rep = prj.PrjDir + AppParams.PRJ_REPORT;
-        rep = rep.Replace("\\", "/");
-        if (File.Exists(rep))
-          File.Delete(rep);
-        BioAcoustics.analyzeFiles(rep, dir);
-        prj.Analysis.read(rep);
+//        string rep = prj.PrjDir + AppParams.PRJ_REPORT;
+//        rep = rep.Replace("\\", "/");
+        if (File.Exists(reportName))
+          File.Delete(reportName);
+        BioAcoustics.analyzeFiles(reportName, dir);
+        prj.Analysis.read(reportName);
       }
 
       if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)
@@ -74,10 +77,10 @@ namespace BatInspector
       if ((options & OPT_CONF95) != 0)
       {
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
-        prj.Analysis.read(prj.PrjDir + AppParams.PRJ_REPORT);
+        prj.Analysis.read(reportName);
         prj.Analysis.checkConfidence(prj.SpeciesInfos);
-        prj.Analysis.save(prj.PrjDir + AppParams.PRJ_REPORT);
-        prj.Analysis.read(prj.PrjDir + AppParams.PRJ_REPORT);
+        prj.Analysis.save(reportName);
+        prj.Analysis.read(reportName);
       }
 
       if ((options & OPT_CLEANUP) != 0)
@@ -151,39 +154,7 @@ namespace BatInspector
       }
     }
 
-    private void createDir(string rootDir, string subDir, bool delete)
-    {
-      string dir = rootDir + "/" + subDir;
-      if (!Directory.Exists(dir))
-        Directory.CreateDirectory(dir);
-      if (delete)
-      {
-        System.IO.DirectoryInfo di = new DirectoryInfo(dir);
-
-        foreach (FileInfo file in di.GetFiles())
-        {
-          file.Delete();
-        }
-        foreach (DirectoryInfo d in di.GetDirectories())
-        {
-          d.Delete(true);
-        }
-      }
-    }
-
-    private void removeDir(string rootDir, string subDir)
-    {
-      string dir = rootDir + "/" + subDir;
-      try
-      {
-        if (Directory.Exists(dir))
-          Directory.Delete(dir, true);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("problems deleting dir: " + dir + ", " + ex.ToString(), enLogType.ERROR);
-      }
-    }
+   
 
   }
 }

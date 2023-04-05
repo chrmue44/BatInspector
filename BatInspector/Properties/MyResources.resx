@@ -759,4 +759,10 @@
   <data name="FrmMainBatDetermination2" xml:space="preserve">
     <value>Bat Species Determination, part 2</value>
   </data>
+  <data name="SetDescReportColumn" xml:space="preserve">
+    <value>Name of column in report for automatically detected species</value>
+  </data>
+  <data name="SetDescRootPath" xml:space="preserve">
+    <value>Root path of application</value>
+  </data>
 </root>

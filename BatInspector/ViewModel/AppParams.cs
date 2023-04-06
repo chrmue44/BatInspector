@@ -533,12 +533,11 @@ namespace BatInspector
 
     }
 
-    public void save()
+    public void saveAs(string fName)
     {
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
       try
       {
-        StreamWriter file = new StreamWriter(fPath);
+        StreamWriter file = new StreamWriter(fName);
         MemoryStream stream = new MemoryStream();
         DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
         ser.WriteObject(stream, this);
@@ -550,15 +549,20 @@ namespace BatInspector
       }
       catch (Exception e)
       {
-        DebugLog.log("failed to write config file for BatInspector" + fPath + ": " + e.ToString(), enLogType.ERROR);
+        DebugLog.log("failed to write config file for BatInspector" + fName + ": " + e.ToString(), enLogType.ERROR);
       }
     }
 
-    public static void load()
+    public void save()
+    {
+      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      saveAs(fPath);
+    }
+
+    public static void loadFrom(string fPath)
     {
       AppParams retVal = null;
       FileStream file = null;
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
       try
       {
         if (File.Exists(fPath))
@@ -593,6 +597,13 @@ namespace BatInspector
           file.Close();
       }
       _inst = retVal;
+
+    }
+
+    public static void load()
+    {
+      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      loadFrom(fPath);
     }
 
 

@@ -97,6 +97,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Load ... ähnelt.
+        /// </summary>
+        public static string BtnLoad {
+            get {
+                return ResourceManager.GetString("BtnLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die OK ähnelt.
         /// </summary>
         public static string BtnOK {
@@ -111,6 +120,15 @@ namespace BatInspector.Properties {
         public static string BtnRun {
             get {
                 return ResourceManager.GetString("BtnRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Save as ... ähnelt.
+        /// </summary>
+        public static string BtnSaveAs {
+            get {
+                return ResourceManager.GetString("BtnSaveAs", resourceCulture);
             }
         }
         

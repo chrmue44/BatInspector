@@ -765,4 +765,10 @@
   <data name="SetDescRootPath" xml:space="preserve">
     <value>Wurzelverzeichnis der Anwndung</value>
   </data>
+  <data name="BtnSaveAs" xml:space="preserve">
+    <value>Speichern als ...</value>
+  </data>
+  <data name="BtnLoad" xml:space="preserve">
+    <value>Laden ...</value>
+  </data>
 </root>

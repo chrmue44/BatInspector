@@ -34,9 +34,10 @@ namespace BatInspector
     {
       string wavDir = prj.PrjDir + prj.WavSubDir;
       string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
-      string args = wavDir + " " + annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
+      string args =AppParams.Inst.ModelRootPath + " " +  wavDir + " " +
+                   annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
       string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
-      string cmd = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Script;
+      string cmd = wrkDir + "/" + AppParams.Inst.Models[this.Index].Script;
       int retVal = _proc.LaunchCommandLineApp(cmd, null,  wrkDir, true, args, true, true);
       string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
       createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);

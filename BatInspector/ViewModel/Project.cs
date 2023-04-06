@@ -202,6 +202,11 @@ namespace BatInspector
       _batExplorerPrj.Records = list.ToArray();
     }
 
+    public void removeFilesNotInReport()
+    {
+
+    }
+
     /// <summary>
     /// find a file in the project
     /// </summary>

@@ -3,7 +3,7 @@ SET FileNr =(getFileIndex(VAR_FILE_NAME))
 SET NrOfCalls =(getCallCount(FileNr) - 1)
 FOR i 0 NrOfCalls
   SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
-  IF =(specMan == "TODO")
+  IF =(toupper(specMan) == "TODO")
     =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
   END  
 END

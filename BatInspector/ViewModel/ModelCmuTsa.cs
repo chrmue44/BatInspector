@@ -1,13 +1,17 @@
 ﻿using BatInspector.Forms;
 using libParser;
 using libScripter;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml.Linq;
 
 namespace BatInspector
 {
@@ -65,8 +69,9 @@ namespace BatInspector
           args += " --prepPredict";
         if ((options & OPT_PREDICT1) != 0)
           args += " --predict";
+        string modelDir = AppParams.Inst.ModelRootPath + "/" + modPar.Dir;
         args += " --csvcalls " + reportName +
-             " --root " + modPar.Dir + " --specFile " + AppParams.Inst.SpeciesFile +
+             " --root " + modelDir + " --specFile " + AppParams.Inst.SpeciesFile +
              " --dataDir " + prj.PrjDir +
              " --data " + datFile +
              " --model " + this.Name +
@@ -94,6 +99,55 @@ namespace BatInspector
     public override void train()
     {
       throw new NotImplementedException();
+    }
+
+    public static Csv createReport()
+    {
+      Csv csv = new Csv();
+      csv.clear();
+      csv.addRow();
+      string[] header =
+      {
+        Cols.NAME,
+        Cols.NR,
+        Cols.SPECIES,
+        Cols.SPECIES2,
+        Cols.SAMPLERATE,
+        Cols.FILE_LEN,
+        Cols.F_MAX_AMP,
+        Cols.F_MIN,
+        Cols.F_MAX,
+        Cols.F_KNEE,
+        Cols.DURATION,
+        Cols.START_TIME,
+        Cols.BANDWIDTH,
+        Cols.F_START,
+        Cols.F_25,
+        Cols.F_CENTER,
+        Cols.F_75,
+        Cols.F_END,
+        Cols.FC,
+        Cols.F_BW_KNEE_FC,
+        Cols.BIN_MAX_AMP,
+        Cols.PC_F_MAX_AMP,
+        Cols.PC_F_MAX,
+        Cols.PC_F_MIN,
+        Cols.PC_KNEE,
+        Cols.TEMP_BW_KNEE_FC,
+        Cols.SLOPE,
+        Cols.KALMAN_SLOPE,
+        Cols.CURVE_NEG,
+        Cols.CURVE_POS_START,
+        Cols.CURVE_POS_END,
+        Cols.MID_OFFSET,
+        Cols.SMOTTHNESS,
+        Cols.SNR,
+        Cols.SPECIES_MAN,
+        Cols.PROBABILITY,
+        Cols.REMARKS
+      };
+      csv.initColNames(header, true);
+      return csv;
     }
 
     private void prepareFolder(string dirName, bool delete = true)

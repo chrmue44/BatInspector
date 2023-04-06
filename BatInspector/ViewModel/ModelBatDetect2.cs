@@ -15,7 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Windows.Media.Animation;
+using System.Windows;
+
 
 namespace BatInspector
 {
@@ -34,8 +35,8 @@ namespace BatInspector
       string wavDir = prj.PrjDir + prj.WavSubDir;
       string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
       string args = wavDir + " " + annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
-      string wrkDir = AppParams.Inst.RootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
-      string cmd = AppParams.Inst.RootPath + "/" + AppParams.Inst.Models[this.Index].Script;
+      string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
+      string cmd = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Script;
       int retVal = _proc.LaunchCommandLineApp(cmd, null,  wrkDir, true, args, true, true);
       string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
       createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);
@@ -50,11 +51,8 @@ namespace BatInspector
 
     public void createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName)
     {
-      Csv report = new Csv();
       string colSpecies = AppParams.Inst.Models[this.Index].ReportColumn;
-      string[] header = { "name", "recTime", "nr", colSpecies, "sampleRate", "FileLen", "freq_max_amp","freq_min", "freq_max", "duration","callInterval","start","SpeciesMan","prob","remarks"};
-    
-      report.initColNames(header, true);
+      Csv report = createReport(colSpecies);
 
       string[] files = Directory.GetFiles(annDir, "*.wav.csv", SearchOption.AllDirectories);
       foreach (string file in files) 
@@ -70,7 +68,7 @@ namespace BatInspector
         {
           sampleRate = info.Samplerate.Replace(" Hz", ""); ;
           fileLen = info.Duration.Replace(" Sec","");
-          recTime = info.DateTime;
+          recTime = ElekonInfoFile.getDateString(info.DateTime);
         }
 
         // read annontation for one wav file
@@ -88,39 +86,44 @@ namespace BatInspector
         {
           report.addRow();
           int repRow = report.RowCnt;
-          report.setCell(repRow, "sampleRate", sampleRate);
-          report.setCell(repRow, "FileLen", fileLen);
-          report.setCell(repRow, "recTime", recTime);
-          report.setCell(repRow, "name", wavName);
+          report.setCell(repRow, Cols.SAMPLERATE, sampleRate);
+          report.setCell(repRow, Cols.FILE_LEN, fileLen);
+          report.setCell(repRow, Cols.REC_TIME, recTime);
+          report.setCell(repRow, Cols.NAME, wavName);
           int id = csvAnn.getCellAsInt(row, "id");
-          report.setCell(repRow, "nr", id + 1);
+          report.setCell(repRow, Cols.NR, id + 1);
           double startTime = csvAnn.getCellAsDouble(row, "start_time");
-          report.setCell(repRow, "start", startTime, 3);
+          report.setCell(repRow, Cols.START_TIME, startTime, 3);
+          double fMin = csvAnn.getCellAsDouble(row, "low_freq");
+          report.setCell(repRow, Cols.F_MIN, fMin, 1);
+          double fMax = csvAnn.getCellAsDouble(row, "high_freq");
+          report.setCell(repRow, Cols.F_MAX, fMax, 1);
           double duration = -1;
           double callInterval = -0.001;
+          double bandwidth;
           if (csvFeat != null)
           {
             double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power");
-            report.setCell(repRow, "freq_max_amp", fMaxAmp);
+            report.setCell(repRow, Cols.F_MAX_AMP, fMaxAmp);
             duration = csvFeat.getCellAsDouble(row, "duration");
             callInterval = csvFeat.getCellAsDouble(row, "call_interval");
             if (callInterval < 0)
               callInterval = -0.001;
+            bandwidth = csvFeat.getCellAsDouble(row, "bandwidth");
           }
           else
           {
             double endTime = csvAnn.getCellAsDouble(row, "end_time");
             duration = (endTime - startTime);
+            bandwidth = fMax - fMin;
           }
-          report.setCell(repRow, "callInterval", callInterval * 1000, 1);
-          report.setCell(repRow, "duration", duration * 1000, 1);
-          double fMin = csvAnn.getCellAsDouble(row, "low_freq");
-          report.setCell(repRow, "freq_min", fMin, 1);
-          double fMax = csvAnn.getCellAsDouble(row, "high_freq");
-          report.setCell(repRow, "freq_max", fMax, 1);
+          report.setCell(repRow, Cols.BANDWIDTH, bandwidth);
+          report.setCell(repRow, Cols.CALL_INTERVALL, callInterval * 1000, 1);
+          report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
+          report.setCell(repRow, Cols.SNR, -1.0);
           string latin = csvAnn.getCell(row, "class");
           double prob = csvAnn.getCellAsDouble(row, "class_prob");
-          report.setCell(repRow, "prob", prob);
+          report.setCell(repRow, Cols.PROBABILITY, prob);
           string abbr = "";
           if (prob < minProb)
             abbr = "??PRO[";
@@ -130,9 +133,42 @@ namespace BatInspector
           if (prob < minProb)
             abbr += "]";
           report.setCell(repRow, colSpecies, abbr);
+          report.setCell(repRow, Cols.SPECIES_MAN,"todo");
+          report.setCell(repRow, Cols.REMARKS, "");
+
         }
       }
       report.saveAs(reportName);
+    }
+
+    public static Csv createReport(string colSpecies)
+    {
+      Csv csv = new Csv();
+      csv.clear();
+      csv.addRow();
+      string[] header =
+      {
+        Cols.NAME,
+        Cols.REC_TIME,
+        Cols.NR,
+        colSpecies,
+        Cols.SPECIES_MAN,
+        Cols.SAMPLERATE,
+        Cols.FILE_LEN,
+        Cols.F_MAX_AMP,
+        Cols.F_MIN,
+        Cols.F_MAX,
+        Cols.DURATION,
+        Cols.CALL_INTERVALL,
+        Cols.START_TIME,
+        Cols.BANDWIDTH,
+        Cols.PROBABILITY,
+        Cols.SNR,
+        Cols.REMARKS
+      };
+
+      csv.initColNames(header, true);
+      return csv;
     }
 
     void cleanup(string root)

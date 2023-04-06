@@ -111,6 +111,9 @@ namespace libParser
       MathHelpTab.Add(new HelpTabItem("indexOf", "returns the start index of a search string in a string",
                       new List<string> { "1: a string", "2:string to search for" }, new List<string> { "1: index of start of search string (0..n), -1 if not found" }));
       addMethod(new FuncTabItem("indexOf", indexOf));
+      MathHelpTab.Add(new HelpTabItem("toupper", "returns upper char string of argument if the variable type is STRING otherwise \"\"",
+                      new List<string> { "1: a string" }, new List<string> { "1: string converted to upper case" }));
+      addMethod(new FuncTabItem("toupper", toupper));
     }
 
     // Ueberschrift fuer Hilfe zur Methodenliste
@@ -597,6 +600,24 @@ namespace libParser
         }
         else
           err = tParseError.ARG2_OUT_OF_RANGE;
+      }
+      else
+      {
+        err = tParseError.NR_OF_ARGUMENTS;
+      }
+      return err;
+    }
+
+    static tParseError toupper(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string str = argv[0].getString();
+        string resultStr = str.ToUpper();
+        result.assign(resultStr);
       }
       else
       {

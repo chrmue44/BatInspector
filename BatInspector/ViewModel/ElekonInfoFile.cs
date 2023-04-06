@@ -1,10 +1,12 @@
-﻿using System;
+﻿using libParser;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms.VisualStyles;
 using System.Xml.Serialization;
 
@@ -65,6 +67,21 @@ namespace BatInspector
         double.TryParse(pos[1], NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
       }
     }
+
+    public static string getDateString(string date)
+    {
+      DateTime time = new DateTime();
+      if (date.Length > 3)
+      {
+        try
+        {
+          time = DateTime.ParseExact(date, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+        }
+        catch { }
+      }
+      return AnyType.getTimeString(time);
+    }
+
 
     public static DateTime parseDate(string datStr)
     {

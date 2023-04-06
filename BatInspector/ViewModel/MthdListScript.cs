@@ -419,13 +419,13 @@ namespace BatInspector
                 switch (callInfo)
                 {
                   case enCallInfo.SPEC_AUTO:
-                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES).ToUpper());
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES));
                     break;
                   case enCallInfo.SPEC_AUTO2:
-                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES2).ToUpper());
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES2));
                     break;
                   case enCallInfo.SPEC_MAN:
-                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN).ToUpper());
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN));
                     break;
                   case enCallInfo.PROB_RATIO:
                     result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].FirstToSecond);

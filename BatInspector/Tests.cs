@@ -69,6 +69,7 @@ namespace BatInspector
     public void exec()
     {
       string wrkDir = AppParams.Inst.ScriptDir == null ? "" : AppParams.Inst.ScriptDir;
+      wrkDir = AppParams.Inst.AppRootPath + "/" + wrkDir;
   //    testBioAcoustics();
       testIf(wrkDir);
       testWhile(wrkDir);

@@ -492,6 +492,8 @@ namespace libScripter
         ok = _cols.TryGetValue(colName, out retVal);
       else
         ok = int.TryParse(colName, out retVal);
+      if(retVal < 1)
+        log("col name '" + colName + "' not found!", enLogType.ERROR);
       return retVal;
     }
     public void initColNames(string[] cols, bool createCols = false)

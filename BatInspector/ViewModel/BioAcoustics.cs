@@ -62,7 +62,7 @@ namespace BatInspector
     public static void analyzeFiles(string reportName, string path)
     {
       string[] files = Directory.GetFiles(path, "*.wav");
-      Csv csv = Cols.createReport();
+      Csv csv = ModelCmuTsa.createReport();
       foreach (string fName in files)
       {
         int sampleRate;
@@ -94,42 +94,42 @@ namespace BatInspector
       {
         csv.addRow();
         int row = csv.RowCnt;
-        csv.setCell(row, "name", fName);
-        csv.setCell(row, "nr", i + 1);
-        csv.setCell(row, "Species", "----");
-        csv.setCell(row, "sampleRate", samplingRate);
-        csv.setCell(row, "FileLen", duration);
-        csv.setCell(row, "freq_max_amp", items[i].freq_max_amp);
-        csv.setCell(row, "freq_min", items[i].freq_min);
-        csv.setCell(row, "freq_max", items[i].freq_max);
-        csv.setCell(row, "freq_knee", items[i].freq_knee);
-        csv.setCell(row, "duration", items[i].duration);
-        csv.setCell(row, "start", (double)items[i].start_time/samplingRate);
-        csv.setCell(row, "bandwidth", items[i].bandwidth);
-        csv.setCell(row, "freq_start", items[i].freq_start);
-        csv.setCell(row, "freq_25", items[i].freq_25);
-        csv.setCell(row, "freq_center", items[i].freq_center);
-        csv.setCell(row, "freq_75", items[i].freq_75);
-        csv.setCell(row, "freq_end", items[i].freq_end);
-        csv.setCell(row, "fc", items[i].fc);
-        csv.setCell(row, "freq_bw_knee_fc", items[i].freq_bw_knee_fc);
-        csv.setCell(row, "bin_max_amp", items[i].bin_max_amp);
-        csv.setCell(row, "pc_freq_max_amp", items[i].pc_freq_max_amp);
-        csv.setCell(row, "pc_freq_max", items[i].pc_freq_max);
-        csv.setCell(row, "pc_freq_min", items[i].pc_freq_min);
-        csv.setCell(row, "pc_knee", items[i].pc_knee);
-        csv.setCell(row, "temp_bw_knee_fc", items[i].temp_bw_knee_fc);
-        csv.setCell(row, "slope", items[i].slope);
-        csv.setCell(row, "kalman_slope", items[i].kalman_slope);
-        csv.setCell(row, "curve_neg", items[i].curve_neg);
-        csv.setCell(row, "curve_pos_start", items[i].curve_pos_start);
-        csv.setCell(row, "curve_pos_end", items[i].curve_pos_end);
-        csv.setCell(row, "mid_offset", items[i].mid_offset);
-        csv.setCell(row, "smoothness", items[i].smoothness);
-        csv.setCell(row, "snr", items[i].snr);
-        csv.setCell(row, "SpeciesMan", "todo");
-        csv.setCell(row, "prob", "");
-        csv.setCell(row, "remarks", "");
+        csv.setCell(row, Cols.NAME, fName);
+        csv.setCell(row, Cols.NR, i + 1);
+        csv.setCell(row, Cols.SPECIES, "----");
+        csv.setCell(row, Cols.SAMPLERATE, samplingRate);
+        csv.setCell(row, Cols.FILE_LEN, duration);
+        csv.setCell(row, Cols.F_MAX_AMP, items[i].freq_max_amp);
+        csv.setCell(row, Cols.F_MIN, items[i].freq_min);
+        csv.setCell(row, Cols.F_MAX, items[i].freq_max);
+        csv.setCell(row, Cols.F_KNEE, items[i].freq_knee);
+        csv.setCell(row, Cols.DURATION, items[i].duration);
+        csv.setCell(row, Cols.START_TIME, (double)items[i].start_time/samplingRate);
+        csv.setCell(row, Cols.BANDWIDTH, items[i].bandwidth);
+        csv.setCell(row, Cols.F_START, items[i].freq_start);
+        csv.setCell(row, Cols.F_25, items[i].freq_25);
+        csv.setCell(row, Cols.F_CENTER, items[i].freq_center);
+        csv.setCell(row, Cols.F_75, items[i].freq_75);
+        csv.setCell(row, Cols.F_END, items[i].freq_end);
+        csv.setCell(row, Cols.FC, items[i].fc);
+        csv.setCell(row, Cols.F_BW_KNEE_FC, items[i].freq_bw_knee_fc);
+        csv.setCell(row, Cols.BIN_MAX_AMP, items[i].bin_max_amp);
+        csv.setCell(row, Cols.PC_F_MAX_AMP, items[i].pc_freq_max_amp);
+        csv.setCell(row, Cols.PC_F_MAX, items[i].pc_freq_max);
+        csv.setCell(row, Cols.PC_F_MIN, items[i].pc_freq_min);
+        csv.setCell(row, Cols.PC_KNEE, items[i].pc_knee);
+        csv.setCell(row, Cols.TEMP_BW_KNEE_FC, items[i].temp_bw_knee_fc);
+        csv.setCell(row, Cols.SLOPE, items[i].slope);
+        csv.setCell(row, Cols.KALMAN_SLOPE, items[i].kalman_slope);
+        csv.setCell(row, Cols.CURVE_NEG, items[i].curve_neg);
+        csv.setCell(row, Cols.CURVE_POS_START, items[i].curve_pos_start);
+        csv.setCell(row, Cols.CURVE_POS_END, items[i].curve_pos_end);
+        csv.setCell(row, Cols.MID_OFFSET, items[i].mid_offset);
+        csv.setCell(row, Cols.SMOTTHNESS, items[i].smoothness);
+        csv.setCell(row, Cols.SNR, items[i].snr);
+        csv.setCell(row, Cols.SPECIES_MAN, "todo");
+        csv.setCell(row, Cols.PROBABILITY, "");
+        csv.setCell(row, Cols.REMARKS, "");
       }
     }
 

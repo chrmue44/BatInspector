@@ -44,7 +44,8 @@
 			"Eptesicus",
 			"Nyctalus",
 			"Myotis",
-			"Vespertilio"
+			"Vespertilio",
+			"Pipistrellus"
 		],
 		"InformationSource": "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm"
 	},
@@ -101,7 +102,8 @@
 			"Eptesicus",
 			"Myotis",
 			"Nyctalus",
-			"Vespertilio"
+			"Vespertilio",
+			"Pipistrellus"
 		],
 		"InformationSource": "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway"
 	   }

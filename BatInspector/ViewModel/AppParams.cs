@@ -195,7 +195,7 @@ namespace BatInspector
   public class AppParams
   {
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
-  //  public const string PRJ_REPORT = "report.csv";        // report name for project report
+    public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings
@@ -222,7 +222,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRootPath")]
-    public string RootPath { get; set; } = "";
+    public string AppRootPath { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -370,6 +370,10 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatModel")]
+    public string ModelRootPath { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatModel")]
     public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
 
     [DataMember]
@@ -440,8 +444,8 @@ namespace BatInspector
 
     public void init()
     {
-      RootPath = AppDomain.CurrentDomain.BaseDirectory;
-      ScriptDir = "C:\\users\\chrmu\\prj\\BatInspector\\scripts";
+      AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
+      ScriptDir = "scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;
       WaterfallWidth = 512;
@@ -468,6 +472,7 @@ namespace BatInspector
       RootDataDir = "C:/users/chrmu/bat";
       SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
+      ModelRootPath = "C:/users/chrmu/prj/BatInspector/BatInspector/model";
       initModels();
       SamplingRate = 312500;
 
@@ -511,12 +516,20 @@ namespace BatInspector
       Models = new List<ModelItem>();
       Models.Add(new ModelItem());
       Models[0].Active = true;
-      Models[0].Script = "C:/Users/chrmu/prj/BatInspector/py/batclass.py";
-      Models[0].Dir = "C:/Users/chrmu/prj/BatInspector/mod_tsa";
-      Models[0].Epochs = 30;
-      Models[0].LearningRate = 0.00002;
+      Models[0].Script = "bd2/run.bat";
+      Models[0].Dir = "bd2";
+      Models[0].Epochs = 0;
+      Models[0].LearningRate = 0;
       Models[0].ReportColumn = "Species";
       Models[0].ReportName = "report.csv";
+      Models.Add(new ModelItem());
+      Models[1].Active = false;
+      Models[1].Script = "py/run.bat";
+      Models[1].Dir = "tsa";
+      Models[1].Epochs = 30;
+      Models[1].LearningRate = 0.00002;
+      Models[1].ReportColumn = "Species";
+      Models[1].ReportName = "report2.csv";
 
     }
 

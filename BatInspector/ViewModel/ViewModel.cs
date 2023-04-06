@@ -205,7 +205,8 @@ namespace BatInspector
         it.IsForAllCalls = p.isForAllCalls;
         _filter.Items.Add(it);
       }
-      _scripter = new ScriptRunner(ref _proc, AppParams.Inst.ScriptDir, updateProgress, this);
+      string scriptDir = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.ScriptDir;
+      _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
       _prj.Analysis.init(_prj.SpeciesInfos);
     }
 

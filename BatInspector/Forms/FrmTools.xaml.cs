@@ -60,7 +60,8 @@ namespace BatInspector.Forms
         if (AppParams.Inst.Scripts[index].IsTool)
         {
           _model.Scripter.VarList.set("VAR_FILE_NAME", _fileName);
-          _model.executeScript(AppParams.Inst.Scripts[index].Name, false);
+          string scriptName = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.Scripts[index].Name;
+          _model.executeScript(scriptName, false);
           this.DialogResult = true;
         }
       }

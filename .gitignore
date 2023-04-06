@@ -1,6 +1,7 @@
 /.vs
 /BatInspector/obj
 /BatInspector/bin
+/BatInspector/models/_venv
 /Setup/Release
 /Setup/Debug
 /libScripter/bin/Debug

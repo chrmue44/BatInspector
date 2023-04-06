@@ -61,52 +61,7 @@ namespace BatInspector
     public const string MID_OFFSET = "mid_offset";
     public const string SMOTTHNESS = "smoothness";
     public const string REC_TIME = "recTime";
-
-    public static Csv createReport()
-    {
-      Csv csv = new Csv();
-      csv.clear();
-      csv.addRow();
-      string header = NAME + ";" +
-                      NR + ";" +
-                      SPECIES + ";" +
-                      SPECIES2 + ";" +
-                      SAMPLERATE + ";" +
-                      FILE_LEN + ";" + 
-                      F_MAX_AMP + ";" + 
-                      F_MIN + ";" + 
-                      F_MAX + ";" + 
-                      F_KNEE + ";" + 
-                      DURATION + ";" + 
-                      START_TIME + ";" + 
-                      BANDWIDTH + ";" + 
-                      F_START + ";" +
-                      F_25 + ";" +
-                      F_CENTER + ";" +
-                      F_75 + ";" +
-                      F_END + ";" +
-                      FC + ";" +
-                      F_BW_KNEE_FC + ";" +
-                      BIN_MAX_AMP + ";" +
-                      PC_F_MAX_AMP + ";" +
-                      PC_F_MAX + ";" +
-                      PC_F_MIN + ";" +
-                      PC_KNEE + ";" +
-                      TEMP_BW_KNEE_FC + ";" +
-                      SLOPE + ";" +
-                      KALMAN_SLOPE + ";" +
-                      CURVE_NEG + ";" +
-                      CURVE_POS_START + ";" +
-                      CURVE_POS_END + ";" +
-                      MID_OFFSET + ";" +
-                      SMOTTHNESS + ";" +
-                      SNR + ";" +
-                      SPECIES_MAN +";" +
-                      PROBABILITY + ";" +
-                      REMARKS;
-      csv.initColNames(header, true);
-      return csv;
-    }
+    public const string CALL_INTERVALL = "callInterval";
   }
 
   public class Analysis
@@ -447,15 +402,7 @@ namespace BatInspector
           BatRecord rec = ElekonInfoFile.read(xmlName);
           if (rec != null)
           {
-            if (rec.DateTime.Length > 3)
-            {
-              try
-              {
-                time = DateTime.ParseExact(rec.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-              }
-              catch { }
-            }
-            dateStr = AnyType.getTimeString(time);
+            dateStr = ElekonInfoFile.getDateString(rec.DateTime);
           }
           else
             DebugLog.log("error reading file: " + xmlName, enLogType.ERROR);

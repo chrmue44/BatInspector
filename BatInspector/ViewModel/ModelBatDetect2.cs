@@ -34,14 +34,16 @@ namespace BatInspector
     {
       string wavDir = prj.PrjDir + prj.WavSubDir;
       string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
-      string args =AppParams.Inst.ModelRootPath + " " +  wavDir + " " +
+      string args = AppParams.Inst.ModelRootPath + " " + wavDir + " " +
                    annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
       string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
       string cmd = wrkDir + "/" + AppParams.Inst.Models[this.Index].Script;
-      int retVal = _proc.LaunchCommandLineApp(cmd, null,  wrkDir, true, args, true, true);
+      int retVal = _proc.LaunchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
       string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
       createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);
       cleanup(prj.PrjDir);
+      prj.Analysis.read(reportName);
+      prj.removeFilesNotInReport();
       return retVal;
     }
 
@@ -59,7 +61,7 @@ namespace BatInspector
       foreach (string file in files) 
       {
         // read infoFile
-        string wavName = wavDir + "/" + Path.GetFileName(file).Replace(".csv", "");
+        string wavName = /*wavDir + "/" + */ Path.GetFileName(file).Replace(".csv", "");
         string infoName = wavDir + "/" + Path.GetFileName(file).Replace(".wav.csv", ".xml");
         string sampleRate = "?";
         string fileLen = "?";

@@ -204,7 +204,27 @@ namespace BatInspector
 
     public void removeFilesNotInReport()
     {
-
+      List<BatExplorerProjectFileRecordsRecord> newList = new List<BatExplorerProjectFileRecordsRecord>();
+      foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
+      {
+        if (Analysis.find(rec.Name) == null)
+        {
+          string name = PrjDir + "/" + WavSubDir + "/" + rec.File;
+          DebugLog.log("delete file " + name, enLogType.DEBUG);
+          if (File.Exists(name))
+            File.Delete(name);
+          name = name.Replace(".wav", ".xml");
+          if (File.Exists(name))
+            File.Delete(name);
+          name = name.Replace(".xml", ".png");
+          if (File.Exists(name))
+            File.Delete(name);
+          _changed = true;
+        }
+        else
+          newList.Add(rec);
+      }
+      _batExplorerPrj.Records = newList.ToArray();
     }
 
     /// <summary>

@@ -205,21 +205,41 @@ namespace BatInspector
     public void removeFilesNotInReport()
     {
       List<BatExplorerProjectFileRecordsRecord> newList = new List<BatExplorerProjectFileRecordsRecord>();
+      string destDir = this.PrjDir + "/del";
+      if (!Directory.Exists(destDir))
+        Directory.CreateDirectory(destDir);
+
       foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
       {
         if (Analysis.find(rec.Name) == null)
         {
           string name = PrjDir + "/" + WavSubDir + "/" + rec.File;
           DebugLog.log("delete file " + name, enLogType.DEBUG);
-          if (File.Exists(name))
-            File.Delete(name);
-          name = name.Replace(".wav", ".xml");
-          if (File.Exists(name))
-            File.Delete(name);
-          name = name.Replace(".xml", ".png");
-          if (File.Exists(name))
-            File.Delete(name);
-          _changed = true;
+          try
+          {
+            if (File.Exists(name))
+            {
+              File.Copy(name, destDir + "/" + Path.GetFileName(name));
+              File.Delete(name);
+            }
+            name = name.Replace(".wav", ".xml");
+            if (File.Exists(name))
+            {
+              File.Copy(name, destDir + "/" + Path.GetFileName(name));
+              File.Delete(name);
+            }
+            name = name.Replace(".xml", ".png");
+            if (File.Exists(name))
+            {
+              File.Copy(name, destDir + "/" + Path.GetFileName(name));
+              File.Delete(name);
+            }
+              _changed = true;
+          }
+          catch(Exception ex) 
+          {
+              //TODO log
+          }
         }
         else
           newList.Add(rec);

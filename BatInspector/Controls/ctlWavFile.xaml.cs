@@ -195,7 +195,7 @@ namespace BatInspector.Controls
                SpeciesInfos.isInList(_model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
             ctlm.setValue(Analysis.Calls[i].getString(Cols.SPECIES).ToUpper());
           else
-            ctlm.setValue("");
+            ctlm.setValue("?");
           _analysis.Calls[i].setString(Cols.SPECIES_MAN, ctlm.getValue());
         }
       }

@@ -134,7 +134,10 @@ namespace BatInspector
           _prj = new Project(_batSpecRegions, _speciesInfos);
         _prj.readPrjFile(files[0]);
         if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
+        {
           _prj.Analysis.read(_selectedDir + AppParams.PRJ_REPORT);
+          _prj.Analysis.openSummary(_selectedDir + AppParams.PRJ_SUMMARY);
+        }
         else
           _prj.Analysis.init(_prj.SpeciesInfos);
         if (_prj.Analysis.Report != null)
@@ -294,6 +297,7 @@ namespace BatInspector
         deleteFile(f);
 
       _prj.Analysis.save(PrjPath + AppParams.PRJ_REPORT);
+      _prj.Analysis.createSummary(PrjPath + AppParams.PRJ_SUMMARY);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 

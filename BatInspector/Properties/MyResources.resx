@@ -771,4 +771,7 @@
   <data name="BtnLoad" xml:space="preserve">
     <value>Load ...</value>
   </data>
+  <data name="ToolTipSaveAs" xml:space="preserve">
+    <value>save zoomed section as WAV file</value>
+  </data>
 </root>

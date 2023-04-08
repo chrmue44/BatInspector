@@ -21,11 +21,11 @@ FOR FileNr 0 NrFiles
 	  FOR i 0 NrCalls
 	    SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
 		SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
-		IF =(specMan == "TODO")
+		IF =(toupper(specMan) == "TODO")
 		  IF =(specAuto == Rank1Spec)
             =(setCallInfo(FileNr, i, "SPEC_MAN", Rank1Spec))
 		  ELSE
-            =(setCallInfo(FileNr, i, "SPEC_MAN", ""))
+            =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
           END
 		END
 	  END

@@ -64,6 +64,29 @@ namespace BatInspector
     public const string CALL_INTERVALL = "callInterval";
   }
 
+
+  public class SumItem
+  {
+    public string Species { get; set; }
+    public int Count { get; set; }
+
+    public SumItem(string species, int count)
+    {
+      Species = species;
+      Count = count;
+    }
+
+    public static SumItem find(string species, List<SumItem> list)
+    {
+      foreach(SumItem item in list) 
+      {
+        if(item.Species == species) 
+          return item;
+      }
+      return null;
+    }
+  }
+
   public class Analysis
   {
 
@@ -73,6 +96,7 @@ namespace BatInspector
     List<AnalysisFile> _list;
     List<ReportItem> _report;
     Csv _csv;
+    List<SumItem> _summary;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
@@ -122,6 +146,7 @@ namespace BatInspector
       _cols = new Cols();
       _csv = new Csv();
       _specList = specList;
+      _summary = new List<SumItem>();
     }
 
     public void read(string fileName)
@@ -159,14 +184,14 @@ namespace BatInspector
             _csv.insertCol(col, "", Cols.REMARKS);
             _csv.save();
           }
-          if (_csv.getColNr(Cols.SPECIES2) < 1)
+      /*    if (_csv.getColNr(Cols.SPECIES2) < 1)
           {
             int col = _csv.getColNr(Cols.SPECIES) + 1;
             if (col < 1)
               col = _csv.ColCnt + 1;
             _csv.insertCol(col, "", Cols.SPECIES2);
             _csv.save();
-          }
+          } */
         }
         if (_csv.getColNr(Cols.REC_TIME) < 1)
           filloutRecTime();
@@ -259,6 +284,7 @@ namespace BatInspector
         _csv.save();
     }
 
+
     public AnalysisFile getAnalysis(string fileName)
     {
       AnalysisFile retVal = null;
@@ -333,6 +359,26 @@ namespace BatInspector
       }
     }
 
+    public void openSummary(string fileName)
+    {
+      if (!File.Exists(fileName))
+        createSummary(fileName);
+      else
+      {
+        Csv sum = new Csv();
+        sum.read(fileName, ";", true);
+        _summary.Clear();
+        for(int row = 2; row < sum.RowCnt; row++)
+        {
+          string species = sum.getCell(row, Cols.SPECIES_MAN);
+          int count = sum.getCellAsInt(row, "Count");
+          SumItem it = new SumItem(species, count);
+          _summary.Add(it);
+        }
+      }
+    }
+
+
     public bool removeWavFromReport(string wavName)
     {
       int row = 0;
@@ -382,6 +428,39 @@ namespace BatInspector
         if (row > 0)
           f.updateRow(row);
       }
+    }
+
+    public void createSummary(string fileName)
+    {
+      _summary.Clear();
+      foreach (AnalysisFile f in _list)
+      {
+        foreach (AnalysisCall c in f.Calls)
+        {
+          SumItem it = SumItem.find(c.getString(Cols.SPECIES_MAN), _summary);
+          if (it != null)
+            it.Count++;
+          else
+          {
+            it = new SumItem(c.getString(Cols.SPECIES_MAN), 1);
+            _summary.Add(it);
+          }
+        }
+      }
+
+      // create csv file
+      Csv sum = new Csv();
+      sum.addRow();
+      sum.initColNames(Cols.SPECIES_MAN + ";Count", true);
+      int row = 2;
+      foreach (SumItem it in _summary)
+      {
+        sum.addRow();
+        sum.setCell(row, Cols.SPECIES_MAN, it.Species);
+        sum.setCell(row, "Count", it.Count);
+        row++;
+      }
+      sum.saveAs(fileName);
     }
 
     void filloutRecTime()

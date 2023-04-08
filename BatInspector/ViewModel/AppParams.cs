@@ -196,6 +196,7 @@ namespace BatInspector
   {
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
     public const string PRJ_REPORT = "report.csv";        // report name for project report
+    public const string PRJ_SUMMARY = "summary.csv";      // report name for project summary
     public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings

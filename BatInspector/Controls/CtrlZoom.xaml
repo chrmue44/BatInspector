@@ -72,6 +72,9 @@
                 </Button>
                 <ComboBox x:Name="_cbWindow" Width="100" SelectionChanged="_cbWindow_SelectionChanged"></ComboBox>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
+                    <Image Source="../images/icons8-save-48.png"></Image>
+                </Button>
             </ToolBar>
         </ToolBarTray>
         <Grid Name ="_gridXt" Grid.Row="1">

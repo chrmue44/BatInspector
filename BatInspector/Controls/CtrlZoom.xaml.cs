@@ -23,6 +23,7 @@ using System;
 using System.IO;
 using System.Globalization;
 
+
 namespace BatInspector.Controls
 {
   /// <summary>
@@ -781,6 +782,21 @@ namespace BatInspector.Controls
       double t = _model.ZoomView.RulerDataT.Min +
       pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
       _imgXt.ToolTip = t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+    }
+
+    private void _btnSaveAs_Click(object sender, RoutedEventArgs e)
+    {
+      System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
+      dlg.Filter = "WAV files (*.wav)|*.wav";
+      System.Windows.Forms.DialogResult res = dlg.ShowDialog();
+      if(res == System.Windows.Forms.DialogResult.OK)
+      {
+        WavFile wav = new WavFile();
+        int iStart = (int)(_model.ZoomView.RulerDataT.Min * _model.ZoomView.Waterfall.SamplingRate);
+        int iEnd = (int)(_model.ZoomView.RulerDataT.Max * _model.ZoomView.Waterfall.SamplingRate);
+        wav.createFile(1, _model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, _model.ZoomView.Waterfall.Samples);
+        wav.saveFileAs(dlg.FileName);
+      }
     }
   }
 }

@@ -69,12 +69,15 @@ namespace BatInspector
           string sampleRate = "?";
           string fileLen = "?";
           string recTime = "?";
+          double lat = 0.0;
+          double lon = 0.0;
           BatRecord info = ElekonInfoFile.read(infoName);
           if (info != null)
           {
             sampleRate = info.Samplerate.Replace(" Hz", ""); ;
             fileLen = info.Duration.Replace(" Sec", "");
             recTime = ElekonInfoFile.getDateString(info.DateTime);
+            ElekonInfoFile.parsePosition(info, out lat, out lon);
           }
 
           // read annontation for one wav file
@@ -96,6 +99,8 @@ namespace BatInspector
             report.setCell(repRow, Cols.FILE_LEN, fileLen);
             report.setCell(repRow, Cols.REC_TIME, recTime);
             report.setCell(repRow, Cols.NAME, wavName);
+            report.setCell(repRow, Cols.LAT, lat);
+            report.setCell(repRow, Cols.LON, lon);
             int id = csvAnn.getCellAsInt(row, "id");
             report.setCell(repRow, Cols.NR, id + 1);
             double startTime = csvAnn.getCellAsDouble(row, "start_time");

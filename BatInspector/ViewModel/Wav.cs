@@ -196,6 +196,20 @@ namespace BatInspector
       ChunkSize = (UInt32)WaveData.Length * 2;
     }
 
+    public void AddSampleData(short[] leftBuffer,
+     short[] rightBuffer, int idxStart, int idxEnd)
+    {
+      WaveData = new short[leftBuffer.Length +
+         rightBuffer.Length];
+      int bufferOffset = 0;
+      for (int index = 0; index < WaveData.Length; index += 2)
+      {
+        WaveData[index] = leftBuffer[bufferOffset];
+        WaveData[index + 1] = rightBuffer[bufferOffset];
+        bufferOffset++;
+      }
+      ChunkSize = (UInt32)WaveData.Length * 2;
+    }
     public void AddSampleData(List<short> leftBuffer, int idxStart, int idxEnd)
     {
       WaveData = new short[leftBuffer.Count];
@@ -232,6 +246,21 @@ namespace BatInspector
       for (int index = idxStart; index < idxEnd; index++)
       {
         WaveData[bufferOffset] = (short)(leftBuffer[index] * 32767.0);
+        bufferOffset++;
+      }
+      ChunkSize = (UInt32)WaveData.Length * 2;
+    }
+
+    public void AddSampleData(short[] leftBuffer, int idxStart, int idxEnd)
+    {
+      WaveData = new short[idxEnd - idxStart + 2];
+      if (idxEnd >= leftBuffer.Length)
+        idxEnd = leftBuffer.Length - 1;
+
+      int bufferOffset = 0;
+      for (int index = idxStart; index < idxEnd; index++)
+      {
+        WaveData[bufferOffset] = (leftBuffer[index]);
         bufferOffset++;
       }
       ChunkSize = (UInt32)WaveData.Length * 2;
@@ -338,6 +367,25 @@ namespace BatInspector
     }
     
     public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    {
+      _header = new WaveHeader();
+      _format = new FormatChunk(chanCount, (uint)sampleRate);
+      _data = new DataChunk();
+      List<Byte> tempBytes = new List<byte>();
+
+      if (chanCount == 1)
+        _data.AddSampleData(left, idxStart, idxEnd);
+      else
+        _data.AddSampleData(left, right, idxStart, idxEnd);
+
+      tempBytes.AddRange(_header.GetBytes());
+      tempBytes.AddRange(_format.GetBytes());
+      tempBytes.AddRange(_data.GetBytes());
+      _waveData = tempBytes.ToArray();
+      _isOpen = true;
+    }
+
+    public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, short[] left, short[] right = null)
     {
       _header = new WaveHeader();
       _format = new FormatChunk(chanCount, (uint)sampleRate);

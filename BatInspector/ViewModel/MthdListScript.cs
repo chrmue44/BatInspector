@@ -388,9 +388,9 @@ namespace BatInspector
     enum enCallInfo
     {
       SPEC_AUTO,
-      SPEC_AUTO2,
       SPEC_MAN,
-      PROB_RATIO
+      PROB_RATIO,
+      PROBABILITY
     }
 
     static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
@@ -421,14 +421,14 @@ namespace BatInspector
                   case enCallInfo.SPEC_AUTO:
                     result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES));
                     break;
-                  case enCallInfo.SPEC_AUTO2:
-                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES2));
-                    break;
                   case enCallInfo.SPEC_MAN:
                     result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.SPECIES_MAN));
                     break;
                   case enCallInfo.PROB_RATIO:
                     result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].FirstToSecond);
+                    break;
+                  case enCallInfo.PROBABILITY:
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.PROBABILITY));
                     break;
                 }
               }
@@ -477,10 +477,6 @@ namespace BatInspector
                   case enCallInfo.SPEC_AUTO:
                     argv[3].changeType(AnyType.tType.RT_STR);
                     _inst._model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES, argv[3].getString());
-                    break;
-                  case enCallInfo.SPEC_AUTO2:
-                    argv[3].changeType(AnyType.tType.RT_STR);
-                    _inst._model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES2, argv[3].getString());
                     break;
                   case enCallInfo.SPEC_MAN:
                     argv[3].changeType(AnyType.tType.RT_STR);

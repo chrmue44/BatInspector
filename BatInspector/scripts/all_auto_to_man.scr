@@ -1,0 +1,17 @@
+#take over all unambiguously automatically recognized species
+SET NrFiles =(getPrjFileCount() - 1)
+FOR FileNr 0 NrFiles
+  SET NrCalls =(getCallCount(FileNr) - 1)
+  FOR i 0 NrCalls
+	SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
+    SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+	SET prob =(getCallInfo(FileNr, i, "PROBABILITY"))
+	IF =(toupper(specMan) == "TODO")
+	  IF =(prob > 0.6)
+        =(setCallInfo(FileNr, i, "SPEC_MAN", specAuto))
+	  ELSE
+        =(setCallInfo(FileNr, i, "SPEC_MAN", "???"))
+	  END
+	END
+  END
+END

@@ -399,6 +399,7 @@ namespace BatInspector
       return image;
     }
 
+
     bool isBusy()
     {
       bool retVal = false;

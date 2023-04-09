@@ -161,6 +161,8 @@ namespace BatInspector
       {
         Cols.NAME,
         Cols.REC_TIME,
+        Cols.LAT,
+        Cols.LON,
         Cols.NR,
         colSpecies,
         Cols.SPECIES_MAN,

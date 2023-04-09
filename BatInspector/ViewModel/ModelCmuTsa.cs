@@ -111,7 +111,6 @@ namespace BatInspector
         Cols.NAME,
         Cols.NR,
         Cols.SPECIES,
-        Cols.SPECIES2,
         Cols.SAMPLERATE,
         Cols.FILE_LEN,
         Cols.F_MAX_AMP,
@@ -176,12 +175,6 @@ namespace BatInspector
         int c = rep.ColCnt + 1;
         rep.insertCol(c, "", Cols.SPECIES);
       }
-      if (rep.findInRow(1, Cols.SPECIES2) < 1)
-      {
-        int c = rep.findInRow(1, Cols.SPECIES) + 1;
-        rep.insertCol(c, "", Cols.SPECIES2);
-      }
-
       for (int r = 2; r <= spec.RowCnt; r++)
       {
         string species = spec.getCell(r, 1);

@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Windows.Documents;
 using System.Xml.Serialization;
 
 // 
@@ -56,6 +58,18 @@ public partial class BatExplorerProjectFile
     //typeField = "";
     //originatorField = "";
   }
+
+  public BatExplorerProjectFile(string name, List<BatExplorerProjectFileRecordsRecord> records)
+  {
+    nameField = name;
+    recordsField = records.ToArray();
+    notesField = "";
+    createdField = "";
+    autoProcessField = "true";
+    //typeField = "";
+    //originatorField = "";
+  }
+
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string Name

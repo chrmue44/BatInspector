@@ -35,7 +35,6 @@ namespace BatInspector
     public const string START_TIME = "start";
     public const string SNR = "snr";
     public const string SPECIES = "Species";
-    public const string SPECIES2 = "Species2";
     public const string SPECIES_MAN = "SpeciesMan";
     public const string PROBABILITY = "prob";
     public const string REMARKS = "remarks";
@@ -62,6 +61,8 @@ namespace BatInspector
     public const string SMOTTHNESS = "smoothness";
     public const string REC_TIME = "recTime";
     public const string CALL_INTERVALL = "callInterval";
+    public const string LAT = "lat";
+    public const string LON = "lon";
   }
 
 
@@ -184,14 +185,6 @@ namespace BatInspector
             _csv.insertCol(col, "", Cols.REMARKS);
             _csv.save();
           }
-      /*    if (_csv.getColNr(Cols.SPECIES2) < 1)
-          {
-            int col = _csv.getColNr(Cols.SPECIES) + 1;
-            if (col < 1)
-              col = _csv.ColCnt + 1;
-            _csv.insertCol(col, "", Cols.SPECIES2);
-            _csv.save();
-          } */
         }
         if (_csv.getColNr(Cols.REC_TIME) < 1)
           filloutRecTime();
@@ -242,8 +235,9 @@ namespace BatInspector
           rItem.Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
           rItem.StartTime = call.getString(Cols.START_TIME);
           rItem.SpeciesAuto = call.getString(Cols.SPECIES);
-          rItem.SpeciesAuto2 = call.getString(Cols.SPECIES2);
           rItem.Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
+          rItem.Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
+          rItem.Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
           rItem.Snr = call.getDouble(Cols.SNR).ToString();
           rItem.SpeciesMan = call.getString(Cols.SPECIES_MAN);
           _report.Add(rItem);
@@ -521,11 +515,12 @@ namespace BatInspector
     public string FreqMaxAmp { get; set; }
 
     public string SpeciesAuto { get; set; }
-    public string SpeciesAuto2 { get; set; }
-
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
     public string Snr { get; set; }
+
+    public string Latitude {get;set;}
+    public string Longitude { get;set;}
     public string Remarks
     {
       get { return _remarks; }

@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -266,6 +267,53 @@ namespace BatInspector
       return retVal;
     }
 
+
+    private void addRecord(string filePath, ref List<BatExplorerProjectFileRecordsRecord> list)
+    {
+      BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
+      string name = Path.GetFileName(filePath);
+      rec.File = name;
+      name = Path.GetFileNameWithoutExtension(filePath);
+      rec.Name = name;
+      list.Add(rec);  
+    }
+
+    private string[] splitWav(string fName, double size)
+    {
+      WavFile wav = new WavFile();
+      string[] retVal = null;
+      try
+      {
+        wav.readFile(fName);
+        double len = wav.AudioSamples.Length / wav.FormatChunk.Frequency / size;
+        int cnt = (int)len;
+        if ((double)cnt < len)
+          cnt++;
+        retVal = new string[cnt];
+        for(int i = 0; i < cnt; i++)
+        {
+          int iStart = (int)((double)i * wav.FormatChunk.Frequency * size);
+          int iEnd = iStart + (int)((double)wav.FormatChunk.Frequency * size) - 1;
+          if (iEnd > (wav.AudioSamples.Length - 1))
+            iEnd = wav.AudioSamples.Length - 1;
+          short[] samples = new short[iEnd - iStart + 1];
+          Array.Copy(wav.AudioSamples, iStart, samples, 0, iEnd - iStart + 1);
+          WavFile newWav = new WavFile();
+          newWav.createFile(wav.FormatChunk.Channels, (int)wav.FormatChunk.Frequency, 0, samples.Length-1, samples);
+          string name = Path.GetDirectoryName(fName) + "/" +
+                        Path.GetFileNameWithoutExtension(fName) + "_" + i.ToString("D3") + Path.GetExtension(fName);
+          newWav.saveFileAs(name);
+          retVal[i] = name;
+        }
+        File.Delete(fName);
+      }
+      catch (Exception ex) 
+      {
+        DebugLog.log("Error splitting wav file: " + fName + ":" + ex.ToString(), enLogType.ERROR);
+      }
+      return retVal;
+    }
+
     /// <summary>
     /// create an elekon compatible project from a directory that contains wav files
     /// </summary>
@@ -276,17 +324,26 @@ namespace BatInspector
       {
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.wav",
                          System.IO.SearchOption.TopDirectoryOnly);
-        _batExplorerPrj = new BatExplorerProjectFile("wavs", files.Length);
-      //  _batExplorerPrj.Originator = "BatInspector";
-//        _batExplorerPrj.Type = "BatInspector";
+        List<BatExplorerProjectFileRecordsRecord> records = new List<BatExplorerProjectFileRecordsRecord>();
         
         for (int i = 0; i < files.Length; i++)
         {
-          string name = Path.GetFileName(files[i]);
-          _batExplorerPrj.Records[i].File = name;
-          name = Path.GetFileNameWithoutExtension(files[i]);
-          _batExplorerPrj.Records[i].Name = name;
+          FileInfo fi = new FileInfo(files[i]);
+          if(fi.Length > 3800000)
+          {
+            string[] fNames = splitWav(files[i], 4.5);
+            for(int j = 0; j < fNames.Length; j++)
+            {
+              addRecord(fNames[j], ref records);
+            }
+          }
+          else
+          {
+            addRecord(files[i], ref records);
+          }          
         }
+
+        _batExplorerPrj = new BatExplorerProjectFile("wavs", records);
         _wavSubDir = "/";
         _ok = true;
         _prjFileName = Path.GetFileName(dir.FullName);

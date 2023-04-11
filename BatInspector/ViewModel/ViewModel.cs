@@ -54,7 +54,7 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     
-    public string WavFilePath { get { return _selectedDir + _prj.WavSubDir; } }
+    public string WavFilePath { get { return _selectedDir + "/" + _prj.WavSubDir; } }
     
     public string PrjPath { get { return _selectedDir; } }
     
@@ -229,7 +229,7 @@ namespace BatInspector
 
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
     {
-      string fullName = _selectedDir + _prj.WavSubDir + rec.File;
+      string fullName = _selectedDir + "/" + _prj.WavSubDir + "/" + rec.File;
       string pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       Bitmap bmp = null;
       BitmapImage bImg = null;
@@ -240,7 +240,7 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + _prj.WavSubDir + rec.File, AppParams.Inst.FftWidth,
+        Waterfall wf = new Waterfall(_selectedDir + "/" + _prj.WavSubDir + "/" + rec.File, AppParams.Inst.FftWidth,
                                      AppParams.Inst.WaterfallWidth, AppParams.Inst.WaterfallHeight,  _colorTable);
         if (wf.Ok)
         {
@@ -311,7 +311,7 @@ namespace BatInspector
     {
       if (_prj != null)
       {
-        string dirName = _selectedDir + _prj.WavSubDir;
+        string dirName = _selectedDir + "/" + _prj.WavSubDir;
         string delName = Path.GetFileName(wavName);
         delName = delName.Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);

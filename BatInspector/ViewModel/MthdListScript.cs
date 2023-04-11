@@ -196,7 +196,7 @@ namespace BatInspector
           int maxIdxF = _inst._model.Prj.Records.Length;
           if (idxF < maxIdxF)
           {
-            result.assign(_inst._model.PrjPath + _inst._model.Prj.WavSubDir + 
+            result.assign(_inst._model.PrjPath + "/" + _inst._model.Prj.WavSubDir + "/" +
                           _inst._model.Prj.Records[idxF].File);
           }
           else

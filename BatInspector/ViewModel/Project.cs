@@ -9,8 +9,10 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using BatInspector.Properties;
 using libParser;
 using libScripter;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +23,20 @@ using System.Xml.Serialization;
 
 namespace BatInspector
 {
+  public class PrjInfo
+  {
+    public string Name { get; set; }
+    public string SrcDir { get;set; }
+    public string DstDir { get;set; }
+    public int MaxFileCnt { get; set; } 
+    public double MaxFileLenSec { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public string Weather { get; set; } 
+    public string Landscape { get; set; } 
+  }
+
+
   public class Project
   {
     BatExplorerProjectFile _batExplorerPrj;
@@ -141,6 +157,81 @@ namespace BatInspector
       return retVal;
     }
 
+    /// <summary>
+    /// create one or multiple projects from a directory containing WAV files
+    /// </summary>
+    /// <param name="info">parameters to specify project</param>
+    /// <param name="regions"></param>
+    /// <param name="speciesInfo"></param>
+    public static void createPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    {
+      try
+      {
+        DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
+        string[] files = Directory.GetFiles(info.SrcDir, "*.wav");
+        if (files.Length > 0)
+        {
+          WavFile wavFile = new WavFile();
+          wavFile.readFile(files[0]);
+          uint sampleRate = wavFile.FormatChunk.Frequency;
+          int maxFileLen = (int)((double)sampleRate * 2 * info.MaxFileLenSec + 2048);
+
+          // 1st step split all 
+          DebugLog.log("split files exceeding max. length", enLogType.INFO);
+          foreach (string f in files)
+          {
+            FileInfo fileInfo = new FileInfo(f);
+            if (fileInfo.Length > maxFileLen)
+              Project.splitWav(f, info.MaxFileLenSec);
+          }
+
+          // 2nd step create projects
+          files = Directory.GetFiles(info.SrcDir, "*.wav");
+          double prjCntd = (double)files.Length / info.MaxFileCnt;
+          int prjCnt = (int)prjCntd;
+          if (prjCntd > prjCnt)
+            prjCnt++;
+          int fileCnt = files.Length / prjCnt;
+          for (int p = 0; p < prjCnt; p++)
+          {
+            string dirName = info.Name;
+            if(prjCnt > 1)
+              dirName += "_" + p.ToString("D2");
+            DebugLog.log("creating project " + dirName, enLogType.INFO);
+            int iFirst = p * fileCnt;
+            int iLast = (p + 1) * fileCnt - 1;
+            char[] invalid = Path.GetInvalidPathChars();
+            string fullDir = info.DstDir + "/" + dirName;
+            string wavDir = fullDir + "/" + AppParams.DIR_WAVS;
+            if(Directory.Exists(fullDir))
+            {
+              DebugLog.log("directory '" + fullDir + "' already exists, project creation aborted!", enLogType.ERROR);
+              return;
+            }
+            else
+              Directory.CreateDirectory(fullDir);
+            if (!Directory.Exists(wavDir))
+              Directory.CreateDirectory(wavDir);
+            if (iLast + fileCnt > files.Length)
+              fileCnt = files.Length - iLast;
+            string[] prjFiles = new string[fileCnt];
+            Array.Copy(files, iFirst, prjFiles, 0, fileCnt);
+            Utils.copyFiles(prjFiles, wavDir);
+            Project prj = new Project(regions, speciesInfo);
+            DirectoryInfo dir = new DirectoryInfo(fullDir);
+            prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Weather + "\n" + info.Landscape);
+            prj.createXmlInfoFiles(info.Latitude, info.Longitude);
+          }
+        }
+        else
+          DebugLog.log("No WAV files in directory " + info.SrcDir, enLogType.ERROR);
+      }
+      catch (Exception e)
+      {
+        DebugLog.log("error creating Project " + info.Name + " " + e.ToString(), enLogType.ERROR);
+      }
+    }
+
     public void readPrjFile(string fName)
     {
       try
@@ -157,13 +248,13 @@ namespace BatInspector
         if (_batExplorerPrj.Notes == null)
           _batExplorerPrj.Notes = "";
         if (/*(_batExplorerPrj.Type != null) && (_batExplorerPrj.Type.IndexOf("Elekon") >= 0) || */
-            Directory.Exists(_selectedDir + "/Records"))
+            Directory.Exists(_selectedDir + "/" + AppParams.DIR_WAVS))
         {
-          _wavSubDir = "/Records/";
+          _wavSubDir =AppParams.DIR_WAVS;
           initSpeciesList();
         }
         else
-          _wavSubDir = "/";
+          _wavSubDir = "";
         _ok = true;
         _changed = false;
       }
@@ -278,7 +369,7 @@ namespace BatInspector
       list.Add(rec);  
     }
 
-    private string[] splitWav(string fName, double size)
+    private static string[] splitWav(string fName, double size)
     {
       WavFile wav = new WavFile();
       string[] retVal = null;
@@ -317,39 +408,28 @@ namespace BatInspector
     /// <summary>
     /// create an elekon compatible project from a directory that contains wav files
     /// </summary>
-    /// <param name="dir"></param>
-    public void fillFromDirectory(DirectoryInfo dir)
+    /// <param name="dir">directory info of prj directory</param>
+    /// <param name="wavSubDir">subdir with leading '/' for wav files</param>
+    public void fillFromDirectory(DirectoryInfo dir, string wavSubDir = "/", string notes = "")
     {
       try
       {
-        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.wav",
+        string[] files = System.IO.Directory.GetFiles(dir.FullName + wavSubDir, "*.wav",
                          System.IO.SearchOption.TopDirectoryOnly);
         List<BatExplorerProjectFileRecordsRecord> records = new List<BatExplorerProjectFileRecordsRecord>();
-        
+        _selectedDir = dir.FullName;
         for (int i = 0; i < files.Length; i++)
-        {
-          FileInfo fi = new FileInfo(files[i]);
-          if(fi.Length > 3800000)
-          {
-            string[] fNames = splitWav(files[i], 4.5);
-            for(int j = 0; j < fNames.Length; j++)
-            {
-              addRecord(fNames[j], ref records);
-            }
-          }
-          else
-          {
-            addRecord(files[i], ref records);
-          }          
-        }
+          addRecord(files[i], ref records);
 
         _batExplorerPrj = new BatExplorerProjectFile("wavs", records);
-        _wavSubDir = "/";
+        _wavSubDir = wavSubDir;
         _ok = true;
         _prjFileName = Path.GetFileName(dir.FullName);
         _batExplorerPrj.Name = _prjFileName;
         _prjFileName = dir.FullName + "/" + _prjFileName +".bpr";
         _changed = true;
+        Created = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+        Notes = notes;
         writePrjFile();
       }
       catch { }
@@ -361,7 +441,7 @@ namespace BatInspector
       foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
       {
         bool create = replaceAll;
-        string fullName = _selectedDir + _wavSubDir + record.File;
+        string fullName = _selectedDir + "/" +_wavSubDir + "/" + record.File;
         if(File.Exists(fullName))
         {
           if (!replaceAll && File.Exists(fullName.Replace(".wav", ".xml")))
@@ -389,7 +469,7 @@ namespace BatInspector
     {
       if(_batExplorerPrj.Records.Length > 0)
       {
-        string fName =_selectedDir + _wavSubDir + _batExplorerPrj.Records[0].File.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+        string fName =_selectedDir + "/" + _wavSubDir + "/" + _batExplorerPrj.Records[0].File.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         BatRecord info = ElekonInfoFile.read(fName);
         ElekonInfoFile.parsePosition(info, out double lat, out double lon);
         ParRegion reg = _batSpecRegions.findRegion(lat, lon);

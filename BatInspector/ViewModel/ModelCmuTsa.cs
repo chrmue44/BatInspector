@@ -50,7 +50,7 @@ namespace BatInspector
       if ((options & OPT_INSPECT) != 0)
       {
         //internal:
-        string dir = prj.PrjDir + prj.WavSubDir;
+        string dir = prj.PrjDir + "/" + prj.WavSubDir;
 //        string rep = prj.PrjDir + AppParams.PRJ_REPORT;
 //        rep = rep.Replace("\\", "/");
         if (File.Exists(reportName))

@@ -735,8 +735,8 @@
   <data name="FrmMainBatDetermination1" xml:space="preserve">
     <value>Fledermausbestimmung, Teil 1</value>
   </data>
-  <data name="MainToolGenXmlFiles" xml:space="preserve">
-    <value>Erzeuge XML informations-Dateien für das aktuelle Projekt</value>
+  <data name="MainToolCreatePrj" xml:space="preserve">
+    <value>Erzeuge ein Projekt aus einer Gruppe von WAV-Dateien</value>
   </data>
   <data name="Latitude" xml:space="preserve">
     <value>geographische Breite</value>
@@ -744,11 +744,11 @@
   <data name="Longitude" xml:space="preserve">
     <value>geografische Länge</value>
   </data>
-  <data name="frmCreateXmlInfo" xml:space="preserve">
-    <value>Bitte die fehlenden Informationen zum Erstellen der XML-Info-Dateien ergänzen</value>
+  <data name="frmCreatePrjInfo" xml:space="preserve">
+    <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus WAV-Dateien ergänzen</value>
   </data>
-  <data name="frmCreateXmlTitle" xml:space="preserve">
-    <value>Erzeuge XML Infodateien</value>
+  <data name="frmCreatePrjTitle" xml:space="preserve">
+    <value>Erzeuge Projekt</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Formatfehler Geografische Breite: </value>
@@ -773,5 +773,26 @@
   </data>
   <data name="ToolTipSaveAs" xml:space="preserve">
     <value>gezoomten Ausschnitt als WAV-Datei speichern</value>
+  </data>
+  <data name="frmCreatePrjSrcFolder" xml:space="preserve">
+    <value>Quellverzeichnis mit WAV-Dateien</value>
+  </data>
+  <data name="frmCreatePrjDstFolder" xml:space="preserve">
+    <value>Zielverzeichnis für Projekt</value>
+  </data>
+  <data name="frmCreatePrjMaxFiles" xml:space="preserve">
+    <value>max. Dateianzahl im Projekt</value>
+  </data>
+  <data name="frmCreatePrjWeather" xml:space="preserve">
+    <value>Wetter bei der Aufnahme</value>
+  </data>
+  <data name="frmCreatePrjLandscape" xml:space="preserve">
+    <value>Landschaft</value>
+  </data>
+  <data name="frmCreatePrjMaxFileLen" xml:space="preserve">
+    <value>max. Dateilänge [s]</value>
+  </data>
+  <data name="frmCreatePrjName" xml:space="preserve">
+    <value>Projektname</value>
   </data>
 </root>

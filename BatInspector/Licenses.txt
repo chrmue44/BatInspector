@@ -76,3 +76,6 @@ https://www.flaticon.com/free-icons/debug Debug icons created by Blaze150 - Flat
 
 WAV recordings bats from
 https://www.museumfuernaturkunde.berlin/de/wissenschaft/tierstimmenarchiv
+
+create-task-icon.png
+https://uxwing.com/create-task-icon/

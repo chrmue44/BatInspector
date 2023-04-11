@@ -51,8 +51,8 @@
           <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>
-          <Button x:Name="_btnXmlTool" Click="_btnXmlTool_Click"  ToolTip="{x:Static res:MyResources.MainToolGenXmlFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-             <Image Source="../images/xml-dateiformatsymbol.png"></Image>
+          <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+             <Image Source="../images/create-task-icon.png"></Image>
           </Button>
           <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/report.png"></Image>

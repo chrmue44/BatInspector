@@ -735,11 +735,11 @@
   <data name="FrmMainBatDetermination1" xml:space="preserve">
     <value>Bat Species Determination, part 1</value>
   </data>
-  <data name="MainToolGenXmlFiles" xml:space="preserve">
-    <value>Generate xml information files for current project</value>
+  <data name="MainToolCreatePrj" xml:space="preserve">
+    <value>Create a project from a collection of WAV files</value>
   </data>
-  <data name="frmCreateXmlInfo" xml:space="preserve">
-    <value>Please enter missing information to create XML info files for this project</value>
+  <data name="frmCreatePrjInfo" xml:space="preserve">
+    <value>Please enter missing information to create a project from a selection of WAV files</value>
   </data>
   <data name="Latitude" xml:space="preserve">
     <value>Latitude</value>
@@ -747,8 +747,8 @@
   <data name="Longitude" xml:space="preserve">
     <value>Longitude</value>
   </data>
-  <data name="frmCreateXmlTitle" xml:space="preserve">
-    <value>Create XML Info Files</value>
+  <data name="frmCreatePrjTitle" xml:space="preserve">
+    <value>Create Project</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Latitude format error: </value>
@@ -773,5 +773,26 @@
   </data>
   <data name="ToolTipSaveAs" xml:space="preserve">
     <value>save zoomed section as WAV file</value>
+  </data>
+  <data name="frmCreatePrjSrcFolder" xml:space="preserve">
+    <value>Source Folder with WAV files</value>
+  </data>
+  <data name="frmCreatePrjDstFolder" xml:space="preserve">
+    <value>Destination Folder for Project</value>
+  </data>
+  <data name="frmCreatePrjMaxFiles" xml:space="preserve">
+    <value>Max. Files in Project</value>
+  </data>
+  <data name="frmCreatePrjWeather" xml:space="preserve">
+    <value>Weather Conditions Recording</value>
+  </data>
+  <data name="frmCreatePrjLandscape" xml:space="preserve">
+    <value>Landscape</value>
+  </data>
+  <data name="frmCreatePrjMaxFileLen" xml:space="preserve">
+    <value>Max. File Length [s]</value>
+  </data>
+  <data name="frmCreatePrjName" xml:space="preserve">
+    <value>Project Name</value>
   </data>
 </root>

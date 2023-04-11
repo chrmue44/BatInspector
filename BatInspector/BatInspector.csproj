@@ -137,11 +137,11 @@
     <Compile Include="Forms\FrmColorMap.xaml.cs">
       <DependentUpon>FrmColorMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmCreatePrj.xaml.cs">
+      <DependentUpon>FrmCreatePrj.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmCreateReport.xaml.cs">
       <DependentUpon>frmCreateReport.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FrmCreateXmlInfos.xaml.cs">
-      <DependentUpon>FrmCreateXmlInfos.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmDebug.xaml.cs">
       <DependentUpon>frmDebug.xaml</DependentUpon>
@@ -293,13 +293,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\FrmCreatePrj.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Forms\frmCreateReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\FrmCreateXmlInfos.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\frmDebug.xaml">
       <SubType>Designer</SubType>
@@ -429,6 +429,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="images\create-task-icon.png" />
     <Content Include="scripts\tool_get_from_auto2.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

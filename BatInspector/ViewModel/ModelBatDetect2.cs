@@ -33,7 +33,7 @@ namespace BatInspector
 
     public override int classify(Project prj)
     {
-      string wavDir = prj.PrjDir + prj.WavSubDir;
+      string wavDir = prj.PrjDir + "/" +prj.WavSubDir;
       string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
       string args = AppParams.Inst.ModelRootPath + " " + wavDir + " " +
                    annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);

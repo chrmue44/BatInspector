@@ -866,9 +866,9 @@ namespace BatInspector.Forms
       showPdf(AppParams.BAT_INFO2_PDF);
     }
 
-    private void _btnXmlTool_Click(object sender, RoutedEventArgs e)
+    private void _btnCreatePrj_Click(object sender, RoutedEventArgs e)
     {
-      FrmCreateXmlInfos frm = new FrmCreateXmlInfos(_model);
+      FrmCreatePrj frm = new FrmCreatePrj(_model);
       frm.Show();
     }
   }

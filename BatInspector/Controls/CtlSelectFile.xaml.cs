@@ -10,16 +10,29 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlSelectFile : UserControl
   {
+    bool _isFolder = false;
     public CtlSelectFile()
     {
       InitializeComponent();
-      IsFolder = false;
     }
 
-    public bool IsFolder { get; set; }
+    public bool IsFolder { get { return _isFolder; } }
+
+    public void setup(string label, int widthLbl = 80, bool isFolder = false)
+    {
+      _lbl.Text = label;
+      _lbl.Width = widthLbl;
+      _isFolder = isFolder;
+    }
+
+    public string getValue()
+    {
+      return _txt.Text; 
+    }
+
     private void _btnOpen_Click(object sender, RoutedEventArgs e)
     {
-      if (IsFolder)
+      if (_isFolder)
       {
         System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
         System.Windows.Forms.DialogResult res = ofo.ShowDialog();

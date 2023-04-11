@@ -50,8 +50,7 @@ namespace BatInspector
       batRecord.Samplerate = wavFile.FormatChunk.Frequency.ToString() + " Hz";
       double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
       batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
-      DateTime lastModified = System.IO.File.GetLastWriteTime(fileName);
-      batRecord.DateTime = lastModified.ToString("dd.MM.yyyy HH:mm:ss");
+      batRecord.DateTime = getDateTimeFromFileName(fileName);
       string infoName = fileName.Replace(".wav", ".xml");
       ElekonInfoFile.write(infoName, batRecord);
     }
@@ -66,6 +65,48 @@ namespace BatInspector
         double.TryParse(pos[0], NumberStyles.Any, CultureInfo.InvariantCulture, out lat);
         double.TryParse(pos[1], NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
       }
+    }
+
+    private static string getDateTimeFromFileName(string fileName)
+    {
+      DateTime creationTime = System.IO.File.GetLastWriteTime(fileName);
+
+      string baseName = Path.GetFileNameWithoutExtension(fileName);
+      string[] token = baseName.Split('_');
+      if(token.Length > 1)
+      {
+        string dateStr = "";
+        string timeStr = "";
+        foreach (string t in token)
+        {
+          if(t.Length == 8)
+          {
+            try
+            {
+              DateTime tim = DateTime.ParseExact(t, "yyyyMMdd", CultureInfo.InvariantCulture);
+              dateStr = t;
+            }
+            catch { }
+          }
+          if(t.Length == 6)
+          {
+            try 
+            {
+              DateTime tim = DateTime.ParseExact(t, "HHmmss", CultureInfo.InvariantCulture);
+              timeStr = t;
+            }
+            catch { }
+          }
+        }
+        if ((dateStr.Length > 1) && (timeStr.Length > 1))
+        {
+          dateStr += " " + timeStr;
+          creationTime = DateTime.ParseExact(dateStr, "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
+        }
+      }
+
+      string retVal = creationTime.ToString("dd.MM.yyyy HH:mm:ss");
+      return retVal;
     }
 
     public static string getDateString(string date)

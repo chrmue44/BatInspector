@@ -79,7 +79,8 @@ namespace BatInspector
       testSumReport();
   //    testSignalForm();
       testSimCall();
-   //   testReportModelBatdetect2();
+      //   testReportModelBatdetect2();
+      // testCreatePrj();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -290,7 +291,21 @@ namespace BatInspector
       l.Add(new FreqItem(22000, 29e-3, 0));
       l.Add(new FreqItem(22000, 500e-3, 0));
       SimCall call = new SimCall(l, 384000);
+    }
 
+    private void testCreatePrj()
+    {
+      PrjInfo prj = new PrjInfo();
+      prj.Name = "Test";
+      prj.SrcDir = "G:\\bat\\src";
+      prj.DstDir = "G:\\bat\\test";
+      prj.MaxFileLenSec = 5;
+      prj.MaxFileCnt = 30;
+      prj.Weather = "12°C, bedeckt";
+      prj.Landscape = "Uferbereich Waldweiher";
+      prj.Latitude = 49.123;
+      prj.Longitude = 8.123;
+      Project.createPrj(prj, _model.Regions, _model.SpeciesInfos);
     }
 
     private void testReportModelBatdetect2()

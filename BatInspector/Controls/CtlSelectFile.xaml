@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Horizontal" Height="25">
-        <Label Name ="_lbl" Width="150" HorizontalContentAlignment="Right">Select Folder</Label>
-        <TextBlock Name ="_txt" Width="300">Tb</TextBlock>
-        <Button Name="_btnOpen" Width="30" Click="_btnOpen_Click">...</Button>
+        <TextBlock Name ="_lbl" Width="150"  Height="20">Select Folder</TextBlock>
+        <TextBox Name ="_txt" Width="300" Height="20">Tb</TextBox>
+        <Button Name="_btnOpen" Width="30" Click="_btnOpen_Click" Height="20">...</Button>
     </StackPanel>
 </UserControl>

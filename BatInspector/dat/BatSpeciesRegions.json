@@ -106,6 +106,63 @@
 			"Pipistrellus"
 		],
 		"InformationSource": "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway"
+	   },
+	   {
+		"Name": "United Kingdom",
+		"Location": [{
+			    "Lat": 51.033539, 
+				"Lon": 1.113506
+			},
+			{
+				"Lat": 52.873203,  
+				"Lon": 1.533058
+			},
+			{
+				"Lat": 59.262795, 
+				"Lon": -2.593458
+			},
+			{
+				"Lat": 57.512548,
+				"Lon": -6.764195
+			},
+			{
+				"Lat": 53.319476, 
+				"Lon": -4.496293
+			},
+			{
+				"Lat": 50.016064, 
+				"Lon": -5.487250
+			},
+			{
+				"Lat": 50.733974,
+				"Lon": 0.240915
+			}
+		],
+		"Species": [
+			"MALC",
+			"BBAR",
+			"MBEC",
+			"MBRA",
+			"PAUR",
+			"PPIP",
+			"MDAU",
+			"RFER",
+			"PAUS",
+			"NLEI",
+			"RHIP",
+			"PNAT",
+			"MNAT",
+			"NNOC",
+			"ESER",
+			"PPYG",
+			"MMYS",		
+			"Eptesicus",
+			"Myotis",
+			"Nyctalus",
+			"Vespertilio",
+			"Pipistrellus"
+		],
+		"InformationSource": "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats"
 	   }
 	]
 }

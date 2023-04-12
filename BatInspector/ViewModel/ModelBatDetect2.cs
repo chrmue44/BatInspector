@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
 
 
@@ -40,11 +42,14 @@ namespace BatInspector
       string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
       string cmd = wrkDir + "/" + AppParams.Inst.Models[this.Index].Script;
        int retVal = _proc.LaunchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
-    string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
-      createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);
-      cleanup(prj.PrjDir);
-      prj.Analysis.read(reportName);
-      prj.removeFilesNotInReport();
+      string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
+      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);
+      if (ok)
+      {
+        cleanup(prj.PrjDir);
+        prj.Analysis.read(reportName);
+        prj.removeFilesNotInReport();
+      }
       return retVal;
     }
 
@@ -53,8 +58,9 @@ namespace BatInspector
       throw new NotImplementedException();
     }
 
-    public void createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName)
+    public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName)
     {
+      bool retVal = true;
       try
       {
         string colSpecies = AppParams.Inst.Models[this.Index].ReportColumn;
@@ -146,15 +152,16 @@ namespace BatInspector
             report.setCell(repRow, colSpecies, abbr);
             report.setCell(repRow, Cols.SPECIES_MAN, "todo");
             report.setCell(repRow, Cols.REMARKS, "");
-
           }
         }
         report.saveAs(reportName);
       }
       catch (Exception e) 
       {
+        retVal = false;
         // TODO log
       }
+      return retVal;
     }
 
     public static Csv createReport(string colSpecies)

@@ -647,7 +647,7 @@ namespace BatInspector
     public void adjustActivateBat()
     {
       string str = "VIRTUAL_ENV=";
-      string path = ModelRootPath + "/models/_venv/Scripts/activate.bat";
+      string path = ModelRootPath + "/_venv/Scripts/activate.bat";
       try
       {
         string activateBat = File.ReadAllText(path);

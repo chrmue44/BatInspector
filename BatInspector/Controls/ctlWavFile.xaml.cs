@@ -146,7 +146,7 @@ namespace BatInspector.Controls
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      if (File.Exists(_wavFilePath + _wavName))
+      if (File.Exists(_wavFilePath + "/" + _wavName))
       {
         if (_analysis != null)
         {

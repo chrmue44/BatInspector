@@ -692,7 +692,7 @@ namespace BatInspector
     public bool Selected { get; set; } = false;
 
     public string Name { get { return _name; } }
-    public DateTime RecTime { get;  }
+    public DateTime RecTime { get { return _recTime; }  }
 
     Dictionary<string, int> _specFound;
 

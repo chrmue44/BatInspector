@@ -277,7 +277,7 @@ namespace BatInspector.Forms
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
-            _model.Prj.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
+            _model.Prj.Analysis.save(_model.PrjPath);
         }
       }
     }
@@ -611,7 +611,7 @@ namespace BatInspector.Forms
       }
       _model.saveSettings();
       if(_model.Prj.Analysis.Report != null)
-        _model.Prj.Analysis.save(_model.PrjPath + AppParams.PRJ_REPORT);
+        _model.Prj.Analysis.save(_model.PrjPath);
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)

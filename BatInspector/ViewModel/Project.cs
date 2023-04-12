@@ -69,7 +69,7 @@ namespace BatInspector
       _batSpecRegions = regions;
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
-      _analysis = new Analysis(speciesInfo);
+      _analysis = new Analysis(this);
     }
 
     /// <summary>
@@ -212,8 +212,8 @@ namespace BatInspector
               Directory.CreateDirectory(fullDir);
             if (!Directory.Exists(wavDir))
               Directory.CreateDirectory(wavDir);
-            if (iLast + fileCnt > files.Length)
-              fileCnt = files.Length - iLast;
+            if (iLast > (files.Length - 1))
+              fileCnt = files.Length - iFirst;
             string[] prjFiles = new string[fileCnt];
             Array.Copy(files, iFirst, prjFiles, 0, fileCnt);
             Utils.copyFiles(prjFiles, wavDir);

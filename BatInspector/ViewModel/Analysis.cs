@@ -63,6 +63,11 @@ namespace BatInspector
     public const string CALL_INTERVALL = "callInterval";
     public const string LAT = "lat";
     public const string LON = "lon";
+
+    public const string COUNT = "Count";
+    public const string DATE = "Date";
+    public const string WEATHER = "Weather";
+    public const string LANDSCAPE = "Landscape";
   }
 
 
@@ -92,21 +97,21 @@ namespace BatInspector
   {
 
     Cols _cols;
-    List<SpeciesInfos> _specList;
     object _fileLock = new object();
     List<AnalysisFile> _list;
     List<ReportItem> _report;
     Csv _csv;
     List<SumItem> _summary;
+    Project _prj;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
 
     public List<ReportItem> Report { get { return _report; } }
 
-    public Analysis(List<SpeciesInfos> specList)
+    public Analysis(Project prj)
     {
-      init(specList);
+      init(prj);
     }
 
     public AnalysisFile find(string name)
@@ -140,19 +145,19 @@ namespace BatInspector
       }
     }
 
-    public void init(List<SpeciesInfos> specList)
+    public void init(Project prj)
     {
       _list = new List<AnalysisFile>();
       _report = null;
       _cols = new Cols();
       _csv = new Csv();
-      _specList = specList;
+      _prj = prj;
       _summary = new List<SumItem>();
     }
 
     public void read(string fileName)
     {
-      init(_specList);
+      init(_prj);
       lock (_fileLock)
       {
         _csv = new Csv();
@@ -209,7 +214,7 @@ namespace BatInspector
             callNr = 1;
           }
          
-          AnalysisCall call = new AnalysisCall(_csv, row, _specList);
+          AnalysisCall call = new AnalysisCall(_csv, row, _prj.SpeciesInfos);
           if(callNr == 1)
           {
             oldStartTime = 0;
@@ -220,7 +225,7 @@ namespace BatInspector
             call.DistToPrev = (startTime - oldStartTime)*1000;
             oldStartTime = startTime;
           }
-          bool isInList = SpeciesInfos.isInList(_specList, call.getString(Cols.SPECIES));
+          bool isInList = SpeciesInfos.isInList(_prj.SpeciesInfos, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
           ReportItem rItem = new ReportItem();
@@ -247,7 +252,7 @@ namespace BatInspector
     }
 
 
-    public void save(string fileName)
+    public void save(string path)
     {
       lock (_fileLock)
       {
@@ -259,6 +264,7 @@ namespace BatInspector
             r.resetChanged();
           }
         }
+        createSummary(path + "/" + AppParams.PRJ_SUMMARY);
       }
     }
 
@@ -411,7 +417,7 @@ namespace BatInspector
     public void updateSpeciesCount()
     {
       foreach(AnalysisFile f in Files)
-        f.updateFoundSpecies(_specList);
+        f.updateFoundSpecies(_prj.SpeciesInfos);
     }
 
     void updateRowNumbers()
@@ -424,7 +430,7 @@ namespace BatInspector
       }
     }
 
-    public void createSummary(string fileName)
+    private void createSummary(string fileName)
     {
       _summary.Clear();
       foreach (AnalysisFile f in _list)
@@ -445,13 +451,24 @@ namespace BatInspector
       // create csv file
       Csv sum = new Csv();
       sum.addRow();
-      sum.initColNames(Cols.SPECIES_MAN + ";Count", true);
+      string[] header = { Cols.SPECIES_MAN, Cols.COUNT, Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE };
+      sum.initColNames(header, true);
+      sum.addRow();
       int row = 2;
+      sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString("yyyy-MM-dd"));
+      sum.setCell(row, Cols.LAT, _list[0].Calls[0].getDouble(Cols.LAT));
+      sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
+      string[] note = _prj.Notes.Split('\n');
+      if(note.Length > 0)
+        sum.setCell(row, Cols.WEATHER, note[0]);
+      if (note.Length > 1)
+        sum.setCell(row, Cols.LANDSCAPE, note[1]);
+
       foreach (SumItem it in _summary)
       {
-        sum.addRow();
         sum.setCell(row, Cols.SPECIES_MAN, it.Species);
         sum.setCell(row, "Count", it.Count);
+        sum.addRow();
         row++;
       }
       sum.saveAs(fileName);

@@ -1,5 +1,6 @@
 ﻿using BatInspector.Properties;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 
 
@@ -11,10 +12,12 @@ namespace BatInspector.Forms
   public partial class FrmCreatePrj : Window
   {
     ViewModel _model;
+    PrjInfo _info;
     public FrmCreatePrj(ViewModel model)
     {
       InitializeComponent();
       _model = model;
+      _info = new PrjInfo();
       int widthLbl = 200;
       _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, widthLbl, 150, true);
       _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, widthLbl, 120, true);
@@ -115,20 +118,24 @@ namespace BatInspector.Forms
         else
         {
           this.Close();
-          PrjInfo info = new PrjInfo();
-          info.Name = _ctlPrjName.getValue();
-          info.SrcDir = _ctlSrcFolder.getValue();
-          info.DstDir = _ctlDstFolder.getValue();
-          info.MaxFileCnt = _ctlMaxFiles.getIntValue();
-          info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
-          info.Weather = _ctlPrjWeather.getValue();
-          info.Landscape = _ctlPrjLandscape.getValue();
-          info.Latitude = lat;
-          info.Longitude = lon;
-
-          Project.createPrj(info, _model.Regions, _model.SpeciesInfos);
+          _info.Name = _ctlPrjName.getValue();
+          _info.SrcDir = _ctlSrcFolder.getValue();
+          _info.DstDir = _ctlDstFolder.getValue();
+          _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
+          _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
+          _info.Weather = _ctlPrjWeather.getValue();
+          _info.Landscape = _ctlPrjLandscape.getValue();
+          _info.Latitude = lat;
+          _info.Longitude = lon;
+          Thread thr = new Thread(createProject);
+          thr.Start();
         }
       }
+    }
+
+    private void createProject()
+    {
+      Project.createPrj(_info, _model.Regions, _model.SpeciesInfos);
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)

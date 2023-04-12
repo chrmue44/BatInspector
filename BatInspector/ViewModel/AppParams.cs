@@ -221,6 +221,14 @@ namespace BatInspector
       }
     }
 
+    public string DriveLetter 
+    {
+      get
+      {
+        return Path.GetPathRoot(System.Reflection.Assembly.GetExecutingAssembly().Location);
+      }
+    }
+
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRootPath")]
@@ -598,8 +606,13 @@ namespace BatInspector
         if (file != null)
           file.Close();
       }
+      if(retVal.AppRootPath.IndexOf(retVal.DriveLetter) < 0)
+      {
+        retVal.AppRootPath = retVal.DriveLetter.Substring(0,1) + retVal.AppRootPath.Substring(1);
+        retVal.ModelRootPath = retVal.DriveLetter.Substring(0, 1) + retVal.ModelRootPath.Substring(1);
+      }
+      retVal.adjustActivateBat();
       _inst = retVal;
-
     }
 
     public static void load()
@@ -629,6 +642,23 @@ namespace BatInspector
       ColorGradientRed.Add(new ColorItem(255, 70));
       ColorGradientRed.Add(new ColorItem(255, 75));
       ColorGradientRed.Add(new ColorItem(255, 100));
+    }
+
+    public void adjustActivateBat()
+    {
+      string str = "VIRTUAL_ENV=";
+      string path = ModelRootPath + "/models/_venv/Scripts/activate.bat";
+      try
+      {
+        string activateBat = File.ReadAllText(path);
+        int pos = activateBat.IndexOf(str) + str.Length;
+        if (activateBat[pos + 1] != DriveLetter[0])
+        {
+          string newBat = activateBat.Substring(0, pos) + DriveLetter[0] + activateBat.Substring(pos + 1);
+          File.WriteAllText(path, newBat);
+        }
+      }
+      catch { }
     }
   }
 }

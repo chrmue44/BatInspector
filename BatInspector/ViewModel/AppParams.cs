@@ -182,11 +182,6 @@ namespace BatInspector
     [DataMember,
     LocalizedDescription("SetDescReportColumn")]
     public string ReportColumn { get; set; }
-
-    [DataMember]
-    public string ReportName { get; set; } 
-
-
   }
 
 
@@ -531,7 +526,6 @@ namespace BatInspector
       Models[0].Epochs = 0;
       Models[0].LearningRate = 0;
       Models[0].ReportColumn = "Species";
-      Models[0].ReportName = "report.csv";
       Models.Add(new ModelItem());
       Models[1].Active = false;
       Models[1].Script = "py/run.bat";
@@ -539,8 +533,6 @@ namespace BatInspector
       Models[1].Epochs = 30;
       Models[1].LearningRate = 0.00002;
       Models[1].ReportColumn = "Species";
-      Models[1].ReportName = "report2.csv";
-
     }
 
     public void saveAs(string fName)
@@ -610,6 +602,7 @@ namespace BatInspector
       {
         retVal.AppRootPath = retVal.DriveLetter.Substring(0,1) + retVal.AppRootPath.Substring(1);
         retVal.ModelRootPath = retVal.DriveLetter.Substring(0, 1) + retVal.ModelRootPath.Substring(1);
+        DebugLog.log("root paths adapted to drive " + retVal.DriveLetter, enLogType.INFO);
       }
       retVal.adjustActivateBat();
       _inst = retVal;
@@ -656,6 +649,7 @@ namespace BatInspector
         {
           string newBat = activateBat.Substring(0, pos) + DriveLetter[0] + activateBat.Substring(pos + 1);
           File.WriteAllText(path, newBat);
+          DebugLog.log("python scripts adapted to drive " + DriveLetter, enLogType.INFO);
         }
       }
       catch { }

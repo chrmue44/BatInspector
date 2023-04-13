@@ -39,7 +39,7 @@ namespace BatInspector
 
       frmStartPredict.showMsg();
       int options = frmStartPredict.Options;
-      string reportName = prj.PrjDir + AppParams.Inst.Models[this.Index].ReportName;
+      string reportName = prj.PrjDir + AppParams.PRJ_REPORT;
       reportName = reportName.Replace("\\", "/");
       addSpeciesColsToReport(reportName, AppParams.Inst.SpeciesFile);
       string datFile = prj.PrjDir + "/Xdata000.npy";

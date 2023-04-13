@@ -138,18 +138,30 @@ namespace BatInspector
     public static bool evaluationDone(DirectoryInfo dir)
     {
       bool retVal = false;
-      string fName = dir.FullName + "/" + AppParams.PRJ_REPORT;
-      if (File.Exists(fName))
+      string sumName = dir.FullName + "/" + AppParams.PRJ_SUMMARY;
+      if(File.Exists(sumName))
       {
         Csv csv = new Csv();
+        csv.read(sumName, ";", true);
+        int col = csv.findInCol(Cols.SPECIES_MAN, "todo");
+        if (col > 0)
+          retVal = true;
+      }
+      else
+      { 
+      string fName = dir.FullName + "/" + AppParams.PRJ_REPORT;
+        if (File.Exists(fName))
         {
-          csv.read(fName, ";", true);
-          int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
-          if (colSp > 0)
+          Csv csv = new Csv();
           {
-            int row = csv.findInCol("todo", colSp);
-            if (row == 0)
-              retVal = true;
+            csv.read(fName, ";", true);
+            int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
+            if (colSp > 0)
+            {
+              int row = csv.findInCol("todo", colSp);
+              if (row == 0)
+                retVal = true;
+            }
           }
         }
       }

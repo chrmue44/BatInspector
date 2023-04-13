@@ -42,7 +42,7 @@ namespace BatInspector
       string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
       string cmd = wrkDir + "/" + AppParams.Inst.Models[this.Index].Script;
        int retVal = _proc.LaunchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
-      string reportName = prj.PrjDir + "/" + AppParams.Inst.Models[this.Index].ReportName;
+      string reportName = prj.PrjDir + "/" + AppParams.PRJ_REPORT;
       bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, reportName);
       if (ok)
       {

@@ -201,11 +201,13 @@ namespace BatInspector
       _filter.Items.Clear();
       foreach(FilterParams p in AppParams.Inst.Filter)
       {
-        FilterItem it = new FilterItem();
-        it.Index = _filter.Items.Count;
-        it.Name = p.Name;
-        it.Expression = p.Expression;
-        it.IsForAllCalls = p.isForAllCalls;
+        FilterItem it = new FilterItem
+        {
+          Index = _filter.Items.Count,
+          Name = p.Name,
+          Expression = p.Expression,
+          IsForAllCalls = p.isForAllCalls
+        };
         _filter.Items.Add(it);
       }
       string scriptDir = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.ScriptDir;
@@ -218,10 +220,12 @@ namespace BatInspector
       AppParams.Inst.Filter.Clear();
       foreach(FilterItem fItem in _filter.Items)
       {
-        FilterParams fPar = new FilterParams();
-        fPar.Expression = fItem.Expression;
-        fPar.Name = fItem.Name;
-        fPar.isForAllCalls = fItem.IsForAllCalls;
+        FilterParams fPar = new FilterParams
+        {
+          Expression = fItem.Expression,
+          Name = fItem.Name,
+          isForAllCalls = fItem.IsForAllCalls
+        };
         AppParams.Inst.Filter.Add(fPar);
       }
       AppParams.Inst.save();
@@ -268,9 +272,8 @@ namespace BatInspector
 
     public int executeScript(string path, bool  initVars = true)
     {
-      int retVal = 1;
       _scriptName = path;
-      retVal = _scripter.RunScript(path, true, initVars);
+      int retVal = _scripter.RunScript(path, true, initVars);
       return retVal;
     }
 
@@ -369,15 +372,17 @@ namespace BatInspector
             (s.CallDistMin <= callDist) && (callDist <= s.CallDistMax) 
           )
         {
-          SpeciesItem item = new SpeciesItem();
-          item.Abbreviation = s.Abbreviation;
-          item.Name = s.Local;
-          item.CharFreqMin = s.FreqCharMin;
-          item.ChaFreqMax = s.FreqCharMax;
-          item.DurationMin = s.DurationMin;
-          item.DurationMax = s.DurationMax;
-          item.CallDistMin = s.CallDistMin;
-          item.CallDistMax = s.CallDistMax;
+          SpeciesItem item = new SpeciesItem
+          {
+            Abbreviation = s.Abbreviation,
+            Name = s.Local,
+            CharFreqMin = s.FreqCharMin,
+            ChaFreqMax = s.FreqCharMax,
+            DurationMin = s.DurationMin,
+            DurationMax = s.DurationMax,
+            CallDistMin = s.CallDistMin,
+            CallDistMax = s.CallDistMax
+          };
           retVal.Add(item);
         }
       }
@@ -401,9 +406,7 @@ namespace BatInspector
 
     bool isBusy()
     {
-      bool retVal = false;
-
-      retVal = _proc.IsRunning | _extBusy;
+      bool retVal = _proc.IsRunning | _extBusy;
       return retVal;
     }
   }

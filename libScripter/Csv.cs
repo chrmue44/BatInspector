@@ -432,6 +432,7 @@ namespace libScripter
       return retVal;
     }
 
+    
     /// <summary>
     /// insert a column at a given position
     /// </summary>

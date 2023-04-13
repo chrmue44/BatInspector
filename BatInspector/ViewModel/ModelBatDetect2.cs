@@ -10,6 +10,7 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
@@ -159,7 +160,7 @@ namespace BatInspector
       catch (Exception e) 
       {
         retVal = false;
-        // TODO log
+        DebugLog.log("error creating report from model predicitons, " + e.ToString(), enLogType.ERROR);
       }
       return retVal;
     }

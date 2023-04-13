@@ -190,6 +190,8 @@ namespace BatInspector
   public class AppParams
   {
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
+    public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
+    public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports
     public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string PRJ_SUMMARY = "summary.csv";      // report name for project summar
     public const string DIR_WAVS = "Records";             // directory for WAV files

@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
 using System.Xml.Serialization;
 
 // 
@@ -27,7 +28,7 @@ public partial class BatRecord
 
   private string fileNameField;
 
-  private string dateTimeField;
+  private DateTime dateTimeField;
 
   private string samplerateField;
 
@@ -65,7 +66,7 @@ public partial class BatRecord
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string DateTime
+  public DateTime DateTime
   {
     get
     {

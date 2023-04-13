@@ -39,14 +39,14 @@ namespace BatInspector
 
   public class Project
   {
-    BatExplorerProjectFile _batExplorerPrj;
-    string _prjFileName;
-    string _wavSubDir;
-    bool _ok;
-    List<string> _speciesList;
-    List<SpeciesInfos> _speciesInfo;
-    string _selectedDir;
-    Analysis _analysis;
+    private BatExplorerProjectFile _batExplorerPrj;
+    private string _prjFileName;
+    private string _wavSubDir;
+    private bool _ok;
+    private List<string> _speciesList;
+    private List<SpeciesInfos> _speciesInfo;
+    private string _selectedDir;
+    private Analysis _analysis;
 
     public bool Ok {get {return _ok;} }
 
@@ -93,9 +93,10 @@ namespace BatInspector
     /// <summary>
     /// checks if a directory contains a report
     /// </summary>
-    /// <param name="dir"></param>
+    /// <param name="dir">directory info of directory to check</param>
+    /// <param name="repName">naem of the report to search for</param>
     /// <returns></returns>
-    public static string containsReport(DirectoryInfo dir)
+    public static string containsReport(DirectoryInfo dir, string repName)
     {
       try
       {
@@ -103,7 +104,7 @@ namespace BatInspector
                          System.IO.SearchOption.TopDirectoryOnly);
         foreach(string file in files)
         {
-          if (file.IndexOf(AppParams.PRJ_REPORT) >= 0)
+          if (file.IndexOf(repName) >= 0)
             return file;
         }
       }
@@ -342,7 +343,7 @@ namespace BatInspector
           }
           catch(Exception ex) 
           {
-              //TODO log
+            DebugLog.log("error removing files from project: " + name + ", " + ex.ToString(), enLogType.ERROR);
           }
         }
         else
@@ -440,7 +441,7 @@ namespace BatInspector
         _batExplorerPrj.Name = _prjFileName;
         _prjFileName = dir.FullName + "/" + _prjFileName +".bpr";
         _changed = true;
-        Created = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+        Created = DateTime.Now.ToString(ElekonInfoFile.DATE_FORMAT);
         Notes = notes;
         writePrjFile();
       }

@@ -1,22 +1,28 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using libParser;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms.VisualStyles;
 using System.Xml.Serialization;
 
 namespace BatInspector
 {
   public class ElekonInfoFile
   {
+    public const string DATE_FORMAT = "yyyy-MM-ddTHH:mm:ss";
     public static BatRecord read(string infoName)
     {
-      BatRecord retVal = null;
+      BatRecord retVal;
       if (File.Exists(infoName))
       {
         string xml = File.ReadAllText(infoName);
@@ -67,7 +73,7 @@ namespace BatInspector
       }
     }
 
-    private static string getDateTimeFromFileName(string fileName)
+    private static DateTime getDateTimeFromFileName(string fileName)
     {
       DateTime creationTime = System.IO.File.GetLastWriteTime(fileName);
 
@@ -104,23 +110,17 @@ namespace BatInspector
           creationTime = DateTime.ParseExact(dateStr, "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
         }
       }
-
-      string retVal = creationTime.ToString("dd.MM.yyyy HH:mm:ss");
-      return retVal;
+      return creationTime;
     }
 
-    public static string getDateString(string date)
+    public static string getDateString(DateTime date)
     {
-      DateTime time = new DateTime();
-      if (date.Length > 3)
+      if (date == null)
       {
-        try
-        {
-          time = DateTime.ParseExact(date, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
-        }
-        catch { }
+        date = new DateTime();
+        DebugLog.log("erroneous time", enLogType.ERROR);
       }
-      return AnyType.getTimeString(time);
+      return AnyType.getTimeString(date);
     }
 
 
@@ -153,7 +153,7 @@ namespace BatInspector
     private static void initUninitializedValues(ref BatRecord rec)
     {
       if (rec.DateTime == null)
-        rec.DateTime = "";
+        rec.DateTime = new DateTime();
       if (rec.Duration == null)
         rec.Duration = "";
       if (rec.FileName == null)

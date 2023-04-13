@@ -1,4 +1,16 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
+using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
@@ -7,9 +19,9 @@ using System.Collections.Generic;
 namespace BatInspector
 {
 
-  struct stFormulaData
+  struct FormulaData
   {
-    public stFormulaData(int i, string f, string r, string e)
+    public FormulaData(int i, string f, string r, string e)
     {
       Id = i;
       Formula = f;
@@ -27,40 +39,40 @@ namespace BatInspector
   {
     ProcessRunner _proc;
     int _errors = 0;
-    stFormulaData[] _dataForm;
+    FormulaData[] _dataForm;
     ViewModel _model;
 
   public Tests(ViewModel model)
     {
       _proc = new ProcessRunner();
       _model = model;
-      _dataForm = new stFormulaData[]
+      _dataForm = new FormulaData[]
         {
-        new stFormulaData(1, "substr(\"ABCDE\",0,2)", "AB",""),
-        new stFormulaData(2, "substr(\"ABCDE\",3,2)", "DE",""),
-        new stFormulaData(3, "substr(\"ABCDE\",4,2)", "ARG2_OUT_OF_RANGE","ARG2_OUT_OF_RANGE"),
-        new stFormulaData(4, "cast(2.5,\"INT\")", "2",""),
-        new stFormulaData(5, "1+3+4", "8",""),
-        new stFormulaData(6, "-1+3+4", "6",""),
-        new stFormulaData(7, "-5.0*(3.1 + 2.9)", "-30.0000",""),
-        new stFormulaData(8, "a=0d22-11-10T13:45:00", "0d22-11-10T13:45:00",""),
-        new stFormulaData(9, "a=0d22+11-10T13:45:00", "BAD_TOKEN","BAD_TOKEN"),
-        new stFormulaData(10, "0d22-11-10T13:45:00 + 60", "0d22-11-10T13:46:00",""),
-        new stFormulaData(11, "0d22-11-10T13:45:00 - 2", "0d22-11-10T13:44:58",""),
-        new stFormulaData(12, "0d22-11-10T13:45:00 < 0d22-11-10T13:46:00", "TRUE",""),
-        new stFormulaData(13, "0d22-11-10T13:45:00 < 0d22-11-10T13:44:00", "FALSE",""),
-        new stFormulaData(14, "0d22-11-10T13:45:00 < 0d22-11-10T13:45:00", "FALSE",""),
-        new stFormulaData(15, "0d22-11-10T13:45:00 > 0d22-11-10T13:46:00", "FALSE",""),
-        new stFormulaData(16, "0d22-11-10T13:45:00 > 0d22-11-10T13:44:00", "TRUE",""),
-        new stFormulaData(17, "0d22-11-10T13:45:00 > 0d22-11-10T13:45:00", "FALSE",""),
-        new stFormulaData(18, "1 + 4i + 2 - 2i", "3.0000 + 2.0000i",""),
-        new stFormulaData(19, "0t13:45:00 > 0t13:44:00", "TRUE",""),
-        new stFormulaData(20, "0t13:45:00 - 0t13:41:00", "0t00:04:00",""),
-        new stFormulaData(21, "tod(\"0d22-11-10T17:48:22\")", "0t17:48:22",""),
-        new stFormulaData(22, "0t13:45:00 + 0t01:01:02", "0t14:46:02",""),
-        new stFormulaData(23, "0d22-11-10T13:45:00 - 0t02:00:01", "0d22-11-10T11:44:59",""),
-        new stFormulaData(24, "indexOf(\"abcdef\",\"cde\")","2",""),
-        new stFormulaData(25, "indexOf(\"abcdef\",\"efg\")","-1",""),
+        new FormulaData(1, "substr(\"ABCDE\",0,2)", "AB",""),
+        new FormulaData(2, "substr(\"ABCDE\",3,2)", "DE",""),
+        new FormulaData(3, "substr(\"ABCDE\",4,2)", "ARG2_OUT_OF_RANGE","ARG2_OUT_OF_RANGE"),
+        new FormulaData(4, "cast(2.5,\"INT\")", "2",""),
+        new FormulaData(5, "1+3+4", "8",""),
+        new FormulaData(6, "-1+3+4", "6",""),
+        new FormulaData(7, "-5.0*(3.1 + 2.9)", "-30.0000",""),
+        new FormulaData(8, "a=0d22-11-10T13:45:00", "0d22-11-10T13:45:00",""),
+        new FormulaData(9, "a=0d22+11-10T13:45:00", "BAD_TOKEN","BAD_TOKEN"),
+        new FormulaData(10, "0d22-11-10T13:45:00 + 60", "0d22-11-10T13:46:00",""),
+        new FormulaData(11, "0d22-11-10T13:45:00 - 2", "0d22-11-10T13:44:58",""),
+        new FormulaData(12, "0d22-11-10T13:45:00 < 0d22-11-10T13:46:00", "TRUE",""),
+        new FormulaData(13, "0d22-11-10T13:45:00 < 0d22-11-10T13:44:00", "FALSE",""),
+        new FormulaData(14, "0d22-11-10T13:45:00 < 0d22-11-10T13:45:00", "FALSE",""),
+        new FormulaData(15, "0d22-11-10T13:45:00 > 0d22-11-10T13:46:00", "FALSE",""),
+        new FormulaData(16, "0d22-11-10T13:45:00 > 0d22-11-10T13:44:00", "TRUE",""),
+        new FormulaData(17, "0d22-11-10T13:45:00 > 0d22-11-10T13:45:00", "FALSE",""),
+        new FormulaData(18, "1 + 4i + 2 - 2i", "3.0000 + 2.0000i",""),
+        new FormulaData(19, "0t13:45:00 > 0t13:44:00", "TRUE",""),
+        new FormulaData(20, "0t13:45:00 - 0t13:41:00", "0t00:04:00",""),
+        new FormulaData(21, "tod(\"0d22-11-10T17:48:22\")", "0t17:48:22",""),
+        new FormulaData(22, "0t13:45:00 + 0t01:01:02", "0t14:46:02",""),
+        new FormulaData(23, "0d22-11-10T13:45:00 - 0t02:00:01", "0d22-11-10T11:44:59",""),
+        new FormulaData(24, "indexOf(\"abcdef\",\"cde\")","2",""),
+        new FormulaData(25, "indexOf(\"abcdef\",\"efg\")","-1",""),
 
         };
 
@@ -124,6 +136,11 @@ namespace BatInspector
       exp = new DateTime(2022, 12, 01);
       end = rep.incrementDate(dat, enPeriod.MONTHLY);
       assert("check inc month", end == exp);
+      DateTime startD = new DateTime(2023, 03, 01);
+      DateTime endD = new DateTime(2023, 04, 30);
+
+      string path = "G:/bat/2023";
+      rep.createReport(startD, endD, enPeriod.DAILY, path);
     }
 
     private void testCsvFuncs(string wrkDir)
@@ -192,7 +209,7 @@ namespace BatInspector
 
       int retVal = 0;
       DebugLog.log("Testing parser", enLogType.INFO);
-      foreach (stFormulaData f in _dataForm)
+      foreach (FormulaData f in _dataForm)
       {
         string form = f.Formula;
         Expression exp = new Expression(null);
@@ -213,21 +230,23 @@ namespace BatInspector
     {
       //  string wavFile = "C:/Users/chrmu/bat/2022/20220816/Records/20220816_0027.wav";
       string wavFile = "C:/Users/chrmu/bat/2022/20220906/Records/20220906_0005.wav";
-      int sampleRate = 0;
-      double duration = 0;
-      ThresholdDetectItem[]items = BioAcoustics.analyzeCalls(wavFile, out sampleRate, out duration);
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+      ThresholdDetectItem[]items = BioAcoustics.analyzeCalls(wavFile, out int sampleRate, out double duration);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
       return 0;
     }
 
     private int testClassifier()
     {
       int retVal = 0;
-      List<ParLocation> locs = new List<ParLocation>();
-      locs.Add(new ParLocation(49.963175, 8.563220));
-      locs.Add(new ParLocation(49.727209, 8.539645));
-      locs.Add(new ParLocation(49.728493, 8.788927));
-      locs.Add(new ParLocation(49.839054, 9.030958));
-      locs.Add(new ParLocation(49.995876, 9.010885));
+      List<ParLocation> locs = new List<ParLocation>
+      {
+        new ParLocation(49.963175, 8.563220),
+        new ParLocation(49.727209, 8.539645),
+        new ParLocation(49.728493, 8.788927),
+        new ParLocation(49.839054, 9.030958),
+        new ParLocation(49.995876, 9.010885)
+      };
 
       ParLocation pos = new ParLocation(49.753933, 8.632084);
       bool ret = _model.Regions.inside(pos, locs);
@@ -278,31 +297,37 @@ namespace BatInspector
 
     private void testSimCall()
     {
-      List<FreqItem> l = new List<FreqItem>();
-      l.Add(new FreqItem(100000, 0, 0));
-      l.Add(new FreqItem(100000, 5e-3, 0));
-      l.Add(new FreqItem(95000, 7e-3, 0.02));
-      l.Add(new FreqItem(80000, 10e-3, 0.05));
-      l.Add(new FreqItem(60000, 15e-3, 0.08));
-      l.Add(new FreqItem(40000, 25e-3, 0.1));
-      l.Add(new FreqItem(25000, 28e-3, 0.08));
-      l.Add(new FreqItem(22000, 29e-3, 0));
-      l.Add(new FreqItem(22000, 500e-3, 0));
+      List<FreqItem> l = new List<FreqItem>
+      {
+        new FreqItem(100000, 0, 0),
+        new FreqItem(100000, 5e-3, 0),
+        new FreqItem(95000, 7e-3, 0.02),
+        new FreqItem(80000, 10e-3, 0.05),
+        new FreqItem(60000, 15e-3, 0.08),
+        new FreqItem(40000, 25e-3, 0.1),
+        new FreqItem(25000, 28e-3, 0.08),
+        new FreqItem(22000, 29e-3, 0),
+        new FreqItem(22000, 500e-3, 0)
+      };
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
       SimCall call = new SimCall(l, 384000);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
     }
 
     private void testCreatePrj()
     {
-      PrjInfo prj = new PrjInfo();
-      prj.Name = "Test";
-      prj.SrcDir = "G:\\bat\\src";
-      prj.DstDir = "G:\\bat\\test";
-      prj.MaxFileLenSec = 5;
-      prj.MaxFileCnt = 30;
-      prj.Weather = "12°C, bedeckt";
-      prj.Landscape = "Uferbereich Waldweiher";
-      prj.Latitude = 49.123;
-      prj.Longitude = 8.123;
+      PrjInfo prj = new PrjInfo
+      {
+        Name = "Test",
+        SrcDir = "G:\\bat\\src",
+        DstDir = "G:\\bat\\test",
+        MaxFileLenSec = 5,
+        MaxFileCnt = 30,
+        Weather = "12°C, bedeckt",
+        Landscape = "Uferbereich Waldweiher",
+        Latitude = 49.123,
+        Longitude = 8.123
+      };
       Project.createPrj(prj, _model.Regions, _model.SpeciesInfos);
     }
 
@@ -333,6 +358,5 @@ namespace BatInspector
         _errors++;
       }
     }
-
   }
 }

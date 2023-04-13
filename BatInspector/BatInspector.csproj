@@ -173,6 +173,7 @@
     <Compile Include="Forms\frmWavFile.xaml.cs">
       <DependentUpon>frmWavFile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\MyResources.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

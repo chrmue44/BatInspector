@@ -23,6 +23,7 @@ namespace BatInspector.Controls
       _lbl.Text = label;
       _lbl.Width = widthLbl;
       _isFolder = isFolder;
+      _txt.Text = "";
     }
 
     public string getValue()

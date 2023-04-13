@@ -68,6 +68,8 @@ namespace BatInspector
     public const string DATE = "Date";
     public const string WEATHER = "Weather";
     public const string LANDSCAPE = "Landscape";
+
+    public const string DAYS = "Days";
   }
 
 
@@ -96,13 +98,13 @@ namespace BatInspector
   public class Analysis
   {
 
-    Cols _cols;
-    object _fileLock = new object();
-    List<AnalysisFile> _list;
-    List<ReportItem> _report;
-    Csv _csv;
-    List<SumItem> _summary;
-    Project _prj;
+    private Cols _cols;
+    private object _fileLock = new object();
+    private List<AnalysisFile> _list;
+    private List<ReportItem> _report;
+    private Csv _csv;
+    private List<SumItem> _summary;
+    private Project _prj;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
@@ -455,7 +457,7 @@ namespace BatInspector
       sum.initColNames(header, true);
       sum.addRow();
       int row = 2;
-      sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString("yyyy-MM-dd"));
+      sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString(AppParams.REPORT_DATE_FORMAT));
       sum.setCell(row, Cols.LAT, _list[0].Calls[0].getDouble(Cols.LAT));
       sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
       string[] note = _prj.Notes.Split('\n');
@@ -478,7 +480,6 @@ namespace BatInspector
     {
       _csv.insertCol(2, "", Cols.REC_TIME);
       string oldF = "$$$";
-      DateTime time = new DateTime();
       string dateStr = "";
 
       Stopwatch sw = new Stopwatch();
@@ -556,9 +557,9 @@ namespace BatInspector
 
   public class AnalysisCall
   {
-    Csv _csv;
-    int _row;
-    double _firstToSecond;
+    private Csv _csv;
+    private int _row;
+    private double _firstToSecond;
 
    public double FirstToSecond { get { return _firstToSecond; } }
     
@@ -682,13 +683,13 @@ namespace BatInspector
 
   public class AnalysisFile
   {
-    List<AnalysisCall> _calls;
+    private List<AnalysisCall> _calls;
 
-    int _startRow;
+    private int _startRow;
 
-    Csv _csv;
-    DateTime _recTime;
-    string _name;
+    private Csv _csv;
+    private DateTime _recTime;
+    private string _name;
     public bool Selected { get; set; } = false;
 
     public string Name { get { return _name; } }

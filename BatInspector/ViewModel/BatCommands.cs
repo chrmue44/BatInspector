@@ -19,7 +19,7 @@ namespace BatInspector
 {
   public class BatCommands : BaseCommands
   {
-    ViewModel _model;
+    private ViewModel _model;
     public BatCommands(delegateUpdateProgress delUpd, ViewModel model) : base(delUpd)
     {
       _model = model;

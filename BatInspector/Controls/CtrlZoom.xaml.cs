@@ -93,7 +93,7 @@ namespace BatInspector.Controls
       int wt = 140;
       int wv = 130;
       _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt, wv);
-      _ctlDateTime.setValue(_model.ZoomView.FileInfo.DateTime);
+      _ctlDateTime.setValue(_model.ZoomView.FileInfo.DateTime.ToString(AppParams.REPORT_DATETIME_FORMAT));
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt, wv);
       _ctlGpsPos.setValue(_model.ZoomView.FileInfo.GPS.Position);
       _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, enDataType.STRING, 0, wt, wv);

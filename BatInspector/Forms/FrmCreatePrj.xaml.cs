@@ -1,4 +1,16 @@
-﻿using BatInspector.Properties;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
+using BatInspector.Properties;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
@@ -11,8 +23,8 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmCreatePrj : Window
   {
-    ViewModel _model;
-    PrjInfo _info;
+    private ViewModel _model;
+    private PrjInfo _info;
     public FrmCreatePrj(ViewModel model)
     {
       InitializeComponent();
@@ -27,6 +39,7 @@ namespace BatInspector.Forms
       _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl, 80, true);
       _ctlMaxFiles.setValue(500);
       _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, widthLbl, 80, true);
+      _ctlMaxFileLen.setValue(5.0);
       _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl, 200, true);
       _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING,0, widthLbl, 200, true);
     }

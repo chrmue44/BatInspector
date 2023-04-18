@@ -73,7 +73,9 @@ namespace BatInspector
     }
   }
 
-
+  /// <summary>
+  /// a class to create a sumarized report over multiple projects for a specified time period
+  /// </summary>
   public class SumReport
   {
     private List<SpeciesInfos> _species;
@@ -89,6 +91,13 @@ namespace BatInspector
       _reports = new List<ReportListItem>();
     }
 
+    /// <summary>
+    /// main function to create a summarized report
+    /// </summary>
+    /// <param name="start">start time</param>
+    /// <param name="end">end time</param>
+    /// <param name="period">granularity of time</param>
+    /// <param name="rootDir">root dir to start search for projects</param>
     public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir)
     {
       initDirTree(rootDir);

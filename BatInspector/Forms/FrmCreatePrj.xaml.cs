@@ -42,6 +42,9 @@ namespace BatInspector.Forms
       _ctlMaxFileLen.setValue(5.0);
       _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl, 200, true);
       _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING,0, widthLbl, 200, true);
+      _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, widthLbl, false, "gpx Files (*.gpx)|*.gpx |All files(*.*)|*.*");
+      _ctlGpxFile.IsEnabled = true;
+      _rbGpxFile.IsChecked = true;
     }
 
 
@@ -138,6 +141,7 @@ namespace BatInspector.Forms
           _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
           _info.Weather = _ctlPrjWeather.getValue();
           _info.Landscape = _ctlPrjLandscape.getValue();
+          _info.GpxFile = _rbGpxFile.IsChecked == true ?  _ctlGpxFile.getValue() : "";
           _info.Latitude = lat;
           _info.Longitude = lon;
           Thread thr = new Thread(createProject);
@@ -155,5 +159,12 @@ namespace BatInspector.Forms
     {
       this.Close();
     }
+
+    private void btnRadioClick(object sender, RoutedEventArgs e)
+    {
+      _ctlGpxFile.IsEnabled = _rbFixedPos.IsChecked == false;
+      _ctlLat.IsEnabled = _rbFixedPos.IsChecked == true;
+      _ctlLon.IsEnabled = _rbFixedPos.IsChecked == true;
+    }    
   }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 //using System.Windows.Forms;
@@ -11,6 +12,8 @@ namespace BatInspector.Controls
   public partial class CtlSelectFile : UserControl
   {
     bool _isFolder = false;
+    string _filter = "all files(*.*)|*.*";
+
     public CtlSelectFile()
     {
       InitializeComponent();
@@ -18,12 +21,19 @@ namespace BatInspector.Controls
 
     public bool IsFolder { get { return _isFolder; } }
 
-    public void setup(string label, int widthLbl = 80, bool isFolder = false)
+   /* public bool IsEnabled
+    {
+      get { return _txt.IsEnabled; }
+      set { _txt.IsEnabled = value; _btnOpen.IsEnabled = value; }
+    }*/
+
+    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "")
     {
       _lbl.Text = label;
       _lbl.Width = widthLbl;
       _isFolder = isFolder;
       _txt.Text = "";
+      _filter = filter;
     }
 
     public string getValue()
@@ -45,7 +55,14 @@ namespace BatInspector.Controls
       else
       {
         OpenFileDialog ofi = new OpenFileDialog();
+        ofi.Filter = _filter;
+        bool? ok = ofi.ShowDialog();
+        if(ok == true) 
+        {
+          _txt.Text = ofi.FileName;
+        }
       }
     }
+   
   }
 }

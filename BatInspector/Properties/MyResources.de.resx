@@ -795,4 +795,13 @@
   <data name="frmCreatePrjName" xml:space="preserve">
     <value>Projektname</value>
   </data>
+  <data name="frmCreatePrjPosFromGpx" xml:space="preserve">
+    <value>Positionen aus GPX-Datei</value>
+  </data>
+  <data name="frmCreatePrjFixedPos" xml:space="preserve">
+    <value>Feste Position</value>
+  </data>
+  <data name="frmCreatePrjSelectGpxFile" xml:space="preserve">
+    <value>GXP-Datei auswählen</value>
+  </data>
 </root>

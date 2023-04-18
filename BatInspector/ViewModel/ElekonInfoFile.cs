@@ -44,7 +44,7 @@ namespace BatInspector
       File.WriteAllText(infoName, writer.ToString());
     }
 
-    public static void create(string fileName, double lat, double lon)
+    public static void create(string fileName, double lat, double lon, DateTime time)
     {
       BatRecord batRecord = new BatRecord();
       batRecord.FileName = Path.GetFileName(fileName);
@@ -56,7 +56,7 @@ namespace BatInspector
       batRecord.Samplerate = wavFile.FormatChunk.Frequency.ToString() + " Hz";
       double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
       batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
-      batRecord.DateTime = getDateTimeFromFileName(fileName);
+      batRecord.DateTime = time;
       string infoName = fileName.Replace(".wav", ".xml");
       ElekonInfoFile.write(infoName, batRecord);
     }
@@ -73,7 +73,7 @@ namespace BatInspector
       }
     }
 
-    private static DateTime getDateTimeFromFileName(string fileName)
+    public static DateTime getDateTimeFromFileName(string fileName)
     {
       DateTime creationTime = System.IO.File.GetLastWriteTime(fileName);
 

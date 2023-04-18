@@ -34,6 +34,7 @@ namespace BatInspector
     public double Longitude { get; set; }
     public string Weather { get; set; } 
     public string Landscape { get; set; } 
+    public string GpxFile { get; set; }
   }
 
 
@@ -233,7 +234,7 @@ namespace BatInspector
             Project prj = new Project(regions, speciesInfo);
             DirectoryInfo dir = new DirectoryInfo(fullDir);
             prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Weather + "\n" + info.Landscape);
-            prj.createXmlInfoFiles(info.Latitude, info.Longitude);
+            prj.createXmlInfoFiles(info);
           }
         }
         else
@@ -441,16 +442,17 @@ namespace BatInspector
         _batExplorerPrj.Name = _prjFileName;
         _prjFileName = dir.FullName + "/" + _prjFileName +".bpr";
         _changed = true;
-        Created = DateTime.Now.ToString(ElekonInfoFile.DATE_FORMAT);
+        Created = DateTime.Now.ToString(AppParams.GPX_DATETIME_FORMAT);
         Notes = notes;
         writePrjFile();
       }
       catch { }
     }
 
-    public void createXmlInfoFiles(double lat, double lon)
+    public void createXmlInfoFiles(PrjInfo info)
     {
       bool replaceAll = false;
+      gpx gpxFile = gpx.read(info.GpxFile);
       foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
       {
         bool create = replaceAll;
@@ -468,8 +470,16 @@ namespace BatInspector
           }
           else
             create = true;
-          if(create)
-            ElekonInfoFile.create(fullName, lat, lon);
+          if (create)
+          {
+            DateTime time = ElekonInfoFile.getDateTimeFromFileName(fullName);
+            double[] pos = new double[2];
+            pos[0] = info.Latitude; 
+            pos[1] = info.Longitude;
+            if (gpxFile != null)
+              pos = gpxFile.getPosition(time);
+            ElekonInfoFile.create(fullName, pos[0], pos[1], time);
+          }
         }
       }
     }

@@ -192,6 +192,7 @@ namespace BatInspector
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
     public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
     public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports
+    public const string GPX_DATETIME_FORMAT = "yyyy-MM-ddThh:mm:ssZ"; // date format for reports
     public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string PRJ_SUMMARY = "summary.csv";      // report name for project summar
     public const string DIR_WAVS = "Records";             // directory for WAV files
@@ -509,13 +510,15 @@ namespace BatInspector
       string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
       string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
       strWorkPath += "/" + PATH_SCRIPT + "/";
-      Scripts = new List<ScriptItem>();
-      Scripts.Add(new ScriptItem(0, strWorkPath + "auto_to_man.scr",
-                  "take over all unambiguously automatically recognized species", false));
-      Scripts.Add(new ScriptItem(1, strWorkPath + "reset_man.scr",
-                  "reset all manual species to 'todo'", false));
-      Scripts.Add(new ScriptItem(2, strWorkPath + "junk.scr",
-                  "select all recordings that seem to contain only junk", false));
+      Scripts = new List<ScriptItem>
+      {
+        new ScriptItem(0, strWorkPath + "auto_to_man.scr",
+                  "take over all unambiguously automatically recognized species", false),
+        new ScriptItem(1, strWorkPath + "reset_man.scr",
+                  "reset all manual species to 'todo'", false),
+        new ScriptItem(2, strWorkPath + "junk.scr",
+                  "select all recordings that seem to contain only junk", false)
+      };
     }
 
     private void initModels()
@@ -619,24 +622,30 @@ namespace BatInspector
 
     public void initColorGradient()
     {
-      ColorGradientBlue = new List<ColorItem>();
-      ColorGradientBlue.Add(new ColorItem(128, 0));
-      ColorGradientBlue.Add(new ColorItem(255, 30));
-      ColorGradientBlue.Add(new ColorItem(0, 70));
-      ColorGradientBlue.Add(new ColorItem(0, 100));
-      ColorGradientBlue.Add(new ColorItem(40, 100));
-      ColorGradientGreen = new List<ColorItem>();
-      ColorGradientGreen.Add(new ColorItem(0, 0));
-      ColorGradientGreen.Add(new ColorItem(200, 30));
-      ColorGradientGreen.Add(new ColorItem(255, 70));
-      ColorGradientGreen.Add(new ColorItem(200, 75));
-      ColorGradientGreen.Add(new ColorItem(0, 100));
-      ColorGradientRed = new List<ColorItem>();
-      ColorGradientRed.Add(new ColorItem(0, 0));
-      ColorGradientRed.Add(new ColorItem(0, 30));
-      ColorGradientRed.Add(new ColorItem(255, 70));
-      ColorGradientRed.Add(new ColorItem(255, 75));
-      ColorGradientRed.Add(new ColorItem(255, 100));
+      ColorGradientBlue = new List<ColorItem>
+      {
+        new ColorItem(128, 0),
+        new ColorItem(255, 30),
+        new ColorItem(0, 70),
+        new ColorItem(0, 100),
+        new ColorItem(40, 100)
+      };
+      ColorGradientGreen = new List<ColorItem>
+      {
+        new ColorItem(0, 0),
+        new ColorItem(200, 30),
+        new ColorItem(255, 70),
+        new ColorItem(200, 75),
+        new ColorItem(0, 100)
+      };
+      ColorGradientRed = new List<ColorItem>
+      {
+        new ColorItem(0, 0),
+        new ColorItem(0, 30),
+        new ColorItem(255, 70),
+        new ColorItem(255, 75),
+        new ColorItem(255, 100)
+      };
     }
 
     public void adjustActivateBat()

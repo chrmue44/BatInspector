@@ -4,12 +4,16 @@ TODO
 - help
 - species comparison
 
-- reports across projects (week, month year)
 - find bug that deletes header from report
 - more than one model
 - stop button to kill running script
 
 DONE
+- load location information for creating project from separate gpx file (not tested yet)
+- wizard to create a project from a list of WAV files
+- added summary report for each project
+- integration of BatDetect2 model
+- reports across projects (week, month year)
 - move deleted files in sub folder del
 - species prediction now done in worker thread
 - removed rescaling option in frmStartPredict (because this must be done always, it is now an implicite operation during OPTION_CUT)

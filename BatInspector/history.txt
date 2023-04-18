@@ -9,6 +9,7 @@ TODO
 - stop button to kill running script
 
 DONE
+-reports and summary moved to individual sub folder for each model
 - load location information for creating project from separate gpx file (not tested yet)
 - wizard to create a project from a list of WAV files
 - added summary report for each project

@@ -62,6 +62,10 @@ namespace BatInspector
 
     public Analysis Analysis { get { return _analysis; }  }
 
+    public string ReportName { get { return getReportName(_selectedDir); } }
+
+    public string SummaryName { get { return getSummaryName(_selectedDir); } }
+
     BatSpeciesRegions _batSpecRegions;
     bool _changed = false;
 
@@ -71,6 +75,17 @@ namespace BatInspector
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
       _analysis = new Analysis(this);
+    }
+
+
+    public static string getReportName(string dir)
+    {
+      return dir +"/" + AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir + "/" + AppParams.PRJ_REPORT;
+    }
+
+    public static string getSummaryName(string dir)
+    {
+      return dir + "/" + AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir + "/" + AppParams.PRJ_SUMMARY;
     }
 
     /// <summary>
@@ -99,17 +114,21 @@ namespace BatInspector
     /// <returns></returns>
     public static string containsReport(DirectoryInfo dir, string repName)
     {
-      try
+      string dirName = dir.FullName + "/" + AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir;
+      if (Directory.Exists(dirName))
       {
-        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.*" ,
-                         System.IO.SearchOption.TopDirectoryOnly);
-        foreach(string file in files)
+        try
         {
-          if (file.IndexOf(repName) >= 0)
-            return file;
+          string[] files = System.IO.Directory.GetFiles(dirName, "*.*",
+                           System.IO.SearchOption.TopDirectoryOnly);
+          foreach (string file in files)
+          {
+            if (file.IndexOf(repName) >= 0)
+              return file;
+          }
         }
+        catch { }
       }
-      catch { }
       return "";
     }
 
@@ -140,7 +159,7 @@ namespace BatInspector
     public static bool evaluationDone(DirectoryInfo dir)
     {
       bool retVal = false;
-      string sumName = dir.FullName + "/" + AppParams.PRJ_SUMMARY;
+      string sumName = Project.getSummaryName(dir.FullName);
       if(File.Exists(sumName))
       {
         Csv csv = new Csv();
@@ -151,7 +170,7 @@ namespace BatInspector
       }
       else
       { 
-      string fName = dir.FullName + "/" + AppParams.PRJ_REPORT;
+        string fName = Project.getReportName(dir.FullName);
         if (File.Exists(fName))
         {
           Csv csv = new Csv();

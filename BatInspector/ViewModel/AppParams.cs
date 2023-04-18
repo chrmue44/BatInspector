@@ -382,6 +382,10 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatModel")]
+    public int SelectedModel { get; set; } = 0;
+
+    [DataMember]
+    [LocalizedCategory("SetCatModel")]
     public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
 
     [DataMember]
@@ -481,6 +485,7 @@ namespace BatInspector
       SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
       ModelRootPath = "C:/users/chrmu/prj/BatInspector/BatInspector/model";
+      SelectedModel = 0;
       initModels();
       SamplingRate = 312500;
 

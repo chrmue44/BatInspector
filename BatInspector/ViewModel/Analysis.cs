@@ -266,7 +266,8 @@ namespace BatInspector
             r.resetChanged();
           }
         }
-        createSummary(path + "/" + AppParams.PRJ_SUMMARY);
+        string sumName = _csv.FileName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
+        createSummary(sumName);
       }
     }
 

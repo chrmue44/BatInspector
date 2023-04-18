@@ -61,8 +61,7 @@ namespace BatInspector
     public ScriptRunner Scripter {  get { return _scripter; } }
     
     public string Version { get { return _version; } }
-   
-    
+       
     public ClassifierBarataud Classifier { get { return _clsBarataud; } }
     
     public Project Prj { get { return _prj; } }
@@ -118,8 +117,8 @@ namespace BatInspector
 
     public void updateReport()
     {
-      if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
-        _prj.Analysis.read(_selectedDir + AppParams.PRJ_REPORT);
+      if (File.Exists(Prj.ReportName))
+        _prj.Analysis.read(Prj.ReportName);
     }
 
 
@@ -133,10 +132,10 @@ namespace BatInspector
         if (_prj == null)
           _prj = new Project(_batSpecRegions, _speciesInfos);
         _prj.readPrjFile(files[0]);
-        if (File.Exists(_selectedDir + AppParams.PRJ_REPORT))
+        if (File.Exists(Prj.ReportName))
         {
-          _prj.Analysis.read(_selectedDir + AppParams.PRJ_REPORT);
-          _prj.Analysis.openSummary(_selectedDir + AppParams.PRJ_SUMMARY);
+          _prj.Analysis.read(_prj.ReportName);
+          _prj.Analysis.openSummary(_prj.SummaryName); ;
         }
         else
           _prj.Analysis.init(_prj);
@@ -257,7 +256,7 @@ namespace BatInspector
         {
            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
           _prj.removeFile(rec.File);
-          _prj.Analysis.removeFile(_selectedDir + "/" + AppParams.PRJ_REPORT, rec.File);
+          _prj.Analysis.removeFile(Prj.ReportName, rec.File);
         }
       }
       if(bmp != null)
@@ -336,7 +335,7 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _prj.Analysis.removeFile(_selectedDir +"/" + AppParams.PRJ_REPORT, wavName);
+        _prj.Analysis.removeFile(_prj.ReportName, wavName);
       }
     }
 

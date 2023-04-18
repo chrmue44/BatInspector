@@ -124,7 +124,7 @@ namespace BatInspector
 
     public void initProject(DirectoryInfo dir)
     {
-      if (Project.containsProject(dir))
+      if (Project.containsProject(dir) != "")
       {
         _selectedDir = dir.FullName + "/";
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",

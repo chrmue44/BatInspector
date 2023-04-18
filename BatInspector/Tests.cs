@@ -14,7 +14,7 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 
 namespace BatInspector
 {
@@ -81,17 +81,20 @@ namespace BatInspector
     public void exec()
     {
       string wrkDir = AppParams.Inst.AppRootPath + "/../../../scripts";
-  //    testBioAcoustics();
+      // testBioAcoustics();
       testIf(wrkDir);
       testWhile(wrkDir);
       testParser();
       testCsvFuncs(wrkDir);
       testClassifier();
       testSumReport();
-  //    testSignalForm();
+      //testSignalForm();
       testSimCall();
-      //   testReportModelBatdetect2();
-      // testCreatePrj();
+      //testReportModelBatdetect2();
+      //testCreatePrj();
+      //updateSummaries();
+      //adjustTimesInReport();
+      //testCreatePrjInfoFiles();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -139,8 +142,8 @@ namespace BatInspector
       DateTime startD = new DateTime(2023, 03, 01);
       DateTime endD = new DateTime(2023, 04, 30);
 
-      string path = "G:/bat/2023";
-      rep.createReport(startD, endD, enPeriod.DAILY, path);
+      //string path = "G:/bat/2023";
+      //rep.createReport(startD, endD, enPeriod.DAILY, path);
     }
 
     private void testCsvFuncs(string wrkDir)
@@ -206,7 +209,6 @@ namespace BatInspector
 
     int testParser()
     {
-
       int retVal = 0;
       DebugLog.log("Testing parser", enLogType.INFO);
       foreach (FormulaData f in _dataForm)
@@ -337,8 +339,63 @@ namespace BatInspector
       ModelBatDetect2 model = new ModelBatDetect2(1);
       string WavDir = "G:\\bat\\2022\\20220326\\Records";
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
-      string reportName = "G:\\bat\\2022\\20220326\\report2.csv";
+      string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos);
+      Analysis a = new Analysis(prj);
+      a.read(reportName);
+      a.save(reportName);
+
+    }
+
+    private void updateSummaries()
+    {
+      string rootDir = "G:/bat/2023";
+      DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
+      foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
+      {
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
+        if (repName != "")
+        {
+          Project p = new Project(_model.Regions, _model.SpeciesInfos);
+          Analysis a = new Analysis(p);
+          a.read(repName);
+          string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
+          a.createSummary(sumName);
+        }
+      }
+    }
+
+    private void testCreatePrjInfoFiles()
+    {
+      PrjInfo i = new PrjInfo();
+      i.Latitude = 49.7670333333333;
+      i.Longitude = 8.63353333333333;
+      DirectoryInfo dirInfo = new DirectoryInfo("G:/bat/2023/20230407_SW");
+      _model.initProject(dirInfo);
+      _model.Prj.createXmlInfoFiles(i);
+    }
+
+    private void adjustTimesInReport()
+    {
+      string rootDir = "G:/bat/2023";
+      DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
+      foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
+      {
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
+        if (repName != "")
+        {
+          _model.initProject(subDir);
+          foreach(AnalysisFile f in _model.Prj.Analysis.Files)
+          {
+            string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.Replace(".wav", ".xml");
+            BatRecord rec = ElekonInfoFile.read(info);
+            foreach(AnalysisCall c in f.Calls)
+              c.setString(Cols.REC_TIME, rec.DateTime);
+          }
+          _model.Prj.Analysis.save(_model.Prj.ReportName);
+        }
+      }
     }
 
     private void assert(string a, string exp)

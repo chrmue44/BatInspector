@@ -82,7 +82,7 @@ namespace BatInspector
           {
             sampleRate = info.Samplerate.Replace(" Hz", ""); ;
             fileLen = info.Duration.Replace(" Sec", "");
-            recTime = ElekonInfoFile.getDateString(info.DateTime);
+            recTime = info.DateTime;
             ElekonInfoFile.parsePosition(info, out lat, out lon);
           }
 

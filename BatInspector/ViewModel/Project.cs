@@ -93,17 +93,17 @@ namespace BatInspector
     /// </summary>
     /// <param name="dir"></param>
     /// <returns></returns>
-    public static bool containsProject(DirectoryInfo dir)
+    public static string containsProject(DirectoryInfo dir)
     {
       try
       {
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);
         if (files.Length > 0)
-          return  true;
+          return  files[0];
       }
       catch { }
-      return false;
+      return "";
     }
 
     /// <summary>

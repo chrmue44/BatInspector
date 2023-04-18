@@ -138,7 +138,7 @@ namespace BatInspector.Forms
           {
             TreeViewItem childItem = CreateTreeItem(subDir);
             item.Items.Add(childItem);
-            if (Project.containsProject(subDir))
+            if (Project.containsProject(subDir) != "" )
             {
               childItem.FontWeight = FontWeights.Bold;
               if (Project.evaluationDone(subDir))
@@ -232,9 +232,11 @@ namespace BatInspector.Forms
     {
       if (AppParams.Inst.ZoomSeparateWin)
       {
-        _frmZoom = new FrmZoom(_model, closeWindow);
-        _frmZoom.Width = AppParams.Inst.ZoomWindowWidth;
-        _frmZoom.Height = AppParams.Inst.ZoomWindowHeight;
+        _frmZoom = new FrmZoom(_model, closeWindow)
+        {
+          Width = AppParams.Inst.ZoomWindowWidth,
+          Height = AppParams.Inst.ZoomWindowHeight
+        };
       }
       else
       {

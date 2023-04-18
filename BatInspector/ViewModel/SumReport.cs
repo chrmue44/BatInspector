@@ -25,32 +25,6 @@ namespace BatInspector
     MONTHLY = 2
   }
 
-  public class SpecListItem
-  {
-    public string Species { get; }
-    public int Count { get; set; } 
-
-    public SpecListItem(string s, int c)
-    {
-      Species = s;
-      Count = c;
-    }
-
-    public static SpecListItem find(string s, List<SpecListItem> list)
-    {
-      SpecListItem retVal = null;
-      foreach(SpecListItem item in list) 
-      {
-        if (item.Species == s)
-        {
-          retVal = item;
-          break;
-        }
-      }
-      return retVal;
-    }
-  }
-
   public class ReportListItem
   {
     public string FileName { get; set; }
@@ -65,11 +39,11 @@ namespace BatInspector
     public double Longitude { get; set; }
     public string Landscape { get; set; }
     public string Weather { get; set; }
-    public List<SpecListItem> SpecList { get; set; }
+    public List<SumItem> SpecList { get; set; }
 
     public SumReportItem()
     {
-      SpecList = new List<SpecListItem>();
+      SpecList = new List<SumItem>();
     }
   }
 
@@ -223,13 +197,19 @@ namespace BatInspector
       _rep.setCell(row, Cols.LON, item.Longitude);
       _rep.setCell(row, Cols.LANDSCAPE, item.Landscape);
       _rep.setCell(row, Cols.WEATHER, item.Weather);
-      foreach(SpecListItem sc in item.SpecList)
+//      int startColTime = _rep.findInRow(1, Cols.T18H);
+      foreach(SumItem sc in item.SpecList)
       {
         if (sc.Species != "")
         {
           if (_rep.findInRow(1, sc.Species) == 0)
             _rep.insertCol(_rep.ColCnt + 1, "0", sc.Species);
           _rep.setCell(row, sc.Species, sc.Count);
+/*          if (startColTime > 0)
+          {
+            for (int i = 0; i < sc.CountTime.Length; i++)
+              _rep.setCell(row, startColTime + i, sc.CountTime[i]);
+          } */
         }
       }    
     }
@@ -246,7 +226,7 @@ namespace BatInspector
       retVal.Date = date;
       DateTime end = date.AddDays(days);
       retVal.Days = days;
-      List<SpecListItem> list = new List<SpecListItem>();
+      List<SumItem> list = new List<SumItem>();
       double latitude = 0;
       double longitude = 0; ;
       int sumCnt = 0;
@@ -258,6 +238,7 @@ namespace BatInspector
           sumCnt++;
           Csv summary = new Csv();
           summary.read(rep.FileName, ";", true);
+          int startColTime = summary.findInRow(1, Cols.T18H);
           retVal.Weather = summary.getCell(2, Cols.WEATHER);
           retVal.Landscape = summary.getCell(2, Cols.LANDSCAPE);
           for (int row = 2; row <= summary.RowCnt; row++)
@@ -266,13 +247,18 @@ namespace BatInspector
             longitude += summary.getCellAsDouble(row, Cols.LON);
             string spec = summary.getCell(row, Cols.SPECIES_MAN);
             int count = summary.getCellAsInt(row, Cols.COUNT);  
-            SpecListItem item = SpecListItem.find(spec, list);
+            SumItem item = SumItem.find(spec, list);
             if (item == null)
             {
-              item = new SpecListItem(spec, 0);
+              item = new SumItem(spec, 0);
               list.Add(item);
             }
             item.Count += count;
+            for(int i = 0; i < item.CountTime.Length; i++)
+            {
+              int cnt = summary.getCellAsInt(row, startColTime + i);
+              item.CountTime[i] += cnt; 
+            }
           }
         }
       }

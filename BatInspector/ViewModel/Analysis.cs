@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 
@@ -70,6 +71,7 @@ namespace BatInspector
     public const string LANDSCAPE = "Landscape";
 
     public const string DAYS = "Days";
+    public const string T18H = "18:00";
   }
 
 
@@ -78,10 +80,15 @@ namespace BatInspector
     public string Species { get; set; }
     public int Count { get; set; }
 
+    public int[] CountTime { get; set; }
+
     public SumItem(string species, int count)
     {
       Species = species;
       Count = count;
+      CountTime = new int[12];
+      for(int i = 0; i < 12; i++)
+        CountTime[i] = 0;
     }
 
     public static SumItem find(string species, List<SumItem> list)
@@ -216,7 +223,7 @@ namespace BatInspector
             callNr = 1;
           }
          
-          AnalysisCall call = new AnalysisCall(_csv, row, _prj.SpeciesInfos);
+          AnalysisCall call = new AnalysisCall(_csv, row);
           if(callNr == 1)
           {
             oldStartTime = 0;
@@ -249,7 +256,7 @@ namespace BatInspector
           rItem.SpeciesMan = call.getString(Cols.SPECIES_MAN);
           _report.Add(rItem);
         }
-        restChanged();
+        resetChanged();
       }
     }
 
@@ -433,7 +440,8 @@ namespace BatInspector
       }
     }
 
-    private void createSummary(string fileName)
+
+    public void createSummary(string fileName)
     {
       _summary.Clear();
       foreach (AnalysisFile f in _list)
@@ -442,19 +450,25 @@ namespace BatInspector
         {
           SumItem it = SumItem.find(c.getString(Cols.SPECIES_MAN), _summary);
           if (it != null)
+          {
             it.Count++;
+          }
           else
           {
             it = new SumItem(c.getString(Cols.SPECIES_MAN), 1);
             _summary.Add(it);
           }
+          int h = f.RecTime.TimeOfDay.Hours;
+          h = (h < 18) ? h + 6 : h - 18;
+          if ((h >= 0) && (h < it.CountTime.Length))
+            it.CountTime[h]++;
         }
       }
 
       // create csv file
       Csv sum = new Csv();
       sum.addRow();
-      string[] header = { Cols.SPECIES_MAN, Cols.COUNT, Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE };
+      string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.SPECIES_MAN, Cols.COUNT, Cols.T18H,"19:00","20:00","21:00","22:00","23:00","0:00","1:00","2:00","3:00","4:00","5:00" };
       sum.initColNames(header, true);
       sum.addRow();
       int row = 2;
@@ -467,13 +481,21 @@ namespace BatInspector
       if (note.Length > 1)
         sum.setCell(row, Cols.LANDSCAPE, note[1]);
 
-      foreach (SumItem it in _summary)
+      int startTimeCol = sum.findInRow(1, Cols.T18H);
+      if (startTimeCol > 0)
       {
-        sum.setCell(row, Cols.SPECIES_MAN, it.Species);
-        sum.setCell(row, "Count", it.Count);
-        sum.addRow();
-        row++;
+        foreach (SumItem it in _summary)
+        {
+          sum.setCell(row, Cols.SPECIES_MAN, it.Species);
+          sum.setCell(row, "Count", it.Count);
+          sum.addRow();
+          for (int c = 0; c < it.CountTime.Length; c++)
+            sum.setCell(row, c + startTimeCol, it.CountTime[c]);
+          row++;
+        }
       }
+      else
+        DebugLog.log("Summary report: col '18:00' not found", enLogType.ERROR);
       sum.saveAs(fileName);
     }
 
@@ -494,7 +516,7 @@ namespace BatInspector
           BatRecord rec = ElekonInfoFile.read(xmlName);
           if (rec != null)
           {
-            dateStr = ElekonInfoFile.getDateString(rec.DateTime);
+            dateStr = rec.DateTime;
           }
           else
             DebugLog.log("error reading file: " + xmlName, enLogType.ERROR);
@@ -506,7 +528,7 @@ namespace BatInspector
       DebugLog.log("read out start time of recordings, exec time: " + sw.Elapsed.ToString(), enLogType.INFO);
     }
 
-    void restChanged()
+    void resetChanged()
     {
       if (_report != null)
       {
@@ -554,6 +576,16 @@ namespace BatInspector
     {
       _changed = false;
     }
+
+    public static ReportItem find(string filename, List<ReportItem> list)
+    {
+      foreach(ReportItem r in list)
+      {
+        if(r.FileName == filename)
+          return r;
+      }
+      return null;
+    }
   }
 
   public class AnalysisCall
@@ -569,7 +601,7 @@ namespace BatInspector
    /// </summary>
    public double DistToPrev { get; set; }
 
-    public AnalysisCall(Csv csv, int row, List<SpeciesInfos> specList)
+    public AnalysisCall(Csv csv, int row)
     {
       _csv = csv;
       _row = row;
@@ -616,18 +648,12 @@ namespace BatInspector
           err = "Dmin";
         else if (duration > spec.DurationMax)
           err = "Dmax";
-//        else if (this.FreqMaxAmp < (spec.FreqCharMin * 1000))
-//          err = "FcMin";
-//        else if (this.FreqMaxAmp > (spec.FreqCharMax * 1000))
-//          err = "FcMax";
         else if (fMin < (spec.FreqMinMin * 1000))
           err = "FminMin";
         else if (fMin > (spec.FreqMinMax * 1000))
           err = "FminMax";
         else if (fMax < (spec.FreqMaxMin * 1000))
           err = "FminMin";
-        //     else if (this.FreqMax > (spec.FreqMaxMax * 1000))
-        //       err = "FmaxMax";
         if (err == "")
           retVal = true;
         else
@@ -694,7 +720,7 @@ namespace BatInspector
     public bool Selected { get; set; } = false;
 
     public string Name { get { return _name; } }
-    public DateTime RecTime { get { return _recTime; }  }
+    public DateTime RecTime { get { return _recTime; } set { _recTime = value; } }
 
     Dictionary<string, int> _specFound;
 

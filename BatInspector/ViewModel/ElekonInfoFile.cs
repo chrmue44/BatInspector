@@ -25,10 +25,18 @@ namespace BatInspector
       BatRecord retVal;
       if (File.Exists(infoName))
       {
-        string xml = File.ReadAllText(infoName);
-        var serializer = new XmlSerializer(typeof(BatRecord));
-        TextReader reader = new StringReader(xml);
-        retVal = (BatRecord)serializer.Deserialize(reader);
+        try
+        {
+          string xml = File.ReadAllText(infoName);
+          var serializer = new XmlSerializer(typeof(BatRecord));
+          TextReader reader = new StringReader(xml);
+          retVal = (BatRecord)serializer.Deserialize(reader);
+        }
+        catch (Exception ex) 
+        {
+          DebugLog.log("error reading info file: " + ex.ToString(), enLogType.ERROR);
+          retVal = new BatRecord();
+        }
       }
       else
         retVal = new BatRecord();
@@ -56,7 +64,7 @@ namespace BatInspector
       batRecord.Samplerate = wavFile.FormatChunk.Frequency.ToString() + " Hz";
       double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
       batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
-      batRecord.DateTime = time;
+      batRecord.DateTime = time.ToString(DATE_FORMAT);
       string infoName = fileName.Replace(".wav", ".xml");
       ElekonInfoFile.write(infoName, batRecord);
     }
@@ -153,7 +161,7 @@ namespace BatInspector
     private static void initUninitializedValues(ref BatRecord rec)
     {
       if (rec.DateTime == null)
-        rec.DateTime = new DateTime();
+        rec.DateTime = "";
       if (rec.Duration == null)
         rec.Duration = "";
       if (rec.FileName == null)

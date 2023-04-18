@@ -139,21 +139,21 @@
               </Grid.RowDefinitions>
 
               <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="2.667,5,5,1" Grid.Column="1">
-                <Button x:Name="_btnAll"  Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom"></Button>
-                <Button x:Name="_btnNone" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom"></Button>
+                <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator></Separator>
-                <Button x:Name="_btnHideUnSelected" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Button x:Name="_btnShowAll" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Button x:Name="_btnDelSelected" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnHideUnSelected" ToolTip="{x:Static res:MyResources.MainToolHideUnsel}" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnShowAll" ToolTip="{x:Static res:MyResources.MainToolBtnShowAll}" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnDelSelected" ToolTip="{x:Static res:MyResources.MainToolBtnDelSel}" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator></Separator>
-                <Button x:Name="_btnSize" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnSize" ToolTip="{x:Static res:MyResources.MainToolBtnSize}" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator></Separator>
                 <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
-                <ComboBox Name="_cbFilter" Margin="5,0,0,0"></ComboBox>
-                <Button x:Name="_btnApplyFilter" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0"></ComboBox>
+                <Button x:Name="_btnApplyFilter" ToolTip="{x:Static res:MyResources.MainToolBtnApplyFilter}" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator></Separator>
-                <Button x:Name="_btnCallInfo" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Button x:Name="_btnCopySpec" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnCallInfo" ToolTip="{x:Static res:MyResources.MainToolHideCallInfo}" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                <Button x:Name="_btnCopySpec" ToolTip="{x:Static res:MyResources.MainToolCopySelected}" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
               </StackPanel>
               <ScrollViewer Grid.Row="2" Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="2" ScrollChanged="ScrollViewer_ScrollChanged" >
                 <StackPanel  Name="_spSpectrums" Orientation="Vertical" >

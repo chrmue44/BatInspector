@@ -804,4 +804,34 @@
   <data name="frmCreatePrjSelectGpxFile" xml:space="preserve">
     <value>GXP-Datei auswählen</value>
   </data>
+  <data name="MainToolBtnAll" xml:space="preserve">
+    <value>Alle Dateien selektieren</value>
+  </data>
+  <data name="MainToolBtnNone" xml:space="preserve">
+    <value>Alle Dateien abwählen</value>
+  </data>
+  <data name="MainToolHideUnsel" xml:space="preserve">
+    <value>Verstecke nicht selektierte Dateien</value>
+  </data>
+  <data name="MainToolBtnShowAll" xml:space="preserve">
+    <value>Zeige alle Dateien (unabhängig von der Selektierung)</value>
+  </data>
+  <data name="MainToolBtnDelSel" xml:space="preserve">
+    <value>lösche alle selektierten Dateien</value>
+  </data>
+  <data name="MainToolBtnSize" xml:space="preserve">
+    <value>Ändere die Höhe der angezeigten Sonogramme</value>
+  </data>
+  <data name="MainToolBtnApplyFilter" xml:space="preserve">
+    <value>Selektiere all Dateien, für die die Filterbedingung erfüllt ist</value>
+  </data>
+  <data name="MainToolHideCallInfo" xml:space="preserve">
+    <value>zeige/verstecke Ruf-Informationen in der Dateiliste</value>
+  </data>
+  <data name="MainToolCopySelected" xml:space="preserve">
+    <value>kopiere automatisch detektierte Spezies in das Feld 'SpeciesMan' für alle selektierten Dateien</value>
+  </data>
+  <data name="MainToolFilter" xml:space="preserve">
+    <value>wähle eine vordefinierte Filterbedingung aus</value>
+  </data>
 </root>

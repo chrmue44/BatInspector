@@ -804,4 +804,34 @@
   <data name="frmCreatePrjSelectGpxFile" xml:space="preserve">
     <value>Select Gpx file</value>
   </data>
+  <data name="MainToolBtnAll" xml:space="preserve">
+    <value>select all files</value>
+  </data>
+  <data name="MainToolBtnNone" xml:space="preserve">
+    <value>deselect all files</value>
+  </data>
+  <data name="MainToolHideUnsel" xml:space="preserve">
+    <value>hide unselected files</value>
+  </data>
+  <data name="MainToolBtnShowAll" xml:space="preserve">
+    <value>show all files (independent of selection)</value>
+  </data>
+  <data name="MainToolBtnDelSel" xml:space="preserve">
+    <value>delete all selected files</value>
+  </data>
+  <data name="MainToolBtnSize" xml:space="preserve">
+    <value>change height of displayed sonograms</value>
+  </data>
+  <data name="MainToolBtnApplyFilter" xml:space="preserve">
+    <value>select all files matching selected filter</value>
+  </data>
+  <data name="MainToolHideCallInfo" xml:space="preserve">
+    <value>hide/show call information in file list</value>
+  </data>
+  <data name="MainToolCopySelected" xml:space="preserve">
+    <value>copy automatically detected species to field 'SpeciesMan'  for all selected files</value>
+  </data>
+  <data name="MainToolFilter" xml:space="preserve">
+    <value>select predefined filter expression</value>
+  </data>
 </root>

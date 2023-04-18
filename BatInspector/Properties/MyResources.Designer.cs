@@ -1186,11 +1186,74 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to select all files.
+        /// </summary>
+        public static string MainToolBtnAll {
+            get {
+                return ResourceManager.GetString("MainToolBtnAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select all files matching selected filter.
+        /// </summary>
+        public static string MainToolBtnApplyFilter {
+            get {
+                return ResourceManager.GetString("MainToolBtnApplyFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delete all selected files.
+        /// </summary>
+        public static string MainToolBtnDelSel {
+            get {
+                return ResourceManager.GetString("MainToolBtnDelSel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to deselect all files.
+        /// </summary>
+        public static string MainToolBtnNone {
+            get {
+                return ResourceManager.GetString("MainToolBtnNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to show all files (independent of selection).
+        /// </summary>
+        public static string MainToolBtnShowAll {
+            get {
+                return ResourceManager.GetString("MainToolBtnShowAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to change height of displayed sonograms.
+        /// </summary>
+        public static string MainToolBtnSize {
+            get {
+                return ResourceManager.GetString("MainToolBtnSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel running script.
         /// </summary>
         public static string MainToolCancelScript {
             get {
                 return ResourceManager.GetString("MainToolCancelScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to copy automatically detected species to field &apos;SpeciesMan&apos;  for all selected files.
+        /// </summary>
+        public static string MainToolCopySelected {
+            get {
+                return ResourceManager.GetString("MainToolCopySelected", resourceCulture);
             }
         }
         
@@ -1258,11 +1321,38 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to select predefined filter expression.
+        /// </summary>
+        public static string MainToolFilter {
+            get {
+                return ResourceManager.GetString("MainToolFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find species by entering call parameters.
         /// </summary>
         public static string MainToolFindSpeciesInfo {
             get {
                 return ResourceManager.GetString("MainToolFindSpeciesInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hide/show call information in file list.
+        /// </summary>
+        public static string MainToolHideCallInfo {
+            get {
+                return ResourceManager.GetString("MainToolHideCallInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hide unselected files.
+        /// </summary>
+        public static string MainToolHideUnsel {
+            get {
+                return ResourceManager.GetString("MainToolHideUnsel", resourceCulture);
             }
         }
         

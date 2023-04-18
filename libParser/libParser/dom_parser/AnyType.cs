@@ -18,13 +18,13 @@ namespace libParser
   {
 
     // Datentypen, die von clAnyType unterstuetzt werden
-    const int TYPEFLAG_BOOL = 0x10;
+    public const int TYPEFLAG_BOOL = 0x10;
     public const int TYPEFLAG_INT = 0x20;
-    const int TYPEFLAG_FLOAT = 0x40;
-    const int TYPEFLAG_CPLX = 0x80;
-    const int TYPEFLAG_FORM = 0x100;
-    const int TYPEFLAG_STRING = 0x800;
-    const int TYPEFLAG_TIME = 0x1000;
+    public const int TYPEFLAG_FLOAT = 0x40;
+    public const int TYPEFLAG_CPLX = 0x80;
+    public const int TYPEFLAG_FORM = 0x100;
+    public const int TYPEFLAG_STRING = 0x800;
+    public const int TYPEFLAG_TIME = 0x1000;
 
     public enum tType
     {
@@ -1317,6 +1317,7 @@ namespace libParser
     public static DateTime getDate(string str)
     {
       DateTime date = new DateTime();
+      bool ok = false;
       try
       {
         if (str[1] == 'd')
@@ -1326,12 +1327,20 @@ namespace libParser
           str = str.Replace("0t", "");
           str = "70-01-01T" + str;
         }
-        date = DateTime.ParseExact(str, "yy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+        ok = DateTime.TryParseExact(str, "yy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out date);
+        if (!ok)
+        {
+          ok = DateTime.TryParseExact(str, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out date);
+          if (!ok)
+            ok = DateTime.TryParseExact(str, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out date);
+        }
       }
       catch
       {
-        DebugLog.log("error parsing date: " + str, enLogType.ERROR);
       }
+      if(!ok)
+        DebugLog.log("error parsing date: " + str, enLogType.ERROR);
+
       return date;
     }
 

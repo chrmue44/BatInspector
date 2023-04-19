@@ -71,7 +71,7 @@ namespace BatInspector.Controls
       _model = model;
       _parent = parent;
       InitializeComponent();
-      if (_model.Prj.Analysis.Files.Count > index)
+      if ((_model.Prj != null) && (_model.Prj.Analysis.Files.Count > index))
       {
         _analysis = _model.Prj.Analysis.Files[index];
         string fName = _analysis.Name;

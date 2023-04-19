@@ -16,6 +16,7 @@ namespace BatInspector.Controls
     public CtlSumReport()
     {
       InitializeComponent();
+      _cbPeriod.SelectedIndex = 0;
     }
 
     public void setModel(ViewModel model)
@@ -41,7 +42,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnCreate_Click(object sender, RoutedEventArgs e)
+ /*   private void _btnCreate_Click(object sender, RoutedEventArgs e)
     {
       if ((_dtStart.SelectedDate != null) && (_dtEnd.SelectedDate != null))
       {
@@ -52,6 +53,6 @@ namespace BatInspector.Controls
       }
       else
         MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-    }
+    }*/
   }
 }

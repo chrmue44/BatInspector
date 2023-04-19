@@ -716,7 +716,7 @@ namespace BatInspector.Forms
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)
     {
-      frmCreateReport frm = new frmCreateReport();
+      frmCreateReport frm = new frmCreateReport(_model);
       Filter.populateFilterComboBox(frm._ctlReport._cbFilter, _model);
       frm.Show();
     }

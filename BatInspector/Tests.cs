@@ -93,8 +93,9 @@ namespace BatInspector
       //testReportModelBatdetect2();
       //testCreatePrj();
       //updateSummaries();
-      //adjustTimesInReport();
-      //testCreatePrjInfoFiles();
+      //string prjName = "E:/bat/2023/20230408_4_SW";
+      //testCreatePrjInfoFiles(prjName, 49.7670333333333, 8.63353333333333);
+      //adjustTimesInReport(prjName);
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -366,12 +367,12 @@ namespace BatInspector
       }
     }
 
-    private void testCreatePrjInfoFiles()
+    private void testCreatePrjInfoFiles(string prjName, double lat, double lon)
     {
       PrjInfo i = new PrjInfo();
-      i.Latitude = 49.7670333333333;
-      i.Longitude = 8.63353333333333;
-      DirectoryInfo dirInfo = new DirectoryInfo("G:/bat/2023/20230407_SW");
+      i.Latitude = lat;
+      i.Longitude = lon;
+      DirectoryInfo dirInfo = new DirectoryInfo(prjName);
       _model.initProject(dirInfo);
       _model.Prj.createXmlInfoFiles(i);
     }
@@ -397,6 +398,26 @@ namespace BatInspector
         }
       }
     }
+    private void adjustTimesInReport(string prjName)
+    {
+      DirectoryInfo subDir = new DirectoryInfo(prjName);
+      
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
+        if (repName != "")
+        {
+          _model.initProject(subDir);
+          foreach (AnalysisFile f in _model.Prj.Analysis.Files)
+          {
+            string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.Replace(".wav", ".xml");
+            BatRecord rec = ElekonInfoFile.read(info);
+            foreach (AnalysisCall c in f.Calls)
+              c.setString(Cols.REC_TIME, rec.DateTime);
+          }
+          _model.Prj.Analysis.save(_model.Prj.ReportName);
+        }
+      
+    }
+
 
     private void assert(string a, string exp)
     {

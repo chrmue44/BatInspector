@@ -38,5 +38,10 @@
             <TextBox Name="_tbDstDir" Width="500" />
             <Button Name="_btnSelDstDir" Content="..." Width="30" Margin="5,0,0,0" Click="btnSetDestDir_Click"/>
         </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="{x:Static res:MyResources.CtlSumReportReportName}" HorizontalContentAlignment="Right" Width="150"/>
+            <TextBox Name="_tbReportName" Width="150"></TextBox>
+        </StackPanel>
+
     </StackPanel>
 </UserControl>

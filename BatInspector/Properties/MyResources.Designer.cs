@@ -313,6 +313,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report Name.
+        /// </summary>
+        public static string CtlSumReportReportName {
+            get {
+                return ResourceManager.GetString("CtlSumReportReportName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Root Directory.
         /// </summary>
         public static string CtlSumReportRootDirectory {
@@ -754,7 +763,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List of available variables.
+        ///   Looks up a localized string similar to List of available variables for different purposes.
         /// </summary>
         public static string FrmFilterListOfVars {
             get {

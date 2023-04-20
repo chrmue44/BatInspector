@@ -11,6 +11,7 @@
  ********************************************************************************/
 using BatInspector.Properties;
 using libParser;
+using libScripter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,26 @@ using System.Windows.Controls;
 
 namespace BatInspector
 {
+  public class FilterVarItem
+  {
+    public string VarName { get; set; }
+    public bool AvailableFile { get; set; } 
+    public bool AvailableCall { get;set; }
+    public bool AvailableSumReport { get; set; }
+
+    public FilterVarItem()
+    {
+
+    }
+    public FilterVarItem(string varName, bool availableFile, bool availableCall, bool availableSumReport)
+    {
+      VarName = varName;
+      AvailableFile = availableFile;
+      AvailableCall = availableCall;
+      AvailableSumReport = availableSumReport;
+    }
+  }
+
   public delegate void dlgDelete(int index);
   public class FilterItem
   {
@@ -28,7 +49,7 @@ namespace BatInspector
     public string Expression { get; set; }
     public bool IsForAllCalls { get; set; }
   }
-  
+ 
   public class Filter
   {
     const string VAR_NR_CALLS = "NrOfCalls";
@@ -45,11 +66,26 @@ namespace BatInspector
     List<FilterItem> _list;
     Expression _expression;
     public List<FilterItem> Items { get { return _list; } }
-
+    
+    List<FilterVarItem> _vars;
     public Filter()
     {
       _list = new List<FilterItem>();
       _expression = new Expression(null);
+      _vars = new List<FilterVarItem>
+      {
+        new FilterVarItem (VAR_NR_CALLS, true, false, false ),
+        new FilterVarItem (VAR_SPECIES_AUTO, true, true, false ),
+        new FilterVarItem (VAR_SPECIES_MAN, true, true, true ),
+        new FilterVarItem (VAR_FREQ_MIN, true, true, false ),
+        new FilterVarItem (VAR_FREQ_MAX, true, true, false ),
+        new FilterVarItem (VAR_DURATION, true, true, false ),
+        new FilterVarItem (VAR_PROBABILITY, true, true, false ),
+        new FilterVarItem (VAR_REMARKS, true, true, false ),
+        new FilterVarItem (VAR_TIME, true, false, false ),
+        new FilterVarItem (VAR_SNR, true, true, false ),
+    };
+
       _expression.Variables.set(VAR_NR_CALLS, 0);
       _expression.Variables.set(VAR_SPECIES_AUTO,"");
       _expression.Variables.set(VAR_SPECIES_MAN,"");
@@ -117,6 +153,19 @@ namespace BatInspector
       return retVal;
     }
 
+    public bool apply(FilterItem filter, Csv csv, int row)
+    {
+      bool retVal = false;
+      _expression.setVariable(VAR_SPECIES_MAN, csv.getCell(row, Cols.SPECIES_MAN));
+      AnyType res = _expression.parse(filter.Expression);
+
+      if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
+        retVal = true;
+
+      return retVal;
+
+    }
+
     public FilterItem getFilter(string name)
     {
       FilterItem retVal = null;
@@ -133,14 +182,26 @@ namespace BatInspector
 
     public string getVariables()
     {
-      string retVal = "";
+      string retVal = "Variable Name       | File | Call | SumReport |\n" +
+                      "--------------------+------+------+-----------+\n";
       foreach(VarListItem v in _expression.Variables.getVarList(false))
       {
-        retVal += v.name + "\n";
+        retVal += v.name;
+        int len = 20 - v.name.Length;
+        while (len > 0)
+        {
+          retVal += " ";
+          len--;
+        }
+        retVal += "|";
+        retVal += findVarItem(v.name).AvailableFile ? "  x   |" : "      |";
+        retVal += findVarItem(v.name).AvailableCall ? "  x   |" : "      |";
+        retVal += findVarItem(v.name).AvailableSumReport ? "     x     |" : "           |";
+        retVal += "\n";
       }
       return retVal;
     }
-
+   
     public static void populateFilterComboBox(ComboBox fiBox, ViewModel model)
     {
       fiBox.Items.Clear();
@@ -152,6 +213,20 @@ namespace BatInspector
       }
       if (fiBox.Items.Count > 0)
         fiBox.Text = (string)fiBox.Items[0];
+    }
+
+    private FilterVarItem findVarItem(string varName)
+    {
+      FilterVarItem item = new FilterVarItem();
+      foreach(FilterVarItem f in _vars)
+      {
+        if (f.VarName == varName)
+        {
+          item = f;
+          break;
+        }
+      }
+      return item;
     }
   }
 }

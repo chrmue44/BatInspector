@@ -17,6 +17,7 @@ namespace BatInspector.Controls
     {
       InitializeComponent();
       _cbPeriod.SelectedIndex = 0;
+      _tbReportName.Text = "sum_report.csv";
     }
 
     public void setModel(ViewModel model)

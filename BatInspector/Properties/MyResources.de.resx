@@ -361,7 +361,7 @@
     <value>Hilfe</value>
   </data>
   <data name="FrmFilterListOfVars" xml:space="preserve">
-    <value>Liste der verfügbaren Variablen</value>
+    <value>Liste der verfügbaren Variablen für verschiedene Anwendungen</value>
   </data>
   <data name="SettingsApplication" xml:space="preserve">
     <value>Programm Allgemein</value>
@@ -833,5 +833,8 @@
   </data>
   <data name="MainToolFilter" xml:space="preserve">
     <value>wähle eine vordefinierte Filterbedingung aus</value>
+  </data>
+  <data name="CtlSumReportReportName" xml:space="preserve">
+    <value>Name der Auswertung</value>
   </data>
 </root>

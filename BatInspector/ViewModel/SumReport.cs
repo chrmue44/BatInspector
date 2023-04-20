@@ -72,7 +72,7 @@ namespace BatInspector
     /// <param name="end">end time</param>
     /// <param name="period">granularity of time</param>
     /// <param name="rootDir">root dir to start search for projects</param>
-    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir)
+    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir, string reportName)
     {
       initDirTree(rootDir);
       _rep = new Csv(true);
@@ -92,7 +92,7 @@ namespace BatInspector
 
       if (Directory.Exists(rootDir))
       {
-        string fileName = rootDir + "/" + AppParams.SUM_REPORT;
+        string fileName = rootDir + "/" + reportName;
         _rep.saveAs(fileName);
       }
       else

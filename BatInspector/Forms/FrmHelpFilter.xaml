@@ -11,7 +11,7 @@
       <RowDefinition Height="*"></RowDefinition>
       <RowDefinition Height="50"></RowDefinition>
     </Grid.RowDefinitions>
-    <TextBlock Name ="_tbHelp" VerticalAlignment="Stretch" Grid.Row="0" Margin="10,10,10,10">
+    <TextBlock Name ="_tbHelp" VerticalAlignment="Stretch" Grid.Row="0" Margin="10,10,10,10" FontFamily="Cascadia Code" FontSize="11">
       </TextBlock>
     <Button Click="Button_Click" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" Margin="10,10,10,10">OK</Button>
     </Grid>

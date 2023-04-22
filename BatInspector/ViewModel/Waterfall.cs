@@ -161,6 +161,11 @@ namespace BatInspector
         length = _samples.Length - idx - 1;
 //        zeroPadding = _fftSize - length;
       }
+      if (length <= 0)
+      {
+        DebugLog.log("unable to generate FFT with length " + length.ToString(), enLogType.ERROR);
+        return new double[1];
+      }
       zeroPadding = (int)_fftSize - length;
       double[] inputSignal = new double[length];
       Array.Copy(_samples, idx, inputSignal, 0, length);

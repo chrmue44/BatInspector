@@ -20,7 +20,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
-
+using System.Windows.Media;
 
 namespace BatInspector
 {
@@ -138,7 +138,8 @@ namespace BatInspector
             report.setCell(repRow, Cols.CALL_INTERVALL, callInterval * 1000, 1);
             report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
             report.setCell(repRow, Cols.SNR, -1.0);
-            string latin = csvAnn.getCell(row, "class");
+            string latin = translate(csvAnn.getCell(row, "class"));
+
             double prob = csvAnn.getCellAsDouble(row, "class_prob");
             report.setCell(repRow, Cols.PROBABILITY, prob);
             string abbr = "";
@@ -147,6 +148,8 @@ namespace BatInspector
             SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
             if ((info != null) && (specInfo != null))
               abbr += specInfo.Abbreviation;
+            else
+              abbr += latin;
             if (prob < minProb)
               abbr += "]";
             report.setCell(repRow, colSpecies, abbr);
@@ -164,9 +167,22 @@ namespace BatInspector
         retVal = false;
         DebugLog.log("error creating report from model predicitons, " + e.ToString(), enLogType.ERROR);
       }
+
       return retVal;
     }
 
+    /// <summary>
+    /// translate species name to official form
+    /// </summary>
+    /// <param name="spec"></param>
+    /// <returns></returns>
+    private string translate(string spec)
+    {
+      if (spec == "Barbastellus barbastellus")
+        return "Barbastella barbastellus";
+      else
+        return spec;
+    }
     public static Csv createReport(string colSpecies)
     {
       Csv csv = new Csv();

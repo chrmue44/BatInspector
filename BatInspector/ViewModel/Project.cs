@@ -164,9 +164,8 @@ namespace BatInspector
       {
         Csv csv = new Csv();
         csv.read(sumName, ";", true);
-        int col = csv.findInCol(Cols.SPECIES_MAN, "todo");
-        if (col > 0)
-          retVal = true;
+        int col = csv.findInCol("todo", Cols.SPECIES_MAN);
+        retVal = (col == 0);
       }
       else
       { 

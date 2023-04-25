@@ -646,6 +646,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluate created Project(s) automatically.
+        /// </summary>
+        public static string frmCreatePrjEvalPrj {
+            get {
+                return ResourceManager.GetString("frmCreatePrjEvalPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fixed position.
         /// </summary>
         public static string frmCreatePrjFixedPos {

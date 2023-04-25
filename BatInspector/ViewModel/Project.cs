@@ -195,8 +195,9 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static void createPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    public static string[] createPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
     {
+      List<string> retVal = new List<string>();
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
@@ -238,7 +239,7 @@ namespace BatInspector
             if(Directory.Exists(fullDir))
             {
               DebugLog.log("directory '" + fullDir + "' already exists, project creation aborted!", enLogType.ERROR);
-              return;
+              return retVal.ToArray();
             }
             else
               Directory.CreateDirectory(fullDir);
@@ -253,6 +254,7 @@ namespace BatInspector
             DirectoryInfo dir = new DirectoryInfo(fullDir);
             prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Weather + "\n" + info.Landscape);
             prj.createXmlInfoFiles(info);
+            retVal.Add(dirName);
           }
         }
         else
@@ -262,6 +264,7 @@ namespace BatInspector
       {
         DebugLog.log("error creating Project " + info.Name + " " + e.ToString(), enLogType.ERROR);
       }
+      return retVal.ToArray();
     }
 
     public void readPrjFile(string fName)

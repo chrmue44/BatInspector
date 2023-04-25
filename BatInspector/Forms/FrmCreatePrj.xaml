@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.frmCreatePrjTitle}" Height="440" Width="700">
+        Title="{x:Static res:MyResources.frmCreatePrjTitle}" Height="502" Width="700">
     <Grid>
         <StackPanel Margin="10">
             <Label Content="{x:Static res:MyResources.frmCreatePrjInfo}"></Label>
@@ -22,9 +22,10 @@
             <local:CtlSelectFile x:Name="_ctlGpxFile" Margin=" 0,00,0,0"/>
             <local:ctlDataItem x:Name="_ctlLat" Margin=" 0,0,0,0"/>
             <local:ctlDataItem x:Name="_ctlLon"/>
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="right">
+      <CheckBox Name="_cbEvalPrj" Content="{x:Static res:MyResources.frmCreatePrjEvalPrj}" Margin="0,20,0,0"/>
+      <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="right">
                 <Button Name="_btnOk" Height="25" Width="100" Content="{x:Static res:MyResources.BtnOK}" Margin ="0,0,10,0" Click="_btnOk_Click"/>
-        <Button Name="_btnCancel"  Height="25" Width="100" Content="{x:Static res:MyResources.BtnCancel}" Margin ="0,0,20,0" Click="_btnCancel_Click" />
+                <Button Name="_btnCancel"  Height="25" Width="100" Content="{x:Static res:MyResources.BtnCancel}" Margin ="0,0,20,0" Click="_btnCancel_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>

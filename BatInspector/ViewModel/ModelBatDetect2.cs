@@ -36,20 +36,34 @@ namespace BatInspector
 
     public override int classify(Project prj)
     {
-      string wavDir = prj.PrjDir + "/" +prj.WavSubDir;
-      string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
-      string args = AppParams.Inst.ModelRootPath + " " + wavDir + " " +
-                   annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
-      string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
-      string cmd = wrkDir + "/" + AppParams.Inst.Models[this.Index].Script;
-       int retVal = _proc.LaunchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
-      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName);
-      if (ok)
+      _isBusy = true;
+      int retVal = 0;
+      try
       {
-        cleanup(prj.PrjDir);
-        prj.Analysis.read(prj.ReportName);
-        prj.removeFilesNotInReport();
+        string wavDir = prj.PrjDir + "/" + prj.WavSubDir;
+        string annDir = prj.PrjDir + AppParams.ANNOTATION_SUBDIR;
+        string args = AppParams.Inst.ModelRootPath + " " + wavDir + " " +
+                     annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
+        string wrkDir = AppParams.Inst.ModelRootPath + "/" + AppParams.Inst.Models[this.Index].Dir;
+        string cmd = wrkDir + "/" + AppParams.Inst.Models[this.Index].Script;
+        retVal = _proc.LaunchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
+        bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName);
+        if (ok)
+        {
+          cleanup(prj.PrjDir);
+          prj.Analysis.read(prj.ReportName);
+          prj.removeFilesNotInReport();
+        }
       }
+      catch 
+      {
+        retVal = 1;
+      }
+      finally
+      {
+        _isBusy = false;
+      }
+
       return retVal;
     }
 

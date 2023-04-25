@@ -102,6 +102,12 @@ namespace libParser
       MathHelpTab.Add(new HelpTabItem("strlen", "returns the length of a string if the variable type is STRING otherwise 0",
                       new List<string> { "1: a string" }, new List<string> { "1: length of string" }));
       addMethod(new FuncTabItem("strlen", strlen));
+      MathHelpTab.Add(new HelpTabItem("strListCnt", "returns the length of a string list, separated by ';'",
+                      new List<string> { "1: a string containing the list" }, new List<string> { "1: nr of items in string list" }));
+      addMethod(new FuncTabItem("strListCnt", strListCnt));
+      MathHelpTab.Add(new HelpTabItem("strListItem", "returns an item of a string list, separated by ';'",
+                      new List<string> { "1: a string containing the list","2: index of item (0..n)" }, new List<string> { "1: selected item in string list" }));
+      addMethod(new FuncTabItem("strListItem", strListItem));
       MathHelpTab.Add(new HelpTabItem("substr", "returns substring if the variable type is STRING otherwise 0",
                       new List<string> { "1: a string", "2:index of first char", "3: length of substring" }, new List<string> { "1: length of string" }));
       addMethod(new FuncTabItem("substr", substr));
@@ -560,6 +566,43 @@ namespace libParser
       {
         err = tParseError.NR_OF_ARGUMENTS;
       }
+      return err;
+    }
+
+    static tParseError strListCnt(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string[] strings = argv[0].getString().Split(';');
+        result.assignInt64(strings.Length);
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+
+       return err;
+    }
+
+    static tParseError strListItem(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 2)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_INT64);
+        string[] strings = argv[0].getString().Split(';');
+        long cnt = argv[1].getInt64();
+        if ((cnt >= 0) && (cnt < strings.Length))
+          result.assign(strings[cnt]);
+        else
+          err = tParseError.ARG2_OUT_OF_RANGE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+
       return err;
     }
 

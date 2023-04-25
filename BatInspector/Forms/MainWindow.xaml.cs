@@ -518,7 +518,7 @@ namespace BatInspector.Forms
 
     private void workerPrediction()
     {
-      _model.startEvaluation();
+      _model.evaluate();
     }
 
 

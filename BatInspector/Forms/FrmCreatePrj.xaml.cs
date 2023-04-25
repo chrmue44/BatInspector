@@ -12,6 +12,7 @@
 
 using BatInspector.Properties;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Windows;
 
@@ -25,6 +26,8 @@ namespace BatInspector.Forms
   {
     private ViewModel _model;
     private PrjInfo _info;
+    private bool _inspect;
+
     public FrmCreatePrj(ViewModel model)
     {
       InitializeComponent();
@@ -53,10 +56,12 @@ namespace BatInspector.Forms
       return parseGeoCoord(coordStr, out coord, "N", "S", 90);
     }
 
+
     public bool parseLongitude(string coordStr, out double coord)
     {
       return parseGeoCoord(coordStr, out coord, "E", "W", 180);
     }
+
 
     /// <summary>
     /// parse geographical coordinates, two formats are allowed:
@@ -121,6 +126,7 @@ namespace BatInspector.Forms
       return retVal;
     }
 
+
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
       bool ok = parseLatitude(_ctlLat.getValue(), out double lat);
@@ -144,21 +150,35 @@ namespace BatInspector.Forms
           _info.GpxFile = _rbGpxFile.IsChecked == true ?  _ctlGpxFile.getValue() : "";
           _info.Latitude = lat;
           _info.Longitude = lon;
+          _inspect = _cbEvalPrj.IsChecked == true;
           Thread thr = new Thread(createProject);
           thr.Start();
         }
       }
     }
 
+
     private void createProject()
     {
-      Project.createPrj(_info, _model.Regions, _model.SpeciesInfos);
+      string[] projects = Project.createPrj(_info, _model.Regions, _model.SpeciesInfos);
+      if (_inspect)
+      {
+        foreach (string prj in projects)
+        {
+          string prjPath = _info.DstDir + "/" + prj;
+          DirectoryInfo dir = new DirectoryInfo(prjPath);
+          _model.initProject(dir);
+          _model.evaluate();
+        }
+      }
     }
+
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
       this.Close();
     }
+
 
     private void btnRadioClick(object sender, RoutedEventArgs e)
     {

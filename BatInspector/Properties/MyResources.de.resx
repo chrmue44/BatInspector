@@ -837,4 +837,7 @@
   <data name="CtlSumReportReportName" xml:space="preserve">
     <value>Name der Auswertung</value>
   </data>
+  <data name="frmCreatePrjEvalPrj" xml:space="preserve">
+    <value>Erzeugte Projekt(e) automatisch auswerten</value>
+  </data>
 </root>

@@ -96,7 +96,101 @@ namespace BatInspector
       addMethod(new FuncTabItem("getFileIndex", getFileIndex));
       _scriptHelpTab.Add(new HelpTabItem("getFileIndex", "get file index in opended project",
                       new List<string> { "1: file name"}, new List<string> { "1: index (-1: not found)" }));
+      addMethod(new FuncTabItem("createPrjFromFiles", createPrjFromFiles));
+      _scriptHelpTab.Add(new HelpTabItem("createPrjFromFiles", "create a project from a list of WAV files",
+                      new List<string> { "1: project name","2:source folder containing WAVs","3:destination folder","4: max files per project (int)", 
+                                         "5: max length of WAV file [s] (float)", "6: latitude (float)", "7: longitude (float)", 
+                                         "8: information about landscape", "9: information about weather"}, 
+                      new List<string> { "1: list of opened projects" }));
+      addMethod(new FuncTabItem("openPrj", openPrj));
+      _scriptHelpTab.Add(new HelpTabItem("openPrj", "open a project",
+                      new List<string> { "1: project dir", "2: project name" }, new List<string> { "1: result" }));
+      addMethod(new FuncTabItem("inspectPrj", inspectPrj));
+      _scriptHelpTab.Add(new HelpTabItem("inspectPrj", "start inspecting currently opened project",
+                      new List<string> {  }, new List<string> { "1: result" }));
+      addMethod(new FuncTabItem("savePrj", savePrj));
+      _scriptHelpTab.Add(new HelpTabItem("savePrj", "save the currently opened project",
+                      new List<string> { }, new List<string> { "1: result" }));
     }
+
+    static tParseError openPrj(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        try
+        {
+           DirectoryInfo dir = new DirectoryInfo(argv[0].getString());
+           _inst._model.initProject(dir);
+        }
+        catch { }
+      }
+      return err;
+    }
+
+
+    static tParseError createPrjFromFiles(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 9)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        argv[2].changeType(AnyType.tType.RT_STR);
+        argv[3].changeType(AnyType.tType.RT_INT64);
+        argv[4].changeType(AnyType.tType.RT_FLOAT);
+        argv[5].changeType(AnyType.tType.RT_FLOAT);
+        argv[6].changeType(AnyType.tType.RT_FLOAT);
+        argv[7].changeType(AnyType.tType.RT_STR);
+        argv[8].changeType(AnyType.tType.RT_STR);
+        PrjInfo info = new PrjInfo
+        {
+          Name = argv[0].getString(),
+          SrcDir = argv[1].getString(),
+          DstDir = argv[2].getString(),
+          MaxFileCnt = (int)argv[3].getInt64(),
+          MaxFileLenSec = (int)argv[4].getFloat(),
+          Latitude = argv[5].getFloat(),
+          Longitude = argv[6].getFloat(),
+          GpxFile = "",
+          Landscape = argv[7].getString(),
+          Weather = argv[8].getString(),
+        };
+        string[] res = Project.createPrj(info, _inst._model.Regions, _inst._model.SpeciesInfos);
+        string resStr = string.Join(";", res);
+        result.assign(resStr); 
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
+    static tParseError inspectPrj(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if(_inst._model.Prj.Name != "")
+      {
+        _inst._model.evaluate(); 
+      }
+      return err;
+    }
+
+    static tParseError savePrj(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (_inst._model.Prj.Name != "")
+      {
+        _inst._model.Prj.writePrjFile();
+        _inst._model.Prj.Analysis.save(_inst._model.PrjPath);
+      }
+      return err;
+    }
+
 
     static tParseError getFileIndex(List<AnyType> argv, out AnyType result)
     {

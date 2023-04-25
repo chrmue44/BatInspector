@@ -340,9 +340,9 @@ namespace BatInspector
     }
 
     /// <summary>
-    /// start evaluation of bat species
+    /// evaluation of bat species
     /// </summary>
-    public int startEvaluation()
+    public int evaluate()
     {
       int retVal = 2;
       

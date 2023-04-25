@@ -73,6 +73,9 @@ namespace BatInspector
         new FormulaData(23, "0d22-11-10T13:45:00 - 0t02:00:01", "0d22-11-10T11:44:59",""),
         new FormulaData(24, "indexOf(\"abcdef\",\"cde\")","2",""),
         new FormulaData(25, "indexOf(\"abcdef\",\"efg\")","-1",""),
+        new FormulaData(26, "strListCnt(\"abc;def;ghi\")","3",""),
+        new FormulaData(27, "strListItem(\"abc;def;ghi\",1)","def",""),
+        new FormulaData(28, "strListItem(\"abc;def;ghi\",3)","ARG2_OUT_OF_RANGE","ARG2_OUT_OF_RANGE"),
 
         };
 

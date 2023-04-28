@@ -141,7 +141,8 @@ namespace BatInspector.Controls
     public void toggleCheckBox()
     {
       _cbSel.IsChecked = !_cbSel.IsChecked;
-      _analysis.Selected = _cbSel.IsChecked == true;
+      if(_analysis != null)
+        _analysis.Selected = _cbSel.IsChecked == true;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

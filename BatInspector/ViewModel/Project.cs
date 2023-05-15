@@ -35,6 +35,9 @@ namespace BatInspector
     public string Weather { get; set; } 
     public string Landscape { get; set; } 
     public string GpxFile { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+
   }
 
 
@@ -55,7 +58,16 @@ namespace BatInspector
     public string Name { get{ return _prjFileName; } }
     public string WavSubDir { get { return _wavSubDir; } }
     public string Notes { get { return _batExplorerPrj != null ?_batExplorerPrj.Notes : ""; } set { if(_batExplorerPrj!= null) _batExplorerPrj.Notes = value; } }
-    public string Created { get { return _batExplorerPrj.Created; }  set { _batExplorerPrj.Created = value; } }
+    public string Created 
+    { 
+      get 
+      {
+        if (_batExplorerPrj != null)
+          return _batExplorerPrj.Created;
+        else
+          return "";
+      }
+        set { _batExplorerPrj.Created = value; } }
     public List<string> Species {  get { return _speciesList; } }
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
     public string PrjDir { get { return _selectedDir + "/"; } }
@@ -188,6 +200,19 @@ namespace BatInspector
 
       return retVal;
     }
+    private static string[] getSelectedFiles(PrjInfo prjInfo, string searchPattern)
+    {
+      string[] files = Directory.GetFiles(prjInfo.SrcDir, searchPattern);
+      List<string> strings = new List<string>();
+      foreach (string file in files)
+      {
+        FileInfo fileInfo = new FileInfo(file);
+        if ((prjInfo.StartTime <= fileInfo.LastWriteTime) && (fileInfo.LastWriteTime <= prjInfo.EndTime))
+          strings.Add(file);
+      }
+      return strings.ToArray();
+    }
+
 
     /// <summary>
     /// create one or multiple projects from a directory containing WAV files
@@ -201,7 +226,8 @@ namespace BatInspector
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        string[] files = Directory.GetFiles(info.SrcDir, "*.wav");
+        //string[] files = Directory.GetFiles(info.SrcDir, "*.wav");
+        string[] files = getSelectedFiles(info, "*.wav");
         if (files.Length > 0)
         {
           WavFile wavFile = new WavFile();

@@ -150,6 +150,8 @@ namespace BatInspector.Forms
           _info.GpxFile = _rbGpxFile.IsChecked == true ?  _ctlGpxFile.getValue() : "";
           _info.Latitude = lat;
           _info.Longitude = lon;
+          _info.StartTime = _dtStart.DisplayDate;
+          _info.EndTime = _dtEnd.DisplayDate;
           _inspect = _cbEvalPrj.IsChecked == true;
           Thread thr = new Thread(createProject);
           thr.Start();

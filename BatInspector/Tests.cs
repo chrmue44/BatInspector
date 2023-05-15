@@ -332,7 +332,9 @@ namespace BatInspector
         Weather = "12°C, bedeckt",
         Landscape = "Uferbereich Waldweiher",
         Latitude = 49.123,
-        Longitude = 8.123
+        Longitude = 8.123,
+        StartTime = new DateTime(2022,7,12),
+        EndTime = new DateTime(2022,7,14),
       };
       Project.createPrj(prj, _model.Regions, _model.SpeciesInfos);
     }

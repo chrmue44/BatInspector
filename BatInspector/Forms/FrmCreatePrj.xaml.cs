@@ -11,6 +11,7 @@
  ********************************************************************************/
 
 using BatInspector.Properties;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -37,7 +38,7 @@ namespace BatInspector.Forms
       _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, widthLbl, 150, true);
       _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, widthLbl, 120, true);
       _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, widthLbl, 120, true);
-      _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, widthLbl, true);
+      _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, widthLbl, true, "", setupStartEndTime);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, widthLbl, true);
       _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl, 80, true);
       _ctlMaxFiles.setValue(500);
@@ -62,6 +63,23 @@ namespace BatInspector.Forms
       return parseGeoCoord(coordStr, out coord, "E", "W", 180);
     }
 
+
+
+    private void setupStartEndTime()
+    {
+      string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
+      if(files != null && files.Length > 0) 
+      {
+        FileInfo info = new FileInfo(files[0]);
+        DateTime start = info.LastWriteTime.Date;
+        start = start.AddHours(21);
+        DateTime end = info.LastWriteTime.Date;
+        end = end.AddDays(1);
+        end = end.AddHours(5);
+        _dtStart.init(start);
+        _dtEnd.init(end);
+      }
+    }
 
     /// <summary>
     /// parse geographical coordinates, two formats are allowed:
@@ -150,8 +168,8 @@ namespace BatInspector.Forms
           _info.GpxFile = _rbGpxFile.IsChecked == true ?  _ctlGpxFile.getValue() : "";
           _info.Latitude = lat;
           _info.Longitude = lon;
-          _info.StartTime = _dtStart.DisplayDate;
-          _info.EndTime = _dtEnd.DisplayDate;
+          _info.StartTime = _dtStart.DateTime;
+          _info.EndTime = _dtEnd.DateTime;
           _inspect = _cbEvalPrj.IsChecked == true;
           Thread thr = new Thread(createProject);
           thr.Start();

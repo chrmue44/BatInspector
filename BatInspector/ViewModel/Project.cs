@@ -226,7 +226,6 @@ namespace BatInspector
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        //string[] files = Directory.GetFiles(info.SrcDir, "*.wav");
         string[] files = getSelectedFiles(info, "*.wav");
         if (files.Length > 0)
         {
@@ -245,7 +244,7 @@ namespace BatInspector
           }
 
           // 2nd step create projects
-          files = Directory.GetFiles(info.SrcDir, "*.wav");
+          files = getSelectedFiles(info, "*.wav");
           double prjCntd = (double)files.Length / info.MaxFileCnt;
           int prjCnt = (int)prjCntd;
           if (prjCntd > prjCnt)

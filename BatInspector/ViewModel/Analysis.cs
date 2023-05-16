@@ -446,60 +446,63 @@ namespace BatInspector
 
     public void createSummary(string fileName)
     {
-      _summary.Clear();
-      foreach (AnalysisFile f in _list)
+      if (_list.Count > 0)
       {
-        foreach (AnalysisCall c in f.Calls)
+        _summary.Clear();
+        foreach (AnalysisFile f in _list)
         {
-          SumItem it = SumItem.find(c.getString(Cols.SPECIES_MAN), _summary);
-          if (it != null)
+          foreach (AnalysisCall c in f.Calls)
           {
-            it.Count++;
+            SumItem it = SumItem.find(c.getString(Cols.SPECIES_MAN), _summary);
+            if (it != null)
+            {
+              it.Count++;
+            }
+            else
+            {
+              it = new SumItem(c.getString(Cols.SPECIES_MAN), 1);
+              _summary.Add(it);
+            }
+            int h = f.RecTime.TimeOfDay.Hours;
+            h = (h < 18) ? h + 6 : h - 18;
+            if ((h >= 0) && (h < it.CountTime.Length))
+              it.CountTime[h]++;
           }
-          else
-          {
-            it = new SumItem(c.getString(Cols.SPECIES_MAN), 1);
-            _summary.Add(it);
-          }
-          int h = f.RecTime.TimeOfDay.Hours;
-          h = (h < 18) ? h + 6 : h - 18;
-          if ((h >= 0) && (h < it.CountTime.Length))
-            it.CountTime[h]++;
         }
-      }
 
-      // create csv file
-      Csv sum = new Csv();
-      sum.addRow();
-      string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.SPECIES_MAN, Cols.COUNT, Cols.T18H,"19:00","20:00","21:00","22:00","23:00","0:00","1:00","2:00","3:00","4:00","5:00" };
-      sum.initColNames(header, true);
-      sum.addRow();
-      int row = 2;
-      sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString(AppParams.REPORT_DATE_FORMAT));
-      sum.setCell(row, Cols.LAT, _list[0].Calls[0].getDouble(Cols.LAT));
-      sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
-      string[] note = _prj.Notes.Split('\n');
-      if(note.Length > 0)
-        sum.setCell(row, Cols.WEATHER, note[0]);
-      if (note.Length > 1)
-        sum.setCell(row, Cols.LANDSCAPE, note[1]);
+        // create csv file
+        Csv sum = new Csv();
+        sum.addRow();
+        string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.SPECIES_MAN, Cols.COUNT, Cols.T18H, "19:00", "20:00", "21:00", "22:00", "23:00", "0:00", "1:00", "2:00", "3:00", "4:00", "5:00" };
+        sum.initColNames(header, true);
+        sum.addRow();
+        int row = 2;
+        sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString(AppParams.REPORT_DATE_FORMAT));
+        sum.setCell(row, Cols.LAT, _list[0].Calls[0].getDouble(Cols.LAT));
+        sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
+        string[] note = _prj.Notes.Split('\n');
+        if (note.Length > 0)
+          sum.setCell(row, Cols.WEATHER, note[0]);
+        if (note.Length > 1)
+          sum.setCell(row, Cols.LANDSCAPE, note[1]);
 
-      int startTimeCol = sum.findInRow(1, Cols.T18H);
-      if (startTimeCol > 0)
-      {
-        foreach (SumItem it in _summary)
+        int startTimeCol = sum.findInRow(1, Cols.T18H);
+        if (startTimeCol > 0)
         {
-          sum.setCell(row, Cols.SPECIES_MAN, it.Species);
-          sum.setCell(row, "Count", it.Count);
-          sum.addRow();
-          for (int c = 0; c < it.CountTime.Length; c++)
-            sum.setCell(row, c + startTimeCol, it.CountTime[c]);
-          row++;
+          foreach (SumItem it in _summary)
+          {
+            sum.setCell(row, Cols.SPECIES_MAN, it.Species);
+            sum.setCell(row, "Count", it.Count);
+            sum.addRow();
+            for (int c = 0; c < it.CountTime.Length; c++)
+              sum.setCell(row, c + startTimeCol, it.CountTime[c]);
+            row++;
+          }
         }
+        else
+          DebugLog.log("Summary report: col '18:00' not found", enLogType.ERROR);
+        sum.saveAs(fileName);
       }
-      else
-        DebugLog.log("Summary report: col '18:00' not found", enLogType.ERROR);
-      sum.saveAs(fileName);
     }
 
     void filloutRecTime()

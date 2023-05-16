@@ -612,7 +612,8 @@ namespace BatInspector.Forms
         _model.Prj.writePrjFile();
       }
       _model.saveSettings();
-      if(_model.Prj.Analysis.Report != null)
+      if((_model != null) && (_model.Prj != null) &&(_model.Prj.Analysis != null) && 
+        (_model.Prj.Analysis.Report != null))
         _model.Prj.Analysis.save(_model.PrjPath);
     }
 

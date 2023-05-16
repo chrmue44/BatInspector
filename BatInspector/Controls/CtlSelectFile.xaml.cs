@@ -6,6 +6,8 @@ using System.Windows.Controls;
 
 namespace BatInspector.Controls
 {
+
+  public delegate void dlgVoid();
   /// <summary>
   /// Interaktionslogik für CtlSelectFile.xaml
   /// </summary>
@@ -13,6 +15,7 @@ namespace BatInspector.Controls
   {
     bool _isFolder = false;
     string _filter = "all files(*.*)|*.*";
+    dlgVoid _dlgAction = null;
 
     public CtlSelectFile()
     {
@@ -27,13 +30,14 @@ namespace BatInspector.Controls
       set { _txt.IsEnabled = value; _btnOpen.IsEnabled = value; }
     }*/
 
-    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "")
+    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "", dlgVoid dlgAction = null)
     {
       _lbl.Text = label;
       _lbl.Width = widthLbl;
       _isFolder = isFolder;
       _txt.Text = "";
       _filter = filter;
+      _dlgAction = dlgAction;
     }
 
     public string getValue()
@@ -62,7 +66,8 @@ namespace BatInspector.Controls
           _txt.Text = ofi.FileName;
         }
       }
-    }
-   
+      if (_dlgAction != null)
+        _dlgAction();
+    }   
   }
 }

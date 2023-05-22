@@ -151,7 +151,7 @@ namespace BatInspector
     }
 
     // Is p0 inside p?  Polygon 
-    public bool inside(ParLocation p0, List<ParLocation> p)
+    public static bool inside(ParLocation p0, List<ParLocation> p)
     {
       int n = p.Count;
       bool result = false;
@@ -170,6 +170,25 @@ namespace BatInspector
           result = !result;
       }
       return result;
+    }
+
+    /// <summary>
+    /// calculates the distance of two points on the earth
+    /// (as a perfect sphere)
+    /// </summary>
+    /// <param name="lat1">latitude point 1 [°]</param>
+    /// <param name="lon1">longitude point 1 [°]</param>
+    /// <param name="lat2">latitude point 2 [°]</param>
+    /// <param name="lon2">longitude point 2 [°]</param>
+    /// <returns>distance [km]</returns>
+    public double distance(double lat1, double lon1, double lat2, double lon2)
+    {
+      lat1 = lat1 / 180 * Math.PI;
+      lat2 = lat2 / 180 * Math.PI;
+      lon1 = lon1 / 180 * Math.PI;
+      lon2 = lon2 / 180 * Math.PI;
+      double retVal = 6371 * Math.Acos(Math.Sin(lat1) * Math.Sin(lat2) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(lon2 - lon1));
+      return retVal;
     }
   }
 }

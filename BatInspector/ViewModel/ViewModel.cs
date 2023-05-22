@@ -11,6 +11,7 @@
  ********************************************************************************/
 using libParser;
 using libScripter;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -88,6 +89,8 @@ namespace BatInspector
 
     public bool UpdateUi { get; set; }
 
+    public bool ReloadPrj { get; set; }
+
   //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -120,7 +123,6 @@ namespace BatInspector
       if (File.Exists(Prj.ReportName))
         _prj.Analysis.read(Prj.ReportName);
     }
-
 
     public void initProject(DirectoryInfo dir)
     {
@@ -271,7 +273,10 @@ namespace BatInspector
 
     public int executeScript(string path, bool  initVars = true)
     {
-      _scriptName = path;
+      if (!Path.IsPathRooted(path))
+        _scriptName = AppParams.Inst.AppRootPath + "/" + path;
+      else
+        _scriptName = path;
       int retVal = _scripter.RunScript(path, true, initVars);
       return retVal;
     }
@@ -355,6 +360,7 @@ namespace BatInspector
             retVal = _models[i].classify(Prj);
           }
         }
+        ReloadPrj = true;
       }
       return retVal;
     }

@@ -177,27 +177,7 @@ namespace BatInspector.Forms
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
       {
-        DebugLog.log("start to open project", enLogType.DEBUG);
-        _scrlViewer.ScrollToVerticalOffset(0);
-        checkSavePrj();
-        _model.initProject(dir);
-        double fMax = 312000 / 2;
-        if ((_model.Prj != null) && (_model.Prj.Analysis != null) && (_model.Prj.Analysis.Files.Count > 0))
-          fMax = _model.Prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
-        _lblProject.Text = dir.FullName;
-        if (_model.Prj != null)
-        {
-          _ctlPrjInfo._tbCreated.Text = _model.Prj.Created;
-          _ctlPrjInfo._tbNotes.Text = _model.Prj.Notes;
-          foreach (stAxisItem it in _scattDiagram.AxisItems)
-          {
-            _cbXaxis.Items.Add(it.Name);
-            _cbYaxis.Items.Add(it.Name);
-          }
-        }
-        _switchTabToPrj = true;
-        setStatus("   loading...");
-        populateFiles();
+        initializeProject(dir);
       }
     }
 
@@ -226,6 +206,33 @@ namespace BatInspector.Forms
           _frmSpecies = null;
           break;
       }
+    }
+
+    void initializeProject(DirectoryInfo dir)
+    {
+      DebugLog.log("start to open project", enLogType.DEBUG);
+      _scrlViewer.ScrollToVerticalOffset(0);
+      checkSavePrj();
+      _model.initProject(dir);
+      if (_model.Prj == null)              //remove all spectrograms if project was closed
+        _spSpectrums.Children.Clear();
+      double fMax = 312000 / 2;
+      if ((_model.Prj != null) && (_model.Prj.Analysis != null) && (_model.Prj.Analysis.Files.Count > 0))
+        fMax = _model.Prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
+      _lblProject.Text = dir.FullName;
+      if (_model.Prj != null)
+      {
+        _ctlPrjInfo._tbCreated.Text = _model.Prj.Created;
+        _ctlPrjInfo._tbNotes.Text = _model.Prj.Notes;
+        foreach (stAxisItem it in _scattDiagram.AxisItems)
+        {
+          _cbXaxis.Items.Add(it.Name);
+          _cbYaxis.Items.Add(it.Name);
+        }
+      }
+      _switchTabToPrj = true;
+      setStatus("   loading...");
+      populateFiles();
     }
 
     private void initZoomWindow()
@@ -696,10 +703,22 @@ namespace BatInspector.Forms
       });
       if(_model.UpdateUi)
       {
-        if (_model.Prj.Analysis != null)
+        if ((_model.Prj != null) && (_model.Prj.Analysis != null))
           _model.Prj.Analysis.updateSpeciesCount();
         updateWavControls();
         _model.UpdateUi = false;
+      }
+
+      if(_model.ReloadPrj)
+      {
+        if ((_model.Prj != null) && (_model.Prj.Analysis != null))
+        {
+          _spSpectrums.Children.Clear();
+          _model.Prj.Analysis.save(_model.PrjPath);
+          DirectoryInfo dir = new DirectoryInfo(_model.PrjPath);
+          initializeProject(dir);
+        }
+        _model.ReloadPrj = false;
       }
 
       if((_worker != null) && (!_worker.IsAlive))

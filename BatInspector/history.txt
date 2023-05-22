@@ -1,14 +1,14 @@
 TODO
 - GUI themes 
-
+- progress bar for long running tasks
 - help
 - species comparison
-
 - find bug that deletes header from report
 - more than one model
 - stop button to kill running script
 
 DONE
+- automatic reload of project after finishing species evaluation
 - create prj from files has now a filter for start and end time
 - more script commands
 - improved help in filter definition window

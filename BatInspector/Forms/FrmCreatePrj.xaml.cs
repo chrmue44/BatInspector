@@ -37,7 +37,9 @@ namespace BatInspector.Forms
       int widthLbl = 200;
       _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, widthLbl, 150, true);
       _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, widthLbl, 120, true);
+      _ctlLat.setValue("49° 46.002 N");
       _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, widthLbl, 120, true);
+      _ctlLon.setValue("8° 38.032 E");
       _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, widthLbl, true, "", setupStartEndTime);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, widthLbl, true);
       _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl, 80, true);
@@ -45,10 +47,13 @@ namespace BatInspector.Forms
       _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, widthLbl, 80, true);
       _ctlMaxFileLen.setValue(5.0);
       _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl, 200, true);
+      _ctlPrjWeather.setValue("");
       _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING,0, widthLbl, 200, true);
+      _ctlPrjLandscape.setValue("");
       _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, widthLbl, false, "gpx Files (*.gpx)|*.gpx |All files(*.*)|*.*");
-      _ctlGpxFile.IsEnabled = true;
-      _rbGpxFile.IsChecked = true;
+      _ctlGpxFile.IsEnabled = false;
+      _rbGpxFile.IsChecked = false;
+      _rbFixedPos.IsChecked = true;
     }
 
 
@@ -75,7 +80,7 @@ namespace BatInspector.Forms
         start = start.AddHours(21);
         DateTime end = info.LastWriteTime.Date;
         end = end.AddDays(1);
-        end = end.AddHours(5);
+        end = end.AddHours(6);
         _dtStart.init(start);
         _dtEnd.init(end);
       }

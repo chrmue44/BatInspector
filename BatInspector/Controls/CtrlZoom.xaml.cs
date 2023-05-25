@@ -31,7 +31,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtrlZoom : UserControl
   {
-    AnalysisFile _analysis;
+  //  AnalysisFile _analysis;
     string _wavFilePath;
     ViewModel _model;
     int _stretch;
@@ -49,35 +49,35 @@ namespace BatInspector.Controls
       InitializeComponent();
       _model = model;
       _imgFt.Source = img;
-      _analysis = analysis;
+      _model.ZoomView.Analysis = analysis;
       _model.ZoomView.Cursor1.set(0, 0, false);
       _model.ZoomView.Cursor2.set(0, 0, false);
 
-      _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1,100);
-      _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3,100);
-      _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1,100);
-      _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3,100);
-      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1,100);
-      _duration.setup(MyResources.Duration+ " [s]", enDataType.DOUBLE, 3,100);
-      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1,100);
+      _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, 100);
+      _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3, 100);
+      _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, 100);
+      _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, 100);
+      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, 100);
+      _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, 100);
+      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, 100);
       _wavFilePath = wavFilePath;
       string fName = analysis.Name;
       string wavName = File.Exists(fName) ? fName : _wavFilePath + "/" + fName;
 
       _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
-      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
+      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate / 1000);
       _ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);
       _ctlRange.setValue(AppParams.Inst.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
-      _ctlSelectCall.setup(MyResources.CtlWavCall +" Nr.", 0, 50, 40, ctlSelCallChanged);
+      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 50, 40, ctlSelCallChanged);
       _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130, 50);
       _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130, 50);
       _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130, 50);
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130, 50);
-      _ctlSnr.setup(MyResources.Snr +": ", enDataType.DOUBLE, 1, 130, 50);
+      _ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, 130, 50);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130, 50);
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 130, 50);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, enDataType.STRING, 1, 130, 50);
@@ -106,20 +106,19 @@ namespace BatInspector.Controls
       _ctlTrigFiltFreq.setValue(_model.ZoomView.FileInfo.Trigger.Frequency);
 
       _ctlSpectrum.init(_model.ZoomView.Spectrum, _model.ZoomView.Waterfall.SamplingRate / 2000);
-      initWindows();
 
-      string[] items = new string[_analysis.Calls.Count];
-      if (_analysis.Calls.Count > 0)
+      string[] items = new string[_model.ZoomView.Analysis.Calls.Count];
+      if (_model.ZoomView.Analysis.Calls.Count > 0)
       {
         setVisabilityCallData(true);
-        for (int i = 0; i < _analysis.Calls.Count; i++)
+        for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
           items[i] = (i + 1).ToString();
         _ctlSelectCall.setItems(items);
         _ctlMeanCallMin.setItems(items);
         _ctlMeanCallMax.setItems(items);
         setupCallData(0);
         _ctlMeanCallMin.setValue("1");
-        _ctlMeanCallMax.setValue(_analysis.Calls.Count.ToString());
+        _ctlMeanCallMax.setValue(_model.ZoomView.Analysis.Calls.Count.ToString());
         calcMeanValues(0, 0);
 
       }
@@ -141,32 +140,6 @@ namespace BatInspector.Controls
       _oldCallIdx = -1;
     }
 
-    void initWindows()
-    {
-      _cbWindow.Items.Clear();
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.None.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Hanning.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Hann.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Hamming.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Welch.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT3F.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT3M.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT4F.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.SFT4M.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Nutall3.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.Nutall4.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT116D.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT144D.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT169D.ToString());
-      _cbWindow.Items.Add(DSPLib.DSP.Window.Type.HFT196D.ToString());
-
-     /* for(int i = 0; i < _cbWindow.Items.Count; i++)
-      {
-        if(_cbWindow.Items[i].ToString() ==)
-      }*/
-
-      _cbWindow.SelectedItem = AppParams.Inst.FftWindow.ToString();
-    }
     void setVisabilityCallData(bool on)
     {
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
@@ -190,7 +163,7 @@ namespace BatInspector.Controls
       {
         _model.ZoomView.RulerDataA.setRange(-1, 1);
         _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
-        _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate/ 2000);
+        _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
         _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
 
         initRulerF();
@@ -268,8 +241,8 @@ namespace BatInspector.Controls
     public void setFileInformations()
     {
       ZoomView z = _model.ZoomView;
-      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate/ 1000);
-      _duration.setValue(_analysis.getDouble(Cols.DURATION));
+      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate / 1000);
+      _duration.setValue(_model.ZoomView.Analysis.getDouble(Cols.DURATION));
       if (z.Cursor1.Visible)
       {
         _grpCursor1.Visibility = Visibility.Visible;
@@ -367,7 +340,7 @@ namespace BatInspector.Controls
         createLine(_rulerA, _rulerA.ActualWidth - 3, y,
                             _rulerA.ActualWidth - 10, y, Brushes.Black);
       }
-      double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1/2;
+      double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1 / 2;
       createText(_rulerA, _rulerA.ActualWidth - 40, y0 - 5, "0.0", Colors.Black);
       createText(_rulerA, _rulerA.ActualWidth - 40, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
     }
@@ -543,8 +516,8 @@ namespace BatInspector.Controls
       double fMin = _model.ZoomView.RulerDataF.Min;
       double fMax = _model.ZoomView.RulerDataF.Max;
       int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
-      if(((tEnd - tStart) > 0) && ((tEnd - tStart) < 0.2))
-        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+      if (((tEnd - tStart) > 0) && ((tEnd - tStart) < 0.2))
+        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
       double dt = (double)AppParams.Inst.FftWidth / samplingRate;
       _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.FftWidth);
@@ -607,8 +580,8 @@ namespace BatInspector.Controls
                  (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
       double t = _model.ZoomView.RulerDataT.Min +
       p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-     _imgFt.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" + 
-                      t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+      _imgFt.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" +
+                       t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
     }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
@@ -618,10 +591,9 @@ namespace BatInspector.Controls
 
     private void ctlSelCallChanged(int index, string val)
     {
-      int idx = 0;
-      int.TryParse(val, out idx);
+      int.TryParse(val, out int idx);
       idx--;
-      if((idx != _oldCallIdx)&& (idx >= 0))
+      if ((idx != _oldCallIdx) && (idx >= 0))
       {
         changeCall(idx);
       }
@@ -632,13 +604,13 @@ namespace BatInspector.Controls
       _model.ZoomView.SelectedCallIdx = idx;
       _oldCallIdx = idx;
       setupCallData(idx);
-      double tStart = _analysis.getStartTime(idx);
-      double tEnd = _analysis.getEndTime(idx);
+      double tStart = _model.ZoomView.Analysis.getStartTime(idx);
+      double tEnd = _model.ZoomView.Analysis.getEndTime(idx);
       _ctlTimeMin.setValue(tStart);
       _ctlTimeMax.setValue(tEnd);
       int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
       //_ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, samplingRate,_cbMode.SelectedIndex);
-      _model.ZoomView.RulerDataF.setRange(0, samplingRate/2000);
+      _model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
       double pre = 0.01;
       _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + AppParams.Inst.ZoomOneCall / 1000.0 - pre);
       hideCursors();
@@ -647,53 +619,51 @@ namespace BatInspector.Controls
     }
     public void calcMeanValues(int idx, object val)
     {
-        int min = 0;
-        int.TryParse(_ctlMeanCallMin.getValue(), out min);
-        min--;
-        int max = 0;
-        int.TryParse(_ctlMeanCallMax.getValue(), out max);
-        max--;
-        if ((min >= 0) && (max < _analysis.Calls.Count))
+      int.TryParse(_ctlMeanCallMin.getValue(), out int min);
+      min--;
+      int.TryParse(_ctlMeanCallMax.getValue(), out int max);
+      max--;
+      if ((min >= 0) && (max < _model.ZoomView.Analysis.Calls.Count))
+      {
+        double fMin = 0;
+        double fMax = 0;
+        double fMaxAmpl = 0;
+        double duration = 0;
+        double callDist = 0;
+        int count = max - min + 1;
+        int countDistPrev = count;
+        if (min == 0)
+          countDistPrev = count - 1;
         {
-          double fMin = 0;
-          double fMax = 0;
-          double fMaxAmpl = 0;
-          double duration = 0;
-          double callDist = 0;
-          int count = max - min + 1;
-          int countDistPrev = count;
-          if (min == 0)
-            countDistPrev = count - 1;
+          for (int i = min; i <= max; i++)
           {
-            for (int i = min; i <= max; i++)
-            {
-              fMin += _analysis.Calls[i].getDouble(Cols.F_MIN) / count;
-              fMax += _analysis.Calls[i].getDouble(Cols.F_MAX) / count;
-              fMaxAmpl += _analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
-              duration += _analysis.Calls[i].getDouble(Cols.DURATION) / count;
-              callDist += _analysis.Calls[i].DistToPrev / countDistPrev;
-            }
-            _ctlMeanDist.setValue(callDist);
-            _ctlMeanFMax.setValue(fMax / 1000);
-            _ctlMeanFMin.setValue(fMin / 1000);
-            _ctlMeanFMaxAmpl.setValue(fMaxAmpl / 1000);
-            _ctlMeanDuration.setValue(duration);
+            fMin += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MIN) / count;
+            fMax += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX) / count;
+            fMaxAmpl += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
+            duration += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.DURATION) / count;
+            callDist += _model.ZoomView.Analysis.Calls[i].DistToPrev / countDistPrev;
           }
+          _ctlMeanDist.setValue(callDist);
+          _ctlMeanFMax.setValue(fMax / 1000);
+          _ctlMeanFMin.setValue(fMin / 1000);
+          _ctlMeanFMaxAmpl.setValue(fMaxAmpl / 1000);
+          _ctlMeanDuration.setValue(duration);
         }
+      }
     }
 
     private void setupCallData(int idx)
     {
-      if (idx < _analysis.Calls.Count)
+      if (idx < _model.ZoomView.Analysis.Calls.Count)
       {
-        _ctlFMin.setValue(_analysis.Calls[idx].getDouble(Cols.F_MIN) / 1000);
-        _ctlFMax.setValue(_analysis.Calls[idx].getDouble(Cols.F_MAX)/ 1000);
-        _ctlFMaxAmpl.setValue(_analysis.Calls[idx].getDouble(Cols.F_MAX_AMP) / 1000);
-        _ctlDuration.setValue(_analysis.Calls[idx].getDouble(Cols.DURATION));
-        _ctlSnr.setValue(_analysis.Calls[idx].getDouble(Cols.SNR));
-        _ctlDist.setValue(_analysis.Calls[idx].DistToPrev);
-        _ctlSpecAuto.setValue(_analysis.Calls[idx].getString(Cols.SPECIES));
-        _ctlSpecMan.setValue(_analysis.Calls[idx].getString(Cols.SPECIES_MAN));
+        _ctlFMin.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MIN) / 1000);
+        _ctlFMax.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MAX) / 1000);
+        _ctlFMaxAmpl.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MAX_AMP) / 1000);
+        _ctlDuration.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION));
+        _ctlSnr.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.SNR));
+        _ctlDist.setValue(_model.ZoomView.Analysis.Calls[idx].DistToPrev);
+        _ctlSpecAuto.setValue(_model.ZoomView.Analysis.Calls[idx].getString(Cols.SPECIES));
+        _ctlSpecMan.setValue(_model.ZoomView.Analysis.Calls[idx].getString(Cols.SPECIES_MAN));
         if (idx > 0)
         {
         }
@@ -704,8 +674,8 @@ namespace BatInspector.Controls
     {
       int retVal = 0;
       ZoomView z = _model.ZoomView;
-      double tStart = _analysis.getStartTime(_oldCallIdx);
-      double tEnd = _analysis.getEndTime(_oldCallIdx);
+      double tStart = _model.ZoomView.Analysis.getStartTime(_oldCallIdx);
+      double tEnd = _model.ZoomView.Analysis.getEndTime(_oldCallIdx);
       double fMin = _model.ZoomView.RulerDataF.Min;
       double fMax = _model.ZoomView.RulerDataF.Max;
       switch (mode)
@@ -714,7 +684,7 @@ namespace BatInspector.Controls
           {
             _ctlTimeMin.setValue(tStart);
             _ctlTimeMax.setValue(tEnd);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, fMin, fMax,
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax,
                                         _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
           }
           break;
@@ -724,7 +694,7 @@ namespace BatInspector.Controls
           {
             _ctlTimeMin.setValue(z.Cursor1.Time);
             _ctlTimeMax.setValue(z.Cursor2.Time);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax, 
+            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax,
                                         _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
             retVal = 1;
           }
@@ -738,7 +708,7 @@ namespace BatInspector.Controls
     private void _btnPrev_Click(object sender, RoutedEventArgs e)
     {
       int idx = _oldCallIdx - 1;
-      if ((idx >= 0) && (idx < _analysis.Calls.Count))
+      if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
       {
         changeCall(idx);
         _ctlSelectCall.setValue((idx + 1).ToString());
@@ -748,21 +718,10 @@ namespace BatInspector.Controls
     private void _btnNext_Click(object sender, RoutedEventArgs e)
     {
       int idx = _oldCallIdx + 1;
-      if ((idx >= 0) && (idx < _analysis.Calls.Count))
+      if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
       {
         changeCall(idx);
         _ctlSelectCall.setValue((idx + 1).ToString());
-      }
-    }
-
-    private void _cbWindow_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-      DSPLib.DSP.Window.Type wType = DSPLib.DSP.Window.Type.None;
-      if ((_cbWindow.SelectedIndex >= 0) && (_cbWindow.SelectedIndex < _cbWindow.Items.Count))
-      {
-        Enum.TryParse(_cbWindow.Items[_cbWindow.SelectedIndex].ToString(), out wType);
-        AppParams.Inst.FftWindow = wType;
-        createZoomImg();
       }
     }
 
@@ -789,14 +748,38 @@ namespace BatInspector.Controls
       System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
       dlg.Filter = "WAV files (*.wav)|*.wav";
       System.Windows.Forms.DialogResult res = dlg.ShowDialog();
-      if(res == System.Windows.Forms.DialogResult.OK)
+      if (res == System.Windows.Forms.DialogResult.OK)
       {
         WavFile wav = new WavFile();
         int iStart = (int)(_model.ZoomView.RulerDataT.Min * _model.ZoomView.Waterfall.SamplingRate);
         int iEnd = (int)(_model.ZoomView.RulerDataT.Max * _model.ZoomView.Waterfall.SamplingRate);
-        wav.createFile(1, _model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, _model.ZoomView.Waterfall.Samples);
+        wav.createFile(1, _model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, _model.ZoomView.Waterfall.Audio.Samples);
         wav.saveFileAs(dlg.FileName);
       }
+    }
+
+    private void _btnDenoise_Click(object sender, RoutedEventArgs e)
+    {
+      _model.ZoomView.denoise();
+    }
+
+    private void _btnBandpass_Click(object sender, RoutedEventArgs e)
+    {
+      if((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible)) 
+      {
+        double fMin = _model.ZoomView.Cursor1.Freq * 1000;
+        double fMax = _model.ZoomView.Cursor2.Freq * 1000;
+        _model.ZoomView.applyBandpass(fMin, fMax);
+        createZoomImg();
+      }
+      else
+        MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+
+    private void _btnUndo_Click(object sender, RoutedEventArgs e)
+    {
+      _model.ZoomView.undoChanges();
+      createZoomImg();
     }
   }
 }

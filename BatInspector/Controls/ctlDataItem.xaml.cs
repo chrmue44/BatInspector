@@ -137,26 +137,22 @@ namespace BatInspector.Controls
       {
         case enDataType.INT:
           int.TryParse(_tb.Text, out _valInt);
-          if (_dlgValChange != null)
-            _dlgValChange(enDataType.INT, _valInt);
+          _dlgValChange?.Invoke(enDataType.INT, _valInt);
           break;
 
         case enDataType.UINT:
           int.TryParse(_tb.Text, out _valInt);
-          if (_dlgValChange != null)
-            _dlgValChange(enDataType.UINT, _valInt);
+          _dlgValChange?.Invoke(enDataType.UINT, _valInt);
           break;
 
         case enDataType.DOUBLE:
           double.TryParse(_tb.Text, NumberStyles.Any,  CultureInfo.InvariantCulture, out _valDouble);
-          if (_dlgValChange != null)
-            _dlgValChange(enDataType.DOUBLE, _valDouble);
+          _dlgValChange?.Invoke(enDataType.DOUBLE, _valDouble);
           break;
 
         case enDataType.STRING:
           _valString = _tb.Text;
-          if (_dlgValChange != null)
-            _dlgValChange(enDataType.STRING, _valString);
+          _dlgValChange?.Invoke(enDataType.STRING, _valString);
           break;
       }
     }

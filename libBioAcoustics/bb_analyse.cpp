@@ -82,8 +82,8 @@ void Analyse::analyse_frame (const int &seek,
 {
   noise = 0;
   signal = 0;
-  fft.impl(seek, audio_samples);
-  power_spectrum = fft.magnitude;
+  fft.implForwardInt(seek, audio_samples);
+  power_spectrum = fft.m_magnitude;
   band_pass_filter(power_spectrum, LPF, HPF, freq_res);
 
   smooth_spectrum(power_spectrum, smoothing_gain);

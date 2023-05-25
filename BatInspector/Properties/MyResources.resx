@@ -840,4 +840,13 @@
   <data name="frmCreatePrjEvalPrj" xml:space="preserve">
     <value>Evaluate created Project(s) automatically</value>
   </data>
+  <data name="ToolTipDenoise" xml:space="preserve">
+    <value>denoise the current file</value>
+  </data>
+  <data name="ToolTipBandpass" xml:space="preserve">
+    <value>apply bandpass for frequency range indicated by cursors</value>
+  </data>
+  <data name="ToolTipUndo" xml:space="preserve">
+    <value>undo changes</value>
+  </data>
 </root>

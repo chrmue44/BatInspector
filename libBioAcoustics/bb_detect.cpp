@@ -58,8 +58,8 @@ void detect_impl (const std::vector<int> &audio_samples,
     seek += step_size;
   }
 
-  fft.impl(seek, audio_samples);
-  std::vector<double> power_spectrum = fft.magnitude;
+  fft.implForwardInt(seek, audio_samples);
+  std::vector<double> power_spectrum = fft.m_magnitude;
 
   band_pass_filter(power_spectrum, LPF, HPF, freq_res);
 
@@ -95,8 +95,8 @@ void detect_impl (const std::vector<int> &audio_samples,
       continue;
     }
 
-    fft.impl(seek, audio_samples);
-    power_spectrum = fft.magnitude;
+    fft.implForwardInt(seek, audio_samples);
+    power_spectrum = fft.m_magnitude;
     seek += step_size;
 
     std::vector<double> filtered_spectrum = power_spectrum;

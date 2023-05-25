@@ -85,6 +85,8 @@ namespace BatInspector
     {
       string wrkDir = AppParams.Inst.AppRootPath + "/../../../scripts";
       // testBioAcoustics();
+      //testFft();
+      testDenoising();
       testIf(wrkDir);
       testWhile(wrkDir);
       testParser();
@@ -380,6 +382,49 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(prjName);
       _model.initProject(dirInfo);
       _model.Prj.createXmlInfoFiles(i);
+    }
+
+
+    private void testFft()
+    {
+      uint size = 256;
+      double[] samples = new double[size];
+      int scale = 100;
+      Random random = new Random();
+      BioAcoustics.initFft(size, enWIN_TYPE.HANN);
+      Csv src = new Csv();
+      for (int i = 0; i < size; i++)
+      {
+        double phi = 5.0 * 2 * Math.PI * i / size;
+        samples[i] = Math.Cos(phi) * scale + random.NextDouble() * scale / 30;
+        src.addRow();
+        src.setCell(i, 1, samples[i]);
+      }
+      src.saveAs("src.csv");
+      double[] specC = BioAcoustics.calculateFftComplexOut(samples);
+      BioAcoustics.applyBandpassFilterComplex(ref specC, 2, 10, 256);
+      double[] reversed = BioAcoustics.calculateFftReversed(specC);
+      Csv csv = new Csv();
+      for (int i = 0; i < reversed.Length; i++)
+      {
+        csv.addRow();
+        csv.setCell(i + 1, 1, reversed[i]);
+      }
+      csv.saveAs("test.csv");
+    }
+
+    private void testDenoising()
+    {
+      WavFile w = new WavFile();
+      string file = "D:\\bat\\2023\\Ententeich\\20230520_SW\\Records\\JA_N_20230520_212801.wav";
+      w.readFile(file);
+      SoundEdit result = new SoundEdit((int)w.FormatChunk.Frequency, w.AudioSamples.Length);
+      result.copySamples(w.AudioSamples);
+      result.FftForward();
+      result.bandpass(15000, 40000);
+      result.FftBackward();
+      string newName = file.Replace(".wav", "_edit.wav");
+      result.saveAs(newName);
     }
 
     private void adjustTimesInReport()

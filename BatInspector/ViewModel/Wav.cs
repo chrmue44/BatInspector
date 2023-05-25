@@ -236,6 +236,21 @@ namespace BatInspector
       ChunkSize = (UInt32)WaveData.Length * 2;
     }
 
+    public void AddSampleData(byte[] data, int offs, int len, ref double[] samples)
+    {
+      WaveData = new short[len / 2];
+      samples = new double[len / 2];
+      for (int i = 0; i < len / 2; i++)
+      {
+        int s = (int)(sbyte)data[offs + 1] << 8;
+        s |= (int)(byte)data[offs];
+        WaveData[i] = (short)s;
+        samples[i] = (double)s / 32768.0;
+        offs += 2;
+      }
+      ChunkSize = (UInt32)WaveData.Length * 2;
+    }
+
     public void AddSampleData(double[] leftBuffer, int idxStart, int idxEnd)
     {
       WaveData = new short[idxEnd - idxStart + 2];
@@ -328,6 +343,39 @@ namespace BatInspector
       }
       return retVal;
     }
+
+    public int readFile(string name, ref double[] samples)
+    {
+      int retVal = 0;
+      try
+      {
+        _waveData = File.ReadAllBytes(name);
+        byte[] hdr = partArray(_waveData, 0, 12);
+        _header = new WaveHeader(hdr);
+        byte[] format = partArray(_waveData, 12, 24);
+        _format = new FormatChunk(format);
+
+        int pos = 12;
+        while (!(_waveData[pos] == 'd' && _waveData[pos + 1] == 'a' && _waveData[pos + 2] == 't' && _waveData[pos + 3] == 'a'))
+        {
+          pos += 4;
+          int chunkSize = _waveData[pos] + _waveData[pos + 1] * 256 + _waveData[pos + 2] * 65536 + _waveData[pos + 3] * 16777216;
+          pos += 4 + chunkSize;
+        }
+        byte[] data = partArray(_waveData, pos, 8);
+        _data = new DataChunk(data);
+        pos += 8;
+        _data.AddSampleData(_waveData, pos, _waveData.Length - pos, ref samples);
+        _fName = name;
+        _isOpen = true;
+      }
+      catch
+      {
+        retVal = 1;
+      }
+      return retVal;
+    }
+
 
     public int saveFileAs(string name)
     {

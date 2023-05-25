@@ -53,7 +53,8 @@ namespace BatInspector
   {
     BLACKMAN_HARRIS_4 = 0,
     BLACKMAN_HARRIS_7 = 1,
-    HANN = 2
+    HANN = 2,
+    NONE = 3,
   }
 
   public class BioAcoustics
@@ -65,9 +66,7 @@ namespace BatInspector
       Csv csv = ModelCmuTsa.createReport();
       foreach (string fName in files)
       {
-        int sampleRate;
-        double duration;
-        ThresholdDetectItem[] items = analyzeCalls(fName, out sampleRate, out duration);
+        ThresholdDetectItem[] items = analyzeCalls(fName, out int sampleRate, out double duration);
         if (items.Length == 0)
         {
           File.Delete(fName);
@@ -80,7 +79,7 @@ namespace BatInspector
           DebugLog.log(fName + " deleted, no calls", enLogType.INFO);
         }
         else
-        { 
+        {
           addToReport(csv, fName, sampleRate, duration, items);
           DebugLog.log(fName + ": " + items.Length.ToString() + " calls", enLogType.INFO);
         }
@@ -90,7 +89,7 @@ namespace BatInspector
 
     static void addToReport(Csv csv, string fName, int samplingRate, double duration, ThresholdDetectItem[] items)
     {
-      for(int i = 0; i < items.Length; i++)
+      for (int i = 0; i < items.Length; i++)
       {
         csv.addRow();
         int row = csv.RowCnt;
@@ -104,7 +103,7 @@ namespace BatInspector
         csv.setCell(row, Cols.F_MAX, items[i].freq_max);
         csv.setCell(row, Cols.F_KNEE, items[i].freq_knee);
         csv.setCell(row, Cols.DURATION, items[i].duration);
-        csv.setCell(row, Cols.START_TIME, (double)items[i].start_time/samplingRate);
+        csv.setCell(row, Cols.START_TIME, (double)items[i].start_time / samplingRate);
         csv.setCell(row, Cols.BANDWIDTH, items[i].bandwidth);
         csv.setCell(row, Cols.F_START, items[i].freq_start);
         csv.setCell(row, Cols.F_25, items[i].freq_25);
@@ -133,7 +132,7 @@ namespace BatInspector
       }
     }
 
-    public static ThresholdDetectItem[]  analyzeCalls(string wavFile, out int sampleRate, out double duration)
+    public static ThresholdDetectItem[] analyzeCalls(string wavFile, out int sampleRate, out double duration)
     {
       WavFile wav = new WavFile();
       int evCount = 0;
@@ -190,20 +189,71 @@ namespace BatInspector
     {
       double[] retVal = new double[size / 2];
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal));
-      calcFftInt(size, window, samples, ref buffer);
+      calcFftInt(samples, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size);
       Marshal.FreeCoTaskMem(buffer);
       return retVal;
     }
 
-    public static double[] calculateFft(int size, enWIN_TYPE window, double[] samples)
+    public static double[] calculateFft(double[] samples)
     {
+      int size = getFftSize();
       double[] retVal = new double[size / 2];
-      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size/2 + 100);
-      calcFftDouble(size, window, samples, ref buffer);
-      Marshal.Copy(buffer, retVal, 0, size/2);
+      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size / 2 + 100);
+      calcFftDouble(samples, ref buffer);
+      Marshal.Copy(buffer, retVal, 0, size / 2);
       Marshal.FreeCoTaskMem(buffer);
       return retVal;
+    }
+
+    public static double[] calculateFftComplexOut(double[] samples)
+    {
+      int size = getFftSize();
+      double[] retVal = new double[size];
+      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size + 100);
+      calcFftComplexOut(samples, ref buffer);
+      Marshal.Copy(buffer, retVal, 0, size);
+      Marshal.FreeCoTaskMem(buffer);
+      return retVal;
+    }
+
+    public static double[] calculateFftReversed(double[] spec)
+    {
+      int size = getFftSize();
+      double[] retVal = new double[size];
+      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size + 100);
+      calcFftInverseComplex(spec, ref buffer);
+      Marshal.Copy(buffer, retVal, 0, size);
+      Marshal.FreeCoTaskMem(buffer);
+      return retVal;
+    }
+
+    /// <summary>
+    /// apply a bandpass filter to a complex spectrum
+    /// </summary>
+    /// <param name="spectrum">ref to array containing the spectrum</param>
+    /// <param name="fMin">min frequency of passband [Hz]</param>
+    /// <param name="fMax">max frequency of passband [Hz]</param>
+    /// <param name="samplingRate">sampling rate [Hz]</param>
+    public static void applyBandpassFilterComplex(ref double[] spectrum, double fMin, double fMax, uint samplingRate)
+    {
+      int sk = spectrum.Length;
+      int iFmin = (int)(fMin / samplingRate * spectrum.Length);
+      int iFmax = (int)(fMax / samplingRate * spectrum.Length);
+      for (int i = 0; i < spectrum.Length / 2; i++)
+      {
+        --sk;
+        if (i < iFmin)
+        {
+          spectrum[i] = 0;
+          spectrum[sk] = 0;
+        }
+        else if (i > iFmax)
+        {
+          spectrum[i] = 0;
+          spectrum[sk] = 0;
+        }
+      }
     }
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -238,9 +288,24 @@ namespace BatInspector
     static extern void releaseMemory();
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static extern void calcFftInt(int size, enWIN_TYPE win, int[] samples, ref IntPtr spectrum);
+    static public extern void calcFftInt(int[] samples, ref IntPtr spectrum);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static extern void calcFftDouble(int size, enWIN_TYPE win, double[] samples, ref IntPtr spectrum);
+    static public extern void initFft(uint size, enWIN_TYPE win);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern void calcFftDouble(double[] samples, ref IntPtr spectrum);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern void calcFftComplexOut(double[] samples, ref IntPtr spectrum);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern void calcFftInverse(double[] spectrum, ref IntPtr samples);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern void calcFftInverseComplex(double[] spectrum, ref IntPtr samples);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern int getFftSize();
   }
 }

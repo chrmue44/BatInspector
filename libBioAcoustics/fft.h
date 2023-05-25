@@ -35,56 +35,38 @@ public:
   enum class WIN_TYPE {
     BLACKMAN_HARRIS_4 = 0,
     BLACKMAN_HARRIS_7 = 1,
-    HANN = 2
+    HANN = 2,
+    NONE = 3
   };
 
   FFT();
   FFT(size_t fft_sz, WIN_TYPE win_type);
   ~FFT();
 
-  std::vector<double> magnitude, original, transformed;
+  std::vector<double> m_magnitude, m_original, m_transformed;
 
-  inline void impl(std::size_t seek, const std::vector<int> &samples);
+  void implForwardInt(std::size_t seek, const std::vector<int> &samples);
+  void implForwardDouble(std::size_t seek, const std::vector<double>& samples);
+  void implReverse(std::size_t seek, const std::vector<double>& samples);
   void set_plan(const size_t &fft_sz);
   void set_window(const FFT::WIN_TYPE& win_type);
 
   std::size_t fft_size;
+  double getNormFactor() { return m_normalise; }
 
 private:
-  double normalise, z;
-  std::vector<double> window;
-  fftw_plan plan;
+  double m_normalise, m_z;
+  std::vector<double> m_window;
+  fftw_plan m_plan;
+  fftw_plan m_planInv;
 
   void blackman_harris_4 (const size_t fft_sz);
   void blackman_harris_7 (const size_t fft_sz);
   void hann (const size_t fft_sz);
+  void none(const size_t fft_sz);
 };
 
 
-inline
-  void FFT::impl(size_t seek, const std::vector<int> &samples)
-  {
-    size_t N = samples.size();
-
-    std::fill(original.begin(), original.end(), 0.0);
-    std::fill(transformed.begin(), transformed.end(), 0.0);
-
-    for (size_t i = 0; i < fft_size; i++, seek++)
-    {
-      if (seek < N)
-      {
-        original[i] = samples[seek] * window[i];
-      }
-    }
-
-    fftw_execute(plan);
-    size_t sk = fft_size;
-
-    for (size_t i = 0; i < fft_size / 2; i++)
-    {
-      magnitude[i] = std::abs(std::complex<double>(transformed[i], transformed[--sk])) * normalise;
-    }
-  }
 
 FFT::WIN_TYPE fft_win_str_to_enum(std::string s);
 

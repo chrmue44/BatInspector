@@ -840,4 +840,13 @@
   <data name="frmCreatePrjEvalPrj" xml:space="preserve">
     <value>Erzeugte Projekt(e) automatisch auswerten</value>
   </data>
+  <data name="ToolTipDenoise" xml:space="preserve">
+    <value>Rauschunterdrückung</value>
+  </data>
+  <data name="ToolTipBandpass" xml:space="preserve">
+    <value>Bandpass anwenden für den mit Cursor markierten Frequenzbereich</value>
+  </data>
+  <data name="ToolTipUndo" xml:space="preserve">
+    <value>Änderungen rückgängig machen</value>
+  </data>
 </root>

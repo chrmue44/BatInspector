@@ -18,19 +18,21 @@ using System.Numerics;
 using DSPLib;
 using libParser;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace BatInspector
 {
   public class Waterfall
   {
-    const bool FFT_W3 = false;
+    const bool FFT_W3 = false;  // FFT_W3:(no multithreading) 143 ms, DSPLib (with multithreading): 50ms
 
     string _wavName;
     UInt32 _fftSize;
-    double[] _samples;
+  //  double[] _samples;
+    SoundEdit _audio;
     bool _ok = false;
     List<double[]> _spec;
-    int _samplingRate;
+    //int _samplingRate;
     ColorTable _colorTable;
     double _maxAmplitude;
     double _minAmplitude;
@@ -38,19 +40,21 @@ namespace BatInspector
     int _heightFt;
     int _heightXt;
     WavFile _wav = null;
+    double[] _dummy;
 
     public double Duration 
     { 
       get
       {
-        if (_samples != null)
-          return (double)_samples.Length / _samplingRate;
+        if (_audio != null)
+          return (double)_audio.Samples.Length / _audio.SamplingRate;
         else
           return 0;
        }
     }
-    public int SamplingRate { get { return _samplingRate; } }
-    public double[] Samples { get { return _samples; } }
+    public int SamplingRate { get { return _audio.SamplingRate; } }
+
+    public SoundEdit Audio { get { return _audio; } }
     public List<double[]> Spec {  get { return _spec; } }
     public bool Ok { get { return _ok; } }
 
@@ -66,6 +70,8 @@ namespace BatInspector
     public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
+    public string WavName { get { return _wavName; } }
+
     public Waterfall(string wavName, UInt32 fftSize, int w, int h, ColorTable colorTable)
     {
       _width = w;
@@ -74,12 +80,16 @@ namespace BatInspector
       _wavName = wavName;
       _fftSize = fftSize;
       _colorTable = colorTable;
-      double[] dummy;
       _spec = new List<double[]>();
       _maxAmplitude = _minAmplitude;
+      _audio = new SoundEdit(384000, (int)fftSize);
+      if(FFT_W3)
+      {
+        BioAcoustics.initFft(fftSize, enWIN_TYPE.HANN);
+      }
       if (File.Exists(_wavName))
       {
-        _ok = openWav(wavName, out _samples, out dummy, out _samplingRate);
+        _ok = _audio.readWav(wavName) == 0;
       }
       else
       {
@@ -97,35 +107,51 @@ namespace BatInspector
     {
       if (_ok)
       {
+        Stopwatch sw = Stopwatch.StartNew();
         _spec.Clear();
-        int idxStart = (int)(startTime * _samplingRate);
-        if (idxStart > _samples.Length)
-          idxStart = (int)_samples.Length;
-        int idxEnd = (int)(EndTime * _samplingRate);
-        if (idxEnd > _samples.Length)
-          idxEnd = (int)_samples.Length;
+        int idxStart = (int)(startTime * _audio.SamplingRate);
+        if (idxStart > _audio.Samples.Length)
+          idxStart = (int)_audio.Samples.Length;
+        int idxEnd = (int)(EndTime * _audio.SamplingRate);
+        if (idxEnd > _audio.Samples.Length)
+          idxEnd = (int)_audio.Samples.Length;
         int step = (idxEnd - idxStart) /(int)width;
         if (step == 0)
           step = 1;
         if (step > _fftSize)
           step = (int)_fftSize;
 
-         int max = (int)(idxEnd - idxStart) / (int)step;
-         for (int i = 0; i < max; i++)
-           _spec.Add(null);
-         Parallel.For(0, max, i =>
-         {
-           int idx = idxStart + i * step;
-           if (idx >= 0)
-           {
-             double[] sp = generateFft(idx, (int)_fftSize, AppParams.Inst.FftWindow);
-             _spec[i] = sp;
-           }
-         });
+        int max = (int)(idxEnd - idxStart) / (int)step;
+        for (int i = 0; i < max; i++)
+          _spec.Add(null);
+        if (FFT_W3)
+        {
+          for (int i = 0; i < max; i++)
+          {
+            int idx = idxStart + i * step;
+            if (idx >= 0)
+            {
+              double[] sp = generateFft(idx, (int)_fftSize, AppParams.Inst.FftWindow);
+              _spec[i] = sp;
+            }
+          }
+        }
+        else
+        {
+          Parallel.For(0, max, i =>
+          {
+            int idx = idxStart + i * step;
+            if (idx >= 0)
+            {
+              double[] sp = generateFft(idx, (int)_fftSize, AppParams.Inst.FftWindow);
+              _spec[i] = sp;
+            }
+          });
+        }
+        sw.Stop();
       }
       else
         DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);
-
     }
 
 
@@ -133,8 +159,8 @@ namespace BatInspector
     {
       _wav = new WavFile();
       int iStart = Math.Max((int)(tStart *  SamplingRate), 0);
-      int iEnd = Math.Min((int)(tEnd * SamplingRate), Samples.Length);
-      _wav.play(1, _samplingRate / stretch, iStart, iEnd, Samples);
+      int iEnd = Math.Min((int)(tEnd * SamplingRate), _audio.Samples.Length);
+      _wav.play(1, _audio.SamplingRate / stretch, iStart, iEnd, _audio.Samples);
       _wav = null;
     }
 
@@ -153,14 +179,10 @@ namespace BatInspector
     public double[] generateFft(int idx, int length, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
       bool logarithmic = AppParams.Inst.WaterfallLogarithmic;
-      //   double amplitude = 1.0; double frequency = 20000.5;
       int zeroPadding = 0; // NOTE: Zero Padding
-  //    _maxAmplitude = -100;
-      if(idx + length > _samples.Length)
-      {
-        length = _samples.Length - idx - 1;
-//        zeroPadding = _fftSize - length;
-      }
+      if(idx + length > _audio.Samples.Length)
+        length = _audio.Samples.Length - idx - 1;
+
       if (length <= 0)
       {
         DebugLog.log("unable to generate FFT with length " + length.ToString(), enLogType.ERROR);
@@ -168,13 +190,12 @@ namespace BatInspector
       }
       zeroPadding = (int)_fftSize - length;
       double[] inputSignal = new double[length];
-      Array.Copy(_samples, idx, inputSignal, 0, length);
+      Array.Copy(_audio.Samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
-      double wScaleFactor;
+      double wScaleFactor = 1.0;
       if (FFT_W3)
       {
-        wScaleFactor = 1;
-        lmSpectrum = BioAcoustics.calculateFft((int)_fftSize, enWIN_TYPE.BLACKMAN_HARRIS_7, inputSignal);
+        lmSpectrum = BioAcoustics.calculateFft(inputSignal); 
       }
       else
       {
@@ -235,7 +256,7 @@ namespace BatInspector
             {
            //   int idxFreq2 = (int)((double)_spec[0].Length / (double)_height * (double)y);
               double f = (fMax - fMin) * y / _heightFt + fMin;
-              int idxFreq =(int)( f * 2000 /(double) _samplingRate * _fftSize / 2);
+              int idxFreq =(int)( f * 2000 /(double) _audio.SamplingRate * _fftSize / 2);
               if (_spec[idxSpec] != null)
               {
                 if (idxFreq >= _spec[idxSpec].Length)
@@ -260,10 +281,10 @@ namespace BatInspector
 
       if (_ok)
       {
-        double samplesPerPixelf = this.Samples.Length * (tMax - tMin) / this.Duration / _width;
+        double samplesPerPixelf = this._audio.Samples.Length * (tMax - tMin) / this.Duration / _width;
         int samplesPerPixel = (int)samplesPerPixelf;
-        int idxMin = (int)(tMin / this.Duration * this.Samples.Length);
-        int idxMax = (int)(tMax / this.Duration * this.Samples.Length);
+        int idxMin = (int)(tMin / this.Duration * this._audio.Samples.Length);
+        int idxMax = (int)(tMax / this.Duration * this._audio.Samples.Length);
         if (samplesPerPixelf > 1.0)
         {
           //          m_isMinMax = true;
@@ -296,9 +317,9 @@ namespace BatInspector
         int idx = (idxMax - idxMin) * x / _width + idxMin;
         for (int j = 0; j < samplesPerPixel; j++)
         {
-          if ((idx < 0) || (idx >= this.Samples.Length))
+          if ((idx < 0) || (idx >= this._audio.Samples.Length))
             break;
-          double val = this.Samples[idx++];
+          double val = this._audio.Samples[idx++];
           if (min > val)
             min = val;
           if (max < val)
@@ -320,7 +341,7 @@ namespace BatInspector
       for (int x = 0; x < _width; x++)
       {
         int idx = (idxMax - idxMin) * x / _width + idxMin;
-        int y1 = (int)((1 - (this.Samples[idx] - aMin) / (aMax - aMin)) * (_heightXt - 1));
+        int y1 = (int)((1 - (this._audio.Samples[idx] - aMin) / (aMax - aMin)) * (_heightXt - 1));
         bmp.SetPixel(x, y1, AppParams.Inst.ColorXtLine);
       }
     }
@@ -331,87 +352,6 @@ namespace BatInspector
         _minAmplitude = _maxAmplitude - AppParams.Inst.GradientRange;
       else
         _minAmplitude = _maxAmplitude / Math.Pow(10, AppParams.Inst.GradientRange / 20);
-    }
-
-    // Returns left and right double arrays. 'right' will be null if sound is mono.
-    public bool openWav(string filename, out double[] left, out double[] right, out int samplingRate)
-    {
-      left = null;
-      right = null; 
-      samplingRate = 0;
-
-      byte[] wav = File.ReadAllBytes(filename);
-      if (wav.Length < 256)
-      {
-        DebugLog.log("could not open WAV: " + filename, enLogType.ERROR);
-        return false;
-      }
-
-      // Determine if mono or stereo
-      int bitsPerSample = wav[34] + wav[35] * 0x100;
-      int channels = wav[22];     // Forget byte 23 as 99.999% of WAVs are 1 or 2 channels
-      samplingRate = wav[24] + wav[25] * 0x100 + wav[26] * 0x10000 + wav[27] * 0x1000000;
-      int fmt = wav[20] + wav[21] * 0x100;
-
-      // Get past all the other sub chunks to get to the data subchunk:
-      int pos = 12;   // First Subchunk ID from 12 to 16
-
-      // Keep iterating until we find the data chunk (i.e. 64 61 74 61 ...... (i.e. 100 97 116 97 in decimal))
-      while (!(wav[pos] == 100 && wav[pos + 1] == 97 && wav[pos + 2] == 116 && wav[pos + 3] == 97))
-      {
-        pos += 4;
-        int chunkSize = wav[pos] + wav[pos + 1] * 256 + wav[pos + 2] * 65536 + wav[pos + 3] * 16777216;
-        pos += 4 + chunkSize;
-      }
-      pos += 8;
-
-      // Pos is now positioned to start of actual sound data.
-      int samples = (wav.Length - pos) * 8 / bitsPerSample;     // 2 bytes per sample (16 bit sound mono)
-      if (channels == 2) samples /= 2;        // 4 bytes per sample (16 bit stereo)
-
-      // Allocate memory (right will be null if only mono sound)
-      left = new double[samples];
-      if (channels == 2) right = new double[samples];
-      else right = null;
-
-      // Write to double array/s:
-      int i = 0;
-      //      while (pos < length)
-
-      if (channels == 1)
-      {
-        if (bitsPerSample == 16)
-        {
-          while (i < left.Length)
-          {
-            left[i] = BitConverter.ToInt16(wav, pos) / 32768.0;
-            pos += 2;
-            i++;
-          }
-        }
-        if (bitsPerSample == 32)
-        {
-          while (i < left.Length)
-          {
-            left[i] = BitConverter.ToInt32(wav, pos) / 32768.0 / 32768.0;
-            pos += 4;
-            i++;
-          }
-        }
-
-      }
-      else
-      {
-        while (i < left.Length)
-        {
-          left[i] = BitConverter.ToInt16(wav, pos) / 32768.0;
-          pos += 2;
-          right[i] = BitConverter.ToInt16(wav, pos) / 32768.0;
-          pos += 2;
-          i++;
-        }
-      }
-      return true;
     }
   }
 }

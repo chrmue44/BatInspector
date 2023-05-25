@@ -70,8 +70,16 @@
                 <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
                     <Image Source="../images/stop.png"></Image>
                 </Button>
-                <ComboBox x:Name="_cbWindow" Width="100" SelectionChanged="_cbWindow_SelectionChanged"></ComboBox>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button x:Name="_btnDenoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDenoise_Click" ToolTip="{x:Static res:MyResources.ToolTipDenoise}">
+                  <Image Source="../images/icons8-cleanup-noise-100.png"></Image>
+                </Button>
+                <Button x:Name="_btnBandpass"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnBandpass_Click" ToolTip="{x:Static res:MyResources.ToolTipBandpass}">
+                  <Image Source="../images/filter_settings_icon_143016.png"></Image>
+                </Button>
+                <Button x:Name="_btnUndo"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnUndo_Click" ToolTip="{x:Static res:MyResources.ToolTipUndo}">
+                    <Image Source="../images/Undo_icon-icons.com_73701.png"></Image>
+                </Button>
                 <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
                     <Image Source="../images/icons8-save-48.png"></Image>
                 </Button>

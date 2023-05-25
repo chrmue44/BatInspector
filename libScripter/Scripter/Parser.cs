@@ -147,17 +147,11 @@ namespace libScripter
       _busy = false;
     }
 
-    public void log(string msg, enLogType type)
-    {
-      if (EnableLog)
-        DebugLog.log(msg, type);
-    }
-
     public int ParseScript(string name)
     {
       _scriptName = _wrkDir + "\\" + name;
       ParseScript();
-      log("exit SCRIPT: " + name, enLogType.INFO);
+      DebugLog.log("exit SCRIPT: " + name, enLogType.INFO);
       int retVal;
       int.TryParse(_parser.LastError.Substring(0, 1), out retVal);
       return retVal;
@@ -165,7 +159,7 @@ namespace libScripter
 
     public int ParseScript(string wrkDir, string name)
     {
-      log("start SCRIPT: " + name, enLogType.INFO);
+      DebugLog.log("start SCRIPT: " + name, enLogType.INFO);
       _scriptName = wrkDir + "\\" + name;
       ParseScript();
       int retVal;
@@ -180,7 +174,7 @@ namespace libScripter
     /// <returns></returns>
     public void ParseScript()
     {
-      log("start SCRIPT: " + _scriptName, enLogType.INFO);
+      DebugLog.log("start SCRIPT: " + _scriptName, enLogType.INFO);
       _busy = true;
       _lastErr = "0";
       try
@@ -190,7 +184,7 @@ namespace libScripter
       catch (Exception ex)
       {
         _lastErr = "1 error reading file " + _scriptName + ": " + ex.ToString();
-        log(_lastErr, enLogType.ERROR);
+        DebugLog.log(_lastErr, enLogType.ERROR);
         _busy = false;
         return;
       }

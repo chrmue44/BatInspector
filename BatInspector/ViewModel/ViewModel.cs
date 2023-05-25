@@ -249,7 +249,7 @@ namespace BatInspector
                                      AppParams.Inst.WaterfallWidth, AppParams.Inst.WaterfallHeight,  _colorTable);
         if (wf.Ok)
         {
-          wf.generateFtDiagram(0, (double)wf.Samples.Length / wf.SamplingRate, AppParams.Inst.FftWidth);
+          wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.FftWidth);
           bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
           bmp.Save(pngName);
           newImage = true;

@@ -39,9 +39,21 @@ namespace libBioAcoustics
 
     extern "C" DLL_API stRetEvalData * __cdecl getEvalItem(int i);
 
-    extern "C" DLL_API void __cdecl calcFftInt(int size, FFT::WIN_TYPE win, int* samples, double** spectrum);
+    extern "C" DLL_API void __cdecl calcFftDouble(double* samples, double** spectrum);
 
-    extern "C" DLL_API void __cdecl calcFftDouble(int size, FFT::WIN_TYPE win, double* samples, double** spectrum);
+    extern "C" DLL_API void __cdecl calcFftComplexOut(double* samples, double** spectrum);
+    /*
+     * calculate inverse fft with complex input
+     */
+    extern "C" DLL_API void __cdecl calcFftInverseComplex(double* spectrum, double** samples);
 
+    /*
+     * calculate inverse fft with real input
+     */
+    extern "C" DLL_API void __cdecl calcFftInverse(double* spectrum, double** samples);
+
+    extern "C" DLL_API void initFft(unsigned int size, FFT::WIN_TYPE win);
+
+    extern "C" DLL_API int getFftSize();
 
 }

@@ -2059,11 +2059,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to apply bandpass for frequency range indicated by cursors.
+        /// </summary>
+        public static string ToolTipBandpass {
+            get {
+                return ResourceManager.GetString("ToolTipBandpass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to decrease dynamic range.
         /// </summary>
         public static string ToolTipDecRange {
             get {
                 return ResourceManager.GetString("ToolTipDecRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to denoise the current file.
+        /// </summary>
+        public static string ToolTipDenoise {
+            get {
+                return ResourceManager.GetString("ToolTipDenoise", resourceCulture);
             }
         }
         
@@ -2163,6 +2181,15 @@ namespace BatInspector.Properties {
         public static string ToolTipStopPlayingAudio {
             get {
                 return ResourceManager.GetString("ToolTipStopPlayingAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to undo changes.
+        /// </summary>
+        public static string ToolTipUndo {
+            get {
+                return ResourceManager.GetString("ToolTipUndo", resourceCulture);
             }
         }
         

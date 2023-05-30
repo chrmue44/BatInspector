@@ -416,7 +416,8 @@ namespace BatInspector
     private void testDenoising()
     {
       WavFile w = new WavFile();
-      string file = "D:\\bat\\2023\\Ententeich\\20230520_SW\\Records\\JA_N_20230520_212801.wav";
+      string file = AppParams.Inst.DriveLetter + "bat\\2023\\Ententeich\\20230520_SW\\Records\\JA_N_20230520_212801.wav";
+      
       w.readFile(file);
       SoundEdit result = new SoundEdit((int)w.FormatChunk.Frequency, w.AudioSamples.Length);
       result.copySamples(w.AudioSamples);

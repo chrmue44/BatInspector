@@ -136,7 +136,7 @@ namespace BatInspector
       {
         _samplingRate = (int)inFile.FormatChunk.Frequency;
         _size = inFile.AudioSamples.Length;
-        initFft();
+//        initFft();
       }
       return retVal;
     }

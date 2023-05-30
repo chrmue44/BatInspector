@@ -3,9 +3,8 @@ TODO
 - progress bar for long running tasks
 - help
 - species comparison
-- find bug that deletes header from report
-- more than one model
 - stop button to kill running script
+- bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 
 DONE
 - automatic reload of project after finishing species evaluation

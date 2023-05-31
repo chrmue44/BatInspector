@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1050">
+             d:DesignHeight="450" d:DesignWidth="1100">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="44"></RowDefinition>
@@ -80,8 +80,11 @@
                 <Button x:Name="_btnUndo"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnUndo_Click" ToolTip="{x:Static res:MyResources.ToolTipUndo}">
                     <Image Source="../images/Undo_icon-icons.com_73701.png"></Image>
                 </Button>
+                <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSave_Click" ToolTip="{x:Static res:MyResources.ToolTipSave}">
+                  <Image Source="../images/icons8-save-48.png"></Image>
+                </Button>
                 <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
-                    <Image Source="../images/icons8-save-48.png"></Image>
+                    <Image Source="../images/icons8-save-as-48.png"></Image>
                 </Button>
             </ToolBar>
         </ToolBarTray>

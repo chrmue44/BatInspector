@@ -445,6 +445,7 @@
     <Resource Include="images\filter_settings_icon_143016.png" />
     <Resource Include="images\Undo_icon-icons.com_73701.png" />
     <Resource Include="images\bats.png" />
+    <Resource Include="images\icons8-save-as-48.png" />
     <Content Include="scripts\tool_get_from_auto2.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

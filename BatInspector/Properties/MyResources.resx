@@ -849,4 +849,7 @@
   <data name="ToolTipUndo" xml:space="preserve">
     <value>undo changes</value>
   </data>
+  <data name="ToolTipSave" xml:space="preserve">
+    <value>save altered WAV file</value>
+  </data>
 </root>

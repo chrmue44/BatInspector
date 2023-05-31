@@ -244,40 +244,9 @@ namespace BatInspector
     {
       if (_analysis != null)
       {
-        /*
-        double tStart = 0;
-        double tEnd = _analysis.getDouble(Cols.FILE_LEN);
-        double dist = 0.02;
-        // find calm area between 1st and 2nd call
-        if (_analysis.Calls.Count > 0)
-        {
-          tStart = _analysis.Calls[0].getDouble(Cols.START_TIME);
-          double duration = _analysis.Calls[0].getDouble(Cols.DURATION);
-          tStart += duration / 1000 + dist;
-        }
-        if (_analysis.Calls.Count > 1)
-        {
-          tEnd = _analysis.Calls[1].getDouble(Cols.START_TIME);
-          tEnd -= dist;
-        }
-        int iStart = (int)(tStart * _wf.SamplingRate);
-        int iEnd = (int)(tEnd * _wf.SamplingRate);
-        double[] noiseSamples = new double[iEnd - iStart];
-        Array.Copy( Waterfall.Samples, iStart, noiseSamples, 0, iEnd - iStart);
-
-        
-        SoundEdit noise = new SoundEdit();
-        noise.expandSamples(noiseSamples, Waterfall.Samples.Length);
-        noise.FftForward();
-        */
-    //    SoundEdit result = new SoundEdit(_wf.SamplingRate, Waterfall.Samples.Length );
-    //    result.copySamples(Waterfall.Samples);
         _wf.Audio.FftForward();
+        _wf.Audio.reduceNoise(0.5);
         _wf.Audio.FftBackward();
-
-        string newName = _wf.WavName.Replace(".wav", "_edit.wav");
-        _wf.Audio.saveAs(newName);
-
       }
     }
   }

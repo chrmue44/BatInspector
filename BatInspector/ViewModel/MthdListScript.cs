@@ -9,11 +9,11 @@
 * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
 * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 ********************************************************************************/
+using libParser;
+using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using libParser;
-using libScripter;
 
 namespace BatInspector
 {
@@ -36,6 +36,9 @@ namespace BatInspector
     {
       _inst = this;
       _scriptHelpTab = new List<HelpTabItem>();
+      addMethod(new FuncTabItem("bandPass", bandPass));
+      _scriptHelpTab.Add(new HelpTabItem("bandPass", "apply a band pass to the specified file",
+                      new List<string> { "1: fileName or file index", "2:min freq [Hz]", "3:nax freq [Hz]" }, new List<string> { "" }));
       addMethod(new FuncTabItem("setSampleRate", setSampleRate));
       _scriptHelpTab.Add(new HelpTabItem("setSampleRate", "sets the samplerate of a file",
                       new List<string> { "1: fileName","2:sample rate" }, new List<string> { "" }));
@@ -353,6 +356,41 @@ namespace BatInspector
       return err;
     }
 
+    static tParseError bandPass(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 3)
+      {
+        argv[1].changeType(AnyType.tType.RT_FLOAT);
+        argv[2].changeType(AnyType.tType.RT_FLOAT);
+        string fName = "";
+        if (argv[0].getType() == AnyType.tType.RT_STR)
+        {
+          fName = argv[0].getString();
+        }
+        else
+        {
+          argv[0].changeType(AnyType.tType.RT_INT64);
+          int idx = (int)argv[0].getInt64();
+          if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok) && (_inst._model.Prj.Records.Length > idx))
+          {
+            fName = _inst._model.Prj.PrjDir + "/" + _inst._model.Prj.WavSubDir + "/" + _inst._model.Prj.Records[idx].File;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+
+        if (err == 0)
+        {
+          SoundEdit edit = new SoundEdit();
+          edit.readWav(fName);
+          edit.bandpass(argv[1].getFloat(), argv[2].getFloat());
+          edit.saveAs(fName);
+        }
+      }
+      return err;
+    }
 
     static tParseError getCallCount(List<AnyType> argv, out AnyType result)
     {

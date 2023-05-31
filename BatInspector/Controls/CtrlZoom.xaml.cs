@@ -758,7 +758,12 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnDenoise_Click(object sender, RoutedEventArgs e)
+    private void _btnSave_Click(object sender, RoutedEventArgs e)
+    {
+      _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName);
+    }
+
+      private void _btnDenoise_Click(object sender, RoutedEventArgs e)
     {
       _model.ZoomView.denoise();
     }

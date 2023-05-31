@@ -10,7 +10,12 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using libParser;
+using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BatInspector
 {
@@ -24,8 +29,10 @@ namespace BatInspector
     double[] _spectrum;
     double[] _originalSamples;
     int _samplingRate;
+    string _fName = "";
+    bool _fftInitDone = false;
 
-    public SoundEdit(int samplingRate, int size)
+    public SoundEdit(int samplingRate = 384000, int size = 384000)
     {
       _size = size;
       _samplingRate = samplingRate;
@@ -89,6 +96,7 @@ namespace BatInspector
 
     public void FftForward()
     {
+      initFft();
       _spectrum = BioAcoustics.calculateFftComplexOut(_samples);
     }
 
@@ -97,7 +105,7 @@ namespace BatInspector
       _samples = new double[samples.Length];
       _originalSamples = new double[samples.Length];
       _size = samples.Length; 
-      initFft();
+      _fftInitDone = false;
       for (int i = 0; i < samples.Length; i++)
       {
         _samples[i] = samples[i];
@@ -110,7 +118,7 @@ namespace BatInspector
       _samples = new double[samples.Length];
       _originalSamples = new double[samples.Length];
       _size = samples.Length;
-      initFft();
+      _fftInitDone = false;
       for (int i = 0; i < samples.Length; i++)
       {
         _samples[i] = samples[i];
@@ -120,6 +128,7 @@ namespace BatInspector
 
     public void FftBackward()
     {
+      initFft();  
       _samples = BioAcoustics.calculateFftReversed(_spectrum);
     }
 
@@ -134,18 +143,40 @@ namespace BatInspector
       Array.Copy(_samples, _originalSamples, _samples.Length);
       if (retVal == 0)
       {
+        _fName = name;
         _samplingRate = (int)inFile.FormatChunk.Frequency;
         _size = inFile.AudioSamples.Length;
-//        initFft();
+        _fftInitDone = false;
       }
       return retVal;
     }
 
+
     public void saveAs(string name)
     {
-      WavFile outFile = new WavFile();
-      outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
-      outFile.saveFileAs(name);
+      try
+      {
+        // backup in folder del if possible
+        if ((_fName != "") && (name == _fName))
+        {
+          string destDir = _fName;
+          if (_fName.IndexOf(AppParams.DIR_WAVS) >= 0)
+            destDir = _fName.Replace(AppParams.DIR_WAVS, "/del");
+          destDir = Path.GetDirectoryName(destDir);
+          if (!Directory.Exists(destDir))
+            Directory.CreateDirectory(destDir);
+          string destFile = destDir + "/" + Path.GetFileName(_fName);
+          if (!File.Exists(destFile))
+            File.Copy(_fName, destFile);
+        }
+        WavFile outFile = new WavFile();
+        outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
+        outFile.saveFileAs(name);
+      }
+      catch
+      {
+        DebugLog.log("unable to save file: " + name, enLogType.ERROR);
+      }
     }
 
     public void bandpass(double fmin, double fmax)
@@ -161,6 +192,25 @@ namespace BatInspector
       {
         _spectrum[i] = 0;
         _spectrum[_spectrum.Length - i - 1] = 0;
+      }
+    }
+
+    public void reduceNoise(double threshold)
+    {
+      List<double> lst = new List<double>(_spectrum);
+      double Max = lst.OrderByDescending(x => x).First();
+      double Min = lst.OrderBy(x => x).First();
+
+      double MinDb = 20* Math.Log(Min);
+      double MaxDb = 20* Math.Log(Max); 
+
+      double limitDb = (MaxDb - MinDb) * threshold + Min;
+      double limit = Math.Pow(10, limitDb / 20);
+
+      for (int i = 0; i < _spectrum.Length; i++)
+      {
+        if (_spectrum[i] < limit)
+          _spectrum[i] = 0; 
       }
     }
 
@@ -181,7 +231,11 @@ namespace BatInspector
 
     void initFft()
     {
-      BioAcoustics.initFft((uint)_size, enWIN_TYPE.NONE);
+      if (!_fftInitDone)
+      {
+        BioAcoustics.initFft((uint)_size, enWIN_TYPE.NONE);
+        _fftInitDone = true;
+      }
     }
   }
 }

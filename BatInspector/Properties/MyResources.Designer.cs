@@ -2158,6 +2158,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to save altered WAV file.
+        /// </summary>
+        public static string ToolTipSave {
+            get {
+                return ResourceManager.GetString("ToolTipSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to save zoomed section as WAV file.
         /// </summary>
         public static string ToolTipSaveAs {

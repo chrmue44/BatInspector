@@ -12,5 +12,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <StartWorkingDirectory>C:\Program Files\C.M\BatInspector\</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\C.M\BatInspector\BatInspector.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartWorkingDirectory>C:\Program Files\C.M\BatInspector\</StartWorkingDirectory>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
   </PropertyGroup>
 </Project>

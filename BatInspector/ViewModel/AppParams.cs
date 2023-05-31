@@ -456,7 +456,7 @@ namespace BatInspector
 
     public void init()
     {
-      AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
+      AppRootPath = "\"" + AppDomain.CurrentDomain.BaseDirectory + "\"";
       ScriptDir = "scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;

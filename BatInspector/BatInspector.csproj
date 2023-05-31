@@ -444,6 +444,7 @@
     <Resource Include="images\icons8-cleanup-noise-100.png" />
     <Resource Include="images\filter_settings_icon_143016.png" />
     <Resource Include="images\Undo_icon-icons.com_73701.png" />
+    <Resource Include="images\bats.png" />
     <Content Include="scripts\tool_get_from_auto2.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -486,9 +487,9 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="Licenses.txt">
+    <Content Include="Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AdditionalFiles>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\Bat_icon-icons.com_75012.png">
@@ -541,9 +542,9 @@
     <Resource Include="images\icons8-plus-+-48.png" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="history.txt">
+    <Content Include="history.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AdditionalFiles>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\icons8-zoom-in-64.png" />

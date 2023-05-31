@@ -86,7 +86,7 @@ namespace BatInspector
       string wrkDir = AppParams.Inst.AppRootPath + "/../../../scripts";
       // testBioAcoustics();
       //testFft();
-      testDenoising();
+      //testDenoising();
       testIf(wrkDir);
       testWhile(wrkDir);
       testParser();
@@ -449,6 +449,7 @@ namespace BatInspector
         }
       }
     }
+
     private void adjustTimesInReport(string prjName)
     {
       DirectoryInfo subDir = new DirectoryInfo(prjName);

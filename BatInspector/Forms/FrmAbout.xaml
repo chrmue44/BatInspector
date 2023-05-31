@@ -16,7 +16,7 @@
     <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
       <TextBlock Margin="50,20,30,30" FontSize="16" FontWeight="Bold">BatInspector</TextBlock>
       <TextBlock Name="_tbVersion" Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version 0.1.2</TextBlock>
-      <Image Source="..\images\Bat_icon-icons.com_75012.png" Height="64" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
+      <Image Source="..\images\bats.png" Height="64" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
     </StackPanel>
     <GroupBox Header="{x:Static res:MyResources.AboutHistory}" Grid.Row="1" Margin="8,3,8,3">
       <TextBox Name="_tbHistory" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" BorderThickness="0"></TextBox>

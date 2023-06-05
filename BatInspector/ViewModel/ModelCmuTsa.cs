@@ -1,17 +1,21 @@
-﻿using BatInspector.Forms;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2023-05-31                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using BatInspector.Forms;
 using libParser;
 using libScripter;
-using OxyPlot.Series;
 using System;
-using System.Collections.Generic;
-using System.Drawing.Drawing2D;
+
 using System.IO;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Xml.Linq;
+
 
 namespace BatInspector
 {
@@ -51,8 +55,7 @@ namespace BatInspector
       {
         //internal:
         string dir = prj.PrjDir + "/" + prj.WavSubDir;
-//        string rep = prj.PrjDir + AppParams.PRJ_REPORT;
-//        rep = rep.Replace("\\", "/");
+
         if (File.Exists(reportName))
           File.Delete(reportName);
         BioAcoustics.analyzeFiles(reportName, dir);
@@ -199,9 +202,6 @@ namespace BatInspector
       {
         file.Delete();
       }
-    }
-
-   
-
+    }   
   }
 }

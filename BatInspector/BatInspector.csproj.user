@@ -15,7 +15,7 @@
     <StartWorkingDirectory>
     </StartWorkingDirectory>
     <StartAction>Project</StartAction>
-    <StartProgram>C:\Program Files\C.M\BatInspector\BatInspector.exe</StartProgram>
+    <StartProgram>C:\Program Files\CM\BatInspector\BatInspector.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartWorkingDirectory>C:\Program Files\C.M\BatInspector\</StartWorkingDirectory>

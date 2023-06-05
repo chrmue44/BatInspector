@@ -149,7 +149,7 @@ namespace libScripter
 
     public int ParseScript(string name)
     {
-      _scriptName = _wrkDir + "\\" + name;
+      _scriptName = Path.Combine(_wrkDir,name);
       ParseScript();
       DebugLog.log("exit SCRIPT: " + name, enLogType.INFO);
       int retVal;

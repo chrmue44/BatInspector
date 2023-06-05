@@ -604,7 +604,7 @@
     <value>Vollständiger Pfad zum Wurzelverzeichnis der trainierten KI-Modelle</value>
   </data>
   <data name="SetDescSamplingRate" xml:space="preserve">
-    <value>Abtastrate, die zur Bestimmung durch die KI-Modelle benötigt wird</value>
+    <value>Abtastrate zur Umskalierung für das KI-Modell TSA</value>
   </data>
   <data name="msgZoomNotPossible" xml:space="preserve">
     <value>Bitte erst beide Cursor setzen!</value>
@@ -763,7 +763,7 @@
     <value>Spaltenname im Report für die automatisch detektierte Spezies</value>
   </data>
   <data name="SetDescRootPath" xml:space="preserve">
-    <value>Wurzelverzeichnis der Anwndung</value>
+    <value>Wurzelverzeichnis der Anwendung</value>
   </data>
   <data name="BtnSaveAs" xml:space="preserve">
     <value>Speichern als ...</value>
@@ -851,5 +851,8 @@
   </data>
   <data name="ToolTipSave" xml:space="preserve">
     <value>geänderte WAV-Datei speichern</value>
+  </data>
+  <data name="SetDescDataPath" xml:space="preserve">
+    <value>Datenverzeichnis der Anwendung</value>
   </data>
 </root>

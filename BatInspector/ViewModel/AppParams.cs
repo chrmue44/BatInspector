@@ -207,6 +207,7 @@ namespace BatInspector
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE = "/doc/BatInspector.pdf"; // software manual
     const string _fName = "BatInspectorSettings.json";
+    const string _dataPath = "dataPath.txt";
 
     static AppParams _inst = null;
     public static AppParams Inst 
@@ -219,7 +220,7 @@ namespace BatInspector
       }
     }
 
-    public string DriveLetter 
+    static public string DriveLetter 
     {
       get
       {
@@ -231,6 +232,9 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRootPath")]
     public string AppRootPath { get; set; } = "";
+
+ 
+    public static string AppDataPath { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -457,6 +461,7 @@ namespace BatInspector
     public void init()
     {
       AppRootPath = "\"" + AppDomain.CurrentDomain.BaseDirectory + "\"";
+      AppDataPath = Path.Combine(Environment.SpecialFolder.MyDocuments.ToString(), "BatInspector"); 
       ScriptDir = "scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;
@@ -481,10 +486,10 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       initScripts();
-      RootDataDir = "C:/users/chrmu/bat";
+      RootDataDir = DriveLetter + "bat";
       SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
-      ModelRootPath = "C:/users/chrmu/prj/BatInspector/BatInspector/model";
+      ModelRootPath = AppRootPath + "model";
       SelectedModel = 0;
       initModels();
       SamplingRate = 312500;
@@ -590,6 +595,7 @@ namespace BatInspector
             retVal.initScripts();
           if (retVal.Models == null)
             retVal.initModels();
+          retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
         }
         else
         {
@@ -608,19 +614,27 @@ namespace BatInspector
         if (file != null)
           file.Close();
       }
-      if(retVal.AppRootPath.IndexOf(retVal.DriveLetter) < 0)
+      if(retVal.AppRootPath.IndexOf(AppParams.DriveLetter) < 0)
       {
-        retVal.AppRootPath = retVal.DriveLetter.Substring(0,1) + retVal.AppRootPath.Substring(1);
-        retVal.ModelRootPath = retVal.DriveLetter.Substring(0, 1) + retVal.ModelRootPath.Substring(1);
-        DebugLog.log("root paths adapted to drive " + retVal.DriveLetter, enLogType.INFO);
+        retVal.AppRootPath = AppParams.DriveLetter.Substring(0,1) + retVal.AppRootPath.Substring(1);
+        retVal.ModelRootPath = AppParams.DriveLetter.Substring(0, 1) + retVal.ModelRootPath.Substring(1);
+        DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);
       }
+        
+      if (AppParams.AppDataPath.IndexOf(AppParams.DriveLetter) < 0)
+        AppParams.AppDataPath = AppParams.DriveLetter.Substring(0, 1) + AppDataPath.Substring(1);
+
       retVal.adjustActivateBat();
       _inst = retVal;
     }
 
     public static void load()
     {
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      //string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      AppDataPath = File.ReadAllText(_dataPath);
+      string fPath = Path.Combine(AppDataPath, _fName);
+      if (!File.Exists(fPath))
+        fPath = DriveLetter.Substring(0, 1) + fPath.Substring(1);
       loadFrom(fPath);
     }
 

@@ -25,7 +25,7 @@ FOR FileNr 0 NrFiles
 		  IF =(specAuto == Rank1Spec)
             =(setCallInfo(FileNr, i, "SPEC_MAN", Rank1Spec))
 		  ELSE
-            =(setCallInfo(FileNr, i, "SPEC_MAN", "???"))
+            =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
           END
 		END
 	  END

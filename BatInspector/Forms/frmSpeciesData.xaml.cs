@@ -10,6 +10,7 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 using System;
+using System.IO;
 using System.Windows;
 
 namespace BatInspector.Forms
@@ -62,18 +63,21 @@ namespace BatInspector.Forms
         {
           if (spec.WavExample != null)
           {
-            string wavName;
-            int pos = spec.WavExample.LastIndexOf("\\");
+            string wavName = Path.GetFileName(spec.WavExample);
+/*            int pos = spec.WavExample.LastIndexOf("\\");
             int pos2 = spec.WavExample.LastIndexOf("/");
             if ((pos > pos2) && (pos >= 0))
               wavName = spec.WavExample.Substring(pos + 1);
             else if (pos2 >= 0)
               wavName = spec.WavExample.Substring(pos2 + 1);
             else
-              wavName = spec.WavExample;
+              wavName = spec.WavExample; */
 
             string fullName = Environment.CurrentDirectory + "/" + spec.WavExample;
-            AnalysisFile ana = new AnalysisFile(fullName, AppParams.Inst.SamplingRate, 3.001);
+            WavFile w = new WavFile();
+            w.readFile(fullName);
+            double duration = (double)w.AudioSamples.Length / w.FormatChunk.Frequency;
+            AnalysisFile ana = new AnalysisFile(fullName, (int)w.FormatChunk.Frequency, duration);
             _parent.setZoom(wavName, ana, fullName, null);
           }
         }

@@ -83,7 +83,7 @@ namespace BatInspector
 
     public void exec()
     {
-      string wrkDir = AppParams.Inst.AppRootPath + "/../../../scripts";
+      string wrkDir = Path.Combine(AppParams.Inst.AppRootPath, "../../../scripts");
       // testBioAcoustics();
       //testFft();
       //testDenoising();
@@ -416,7 +416,7 @@ namespace BatInspector
     private void testDenoising()
     {
       WavFile w = new WavFile();
-      string file = AppParams.Inst.DriveLetter + "bat\\2023\\Ententeich\\20230520_SW\\Records\\JA_N_20230520_212801.wav";
+      string file = AppParams.DriveLetter + "bat\\2023\\Ententeich\\20230520_SW\\Records\\JA_N_20230520_212801.wav";
       
       w.readFile(file);
       SoundEdit result = new SoundEdit((int)w.FormatChunk.Frequency, w.AudioSamples.Length);

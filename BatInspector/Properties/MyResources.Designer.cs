@@ -1636,6 +1636,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data path of application.
+        /// </summary>
+        public static string SetDescDataPath {
+            get {
+                return ResourceManager.GetString("SetDescDataPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nr of epochs during training of model.
         /// </summary>
         public static string SetDescEpochs {
@@ -1780,7 +1789,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sampling rate needed for AI models.
+        ///   Looks up a localized string similar to Re-sampling rate needed for AI model TSA.
         /// </summary>
         public static string SetDescSamplingRate {
             get {

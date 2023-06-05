@@ -1294,6 +1294,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show table of script variables.
+        /// </summary>
+        public static string MainToolDebug {
+            get {
+                return ResourceManager.GetString("MainToolDebug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Define filters for lists.
         /// </summary>
         public static string MainToolDefFilters {
@@ -1353,6 +1362,15 @@ namespace BatInspector.Properties {
         public static string MainToolFindSpeciesInfo {
             get {
                 return ResourceManager.GetString("MainToolFindSpeciesInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show help files.
+        /// </summary>
+        public static string MainToolHelp {
+            get {
+                return ResourceManager.GetString("MainToolHelp", resourceCulture);
             }
         }
         

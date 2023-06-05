@@ -855,4 +855,10 @@
   <data name="SetDescDataPath" xml:space="preserve">
     <value>Datenverzeichnis der Anwendung</value>
   </data>
+  <data name="MainToolDebug" xml:space="preserve">
+    <value>Zeige Script-Variablentabelle</value>
+  </data>
+  <data name="MainToolHelp" xml:space="preserve">
+    <value>Zeige Hilfe-Dateien</value>
+  </data>
 </root>

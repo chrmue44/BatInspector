@@ -11,6 +11,7 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace libParser
 {
@@ -45,6 +46,7 @@ namespace libParser
     List<stLogEntry> _list;
     delegateLogEntry _dlgLog = null;
     delegateLogClear _dlgClear = null;
+    string _logPath = null;
 
     static public void log(string msg, enLogType type, bool beep = false)
     {
@@ -53,14 +55,35 @@ namespace libParser
       Inst().logMsg(msg, type);
     }
 
-    static public void setLogDelegate(delegateLogEntry dlg, delegateLogClear dlgClear)
+    static public void save()
+    {
+      string log = "";
+      foreach(stLogEntry entry in Inst()._list)
+      {
+        log += entry.Time.ToString() + " " + entry.Type.ToString() + " " + entry.Text + "\n"; 
+      }
+      if (Inst()._list.Count > 0)
+      {
+        if (!Directory.Exists(Inst()._logPath))
+          Directory.CreateDirectory(Inst()._logPath);
+        DateTime t = DateTime.Now;
+        string fName = t.Year.ToString("D4") + t.Month.ToString("D2") + t.Day.ToString("D2") + "_" +
+                       t.Hour.ToString("D2") + t.Minute.ToString("D2") + t.Second.ToString("D2") + ".log";
+        fName = Path.Combine(Inst()._logPath, fName);
+        File.WriteAllText(fName, log);
+      }
+    }
+
+    static public void setLogDelegate(delegateLogEntry dlg, delegateLogClear dlgClear, string logPath)
     {
       Inst()._dlgLog = dlg;
       Inst()._dlgClear = dlgClear;
+      Inst()._logPath= logPath;
     }
 
     static public void clear()
     {
+      save();
       Inst()._list.Clear();
       Inst()._dlgClear();
     }

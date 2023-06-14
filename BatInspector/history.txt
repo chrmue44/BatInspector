@@ -7,6 +7,7 @@ TODO
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 
 DONE
+- write log to file when quiitng program
 - automatic reload of project after finishing species evaluation
 - create prj from files has now a filter for start and end time
 - more script commands

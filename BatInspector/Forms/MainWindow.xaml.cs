@@ -92,7 +92,7 @@ namespace BatInspector.Forms
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 1);
       _timer.Start();
-      DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog);
+      DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog, AppParams.LogDataPath);
       _ctlLog.setViewModel(_model);
 #if DEBUG
       Tests tests = new Tests(_model);
@@ -584,6 +584,7 @@ namespace BatInspector.Forms
         _frmZoom.Close();
       if (_frmSpecies != null)
         _frmSpecies.Close();
+      DebugLog.save();
     }
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)

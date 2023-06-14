@@ -235,6 +235,7 @@ namespace BatInspector
 
  
     public static string AppDataPath { get; set; } = "";
+    public static string LogDataPath { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -461,7 +462,8 @@ namespace BatInspector
     public void init()
     {
       AppRootPath = "\"" + AppDomain.CurrentDomain.BaseDirectory + "\"";
-      AppDataPath = Path.Combine(Environment.SpecialFolder.MyDocuments.ToString(), "BatInspector"); 
+      AppDataPath = Path.Combine(Environment.SpecialFolder.MyDocuments.ToString(), "BatInspector");
+      LogDataPath = Path.Combine(AppDataPath, "log");
       ScriptDir = "scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;
@@ -563,6 +565,7 @@ namespace BatInspector
         string str = sr.ReadToEnd();
         file.Write(JsonHelper.FormatJson(str));
         file.Close();
+        DebugLog.log("settings saved to '" + fName + "'", enLogType.DEBUG);
       }
       catch (Exception e)
       {
@@ -572,7 +575,7 @@ namespace BatInspector
 
     public void save()
     {
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
+      string fPath = Path.Combine(AppDataPath, _fName);
       saveAs(fPath);
     }
 
@@ -614,24 +617,37 @@ namespace BatInspector
         if (file != null)
           file.Close();
       }
-      if(retVal.AppRootPath.IndexOf(AppParams.DriveLetter) < 0)
-      {
-        retVal.AppRootPath = AppParams.DriveLetter.Substring(0,1) + retVal.AppRootPath.Substring(1);
-        retVal.ModelRootPath = AppParams.DriveLetter.Substring(0, 1) + retVal.ModelRootPath.Substring(1);
-        DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);
-      }
-        
-      if (AppParams.AppDataPath.IndexOf(AppParams.DriveLetter) < 0)
-        AppParams.AppDataPath = AppParams.DriveLetter.Substring(0, 1) + AppDataPath.Substring(1);
+
+      retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
+      retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
+      retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
+      LogDataPath = replaceDriveLetter(LogDataPath);
+      AppDataPath = replaceDriveLetter(AppDataPath);
+      DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);
 
       retVal.adjustActivateBat();
       _inst = retVal;
     }
 
+    static string replaceDriveLetter(string  path)
+    {
+      string driveStr = "C";
+      int driveIdx = 0;
+      if (path[0] == '"')
+      {
+        driveStr = "\"C";
+        driveIdx = 1;
+      }
+      if(path.IndexOf(driveStr) < 0)
+        path = path.Replace(path.Substring(driveIdx,1), DriveLetter.Substring(0,1));
+      return path;
+    }
+
     public static void load()
     {
       //string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
-      AppDataPath = File.ReadAllText(_dataPath);
+      AppDataPath = replaceDriveLetter(File.ReadAllText(_dataPath));
+      LogDataPath = Path.Combine(AppDataPath, "log");
       string fPath = Path.Combine(AppDataPath, _fName);
       if (!File.Exists(fPath))
         fPath = DriveLetter.Substring(0, 1) + fPath.Substring(1);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using libParser;
+using System;
 using System.Windows;
 
 namespace BatInspector
@@ -12,9 +13,17 @@ namespace BatInspector
     [STAThread]
     public static void Main()
     {
-      var application = new App();
-      application.InitializeComponent();
-      application.Run();
+  	  try
+	    {
+        var application = new App();
+        application.InitializeComponent();
+        application.Run();
+	    }
+	    catch (Exception e)
+	    {
+		    DebugLog.log(e.ToString(),enLogType.ERROR);
+		    DebugLog.save();
+	    }
     }
   }
 }

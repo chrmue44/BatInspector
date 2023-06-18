@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema targetNamespace="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:mstns="http://www.topografix.com/GPX/1/1" xmlns="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:app2="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:app1="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+  <xs:import namespace="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" schemaLocation="Track_app1.xsd" />
+  <xs:import namespace="http://www.topografix.com/GPX/1/1" schemaLocation="Track.xsd" />
+  <xs:element name="TrackExtension" msdata:Prefix="gpxx">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DisplayColor" msdata:Prefix="gpxx" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

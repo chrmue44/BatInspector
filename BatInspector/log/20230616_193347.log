@@ -1,0 +1,601 @@
+16.06.2023 17:12:43 INFO Tests passed
+16.06.2023 17:12:51 DEBUG start evaluation TODO
+16.06.2023 17:12:52 INFO evaluation of dir 'D:\' for TODOs finished
+16.06.2023 17:12:53 DEBUG start evaluation TODO
+16.06.2023 17:12:53 INFO evaluation of dir 'bat' for TODOs finished
+16.06.2023 17:12:54 DEBUG start to open project
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230325_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230407_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_1_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_2_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_3_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_4_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230411_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230411_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230411_SW_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230418_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_03/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_04/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_05/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_06/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_07/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230426_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230513_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230514_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230514_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230514_SW_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230519_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230519_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230520_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230525_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230531_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230531_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230601_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230601_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230614/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230615/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230325_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230407_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_1_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_2_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_3_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230408_4_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230411_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230411_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230411_SW_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230418_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_03/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_04/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_05/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_06/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230419_SW_07/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230426_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230513_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230514_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230514_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230514_SW_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230519_SW_00/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230519_SW_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230520_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230525_SW/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230531_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230531_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230601_01/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230601_02/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230614/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 DEBUG [Csv] file D:\bat\2023\Ententeich\20230615/bd2\summary.csv opened successfully
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 1 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 2 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 5 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 6 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 7 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 8 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 9 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 10 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 11 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 12 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 13 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 14 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 15 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 16 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 17 does not exist
+16.06.2023 17:13:43 ERROR [Csv] getCell(): column 18 does not exist
+16.06.2023 17:13:43 INFO [Csv] D:\bat\2023\Ententeich/sum_report_0301_0617.csv saved

@@ -1,0 +1,302 @@
+{
+  "AppRootPath": "D:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
+  "ColorGradientBlue": [
+    {
+      "Color": 128,
+      "Value": 0
+    },
+    {
+      "Color": 255,
+      "Value": 30
+    },
+    {
+      "Color": 0,
+      "Value": 70
+    },
+    {
+      "Color": 0,
+      "Value": 100
+    },
+    {
+      "Color": 40,
+      "Value": 100
+    }
+  ],
+  "ColorGradientGreen": [
+    {
+      "Color": 0,
+      "Value": 0
+    },
+    {
+      "Color": 200,
+      "Value": 30
+    },
+    {
+      "Color": 255,
+      "Value": 70
+    },
+    {
+      "Color": 200,
+      "Value": 75
+    },
+    {
+      "Color": 0,
+      "Value": 100
+    }
+  ],
+  "ColorGradientRed": [
+    {
+      "Color": 0,
+      "Value": 0
+    },
+    {
+      "Color": 0,
+      "Value": 30
+    },
+    {
+      "Color": 255,
+      "Value": 70
+    },
+    {
+      "Color": 255,
+      "Value": 75
+    },
+    {
+      "Color": 255,
+      "Value": 100
+    }
+  ],
+  "ColorXtBackground": {
+    "knownColor": 95,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "ColorXtLine": {
+    "knownColor": 35,
+    "name": null,
+    "state": 1,
+    "value": 0
+  },
+  "Culture": 0,
+  "ExeEditor": "C:\\Program Files\\Notepad++\\notepad++.exe",
+  "FftWidth": 512,
+  "FftWindow": 4,
+  "Filter": [
+    {
+      "Expression": "(SpeciesMan == \"todo\")",
+      "Name": "todo",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesAuto == \"----\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\") || (NrOfCalls == 1)",
+      "Name": "Junk",
+      "isForAllCalls": true
+    },
+    {
+      "Expression": "(SpeciesAuto == \"Ppip\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\") || (SpeciesAuto == \"----\")",
+      "Name": "Ppip",
+      "isForAllCalls": true
+    },
+    {
+      "Expression": "(SpeciesAuto == \"Eser\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\") || (SpeciesAuto == \"----\")",
+      "Name": "Eser",
+      "isForAllCalls": true
+    },
+    {
+      "Expression": "(SpeciesAuto == \"Ppyg\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\")",
+      "Name": "Ppyg",
+      "isForAllCalls": true
+    },
+    {
+      "Expression": "indexOf(Remarks,\"Fangruf\") >= 0",
+      "Name": "Fangrufe",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"PPIP\")",
+      "Name": "Man_PPIP",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"ESER\")",
+      "Name": "Man_ESER",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"NNOC\")",
+      "Name": "Man_NNOC",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"BBAR\")",
+      "Name": "Man_BBAR",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"PNAT\")",
+      "Name": "Man_PNAT",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"MNAT\")",
+      "Name": "Man_MNAT",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"PPYG\")",
+      "Name": "Man_PPYG",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"PAUR\")",
+      "Name": "Man_PAUR",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"MDAU\")",
+      "Name": "Man_MDAU",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesAuto == \"MDAU\")",
+      "Name": "Auto_MDAU",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"PNAT\") && (FreqMin > 43000)",
+      "Name": "checkPNAT",
+      "isForAllCalls": false
+    },
+    {
+      "Expression": "(SpeciesMan == \"PPIP\") && ((FreqMin < 43000) || (FreqMin > 51000))",
+      "Name": "checkPPIP",
+      "isForAllCalls": false
+    }
+  ],
+  "GradientRange": 21,
+  "HideInfos": false,
+  "LogControlHeight": 110,
+  "MainWindowHeight": 852.80000000000007,
+  "MainWindowPosX": 24,
+  "MainWindowPosY": 74.4,
+  "MainWindowWidth": 1454.4,
+  "ModelRootPath": "D:\\prj\\BatInspector\\BatInspector\\models",
+  "Models": [
+    {
+      "Active": true,
+      "Dir": "bd2",
+      "Epochs": 0,
+      "LearningRate": 0,
+      "ModelType": 2,
+      "ReportColumn": "Species",
+      "Script": "run.bat"
+    },
+    {
+      "Active": false,
+      "Dir": "tsa",
+      "Epochs": 30,
+      "LearningRate": 2E-05,
+      "ModelType": 0,
+      "ReportColumn": "Species",
+      "Script": "run.bat"
+    }
+  ],
+  "PredConfTest": false,
+  "PredCutCalls": true,
+  "PredDelTemp": true,
+  "PredIdentifyCalls": false,
+  "PredPredict1": true,
+  "PredPredict2": false,
+  "PredPredict3": false,
+  "PredPrepData": true,
+  "ProbabilityMin": 0.5,
+  "PythonBin": "\"C:\/Program Files\/Python310\/python.exe\"",
+  "RootDataDir": "D:\/bat",
+  "SamplingRate": 312500,
+  "ScriptDir": "scripts",
+  "Scripts": [
+    {
+      "Description": "take over all unambiguously automatically recognized species",
+      "Index": 0,
+      "IsTool": false,
+      "Name": "scripts\/auto_to_man.scr"
+    },
+    {
+      "Description": "reset all manual species to 'todo'",
+      "Index": 1,
+      "IsTool": false,
+      "Name": "scripts\/reset_man.scr"
+    },
+    {
+      "Description": "select all recordings that seem to contain only junk",
+      "Index": 2,
+      "IsTool": false,
+      "Name": "scripts\/junk.scr"
+    },
+    {
+      "Description": "eliminate predictions with low ratio 1st to 2nd rank",
+      "Index": 3,
+      "IsTool": false,
+      "Name": "scripts\\elimLowRatio.scr"
+    },
+    {
+      "Description": "replace 'todo' in species man with '?'",
+      "Index": 4,
+      "IsTool": false,
+      "Name": "scripts\\replace_todo.scr"
+    },
+    {
+      "Description": "Set Species MAN to '?'",
+      "Index": 5,
+      "IsTool": true,
+      "Name": "scripts\\tool_all_unknown.scr"
+    },
+    {
+      "Description": "Set Species MAN to 'todo'",
+      "Index": 6,
+      "IsTool": true,
+      "Name": "scripts\\tool_all_todo.scr"
+    },
+    {
+      "Description": "Remove PPYG",
+      "Index": 7,
+      "IsTool": true,
+      "Name": "scripts\\tool_remove_ppyg.scr"
+    },
+    {
+      "Description": "Set Spec MAN from AUTO2",
+      "Index": 8,
+      "IsTool": true,
+      "Name": "scripts\\tool_get_from_auto2.scr"
+    },
+    {
+      "Description": "copy first SPECIES_MAN to all following calls",
+      "Index": 9,
+      "IsTool": true,
+      "Name": "scripts\\tool_copy_spec_from_first.scr"
+    },
+    {
+      "Description": "replace all pipstrelle in SPRECIES_MAN with \"Pipistrellus\"",
+      "Index": 10,
+      "IsTool": true,
+      "Name": "scripts\\tool_replace_pipstrelle.scr"
+    },
+    {
+      "Description": "take over all automatically recognized species",
+      "Index": 11,
+      "IsTool": false,
+      "Name": "scripts\/all_auto_to_man.scr"
+    }
+  ],
+  "SelectedModel": 0,
+  "SpeciesFile": "\"C:\/Users\/chrmu\/bat\/tierSta\/species.csv\"",
+  "WaterfallHeight": 256,
+  "WaterfallLogarithmic": true,
+  "WaterfallWidth": 512,
+  "WidthFileSelector": 241,
+  "ZoomOneCall": 100,
+  "ZoomSeparateWin": false,
+  "ZoomWindowHeight": 900,
+  "ZoomWindowWidth": 1200
+}

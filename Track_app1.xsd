@@ -1,0 +1,5 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema targetNamespace="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:mstns="http://www.topografix.com/GPX/1/1" xmlns="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:app1="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+  <xs:import namespace="http://www.topografix.com/GPX/1/1" schemaLocation="Track.xsd" />
+  <xs:element name="TrackPointExtension" msdata:Prefix="gpxtpx" type="xs:string" />
+</xs:schema>

@@ -1,5 +1,5 @@
 {
-  "AppRootPath": "D:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
+  "AppRootPath": "G:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
   "ColorGradientBlue": [
     {
       "Color": 128,
@@ -176,12 +176,12 @@
   ],
   "GradientRange": 21,
   "HideInfos": false,
-  "LogControlHeight": 65,
-  "MainWindowHeight": 852.80000000000007,
-  "MainWindowPosX": 4.8000000000000007,
-  "MainWindowPosY": 71.2,
-  "MainWindowWidth": 1471.2,
-  "ModelRootPath": "D:\\prj\\BatInspector\\BatInspector\\models",
+  "LogControlHeight": 170,
+  "MainWindowHeight": 1055,
+  "MainWindowPosX": 5,
+  "MainWindowPosY": 71,
+  "MainWindowWidth": 1471,
+  "ModelRootPath": "G:\\prj\\BatInspector\\BatInspector\\models",
   "Models": [
     {
       "Active": true,

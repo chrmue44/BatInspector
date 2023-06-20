@@ -22,6 +22,8 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
+    public new bool IsEnabled { get { return _txt.IsEnabled; } set { _txt.IsEnabled = value; _lbl.Opacity = value ? 1.0 : 0.5; } }
+
     public bool IsFolder { get { return _isFolder; } }
 
    /* public bool IsEnabled

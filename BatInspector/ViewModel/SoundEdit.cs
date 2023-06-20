@@ -181,6 +181,13 @@ namespace BatInspector
 
     public void bandpass(double fmin, double fmax)
     {
+      if (fmin > fmax)
+      {
+        double v;
+        v = fmin;
+        fmin = fmax;
+        fmax = v; 
+      }
       int iFmin = (int)(_spectrum.Length * fmin / _samplingRate);
       int iFmax = (int)(_spectrum.Length * fmax / _samplingRate);
       for (int i = 0; i < iFmin; i++)
@@ -195,22 +202,33 @@ namespace BatInspector
       }
     }
 
+    /// <summary>
+    /// noise reduction (does not work as expected)
+    /// </summary>
+    /// <param name="threshold"></param>
     public void reduceNoise(double threshold)
     {
       List<double> lst = new List<double>(_spectrum);
-      double Max = lst.OrderByDescending(x => x).First();
-      double Min = lst.OrderBy(x => x).First();
 
-      double MinDb = 20* Math.Log(Min);
-      double MaxDb = 20* Math.Log(Max); 
+      findMaxPower(out double maxP, out double maxF);
+      double MaxDb = 20* Math.Log10(maxP); 
 
-      double limitDb = (MaxDb - MinDb) * threshold + Min;
+      double limitDb = MaxDb + threshold;
       double limit = Math.Pow(10, limitDb / 20);
 
-      for (int i = 0; i < _spectrum.Length; i++)
+      limit = limit * limit;
+      for (int i = 2; i < _spectrum.Length; i+=2)
       {
-        if (_spectrum[i] < limit)
-          _spectrum[i] = 0; 
+        double p = _spectrum[i] * _spectrum[i] + _spectrum[i+1] + _spectrum[i+1];
+        if (p < limit)
+        {
+          _spectrum[i] = 0;
+          _spectrum[i + 1] = 0;
+        }
+        else
+        {
+          _spectrum[i] = _spectrum[i];
+        }
       }
     }
 
@@ -236,6 +254,23 @@ namespace BatInspector
         BioAcoustics.initFft((uint)_size, enWIN_TYPE.NONE);
         _fftInitDone = true;
       }
+    }
+
+    void findMaxPower(out double p, out double f)
+    {
+      p = 0;
+      f = 0;
+      for(int i = 2; i < _spectrum.Length; i+=2)
+      {
+        double p1 = _spectrum[i]*_spectrum[i] + _spectrum[i+1] * _spectrum[i+1];
+        if(p1 > p)
+        {
+          p = p1;
+          f = i;
+        }
+      }
+      p = Math.Sqrt(p);
+      f = _samplingRate / 2 * f / _spectrum.Length;
     }
   }
 }

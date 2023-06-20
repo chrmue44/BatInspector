@@ -10,13 +10,13 @@
     <Grid>
         <StackPanel Margin="10,10,10,-11">
             <Label Content="{x:Static res:MyResources.frmCreatePrjInfo}"></Label>
-            <local:ctlDataItem x:Name="_ctlPrjName" Margin=" 0,10,0,0"/>
             <local:CtlSelectFile x:Name="_ctlSrcFolder" Margin=" 0,20,0,0"/>
             <local:CtlSelectFile x:Name="_ctlDstFolder" Margin=" 0,0,0,0"/>
-            <StackPanel Orientation="Horizontal" Name="_spStartDate" Margin="0,20,0,20">
-                <Label Content="{x:Static res:MyResources.CtlSumReportStartDate}" HorizontalContentAlignment="Right" Width="100"/>
+      <local:ctlDataItem x:Name="_ctlPrjName" Margin=" 0,10,0,0"/>
+      <StackPanel Orientation="Horizontal" Name="_spStartDate" Margin="0,20,0,20">
+                <Label Name="_lblDateStart" Content="{x:Static res:MyResources.CtlSumReportStartDate}" HorizontalContentAlignment="Right" Width="100"/>
                 <local:CtlDateTime x:Name="_dtStart"></local:CtlDateTime>
-                <Label Content="{x:Static res:MyResources.CtlSumReportEndDate}" HorizontalContentAlignment="Right" Width="120"/>
+        <Label Name="_lblDateEnd" Content="{x:Static res:MyResources.CtlSumReportEndDate}" HorizontalContentAlignment="Right" Width="120"/>
                 <local:CtlDateTime x:Name="_dtEnd"></local:CtlDateTime>
       </StackPanel>
             <local:ctlDataItem x:Name="_ctlMaxFiles" Margin=" 0,0,0,0"/>

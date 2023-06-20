@@ -242,12 +242,9 @@ namespace BatInspector
 
     public void denoise()
     {
-      if (_analysis != null)
-      {
         _wf.Audio.FftForward();
-        _wf.Audio.reduceNoise(0.5);
+        _wf.Audio.reduceNoise(-30);
         _wf.Audio.FftBackward();
-      }
     }
   }
 }

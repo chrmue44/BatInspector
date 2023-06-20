@@ -16,6 +16,7 @@ using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
@@ -37,6 +38,8 @@ namespace BatInspector
     public string GpxFile { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
+    public bool IsProjectFolder { get; set; } 
+
 
   }
 
@@ -213,6 +216,27 @@ namespace BatInspector
       return strings.ToArray();
     }
 
+    /// <summary>
+    /// create one or multiple projects from a directory containing a project
+    /// </summary>
+    /// <param name="info">parameters to specify project</param>
+    /// <param name="regions"></param>
+    /// <param name="speciesInfo"></param>
+    public static string[] splitPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    {
+      Project prjSrc = new Project(regions, speciesInfo);
+      string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
+      prjSrc.readPrjFile(fName);
+      string[] notes = prjSrc.Notes.Split('\n');
+      info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
+      info.Landscape = notes[0];
+      info.StartTime = new DateTime(1900, 1, 1);
+      info.EndTime = new DateTime(2100, 1, 1);
+      if(notes.Length > 1)
+        info.Weather = notes[1];
+
+      return createPrj(info, regions, speciesInfo);
+    }
 
     /// <summary>
     /// create one or multiple projects from a directory containing WAV files
@@ -240,7 +264,11 @@ namespace BatInspector
           {
             FileInfo fileInfo = new FileInfo(f);
             if (fileInfo.Length > maxFileLen)
-              Project.splitWav(f, info.MaxFileLenSec);
+            {
+              string[] names = Project.splitWav(f, info.MaxFileLenSec);
+              if (info.IsProjectFolder)
+                Project.createSplitXmls(f, names);
+            }
           }
 
           // 2nd step create projects
@@ -275,10 +303,18 @@ namespace BatInspector
             string[] prjFiles = new string[fileCnt];
             Array.Copy(files, iFirst, prjFiles, 0, fileCnt);
             Utils.copyFiles(prjFiles, wavDir);
+            if(info.IsProjectFolder)
+            {
+              string[] xmlFiles = new string[prjFiles.Length];
+              for(int i = 0; i < xmlFiles.Length; i++)
+                xmlFiles[i] = prjFiles[i].Replace(".wav", ".xml");
+              Utils.copyFiles(xmlFiles, wavDir);
+            }
             Project prj = new Project(regions, speciesInfo);
             DirectoryInfo dir = new DirectoryInfo(fullDir);
-            prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Weather + "\n" + info.Landscape);
-            prj.createXmlInfoFiles(info);
+            prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
+            if(!info.IsProjectFolder)
+              prj.createXmlInfoFiles(info);
             retVal.Add(dirName);
           }
         }
@@ -427,6 +463,16 @@ namespace BatInspector
       name = Path.GetFileNameWithoutExtension(filePath);
       rec.Name = name;
       list.Add(rec);  
+    }
+
+    private static void createSplitXmls(string fName, string[] newNames)
+    {
+      fName = fName.Replace(".wav", ".xml");
+      foreach(string newName in newNames)
+      {
+        string xmlName = newName.Replace(".wav", ".xml");
+        File.Copy(fName, xmlName, true);
+      }
     }
 
     private static string[] splitWav(string fName, double size)

@@ -727,7 +727,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source Folder with WAV files.
+        ///   Looks up a localized string similar to Source Folder(*.wav, *.bpr).
         /// </summary>
         public static string frmCreatePrjSrcFolder {
             get {
@@ -736,7 +736,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create Project.
+        ///   Looks up a localized string similar to Create Project(s) from WAV files or another project.
         /// </summary>
         public static string frmCreatePrjTitle {
             get {
@@ -1276,7 +1276,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a project from a collection of WAV files.
+        ///   Looks up a localized string similar to Create project(s) from a collection of WAV files or another project.
         /// </summary>
         public static string MainToolCreatePrj {
             get {

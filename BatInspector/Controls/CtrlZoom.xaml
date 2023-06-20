@@ -71,9 +71,11 @@
                     <Image Source="../images/stop.png"></Image>
                 </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+              <!---
                 <Button x:Name="_btnDenoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDenoise_Click" ToolTip="{x:Static res:MyResources.ToolTipDenoise}">
                   <Image Source="../images/icons8-cleanup-noise-100.png"></Image>
                 </Button>
+              -->
                 <Button x:Name="_btnBandpass"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnBandpass_Click" ToolTip="{x:Static res:MyResources.ToolTipBandpass}">
                   <Image Source="../images/filter_settings_icon_143016.png"></Image>
                 </Button>
@@ -110,7 +112,7 @@ ToolTip="This is a tool tip." >
       <Line Name="_cursorA1" Visibility="Hidden" Grid.Row="0" Grid.Column="2" Stroke="Red" StrokeThickness="2"/>
       <Line Name="_cursorA2" Visibility="Hidden" Grid.Row="0" Grid.Column="2" Stroke="Magenta" StrokeThickness="2"/>
       <Canvas Name ="_rulerA" Grid.Row="0" Grid.Column="1" ></Canvas>
-            <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="3" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="10" />
+            <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="3" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="5" />
             <Image Name="_imgFt" Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_imgFt_MouseMove">

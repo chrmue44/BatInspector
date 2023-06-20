@@ -48,6 +48,8 @@ namespace BatInspector.Controls
 
     }
 
+    public new bool IsEnabled { get { return _tb.IsEnabled; } set { _tb.IsEnabled = value; _lbl.Opacity = value ? 1 : 0.5; } }
+    
     public void setValue(uint val)
     {
       if (_type == enDataType.UINT)

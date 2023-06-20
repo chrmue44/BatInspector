@@ -736,7 +736,7 @@
     <value>Bat Species Determination, part 1</value>
   </data>
   <data name="MainToolCreatePrj" xml:space="preserve">
-    <value>Create a project from a collection of WAV files</value>
+    <value>Create project(s) from a collection of WAV files or another project</value>
   </data>
   <data name="frmCreatePrjInfo" xml:space="preserve">
     <value>Please enter missing information to create a project from a selection of WAV files</value>
@@ -748,7 +748,7 @@
     <value>Longitude</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Create Project</value>
+    <value>Create Project(s) from WAV files or another project</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Latitude format error: </value>
@@ -775,7 +775,7 @@
     <value>save zoomed section as WAV file</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Source Folder with WAV files</value>
+    <value>Source Folder(*.wav, *.bpr)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Destination Folder for Project</value>

@@ -12,6 +12,7 @@
 
 using BatInspector.Properties;
 using libParser;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Globalization;
 using System.IO;
@@ -29,6 +30,7 @@ namespace BatInspector.Forms
     private ViewModel _model;
     private PrjInfo _info;
     private bool _inspect;
+    private bool _isProjectFolder = false;
 
     public FrmCreatePrj(ViewModel model)
     {
@@ -73,18 +75,60 @@ namespace BatInspector.Forms
 
     private void setupStartEndTime()
     {
-      string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
-      if(files != null && files.Length > 0) 
+      string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.bpr");
+      // folder contains project file
+      if (files != null && files.Length > 0)
       {
-        FileInfo info = new FileInfo(files[0]);
-        DateTime start = info.LastWriteTime.Date;
-        start = start.AddHours(21);
-        DateTime end = info.LastWriteTime.Date;
-        end = end.AddDays(1);
-        end = end.AddHours(6);
-        _dtStart.init(start);
-        _dtEnd.init(end);
+        _isProjectFolder = true;
+        _info.Name = Path.GetFileNameWithoutExtension( files[0]);
+        _ctlPrjName.setValue(_info.Name);
       }
+      else
+      {
+        _isProjectFolder = false;
+        files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
+        if (files != null && files.Length > 0)
+        {
+          FileInfo info = new FileInfo(files[0]);
+          DateTime start = info.LastWriteTime.Date;
+          start = start.AddHours(21);
+          DateTime end = info.LastWriteTime.Date;
+          end = end.AddDays(1);
+          end = end.AddHours(6);
+          _dtStart.init(start);
+          _dtEnd.init(end);
+        }
+      }
+      enableGuiElements();
+    }
+
+    private void enableGuiElements()
+    {
+      _ctlPrjName.IsEnabled = !_isProjectFolder;
+      //      _ctlLat.IsEnabled = !_isProjectFolder;
+      _ctlLat.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      //      _ctlLon.IsEnabled = !_isProjectFolder;
+      _ctlLon.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      //      _ctlPrjWeather.IsEnabled = !_isProjectFolder;
+      _ctlPrjWeather.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      //      _ctlPrjLandscape.IsEnabled = !_isProjectFolder;
+      _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      //      _ctlGpxFile.IsEnabled = !_isProjectFolder;
+      _ctlGpxFile.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      //      _rbGpxFile.Opacity = !_isProjectFolder ? 1 : 0.5;
+      //      _rbGpxFile.IsEnabled = !_isProjectFolder;
+      _rbGpxFile.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      //      _rbFixedPos.Opacity = !_isProjectFolder ? 1 : 0.5;
+      //      _rbFixedPos.IsEnabled = !_isProjectFolder;
+      _rbFixedPos.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      //      _dtStart.IsEnabled = !_isProjectFolder;
+      _dtStart.Visibility = Visibility.Hidden;
+      //      _dtEnd.IsEnabled = !_isProjectFolder;
+      _dtEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      //      _lblDateStart.Opacity = !_isProjectFolder ? 1 : 0.5;
+      _lblDateStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      //      _lblDateEnd.Opacity = !_isProjectFolder ? 1 : 0.5;
+      _lblDateEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
     }
 
     /// <summary>
@@ -153,43 +197,67 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      bool ok = parseLatitude(_ctlLat.getValue(), out double lat);
-      if (!ok)
-        MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+      _info.Name = _ctlPrjName.getValue();
+      _info.SrcDir = _ctlSrcFolder.getValue();
+      _info.DstDir = _ctlDstFolder.getValue();
+      _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
+      _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
+      _inspect = _cbEvalPrj.IsChecked == true;
+      _info.IsProjectFolder = _isProjectFolder;
+      if (_isProjectFolder)
+      {
+        this.Visibility = Visibility.Hidden;
+        Thread thr = new Thread(splitProject);
+        thr.Start();
+      }
       else
       {
-        ok = parseLongitude(_ctlLon.getValue(), out double lon);
+        bool ok = parseLatitude(_ctlLat.getValue(), out double lat);
         if (!ok)
-          MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         else
         {
-          try
+          ok = parseLongitude(_ctlLon.getValue(), out double lon);
+          if (!ok)
+            MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          else
           {
-            this.Visibility = Visibility.Hidden;
-            _info.Name = _ctlPrjName.getValue();
-            _info.SrcDir = _ctlSrcFolder.getValue();
-            _info.DstDir = _ctlDstFolder.getValue();
-            _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
-            _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
-            _info.Weather = _ctlPrjWeather.getValue();
-            _info.Landscape = _ctlPrjLandscape.getValue();
-            _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
-            _info.Latitude = lat;
-            _info.Longitude = lon;
-            _info.StartTime = _dtStart.DateTime;
-            _info.EndTime = _dtEnd.DateTime;
-            _inspect = _cbEvalPrj.IsChecked == true;
-            Thread thr = new Thread(createProject);
-            thr.Start();
-          }
-          catch(Exception ex) 
-          {
-            DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
+            try
+            {
+              this.Visibility = Visibility.Hidden;
+              _info.Weather = _ctlPrjWeather.getValue();
+              _info.Landscape = _ctlPrjLandscape.getValue();
+              _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+              _info.Latitude = lat;
+              _info.Longitude = lon;
+              _info.StartTime = _dtStart.DateTime;
+              _info.EndTime = _dtEnd.DateTime;
+              Thread thr = new Thread(createProject);
+              thr.Start();
+            }
+            catch (Exception ex)
+            {
+              DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
+            }
           }
         }
       }
     }
 
+    private void splitProject()
+    {
+      string[] projects = Project.splitPrj(_info, _model.Regions, _model.SpeciesInfos);
+      if (_inspect)
+      {
+        foreach (string prj in projects)
+        {
+          string prjPath = _info.DstDir + "/" + prj;
+          DirectoryInfo dir = new DirectoryInfo(prjPath);
+          _model.initProject(dir);
+          _model.evaluate();
+        }
+      }
+    }
 
     private void createProject()
     {

@@ -9,9 +9,12 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using System.Runtime.InteropServices;
+using System;
 using System.Windows;
 using BatInspector.Controls;
 using Microsoft.Win32;
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -43,7 +46,8 @@ namespace BatInspector.Forms
 
       _ctlSamples.setup("Nr of Samples", enDataType.INT, 0, wLbl);
     }
-  
+
+
     private void _btnOpen_Click(object sender, RoutedEventArgs e)
     {
       OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -84,6 +88,16 @@ namespace BatInspector.Forms
     {
       int sr = _ctlSamplingRate.getIntValue();
       _model.WavFile.FormatChunk.Frequency = (uint)sr;
+    }
+
+    private void windowLoaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
+
+    private void _btnClose_Click(object sender, RoutedEventArgs e)
+    {
+      this.Visibility = Visibility.Hidden;
     }
   }
 }

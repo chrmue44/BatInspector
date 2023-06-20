@@ -41,8 +41,17 @@ namespace BatInspector.Forms
     int _cbFocus = -1;
 
     ViewModel _model;
-    FrmLog _log = null;
     FrmFilter _frmFilter = null;
+    FrmScript _frmScript = null;
+    FrmAbout _frmAbout = null;
+    frmSettings _frmSettings = null;
+    FrmCreatePrj _frmCreatePrj = null;
+    frmCreateReport _frmCreateReport = null;
+    frmWavFile _frmWavFile = null;
+    FrmColorMap _frmColorMap = null;
+    frmDebug _frmDebug = null;
+   
+
     int _imgHeight = MAX_IMG_HEIGHT;
 
     FrmZoom _frmZoom = null;
@@ -71,7 +80,6 @@ namespace BatInspector.Forms
 
       _model = new ViewModel(this, version.ToString());
       _model.loadSettings();
-      _log = new FrmLog();
 
       setLanguage();
       InitializeComponent();
@@ -577,20 +585,39 @@ namespace BatInspector.Forms
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
-      checkSavePrj();      
-      if (_log != null)
-        _log.Close();
+      checkSavePrj();
+      if (_frmColorMap != null)
+        _frmColorMap.Close();
       if (_frmZoom != null)
         _frmZoom.Close();
       if (_frmSpecies != null)
         _frmSpecies.Close();
+      if(_frmFilter != null)
+        _frmFilter.Close();
+      if(_frmScript != null)
+        _frmScript.Close();
+      if (_frmAbout != null)
+        _frmAbout.Close();
+      if(_frmSettings != null)
+        _frmSettings.Close();
+      if(_frmCreatePrj != null)
+        _frmCreatePrj.Close();
+      if (_frmCreateReport != null)
+        _frmCreateReport.Close();
+      if(_frmWavFile != null)
+        _frmWavFile.Close();
+      if(_frmDebug != null) 
+        _frmDebug.Close();
       DebugLog.save();
     }
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)
     {
-      _frmFilter = new FrmFilter(_model.Filter, populateFilterComboBoxes);
+      if(_frmFilter == null)
+        _frmFilter = new FrmFilter(_model.Filter, populateFilterComboBoxes);
       _frmFilter.Show();
+      _frmFilter.Visibility = Visibility.Visible;
+      _frmFilter.Topmost = true;
     }
 
     private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
@@ -632,8 +659,11 @@ namespace BatInspector.Forms
 
     private void _btnInfo_Click(object sender, RoutedEventArgs e)
     {
-      FrmAbout frm = new FrmAbout(_model.Version);
-      frm.Show();
+      if(_frmAbout == null)
+        _frmAbout = new FrmAbout(_model.Version);
+      _frmAbout.Show();
+      _frmAbout.Visibility = Visibility.Visible;
+      _frmAbout.Topmost = true;
     }
 
     private void _btnCallInfo_Click(object sender, RoutedEventArgs e)
@@ -649,8 +679,11 @@ namespace BatInspector.Forms
 
     private void _btnDel_Click(object sender, RoutedEventArgs e)
     {
-      FrmColorMap frm = new FrmColorMap(_model);
-      frm.Show();
+      if(_frmColorMap == null)
+        _frmColorMap = new FrmColorMap(_model);
+      _frmColorMap.Show();
+      _frmColorMap.Visibility = Visibility.Visible;
+      _frmColorMap.Topmost = true;
     }
 
     private void _btnSpecies_Click(object sender, RoutedEventArgs e)
@@ -658,18 +691,26 @@ namespace BatInspector.Forms
       if(_frmSpecies == null)
         _frmSpecies = new frmSpeciesData(_model, closeWindow, this);
       _frmSpecies.Show();
+      _frmSpecies.Visibility = Visibility.Visible;
+      _frmSpecies.Topmost = true;
     }
 
     private void _btnSettings_Click(object sender, RoutedEventArgs e)
     {
-      frmSettings frm = new frmSettings(AppParams.Inst);
-      frm.Show();
+      if(_frmSettings == null)
+        _frmSettings = new frmSettings(AppParams.Inst);
+      _frmSettings.Show();
+      _frmSettings.Visibility = Visibility.Visible;
+      _frmSettings.Topmost = true;
     }
 
     private void _btnWavTool_Click(object sender, RoutedEventArgs e)
     {
-      frmWavFile frm = new frmWavFile(_model);
-      frm.Show();
+      if(_frmWavFile == null)
+        _frmWavFile = new frmWavFile(_model);
+      _frmWavFile.Show();
+      _frmWavFile.Visibility = Visibility.Visible;
+      _frmWavFile.Topmost = true;
     }
 
     private void Content_rendered(object sender, System.EventArgs e)
@@ -737,9 +778,12 @@ namespace BatInspector.Forms
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)
     {
-      frmCreateReport frm = new frmCreateReport(_model);
-      Filter.populateFilterComboBox(frm._ctlReport._cbFilter, _model);
-      frm.Show();
+      if(_frmCreateReport == null)
+        _frmCreateReport = new frmCreateReport(_model);
+      Filter.populateFilterComboBox(_frmCreateReport._ctlReport._cbFilter, _model);
+      _frmCreateReport.Show();
+      _frmCreateReport.Visibility = Visibility.Visible;
+      _frmCreateReport.Topmost = true;
     }
 
     private void _btnFindSpecies_Click(object sender, RoutedEventArgs e)
@@ -771,8 +815,9 @@ namespace BatInspector.Forms
 
     private void _btnScript_Click(object sender, RoutedEventArgs e)
     {
-      FrmScript frmScript = new FrmScript(_model);
-      frmScript.Show();
+      if (_frmScript == null)
+        _frmScript = new FrmScript(_model);
+      _frmScript.Show();
     }
 
     private void _btnCancelScript_Click(object sender, RoutedEventArgs e)
@@ -789,8 +834,11 @@ namespace BatInspector.Forms
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
-      frmDebug frm = new frmDebug(_model);
-      frm.Show();
+      if(_frmDebug == null)
+        _frmDebug = new frmDebug(_model);
+      _frmDebug.Show();
+      _frmDebug.Visibility = Visibility.Visible;
+      _frmDebug.Topmost = true;
     }
 
     private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
@@ -891,8 +939,11 @@ namespace BatInspector.Forms
 
     private void _btnCreatePrj_Click(object sender, RoutedEventArgs e)
     {
-      FrmCreatePrj frm = new FrmCreatePrj(_model);
-      frm.Show();
+      if(_frmCreatePrj == null)
+        _frmCreatePrj = new FrmCreatePrj(_model);
+      _frmCreatePrj.Show();
+      _frmCreatePrj.Visibility = Visibility.Visible;
+      _frmCreatePrj.Topmost = true;
     }
   }
 

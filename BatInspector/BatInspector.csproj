@@ -134,9 +134,6 @@
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmAppSettings.xaml.cs">
-      <DependentUpon>FrmAppSettings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FrmColorMap.xaml.cs">
       <DependentUpon>FrmColorMap.xaml</DependentUpon>
     </Compile>
@@ -207,6 +204,7 @@
     <Compile Include="ViewModel\SumReport.cs" />
     <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
+    <Compile Include="winUtils.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -221,9 +219,6 @@
       <DependentUpon>FrmZoom.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppParams.cs" />
-    <Compile Include="Forms\FrmLog.xaml.cs">
-      <DependentUpon>FrmLog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModel\Analysis.cs" />
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
@@ -296,10 +291,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\FrmAppSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Forms\FrmColorMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -325,10 +316,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\frmFindBat.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\FrmLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

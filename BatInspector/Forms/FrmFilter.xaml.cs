@@ -11,6 +11,7 @@
  ********************************************************************************/
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -68,7 +69,7 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {      
-      this.Close();
+      this.Visibility = Visibility.Hidden;
       _dlgUpdate();
     }
 
@@ -82,6 +83,16 @@ namespace BatInspector.Forms
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
+    {
+      Visibility = Visibility.Hidden;
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
+
+    private void _scrlViewer_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
     {
 
     }

@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Forms"
+        xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="Tools for current File" Height="383" Width="400">
+        Title="{x:Static res:MyResources.titleFrmTools}" Height="383" Width="400">
     <Grid>
-        <StackPanel Name ="_sp" Orientation="Vertical">
+        <StackPanel x:Name ="_sp" Orientation="Vertical">
             <Button></Button>
         </StackPanel>
     </Grid>

@@ -10,6 +10,7 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 using BatInspector.Controls;
 using BatInspector.Properties;
@@ -87,17 +88,18 @@ namespace BatInspector.Forms
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-
+      this.Visibility = Visibility.Hidden;
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
       _btnApply_Click(null, null);
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
 }

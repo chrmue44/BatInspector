@@ -2086,6 +2086,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Report Across Projects.
+        /// </summary>
+        public static string titleCreateReport {
+            get {
+                return ResourceManager.GetString("titleCreateReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools for current File.
+        /// </summary>
+        public static string titleFrmTools {
+            get {
+                return ResourceManager.GetString("titleFrmTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to apply bandpass for frequency range indicated by cursors.
         /// </summary>
         public static string ToolTipBandpass {

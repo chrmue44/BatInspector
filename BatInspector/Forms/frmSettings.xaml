@@ -6,22 +6,26 @@
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="frmSettings" Height="450" Width="800">
+        Title="frmSettings" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="35" />
-    </Grid.RowDefinitions>
-    <WindowsFormsHost Name="_wfHost">
-      <wf:PropertyGrid x:Name="_pg"></wf:PropertyGrid>
-    </WindowsFormsHost>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-      <Button Name="_btnFactSettings" Width="130" Margin="5" Click="_btnFactSettings_Click" Content="{x:Static res:MyResources.FactorySettings}"></Button>
-      <Button Name="_btnLoad" Width="130" Margin="5" Click="_btnLoad_Click" Content="{x:Static res:MyResources.BtnLoad}"></Button>
-      <Button Name="_btnSaveAs" Width="130" Margin="5" Click="_btnSaveAs_Click" Content="{x:Static res:MyResources.BtnSaveAs}"></Button>
-      <Button Name="_btnCancel" Width="130" Margin="30,5,5,5" Click="_btnCancel_Click" Content="{x:Static res:MyResources.BtnCancel}"></Button>
-      <Button Name="_btnOk" Width="130" Margin="5" Click="_btnOk_Click" Content="OK"></Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <WindowsFormsHost Name="_wfHost" Grid.ColumnSpan="2">
+            <wf:PropertyGrid x:Name="_pg"></wf:PropertyGrid>
+        </WindowsFormsHost>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="75,399,0,0" Grid.RowSpan="2">
+            <Button Name="_btnFactSettings" Width="130" Margin="5" Click="_btnFactSettings_Click" Content="{x:Static res:MyResources.FactorySettings}"></Button>
+            <Button Name="_btnLoad" Width="130" Margin="5" Click="_btnLoad_Click" Content="{x:Static res:MyResources.BtnLoad}"></Button>
+            <Button Name="_btnSaveAs" Width="130" Margin="5" Click="_btnSaveAs_Click" Content="{x:Static res:MyResources.BtnSaveAs}"></Button>
+            <Button Name="_btnCancel" Width="130" Margin="30,5,5,5" Click="_btnCancel_Click" Content="{x:Static res:MyResources.BtnCancel}"></Button>
+            <Button Name="_btnOk" Width="130" Margin="5" Click="_btnOk_Click" Content="OK"></Button>
 
-    </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

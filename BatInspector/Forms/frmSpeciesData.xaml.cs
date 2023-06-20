@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -64,14 +65,6 @@ namespace BatInspector.Forms
           if (spec.WavExample != null)
           {
             string wavName = Path.GetFileName(spec.WavExample);
-/*            int pos = spec.WavExample.LastIndexOf("\\");
-            int pos2 = spec.WavExample.LastIndexOf("/");
-            if ((pos > pos2) && (pos >= 0))
-              wavName = spec.WavExample.Substring(pos + 1);
-            else if (pos2 >= 0)
-              wavName = spec.WavExample.Substring(pos2 + 1);
-            else
-              wavName = spec.WavExample; */
 
             string fullName = Environment.CurrentDirectory + "/" + spec.WavExample;
             WavFile w = new WavFile();
@@ -86,13 +79,13 @@ namespace BatInspector.Forms
 
     private void _btnCacel_Click(object sender, RoutedEventArgs e)
     {
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
       _btnSave_Click(sender, e);
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
 
     private void species1Changed(int idx, string val)
@@ -187,6 +180,11 @@ namespace BatInspector.Forms
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
       _closWin(enWinType.BAT);
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
 }

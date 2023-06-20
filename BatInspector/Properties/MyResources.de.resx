@@ -861,4 +861,10 @@
   <data name="MainToolHelp" xml:space="preserve">
     <value>Zeige Hilfe-Dateien</value>
   </data>
+  <data name="titleCreateReport" xml:space="preserve">
+    <value>Projektübergreifenden Bericht erstellen</value>
+  </data>
+  <data name="titleFrmTools" xml:space="preserve">
+    <value>Tools für aktuelle Datei</value>
+  </data>
 </root>

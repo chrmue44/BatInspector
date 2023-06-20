@@ -6,7 +6,7 @@
                xmlns:res="clr-namespace:BatInspector.Properties" 
         xmlns:local="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
-        Title="frmCreateReport" Height="276" Width="719">
+        Title="{x:Static res:MyResources.titleCreateReport}" Height="276" Width="719" Loaded="Window_Loaded">
     <StackPanel>
         <local:CtlSumReport x:Name="_ctlReport">
             

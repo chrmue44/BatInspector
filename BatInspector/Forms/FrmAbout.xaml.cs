@@ -13,7 +13,7 @@
 using System.IO;
 
 using System.Windows;
-
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -36,7 +36,12 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      this.Close();
+      this.Visibility = Visibility.Hidden;
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
 }

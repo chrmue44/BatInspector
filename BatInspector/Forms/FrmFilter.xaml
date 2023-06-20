@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties" 
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.FrmFilterTitle}" Height="450" Width="800">
+        Title="{x:Static res:MyResources.FrmFilterTitle}" Height="450" Width="800" Loaded="Window_Loaded">
   <Grid  Margin="5,5,5,5">
     <Grid.RowDefinitions>
       <RowDefinition Height="44"></RowDefinition>
       <RowDefinition Height="25"></RowDefinition>
       <RowDefinition Height="*"></RowDefinition>
-      <RowDefinition Height="30"></RowDefinition>
+      <RowDefinition Height="50"></RowDefinition>
     </Grid.RowDefinitions>
     <ToolBar Grid.Row="0">
     <Button x:Name="_btnAdd"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnAdd_Click" ToolTip="{x:Static res:MyResources.FrmFilterTtipAdd}">
@@ -35,13 +35,14 @@
             <TextBlock Grid.Column="2" Text="{x:Static res:MyResources.FrmFilterFilterExpression}" />
             <TextBlock Grid.Column="3" Text="{x:Static res:MyResources.MainBtnAll}" />
     </Grid>
-    <StackPanel Name="_sp" Grid.Row="2" Grid.ColumnSpan="2">
-      <local:ctlFilterItem></local:ctlFilterItem>
-
-    </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button x:Name="_btnCancel"  Height="25" Width="100"  Margin="0,0,5,5" VerticalAlignment="Top"  Click="_btnCancel_Click" ToolTip="{x:Static res:MyResources.FrmFilterToolCancel}" Grid.Column="1" Content="{x:Static res:MyResources.BtnCancel}" />
-        <Button x:Name="_btnOk"  Height="25" Width="100"  Margin="0,0,5,5" VerticalAlignment="Top" Click="_btnOk_Click" ToolTip="{x:Static res:MyResources.FrmFilterToolOk}" Grid.Column="1" Content="{x:Static res:MyResources.BtnOK}" />
+        <ScrollViewer Grid.Row="2"   Name="_scrlViewer" VerticalScrollBarVisibility="Auto" >
+            <StackPanel Name="_sp" >
+                <local:ctlFilterItem></local:ctlFilterItem>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+        <Button x:Name="_btnCancel"  Height="25" Width="100"  Margin="0,0,15,0" VerticalAlignment="Top"  Click="_btnCancel_Click" ToolTip="{x:Static res:MyResources.FrmFilterToolCancel}" Grid.Column="1" Content="{x:Static res:MyResources.BtnCancel}" />
+        <Button x:Name="_btnOk"  Height="25" Width="100"  Margin="0,0,15,0" VerticalAlignment="Top" Click="_btnOk_Click" ToolTip="{x:Static res:MyResources.FrmFilterToolOk}" Grid.Column="1" Content="{x:Static res:MyResources.BtnOK}" />
         </StackPanel>
     </Grid>
 </Window>

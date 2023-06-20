@@ -9,9 +9,11 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -77,7 +79,7 @@ namespace BatInspector.Forms
         }
       }
       _model.Scripter.setScripts(_temp);
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
@@ -92,7 +94,12 @@ namespace BatInspector.Forms
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
-      this.Close();
+      this.Visibility = Visibility.Hidden; ;
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
 

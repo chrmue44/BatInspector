@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.frmCreatePrjTitle}" Height="580" Width="700">
+        Title="{x:Static res:MyResources.frmCreatePrjTitle}" Height="580" Width="700" Loaded="Window_Loaded">
     <Grid>
         <StackPanel Margin="10,10,10,-11">
             <Label Content="{x:Static res:MyResources.frmCreatePrjInfo}"></Label>

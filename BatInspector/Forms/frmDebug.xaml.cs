@@ -10,6 +10,7 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 using System.Windows;
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -24,6 +25,16 @@ namespace BatInspector.Forms
       InitializeComponent();
       _model = model;
       _ctlVarTable.setup(_model.Scripter.VarList);
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
+
+    private void _btnClose_Click(object sender, RoutedEventArgs e)
+    {
+      this.Visibility = Visibility.Hidden;
     }
   }
 }

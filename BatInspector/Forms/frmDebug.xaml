@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ctrl="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
-        Title="frmDebug" Height="450" Width="800">
+        Title="frmDebug" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <GroupBox Header="Variables">
+        <StackPanel>
+            <GroupBox Header="Variables">
         <ctrl:ctlVarTable x:Name="_ctlVarTable" Margin="10"/>
-        </GroupBox>
-
+            </GroupBox>
+            <Button x:Name="_btnClose" Margin ="0,10,20,0" Content="Close" Width="80" Height="30" Click="_btnClose_Click" HorizontalAlignment="Right"/>
+        </StackPanel>
     </Grid>
 </Window>
+
+    

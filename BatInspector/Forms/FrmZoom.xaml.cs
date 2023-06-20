@@ -13,6 +13,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -69,6 +70,12 @@ namespace BatInspector.Forms
     private void Window_Closing(object sender, CancelEventArgs e)
     {
       _closeWin(enWinType.ZOOM);
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+
     }
   }
 }

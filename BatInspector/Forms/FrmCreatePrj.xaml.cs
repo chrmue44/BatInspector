@@ -11,12 +11,13 @@
  ********************************************************************************/
 
 using BatInspector.Properties;
+using libParser;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows;
-
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -162,22 +163,29 @@ namespace BatInspector.Forms
           MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         else
         {
-          this.Close();
-          _info.Name = _ctlPrjName.getValue();
-          _info.SrcDir = _ctlSrcFolder.getValue();
-          _info.DstDir = _ctlDstFolder.getValue();
-          _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
-          _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
-          _info.Weather = _ctlPrjWeather.getValue();
-          _info.Landscape = _ctlPrjLandscape.getValue();
-          _info.GpxFile = _rbGpxFile.IsChecked == true ?  _ctlGpxFile.getValue() : "";
-          _info.Latitude = lat;
-          _info.Longitude = lon;
-          _info.StartTime = _dtStart.DateTime;
-          _info.EndTime = _dtEnd.DateTime;
-          _inspect = _cbEvalPrj.IsChecked == true;
-          Thread thr = new Thread(createProject);
-          thr.Start();
+          try
+          {
+            this.Visibility = Visibility.Hidden;
+            _info.Name = _ctlPrjName.getValue();
+            _info.SrcDir = _ctlSrcFolder.getValue();
+            _info.DstDir = _ctlDstFolder.getValue();
+            _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
+            _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
+            _info.Weather = _ctlPrjWeather.getValue();
+            _info.Landscape = _ctlPrjLandscape.getValue();
+            _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+            _info.Latitude = lat;
+            _info.Longitude = lon;
+            _info.StartTime = _dtStart.DateTime;
+            _info.EndTime = _dtEnd.DateTime;
+            _inspect = _cbEvalPrj.IsChecked == true;
+            Thread thr = new Thread(createProject);
+            thr.Start();
+          }
+          catch(Exception ex) 
+          {
+            DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
+          }
         }
       }
     }
@@ -201,7 +209,7 @@ namespace BatInspector.Forms
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
 
 
@@ -210,6 +218,11 @@ namespace BatInspector.Forms
       _ctlGpxFile.IsEnabled = _rbFixedPos.IsChecked == false;
       _ctlLat.IsEnabled = _rbFixedPos.IsChecked == true;
       _ctlLon.IsEnabled = _rbFixedPos.IsChecked == true;
-    }    
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
   }
 }

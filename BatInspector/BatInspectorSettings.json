@@ -176,11 +176,11 @@
   ],
   "GradientRange": 21,
   "HideInfos": false,
-  "LogControlHeight": 110,
+  "LogControlHeight": 65,
   "MainWindowHeight": 852.80000000000007,
-  "MainWindowPosX": 24,
-  "MainWindowPosY": 74.4,
-  "MainWindowWidth": 1454.4,
+  "MainWindowPosX": 4.8000000000000007,
+  "MainWindowPosY": 71.2,
+  "MainWindowWidth": 1471.2,
   "ModelRootPath": "D:\\prj\\BatInspector\\BatInspector\\models",
   "Models": [
     {

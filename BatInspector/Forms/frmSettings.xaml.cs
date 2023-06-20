@@ -13,7 +13,7 @@ using BatInspector.Properties;
 using libParser;
 using System.Threading;
 using System.Windows;
-
+using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
@@ -43,7 +43,7 @@ namespace BatInspector.Forms
     {
       AppParams.load();
       DebugLog.log("Change of application settings cancelled", enLogType.INFO);
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
@@ -52,7 +52,7 @@ namespace BatInspector.Forms
       setLanguage();
 
       DebugLog.log("Application Settings changed and saved", enLogType.INFO);
-      this.Close();
+      this.Visibility = Visibility.Hidden;
     }
     private void setLanguage()
     {
@@ -82,6 +82,11 @@ namespace BatInspector.Forms
         string fName = openFileDialog.FileName;
         AppParams.loadFrom(fName);
       }
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
 }

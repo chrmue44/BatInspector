@@ -106,13 +106,13 @@ namespace BatInspector.Forms
     {
       _ctlPrjName.IsEnabled = !_isProjectFolder;
       //      _ctlLat.IsEnabled = !_isProjectFolder;
-      _ctlLat.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _ctlLat.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _ctlLon.IsEnabled = !_isProjectFolder;
-      _ctlLon.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _ctlLon.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _ctlPrjWeather.IsEnabled = !_isProjectFolder;
-      _ctlPrjWeather.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _ctlPrjWeather.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _ctlPrjLandscape.IsEnabled = !_isProjectFolder;
-      _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _ctlGpxFile.IsEnabled = !_isProjectFolder;
       _ctlGpxFile.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _rbGpxFile.Opacity = !_isProjectFolder ? 1 : 0.5;
@@ -122,13 +122,14 @@ namespace BatInspector.Forms
       //      _rbFixedPos.IsEnabled = !_isProjectFolder;
       _rbFixedPos.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _dtStart.IsEnabled = !_isProjectFolder;
-      _dtStart.Visibility = Visibility.Hidden;
+      _dtStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _dtEnd.IsEnabled = !_isProjectFolder;
-      _dtEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _dtEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+
       //      _lblDateStart.Opacity = !_isProjectFolder ? 1 : 0.5;
-      _lblDateStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _lblDateStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       //      _lblDateEnd.Opacity = !_isProjectFolder ? 1 : 0.5;
-      _lblDateEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden; ;
+      _lblDateEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
     }
 
     /// <summary>

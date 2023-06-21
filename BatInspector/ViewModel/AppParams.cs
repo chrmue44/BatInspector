@@ -205,7 +205,8 @@ namespace BatInspector
     public const string PATH_SCRIPT = "scripts";          // sub directory containig scripts
     public const string BAT_INFO1_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
-    public const string HELP_FILE = "/doc/BatInspector.pdf"; // software manual
+    public const string HELP_FILE_DE = "/doc/BatInspector_DE.pdf"; // software manual
+    public const string HELP_FILE_EN = "/doc/BatInspector_EN.pdf"; // software manual
     const string _fName = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
 

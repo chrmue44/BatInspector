@@ -22,6 +22,7 @@ namespace BatInspector.Forms
   {
     Filter _filter;
     dlgUpdate _dlgUpdate;
+    FrmHelpFilter _frmHelp =null;
     public FrmFilter(Filter filter, dlgUpdate dlgUpdate)
     {
       _filter = filter;
@@ -71,19 +72,30 @@ namespace BatInspector.Forms
     {      
       this.Visibility = Visibility.Hidden;
       _dlgUpdate();
+      if(_frmHelp != null)
+      {
+        _frmHelp.Close();
+        _frmHelp = null;
+      }
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {
       string str = BatInspector.Properties.MyResources.FrmFilterListOfVars + ":\n\n";
       str += _filter.getVariables();
-      FrmHelpFilter frm = new FrmHelpFilter();
-      frm._tbHelp.Text = str;
-      frm.Show();
+      if(_frmHelp == null)
+        _frmHelp = new FrmHelpFilter();
+      _frmHelp._tbHelp.Text = str;
+      _frmHelp.Show();
+      _frmHelp.Visibility = Visibility.Visible;
+      _frmHelp.Topmost = true;
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
+      if(_frmHelp != null)
+
+        _frmHelp.Close();
       Visibility = Visibility.Hidden;
     }
 

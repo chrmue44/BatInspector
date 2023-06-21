@@ -924,7 +924,10 @@ namespace BatInspector.Forms
 
     private void _mnHelpSw_Click(object sender, RoutedEventArgs e)
     {
-      showPdf(AppParams.HELP_FILE);
+      if(AppParams.Inst.Culture == enCulture.de_DE)
+        showPdf(AppParams.HELP_FILE_DE);
+      else
+        showPdf(AppParams.HELP_FILE_EN);
     }
 
     private void _mnBat1_Click(object sender, RoutedEventArgs e)

@@ -2095,6 +2095,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameter.
+        /// </summary>
+        public static string titleFrmSettings {
+            get {
+                return ResourceManager.GetString("titleFrmSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tools for current File.
         /// </summary>
         public static string titleFrmTools {

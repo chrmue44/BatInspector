@@ -8,16 +8,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <StackPanel>
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Margin="5">
       <Label Content="{x:Static res:MyResources.CtlSumReportRootDirectory}" HorizontalContentAlignment="Right" Width="150"/>
       <TextBox Name="_tbRootDir" Width="500" />
       <Button Name="_btnSelDir" Content="..." Width="30" Margin="5,0,0,0" Click="btnSetDir_Click"/>
     </StackPanel>
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
       <Label Content="Filter" HorizontalContentAlignment="Right" Width="150"/>
       <ComboBox Name="_cbFilter" Width="150"></ComboBox>
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Name="_spTimeSpan">
+    <StackPanel Orientation="Horizontal" Name="_spTimeSpan" Margin="5,0,5,5">
       <Label Content="{x:Static res:MyResources.CtlSumReportTimespan}" HorizontalContentAlignment="Right" Width="150"/>
       <ComboBox Width="150" Name="_cbPeriod">
         <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsDaily}" />
@@ -25,20 +25,20 @@
         <ComboBoxItem Content="{x:Static res:MyResources.CtlSumReportTsMonthly}" />
       </ComboBox>
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Name="_spStartDate">
+    <StackPanel Orientation="Horizontal" Name="_spStartDate" Margin="5,0,5,5">
       <Label Content="{x:Static res:MyResources.CtlSumReportStartDate}" HorizontalContentAlignment="Right" Width="150"/>
       <DatePicker Name="_dtStart" />
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Name="_spEndDate">
+    <StackPanel Orientation="Horizontal" Name="_spEndDate" Margin="5,0,5,5">
       <Label Content="{x:Static res:MyResources.CtlSumReportEndDate}" HorizontalContentAlignment="Right" Width="150"/>
       <DatePicker Name="_dtEnd" />
     </StackPanel>
-        <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Label Content="{x:Static res:MyResources.CtlSumReportDstDirectory}" HorizontalContentAlignment="Right" Width="150"/>
             <TextBox Name="_tbDstDir" Width="500" />
             <Button Name="_btnSelDstDir" Content="..." Width="30" Margin="5,0,0,0" Click="btnSetDestDir_Click"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Label Content="{x:Static res:MyResources.CtlSumReportReportName}" HorizontalContentAlignment="Right" Width="150"/>
             <TextBox Name="_tbReportName" Width="150"></TextBox>
         </StackPanel>

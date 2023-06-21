@@ -79,7 +79,7 @@
     "value": 0
   },
   "Culture": 0,
-  "ExeEditor": "C:\\Program Files\\Notepad++\\notepad++.exe",
+  "ExeEditor": "C:\\Program Files (x86)\\Notepad++\\notepad++.exe",
   "FftWidth": 512,
   "FftWindow": 4,
   "Filter": [
@@ -178,8 +178,8 @@
   "HideInfos": false,
   "LogControlHeight": 170,
   "MainWindowHeight": 1055,
-  "MainWindowPosX": 5,
-  "MainWindowPosY": 71,
+  "MainWindowPosX": 108,
+  "MainWindowPosY": 541,
   "MainWindowWidth": 1471,
   "ModelRootPath": "G:\\prj\\BatInspector\\BatInspector\\models",
   "Models": [
@@ -290,7 +290,7 @@
     }
   ],
   "SelectedModel": 0,
-  "SpeciesFile": "\"C:\/Users\/chrmu\/bat\/tierSta\/species.csv\"",
+  "SpeciesFile": "\"G:\/bat\/tierSta\/species.csv\"",
   "WaterfallHeight": 256,
   "WaterfallLogarithmic": true,
   "WaterfallWidth": 512,

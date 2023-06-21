@@ -273,8 +273,8 @@ namespace BatInspector
 
     public int executeScript(string path, bool  initVars = true)
     {
-      if (!Path.IsPathRooted(path))
-        _scriptName = AppParams.Inst.AppRootPath + "/" + path;
+      if (!System.IO.Path.IsPathRooted(path))
+        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath , path);
       else
         _scriptName = path;
       int retVal = _scripter.RunScript(path, true, initVars);
@@ -287,11 +287,14 @@ namespace BatInspector
       DebugLog.log("script execution cancelled manually", enLogType.INFO);
     }
 
-    public void editScript(string name)
+    public void editScript(string path)
     {
       string exe = AppParams.Inst.ExeEditor;
-      _scriptName = name;
-      string args = name;
+      if (!System.IO.Path.IsPathRooted(path))
+        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath, path);
+      else
+        _scriptName = path;
+      string args = _scriptName;
       _proc.LaunchCommandLineApp(exe, null, null, false, args, true, false);
     }
 
@@ -318,7 +321,7 @@ namespace BatInspector
       if (_prj != null)
       {
         string dirName = _selectedDir + "/" + _prj.WavSubDir;
-        string delName = Path.GetFileName(wavName);
+        string delName = System.IO.Path.GetFileName(wavName);
         delName = delName.Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
         string destDir = PrjPath + "/del";
@@ -328,7 +331,7 @@ namespace BatInspector
         {
           try
           { 
-            File.Copy(f, destDir + "/" + Path.GetFileName(f));
+            File.Copy(f, destDir + "/" + System.IO.Path.GetFileName(f));
             File.Delete(f);
             DebugLog.log("delete file " + f, enLogType.DEBUG);
           }

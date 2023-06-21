@@ -345,12 +345,10 @@ namespace BatInspector
           _batExplorerPrj.Notes = "";
         if (/*(_batExplorerPrj.Type != null) && (_batExplorerPrj.Type.IndexOf("Elekon") >= 0) || */
             Directory.Exists(_selectedDir + "/" + AppParams.DIR_WAVS))
-        {
           _wavSubDir =AppParams.DIR_WAVS;
-          initSpeciesList();
-        }
         else
           _wavSubDir = "";
+        initSpeciesList();
         _ok = true;
         _changed = false;
       }

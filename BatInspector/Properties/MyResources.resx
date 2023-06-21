@@ -867,4 +867,7 @@
   <data name="titleFrmTools" xml:space="preserve">
     <value>Tools for current File</value>
   </data>
+  <data name="titleFrmSettings" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
 </root>

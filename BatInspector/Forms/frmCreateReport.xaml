@@ -6,15 +6,19 @@
                xmlns:res="clr-namespace:BatInspector.Properties" 
         xmlns:local="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.titleCreateReport}" Height="276" Width="719" Loaded="Window_Loaded">
-    <StackPanel>
-        <local:CtlSumReport x:Name="_ctlReport">
+        Title="{x:Static res:MyResources.titleCreateReport}" Height="360" Width="800" Loaded="Window_Loaded">
+    <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="60"/>
+    </Grid.RowDefinitions>
+        <local:CtlSumReport x:Name="_ctlReport" Margin="10,20,10,0" Grid.Row="0">
             
         </local:CtlSumReport>
-        <StackPanel Orientation="Horizontal" Margin="150,20,0,0" Height="25">
-            <Button Content="{x:Static res:MyResources.CtlReportCreate}" Name="_btnCreate"  Width="120"   HorizontalAlignment="Left" Click="_btnCreate_Click"></Button>
-            <Button Content="{x:Static res:MyResources.BtnCancel}" Name="_btnCancel"  Width="120" Margin="10,0"   HorizontalAlignment="Left" Click="_btnCancel_Click"></Button>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,20,0" Height="25" Grid.Row="1">
+            <Button Content="{x:Static res:MyResources.CtlReportCreate}" Name="_btnCreate"  Width="120"   HorizontalAlignment="Right" Click="_btnCreate_Click"></Button>
+            <Button Content="{x:Static res:MyResources.BtnCancel}" Name="_btnCancel"  Width="120" Margin="10,0"   HorizontalAlignment="Right" Click="_btnCancel_Click"></Button>
         </StackPanel>
 
-    </StackPanel>
+    </Grid>
 </Window>

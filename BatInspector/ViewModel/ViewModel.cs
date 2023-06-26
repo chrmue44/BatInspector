@@ -277,7 +277,7 @@ namespace BatInspector
         _scriptName = System.IO.Path.Combine(AppParams.AppDataPath , path);
       else
         _scriptName = path;
-      int retVal = _scripter.RunScript(path, true, initVars);
+      int retVal = _scripter.RunScript(_scriptName, true, initVars);
       return retVal;
     }
 

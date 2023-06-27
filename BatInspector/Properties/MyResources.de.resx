@@ -870,4 +870,16 @@
   <data name="titleFrmSettings" xml:space="preserve">
     <value>Parameter</value>
   </data>
+  <data name="MainBtnAddFile" xml:space="preserve">
+    <value>Datei(en) hinzufügen</value>
+  </data>
+  <data name="MainToolAddFile" xml:space="preserve">
+    <value>Datei zum Projekt hinzufügen</value>
+  </data>
+  <data name="AddWAVFileSToProject" xml:space="preserve">
+    <value>WAV Datei(en) zum Projekt hinzufügen</value>
+  </data>
+  <data name="OpenProjectFirst" xml:space="preserve">
+    <value>Bitte zuerst ein Projekt öffnen!</value>
+  </data>
 </root>

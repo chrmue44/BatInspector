@@ -313,6 +313,28 @@ namespace BatInspector
       return retVal;
     }
 
+    public void addFile(string reportName, string wavName, int samplerate, double duration)
+    {
+      lock (_fileLock)
+      {
+        string wavFileName = Path.GetFileName(wavName);
+        AnalysisFile f = new AnalysisFile(wavFileName, samplerate, duration);
+        _list.Add(f);
+        _csv.addRow();
+        _csv.setCell(_csv.RowCnt, Cols.NAME, wavFileName);
+        _csv.setCell(_csv.RowCnt, Cols.SAMPLERATE, samplerate);
+        _csv.setCell(_csv.RowCnt, Cols.FILE_LEN, duration);
+        _csv.setCell(_csv.RowCnt, Cols.NR, 1);
+        if(_report != null)
+        {
+          ReportItem rep = new ReportItem();
+          rep.FileName = wavFileName;
+          rep.Duration = duration.ToString();
+          _report.Add(rep);
+        }
+        
+      }
+    }
 
     public void removeFile(string reportName, string wavName)
     {

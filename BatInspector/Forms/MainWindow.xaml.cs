@@ -27,7 +27,6 @@ using System.Threading;
 using BatInspector.Properties;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
-using libScripter;
 
 namespace BatInspector.Forms
 {
@@ -50,7 +49,7 @@ namespace BatInspector.Forms
     frmWavFile _frmWavFile = null;
     FrmColorMap _frmColorMap = null;
     frmDebug _frmDebug = null;
-   
+
 
     int _imgHeight = MAX_IMG_HEIGHT;
 
@@ -146,7 +145,7 @@ namespace BatInspector.Forms
           {
             TreeViewItem childItem = CreateTreeItem(subDir);
             item.Items.Add(childItem);
-            if (Project.containsProject(subDir) != "" )
+            if (Project.containsProject(subDir) != "")
             {
               childItem.FontWeight = FontWeights.Bold;
               if (Project.evaluationDone(subDir))
@@ -224,9 +223,9 @@ namespace BatInspector.Forms
       _model.initProject(dir);
       if (_model.Prj == null)              //remove all spectrograms if project was closed
         _spSpectrums.Children.Clear();
-      double fMax = 312000 / 2;
-      if ((_model.Prj != null) && (_model.Prj.Analysis != null) && (_model.Prj.Analysis.Files.Count > 0))
-        fMax = _model.Prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
+   //   double fMax = 312000 / 2;
+   //   if ((_model.Prj != null) && (_model.Prj.Analysis != null) && (_model.Prj.Analysis.Files.Count > 0))
+   //     fMax = _model.Prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
       _lblProject.Text = dir.FullName;
       if (_model.Prj != null)
       {
@@ -261,7 +260,7 @@ namespace BatInspector.Forms
         _ctlZoom = new CtrlZoom();
         _tbZoom.Content = _ctlZoom;
         _tbZoom.IsSelected = false;
- //       _tbMain.SelectedIndex = 0;
+        //       _tbMain.SelectedIndex = 0;
       }
     }
 
@@ -398,8 +397,8 @@ namespace BatInspector.Forms
       ctl._img.MaxHeight = _imgHeight;
       ctl.setFileInformations(rec.File, _model.WavFilePath, _model.Prj.Species);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
-      if(!_fastOpen)
-         setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
+      if (!_fastOpen)
+        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
     }
 
     internal async Task createFftImages()
@@ -425,7 +424,7 @@ namespace BatInspector.Forms
           {
             initCtlWav(ctl, rec);
           }
-         await Task.Delay(1);
+          await Task.Delay(1);
         }
         DebugLog.log("project opened", enLogType.INFO);
         showStatus();
@@ -436,12 +435,12 @@ namespace BatInspector.Forms
     {
       string report = _model.Prj.Analysis.Report != null ? "report available" : "no report";
       int vis = 0;
-      foreach(ctlWavFile c in _spSpectrums.Children)
+      foreach (ctlWavFile c in _spSpectrums.Children)
       {
         if (c.Visibility == Visibility.Visible)
           vis++;
       }
-      setStatus("  [ nr of files: " + vis.ToString() + "/" + _spSpectrums.Children.Count.ToString() +" | " + report + " ]");
+      setStatus("  [ nr of files: " + vis.ToString() + "/" + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)
@@ -450,7 +449,7 @@ namespace BatInspector.Forms
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = true;
-        if(ctl.Analysis != null)
+        if (ctl.Analysis != null)
           ctl.Analysis.Selected = true;
       }
       DebugLog.log("select all files", enLogType.INFO);
@@ -462,7 +461,7 @@ namespace BatInspector.Forms
       {
         ctlWavFile ctl = it as ctlWavFile;
         ctl._cbSel.IsChecked = false;
-        if(ctl.Analysis != null)
+        if (ctl.Analysis != null)
           ctl.Analysis.Selected = false;
       }
       DebugLog.log("deselect all files", enLogType.INFO);
@@ -507,7 +506,7 @@ namespace BatInspector.Forms
 
     private void _btnHideUnSelected_Click(object sender, RoutedEventArgs e)
     {
-      foreach (ctlWavFile ctl in _spSpectrums.Children)      
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.Visibility = ctl._cbSel.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
       DebugLog.log("hide unselected files", enLogType.INFO);
       showStatus();
@@ -592,28 +591,28 @@ namespace BatInspector.Forms
         _frmZoom.Close();
       if (_frmSpecies != null)
         _frmSpecies.Close();
-      if(_frmFilter != null)
+      if (_frmFilter != null)
         _frmFilter.Close();
-      if(_frmScript != null)
+      if (_frmScript != null)
         _frmScript.Close();
       if (_frmAbout != null)
         _frmAbout.Close();
-      if(_frmSettings != null)
+      if (_frmSettings != null)
         _frmSettings.Close();
-      if(_frmCreatePrj != null)
+      if (_frmCreatePrj != null)
         _frmCreatePrj.Close();
       if (_frmCreateReport != null)
         _frmCreateReport.Close();
-      if(_frmWavFile != null)
+      if (_frmWavFile != null)
         _frmWavFile.Close();
-      if(_frmDebug != null) 
+      if (_frmDebug != null)
         _frmDebug.Close();
       DebugLog.save();
     }
 
     private void _btnFilter_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmFilter == null)
+      if (_frmFilter == null)
         _frmFilter = new FrmFilter(_model.Filter, populateFilterComboBoxes);
       _frmFilter.Show();
       _frmFilter.Visibility = Visibility.Visible;
@@ -647,7 +646,7 @@ namespace BatInspector.Forms
         _model.Prj.writePrjFile();
       }
       _model.saveSettings();
-      if((_model != null) && (_model.Prj != null) &&(_model.Prj.Analysis != null) && 
+      if ((_model != null) && (_model.Prj != null) && (_model.Prj.Analysis != null) &&
         (_model.Prj.Analysis.Report != null))
         _model.Prj.Analysis.save(_model.PrjPath);
     }
@@ -659,7 +658,7 @@ namespace BatInspector.Forms
 
     private void _btnInfo_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmAbout == null)
+      if (_frmAbout == null)
         _frmAbout = new FrmAbout(_model.Version);
       _frmAbout.Show();
       _frmAbout.Visibility = Visibility.Visible;
@@ -667,7 +666,7 @@ namespace BatInspector.Forms
     }
 
     private void _btnCallInfo_Click(object sender, RoutedEventArgs e)
-    { 
+    {
       foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.InfoVisible = !ctl.InfoVisible;
       if (_spSpectrums.Children.Count > 0)
@@ -679,7 +678,7 @@ namespace BatInspector.Forms
 
     private void _btnDel_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmColorMap == null)
+      if (_frmColorMap == null)
         _frmColorMap = new FrmColorMap(_model);
       _frmColorMap.Show();
       _frmColorMap.Visibility = Visibility.Visible;
@@ -688,7 +687,7 @@ namespace BatInspector.Forms
 
     private void _btnSpecies_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmSpecies == null)
+      if (_frmSpecies == null)
         _frmSpecies = new frmSpeciesData(_model, closeWindow, this);
       _frmSpecies.Show();
       _frmSpecies.Visibility = Visibility.Visible;
@@ -697,7 +696,7 @@ namespace BatInspector.Forms
 
     private void _btnSettings_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmSettings == null)
+      if (_frmSettings == null)
         _frmSettings = new frmSettings(AppParams.Inst);
       _frmSettings.Show();
       _frmSettings.Visibility = Visibility.Visible;
@@ -706,7 +705,7 @@ namespace BatInspector.Forms
 
     private void _btnWavTool_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmWavFile == null)
+      if (_frmWavFile == null)
         _frmWavFile = new frmWavFile(_model);
       _frmWavFile.Show();
       _frmWavFile.Visibility = Visibility.Visible;
@@ -732,7 +731,7 @@ namespace BatInspector.Forms
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-      setZoomPosition ();
+      setZoomPosition();
       AppParams.Inst.MainWindowWidth = this.Width;
       AppParams.Inst.MainWindowHeight = this.Height;
     }
@@ -743,7 +742,7 @@ namespace BatInspector.Forms
       {
         Mouse.OverrideCursor = _model.Busy ? Cursors.Wait : null;
       });
-      if(_model.UpdateUi)
+      if (_model.UpdateUi)
       {
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
           _model.Prj.Analysis.updateSpeciesCount();
@@ -751,7 +750,7 @@ namespace BatInspector.Forms
         _model.UpdateUi = false;
       }
 
-      if(_model.ReloadPrj)
+      if (_model.ReloadPrj)
       {
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
         {
@@ -763,11 +762,11 @@ namespace BatInspector.Forms
         _model.ReloadPrj = false;
       }
 
-      if((_worker != null) && (!_worker.IsAlive))
+      if ((_worker != null) && (!_worker.IsAlive))
       {
         _worker = null;
-         _model.updateReport();
-         updateWavControls();
+        _model.updateReport();
+        updateWavControls();
       }
       if (_switchTabToPrj)
       {
@@ -778,7 +777,7 @@ namespace BatInspector.Forms
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmCreateReport == null)
+      if (_frmCreateReport == null)
         _frmCreateReport = new frmCreateReport(_model);
       Filter.populateFilterComboBox(_frmCreateReport._ctlReport._cbFilter, _model);
       _frmCreateReport.Show();
@@ -794,9 +793,9 @@ namespace BatInspector.Forms
 
     private void _btnCopySpec_Click(object sender, RoutedEventArgs e)
     {
-      foreach(ctlWavFile ctl in _spSpectrums.Children)
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
       {
-        if(ctl._cbSel.IsChecked == true)
+        if (ctl._cbSel.IsChecked == true)
         {
           ctl._btnCopy_Click(null, null);
         }
@@ -834,7 +833,7 @@ namespace BatInspector.Forms
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmDebug == null)
+      if (_frmDebug == null)
         _frmDebug = new frmDebug(_model);
       _frmDebug.Show();
       _frmDebug.Visibility = Visibility.Visible;
@@ -849,7 +848,7 @@ namespace BatInspector.Forms
 
       Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
       Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-//      return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+      //      return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
       return rect.IntersectsWith(bounds);
     }
 
@@ -857,12 +856,12 @@ namespace BatInspector.Forms
     {
       if (!_fastOpen)
         return;
-      
+
       double h = e.ExtentHeight;
       double p = e.VerticalOffset;
       int k = (int)((double)_spSpectrums.Children.Count * p / h);
 
-      foreach(ctlWavFile c in _spSpectrums.Children)
+      foreach (ctlWavFile c in _spSpectrums.Children)
       {
         if (IsUserVisible(c, this) && !c.WavInit)
         {
@@ -924,7 +923,7 @@ namespace BatInspector.Forms
 
     private void _mnHelpSw_Click(object sender, RoutedEventArgs e)
     {
-      if(AppParams.Inst.Culture == enCulture.de_DE)
+      if (AppParams.Inst.Culture == enCulture.de_DE)
         showPdf(AppParams.HELP_FILE_DE);
       else
         showPdf(AppParams.HELP_FILE_EN);
@@ -942,15 +941,39 @@ namespace BatInspector.Forms
 
     private void _btnCreatePrj_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmCreatePrj == null)
+      if (_frmCreatePrj == null)
         _frmCreatePrj = new FrmCreatePrj(_model);
       _frmCreatePrj.Show();
       _frmCreatePrj.Visibility = Visibility.Visible;
       _frmCreatePrj.Topmost = true;
     }
+
+    private void _btnaddFile_Click(object sender, RoutedEventArgs e)
+    {
+      if (_model.Prj.Ok)
+      {
+        System.Windows.Forms.OpenFileDialog ofi = new System.Windows.Forms.OpenFileDialog();
+        ofi.Filter = "*.wav|*.wav";
+        ofi.Title = BatInspector.Properties.MyResources.AddWAVFileSToProject;
+        ofi.Multiselect = true;
+        System.Windows.Forms.DialogResult ok = ofi.ShowDialog();
+        if (ok == System.Windows.Forms.DialogResult.OK)
+        {
+          _model.Prj.addFiles(ofi.FileNames);
+          if (_model.Prj.Analysis != null)
+            _model.Prj.Analysis.save(_model.PrjPath);
+          _model.Prj.writePrjFile();
+          _spSpectrums.Children.Clear();
+          DirectoryInfo dir = new DirectoryInfo(_model.PrjPath);
+          initializeProject(dir);
+        }
+      }
+      else
+        MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
+    }
   }
 
-  public enum enWinType 
+  public enum enWinType
   {
     ZOOM,
     BAT

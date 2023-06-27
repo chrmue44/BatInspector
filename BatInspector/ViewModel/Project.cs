@@ -57,7 +57,15 @@ namespace BatInspector
 
     public bool Ok {get {return _ok;} }
 
-    public BatExplorerProjectFileRecordsRecord[] Records { get { return _batExplorerPrj.Records; } }
+    public BatExplorerProjectFileRecordsRecord[] Records 
+    { 
+      get {
+        if(_batExplorerPrj.Records != null)
+          return _batExplorerPrj.Records;
+        else
+          return null;
+         }
+    }
     public string Name { get{ return _prjFileName; } }
     public string WavSubDir { get { return _wavSubDir; } }
     public string Notes { get { return _batExplorerPrj != null ?_batExplorerPrj.Notes : ""; } set { if(_batExplorerPrj!= null) _batExplorerPrj.Notes = value; } }
@@ -453,6 +461,37 @@ namespace BatInspector
     }
 
 
+    public void addFiles(string[] files)
+    {
+      List<BatExplorerProjectFileRecordsRecord> list = new List<BatExplorerProjectFileRecordsRecord>();
+      foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
+        list.Add(rec);
+      foreach(string file in files)
+      {
+        addRecord(file, ref list);
+        if(_analysis != null)
+        {
+          WavFile wFile = new WavFile();
+          wFile.readFile(file);
+          _analysis.addFile(ReportName, file, (int)wFile.FormatChunk.Frequency, 
+                            (double)wFile.AudioSamples.Length/wFile.FormatChunk.Frequency);
+        }
+      }
+      _batExplorerPrj.Records = list.ToArray();
+
+      string dstPath = Path.Combine(PrjDir, _wavSubDir);
+      List<string> fileList = new List<string>();
+      foreach(string file in files)
+      {
+        fileList.Add(file);
+        string xmlFile = file.Replace(".wav", ".xml");
+        if(File.Exists(xmlFile))
+          fileList.Add(xmlFile);
+      }
+      Utils.copyFiles(fileList.ToArray(), dstPath);
+      _changed = true;
+    }
+
     private void addRecord(string filePath, ref List<BatExplorerProjectFileRecordsRecord> list)
     {
       BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
@@ -462,6 +501,8 @@ namespace BatInspector
       rec.Name = name;
       list.Add(rec);  
     }
+
+
 
     private static void createSplitXmls(string fName, string[] newNames)
     {

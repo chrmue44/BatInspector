@@ -70,6 +70,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add WAV file(s) to project.
+        /// </summary>
+        public static string AddWAVFileSToProject {
+            get {
+                return ResourceManager.GetString("AddWAVFileSToProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
         public static string BtnApply {
@@ -1078,6 +1087,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add File(s).
+        /// </summary>
+        public static string MainBtnAddFile {
+            get {
+                return ResourceManager.GetString("MainBtnAddFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string MainBtnAll {
@@ -1200,6 +1218,15 @@ namespace BatInspector.Properties {
         public static string MainSelectFolder {
             get {
                 return ResourceManager.GetString("MainSelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add file to current project.
+        /// </summary>
+        public static string MainToolAddFile {
+            get {
+                return ResourceManager.GetString("MainToolAddFile", resourceCulture);
             }
         }
         
@@ -1533,6 +1560,15 @@ namespace BatInspector.Properties {
         public static string msgZoomNotPossible {
             get {
                 return ResourceManager.GetString("msgZoomNotPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to please open Project first!.
+        /// </summary>
+        public static string OpenProjectFirst {
+            get {
+                return ResourceManager.GetString("OpenProjectFirst", resourceCulture);
             }
         }
         

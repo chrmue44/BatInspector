@@ -69,7 +69,9 @@ namespace BatInspector
       {
         if(initVars)
           _parser.VarTable.VarList.init();
-        SetVariable("WRK_DIR", _wrkDir);
+        SetVariable(AppParams.VAR_WRK_DIR, _wrkDir);
+        SetVariable(AppParams.VAR_DATA_PATH, AppParams.AppDataPath);
+
         if (background)
           _parser.StartParsing(fileName);
         else {

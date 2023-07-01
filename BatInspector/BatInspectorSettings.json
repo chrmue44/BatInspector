@@ -259,34 +259,34 @@
       "Name": "scripts\\tool_all_todo.scr"
     },
     {
-      "Description": "Remove PPYG",
+      "Description": "Entferne PPYG",
       "Index": 7,
       "IsTool": true,
       "Name": "scripts\\tool_remove_ppyg.scr"
     },
     {
-      "Description": "Set Spec MAN from AUTO2",
+      "Description": "kopiere 1. SPECIES_MAN auf alle folgenden Rufe",
       "Index": 8,
-      "IsTool": true,
-      "Name": "scripts\\tool_get_from_auto2.scr"
-    },
-    {
-      "Description": "copy first SPECIES_MAN to all following calls",
-      "Index": 9,
       "IsTool": true,
       "Name": "scripts\\tool_copy_spec_from_first.scr"
     },
     {
-      "Description": "replace all pipstrelle in SPRECIES_MAN with \"Pipistrellus\"",
-      "Index": 10,
+      "Description": "Alle pipstrelle in SPECIES_MAN auf \"Pipistrellus\" setzen",
+      "Index": 9,
       "IsTool": true,
       "Name": "scripts\\tool_replace_pipstrelle.scr"
     },
     {
       "Description": "take over all automatically recognized species",
-      "Index": 11,
+      "Index": 10,
       "IsTool": false,
       "Name": "scripts\/all_auto_to_man.scr"
+    },
+    {
+      "Description": "intelligente Übernahme der automatisch ermittelten Spezies",
+      "Index": 11,
+      "IsTool": false,
+      "Name": "scripts\/transfer_auto_to_man.scr"
     }
   ],
   "SelectedModel": 0,

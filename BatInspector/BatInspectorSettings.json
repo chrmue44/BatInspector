@@ -1,5 +1,5 @@
 {
-  "AppRootPath": "G:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
+  "AppRootPath": "D:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
   "ColorGradientBlue": [
     {
       "Color": 128,
@@ -177,11 +177,11 @@
   "GradientRange": 21,
   "HideInfos": false,
   "LogControlHeight": 170,
-  "MainWindowHeight": 1055,
-  "MainWindowPosX": 108,
-  "MainWindowPosY": 541,
-  "MainWindowWidth": 1471,
-  "ModelRootPath": "G:\\prj\\BatInspector\\BatInspector\\models",
+  "MainWindowHeight": 881.6,
+  "MainWindowPosX": 84,
+  "MainWindowPosY": 101.60000000000001,
+  "MainWindowWidth": 1471.2,
+  "ModelRootPath": "D:\\prj\\BatInspector\\BatInspector\\models",
   "Models": [
     {
       "Active": true,
@@ -290,7 +290,7 @@
     }
   ],
   "SelectedModel": 0,
-  "SpeciesFile": "\"G:\/bat\/tierSta\/species.csv\"",
+  "SpeciesFile": "\"D:\/bat\/tierSta\/species.csv\"",
   "WaterfallHeight": 256,
   "WaterfallLogarithmic": true,
   "WaterfallWidth": 512,

@@ -21,7 +21,7 @@ namespace libScripter
   public class Csv
   {
     List<List<string>> _cells;
-    string _fileName;
+    string _fileName = "";
     string _separator = ";";
     int _colCnt = 0;
     bool _withHdr = false;
@@ -140,6 +140,7 @@ namespace libScripter
       List<string> retVal = null;
       if((row > 0) && (row <= _cells.Count))
       {
+        row--;
         retVal = _cells[row];
       }
       return retVal;

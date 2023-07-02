@@ -50,17 +50,31 @@ namespace BatInspector
 
     public void evaluate(ViewModel model)
     {
-      DirectoryInfo dir = new DirectoryInfo(_srcDir);
-      _model = model;
-      _analysis = new Analysis(_model.SpeciesInfos);
-      _cntCall = 0;
-      _cntFile = 0;
-      createQueryFile();
-      bool ok = crawl(dir);
-      if (ok)
-        writeQueryFile();
+      if (!Directory.Exists(_srcDir))
+        DebugLog.log("invalid directory: " + _srcDir, enLogType.ERROR);
+      else if (!Directory.Exists(_destDir))
+        DebugLog.log("invalid directory: " + _destDir, enLogType.ERROR);
       else
-        DebugLog.log("query aborted", enLogType.ERROR);
+      {
+        try
+        {
+          DirectoryInfo dir = new DirectoryInfo(_srcDir);
+          _model = model;
+          _analysis = new Analysis(_model.SpeciesInfos);
+          _cntCall = 0;
+          _cntFile = 0;
+          createQueryFile();
+          bool ok = crawl(dir);
+          if (ok)
+            writeQueryFile();
+          else
+            DebugLog.log("Query aborted", enLogType.ERROR);
+        }
+        catch ( Exception ex )
+        {
+          DebugLog.log("Query failed: " + ex.ToString(), enLogType.ERROR);
+        }
+      }
     }
 
     private bool crawl(DirectoryInfo dir)
@@ -154,6 +168,7 @@ namespace BatInspector
               lastFileName = file.Name;
             }
             List<string> row = call.getReportRow();
+            row[0] = file.Name;
             _analysis.addCsvReportRow(row);
             _analysis.addReportItem(file, call);
           }

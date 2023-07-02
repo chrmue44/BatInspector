@@ -1,0 +1,122 @@
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2023-07-02                                       
+ *   Copyright (C) 2023: christian Müller chrmue44(at)gmail(dot)com
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Xml.Serialization;
+
+namespace BatInspector
+{
+
+  // 
+  // Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.3928.0.
+  // 
+
+
+  /// <remarks/>
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public class QueryFile
+  {
+    private string _name;
+
+    private string _srcDir;
+
+    private string _created;
+
+    private string _query;
+
+    private BatExplorerProjectFileRecordsRecord[] _records;
+
+    public QueryFile()
+    {
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string Name
+    {
+      get
+      {
+        return this._name;
+      }
+      set
+      {
+        this._name = value;
+      }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string SrcDir
+    {
+      get
+      {
+        return this._srcDir;
+      }
+      set
+      {
+        this._srcDir = value;
+      }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string Created
+    {
+      get
+      {
+        return this._created;
+      }
+      set
+      {
+        this._created = value;
+      }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string Expression
+    {
+      get
+      {
+        return this._query;
+      }
+      set
+      {
+        this._query = value;
+      }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
+    public BatExplorerProjectFileRecordsRecord[] Records
+    {
+      get
+      {
+        return this._records;
+      }
+      set
+      {
+        this._records = value;
+      }
+    }
+  }
+}

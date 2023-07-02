@@ -727,7 +727,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Gpx file.
+        ///   Looks up a localized string similar to Select GPX file.
         /// </summary>
         public static string frmCreatePrjSelectGpxFile {
             get {
@@ -903,6 +903,51 @@ namespace BatInspector.Properties {
         public static string frmPredPrepare {
             get {
                 return ResourceManager.GetString("frmPredPrepare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query.
+        /// </summary>
+        public static string frmQueryQuery {
+            get {
+                return ResourceManager.GetString("frmQueryQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query Name.
+        /// </summary>
+        public static string frmQueryQueryName {
+            get {
+                return ResourceManager.GetString("frmQueryQueryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Directory.
+        /// </summary>
+        public static string frmQuerySelDestDir {
+            get {
+                return ResourceManager.GetString("frmQuerySelDestDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source directory.
+        /// </summary>
+        public static string frmQuerySelSrcDir {
+            get {
+                return ResourceManager.GetString("frmQuerySelSrcDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create/Edit query across multiple projects.
+        /// </summary>
+        public static string FrmQueryTitle {
+            get {
+                return ResourceManager.GetString("FrmQueryTitle", resourceCulture);
             }
         }
         
@@ -1434,6 +1479,15 @@ namespace BatInspector.Properties {
         public static string MainToolOpenManual {
             get {
                 return ResourceManager.GetString("MainToolOpenManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a query across multiple projects.
+        /// </summary>
+        public static string MainToolQuery {
+            get {
+                return ResourceManager.GetString("MainToolQuery", resourceCulture);
             }
         }
         

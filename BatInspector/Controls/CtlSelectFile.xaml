@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Horizontal" Height="25">
-        <TextBlock Name ="_lbl" Width="150"  Height="20">Select Folder</TextBlock>
-        <TextBox Name ="_txt" Width="300" Height="20">Tb</TextBox>
-        <Button Name="_btnOpen" Width="30" Click="_btnOpen_Click" Height="20">...</Button>
+    <StackPanel Orientation="Horizontal" Height="20">
+        <TextBlock Name ="_lbl" Width="150"  >Select Folder</TextBlock>
+        <TextBox Name ="_txt" Width="300" >Tb</TextBox>
+        <Button Name="_btnOpen" Width="30" Click="_btnOpen_Click" >...</Button>
     </StackPanel>
 </UserControl>

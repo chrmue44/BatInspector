@@ -49,7 +49,7 @@ namespace BatInspector.Forms
     frmWavFile _frmWavFile = null;
     FrmColorMap _frmColorMap = null;
     frmDebug _frmDebug = null;
-
+    FrmQuery _frmQuery = null;
 
     int _imgHeight = MAX_IMG_HEIGHT;
 
@@ -607,6 +607,8 @@ namespace BatInspector.Forms
         _frmWavFile.Close();
       if (_frmDebug != null)
         _frmDebug.Close();
+      if(_frmQuery != null)
+        _frmQuery.Close();
       DebugLog.save();
     }
 
@@ -676,7 +678,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _btnDel_Click(object sender, RoutedEventArgs e)
+    private void _btnColorPalette_Click(object sender, RoutedEventArgs e)
     {
       if (_frmColorMap == null)
         _frmColorMap = new FrmColorMap(_model);
@@ -970,6 +972,13 @@ namespace BatInspector.Forms
       }
       else
         MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    private void _btnQuery_Click(object sender, RoutedEventArgs e)
+    {
+      if(_frmQuery == null)
+        _frmQuery = new FrmQuery(_model);
+      _frmQuery.Show();
     }
   }
 

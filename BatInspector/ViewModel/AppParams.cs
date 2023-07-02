@@ -201,6 +201,7 @@ namespace BatInspector
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings
     public const string EXT_INFO = ".xml";                // file extension for info files in Elekon projects
     public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
+    public const string EXT_QUERY = ".qry";               // file extension for query files
     public const string CSV_SEPARATOR = ";";              // CSV separator
     public const string PATH_SCRIPT = "scripts";          // sub directory containig scripts
     public const string BAT_INFO1_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection

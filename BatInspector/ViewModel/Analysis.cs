@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using BatInspector.Forms;
 using libParser;
 using libScripter;
@@ -111,16 +112,17 @@ namespace BatInspector
     private List<ReportItem> _report;
     private Csv _csv;
     private List<SumItem> _summary;
-    private Project _prj;
+    private List<SpeciesInfos> _speciesInfos;
+    private string _notes;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
 
     public List<ReportItem> Report { get { return _report; } }
 
-    public Analysis(Project prj)
+    public Analysis(List<SpeciesInfos> specInfos, string notes)
     {
-      init(prj);
+      init(specInfos, notes);
     }
 
     public AnalysisFile find(string name)
@@ -137,6 +139,19 @@ namespace BatInspector
       return retVal;
     }
 
+    public void addCsvReportRow(List<string> row)
+    {
+      _csv.addRow(row);
+    }
+
+    public void addReportItem(AnalysisFile file, AnalysisCall call)
+    {
+      if (_report != null)
+      {
+        ReportItem item = new ReportItem(file, call);
+        _report.Add(item);
+      }
+    }
     public bool Changed
     {
       get
@@ -154,19 +169,20 @@ namespace BatInspector
       }
     }
 
-    public void init(Project prj)
+    public void init(List<SpeciesInfos> specInfos, string notes)
     {
       _list = new List<AnalysisFile>();
       _report = null;
       _cols = new Cols();
       _csv = new Csv();
-      _prj = prj;
+      _speciesInfos = specInfos;
+      _notes = notes;
       _summary = new List<SumItem>();
     }
 
     public void read(string fileName)
     {
-      init(_prj);
+      init(_speciesInfos, _notes);
       lock (_fileLock)
       {
         _csv = new Csv();
@@ -234,27 +250,12 @@ namespace BatInspector
             call.DistToPrev = (startTime - oldStartTime)*1000;
             oldStartTime = startTime;
           }
-          bool isInList = SpeciesInfos.isInList(_prj.SpeciesInfos, call.getString(Cols.SPECIES));
+          bool isInList = SpeciesInfos.isInList(_speciesInfos, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
-          ReportItem rItem = new ReportItem();
-          rItem.FileName = fName;
-          rItem.CallNr = callNr.ToString();
-          if (callNr < 2)
-            rItem.Remarks = file.getString(Cols.REMARKS);
-          callNr++;
-          rItem.FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP)/ 1000).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
-          rItem.StartTime = call.getString(Cols.START_TIME);
-          rItem.SpeciesAuto = call.getString(Cols.SPECIES);
-          rItem.Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
-          rItem.Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
-          rItem.Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
-          rItem.Snr = call.getDouble(Cols.SNR).ToString();
-          rItem.SpeciesMan = call.getString(Cols.SPECIES_MAN);
+          ReportItem rItem = new ReportItem(file, call);
           _report.Add(rItem);
+          callNr++;
         }
         resetChanged();
       }
@@ -335,6 +336,7 @@ namespace BatInspector
         
       }
     }
+
 
     public void removeFile(string reportName, string wavName)
     {
@@ -452,7 +454,7 @@ namespace BatInspector
     public void updateSpeciesCount()
     {
       foreach(AnalysisFile f in Files)
-        f.updateFoundSpecies(_prj.SpeciesInfos);
+        f.updateFoundSpecies(_speciesInfos);
     }
 
     void updateRowNumbers()
@@ -502,7 +504,7 @@ namespace BatInspector
         sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString(AppParams.REPORT_DATE_FORMAT));
         sum.setCell(row, Cols.LAT, _list[0].Calls[0].getDouble(Cols.LAT));
         sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
-        string[] note = _prj.Notes.Split('\n');
+        string[] note = _notes.Split('\n');
         if (note.Length > 0)
           sum.setCell(row, Cols.WEATHER, note[0]);
         if (note.Length > 1)
@@ -574,6 +576,33 @@ namespace BatInspector
   {
     bool _changed = false;
     string _remarks;
+
+    public ReportItem()
+    {
+
+    }
+
+    public ReportItem(AnalysisFile file, AnalysisCall call)
+    {
+      FileName = file.Name;
+      int callNr = call.getInt(Cols.NR);
+      CallNr = callNr.ToString();
+      if (callNr < 2)
+        Remarks = file.getString(Cols.REMARKS);
+      callNr++;
+      FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+      FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+      FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+      Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
+      StartTime = call.getString(Cols.START_TIME);
+      SpeciesAuto = call.getString(Cols.SPECIES);
+      Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
+      Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
+      Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
+      Snr = call.getDouble(Cols.SNR).ToString();
+      SpeciesMan = call.getString(Cols.SPECIES_MAN);
+    }
+
     public bool Changed { get { return _changed; } }
     public string FileName { get; set; }
     public string CallNr { get; set; }
@@ -638,6 +667,11 @@ namespace BatInspector
     public void updateRow(int row)
     {
       _row = row;
+    }
+
+    public List<string> getReportRow()
+    {
+      return _csv.getRow( _row );
     }
 
     public double getDouble(string key)

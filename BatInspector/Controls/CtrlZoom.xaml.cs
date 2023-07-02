@@ -587,6 +587,7 @@ namespace BatInspector.Controls
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
       _worker.Abort();
+      _model.ZoomView.Waterfall.stop();
     }
 
     private void ctlSelCallChanged(int index, string val)

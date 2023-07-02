@@ -54,6 +54,7 @@ namespace BatInspector
     //ScatterDiagram _scatterDiagram;
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
+    Query _query;
     
     public string WavFilePath { get { return _selectedDir + "/" + _prj.WavSubDir; } }
     
@@ -91,6 +92,8 @@ namespace BatInspector
 
     public bool ReloadPrj { get; set; }
 
+    public Query Query { get { return _query; } set { _query = value; } }
+
   //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
     public ViewModel(Forms.MainWindow mainWin, string version)
@@ -109,6 +112,7 @@ namespace BatInspector
       _sumReport = new SumReport(_speciesInfos);
       _prj = new Project(_batSpecRegions, _speciesInfos);
       _models = new List<BaseModel>();
+      _query = null;
       int index = 0;
       foreach(ModelItem m in AppParams.Inst.Models)
       {
@@ -129,7 +133,7 @@ namespace BatInspector
       if (Project.containsProject(dir) != "")
       {
         _selectedDir = dir.FullName + "/";
-        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*.bpr",
+        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
           _prj = new Project(_batSpecRegions, _speciesInfos);
@@ -140,7 +144,7 @@ namespace BatInspector
           _prj.Analysis.openSummary(_prj.SummaryName); ;
         }
         else
-          _prj.Analysis.init(_prj);
+          _prj.Analysis.init(_prj.SpeciesInfos, _prj.Notes);
         if (_prj.Analysis.Report != null)
           checkProject();
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
@@ -213,7 +217,7 @@ namespace BatInspector
       }
       string scriptDir = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.ScriptDir;
       _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
-      _prj.Analysis.init(_prj);
+      _prj.Analysis.init(_prj.SpeciesInfos, _prj.Notes);
     }
 
     public void saveSettings()

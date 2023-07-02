@@ -57,6 +57,7 @@ namespace BatInspector
     const string VAR_SPECIES_MAN = "SpeciesMan";
     const string VAR_FREQ_MAX = "FreqMax";
     const string VAR_FREQ_MIN = "FreqMin";
+    const string VAR_FREQ_MAX_AMP = "FreqMaxAmp";
     const string VAR_DURATION = "DurationCall";
     const string VAR_PROBABILITY = "Probability";
     const string VAR_SNR = "Snr";
@@ -79,6 +80,7 @@ namespace BatInspector
         new FilterVarItem (VAR_SPECIES_MAN, true, true, true ),
         new FilterVarItem (VAR_FREQ_MIN, true, true, false ),
         new FilterVarItem (VAR_FREQ_MAX, true, true, false ),
+        new FilterVarItem (VAR_FREQ_MAX_AMP, true, true, false ),
         new FilterVarItem (VAR_DURATION, true, true, false ),
         new FilterVarItem (VAR_PROBABILITY, true, true, false ),
         new FilterVarItem (VAR_REMARKS, true, true, false ),
@@ -91,6 +93,7 @@ namespace BatInspector
       _expression.Variables.set(VAR_SPECIES_MAN,"");
       _expression.Variables.set(VAR_FREQ_MIN,"");
       _expression.Variables.set(VAR_FREQ_MAX,"");
+      _expression.Variables.set(VAR_FREQ_MAX_AMP, "");
       _expression.Variables.set(VAR_DURATION,"");
       _expression.Variables.set(VAR_PROBABILITY,"");
       _expression.Variables.set(VAR_REMARKS, "");
@@ -115,6 +118,7 @@ namespace BatInspector
           _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
           _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
           _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
+          _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
           _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
           _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
           _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));

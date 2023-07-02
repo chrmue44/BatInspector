@@ -15,6 +15,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Markup;
 
 namespace BatInspector
 {
@@ -350,10 +351,20 @@ namespace BatInspector
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName);
       Project prj = new Project(_model.Regions, _model.SpeciesInfos);
-      Analysis a = new Analysis(prj);
+      Analysis a = new Analysis(prj.SpeciesInfos, prj.Notes);
       a.read(reportName);
       a.save(reportName);
+    }
 
+    private void testQuery()
+    {
+      string srcDir = "D:\\bat\\2023\\Ententeich";
+      string dstDir = "D:\\bat\\Queries";
+      string name = "test";
+      string query = "(FreqMin > 20000) && (FreqMin < 23000)";
+      Query qry = new Query(name, srcDir, dstDir, query);
+      qry.evaluate(_model);
+      
     }
 
     private void updateSummaries()
@@ -366,7 +377,7 @@ namespace BatInspector
         if (repName != "")
         {
           Project p = new Project(_model.Regions, _model.SpeciesInfos);
-          Analysis a = new Analysis(p);
+          Analysis a = new Analysis(p.SpeciesInfos, p.Notes);
           a.read(repName);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
           a.createSummary(sumName);

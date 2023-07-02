@@ -33,11 +33,11 @@
           <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
             <Image Source="../images/icons8-save-48.png"></Image>
           </Button>
-          <Button x:Name="_btnDel"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.MainToolEditColorScheme}" Click="_btnDel_Click">
-            <Image Source="../images/color-palette.png"></Image>
+          <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
-          <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/magnifying-glass.png"></Image>
+          <Button x:Name="_btnColorPal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.MainToolEditColorScheme}" Click="_btnColorPalette_Click">
+            <Image Source="../images/color-palette.png"></Image>
           </Button>
           <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="{x:Static res:MyResources.MainToolDefFilters}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/filter.png"></Image>
@@ -45,24 +45,25 @@
           <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
           </Button>
-           <!---
+          <Separator Margin="10,2"/>
+          <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/magnifying-glass.png"></Image>
+          </Button>
+          <!---
           <Button x:Name="_btnFindSpecies" Click="_btnFindSpecies_Click" ToolTip="{x:Static res:MyResources.MainToolFindSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_Q.png"></Image>
           </Button>
             -->
-          <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/wav-file-format-symbol.png"></Image>
-          </Button>
           <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
              <Image Source="../images/create-task-icon.png"></Image>
           </Button>
           <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/report.png"></Image>
           </Button>
-          <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/settingscog_87317.png"></Image>
+          <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/query.png"></Image>
           </Button>
-          <Separator/>
+          <Separator Margin="10,2"/>
                     <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/script.png"></Image>
           </Button>
@@ -72,8 +73,12 @@
                     <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Image Source="../images/debug.png"></Image>
                     </Button>
-                    <Separator/>
-<!---
+                    <Separator Margin="10,2"/>
+          <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/wav-file-format-symbol.png"></Image>
+          </Button>
+          <Separator Margin="10,2"/>
+          <!---
                     <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                     </Button>
@@ -144,7 +149,7 @@
               <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="2.667,5,5,1" Grid.Column="1">
                 <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom"></Button>
                 <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Separator></Separator>
+                <Separator Margin="5,0,0,0"/>
                 <Button x:Name="_btnHideUnSelected" ToolTip="{x:Static res:MyResources.MainToolHideUnsel}" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Button x:Name="_btnShowAll" ToolTip="{x:Static res:MyResources.MainToolBtnShowAll}" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Button x:Name="_btnDelSelected" ToolTip="{x:Static res:MyResources.MainToolBtnDelSel}" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>

@@ -802,7 +802,7 @@
     <value>fixed position</value>
   </data>
   <data name="frmCreatePrjSelectGpxFile" xml:space="preserve">
-    <value>Select Gpx file</value>
+    <value>Select GPX file</value>
   </data>
   <data name="MainToolBtnAll" xml:space="preserve">
     <value>select all files</value>
@@ -881,5 +881,23 @@
   </data>
   <data name="OpenProjectFirst" xml:space="preserve">
     <value>please open Project first!</value>
+  </data>
+  <data name="MainToolQuery" xml:space="preserve">
+    <value>Create a query across multiple projects</value>
+  </data>
+  <data name="FrmQueryTitle" xml:space="preserve">
+    <value>Create/Edit query across multiple projects</value>
+  </data>
+  <data name="frmQueryQuery" xml:space="preserve">
+    <value>Query</value>
+  </data>
+  <data name="frmQuerySelSrcDir" xml:space="preserve">
+    <value>Source directory</value>
+  </data>
+  <data name="frmQueryQueryName" xml:space="preserve">
+    <value>Query Name</value>
+  </data>
+  <data name="frmQuerySelDestDir" xml:space="preserve">
+    <value>Destination Directory</value>
   </data>
 </root>

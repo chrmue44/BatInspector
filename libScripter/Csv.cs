@@ -129,6 +129,11 @@ namespace libScripter
       _changed = true;
     }
 
+    public void addRow(List<string> row)
+    {
+      _cells.Add(row);
+      _changed = true;
+    }
 
     public List<string> getRow(int row)
     {

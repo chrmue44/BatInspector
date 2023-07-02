@@ -42,6 +42,8 @@ namespace BatInspector
 
     private string _query;
 
+    private string _reportFile;
+
     private BatExplorerProjectFileRecordsRecord[] _records;
 
     public QueryFile()
@@ -50,73 +52,27 @@ namespace BatInspector
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public string Name
-    {
-      get
-      {
-        return this._name;
-      }
-      set
-      {
-        this._name = value;
-      }
-    }
+    public string Name {  get { return _name; }  set { _name = value; } }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public string SrcDir
-    {
-      get
-      {
-        return this._srcDir;
-      }
-      set
-      {
-        this._srcDir = value;
-      }
-    }
+    public string SrcDir { get { return _srcDir;} set { _srcDir = value; } }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public string Created
-    {
-      get
-      {
-        return this._created;
-      }
-      set
-      {
-        this._created = value;
-      }
-    }
+    public string Created { get { return _created; } set { _created = value; } }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public string Expression
-    {
-      get
-      {
-        return this._query;
-      }
-      set
-      {
-        this._query = value;
-      }
-    }
+    public string Expression { get { return _query; }  set {_query = value; } }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string ReportFile { get { return _reportFile; } set {_reportFile = value; } }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
-    public BatExplorerProjectFileRecordsRecord[] Records
-    {
-      get
-      {
-        return this._records;
-      }
-      set
-      {
-        this._records = value;
-      }
-    }
+    public BatExplorerProjectFileRecordsRecord[] Records { get { return _records; } set { _records = value; } }
   }
 }

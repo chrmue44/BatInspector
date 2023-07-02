@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,10 +44,16 @@ namespace BatInspector.Forms
     {
       _model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(), _tbQuery.Text );
       this.Visibility = Visibility.Hidden;
-      if (_frmHelp == null)
+      if (_frmHelp != null)
         _frmHelp.Close();
+      Thread thr = new Thread(evaluateInBackground);
+      thr.Start();
     }
 
+    private void evaluateInBackground()
+    {
+      _model.Query.evaluate(_model);
+    }
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {
       string str = BatInspector.Properties.MyResources.FrmFilterListOfVars + ":\n\n";

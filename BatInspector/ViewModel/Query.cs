@@ -13,8 +13,11 @@
 using libParser;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Navigation;
+using System.Xml.Serialization;
 
 namespace BatInspector
 {
@@ -28,6 +31,8 @@ namespace BatInspector
     QueryFile _queryFile = null;
     Analysis _analysis = null;
     List<BatExplorerProjectFileRecordsRecord> _records = null;
+    int _cntCall;
+    int _cntFile;
 
     public string Name { get { return _name; } }
     public string SrcDir { get { return _srcDir; } }
@@ -47,20 +52,31 @@ namespace BatInspector
     {
       DirectoryInfo dir = new DirectoryInfo(_srcDir);
       _model = model;
+      _analysis = new Analysis(_model.SpeciesInfos);
+      _cntCall = 0;
+      _cntFile = 0;
       createQueryFile();
-      crawl(dir);
+      bool ok = crawl(dir);
+      if (ok)
+        writeQueryFile();
+      else
+        DebugLog.log("query aborted", enLogType.ERROR);
     }
 
-    private void crawl(DirectoryInfo dir)
+    private bool crawl(DirectoryInfo dir)
     {
       DirectoryInfo[] dirs = dir.GetDirectories();
+      bool ok = false;
       foreach (DirectoryInfo d in dirs)
       {
         if (Project.containsProject(d) != "")
-          evaluatePrj(d);
+          ok = evaluatePrj(d);
         else
-          crawl(d);
+          ok = crawl(d);
+        if (!ok)
+          break;
       }
+      return ok;
     }
 
 
@@ -71,6 +87,7 @@ namespace BatInspector
       _queryFile.Created = DateTime.Now.ToString();
       _queryFile.Expression = _expression;
       _queryFile.SrcDir = _srcDir;
+      _queryFile.ReportFile = Path.Combine(_destDir, _name) + "_" + AppParams.PRJ_REPORT;
     }
 
     private void openQueryFile(string name)
@@ -78,35 +95,73 @@ namespace BatInspector
 
     }
 
-
-    private void evaluatePrj(DirectoryInfo dir) 
+    private void writeQueryFile() 
     {
+      if (_queryFile != null)
+      {
+        _queryFile.Records = _records.ToArray();
+        var serializer = new XmlSerializer(typeof(QueryFile));
+        string name = Path.Combine(_destDir, _name) + AppParams.EXT_QUERY;
+        TextWriter writer = new StreamWriter(name);
+        serializer.Serialize(writer, _queryFile);
+        writer.Close();
+        DebugLog.log("query '" + name + "' saved", enLogType.INFO);
+      }
+      _analysis.save(_queryFile.ReportFile, "sum query\nsum query");
+      DebugLog.log(_cntCall.ToString() + " calls in " + _cntFile.ToString() + " files found", enLogType.INFO);
+    }
+
+    private bool evaluatePrj(DirectoryInfo dir)
+    {
+      bool retVal = false;
       string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                    System.IO.SearchOption.TopDirectoryOnly);
       Project prj = new Project(_model.Regions, _model.SpeciesInfos);
       prj.readPrjFile(files[0]);
-      Analysis analysis = new Analysis(_model.SpeciesInfos, prj.Notes);
+      Analysis analysis = new Analysis(_model.SpeciesInfos);
       analysis.read(prj.ReportName);
-      foreach(AnalysisFile file in analysis.Files)
+
+      FilterItem filter = new FilterItem();
+      filter.Expression = _expression;
+      filter.IsForAllCalls = false;
+      filter.Name = "query";
+
+      string lastFileName = "";
+      DebugLog.log("evaluating project " + prj.Name, enLogType.INFO);
+      foreach (AnalysisFile file in analysis.Files)
       {
-        FilterItem filter = new FilterItem();
-        filter.Expression = _expression;
-        filter.IsForAllCalls = false;
-        filter.Name = "query";
-        bool match = _model.Filter.apply(filter, file);
-        if(match) 
+        foreach (AnalysisCall call in file.Calls)
         {
-          BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
-          rec.File = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
-          _records.Add(rec);
-          foreach (AnalysisCall call in file.Calls)
+          bool match = _model.Filter.apply(filter, call,
+                        file.getString(Cols.REMARKS),
+                        AnyType.getTimeString(file.RecTime), out retVal);
+          if (!retVal)
           {
+            DebugLog.log("error parsing query expression: " + _expression, enLogType.ERROR);
+            break;
+          }
+          if (match)
+          {
+            _cntCall++;
+            if (lastFileName != file.Name)
+            {
+              _cntFile++;
+              BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
+              rec.File = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
+              rec.Name = Path.GetFileNameWithoutExtension(file.Name);
+              _records.Add(rec);
+              _analysis.addFile(file);
+              lastFileName = file.Name;
+            }
             List<string> row = call.getReportRow();
             _analysis.addCsvReportRow(row);
             _analysis.addReportItem(file, call);
           }
         }
+        if (!retVal)
+          break;
       }
+      return retVal;
     }
   }
 }

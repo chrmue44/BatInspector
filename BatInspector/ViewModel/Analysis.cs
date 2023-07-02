@@ -113,16 +113,16 @@ namespace BatInspector
     private Csv _csv;
     private List<SumItem> _summary;
     private List<SpeciesInfos> _speciesInfos;
-    private string _notes;
+ //   private string _notes;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
 
     public List<ReportItem> Report { get { return _report; } }
 
-    public Analysis(List<SpeciesInfos> specInfos, string notes)
+    public Analysis(List<SpeciesInfos> specInfos)
     {
-      init(specInfos, notes);
+      init(specInfos);
     }
 
     public AnalysisFile find(string name)
@@ -169,20 +169,19 @@ namespace BatInspector
       }
     }
 
-    public void init(List<SpeciesInfos> specInfos, string notes)
+    public void init(List<SpeciesInfos> specInfos)
     {
       _list = new List<AnalysisFile>();
       _report = null;
       _cols = new Cols();
-      _csv = new Csv();
+      _csv = ModelBatDetect2.createReport(Cols.SPECIES);
       _speciesInfos = specInfos;
-      _notes = notes;
       _summary = new List<SumItem>();
     }
 
     public void read(string fileName)
     {
-      init(_speciesInfos, _notes);
+      init(_speciesInfos);
       lock (_fileLock)
       {
         _csv = new Csv();
@@ -262,11 +261,14 @@ namespace BatInspector
     }
 
 
-    public void save(string path)
+    public void save(string path, string notes)
     {
       lock (_fileLock)
       {
-        _csv.save();
+        if (_csv.FileName != "")
+          _csv.save();
+        else
+          _csv.saveAs(path);
         if (_report != null)
         {
           foreach (ReportItem r in _report)
@@ -277,7 +279,7 @@ namespace BatInspector
         if (Report != null)
         {
           string sumName = _csv.FileName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
-          createSummary(sumName);
+          createSummary(sumName, notes);
         }
       }
     }
@@ -312,6 +314,11 @@ namespace BatInspector
         }
       }
       return retVal;
+    }
+
+    public void addFile(AnalysisFile file)
+    {
+      _list.Add(file);
     }
 
     public void addFile(string reportName, string wavName, int samplerate, double duration)
@@ -396,10 +403,10 @@ namespace BatInspector
       }
     }
 
-    public void openSummary(string fileName)
+    public void openSummary(string fileName, string notes)
     {
       if (!File.Exists(fileName))
-        createSummary(fileName);
+        createSummary(fileName, notes);
       else
       {
         Csv sum = new Csv();
@@ -468,7 +475,7 @@ namespace BatInspector
     }
 
 
-    public void createSummary(string fileName)
+    public void createSummary(string fileName, string notes)
     {
       if (_list.Count > 0)
       {
@@ -504,7 +511,7 @@ namespace BatInspector
         sum.setCell(row, Cols.DATE, _list[0].RecTime.ToString(AppParams.REPORT_DATE_FORMAT));
         sum.setCell(row, Cols.LAT, _list[0].Calls[0].getDouble(Cols.LAT));
         sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
-        string[] note = _notes.Split('\n');
+        string[] note = notes.Split('\n');
         if (note.Length > 0)
           sum.setCell(row, Cols.WEATHER, note[0]);
         if (note.Length > 1)

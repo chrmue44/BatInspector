@@ -189,7 +189,7 @@ namespace BatInspector
       if (_inst._model.Prj.Name != "")
       {
         _inst._model.Prj.writePrjFile();
-        _inst._model.Prj.Analysis.save(_inst._model.PrjPath);
+        _inst._model.Prj.Analysis.save(_inst._model.PrjPath, _inst._model.Prj.Notes);
       }
       return err;
     }

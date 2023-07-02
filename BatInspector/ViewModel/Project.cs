@@ -97,7 +97,7 @@ namespace BatInspector
       _batSpecRegions = regions;
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
-      _analysis = new Analysis(this.SpeciesInfos, this.Notes);
+      _analysis = new Analysis(this.SpeciesInfos);
     }
 
 

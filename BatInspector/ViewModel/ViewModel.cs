@@ -141,10 +141,10 @@ namespace BatInspector
         if (File.Exists(Prj.ReportName))
         {
           _prj.Analysis.read(_prj.ReportName);
-          _prj.Analysis.openSummary(_prj.SummaryName); ;
+          _prj.Analysis.openSummary(_prj.SummaryName, _prj.Notes);
         }
         else
-          _prj.Analysis.init(_prj.SpeciesInfos, _prj.Notes);
+          _prj.Analysis.init(_prj.SpeciesInfos);
         if (_prj.Analysis.Report != null)
           checkProject();
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
@@ -217,7 +217,7 @@ namespace BatInspector
       }
       string scriptDir = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.ScriptDir;
       _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
-      _prj.Analysis.init(_prj.SpeciesInfos, _prj.Notes);
+      _prj.Analysis.init(_prj.SpeciesInfos);
     }
 
     public void saveSettings()
@@ -310,7 +310,7 @@ namespace BatInspector
       foreach (string f in files)
         deleteFile(f);
 
-      _prj.Analysis.save(PrjPath);
+      _prj.Analysis.save(PrjPath, _prj.Notes);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 

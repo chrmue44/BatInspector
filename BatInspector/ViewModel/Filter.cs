@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace BatInspector
 {
@@ -99,6 +100,26 @@ namespace BatInspector
       _expression.Variables.set(VAR_REMARKS, "");
       _expression.Variables.set(VAR_TIME, 0);
       _expression.Variables.set(VAR_SNR,0.0);
+    }
+
+    public bool apply(FilterItem filter, AnalysisCall call, string remarks, string time, out bool ok)
+    {
+      bool retVal = false;
+      _expression.setVariable(VAR_REMARKS, remarks);
+      _expression.setVariable(VAR_TIME, time);
+      _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));
+      _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
+      _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
+      _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
+      _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
+      _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
+      _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
+      _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
+      AnyType res = _expression.parse(filter.Expression);
+      ok = _expression.Errors == 0;
+      if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
+        retVal = true;
+      return retVal;
     }
 
     public bool apply(FilterItem filter, AnalysisFile file)

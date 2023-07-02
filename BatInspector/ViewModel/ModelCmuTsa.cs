@@ -87,7 +87,7 @@ namespace BatInspector
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
         prj.Analysis.read(reportName);
         prj.Analysis.checkConfidence(prj.SpeciesInfos);
-        prj.Analysis.save(Path.GetDirectoryName(reportName));
+        prj.Analysis.save(Path.GetDirectoryName(reportName), prj.Notes);
         prj.Analysis.read(reportName);
       }
 

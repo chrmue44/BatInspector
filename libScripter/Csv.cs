@@ -515,24 +515,29 @@ namespace libScripter
         log("col name '" + colName + "' not found!", enLogType.ERROR);
       return retVal;
     }
+
+
     public void initColNames(string[] cols, bool createCols = false)
     {
       _cols.Clear();
       for (int i = 0; i < cols.Length; i++)
       {
         string colName = cols[i];
-        try
-        {
-          if(colName.Length == 0)
-            colName= "_colHeader" + i.ToString();   
-          _cols.Add(colName, i + 1);
-        }
-        catch
-        {
-          DebugLog.log("initColNames: col name already present: '" + colName + "'", enLogType.ERROR);
-        }
         if (createCols)
           insertCol(i + 1, cols[i], colName);
+        else
+        {
+          try
+          {
+            if (colName.Length == 0)
+              colName = "_colHeader" + i.ToString();
+            _cols.Add(colName, i + 1);
+          }
+          catch
+          {
+            DebugLog.log("initColNames: col name already present: '" + colName + "'", enLogType.ERROR);
+          }
+        }
       }
     }
 

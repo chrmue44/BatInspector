@@ -289,7 +289,7 @@ namespace BatInspector.Forms
     {
       if (_model.Prj != null)
       {
-        if (_model.Prj.Analysis.Changed)
+        if (_model.Prj.Ok && _model.Prj.Analysis.Changed)
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
@@ -919,7 +919,7 @@ namespace BatInspector.Forms
       }
       catch
       {
-        DebugLog.log("could not open help file: " + helpFileName, enLogType.ERROR);
+        DebugLog.log("could not open PDF file: " + helpFileName, enLogType.ERROR);
       }
     }
 

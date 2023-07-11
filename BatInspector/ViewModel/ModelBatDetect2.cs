@@ -24,6 +24,12 @@ using System.Windows.Media;
 
 namespace BatInspector
 {
+  public enum enRepMode
+  {
+    REPLACE,
+    APPEND
+  }
+
   public class ModelBatDetect2 : BaseModel
   {
     double _minProb = 0.5;
@@ -47,7 +53,7 @@ namespace BatInspector
         string wrkDir = Path.Combine(AppParams.Inst.ModelRootPath, AppParams.Inst.Models[this.Index].Dir);
         string cmd = Path.Combine(wrkDir, AppParams.Inst.Models[this.Index].Script);
         retVal = _proc.LaunchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
-        bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName);
+        bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
         if (ok)
         {
           cleanup(prj.PrjDir);
@@ -72,13 +78,20 @@ namespace BatInspector
       throw new NotImplementedException();
     }
 
-    public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName)
+    public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode)
     {
       bool retVal = true;
       try
       {
         string colSpecies = AppParams.Inst.Models[this.Index].ReportColumn;
-        Csv report = createReport(colSpecies);
+        Csv report;
+        if ((mode == enRepMode.REPLACE) || !File.Exists(reportName))
+          report = createReport(colSpecies);
+        else
+        {
+          report = new Csv();
+          report.read(reportName);
+        }
 
         string[] files = Directory.GetFiles(annDir, "*.wav.csv", SearchOption.AllDirectories);
         foreach (string file in files)

@@ -17,6 +17,7 @@ using System.Media;
 using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.Devices;
+using NAudio.Wave;
 
 namespace BatInspector
 {
@@ -288,10 +289,10 @@ namespace BatInspector
     WaveHeader _header;
     FormatChunk _format;
     DataChunk _data;
-    Audio _audio;
-    // SoundPlayer _audio;
     string _fName;
     bool _isOpen;
+    WaveOutEvent _outputDevice = null;
+    AudioFileReader _audioFile = null;
 
     public WaveHeader WavHeader { get { return _header;} }
 
@@ -300,8 +301,6 @@ namespace BatInspector
     public short[] AudioSamples {  get { return _data.WaveData; } }
     public WavFile()
     {
-      _audio = new Audio();
-      //_audio = new SoundPlayer();
       _isOpen = false;
       _fName = "";
     }
@@ -394,7 +393,7 @@ namespace BatInspector
         {
           FileStream f = File.OpenWrite(_fName);
           List<Byte> tempBytes = new List<byte>();
-       //   _header.FileLength = 4 + _format.Length() + _data.Length();
+          _header.FileLength = 4 + _format.Length() + _data.Length();
           tempBytes.AddRange(_header.GetBytes());
           tempBytes.AddRange(_format.GetBytes());
           if(_format.ChunkSize > 16)
@@ -464,19 +463,33 @@ namespace BatInspector
     {
       if (_waveData != null)
       {
-        saveFileAs("$$$.wav");
-        //_audio = new SoundPlayer("$$$.wav");
-          _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
-        //_audio.PlaySync();
-        //  _waveData = null;
-        //  tempBytes = null;
+        string fName = "$$$.wav";
+        saveFileAs(fName);
+        if (_outputDevice == null)
+        {
+          _outputDevice = new WaveOutEvent();
+          _outputDevice.PlaybackStopped += OnPlaybackStopped;
+        }
+        if (_audioFile == null)
+        {
+          _audioFile = new AudioFileReader(fName);
+          _outputDevice.Init(_audioFile);
+        }
+        _outputDevice.Play();
       }
     }
 
     public void stop()
     {
-      if (_audio != null)
-        _audio.Stop();
+      _outputDevice?.Stop();
+    }
+
+    private void OnPlaybackStopped(object sender, StoppedEventArgs args)
+    {
+      _outputDevice.Dispose();
+      _outputDevice = null;
+      _audioFile.Dispose();
+      _audioFile = null;
     }
   }
 }

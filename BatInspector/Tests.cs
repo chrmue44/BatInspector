@@ -350,7 +350,7 @@ namespace BatInspector
       string WavDir = "G:\\bat\\2022\\20220326\\Records";
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
-      model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName);
+      model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
       Project prj = new Project(_model.Regions, _model.SpeciesInfos);
       Analysis a = new Analysis(prj.SpeciesInfos);
       a.read(reportName);

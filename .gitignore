@@ -15,4 +15,5 @@
 /libBioAcoustics/x64
 /BatInspector/ViewModel/*.bak
 /x64/Debug
+/x64/Release
 /R

@@ -161,13 +161,15 @@ namespace BatInspector
       int iStart = Math.Max((int)(tStart *  SamplingRate), 0);
       int iEnd = Math.Min((int)(tEnd * SamplingRate), _audio.Samples.Length);
       _wav.play(1, _audio.SamplingRate / stretch, iStart, iEnd, _audio.Samples);
-      _wav = null;
     }
 
     public void stop()
     {
       if (_wav != null)
+      {
         _wav.stop();
+        _wav = null;
+      }
     }
 
 

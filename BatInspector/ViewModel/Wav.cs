@@ -11,12 +11,11 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Media;
 using System.Text;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.Devices;
+using libParser;
 using NAudio.Wave;
 
 namespace BatInspector
@@ -293,6 +292,7 @@ namespace BatInspector
     bool _isOpen;
     WaveOutEvent _outputDevice = null;
     AudioFileReader _audioFile = null;
+    string _tmpName = "$$$.wav";
 
     public WaveHeader WavHeader { get { return _header;} }
 
@@ -461,27 +461,35 @@ namespace BatInspector
 
     public void play()
     {
-      if (_waveData != null)
+      try
       {
-        string fName = "$$$.wav";
-        saveFileAs(fName);
-        if (_outputDevice == null)
+        if (_waveData != null)
         {
-          _outputDevice = new WaveOutEvent();
-          _outputDevice.PlaybackStopped += OnPlaybackStopped;
+          saveFileAs(_tmpName);
+          if (_outputDevice == null)
+          {
+            _outputDevice = new WaveOutEvent();
+            _outputDevice.PlaybackStopped += OnPlaybackStopped;
+          }
+          if (_audioFile == null)
+          {
+            _audioFile = new AudioFileReader(_tmpName);
+            _outputDevice.Init(_audioFile);
+          }
+          _outputDevice.Play();
         }
-        if (_audioFile == null)
-        {
-          _audioFile = new AudioFileReader(fName);
-          _outputDevice.Init(_audioFile);
-        }
-        _outputDevice.Play();
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("could not play wav file: " + _fName + " :" + ex.ToString(), enLogType.ERROR);
       }
     }
 
     public void stop()
     {
       _outputDevice?.Stop();
+      if(File.Exists(_tmpName))
+        File.Delete(_tmpName);
     }
 
     private void OnPlaybackStopped(object sender, StoppedEventArgs args)

@@ -12,7 +12,6 @@
 
 using BatInspector.Properties;
 using libParser;
-using Microsoft.VisualBasic.Logging;
 using System;
 using System.Globalization;
 using System.IO;

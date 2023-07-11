@@ -92,10 +92,11 @@ namespace BatInspector
     BatSpeciesRegions _batSpecRegions;
     bool _changed = false;
 
-    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, string wavSubDir = "")
     {
       _batSpecRegions = regions;
       _speciesList = new List<string>();
+      _wavSubDir = wavSubDir;
       _speciesInfo = speciesInfo;
       _analysis = new Analysis(this.SpeciesInfos);
     }
@@ -232,10 +233,16 @@ namespace BatInspector
     /// <param name="speciesInfo"></param>
     public static string[] splitPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
     {
-      Project prjSrc = new Project(regions, speciesInfo);
+      string wavDir = Path.Combine(info.SrcDir, AppParams.DIR_WAVS);
+      string wavSubDir = "";
+      if (Directory.Exists(wavDir))
+        wavSubDir = AppParams.DIR_WAVS;
+
+      Project prjSrc = new Project(regions, speciesInfo, wavSubDir);
       string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
       prjSrc.readPrjFile(fName);
       string[] notes = prjSrc.Notes.Split('\n');
+
       info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
       info.Landscape = notes[0];
       info.StartTime = new DateTime(1900, 1, 1);

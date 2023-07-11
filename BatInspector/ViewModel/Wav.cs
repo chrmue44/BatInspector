@@ -288,8 +288,8 @@ namespace BatInspector
     WaveHeader _header;
     FormatChunk _format;
     DataChunk _data;
-    //    Audio _audio;
-     SoundPlayer _audio;
+    Audio _audio;
+    // SoundPlayer _audio;
     string _fName;
     bool _isOpen;
 
@@ -300,8 +300,8 @@ namespace BatInspector
     public short[] AudioSamples {  get { return _data.WaveData; } }
     public WavFile()
     {
-      //      _audio = new Audio();
-      _audio = new SoundPlayer();
+      _audio = new Audio();
+      //_audio = new SoundPlayer();
       _isOpen = false;
       _fName = "";
     }
@@ -464,10 +464,10 @@ namespace BatInspector
     {
       if (_waveData != null)
       {
-        File.WriteAllBytes("$$$.wav", _waveData);
-        _audio = new SoundPlayer("$$$.wav");
-        //  _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
-        _audio.PlaySync();
+        saveFileAs("$$$.wav");
+        //_audio = new SoundPlayer("$$$.wav");
+          _audio.Play(_waveData, AudioPlayMode.WaitToComplete);
+        //_audio.PlaySync();
         //  _waveData = null;
         //  tempBytes = null;
       }

@@ -194,7 +194,7 @@ namespace BatInspector
         }
       }
       if (ok)
-        DebugLog.log("report and project file are consistent", enLogType.INFO);
+        DebugLog.log("report and project file are consistent", enLogType.DEBUG);
       else
         DebugLog.log("mismatch between project file and report, please check", enLogType.ERROR, true);
     }

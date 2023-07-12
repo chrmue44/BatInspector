@@ -156,7 +156,7 @@ namespace BatInspector.Forms
             else if (Project.containsWavs(subDir))
               childItem.Foreground = new SolidColorBrush(Colors.Blue);
           }
-          DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.INFO);
+          DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
           _model.Busy = false;
         }
         catch
@@ -426,7 +426,7 @@ namespace BatInspector.Forms
           }
           await Task.Delay(1);
         }
-        DebugLog.log("project opened", enLogType.INFO);
+        DebugLog.log("project opened: " + _model.Prj.Name, enLogType.INFO);
         showStatus();
       }
     }

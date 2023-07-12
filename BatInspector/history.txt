@@ -4,9 +4,13 @@ TODO
 - help
 - species comparison
 - stop button to kill running script
+- progess bar for WAV playing
+- show queries like projects
+- show summary
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 
 DONE
+- start/stop playing wav works now thatns to Naudio
 - query function: create query across multiple projects
 - added button to add file(s) to project
 - improved modal dialogs

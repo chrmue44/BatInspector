@@ -10,7 +10,7 @@ FOR FileNr 0 NrFiles
 	  IF =(prob > 0.6)
         =(setCallInfo(FileNr, i, "SPEC_MAN", specAuto))
 	  ELSE
-        =(setCallInfo(FileNr, i, "SPEC_MAN", "???"))
+        =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
 	  END
 	END
   END

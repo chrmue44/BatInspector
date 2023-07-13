@@ -579,7 +579,8 @@ namespace BatInspector.Forms
     {
       if (_model.Prj.Analysis.Report != null)
         _dgData.ItemsSource = _model.Prj.Analysis.Report;
-
+      if (_model.Prj.Analysis.Summary != null)
+        _dgSum.ItemsSource = _model.Prj.Analysis.Summary;
     }
 
     private void Window_Closing(object sender, CancelEventArgs e)

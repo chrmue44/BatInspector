@@ -76,7 +76,7 @@ namespace BatInspector
   }
 
 
-  public class SumItem
+    public class SumItem
   {
     public string Species { get; set; }
     public int Count { get; set; }
@@ -103,6 +103,29 @@ namespace BatInspector
     }
   }
 
+  public class SumItemReport
+  {
+    SumItem _item;
+    public SumItemReport(SumItem item) 
+    {
+      _item = item;
+    }
+
+    public string Species { get { return _item.Species; } }
+    public int Count {  get { return _item.Count; } }
+    public int C18h { get { return _item.CountTime[0]; } }
+    public int C19h { get { return _item.CountTime[1]; } }
+    public int C20h { get { return _item.CountTime[2]; } }
+    public int C21h { get { return _item.CountTime[3]; } }
+    public int C22h { get { return _item.CountTime[4]; } }
+    public int C23h { get { return _item.CountTime[5]; } }
+    public int C00h { get { return _item.CountTime[6]; } }
+    public int C01h { get { return _item.CountTime[7]; } }
+    public int C02h { get { return _item.CountTime[8]; } }
+    public int C03h { get { return _item.CountTime[9]; } }
+    public int C04h { get { return _item.CountTime[10]; } }
+    public int C05h { get { return _item.CountTime[11]; } }
+  }
   public class Analysis
   {
 
@@ -119,6 +142,23 @@ namespace BatInspector
     public Cols Cols { get { return _cols; } }
 
     public List<ReportItem> Report { get { return _report; } }
+
+    public List<SumItemReport> Summary {
+      get {
+        if (_summary == null)
+          return null;
+        else
+        {
+          List<SumItemReport> l = new List<SumItemReport>();
+          foreach (SumItem item in _summary)
+          {
+            SumItemReport it = new SumItemReport(item);
+            l.Add(it);
+          }
+          return l;
+        }
+      } 
+    }
 
     public Analysis(List<SpeciesInfos> specInfos)
     {
@@ -417,6 +457,13 @@ namespace BatInspector
           string species = sum.getCell(row, Cols.SPECIES_MAN);
           int count = sum.getCellAsInt(row, "Count");
           SumItem it = new SumItem(species, count);
+          int startCol = sum.getColNr(Cols.T18H);
+          int idx = 0;
+          for(int c = startCol; c < startCol + 12; c++)
+          {
+            it.CountTime[idx] = sum.getCellAsInt(row, c);
+            idx++;
+          }
           _summary.Add(it);
         }
       }

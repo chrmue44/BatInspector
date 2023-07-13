@@ -12,11 +12,11 @@
         Title="BatInspector" Height="900" Width="1400"
         Icon="../images/bats.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
-    <Window.DataContext>
+  <Window.DataContext>
     <!--    <controls:DropDownCmds /> -->
-        <viewmodel:ScatterDiagram x:Name="_scattDiagram"/>
-    </Window.DataContext>
-    <DockPanel>
+    <viewmodel:ScatterDiagram x:Name="_scattDiagram"/>
+  </Window.DataContext>
+  <DockPanel>
     <StatusBar DockPanel.Dock="Bottom" Background="#FF40508D">
       <TextBlock Name="_lblProject" Text="---" Foreground="White"></TextBlock>
       <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="White"></TextBlock>
@@ -55,7 +55,7 @@
           </Button>
             -->
           <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-             <Image Source="../images/create-task-icon.png"></Image>
+            <Image Source="../images/create-task-icon.png"></Image>
           </Button>
           <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/report.png"></Image>
@@ -64,16 +64,16 @@
             <Image Source="../images/query.png"></Image>
           </Button>
           <Separator Margin="10,2"/>
-                    <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+          <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/script.png"></Image>
           </Button>
-                    <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Image Source="../images/cancel_77947.png"></Image>
-                    </Button>
-                    <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Image Source="../images/debug.png"></Image>
-                    </Button>
-                    <Separator Margin="10,2"/>
+          <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/cancel_77947.png"></Image>
+          </Button>
+          <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Image Source="../images/debug.png"></Image>
+          </Button>
+          <Separator Margin="10,2"/>
           <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>
@@ -83,23 +83,23 @@
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                     </Button>
      -->
-            <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked" MouseRightButtonUp="DropdownButton_MouseRightButtonUp"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <ToggleButton.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <!-- Image Source="mysrc.png" /-->
-                                <Image Source="../images/Button_Help_icon_32.png"></Image>
+          <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked" MouseRightButtonUp="DropdownButton_MouseRightButtonUp"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ToggleButton.Content>
+              <StackPanel Orientation="Horizontal">
+                <!-- Image Source="mysrc.png" /-->
+                <Image Source="../images/Button_Help_icon_32.png"></Image>
 
-                                <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
-                            </StackPanel>
-                        </ToggleButton.Content>
-                        <ToggleButton.ContextMenu>
-                            <ContextMenu Closed="ContextMenu_Closed">
-                                <MenuItem Header="{x:Static res:MyResources.frmMainSoftwareManual}" Name="_mnHelpSw" Click="_mnHelpSw_Click" />
-                                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
-                                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
-                            </ContextMenu>
-                        </ToggleButton.ContextMenu>
-                    </ToggleButton>
+                <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+              </StackPanel>
+            </ToggleButton.Content>
+            <ToggleButton.ContextMenu>
+              <ContextMenu Closed="ContextMenu_Closed">
+                <MenuItem Header="{x:Static res:MyResources.frmMainSoftwareManual}" Name="_mnHelpSw" Click="_mnHelpSw_Click" />
+                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
+                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
+              </ContextMenu>
+            </ToggleButton.ContextMenu>
+          </ToggleButton>
 
           <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="{x:Static res:MyResources.MainToolShowSoftwareInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Actions_help_about_icon.png"></Image>
@@ -136,7 +136,8 @@
             <Grid Grid.Column="2" Margin="0">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1147*"/>
+                <ColumnDefinition Width="391*"/>
+                <ColumnDefinition Width="763*"/>
               </Grid.ColumnDefinitions>
               <Grid.RowDefinitions>
                 <RowDefinition Height="26.25"></RowDefinition>
@@ -146,7 +147,7 @@
                 <RowDefinition Height="628*"/>
               </Grid.RowDefinitions>
 
-              <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="2.667,5,5,1" Grid.Column="1">
+              <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="3,5,5,1" Grid.Column="1" Grid.ColumnSpan="2">
                 <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" Height="20" VerticalAlignment="Bottom"></Button>
                 <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator Margin="5,0,0,0"/>
@@ -164,7 +165,7 @@
                 <Button x:Name="_btnCopySpec" ToolTip="{x:Static res:MyResources.MainToolCopySelected}" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Button x:Name="_btnaddFile" ToolTip="{x:Static res:MyResources.MainToolAddFile}" Click ="_btnaddFile_Click" Content="{x:Static res:MyResources.MainBtnAddFile}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
               </StackPanel>
-              <ScrollViewer Grid.Row="2" Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="2" ScrollChanged="ScrollViewer_ScrollChanged" >
+              <ScrollViewer Grid.Row="2" Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="3" ScrollChanged="ScrollViewer_ScrollChanged" >
                 <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
                 </StackPanel>
               </ScrollViewer>
@@ -179,44 +180,49 @@
               <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" />
             </Grid>
           </TabItem>
+          <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" >
+            <Grid >
+              <DataGrid x:Name="_dgSum" Margin="0,0,0,10" />
+            </Grid>
+          </TabItem>
           <TabItem Name="_tbScatter" Header="{x:Static res:MyResources.frmMainScatterDiagram}" Margin="0,0,0,0"  >
-              <Grid Background="AliceBlue">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="100"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0">
-                                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                    <Label Content="{x:Static res:MyResources.frmMainXAxis}" Width="80" HorizontalContentAlignment="Right"/>
-                                    <ComboBox Name="_cbXaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                                    <CheckBox Name="_cbFreezeAxis" Content="{x:Static res:MyResources.frmMainFreezeAxes}" Margin="200,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="{x:Static res:MyResources.frmMainYAxis}" Width="80" HorizontalContentAlignment="Right" />
-                                    <ComboBox Name="_cbYaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right"/>
-                                    <ComboBox Name="_cbFilterScatter" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                                </StackPanel>
-                            </StackPanel>
-                            <oxy:PlotView Model="{Binding PlotModel}" x:Name="_scatterModel" Grid.Row="1">
-                                <oxy:PlotView.DefaultTrackerTemplate>
-                                    <ControlTemplate>
-                                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
-                                            <oxy:TrackerControl.Background>
-                                                <SolidColorBrush Color="LightBlue" />
-                                            </oxy:TrackerControl.Background>
-                                            <oxy:TrackerControl.Content>
-                                                <TextBlock Text="{Binding}" Margin="7" Foreground="Black" />
-                                            </oxy:TrackerControl.Content>
-                                        </oxy:TrackerControl>
-                                    </ControlTemplate>
-                                </oxy:PlotView.DefaultTrackerTemplate>
-                            </oxy:PlotView> 
-                        </Grid>
+            <Grid Background="AliceBlue">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <StackPanel Grid.Row="0">
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                  <Label Content="{x:Static res:MyResources.frmMainXAxis}" Width="80" HorizontalContentAlignment="Right"/>
+                  <ComboBox Name="_cbXaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                  <CheckBox Name="_cbFreezeAxis" Content="{x:Static res:MyResources.frmMainFreezeAxes}" Margin="200,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                  <Label Content="{x:Static res:MyResources.frmMainYAxis}" Width="80" HorizontalContentAlignment="Right" />
+                  <ComboBox Name="_cbYaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                  <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right"/>
+                  <ComboBox Name="_cbFilterScatter" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                </StackPanel>
+              </StackPanel>
+              <oxy:PlotView Model="{Binding PlotModel}" x:Name="_scatterModel" Grid.Row="1">
+                <oxy:PlotView.DefaultTrackerTemplate>
+                  <ControlTemplate>
+                    <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                      <oxy:TrackerControl.Background>
+                        <SolidColorBrush Color="LightBlue" />
+                      </oxy:TrackerControl.Background>
+                      <oxy:TrackerControl.Content>
+                        <TextBlock Text="{Binding}" Margin="7" Foreground="Black" />
+                      </oxy:TrackerControl.Content>
+                    </oxy:TrackerControl>
+                  </ControlTemplate>
+                </oxy:PlotView.DefaultTrackerTemplate>
+              </oxy:PlotView>
+            </Grid>
 
-                    </TabItem>
+          </TabItem>
         </TabControl>
       </Grid>
       <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" Margin="0" BorderThickness="0" DragCompleted="_grdSplitterH_DragCompleted"/>

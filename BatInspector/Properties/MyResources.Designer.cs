@@ -1267,6 +1267,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Summary.
+        /// </summary>
+        public static string MainSummaryProject {
+            get {
+                return ResourceManager.GetString("MainSummaryProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add file to current project.
         /// </summary>
         public static string MainToolAddFile {

@@ -900,4 +900,7 @@
   <data name="frmQuerySelDestDir" xml:space="preserve">
     <value>Zielverzeichnis</value>
   </data>
+  <data name="MainSummaryProject" xml:space="preserve">
+    <value>Zusammenfassung</value>
+  </data>
 </root>

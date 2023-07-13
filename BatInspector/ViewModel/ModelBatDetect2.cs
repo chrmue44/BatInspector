@@ -14,13 +14,9 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows;
-using System.Windows.Media;
+
 
 namespace BatInspector
 {

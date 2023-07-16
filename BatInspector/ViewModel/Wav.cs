@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using libParser;
 using NAudio.Wave;
 
@@ -299,6 +300,30 @@ namespace BatInspector
     public FormatChunk FormatChunk {  get {  return _format;} }
 
     public short[] AudioSamples {  get { return _data.WaveData; } }
+
+    public bool IsPlaying 
+    { 
+      get 
+      {
+        if (_outputDevice == null)
+          return false; 
+        else
+          return _outputDevice.PlaybackState == PlaybackState.Playing; 
+      }
+    }
+    
+    
+    public double CurrentPlayTime
+    {
+      get { return CurrentPlayTime; }
+     /* set { 
+        if((_outputDevice != null) && (_outputDevice.PlaybackState == PlaybackState.Paused))
+          _outputDevice.
+        CurrentPlayTime = value; 
+      }*/
+    }
+    
+
     public WavFile()
     {
       _isOpen = false;
@@ -453,6 +478,15 @@ namespace BatInspector
       _isOpen = true;
     }
 
+    public void pause()
+    {
+      if ((_waveData != null) && (_outputDevice != null))
+      {
+        if(_outputDevice.PlaybackState == PlaybackState.Playing)
+          _outputDevice.Pause();
+      }
+    }
+
     public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
     {
       createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
@@ -488,8 +522,13 @@ namespace BatInspector
     public void stop()
     {
       _outputDevice?.Stop();
-      if(File.Exists(_tmpName))
-        File.Delete(_tmpName);
+      Thread.Sleep(20);
+      try
+      {
+        if (File.Exists(_tmpName))
+          File.Delete(_tmpName);
+      }
+      catch { }
     }
 
     private void OnPlaybackStopped(object sender, StoppedEventArgs args)
@@ -498,6 +537,7 @@ namespace BatInspector
       _outputDevice = null;
       _audioFile.Dispose();
       _audioFile = null;
+  //    CurrentPlayTime = 0;
     }
   }
 }

@@ -97,7 +97,7 @@ namespace BatInspector.Forms
       this.Left = AppParams.Inst.MainWindowPosY;
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
-      _timer.Interval = new TimeSpan(0, 0, 1);
+      _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
       _timer.Start();
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog, AppParams.LogDataPath);
       _ctlLog.setViewModel(_model);
@@ -776,6 +776,11 @@ namespace BatInspector.Forms
         _tbPrj.IsSelected = true;
         _switchTabToPrj = false;
       }
+
+      if (_frmZoom != null)
+        _frmZoom._ctl.tick(_timer.Interval.TotalMilliseconds);
+      if (_ctlZoom != null)
+        _ctlZoom.tick(_timer.Interval.TotalMilliseconds);
     }
 
     private void _btnReport_Click(object sender, RoutedEventArgs e)

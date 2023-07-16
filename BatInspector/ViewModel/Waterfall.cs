@@ -71,6 +71,7 @@ namespace BatInspector
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
     public string WavName { get { return _wavName; } }
+    public bool WavIsPlaying { get { if (_wav != null) return _wav.IsPlaying; else return false; } }
 
     public Waterfall(string wavName, UInt32 fftSize, int w, int h, ColorTable colorTable)
     {
@@ -161,6 +162,14 @@ namespace BatInspector
       int iStart = Math.Max((int)(tStart *  SamplingRate), 0);
       int iEnd = Math.Min((int)(tEnd * SamplingRate), _audio.Samples.Length);
       _wav.play(1, _audio.SamplingRate / stretch, iStart, iEnd, _audio.Samples);
+    }
+
+    public void pause()
+    {
+      if (_wav != null)
+      {
+        _wav.pause();
+      }
     }
 
     public void stop()

@@ -67,6 +67,9 @@
                 <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
                     <Image Source="../images/play-button-20x.png"></Image>
                 </Button>
+                <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPause_Click" ToolTip="{x:Static res:MyResources.ToolTipPausePlayingAudio}">
+                    <Image Source="../images/pause.png"></Image>
+                </Button>
                 <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
                     <Image Source="../images/stop.png"></Image>
                 </Button>
@@ -93,6 +96,7 @@
         <Grid Name ="_gridXt" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="5*"></RowDefinition>
                 <RowDefinition Height="50"></RowDefinition>
             </Grid.RowDefinitions>
@@ -103,7 +107,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="220"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-                <local:CtlSpectrum x:Name ="_ctlSpectrum" Grid.Row="1" Grid.Column="0" Margin="5,10,0,0" VerticalAlignment="Stretch"/>
+                <local:CtlSpectrum x:Name ="_ctlSpectrum" Grid.Row="2" Grid.Column="0" Margin="5,10,0,0" VerticalAlignment="Stretch"/>
             <Image Name="_imgXt" Grid.Row="0" Grid.Column="2" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="50" MouseMove="_imgXt_MouseMove"
@@ -113,16 +117,18 @@ ToolTip="This is a tool tip." >
       <Line Name="_cursorA2" Visibility="Hidden" Grid.Row="0" Grid.Column="2" Stroke="Magenta" StrokeThickness="2"/>
       <Canvas Name ="_rulerA" Grid.Row="0" Grid.Column="1" ></Canvas>
             <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="3" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="5" />
-            <Image Name="_imgFt" Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" Stretch="Fill" ToolTipService.InitialShowDelay="50" 
+      <Slider Height="20" Name="_slider" Grid.Row="1" Grid.Column="2" Foreground="Black" Maximum="100"/>
+      <Image Name="_imgFt"  Margin="0,0,0,0" Grid.Row="2" Grid.Column="2" Stretch="Fill" ToolTipService.InitialShowDelay="50"  
+    
 ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_imgFt_MouseMove">
-            </Image>
-            <ComboBox  Grid.Row="2" Grid.Column="0" x:Name="_cbMode" Height ="20" Margin ="5,0,0,0" SelectionChanged="_cbModeChanged" />
-            <Line Name="_cursorX1" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
-            <Line Name="_cursorY1" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
-            <Line Name="_cursorX2" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
-            <Line Name="_cursorY2" Grid.Row="1" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
-            <Canvas Name ="_rulerF" Grid.Row="1" Grid.Column="1" ></Canvas>
+        </Image>
+      <ComboBox  Grid.Row="3" Grid.Column="0" x:Name="_cbMode" Height ="20" Margin ="5,0,0,0" SelectionChanged="_cbModeChanged" />
+            <Line Name="_cursorX1" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
+            <Line Name="_cursorY1" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
+            <Line Name="_cursorX2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
+            <Line Name="_cursorY2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
+            <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
             <StackPanel Grid.Column="3" Grid.Row="1">
                 <GroupBox Name="_grpData" Header="Info" Margin="5" Padding="2">
                     <StackPanel>
@@ -144,7 +150,7 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
-            <Canvas Name ="_rulerT" Grid.Row="2" Grid.Column="2" ></Canvas>
+            <Canvas Name ="_rulerT" Grid.Row="3" Grid.Column="2" ></Canvas>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" >
             <GroupBox Header="Spectrum">

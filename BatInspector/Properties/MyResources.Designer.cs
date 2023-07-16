@@ -2284,6 +2284,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pause playing audio.
+        /// </summary>
+        public static string ToolTipPausePlayingAudio {
+            get {
+                return ResourceManager.GetString("ToolTipPausePlayingAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to play displayed section.
         /// </summary>
         public static string ToolTipPlayDispSection {

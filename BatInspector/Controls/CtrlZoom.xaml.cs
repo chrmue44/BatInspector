@@ -35,8 +35,6 @@ namespace BatInspector.Controls
     string _wavFilePath;
     ViewModel _model;
     int _stretch;
-    //    BackgroundWorker _worker;
-    Thread _worker;
     int _oldCallIdx = -1;
 
     public CtrlZoom()
@@ -397,6 +395,15 @@ namespace BatInspector.Controls
       can.Children.Add(textBlock);
     }
 
+    public void tick(double ms)
+    {
+      if ((_model != null) && (_model.ZoomView != null) && (_model.ZoomView.Waterfall.WavIsPlaying))
+      {
+        double val = ms / (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) / 10;
+        _slider.Value += val;
+      }
+    }
+
     private void _btnZoomCursor_Click(object sender, RoutedEventArgs e)
     {
       ZoomView z = _model.ZoomView;
@@ -551,11 +558,14 @@ namespace BatInspector.Controls
       play(1);
     }
 
+    private void _btnPause_Click(object sender, RoutedEventArgs e)
+    {
+      _model.ZoomView.Waterfall.pause();
+    }
     private void play(int stretch)
     {
       _stretch = stretch;
-      _worker = new Thread(worker_DoWork);
-      _worker.Start();
+      _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
     }
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
@@ -563,11 +573,6 @@ namespace BatInspector.Controls
       play(10);
     }
 
-    void worker_DoWork()
-    {
-      _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
-
-    }
     private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
     {
       play(20);
@@ -586,7 +591,7 @@ namespace BatInspector.Controls
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
-      _worker.Abort();
+   //   _worker.Abort();
       _model.ZoomView.Waterfall.stop();
     }
 

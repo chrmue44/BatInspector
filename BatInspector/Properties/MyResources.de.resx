@@ -903,4 +903,7 @@
   <data name="MainSummaryProject" xml:space="preserve">
     <value>Zusammenfassung</value>
   </data>
+  <data name="ToolTipPausePlayingAudio" xml:space="preserve">
+    <value>Laufende Abspielung pausieren</value>
+  </data>
 </root>

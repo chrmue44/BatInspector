@@ -369,6 +369,7 @@ namespace BatInspector
         }
         ReloadPrj = true;
       }
+      DebugLog.log("evaluation of species done", enLogType.INFO);
       return retVal;
     }
 

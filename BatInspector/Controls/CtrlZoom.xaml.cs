@@ -22,7 +22,7 @@ using BatInspector.Properties;
 using System;
 using System.IO;
 using System.Globalization;
-
+using System.Diagnostics.Eventing.Reader;
 
 namespace BatInspector.Controls
 {
@@ -397,13 +397,30 @@ namespace BatInspector.Controls
 
     public void tick(double ms)
     {
-      if ((_model != null) && (_model.ZoomView != null) && (_model.ZoomView.Waterfall.WavIsPlaying))
+      if ((_model != null) && (_model.ZoomView != null))
       {
-        double val = ms / (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) / 10;
-        _slider.Value += val;
+        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        {
+          double val = _model.ZoomView.Waterfall.PlayPosition / (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) / _stretch * 100;
+          _slider.Value = val;
+        }
+        else if (_model.ZoomView.Waterfall.PlaybackState != NAudio.Wave.PlaybackState.Paused)
+        {
+          _slider.Value = 0;
+          _btnPlay_20.IsEnabled = true;
+          _btnPlay_10.IsEnabled = true;
+          _btnPlay_1.IsEnabled = true;
+        }
+      }
+      else
+      {
+        _slider.Value = 0;
+        _btnPlay_20.IsEnabled = true;
+        _btnPlay_10.IsEnabled = true;
+        _btnPlay_1.IsEnabled = true;
       }
     }
-
+    
     private void _btnZoomCursor_Click(object sender, RoutedEventArgs e)
     {
       ZoomView z = _model.ZoomView;
@@ -556,6 +573,8 @@ namespace BatInspector.Controls
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
     {
       play(1);
+      _btnPlay_20.IsEnabled = false;
+      _btnPlay_10.IsEnabled = false;
     }
 
     private void _btnPause_Click(object sender, RoutedEventArgs e)
@@ -565,17 +584,22 @@ namespace BatInspector.Controls
     private void play(int stretch)
     {
       _stretch = stretch;
-      _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+      double pos = _slider.Value / 100.0 * _model.ZoomView.Waterfall.Duration;
+      _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, pos);
     }
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
     {
       play(10);
+      _btnPlay_1.IsEnabled = false;
+      _btnPlay_20.IsEnabled = false;
     }
 
     private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
     {
       play(20);
+      _btnPlay_1.IsEnabled = false;
+      _btnPlay_10.IsEnabled = false;
     }
 
     private void _imgFt_MouseMove(object sender, MouseEventArgs e)
@@ -591,8 +615,11 @@ namespace BatInspector.Controls
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
-   //   _worker.Abort();
       _model.ZoomView.Waterfall.stop();
+      _slider.Value = 0;
+      _btnPlay_20.IsEnabled = true;
+      _btnPlay_10.IsEnabled = true;
+      _btnPlay_1.IsEnabled = true;
     }
 
     private void ctlSelCallChanged(int index, string val)
@@ -792,6 +819,10 @@ namespace BatInspector.Controls
     {
       _model.ZoomView.undoChanges();
       createZoomImg();
+    }
+
+    private void _slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
     }
   }
 }

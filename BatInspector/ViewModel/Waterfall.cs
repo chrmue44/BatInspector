@@ -19,6 +19,7 @@ using DSPLib;
 using libParser;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using NAudio.Wave;
 
 namespace BatInspector
 {
@@ -71,8 +72,12 @@ namespace BatInspector
     public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
     public string WavName { get { return _wavName; } }
-    public bool WavIsPlaying { get { if (_wav != null) return _wav.IsPlaying; else return false; } }
+    public PlaybackState PlaybackState { get { return (_wav != null) ? _wav.PlaybackState : PlaybackState.Stopped; } }
 
+    public double PlayPosition
+    {  
+      get { return (_wav != null) ? _wav.PlayPosition : 0.0; } 
+    }
     public Waterfall(string wavName, UInt32 fftSize, int w, int h, ColorTable colorTable)
     {
       _width = w;
@@ -156,12 +161,13 @@ namespace BatInspector
     }
 
 
-    public void play(int stretch, double tStart, double tEnd)
+    public void play(int stretch, double tStart, double tEnd, double playPosition)
     {
-      _wav = new WavFile();
+      if (_wav == null)
+        _wav = new WavFile();
       int iStart = Math.Max((int)(tStart *  SamplingRate), 0);
       int iEnd = Math.Min((int)(tEnd * SamplingRate), _audio.Samples.Length);
-      _wav.play(1, _audio.SamplingRate / stretch, iStart, iEnd, _audio.Samples);
+      _wav.play(1, _audio.SamplingRate / stretch, iStart, iEnd, _audio.Samples, null, playPosition * stretch);
     }
 
     public void pause()

@@ -650,7 +650,10 @@ namespace BatInspector
     public static void load()
     {
       //string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
-      AppDataPath = replaceDriveLetter(File.ReadAllText(_dataPath));
+      if(File.Exists(_dataPath))
+        AppDataPath = replaceDriveLetter(File.ReadAllText(_dataPath));
+     else
+        AppDataPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
       LogDataPath = Path.Combine(AppDataPath, "log");
       string fPath = Path.Combine(AppDataPath, _fName);
       if (!File.Exists(fPath))

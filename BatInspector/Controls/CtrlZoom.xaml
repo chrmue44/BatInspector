@@ -59,13 +59,13 @@
                 </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                 <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
-                    <Image Source="../images/play-button.png"></Image>
+          <Image Source="../images/play-button.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
                 <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection10x}">
-                    <Image Source="../images/play-button-10x.png"></Image>
+          <Image Source="../images/play-button-10x.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
                 <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
-                    <Image Source="../images/play-button-20x.png"></Image>
+          <Image Source="../images/play-button-20x.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
                 <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPause_Click" ToolTip="{x:Static res:MyResources.ToolTipPausePlayingAudio}">
                     <Image Source="../images/pause.png"></Image>
@@ -117,7 +117,7 @@ ToolTip="This is a tool tip." >
       <Line Name="_cursorA2" Visibility="Hidden" Grid.Row="0" Grid.Column="2" Stroke="Magenta" StrokeThickness="2"/>
       <Canvas Name ="_rulerA" Grid.Row="0" Grid.Column="1" ></Canvas>
             <CheckBox Name ="_cbZoomAmpl" Grid.Row="0" Grid.Column="3" Content="{x:Static res:MyResources.ctlZoomZoomAplitude}" Click="_cbZoomAmpl_Click" VerticalAlignment="Center" Margin="5" />
-      <Slider Height="20" Name="_slider" Grid.Row="1" Grid.Column="2" Foreground="Black" Maximum="100"/>
+      <Slider Height="20" Name="_slider" Grid.Row="1" Grid.Column="2" Foreground="Black" Maximum="100" ValueChanged="_slider_ValueChanged"/>
       <Image Name="_imgFt"  Margin="0,0,0,0" Grid.Row="2" Grid.Column="2" Stretch="Fill" ToolTipService.InitialShowDelay="50"  
     
 ToolTipService.ShowDuration="8000" 

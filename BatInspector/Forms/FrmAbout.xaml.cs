@@ -10,8 +10,9 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using System;
 using System.IO;
-
+using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -25,7 +26,7 @@ namespace BatInspector.Forms
     public FrmAbout(string version)
     {
       InitializeComponent();
-      _tbVersion.Text = "Version V" + version;
+      _tbVersion.Text = version;
       try
       {
         _tbLicences.Text = File.ReadAllText("Licenses.txt");
@@ -44,4 +45,5 @@ namespace BatInspector.Forms
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
+
 }

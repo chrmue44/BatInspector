@@ -11,7 +11,6 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -294,6 +293,7 @@ namespace BatInspector
     WaveOutEvent _outputDevice = null;
     AudioFileReader _audioFile = null;
     string _tmpName = "$$$.wav";
+    PlaybackState _playbackState = PlaybackState.Stopped;
 
     public WaveHeader WavHeader { get { return _header;} }
 
@@ -301,28 +301,23 @@ namespace BatInspector
 
     public short[] AudioSamples {  get { return _data.WaveData; } }
 
-    public bool IsPlaying 
-    { 
-      get 
+    public PlaybackState PlaybackState
+    {
+      get
       {
         if (_outputDevice == null)
-          return false; 
+          return PlaybackState.Stopped;
         else
-          return _outputDevice.PlaybackState == PlaybackState.Playing; 
+          return _outputDevice.PlaybackState;
       }
     }
     
     
-    public double CurrentPlayTime
+    public double PlayPosition
     {
-      get { return CurrentPlayTime; }
-     /* set { 
-        if((_outputDevice != null) && (_outputDevice.PlaybackState == PlaybackState.Paused))
-          _outputDevice.
-        CurrentPlayTime = value; 
-      }*/
+      get { return (_audioFile!= null) ? (double)_audioFile.Position / _audioFile.Length * _data.WaveData.Length/_format.Frequency  : 0.0; }
     }
-    
+
 
     public WavFile()
     {
@@ -416,6 +411,8 @@ namespace BatInspector
       {
         if (_isOpen)
         {
+          if(File.Exists(_fName))
+            File.Delete(_fName);
           FileStream f = File.OpenWrite(_fName);
           List<Byte> tempBytes = new List<byte>();
           _header.FileLength = 4 + _format.Length() + _data.Length();
@@ -433,8 +430,9 @@ namespace BatInspector
           f.Close();
         }
       }
-      catch
+      catch (Exception ex)
       {
+        DebugLog.log("error writing WAV file: " + _fName + " " + ex.ToString(), enLogType.ERROR);
         retVal = 1;
       }
       return retVal;
@@ -478,18 +476,45 @@ namespace BatInspector
       _isOpen = true;
     }
 
+    public void createSineWave(double freqHz, int sampleRate, double amplitude, double offs)
+    {
+      double[] vals = new double[sampleRate];
+      for(int i = 0; i < sampleRate; i++)
+        vals[i] = amplitude * Math.Sin(i * freqHz * 2 * Math.PI/ sampleRate) + offs;
+      createFile(1, sampleRate, 0, vals.Length - 1, vals);
+    }
+
     public void pause()
     {
       if ((_waveData != null) && (_outputDevice != null))
       {
-        if(_outputDevice.PlaybackState == PlaybackState.Playing)
+        if (_outputDevice.PlaybackState == PlaybackState.Playing)
+        {
           _outputDevice.Pause();
+          _playbackState = PlaybackState.Paused;
+        }
       }
     }
 
-    public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null, double playPosition = 0.0)
     {
-      createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
+      if (_playbackState != PlaybackState.Paused)
+      {
+        createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
+        saveFileAs(_tmpName);
+      }
+      else
+      {
+        if ((_outputDevice != null) && (_audioFile != null))
+        {
+          if (_outputDevice.PlaybackState == PlaybackState.Paused)
+          {
+            double length = (double)_data.WaveData.Length / _format.Frequency;
+            int pos = (int)(playPosition / length * _audioFile.Length);
+            _audioFile.Position = pos;
+          }
+        }
+      }
       play();
     }
 
@@ -497,9 +522,9 @@ namespace BatInspector
     {
       try
       {
+
         if (_waveData != null)
         {
-          saveFileAs(_tmpName);
           if (_outputDevice == null)
           {
             _outputDevice = new WaveOutEvent();
@@ -510,6 +535,7 @@ namespace BatInspector
             _audioFile = new AudioFileReader(_tmpName);
             _outputDevice.Init(_audioFile);
           }
+          _playbackState = PlaybackState.Playing;
           _outputDevice.Play();
         }
       }
@@ -519,9 +545,28 @@ namespace BatInspector
       }
     }
 
+
+    public double calcEffVoltage(double tStart = 0, double tEnd = 20, bool ac = true)
+    {
+      double retVal = 0;
+      int iStart = timeToIndex(tStart);
+      int iEnd = timeToIndex(tEnd);
+      short mean = ac ? calcMean(iStart, iEnd) : (short)0;
+
+      double sum = 0;
+      double dt = 1.0 / (double)_format.Frequency;
+      double t = _data.WaveData.Length / _format.Frequency;
+      for(int i = iStart; i < iEnd; i++)
+        sum += (long)(_data.WaveData[i] - mean) * (long)(_data.WaveData[i] - mean) * dt;
+
+      retVal =   Math.Sqrt(t * (double)(sum) ) / 32768;
+
+      return retVal;
+    }
     public void stop()
     {
       _outputDevice?.Stop();
+      _playbackState = PlaybackState.Stopped;
       Thread.Sleep(20);
       try
       {
@@ -531,13 +576,35 @@ namespace BatInspector
       catch { }
     }
 
+    public short calcMean(int iStart, int iEnd)
+    {
+      short retVal = 0;
+      long sum = 0;
+      for (int i = iStart; i < iEnd; i++)
+        sum += _data.WaveData[i];
+
+      retVal = (short)(sum / (iEnd - iStart));
+      return retVal;
+    }
+
+    private int timeToIndex(double t)
+    {
+      int retVal = (int)(t * _format.Frequency);
+      if(retVal < 0)
+        retVal = 0;
+      if(retVal >= _data.WaveData.Length)
+        retVal = _data.WaveData.Length - 1;
+      return retVal;
+    }
+
     private void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
       _outputDevice.Dispose();
       _outputDevice = null;
       _audioFile.Dispose();
       _audioFile = null;
-  //    CurrentPlayTime = 0;
+      //    CurrentPlayTime = 0;
+      stop();
     }
   }
 }

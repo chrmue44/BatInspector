@@ -27,6 +27,7 @@ using System.Threading;
 using BatInspector.Properties;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
+using NAudio.SoundFont;
 
 namespace BatInspector.Forms
 {
@@ -76,8 +77,9 @@ namespace BatInspector.Forms
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
 
-
-      _model = new ViewModel(this, version.ToString());
+      DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
+      string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
+      _model = new ViewModel(this, versionStr);
       _model.loadSettings();
 
       setLanguage();
@@ -85,7 +87,7 @@ namespace BatInspector.Forms
       initTreeView();
       populateFilterComboBoxes();
       initZoomWindow();
-      this.Title = "BatInspector V" + version.ToString();
+      this.Title = versionStr;
       if ((AppParams.Inst.MainWindowWidth > 100) && (AppParams.Inst.MainWindowHeight > 100))
       {
         this.Width = AppParams.Inst.MainWindowWidth;

@@ -1,5 +1,5 @@
 {
-  "AppRootPath": "D:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
+  "AppRootPath": "G:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
   "ColorGradientBlue": [
     {
       "Color": 128,
@@ -176,12 +176,12 @@
   ],
   "GradientRange": 21,
   "HideInfos": false,
-  "LogControlHeight": 170,
-  "MainWindowHeight": 881.6,
-  "MainWindowPosX": -7.2,
-  "MainWindowPosY": 67.2,
-  "MainWindowWidth": 1471.2,
-  "ModelRootPath": "D:\\prj\\BatInspector\\BatInspector\\models",
+  "LogControlHeight": 370,
+  "MainWindowHeight": 1079,
+  "MainWindowPosX": 9,
+  "MainWindowPosY": 142,
+  "MainWindowWidth": 1684,
+  "ModelRootPath": "G:\\prj\\BatInspector\\BatInspector\\models",
   "Models": [
     {
       "Active": true,
@@ -212,7 +212,7 @@
   "PredPrepData": true,
   "ProbabilityMin": 0.5,
   "PythonBin": "\"C:\/Program Files\/Python310\/python.exe\"",
-  "RootDataDir": "D:\/bat",
+  "RootDataDir": "G:\/bat",
   "SamplingRate": 312500,
   "ScriptDir": "scripts",
   "Scripts": [
@@ -290,7 +290,7 @@
     }
   ],
   "SelectedModel": 0,
-  "SpeciesFile": "\"D:\/bat\/tierSta\/species.csv\"",
+  "SpeciesFile": "\"G:\/bat\/tierSta\/species.csv\"",
   "WaterfallHeight": 256,
   "WaterfallLogarithmic": true,
   "WaterfallWidth": 512,

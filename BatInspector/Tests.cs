@@ -103,6 +103,8 @@ namespace BatInspector
       //testCreatePrjInfoFiles(prjName, 49.7670333333333, 8.63353333333333);
       //adjustTimesInReport(prjName);
       //testQuery();
+      testEffVal();
+      //calcNoiseLevel();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -437,6 +439,37 @@ namespace BatInspector
       result.FftBackward();
       string newName = file.Replace(".wav", "_edit.wav");
       result.saveAs(newName);
+    }
+
+    private void testEffVal()
+    {
+      WavFile w = new WavFile();
+      w.createSineWave(1000, 384000, 0.5, 0.2);
+      double v = w.calcEffVoltage();
+      assert("effective voltage" , (v - Math.Sqrt(2)/4) < 0.0001);
+      w.createSineWave(1000, 384000, 0, 0.2);
+      v = w.calcEffVoltage(0, 1, false);
+      assert("effective voltage", (v - 0.2 ) < 0.0001);
+    }
+
+    private void calcNoiseLevel()
+    {
+      WavFile w = new WavFile();
+      w.readFile("G:\\bat\\2023\\TestRecording\\20230715\\Records\\20230715_224211.wav");
+      double v = w.calcEffVoltage(0.1, 0.3);
+      double db = Math.Log10(v) * 20;
+      w.readFile("G:\\bat\\2023\\TestRecording\\20230715\\Records\\20230716_170418.wav");
+      v = w.calcEffVoltage(0.1, 0.3);
+      db = Math.Log10(v) * 20;
+      w.readFile("G:\\bat\\2023\\TestRecording\\20230715\\Records\\20230716_171555.wav");
+      v = w.calcEffVoltage(0.1, 0.3);
+      db = Math.Log10(v) * 20;
+       
+      /* result for Rev B:
+       * -80dB for ADC only (shortcut pin 3-5 header to analog board
+       * -73dB for analog board (shortcut mic input on sub-D)
+       * -57dB for mic pre amp (shortcut mic input on pre amp)
+       */
     }
 
     private void adjustTimesInReport()

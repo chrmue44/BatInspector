@@ -14,7 +14,7 @@
       <RowDefinition Height="33"></RowDefinition>
     </Grid.RowDefinitions>
     <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-      <TextBlock Margin="50,20,30,30" FontSize="16" FontWeight="Bold">BatInspector</TextBlock>
+      <TextBlock Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version</TextBlock>
       <TextBlock Name="_tbVersion" Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version 0.1.2</TextBlock>
       <Image Source="..\images\bats.png" Height="64" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
     </StackPanel>

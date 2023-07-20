@@ -57,19 +57,29 @@ namespace BatInspector.Controls
       _cvSpec.Children.Clear();
       if ((_spectrum != null) && (_spectrum.Amplitude != null))
       {
-        double min = _spectrum.findMinAmplitude(logarithmic);
-        double max = _spectrum.findMaxAmplitude(logarithmic);
         int w = (int)_cvSpec.ActualWidth;
         int h = (int)_cvSpec.ActualHeight;
         int n = h > 0 ? _spectrum.Amplitude.Length / h + 1 : 1;
 
+        double[] spectrum = new double[h];
+
         for (int y = h; y > 0; y--)
         {
-          double f = fMin + (double)(h - y) / h * (fMax - fMin); 
-          int i = (int)(_spectrum.Amplitude.Length * f /_spectrum.RulerDataF.Max);
-          double a = _spectrum.getMeanAmpl(i, n, logarithmic);
+          double f = fMin + (double)(h - y) / h * (fMax - fMin);
+          int i = (int)(_spectrum.Amplitude.Length * f / _spectrum.RulerDataF.Max);
+          if (f > 1)
+            spectrum[y - 1] = _spectrum.getMeanAmpl(i, n, logarithmic);
+          else
+            spectrum[y - 1] = 0;
+        }
+
+        double min = Spectrum.findMinAmplitude(logarithmic, spectrum);
+        double max = Spectrum.findMaxAmplitude(logarithmic, spectrum);
+
+        for (int y = h; y > 0; y--)
+        {
           int x1 = w;
-          int x2 = w - (int)(w * (a / (max - min)));
+          int x2 = w - (int)(w * (spectrum[y-1] / (max - min)));
           if (mode == 0)
             CtrlZoom.createLine(_cvSpec, x1, y, x2, y, Brushes.Blue);
           else

@@ -7,6 +7,7 @@ TODO
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 
 DONE
+- better spectrum display in zoom view
 - play/stop/pause replay, cursor in zoom view works 
 - show summary in separate tab
 - progess bar for WAV playing

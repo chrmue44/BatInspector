@@ -13,14 +13,14 @@
 using libParser;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Navigation;
 using System.Xml.Serialization;
 
 namespace BatInspector
 {
+  /// <summary>
+  /// a class to handle queries covering multiple projects 
+  /// </summary>
   public class Query
   {
     string _name;
@@ -34,9 +34,21 @@ namespace BatInspector
     int _cntCall;
     int _cntFile;
 
+    /// <summary>
+    /// name of the query
+    /// </summary>
     public string Name { get { return _name; } }
+    /// <summary>
+    /// source directory to start the search. All sub directories will be browsed during the search
+    /// </summary>
     public string SrcDir { get { return _srcDir; } }
+    /// <summary>
+    /// directory to store the result of the query
+    /// </summary>
     public string DestDir { get { return _destDir; } }
+    /// <summary>
+    /// logic expression to apply to the data
+    /// </summary>
     public string Expression { get { return _expression; } }
 
     public Query(string name, string srcDir, string dstDir, string query) 
@@ -96,12 +108,14 @@ namespace BatInspector
 
     private void createQueryFile()
     {
-      _queryFile = new QueryFile();
-      _queryFile.Name = _name;
-      _queryFile.Created = DateTime.Now.ToString();
-      _queryFile.Expression = _expression;
-      _queryFile.SrcDir = _srcDir;
-      _queryFile.ReportFile = Path.Combine(_destDir, _name) + "_" + AppParams.PRJ_REPORT;
+      _queryFile = new QueryFile
+      {
+        Name = _name,
+        Created = DateTime.Now.ToString(),
+        Expression = _expression,
+        SrcDir = _srcDir,
+        ReportFile = Path.Combine(_destDir, _name) + "_" + AppParams.PRJ_REPORT
+      };
     }
 
     private void openQueryFile(string name)
@@ -136,7 +150,7 @@ namespace BatInspector
       analysis.read(prj.ReportName);
 
       FilterItem filter = new FilterItem();
-      filter.Expression = _expression;
+      filter.Expression = _expression.Replace('\n', ' '); ;
       filter.IsForAllCalls = false;
       filter.Name = "query";
 

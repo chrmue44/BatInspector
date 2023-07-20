@@ -45,10 +45,11 @@ namespace BatInspector
       int options = frmStartPredict.Options;
       string reportName = prj.ReportName;
       reportName = reportName.Replace("\\", "/");
-      addSpeciesColsToReport(reportName, AppParams.Inst.SpeciesFile);
+      ModelItem modPar = AppParams.Inst.Models[this.Index];
+      string speciesFile = Path.Combine(AppParams.Inst.ModelRootPath, modPar.Dir,"species.csv");
+      addSpeciesColsToReport(reportName, speciesFile);
       string datFile = prj.PrjDir + "/Xdata000.npy";
       string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
-      ModelItem modPar = AppParams.Inst.Models[this.Index];
       string args = modPar.Script;
 
       if ((options & OPT_INSPECT) != 0)
@@ -74,7 +75,7 @@ namespace BatInspector
           args += " --predict";
         string modelDir = AppParams.Inst.ModelRootPath + "/" + modPar.Dir;
         args += " --csvcalls " + reportName +
-             " --root " + modelDir + " --specFile " + AppParams.Inst.SpeciesFile +
+             " --root " + modelDir + " --specFile " + modelDir + "/speies.csv" +
              " --dataDir " + prj.PrjDir +
              " --data " + datFile +
              " --model " + this.Name +

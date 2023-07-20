@@ -212,7 +212,8 @@ namespace BatInspector
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
     const string _fName = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
-
+    public const int MAX_FILES_PRJ_OVERVIEW = 1000;
+   
     static AppParams _inst = null;
     public static AppParams Inst 
     { 
@@ -365,10 +366,10 @@ namespace BatInspector
     public string RootDataDir { get; set; }
 
 
-    [DataMember]
+   /* [DataMember]
     [LocalizedCategory("SetCatScripting"),
     LocalizedDescription("SetDescSpeciesFile")]
-    public string SpeciesFile { get; set; }
+    public string SpeciesFile { get; set; } */
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
@@ -493,7 +494,7 @@ namespace BatInspector
       initColorGradient();
       initScripts();
       RootDataDir = DriveLetter + "bat";
-      SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
+    //  SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
       ModelRootPath = AppRootPath + "model";
       SelectedModel = 0;
@@ -624,7 +625,7 @@ namespace BatInspector
 
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
       retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
-      retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
+      //retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
       LogDataPath = replaceDriveLetter(LogDataPath);
       AppDataPath = replaceDriveLetter(AppDataPath);
       DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);

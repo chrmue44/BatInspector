@@ -240,8 +240,13 @@ namespace BatInspector.Forms
         }
       }
       _switchTabToPrj = true;
-      setStatus("   loading...");
-      populateFiles();
+      if (_model.Prj?.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
+      {
+        setStatus("   loading...");
+        populateFiles();
+      }
+      else
+        DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
     }
 
     private void initZoomWindow()

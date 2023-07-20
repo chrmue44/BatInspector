@@ -26,6 +26,7 @@ namespace BatInspector
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
+        new OptItem("AdjustProject","remove all entries from project file not corresponding to report", 0, fctAdjustProject),
       }); ; 
 
       _options = new Options(_features, false);
@@ -36,6 +37,12 @@ namespace BatInspector
     {
       ErrText = "";
       _model.removeDeletedWavsFromReport(_model.Prj.ReportName);
+      return 0;
+    }
+    int fctAdjustProject(List<string> pars, out string ErrText)
+    {
+      ErrText = "";
+      _model.Prj?.removeFilesNotInReport();
       return 0;
     }
   }

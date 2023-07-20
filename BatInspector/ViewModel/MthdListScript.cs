@@ -14,6 +14,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace BatInspector
 {
@@ -93,9 +94,9 @@ namespace BatInspector
       addMethod(new FuncTabItem("getRankCount", getRankCount));
       _scriptHelpTab.Add(new HelpTabItem("getRankCount", "get the number of calls of a species for the specified rank in specified file in open project",
                       new List<string> { "1: file index (0..n)", "2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
-      addMethod(new FuncTabItem("calcProbabilityRatios", calcProbabilityRatios));
+/*      addMethod(new FuncTabItem("calcProbabilityRatios", calcProbabilityRatios));
       _scriptHelpTab.Add(new HelpTabItem("calcProbabilityRatios", "calculate the probability ratio for each call for 1st and 2nd rank in open project",
-                      new List<string> { }, new List<string> { "1: error code" }));
+                      new List<string> { }, new List<string> { "1: error code" })); */
       addMethod(new FuncTabItem("getFileIndex", getFileIndex));
       _scriptHelpTab.Add(new HelpTabItem("getFileIndex", "get file index in opended project",
                       new List<string> { "1: file name"}, new List<string> { "1: index (-1: not found)" }));
@@ -830,13 +831,14 @@ namespace BatInspector
       return err;
     }
 
-
+    /*
     static tParseError calcProbabilityRatios(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
       result = new AnyType();
       if((_inst._model.Prj != null) && (_inst._model.Prj.Analysis != null))
       {
+        string speciesFile = 
         _inst._model.Prj.Analysis.calcProbabilityRatios(AppParams.Inst.SpeciesFile);
       }
       else
@@ -845,7 +847,7 @@ namespace BatInspector
         result.assign(1);
       }
       return err;
-    }
+    }*/
 
     static tParseError getSampleRate(List<AnyType> argv, out AnyType result)
     {

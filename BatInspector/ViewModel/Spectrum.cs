@@ -106,10 +106,10 @@ namespace BatInspector
       return lmSpectrum;
     }
 
-    public double findMinAmplitude(bool logarithmic)
+    public static  double findMinAmplitude(bool logarithmic, double[] ampl)
     {
       double min = 100000;
-      foreach(double a in _ampl)
+      foreach(double a in ampl)
       {
         if (min > a)
           min = a;
@@ -120,10 +120,10 @@ namespace BatInspector
         return min; 
     }
 
-    public double findMaxAmplitude(bool logarithmic)
+    public static double findMaxAmplitude(bool logarithmic, double[] ampl)
     {
       double max = -100000;
-      foreach (double a in _ampl)
+      foreach (double a in ampl)
       {
         if (max < a)
           max = a;

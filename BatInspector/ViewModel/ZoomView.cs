@@ -132,9 +132,9 @@ namespace BatInspector
 
     public int SelectedCallIdx { get; set; }
 
-    public void initWaterfallDiagram(string wavName, uint fftSize, int w, int h)
+    public void initWaterfallDiagram(string wavName)
     {
-      _wf = new Waterfall(wavName, fftSize, w, h, _colorTable);
+      _wf = new Waterfall(wavName, _colorTable);
       string infoName = wavName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
       _fileInfo = ElekonInfoFile.read(infoName);
     }

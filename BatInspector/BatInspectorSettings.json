@@ -80,7 +80,7 @@
   },
   "Culture": 0,
   "ExeEditor": "C:\\Program Files (x86)\\Notepad++\\notepad++.exe",
-  "FftWidth": 512,
+  "FftWidth": 256,
   "FftWindow": 4,
   "Filter": [
     {
@@ -174,9 +174,9 @@
       "isForAllCalls": false
     }
   ],
-  "GradientRange": 21,
+  "GradientRange": 18,
   "HideInfos": false,
-  "LogControlHeight": 370,
+  "LogControlHeight": 181,
   "MainWindowHeight": 1079,
   "MainWindowPosX": 8,
   "MainWindowPosY": 107,
@@ -290,7 +290,6 @@
     }
   ],
   "SelectedModel": 0,
-  "SpeciesFile": "\"G:\/bat\/tierSta\/species.csv\"",
   "WaterfallHeight": 256,
   "WaterfallLogarithmic": true,
   "WaterfallWidth": 512,

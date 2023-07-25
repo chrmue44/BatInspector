@@ -260,15 +260,15 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SpecDescWidthWf")]
-    public int WaterfallHeight { get; set; } = 256;
+    public uint WaterfallHeight { get; set; } = 256;
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescHeightWf")]
-    public int WaterfallWidth { get; set; } = 512;
+    public uint WaterfallWidth { get; set; } = 512;
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescWidthFFT")]
-    public uint FftWidth { get; set; } = 512;
+    public uint FftWidth { get; set; } = 256;
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescColorOfLine")]

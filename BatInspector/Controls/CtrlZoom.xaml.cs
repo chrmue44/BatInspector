@@ -62,7 +62,7 @@ namespace BatInspector.Controls
       string fName = analysis.Name;
       string wavName = File.Exists(fName) ? fName : _wavFilePath + "/" + fName;
 
-      _model.ZoomView.initWaterfallDiagram(wavName, 1024, 512, 256);
+      _model.ZoomView.initWaterfallDiagram(wavName);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
       _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate / 1000);
       _ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);
@@ -544,7 +544,7 @@ namespace BatInspector.Controls
         _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
       double dt = (double)AppParams.Inst.FftWidth / samplingRate;
-      _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.FftWidth);
+      _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
 

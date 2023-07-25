@@ -249,11 +249,10 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + "/" + _prj.WavSubDir + "/" + rec.File, AppParams.Inst.FftWidth,
-                                     AppParams.Inst.WaterfallWidth, AppParams.Inst.WaterfallHeight,  _colorTable);
+        Waterfall wf = new Waterfall(_selectedDir + "/" + _prj.WavSubDir + "/" + rec.File, _colorTable);
         if (wf.Ok)
         {
-          wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.FftWidth);
+          wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
           bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
           bmp.Save(pngName);
           newImage = true;

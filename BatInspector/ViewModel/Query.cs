@@ -10,10 +10,12 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using BatInspector.Controls;
 using libParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -50,6 +52,8 @@ namespace BatInspector
     /// logic expression to apply to the data
     /// </summary>
     public string Expression { get { return _expression; } }
+
+    public Analysis Analysis { get{ return _analysis; } }
 
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
 
@@ -130,8 +134,8 @@ namespace BatInspector
         Name = _name,
         Created = DateTime.Now.ToString(),
         Expression = _expression,
-        SrcDir = _srcDir,
-        ReportFile = Path.Combine(_destDir, _name) + "_" + AppParams.PRJ_REPORT
+        SrcDir = Utils.relativePath(_destDir, _srcDir),
+        ReportFile = _name + "_" + AppParams.PRJ_REPORT
       };
     }
 
@@ -164,7 +168,6 @@ namespace BatInspector
     }
 
 
-
     private void writeQueryFile() 
     {
       if (_queryFile != null)
@@ -177,9 +180,11 @@ namespace BatInspector
         writer.Close();
         DebugLog.log("query '" + name + "' saved", enLogType.INFO);
       }
-      _analysis.save(_queryFile.ReportFile, "sum query\nsum query");
+      string reportName = Path.Combine(_destDir, _queryFile.ReportFile);
+      _analysis.save(reportName, "sum query\nsum query");
       DebugLog.log(_cntCall.ToString() + " calls in " + _cntFile.ToString() + " files found", enLogType.INFO);
     }
+
 
     private bool evaluatePrj(DirectoryInfo dir)
     {
@@ -197,40 +202,48 @@ namespace BatInspector
       filter.Name = "query";
 
       string lastFileName = "";
-      DebugLog.log("evaluating project " + prj.Name, enLogType.INFO);
-      foreach (AnalysisFile file in analysis.Files)
+      if (analysis.Files.Count == 0)
+        MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+      else
       {
-        foreach (AnalysisCall call in file.Calls)
+        DebugLog.log("evaluating project " + prj.Name, enLogType.INFO);
+        foreach (AnalysisFile file in analysis.Files)
         {
-          bool match = _model.Filter.apply(filter, call,
-                        file.getString(Cols.REMARKS),
-                        AnyType.getTimeString(file.RecTime), out retVal);
-          if (!retVal)
+          foreach (AnalysisCall call in file.Calls)
           {
-            DebugLog.log("error parsing query expression: " + _expression, enLogType.ERROR);
-            break;
-          }
-          if (match)
-          {
-            _cntCall++;
-            if (lastFileName != file.Name)
+            bool match = _model.Filter.apply(filter, call,
+                          file.getString(Cols.REMARKS),
+                          AnyType.getTimeString(file.RecTime), out retVal);
+            if (!retVal)
             {
-              _cntFile++;
-              BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
-              rec.File = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
-              rec.Name = Path.GetFileNameWithoutExtension(file.Name);
-              _records.Add(rec);
-              _analysis.addFile(file);
-              lastFileName = file.Name;
+              DebugLog.log("error parsing query expression: " + _expression, enLogType.ERROR);
+              break;
             }
-            List<string> row = call.getReportRow();
-            row[0] = file.Name;
-            _analysis.addCsvReportRow(row);
-            _analysis.addReportItem(file, call);
+            if (match)
+            {
+              _cntCall++;
+              if (lastFileName != file.Name)
+              {
+                _cntFile++;
+                BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
+
+                string absPath = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
+                rec.File = Utils.relativePath( this._destDir, absPath);
+                rec.Name = Path.GetFileNameWithoutExtension(file.Name);
+                _records.Add(rec);
+                file.Name = rec.File;
+                _analysis.addFile(file);
+                lastFileName = file.Name;
+              }
+              List<string> row = call.getReportRow();
+              row[0] = file.Name;
+              _analysis.addCsvReportRow(row);
+              _analysis.addReportItem(file, call);
+            }
           }
+          if (!retVal)
+            break;
         }
-        if (!retVal)
-          break;
       }
       return retVal;
     }

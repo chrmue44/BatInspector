@@ -102,12 +102,12 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = _analysis.Selected;
     }
 
-    public void setFileInformations(string Name, string wavFilePath, List<string> spec)
+    public void setFileInformations(string Name, string wavFilePath, AnalysisFile analysis, List<string> spec)
     {
       _wavFilePath = wavFilePath;
       _wavName = Name;
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
-      _analysis = _model.Prj.Analysis.find(_wavName);
+      _analysis = analysis;
       if (_analysis != null)
       {
         int callNr = 1;

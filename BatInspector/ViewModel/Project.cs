@@ -43,16 +43,68 @@ namespace BatInspector
   }
 
 
-  public class Project
+  public abstract class PrjBase
   {
-    private BatExplorerProjectFile _batExplorerPrj;
+    protected BatExplorerProjectFile _batExplorerPrj;
+
+    protected List<string> _speciesList;
+
+    protected List<SpeciesInfos> _speciesInfo;
+
+    protected Analysis _analysis;
+    protected BatSpeciesRegions _batSpecRegions;
+
+    public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
+
+    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions)
+    {
+      _speciesList = new List<string>();
+      _speciesInfo = speciesInfo;
+
+      _analysis = new Analysis(this.SpeciesInfos);
+      _batSpecRegions = batSpecRegions;
+    }
+
+    public abstract string getFullFilePath(string path);
+
+    /// <summary>
+    /// init the list of species valid for the project.
+    /// The list is depending on the region where the first file of the project was recorded
+    /// </summary>
+    protected void initSpeciesList()
+    {
+      if (_batExplorerPrj.Records.Length > 0)
+      {
+        string fName = getFullFilePath(_batExplorerPrj.Records[0].File);
+        fName = fName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+        BatRecord info = ElekonInfoFile.read(fName);
+        ElekonInfoFile.parsePosition(info, out double lat, out double lon);
+        ParRegion reg = _batSpecRegions.findRegion(lat, lon);
+        _speciesList = new List<string>();
+        if (reg != null)
+        {
+          foreach (string sp in reg.Species)
+            _speciesList.Add(sp);
+        }
+        else
+        {
+          foreach (SpeciesInfos sp in _speciesInfo)
+            _speciesList.Add(sp.Abbreviation);
+        }
+        _speciesList.Add("----");
+        _speciesList.Add("?");
+        _speciesList.Add("todo");
+      }
+    }
+
+  }
+
+  public class Project : PrjBase
+  {
     private string _prjFileName;
     private string _wavSubDir;
     private bool _ok;
-    private List<string> _speciesList;
-    private List<SpeciesInfos> _speciesInfo;
     private string _selectedDir;
-    private Analysis _analysis;
 
     public bool Ok {get {return _ok;} }
 
@@ -79,7 +131,6 @@ namespace BatInspector
       }
         set { _batExplorerPrj.Created = value; } }
     public List<string> Species {  get { return _speciesList; } }
-    public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
     public string PrjDir { get { return _selectedDir + "/"; } }
 
     public Analysis Analysis { get { return _analysis; }  }
@@ -88,16 +139,12 @@ namespace BatInspector
 
     public string SummaryName { get { return getSummaryName(_selectedDir); } }
 
-    BatSpeciesRegions _batSpecRegions;
     bool _changed = false;
 
     public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, string wavSubDir = "")
+    : base(speciesInfo, regions)
     {
-      _batSpecRegions = regions;
-      _speciesList = new List<string>();
       _wavSubDir = wavSubDir;
-      _speciesInfo = speciesInfo;
-      _analysis = new Analysis(this.SpeciesInfos);
     }
 
 
@@ -621,33 +668,10 @@ namespace BatInspector
       }
     }
 
-    /// <summary>
-    /// init the list of species valid for the project.
-    /// The list is depending on the region where the first file of the project was recorded
-    /// </summary>
-    void initSpeciesList()
+    public override string getFullFilePath(string wavName)
     {
-      if(_batExplorerPrj.Records.Length > 0)
-      {
-        string fName =_selectedDir + "/" + _wavSubDir + "/" + _batExplorerPrj.Records[0].File.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-        BatRecord info = ElekonInfoFile.read(fName);
-        ElekonInfoFile.parsePosition(info, out double lat, out double lon);
-        ParRegion reg = _batSpecRegions.findRegion(lat, lon);
-        _speciesList = new List<string>();
-        if (reg != null)
-        {
-          foreach (string sp in reg.Species)
-            _speciesList.Add(sp);
-        }
-        else
-        {
-          foreach (SpeciesInfos sp in _speciesInfo)
-            _speciesList.Add(sp.Abbreviation);
-        }
-        _speciesList.Add("----");
-        _speciesList.Add("?");
-        _speciesList.Add("todo");
-      }
+      string retVal = Path.Combine(_selectedDir, _wavSubDir, wavName);
+      return retVal;
     }
   }
 }

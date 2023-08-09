@@ -243,6 +243,9 @@ namespace BatInspector.Forms
       _model.initQuery(file);
 
       _switchTabToPrj = true;
+      if (_model.Query == null)              //remove all spectrograms if project was closed
+        _spSpectrums.Children.Clear();
+      _lblProject.Text = "QUERY: " + file.FullName;
       if (_model.Query != null)
       {
         if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
@@ -264,7 +267,7 @@ namespace BatInspector.Forms
       _model.initProject(dir);
       if (_model.Prj == null)              //remove all spectrograms if project was closed
         _spSpectrums.Children.Clear();
-      _lblProject.Text = dir.FullName;
+      _lblProject.Text = "PROJECT: " + dir.FullName;
       if (_model.Prj != null)
       {
         _ctlPrjInfo._tbCreated.Text = _model.Prj.Created;
@@ -339,7 +342,7 @@ namespace BatInspector.Forms
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
-            _model.Prj.Analysis.save(_model.PrjPath, _model.Prj.Notes);
+            _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
         }
       }
     }
@@ -456,7 +459,29 @@ namespace BatInspector.Forms
       bool newImage;
       ctl._img.Source = _model.getFtImage(rec, out newImage, fromQuery);
       ctl._img.MaxHeight = _imgHeight;
-      ctl.setFileInformations(rec.File, _model.WavFilePath, _model.Prj.Species);
+      AnalysisFile analysis;
+      List<string> species;
+      string fullWavName;
+      string wavName;
+      string wavFilePath;
+      if (fromQuery)
+      {
+        fullWavName = Path.Combine(_model.SelectedDir, rec.File);
+        wavName = Path.GetFileName(fullWavName);
+        wavFilePath = Path.GetDirectoryName(fullWavName);
+        analysis = _model.Query.Analysis.find(rec.File);
+        species = new List<string>();
+      }
+      else
+      {
+        wavFilePath = Path.Combine(_model.SelectedDir, _model.Prj.WavSubDir);
+        wavName = rec.File;
+        fullWavName = Path.Combine(_model.SelectedDir, rec.File);
+        analysis = _model.Prj.Analysis.find(rec.File);
+        species = _model.Prj.Species;
+      }
+      
+      ctl.setFileInformations(wavName, wavFilePath, analysis, species);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
       if (!_fastOpen)
         setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
@@ -511,7 +536,10 @@ namespace BatInspector.Forms
           }
           await Task.Delay(1);
         }
-        DebugLog.log("project opened: " + _model.Prj.Name, enLogType.INFO);
+        if(_model.Prj != null)
+          DebugLog.log("Project opened: " + _model.Prj.Name, enLogType.INFO);
+        else if (_model.Query != null)
+          DebugLog.log("Query opened: " + _model.Query.Name, enLogType.INFO);
         showStatus();
       }
     }
@@ -519,10 +547,15 @@ namespace BatInspector.Forms
 
   void showStatus()
     {
-      string report = _model.Prj.Analysis.Report != null ? "report available" : "no report";
+      string report = "";
+      if (_model.Prj != null)
+        report = _model.Prj.Analysis.Report != null ? "report available" : "no report";
+      else if(_model.Query != null)
+        report = _model.Query.Analysis.Report != null ? "report available" : "no report";
+
       int vis = 0;
       foreach (ctlWavFile c in _spSpectrums.Children)
-      {
+       {
         if (c.Visibility == Visibility.Visible)
           vis++;
       }
@@ -663,10 +696,20 @@ namespace BatInspector.Forms
 
     private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
     {
-      if (_model.Prj.Analysis.Report != null)
-        _dgData.ItemsSource = _model.Prj.Analysis.Report;
-      if (_model.Prj.Analysis.Summary != null)
-        _dgSum.ItemsSource = _model.Prj.Analysis.Summary;
+      if (_model.Prj != null)
+      {
+        if (_model.Prj.Analysis.Report != null)
+          _dgData.ItemsSource = _model.Prj.Analysis.Report;
+        if (_model.Prj.Analysis.Summary != null)
+          _dgSum.ItemsSource = _model.Prj.Analysis.Summary;
+      }
+      if (_model.Query != null)
+      {
+        if (_model.Query.Analysis.Report != null)
+          _dgData.ItemsSource = _model.Query.Analysis.Report;
+        if (_model.Query.Analysis.Summary != null)
+          _dgSum.ItemsSource = _model.Query.Analysis.Summary;
+      }
     }
 
     private void Window_Closing(object sender, CancelEventArgs e)
@@ -737,7 +780,7 @@ namespace BatInspector.Forms
       _model.saveSettings();
       if ((_model != null) && (_model.Prj != null) && (_model.Prj.Analysis != null) &&
         (_model.Prj.Analysis.Report != null))
-        _model.Prj.Analysis.save(_model.PrjPath, _model.Prj.Notes);
+        _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
@@ -803,7 +846,7 @@ namespace BatInspector.Forms
 
     private void Content_rendered(object sender, System.EventArgs e)
     {
-      if ((_ctlZoom != null) && (_model.PrjPath != null))
+      if ((_ctlZoom != null) && (_model.SelectedDir != null))
       {
         _ctlZoom.update();
         _tbMain.SelectedIndex = 2;
@@ -844,8 +887,8 @@ namespace BatInspector.Forms
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
         {
           _spSpectrums.Children.Clear();
-          _model.Prj.Analysis.save(_model.PrjPath, _model.Prj.Notes);
-          DirectoryInfo dir = new DirectoryInfo(_model.PrjPath);
+          _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
+          DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
           initializeProject(dir);
         }
         _model.ReloadPrj = false;
@@ -959,13 +1002,10 @@ namespace BatInspector.Forms
       {
         if (IsUserVisible(c, this) && !c.WavInit)
         {
-          if (c.Index < _model.Prj.Records.Length)
-          {
-            if(_model.Prj != null)
-              initCtlWav(c, _model.Prj.Records[c.Index], false);
-            if(_model.Query != null)
-              initCtlWav(c, _model.Prj.Records[c.Index], true);
-          }
+          if((_model.Prj != null) && (c.Index < _model.Prj.Records.Length))
+            initCtlWav(c, _model.Prj.Records[c.Index], false);
+          if((_model.Query != null) && (c.Index < _model.Query.Records.Length))
+            initCtlWav(c, _model.Query.Records[c.Index], true);
           c.UpdateLayout();
         }
       }
@@ -1060,10 +1100,10 @@ namespace BatInspector.Forms
         {
           _model.Prj.addFiles(ofi.FileNames);
           if (_model.Prj.Analysis != null)
-            _model.Prj.Analysis.save(_model.PrjPath, _model.Prj.Notes);
+            _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
           _model.Prj.writePrjFile();
           _spSpectrums.Children.Clear();
-          DirectoryInfo dir = new DirectoryInfo(_model.PrjPath);
+          DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
           initializeProject(dir);
         }
       }

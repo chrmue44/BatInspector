@@ -906,4 +906,7 @@
   <data name="ToolTipPausePlayingAudio" xml:space="preserve">
     <value>pause playing audio</value>
   </data>
+  <data name="QueryReportMissing" xml:space="preserve">
+    <value>Evaluation for project missing, please run evaluation first!</value>
+  </data>
 </root>

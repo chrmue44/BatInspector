@@ -1645,6 +1645,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluation for project missing, please run evaluation first!.
+        /// </summary>
+        public static string QueryReportMissing {
+            get {
+                return ResourceManager.GetString("QueryReportMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sampling Rate.
         /// </summary>
         public static string SamplingRate {

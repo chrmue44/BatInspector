@@ -59,9 +59,8 @@ namespace BatInspector
     Query _query;
  
     
-    public string WavFilePath { get { return _selectedDir + "/" + _prj.WavSubDir; } }
     
-    public string PrjPath { get { return _selectedDir; } }
+    public string SelectedDir { get { return _selectedDir; } }
     
     public ScriptRunner Scripter {  get { return _scripter; } }
     
@@ -136,8 +135,11 @@ namespace BatInspector
     public void initQuery(FileInfo file)
     {
       _prj = null;
-      if(Query.isQuery(file))
+      if (Query.isQuery(file))
+      {
         _query = Query.readQueryFile(file.FullName, this);
+        _selectedDir = Path.GetDirectoryName(file.FullName);
+      }
       else
         _query = null;
     }
@@ -252,7 +254,7 @@ namespace BatInspector
 
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage, bool fromQuery)
     {
-      string fullName = fromQuery ? rec.File : _selectedDir + "/" + _prj.WavSubDir + "/" + rec.File;
+      string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
       string pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       Bitmap bmp = null;
       BitmapImage bImg = null;
@@ -326,7 +328,7 @@ namespace BatInspector
       foreach (string f in files)
         deleteFile(f);
 
-      _prj.Analysis.save(PrjPath, _prj.Notes);
+      _prj.Analysis.save(SelectedDir, _prj.Notes);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
@@ -340,11 +342,11 @@ namespace BatInspector
     {
       if (_prj != null)
       {
-        string dirName = _selectedDir + "/" + _prj.WavSubDir;
+        string dirName = Path.Combine(_selectedDir, _prj.WavSubDir);
         string delName = System.IO.Path.GetFileName(wavName);
         delName = delName.Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
-        string destDir = PrjPath + "/del";
+        string destDir = SelectedDir + "/del";
         if(!Directory.Exists(destDir))
           Directory.CreateDirectory(destDir);
         foreach (string f in delFiles)

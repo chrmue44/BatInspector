@@ -23,9 +23,6 @@ using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
 using System.Resources;
-using System.Management;
-using System.Windows.Controls;
-using System.Xml.Linq;
 
 namespace BatInspector
 {
@@ -42,29 +39,6 @@ namespace BatInspector
     resNet34Model,
     BAT_DETECT2
   };
-
-  public class DriveId
-  {
-    public string Name { get; }
-    public string GUID { get; }
-
-    public DriveId(string name)
-    {
-      GUID = "";
-      Name = name;
-      ManagementObjectSearcher ms = new ManagementObjectSearcher("Select * from Win32_Volume");
-      foreach (ManagementObject mo in ms.Get())
-      {
-        string guid = mo["DeviceID"].ToString();
-        string drive = mo["Name"].ToString();
-        if (drive == name)
-        {
-          GUID = guid;
-          break;
-        }
-      }
-    }
-  }
 
   [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter)]
   class LocalizedDescriptionAttribute : DescriptionAttribute
@@ -241,9 +215,6 @@ namespace BatInspector
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;
    
     static AppParams _inst = null;
-    
-    DriveId[] _drives;
-    
     public static AppParams Inst 
     { 
       get 
@@ -253,37 +224,14 @@ namespace BatInspector
         return _inst;
       }
     }
-    /*
+
     static public string DriveLetter 
     {
       get
       {
         return Path.GetPathRoot(System.Reflection.Assembly.GetExecutingAssembly().Location);
       }
-    }*/
-
-    static public string DriveId
-    {
-      get
-      {
-
-        string driveLetter = Path.GetPathRoot(System.Reflection.Assembly.GetExecutingAssembly().Location);
-        string GUID = "";
-        ManagementObjectSearcher ms = new ManagementObjectSearcher("Select * from Win32_Volume");
-        foreach (ManagementObject mo in ms.Get())
-        {
-          string guid = mo["DeviceID"].ToString();
-          string drive = mo["Name"].ToString();
-          if (drive == driveLetter)
-          {
-            GUID = guid;
-            break;
-          }
-        }
-        return GUID;
-      }
     }
-
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -513,24 +461,19 @@ namespace BatInspector
 
     public AppParams()
     {
-      DriveInfo[] drives = DriveInfo.GetDrives();
-      _drives = new DriveId[drives.Length];
-      for (int i = 0; i < drives.Length; i++)
-        _drives[i] = new DriveId(drives[i].Name);
-
       init();
     }
 
     public void init()
     {
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
-      AppDataPath = Path.Combine(Environment.SpecialFolder.MyDocuments.ToString(), "BatInspector");
+      AppDataPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
       LogDataPath = Path.Combine(AppDataPath, "log");
       ScriptDir = "scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
       WaterfallHeight = 256;
       WaterfallWidth = 512;
-      FftWidth = 512;
+      FftWidth = 256;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
       MainWindowWidth = 1400;
@@ -550,7 +493,7 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       initScripts();
-      RootDataDir = DriveId + "bat";
+      RootDataDir = DriveLetter + "bat";
     //  SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
       PythonBin = "\"C:/Program Files/Python310/python.exe\"";
       ModelRootPath = AppRootPath + "model";
@@ -566,23 +509,6 @@ namespace BatInspector
       PredPredict3 = false;
       PredConfTest = false;
       PredDelTemp = true;
-    }
-
-    public string getGuidPath(string path)
-    {
-      string retVal = path;
-      if ((path[1] == ':') && (path[2] == '\\'))
-      {
-        foreach (DriveId drive in _drives)
-        {
-          if (path.IndexOf(drive.Name) >= 0)
-          {
-            retVal = path.Replace(drive.Name, drive.GUID);
-            break;
-          }
-        }
-      }
-      return retVal;
     }
 
     private void initFilterParams()
@@ -697,18 +623,18 @@ namespace BatInspector
           file.Close();
       }
 
-      retVal.AppRootPath = retVal.getGuidPath(retVal.AppRootPath);
-      retVal.ModelRootPath = retVal.getGuidPath(retVal.ModelRootPath);
-      //retVal.SpeciesFile = retVal.getGuidPath(retVal.SpeciesFile);
-      LogDataPath = retVal.getGuidPath(LogDataPath);
-      AppDataPath = retVal.getGuidPath(AppDataPath);
-      DebugLog.log("root paths adapted to drive " + AppParams.DriveId, enLogType.INFO);
+      retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
+      retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
+      //retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
+      LogDataPath = replaceDriveLetter(LogDataPath);
+      AppDataPath = replaceDriveLetter(AppDataPath);
+      DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);
 
       retVal.adjustActivateBat();
       _inst = retVal;
     }
 
-   /* string replaceDriveLetter(string  path)
+    static string replaceDriveLetter(string  path)
     {
       string driveStr = "C";
       int driveIdx = 0;
@@ -720,20 +646,19 @@ namespace BatInspector
       if(path.IndexOf(driveStr) < 0)
         path = path.Replace(path.Substring(driveIdx,1), DriveLetter.Substring(0,1));
       return path;
-    }*/
+    }
 
     public static void load()
     {
-      AppParams dummy = new AppParams();
       //string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
       if(File.Exists(_dataPath))
-        AppDataPath = dummy.getGuidPath(File.ReadAllText(_dataPath));
+        AppDataPath = replaceDriveLetter(File.ReadAllText(_dataPath));
      else
         AppDataPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
       LogDataPath = Path.Combine(AppDataPath, "log");
       string fPath = Path.Combine(AppDataPath, _fName);
       if (!File.Exists(fPath))
-        fPath =  dummy.getGuidPath(fPath);
+        fPath = DriveLetter.Substring(0, 1) + fPath.Substring(1);
       loadFrom(fPath);
     }
 
@@ -774,11 +699,11 @@ namespace BatInspector
       {
         string activateBat = File.ReadAllText(path);
         int pos = activateBat.IndexOf(str) + str.Length;
-        if (activateBat[pos + 2] == ':')
+        if (activateBat[pos + 1] != DriveLetter[0])
         {
-          string newBat = activateBat.Substring(0, pos) + DriveId + activateBat.Substring(pos + 3);
+          string newBat = activateBat.Substring(0, pos) + DriveLetter[0] + activateBat.Substring(pos + 1);
           File.WriteAllText(path, newBat);
-          DebugLog.log("python scripts adapted to drive " + DriveId, enLogType.INFO);
+          DebugLog.log("python scripts adapted to drive " + DriveLetter, enLogType.INFO);
         }
       }
       catch { }

@@ -9,9 +9,10 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 
 namespace libParser
 {
@@ -337,6 +338,51 @@ namespace libParser
         return matchPattern(pattern.Substring(1), name) ||
                matchPattern(pattern, name.Substring(1));
       return false;
+    }
+
+    /// <summary>
+    /// create a relative path from two absolute paths
+    /// https://stackoverflow.com/questions/9042861/how-to-make-an-absolute-path-relative-to-a-particular-folder
+    /// </summary>
+    /// <param name="relativeTo">root point from where the path should be relative</param>
+    /// <param name="">path</param>
+    /// <returns>a relative path</returns>
+    public static string relativePath(string relativeTo, string path)
+    {
+      path = Path.GetFullPath(path);
+      relativeTo = Path.GetFullPath(relativeTo);
+
+      var separators = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+      IReadOnlyList<string> p1 = path.Split(separators);
+      IReadOnlyList<string> p2 = relativeTo.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+      StringComparison sc = new StringComparison();
+
+      int i;
+      int n = Math.Min(p1.Count, p2.Count);
+      for (i = 0; i < n; i++)
+        if (!string.Equals(p1[i], p2[i], sc))
+          break;
+
+      if (i == 0)
+      {
+        // Cannot make a relative path, for example if the path resides on another drive.
+        return path;
+      }
+
+      p1 = p1.Skip(i).Take(p1.Count - i).ToList();
+
+      if (p1.Count == 1 && p1[0].Length == 0)
+        p1 = Array.Empty<string>();
+
+      string relativePath = string.Join(
+          new string(Path.DirectorySeparatorChar, 1),
+          Enumerable.Repeat("..", p2.Count - i).Concat(p1));
+
+      if (relativePath.Length == 0)
+        relativePath = ".";
+
+      return relativePath;
     }
 
     public static string latToString(double lat)

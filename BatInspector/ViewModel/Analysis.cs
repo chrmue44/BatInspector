@@ -226,7 +226,6 @@ namespace BatInspector
       {
         _csv = new Csv();
         int ret = _csv.read(fileName, ";", true);
-
         //_cols.init(csv);
 
         //@@@ temporary
@@ -254,9 +253,9 @@ namespace BatInspector
             _csv.insertCol(col, "", Cols.REMARKS);
             _csv.save();
           }
+          if (_csv.getColNr(Cols.REC_TIME) < 1)
+            filloutRecTime();
         }
-        if (_csv.getColNr(Cols.REC_TIME) < 1)
-          filloutRecTime();
 
         _list.Clear();
         string lastFileName = "$$$";
@@ -835,7 +834,7 @@ namespace BatInspector
     private string _name;
     public bool Selected { get; set; } = false;
 
-    public string Name { get { return _name; } }
+    public string Name { get { return _name; } set { _name = value; } }
     public DateTime RecTime { get { return _recTime; } set { _recTime = value; } }
 
     Dictionary<string, int> _specFound;

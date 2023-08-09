@@ -3,10 +3,10 @@ TODO
 - progress bar for long running tasks
 - species comparison
 - stop button to kill running script
-- show queries like projects
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 
 DONE
+- show queries like projects (queries now only with relative file paths)
 - crisper spectrum display in zoom view (FFT width now taken from settings)
 - better spectrum display in zoom view
 - play/stop/pause replay, cursor in zoom view works 

@@ -23,6 +23,7 @@ using System;
 using System.IO;
 using System.Globalization;
 using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics;
 
 namespace BatInspector.Controls
 {

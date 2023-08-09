@@ -141,25 +141,40 @@ namespace BatInspector.Forms
           expandedDir = (item.Tag as DirectoryInfo);
         try
         {
-          _model.Busy = true;
-          DebugLog.log("start evaluation TODO", enLogType.DEBUG);
-          foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
+          if (expandedDir != null)
           {
-            TreeViewItem childItem = CreateTreeItem(subDir);
-            item.Items.Add(childItem);
-            if (Project.containsProject(subDir) != "")
+            _model.Busy = true;
+            DebugLog.log("start evaluation TODO", enLogType.DEBUG);
+            foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
             {
-              childItem.FontWeight = FontWeights.Bold;
-              if (Project.evaluationDone(subDir))
-                childItem.Foreground = new SolidColorBrush(Colors.Green);
-              else
-                childItem.Foreground = new SolidColorBrush(Colors.Violet);
+              TreeViewItem childItem = CreateTreeItem(subDir);
+              item.Items.Add(childItem);
+              if (Project.containsProject(subDir) != "")
+              {
+                childItem.FontWeight = FontWeights.Bold;
+                if (Project.evaluationDone(subDir))
+                  childItem.Foreground = new SolidColorBrush(Colors.Green);
+                else
+                  childItem.Foreground = new SolidColorBrush(Colors.Violet);
+              }
+              else if (Project.containsWavs(subDir))
+                childItem.Foreground = new SolidColorBrush(Colors.Blue);
             }
-            else if (Project.containsWavs(subDir))
-              childItem.Foreground = new SolidColorBrush(Colors.Blue);
+
+            foreach (FileInfo subFile in expandedDir.GetFiles())
+            {
+              if (Query.isQuery(subFile))
+              {
+                TreeViewItem childItem = CreateTreeItem(subFile);
+                item.Items.Add(childItem);
+                childItem.Foreground = new SolidColorBrush(Colors.Orange);
+              }
+            }
+
+
+            DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
+            _model.Busy = false;
           }
-          DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
-          _model.Busy = false;
         }
         catch
         {
@@ -185,9 +200,12 @@ namespace BatInspector.Forms
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
-      {
+      if((dir != null) && (Project.containsProject(dir) != ""))
         initializeProject(dir);
-      }
+
+      FileInfo file = item.Tag as FileInfo;
+      if((file != null) && Query.isQuery(file))
+        initializeQuery(file);
     }
 
     public void setStatus(string status)
@@ -217,6 +235,27 @@ namespace BatInspector.Forms
       }
     }
 
+    void initializeQuery(FileInfo file)
+    {
+      DebugLog.log("start to open query", enLogType.DEBUG);
+      _scrlViewer.ScrollToVerticalOffset(0);
+      checkSavePrj();
+      _model.initQuery(file);
+
+      _switchTabToPrj = true;
+      if (_model.Query != null)
+      {
+        if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
+        {
+          setStatus("   loading...");
+          populateFiles();
+        }
+        else
+          DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
+      }
+
+    }
+
     void initializeProject(DirectoryInfo dir)
     {
       DebugLog.log("start to open project", enLogType.DEBUG);
@@ -225,9 +264,6 @@ namespace BatInspector.Forms
       _model.initProject(dir);
       if (_model.Prj == null)              //remove all spectrograms if project was closed
         _spSpectrums.Children.Clear();
-   //   double fMax = 312000 / 2;
-   //   if ((_model.Prj != null) && (_model.Prj.Analysis != null) && (_model.Prj.Analysis.Files.Count > 0))
-   //     fMax = _model.Prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2;
       _lblProject.Text = dir.FullName;
       if (_model.Prj != null)
       {
@@ -240,13 +276,16 @@ namespace BatInspector.Forms
         }
       }
       _switchTabToPrj = true;
-      if (_model.Prj?.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
+      if (_model.Prj != null)
       {
-        setStatus("   loading...");
-        populateFiles();
+        if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
+        {
+          setStatus("   loading...");
+          populateFiles();
+        }
+        else
+          DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
       }
-      else
-        DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
     }
 
     private void initZoomWindow()
@@ -386,21 +425,36 @@ namespace BatInspector.Forms
         //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
-          _model.getFtImage(rec, out newImage);
+          _model.getFtImage(rec, out newImage, false);
           if (newImage)
           {
             (sender as BackgroundWorker).ReportProgress(55, rec.Name);
           }
         });
         _model.Busy = false;
+      } else if(_model.Query != null)
+      {
+        _model.Busy = true;
+        Parallel.ForEach(_model.Query.Records, rec =>
+        //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+        {
+          bool newImage;
+          _model.getFtImage(rec, out newImage, true);
+          if (newImage)
+          {
+            (sender as BackgroundWorker).ReportProgress(55, rec.Name);
+          }
+        });
+        _model.Busy = false;
+
       }
     }
 
 
-    void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec)
+    void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
     {
       bool newImage;
-      ctl._img.Source = _model.getFtImage(rec, out newImage);
+      ctl._img.Source = _model.getFtImage(rec, out newImage, fromQuery);
       ctl._img.MaxHeight = _imgHeight;
       ctl.setFileInformations(rec.File, _model.WavFilePath, _model.Prj.Species);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
@@ -429,7 +483,31 @@ namespace BatInspector.Forms
 
           if (!_fastOpen || (ctl.Index < 5))
           {
-            initCtlWav(ctl, rec);
+            initCtlWav(ctl, rec, false);
+          }
+          await Task.Delay(1);
+        }
+        DebugLog.log("project opened: " + _model.Prj.Name, enLogType.INFO);
+        showStatus();
+      }
+      else if (_model.Query != null)
+      {
+        _spSpectrums.Children.Clear();
+        _cbFocus = -1;
+
+        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Query.Records)
+        {
+          ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this);
+          DockPanel.SetDock(ctl, Dock.Bottom);
+          _spSpectrums.Dispatcher.Invoke(() =>
+          {
+            _cbFocus = 0;
+            _spSpectrums.Children.Add(ctl);
+          });
+
+          if (!_fastOpen || (ctl.Index < 5))
+          {
+            initCtlWav(ctl, rec, true);
           }
           await Task.Delay(1);
         }
@@ -437,8 +515,9 @@ namespace BatInspector.Forms
         showStatus();
       }
     }
+  
 
-    void showStatus()
+  void showStatus()
     {
       string report = _model.Prj.Analysis.Report != null ? "report available" : "no report";
       int vis = 0;
@@ -881,7 +960,12 @@ namespace BatInspector.Forms
         if (IsUserVisible(c, this) && !c.WavInit)
         {
           if (c.Index < _model.Prj.Records.Length)
-            initCtlWav(c, _model.Prj.Records[c.Index]);
+          {
+            if(_model.Prj != null)
+              initCtlWav(c, _model.Prj.Records[c.Index], false);
+            if(_model.Query != null)
+              initCtlWav(c, _model.Prj.Records[c.Index], true);
+          }
           c.UpdateLayout();
         }
       }

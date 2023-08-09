@@ -13,13 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Numerics;
 using DSPLib;
 using libParser;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using NAudio.Wave;
+using System.Runtime.InteropServices;
 
 namespace BatInspector
 {
@@ -250,11 +250,12 @@ namespace BatInspector
       return lmSpectrum;
     }
 
-    public Bitmap generateFtPicture(double fMin, double fMax)
+    public Bitmap generateFtPicture_old(double fMin, double fMax)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int heightFt = (int)AppParams.Inst.WaterfallHeight;
       Bitmap bmp = new Bitmap(width, heightFt);
+
       if (_ok)
       {
         int fftSize = (int)AppParams.Inst.FftWidth;
@@ -265,7 +266,6 @@ namespace BatInspector
           {
             if (_spec.Count > 0)
             {
-           //   int idxFreq2 = (int)((double)_spec[0].Length / (double)_height * (double)y);
               double f = (fMax - fMin) * y / heightFt + fMin;
               int idxFreq =(int)( f * 2000 /(double) _audio.SamplingRate * fftSize / 2);
               if (_spec[idxSpec] != null)
@@ -273,7 +273,7 @@ namespace BatInspector
                 if (idxFreq >= _spec[idxSpec].Length)
                   idxFreq = _spec[idxSpec].Length - 1;
                 double val = _spec[idxSpec][idxFreq];
-                Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
+                System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
                 bmp.SetPixel(x, heightFt - 1 - y, col);
               }
             }
@@ -281,6 +281,84 @@ namespace BatInspector
         }
       }
       return bmp;
+    }
+
+    /*
+    public Bitmap generateFtPicture(double fMin, double fMax)
+    {
+      int width = (int)AppParams.Inst.WaterfallWidth;
+      int heightFt = (int)AppParams.Inst.WaterfallHeight;
+      System.Drawing.Imaging.PixelFormat fmt = System.Drawing.Imaging.PixelFormat.Format32bppRgb;
+
+      int pixelFormatSize = Image.GetPixelFormatSize(fmt);
+      int stride = width * pixelFormatSize;
+      int padding = 32 - (stride % 32);
+      if (padding < 32)
+        stride += padding;
+      uint[] pixels = new uint[(stride / 32) *heightFt];
+      IntPtr addr = Marshal.UnsafeAddrOfPinnedArrayElement(pixels, 0);
+      Bitmap bmp = new Bitmap(width, heightFt,stride / 8, fmt, addr);
+
+
+      if (_ok)
+      {
+        int fftSize = (int)AppParams.Inst.FftWidth;
+        for (int x = 0; x < width; x++)
+        {
+          int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
+          for (int y = 0; y < heightFt; y++)
+          {
+            if (_spec.Count > 0)
+            {
+              double f = (fMax - fMin) * y / heightFt + fMin;
+              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftSize / 2);
+              if (_spec[idxSpec] != null)
+              {
+                if (idxFreq >= _spec[idxSpec].Length)
+                  idxFreq = _spec[idxSpec].Length - 1;
+                double val = _spec[idxSpec][idxFreq];
+                System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
+                int idx = (heightFt - 1 - y) * width + x;
+                pixels[idx] = (uint)col.B | ((uint)col.G << 8) | ((uint)col.R << 16);
+              }
+            }
+          }
+        }
+      }
+      return bmp;
+    }*/
+
+    public Bitmap generateFtPicture(double fMin, double fMax)
+    {
+      int width = (int)AppParams.Inst.WaterfallWidth;
+      int heightFt = (int)AppParams.Inst.WaterfallHeight;
+      BitmapFast bmp = new BitmapFast(width, heightFt);
+
+      if (_ok)
+      {
+        int fftSize = (int)AppParams.Inst.FftWidth;
+        for (int x = 0; x < width; x++)
+        {
+          int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
+          for (int y = 0; y < heightFt; y++)
+          {
+            if (_spec.Count > 0)
+            {
+              double f = (fMax - fMin) * y / heightFt + fMin;
+              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftSize / 2);
+              if (_spec[idxSpec] != null)
+              {
+                if (idxFreq >= _spec[idxSpec].Length)
+                  idxFreq = _spec[idxSpec].Length - 1;
+                double val = _spec[idxSpec][idxFreq];
+                System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
+                bmp.setPixel(x, heightFt - 1 - y, col);
+              }
+            }
+          }
+        }
+      }
+      return bmp.Bmp;
     }
 
     public Bitmap generateXtPicture(double aMin, double aMax, double tMin, double tMax)

@@ -92,6 +92,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -218,6 +219,7 @@
     <Compile Include="ViewModel\BatRecord.cs" />
     <Compile Include="ViewModel\BatSpeciesRegions.cs" />
     <Compile Include="ViewModel\BioAcoustics.cs" />
+    <Compile Include="ViewModel\BitmapFast.cs" />
     <Compile Include="ViewModel\ClassifierBarataud.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\ElekonInfoFile.cs" />

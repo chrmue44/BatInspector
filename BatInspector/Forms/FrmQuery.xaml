@@ -6,20 +6,26 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties" 
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.FrmQueryTitle}" Height="350" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="44"/>
-            <RowDefinition/>
+        Title="{x:Static res:MyResources.FrmQueryTitle}" Height="350" Width="800" Loaded="Window_Loaded_1">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="32*"/>
+      <ColumnDefinition Width="526*"/>
+      <ColumnDefinition Width="43*"/>
+      <ColumnDefinition Width="199*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="44"/>
+      <RowDefinition/>
 
-        </Grid.RowDefinitions>
-        <ToolBar Grid.Row="0">
-            <Button x:Name="_btnHelp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnHelp_Click" ToolTip="{x:Static res:MyResources.FrmFilterTtipShowList}">
-                <Image Source="../images/Button_Help_icon_32.png"></Image>
-            </Button>
-        </ToolBar>
+    </Grid.RowDefinitions>
+    <ToolBar Grid.Row="0" Grid.ColumnSpan="4">
+      <Button x:Name="_btnHelp"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnHelp_Click" ToolTip="{x:Static res:MyResources.FrmFilterTtipShowList}">
+        <Image Source="../images/Button_Help_icon_32.png"></Image>
+      </Button>
+    </ToolBar>
 
-        <StackPanel Margin="10" Grid.Row="1">
+    <StackPanel Margin="10,10,10,10" Grid.Row="1" Grid.ColumnSpan="4">
       <local:ctlDataItem x:Name="_ctlName" Margin="0,5,0,0"/>
       <local:CtlSelectFile x:Name="_ctlSelectSource" Margin="0,5,0,0"/>
       <local:CtlSelectFile x:Name="_ctlSelectDest" Margin="0,5,0,0"/>
@@ -39,5 +45,5 @@
         <Button x:Name="_btnOK" Height="25" Width="120" Content="OK"  Click="btnOK_Click"></Button>
       </StackPanel>
     </StackPanel>
-    </Grid>
+  </Grid>
 </Window>

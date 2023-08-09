@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Interop;
+
 
 namespace BatInspector.Forms
 {
@@ -64,6 +54,11 @@ namespace BatInspector.Forms
       _frmHelp.Show();
       _frmHelp.Visibility = Visibility.Visible;
       _frmHelp.Topmost = true;
+    }
+
+    private void Window_Loaded_1(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
 }

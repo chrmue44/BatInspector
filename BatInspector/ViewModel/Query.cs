@@ -51,6 +51,8 @@ namespace BatInspector
     /// </summary>
     public string Expression { get { return _expression; } }
 
+    public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
+
     public Query(string name, string srcDir, string dstDir, string query) 
     {
       _name = name;
@@ -89,6 +91,21 @@ namespace BatInspector
       }
     }
 
+
+    /// <summary>
+    /// checks wether a directory contains query files
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static bool isQuery(FileInfo file)
+    {
+      bool retVal = false;
+      if (file.Extension == AppParams.EXT_QUERY)
+        retVal = true;
+      return retVal;
+    }
+
+
     private bool crawl(DirectoryInfo dir)
     {
       DirectoryInfo[] dirs = dir.GetDirectories();
@@ -118,10 +135,35 @@ namespace BatInspector
       };
     }
 
-    private void openQueryFile(string name)
+    public static Query readQueryFile(string name, ViewModel model)
     {
-
+      Query retVal;
+      try
+      {
+        string dstDir = Path.GetDirectoryName(name);
+        string queryName = Path.GetFileName(name);
+        string xml = File.ReadAllText(name);
+        var serializer = new XmlSerializer(typeof(QueryFile));
+        TextReader reader = new StringReader(xml);
+        QueryFile qFile = (QueryFile)serializer.Deserialize(reader);
+        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression);
+        foreach(BatExplorerProjectFileRecordsRecord rec in qFile.Records)
+          retVal._records.Add(rec);
+        retVal._queryFile = qFile;
+        retVal._model = model;
+        retVal._analysis = new Analysis(model.SpeciesInfos);
+        string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
+        retVal._analysis.read(fullReportName);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error reading query file: " + name + " :" + ex.ToString(), enLogType.ERROR);
+        retVal = null;  
+      }
+      return retVal;
     }
+
+
 
     private void writeQueryFile() 
     {

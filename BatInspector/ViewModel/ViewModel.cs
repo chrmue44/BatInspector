@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Management;
 using System.Windows.Media.Imaging;
 
 
@@ -32,6 +33,7 @@ namespace BatInspector
     public double CallDistMin { get; set; }
     public double CallDistMax { get; set; }
   }
+
 
   public class ViewModel
   {
@@ -55,6 +57,7 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
+ 
     
     public string WavFilePath { get { return _selectedDir + "/" + _prj.WavSubDir; } }
     
@@ -119,6 +122,7 @@ namespace BatInspector
         _models.Add(BaseModel.Create(index, m.ModelType));
         index++;
       }
+      
       UpdateUi = false;
     }
 
@@ -126,6 +130,16 @@ namespace BatInspector
     {
       if (File.Exists(Prj.ReportName))
         _prj.Analysis.read(Prj.ReportName);
+    }
+
+
+    public void initQuery(FileInfo file)
+    {
+      _prj = null;
+      if(Query.isQuery(file))
+        _query = Query.readQueryFile(file.FullName, this);
+      else
+        _query = null;
     }
 
     public void initProject(DirectoryInfo dir)
@@ -236,9 +250,9 @@ namespace BatInspector
       AppParams.Inst.save();
     }
 
-    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage)
+    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage, bool fromQuery)
     {
-      string fullName = _selectedDir + "/" + _prj.WavSubDir + "/" + rec.File;
+      string fullName = fromQuery ? rec.File : _selectedDir + "/" + _prj.WavSubDir + "/" + rec.File;
       string pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       Bitmap bmp = null;
       BitmapImage bImg = null;
@@ -249,7 +263,7 @@ namespace BatInspector
       }
       else
       {
-        Waterfall wf = new Waterfall(_selectedDir + "/" + _prj.WavSubDir + "/" + rec.File, _colorTable);
+        Waterfall wf = new Waterfall(fullName, _colorTable);
         if (wf.Ok)
         {
           wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
@@ -260,8 +274,11 @@ namespace BatInspector
         else
         {
            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
-          _prj.removeFile(rec.File);
-          _prj.Analysis.removeFile(Prj.ReportName, rec.File);
+          if (_prj != null)
+          {
+            _prj.removeFile(rec.File);
+            _prj.Analysis.removeFile(Prj.ReportName, rec.File);
+          }
         }
       }
       if(bmp != null)
@@ -416,7 +433,8 @@ namespace BatInspector
     }
 
 
-    bool isBusy()
+
+  bool isBusy()
     {
       bool retVal = _proc.IsRunning | _extBusy;
       return retVal;

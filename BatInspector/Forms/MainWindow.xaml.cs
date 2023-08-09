@@ -470,7 +470,7 @@ namespace BatInspector.Forms
         wavName = Path.GetFileName(fullWavName);
         wavFilePath = Path.GetDirectoryName(fullWavName);
         analysis = _model.Query.Analysis.find(rec.File);
-        species = new List<string>();
+        species = _model.Query.Species;
       }
       else
       {

@@ -365,7 +365,7 @@ namespace BatInspector
       string dstDir = "D:\\bat\\Queries";
       string name = "test";
       string query = "(FreqMin > 18000) && (FreqMin < 21000) && (SpeciesAuto == \"NLEI\")";
-      Query qry = new Query(name, srcDir, dstDir, query);
+      Query qry = new Query(name, srcDir, dstDir, query, _model.SpeciesInfos, _model.Regions);
       qry.evaluate(_model);      
     }
 

@@ -23,7 +23,7 @@ namespace BatInspector
   /// <summary>
   /// a class to handle queries covering multiple projects 
   /// </summary>
-  public class Query
+  public class Query : PrjBase
   {
     string _name;
     string _srcDir;
@@ -31,7 +31,6 @@ namespace BatInspector
     string _expression;
     ViewModel _model = null;
     QueryFile _queryFile = null;
-    Analysis _analysis = null;
     List<BatExplorerProjectFileRecordsRecord> _records = null;
     int _cntCall;
     int _cntFile;
@@ -57,7 +56,8 @@ namespace BatInspector
 
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
 
-    public Query(string name, string srcDir, string dstDir, string query) 
+    public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions) :
+    base(speciesInfo, regions)
     {
       _name = name;
       _srcDir = srcDir; 
@@ -109,6 +109,15 @@ namespace BatInspector
       return retVal;
     }
 
+    public override BatExplorerProjectFileRecordsRecord[] getRecords()
+    {
+      return _records.ToArray();
+    }
+
+    public override string getFullFilePath(string path)
+    {
+      return Path.Combine(_destDir, path);
+    }
 
     private bool crawl(DirectoryInfo dir)
     {
@@ -150,7 +159,7 @@ namespace BatInspector
         var serializer = new XmlSerializer(typeof(QueryFile));
         TextReader reader = new StringReader(xml);
         QueryFile qFile = (QueryFile)serializer.Deserialize(reader);
-        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression);
+        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, model.SpeciesInfos, model.Regions);
         foreach(BatExplorerProjectFileRecordsRecord rec in qFile.Records)
           retVal._records.Add(rec);
         retVal._queryFile = qFile;
@@ -158,6 +167,8 @@ namespace BatInspector
         retVal._analysis = new Analysis(model.SpeciesInfos);
         string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
         retVal._analysis.read(fullReportName);
+        retVal.initSpeciesList();
+
       }
       catch (Exception ex)
       {

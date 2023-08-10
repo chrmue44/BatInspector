@@ -96,7 +96,23 @@ namespace BatInspector
 
     public Query Query { get { return _query; } set { _query = value; } }
 
-  //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
+    /// <summary>
+    /// currently opened object (prj, query or null)
+    /// </summary>
+    public PrjBase CurrentlyOpen
+    {
+      get
+      {
+        if (_prj != null)
+          return _prj;
+        else if (_query != null)
+          return _query;
+        else
+          return null;
+      }
+    }
+
+    //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
     public ViewModel(Forms.MainWindow mainWin, string version)
     {

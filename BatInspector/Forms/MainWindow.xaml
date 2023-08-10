@@ -177,7 +177,7 @@
                 <ColumnDefinition Width="51*"/>
                 <ColumnDefinition Width="1099*"/>
               </Grid.ColumnDefinitions>
-              <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" />
+              <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" MouseDoubleClick="_dgData_MouseDoubleClick"/>
             </Grid>
           </TabItem>
           <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" >

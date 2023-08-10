@@ -633,9 +633,10 @@ namespace BatInspector.Controls
       }
     }
 
-    private void changeCall(int idx)
+    public void changeCall(int idx)
     {
       _model.ZoomView.SelectedCallIdx = idx;
+      _ctlSelectCall.setValue((idx + 1).ToString());
       _oldCallIdx = idx;
       setupCallData(idx);
       double tStart = _model.ZoomView.Analysis.getStartTime(idx);

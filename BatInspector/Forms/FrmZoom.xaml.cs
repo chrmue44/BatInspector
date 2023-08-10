@@ -43,7 +43,10 @@ namespace BatInspector.Forms
       this.Title = name;
     }
 
-
+    public void changeCall(int idx)
+    {
+      _ctl.changeCall(idx);
+    }
 
 
     private void FrmZoom_ContentRendered(object sender, EventArgs e)

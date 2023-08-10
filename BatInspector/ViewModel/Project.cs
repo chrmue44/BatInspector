@@ -54,6 +54,7 @@ namespace BatInspector
 
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
     public List<string> Species { get { return _speciesList; } }
+    public Analysis Analysis { get { return _analysis; } }
 
     public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions)
     {
@@ -134,7 +135,6 @@ namespace BatInspector
       set { _batExplorerPrj.Created = value; } }
     public string PrjDir { get { return _selectedDir + "/"; } }
 
-    public Analysis Analysis { get { return _analysis; } }
 
     public string ReportName { get { return getReportName(_selectedDir); } }
 

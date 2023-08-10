@@ -52,7 +52,6 @@ namespace BatInspector
     /// </summary>
     public string Expression { get { return _expression; } }
 
-    public Analysis Analysis { get{ return _analysis; } }
 
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
 

@@ -1117,6 +1117,28 @@ namespace BatInspector.Forms
         _frmQuery = new FrmQuery(_model);
       _frmQuery.Show();
     }
+
+    private void _dgData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+      
+      int i = _dgData.SelectedIndex;
+      if (_model.CurrentlyOpen != null)
+      {
+        if ((i >= 0) && (1 < _model.CurrentlyOpen.Analysis.Report.Count))
+        {
+          ReportItem it = _model.CurrentlyOpen.Analysis.Report[i];
+          int.TryParse(it.CallNr, out int callNr);
+          AnalysisFile analysis = _model.CurrentlyOpen.Analysis.find(it.FileName);
+          string fileName = Path.GetFileName(it.FileName);
+          string wavPath = Path.GetDirectoryName(_model.CurrentlyOpen.getFullFilePath(it.FileName));
+          setZoom(fileName, analysis, wavPath, null);
+          if (_frmZoom != null)
+            _frmZoom.changeCall(callNr - 1);
+          if (_ctlZoom != null)
+            _ctlZoom.changeCall(callNr - 1);
+        }
+      }
+    }
   }
 
   public enum enWinType

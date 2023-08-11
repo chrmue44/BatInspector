@@ -143,13 +143,17 @@ namespace BatInspector
             double bandwidth;
             if (csvFeat != null)
             {
-              double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power");
+              double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power_bb");
               report.setCell(repRow, Cols.F_MAX_AMP, fMaxAmp);
               duration = csvFeat.getCellAsDouble(row, "duration");
               callInterval = csvFeat.getCellAsDouble(row, "call_interval");
               if (callInterval < 0)
                 callInterval = -0.001;
               bandwidth = csvFeat.getCellAsDouble(row, "bandwidth");
+              fMin = csvFeat.getCellAsDouble(row, "low_freq_bb");
+              report.setCell(repRow, Cols.F_MIN, fMin, 1);
+              fMax = csvFeat.getCellAsDouble(row, "high_freq_bb");
+              report.setCell(repRow, Cols.F_MAX, fMax, 1);
             }
             else
             {

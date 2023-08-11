@@ -7,6 +7,10 @@ TODO
 - title of groubp boxes
 - less confusing error messages (especially after KI classifiacation) in log view
 
+0.3.0.0
+- new version AI model batdetect2 V1.06
+- bugfix: readout features _bb for maxima 
+
 11.08.23 0.2.2.0
 - double click in report line opens zoom view of clicked call
 - show queries like projects (queries now only with relative file paths)

@@ -1,4 +1,5 @@
 ﻿/********************************************************************************
+d/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
  *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
@@ -27,7 +28,6 @@ using System.Threading;
 using BatInspector.Properties;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
-using NAudio.SoundFont;
 
 namespace BatInspector.Forms
 {
@@ -277,10 +277,7 @@ namespace BatInspector.Forms
           _cbXaxis.Items.Add(it.Name);
           _cbYaxis.Items.Add(it.Name);
         }
-      }
-      _switchTabToPrj = true;
-      if (_model.Prj != null)
-      {
+        _switchTabToPrj = true;
         if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
         {
           setStatus("   loading...");
@@ -309,12 +306,12 @@ namespace BatInspector.Forms
         _ctlZoom = new CtrlZoom();
         _tbZoom.Content = _ctlZoom;
         _tbZoom.IsSelected = false;
-        //       _tbMain.SelectedIndex = 0;
       }
     }
 
     public void setZoom(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
     {
+      DebugLog.log("activate zoom view of: " + name, enLogType.DEBUG);
       if (AppParams.Inst.ZoomSeparateWin)
       {
         if (_frmZoom == null)
@@ -327,7 +324,9 @@ namespace BatInspector.Forms
       {
         _ctlZoom.setup(analysis, wavFilePath, _model, img);
         _tbZoom.Header = "Zoom: " + name;
-        _tbMain.SelectedItem = _tbZoom;
+//      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
+        Dispatcher.BeginInvoke((Action)(() => _tbMain.SelectedItem = _tbZoom));
+//        _tbMain.SelectedItem = _tbZoom; (does not work reliably!)
       }
     }
 
@@ -449,7 +448,6 @@ namespace BatInspector.Forms
           }
         });
         _model.Busy = false;
-
       }
     }
 
@@ -548,10 +546,8 @@ namespace BatInspector.Forms
   void showStatus()
     {
       string report = "";
-      if (_model.Prj != null)
-        report = _model.Prj.Analysis.Report != null ? "report available" : "no report";
-      else if(_model.Query != null)
-        report = _model.Query.Analysis.Report != null ? "report available" : "no report";
+      if (_model.CurrentlyOpen != null)
+        report = _model.CurrentlyOpen.Analysis.Report != null ? "report available" : "no report";
 
       int vis = 0;
       foreach (ctlWavFile c in _spSpectrums.Children)
@@ -696,19 +692,17 @@ namespace BatInspector.Forms
 
     private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
     {
-      if (_model.Prj != null)
+      if (_model.CurrentlyOpen != null)
       {
-        if (_model.Prj.Analysis.Report != null)
-          _dgData.ItemsSource = _model.Prj.Analysis.Report;
-        if (_model.Prj.Analysis.Summary != null)
-          _dgSum.ItemsSource = _model.Prj.Analysis.Summary;
-      }
-      if (_model.Query != null)
-      {
-        if (_model.Query.Analysis.Report != null)
-          _dgData.ItemsSource = _model.Query.Analysis.Report;
-        if (_model.Query.Analysis.Summary != null)
-          _dgSum.ItemsSource = _model.Query.Analysis.Summary;
+        if (_model.CurrentlyOpen.Analysis.Report != null)
+        {
+          _dgData.ItemsSource = _model.CurrentlyOpen.Analysis.Report;
+          if(_dgData.Columns.Count > 0)
+            _dgData.Columns[0].Visibility = Visibility.Hidden; // hide 'changed'
+          _dgData.IsReadOnly = true;
+        }
+        if (_model.CurrentlyOpen.Analysis.Summary != null)
+          _dgSum.ItemsSource = _model.CurrentlyOpen.Analysis.Summary;
       }
     }
 
@@ -781,11 +775,6 @@ namespace BatInspector.Forms
       if ((_model != null) && (_model.Prj != null) && (_model.Prj.Analysis != null) &&
         (_model.Prj.Analysis.Report != null))
         _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
-    }
-
-    private void _btnHelp_Click(object sender, RoutedEventArgs e)
-    {
-
     }
 
     private void _btnInfo_Click(object sender, RoutedEventArgs e)
@@ -1120,13 +1109,34 @@ namespace BatInspector.Forms
 
     private void _dgData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-      
-      int i = _dgData.SelectedIndex;
+      // https://blog.scottlogic.com/2008/12/02/wpf-datagrid-detecting-clicked-cell-and-row.html
+
+      DependencyObject dep = (DependencyObject)e.OriginalSource;
+
+      // iteratively traverse the visual tree
+      while ((dep != null) && !(dep is DataGridCell))
+        dep = VisualTreeHelper.GetParent(dep);
+   
+      if (dep == null)
+        return;
+
+      ReportItem it = null;
+      if (dep is DataGridCell)
+      {
+        DataGridCell cell = dep as DataGridCell;
+        // navigate further up the tree
+        while ((dep != null) && !(dep is DataGridRow))
+          dep = VisualTreeHelper.GetParent(dep);
+
+        DataGridRow row = dep as DataGridRow;
+        it = row.DataContext as ReportItem;
+      }
+
+
       if (_model.CurrentlyOpen != null)
       {
-        if ((i >= 0) && (1 < _model.CurrentlyOpen.Analysis.Report.Count))
+        if (it != null)
         {
-          ReportItem it = _model.CurrentlyOpen.Analysis.Report[i];
           int.TryParse(it.CallNr, out int callNr);
           AnalysisFile analysis = _model.CurrentlyOpen.Analysis.find(it.FileName);
           string fileName = Path.GetFileName(it.FileName);

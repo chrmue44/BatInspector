@@ -47,6 +47,11 @@ namespace BatInspector.Controls
       return _txt.Text; 
     }
 
+    public void setValue(string value) 
+    {
+      _txt.Text = value;
+    }
+
     private void _btnOpen_Click(object sender, RoutedEventArgs e)
     {
       if (_isFolder)

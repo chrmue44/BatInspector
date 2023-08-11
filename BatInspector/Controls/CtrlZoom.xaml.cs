@@ -111,7 +111,7 @@ namespace BatInspector.Controls
       {
         setVisabilityCallData(true);
         for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
-          items[i] = (i + 1).ToString();
+          items[i] = _model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
         _ctlSelectCall.setItems(items);
         _ctlMeanCallMin.setItems(items);
         _ctlMeanCallMax.setItems(items);

@@ -167,6 +167,7 @@ namespace BatInspector.Forms
               {
                 TreeViewItem childItem = CreateTreeItem(subFile);
                 item.Items.Add(childItem);
+                childItem.FontWeight = FontWeights.Bold;
                 childItem.Foreground = new SolidColorBrush(Colors.Orange);
               }
             }
@@ -241,6 +242,9 @@ namespace BatInspector.Forms
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
       _model.initQuery(file);
+      if (_frmQuery == null)
+        _frmQuery = new FrmQuery(_model);
+      _frmQuery.initFieldsFromQuery();
 
       _switchTabToPrj = true;
       if (_model.Query == null)              //remove all spectrograms if project was closed

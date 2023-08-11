@@ -23,6 +23,16 @@ namespace BatInspector.Forms
       _grdCol1.Width = new GridLength(wLabel);
     }
 
+    public void initFieldsFromQuery()
+    {
+      if(_model.Query != null)
+      {
+        _ctlName.setValue(_model.Query.Name);
+        _ctlSelectSource.setValue(_model.Query.SrcDir);
+        _ctlSelectDest.setValue(_model.Query.DestDir);
+        _tbQuery.Text = _model.Query.Expression;
+      }
+    }
     private void btnCancel_Click(object sender, RoutedEventArgs e)
     {
       this.Visibility = Visibility.Hidden;

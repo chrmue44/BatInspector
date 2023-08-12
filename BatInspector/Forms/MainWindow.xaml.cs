@@ -881,6 +881,8 @@ namespace BatInspector.Forms
         {
           _spSpectrums.Children.Clear();
           _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
+          _model.Prj.removeFilesNotInReport();
+          _model.Prj.writePrjFile();
           DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
           initializeProject(dir);
         }
@@ -1004,10 +1006,6 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _btnSumReport_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
 
     private void _cbXaxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {

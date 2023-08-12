@@ -48,7 +48,7 @@
                     <Image Source="../images/icons8-arrow-right-64.png"></Image>
                 </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                <GroupBox VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
+                <GroupBox Template="{DynamicResource GroupBoxCmu}" VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
                     <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
                 </GroupBox>
                 <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
@@ -129,20 +129,14 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
             <Line Name="_cursorX2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
             <Line Name="_cursorY2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
             <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
-            <StackPanel Grid.Column="3" Grid.Row="1">
-                <GroupBox Name="_grpData" Header="Info" Margin="5" Padding="2">
-                    <StackPanel>
-                        <local:ctlDataItem x:Name="_sampleRate" />
-                        <local:ctlDataItem x:Name="_duration" />
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Name="_grpCursor1" Header="Cursor 1" Margin="5" Padding="2" Visibility="Hidden">
+            <StackPanel Grid.Column="3" Grid.Row="2">
+                <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpCursor1" Header="Cursor 1" Margin="5" Padding="2" Visibility="Hidden">
                     <StackPanel>
                         <local:ctlDataItem x:Name="_time1" />
                         <local:ctlDataItem x:Name="_freq1" />
                     </StackPanel>
                 </GroupBox>
-                <GroupBox  Name="_grpCursor2" Header="Cursor 2" Margin="5" Padding="2" Visibility="Hidden">
+                <GroupBox  Template="{DynamicResource GroupBoxCmu}" Name="_grpCursor2" Header="Cursor 2" Margin="5" Padding="2" Visibility="Hidden">
                     <StackPanel>
                         <local:ctlDataItem x:Name="_time2" />
                         <local:ctlDataItem x:Name="_freq2" />
@@ -153,13 +147,13 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
             <Canvas Name ="_rulerT" Grid.Row="3" Grid.Column="2" ></Canvas>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" >
-            <GroupBox Header="Spectrum">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Spectrum">
                 <StackPanel Orientation="Vertical"  Margin="5,5,5,5">
                 <local:ctlDataItem x:Name="_ctlTimeMin"/>
                 <local:ctlDataItem x:Name="_ctlTimeMax"/>
             </StackPanel>
             </GroupBox>
-            <GroupBox Header="{x:Static res:MyResources.CallInformation}"  >
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CallInformation}"  >
 
                 <StackPanel Orientation="Vertical" Grid.Column="1" x:Name ="_spCallInfo">
                     <StackPanel Orientation="Horizontal">
@@ -178,7 +172,7 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="{x:Static res:MyResources.CtrlZoomMeanValues}">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtrlZoomMeanValues}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <local:ctlSelectItem x:Name="_ctlMeanCallMin" HorizontalAlignment="Left" Margin="10,0,0,0"/>
@@ -191,7 +185,7 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
                     <local:ctlDataItem x:Name="_ctlMeanDist"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="{x:Static res:MyResources.CtlZoomFileInfo}">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtlZoomFileInfo}">
                 <StackPanel>
                     <local:ctlDataItem x:Name="_ctlDateTime" />
                     <local:ctlDataItem x:Name="_ctlGpsPos" />
@@ -200,6 +194,12 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
                     <local:ctlDataItem x:Name="_ctlTrigFilter" />
                     <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
 
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpData" Header="Info" Margin="5" Padding="2">
+                <StackPanel>
+                    <local:ctlDataItem x:Name="_sampleRate" />
+                    <local:ctlDataItem x:Name="_duration" />
                 </StackPanel>
             </GroupBox>
         </StackPanel>

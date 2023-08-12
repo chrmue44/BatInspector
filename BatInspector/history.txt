@@ -4,14 +4,16 @@ TODO
 - species comparison
 - stop button to kill running script
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
-- title of groubp boxes
-- less confusing error messages (especially after KI classifiacation) in log view
 
-0.3.0.0
+
+12.08.23  V0.3.0.0
+- bugfix: show cursor inforamtion in zoom view when cursor is enabled
+- title of group boxes no longer transparent
+- less error messages after analysis of project
 - new version AI model batdetect2 V1.06
 - bugfix: readout features _bb for maxima 
 
-11.08.23 0.2.2.0
+11.08.23  V0.2.2.0
 - double click in report line opens zoom view of clicked call
 - show queries like projects (queries now only with relative file paths)
 - crisper spectrum display in zoom view (FFT width now taken from settings)

@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              >
   <Grid>
-    <GroupBox Margin="5">
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5">
       <StackPanel>
         <local:ctlDataItem x:Name="_ctlLocalName" Margin="5"/>
         <local:ctlDataItemMinMax x:Name="_ctFreqC"/>
@@ -22,10 +22,10 @@
                 <GroupBox Header="{x:Static res:MyResources.CtlSpecProofSpecies}" Height="120">
           <TextBox Margin="5" Name="_tbProof" TextWrapping="Wrap" AcceptsReturn="True"> </TextBox>
         </GroupBox>
-        <GroupBox Header="Distinctive Calls" Height="120">
+                <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Distinctive Calls" Height="120">
           <TextBox Margin="5" Name="_tbDistintCalls" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
         </GroupBox>
-        <GroupBox Header="Habitat" Height="120" >
+                <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Habitat" Height="120" >
           <TextBox Margin="5" Name="_tbHabitat" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
         </GroupBox>
         <local:ctlSelectItem x:Name="_ctlSelPic" Margin="10"/>

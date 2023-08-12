@@ -9,10 +9,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
     <Label Background="#FF5D6B99" Foreground="White" Content="{x:Static res:MyResources.ctlProjectInfo}"></Label>
-    <GroupBox Header="{x:Static res:MyResources.ctlPrjInfoCreated}" Height="45">
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoCreated}" Height="45">
       <TextBlock Name="_tbCreated" TextWrapping="Wrap"></TextBlock>
     </GroupBox>
-    <GroupBox Header="{x:Static res:MyResources.ctlPrjInfoNotes}" Height="80">
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoNotes}" Height="80">
       <TextBox Name="_tbNotes" TextWrapping="Wrap"></TextBox>
     </GroupBox>
   </StackPanel>

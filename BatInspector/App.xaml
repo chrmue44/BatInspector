@@ -33,6 +33,40 @@
       <Setter Property="Background" Value="#FFCCD5F0"/>
     </Style>
  
+    <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
+    <ControlTemplate x:Key="GroupBoxCmu" TargetType="{x:Type GroupBox}">
+            <Grid SnapsToDevicePixels="true">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="6"/>
+            </Grid.RowDefinitions>
+            <Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1"/>
+            <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1">
+                <Border.OpacityMask>
+                    <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
+                        <Binding ElementName="Header" Path="ActualWidth"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}"/>
+                    </MultiBinding>
+                </Border.OpacityMask>
+                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
+                    <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
+                </Border>
+            </Border>
+                <Border x:Name="Header" Grid.Column="1" Padding="5,0,5,0" Grid.RowSpan="2" Grid.Row="0" Background="#FFF7F9FE">
+                <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </Border>
+            <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        </Grid>
+    </ControlTemplate>
     <Style TargetType="Label">
       <Setter Property="Background" Value="#FFF7F9FE"/>
       <Setter Property="Foreground" Value="Black"/>

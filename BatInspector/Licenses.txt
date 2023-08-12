@@ -1,4 +1,15 @@
-﻿Bat_icon-icons.com_75012.png:
+﻿****************
+*   AI model   *
+****************
+
+AI model to detect bat species:
+https://github.com/macaodha/batdetect2
+
+****************
+*    Icons     *
+****************
+
+Bat_icon-icons.com_75012.png:
 https://icon-icons.com/de/download/75012/PNG/128/
 License: https://creativecommons.org/licenses/by/4.0/
 

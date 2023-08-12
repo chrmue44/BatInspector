@@ -280,6 +280,7 @@ namespace BatInspector.Controls
         la = _cursorA2;
         cursor = _model.ZoomView.Cursor2;
       }
+
       lx.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       ly.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       la.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;

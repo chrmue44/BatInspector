@@ -591,12 +591,6 @@
   <data name="SetDescScriptProp" xml:space="preserve">
     <value>Vollständiger Pfad zum R-Skript zur Bestimmung der Ruf-Parameter</value>
   </data>
-  <data name="SetDescSpeciesFile" xml:space="preserve">
-    <value>Csv-Datei mit der Liste der Arten für die automatische Artenbestimmung</value>
-  </data>
-  <data name="SetDescPythonExe" xml:space="preserve">
-    <value>Vollständiger Pfad zur Python-Binärdatei zur Ausführung von Skripten</value>
-  </data>
   <data name="SetDescScriptPredict" xml:space="preserve">
     <value>Vollständiger Pfad zum Python-Skript zur Bestimmung der Fledermaus-Arten</value>
   </data>
@@ -736,7 +730,7 @@
     <value>Fledermausbestimmung, Teil 1</value>
   </data>
   <data name="MainToolCreatePrj" xml:space="preserve">
-    <value>Erzeuge Projekt(e) aus einer Gruppe von WAV-Dateien oder einem anderen Projekt</value>
+    <value>Importiere WAV Datei(en) oder Elekon-Projekt</value>
   </data>
   <data name="Latitude" xml:space="preserve">
     <value>geographische Breite</value>
@@ -748,7 +742,7 @@
     <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus WAV-Dateien ergänzen</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Erzeuge Projekt(e) aus WAV Dateien oder einem anderen Projekt</value>
+    <value>Importiere WAV Datei(en) oder Elekon-Projekt</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Formatfehler Geografische Breite: </value>
@@ -908,5 +902,17 @@
   </data>
   <data name="QueryReportMissing" xml:space="preserve">
     <value>Auswertung für das Projekt fehlt, bitte erst Auswertung durchführen!</value>
+  </data>
+  <data name="msgDeleteIntermediate" xml:space="preserve">
+    <value>Alle temporären Mac OS-Dateien löschen? (wenn nein, wird die Erzeugung des Projekts abgebrochen)</value>
+  </data>
+  <data name="SetCatPrjExplorer" xml:space="preserve">
+    <value>Projekt-Eplorer</value>
+  </data>
+  <data name="SetDescShowOnlyFiltered" xml:space="preserve">
+    <value>Zeige nur Verzeichnisse im Explorer, die der Filterbedingung der Filterliste entsprechen</value>
+  </data>
+  <data name="SetDescDirFilter" xml:space="preserve">
+    <value>Filterliste zur Anzeigefilterung im Wurzelverzeichnis des Explorers</value>
   </data>
 </root>

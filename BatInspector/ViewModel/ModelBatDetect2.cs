@@ -56,6 +56,8 @@ namespace BatInspector
           prj.Analysis.read(prj.ReportName);
           prj.removeFilesNotInReport();
         }
+        else
+          retVal = 2;
       }
       catch 
       {
@@ -90,98 +92,106 @@ namespace BatInspector
         }
 
         string[] files = Directory.GetFiles(annDir, "*.wav.csv", SearchOption.AllDirectories);
-        foreach (string file in files)
+        if (files.Length == 0)
         {
-          // read infoFile
-          string wavName = /*wavDir + "/" + */ Path.GetFileName(file).Replace(".csv", "");
-          string infoName = wavDir + "/" + Path.GetFileName(file).Replace(".wav.csv", ".xml");
-          string sampleRate = "?";
-          string fileLen = "?";
-          string recTime = "?";
-          double lat = 0.0;
-          double lon = 0.0;
-          BatRecord info = ElekonInfoFile.read(infoName);
-          if (info != null)
+          DebugLog.log("something went wrong not a single bat call found! (should never happen", enLogType.ERROR);
+          retVal = false;
+        }
+        else
+        {
+          foreach (string file in files)
           {
-            sampleRate = info.Samplerate.Replace(" Hz", ""); ;
-            fileLen = info.Duration.Replace(" Sec", "");
-            recTime = info.DateTime;
-            ElekonInfoFile.parsePosition(info, out lat, out lon);
-          }
-
-          // read annontation for one wav file
-          Csv csvAnn = new Csv();
-          csvAnn.read(file, ",", true);
-          string fileFeat = file.Replace("wav.csv", "wav_spec_features.csv");
-          Csv csvFeat = null;
-          if (File.Exists(fileFeat))
-          {
-            csvFeat = new Csv();
-            csvFeat.read(fileFeat, ",", true);
-          }
-          int rowcnt = csvAnn.RowCnt;
-          for (int row = 2; row <= rowcnt; row++)
-          {
-            report.addRow();
-            int repRow = report.RowCnt;
-            report.setCell(repRow, Cols.SAMPLERATE, sampleRate);
-            report.setCell(repRow, Cols.FILE_LEN, fileLen);
-            report.setCell(repRow, Cols.REC_TIME, recTime);
-            report.setCell(repRow, Cols.NAME, wavName);
-            report.setCell(repRow, Cols.LAT, lat);
-            report.setCell(repRow, Cols.LON, lon);
-            int id = csvAnn.getCellAsInt(row, "id");
-            report.setCell(repRow, Cols.NR, id + 1);
-            double startTime = csvAnn.getCellAsDouble(row, "start_time");
-            report.setCell(repRow, Cols.START_TIME, startTime, 3);
-            double fMin = csvAnn.getCellAsDouble(row, "low_freq");
-            report.setCell(repRow, Cols.F_MIN, fMin, 1);
-            double fMax = csvAnn.getCellAsDouble(row, "high_freq");
-            report.setCell(repRow, Cols.F_MAX, fMax, 1);
-            double duration = -1;
-            double callInterval = -0.001;
-            double bandwidth;
-            if (csvFeat != null)
+            // read infoFile
+            string wavName = /*wavDir + "/" + */ Path.GetFileName(file).Replace(".csv", "");
+            string infoName = wavDir + "/" + Path.GetFileName(file).Replace(".wav.csv", ".xml");
+            string sampleRate = "?";
+            string fileLen = "?";
+            string recTime = "?";
+            double lat = 0.0;
+            double lon = 0.0;
+            BatRecord info = ElekonInfoFile.read(infoName);
+            if (info != null)
             {
-              double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power_bb");
-              report.setCell(repRow, Cols.F_MAX_AMP, fMaxAmp);
-              duration = csvFeat.getCellAsDouble(row, "duration");
-              callInterval = csvFeat.getCellAsDouble(row, "call_interval");
-              if (callInterval < 0)
-                callInterval = -0.001;
-              bandwidth = csvFeat.getCellAsDouble(row, "bandwidth");
-              fMin = csvFeat.getCellAsDouble(row, "low_freq_bb");
+              sampleRate = info.Samplerate.Replace(" Hz", ""); ;
+              fileLen = info.Duration.Replace(" Sec", "");
+              recTime = info.DateTime;
+              ElekonInfoFile.parsePosition(info, out lat, out lon);
+            }
+
+            // read annontation for one wav file
+            Csv csvAnn = new Csv();
+            csvAnn.read(file, ",", true);
+            string fileFeat = file.Replace("wav.csv", "wav_spec_features.csv");
+            Csv csvFeat = null;
+            if (File.Exists(fileFeat))
+            {
+              csvFeat = new Csv();
+              csvFeat.read(fileFeat, ",", true);
+            }
+            int rowcnt = csvAnn.RowCnt;
+            for (int row = 2; row <= rowcnt; row++)
+            {
+              report.addRow();
+              int repRow = report.RowCnt;
+              report.setCell(repRow, Cols.SAMPLERATE, sampleRate);
+              report.setCell(repRow, Cols.FILE_LEN, fileLen);
+              report.setCell(repRow, Cols.REC_TIME, recTime);
+              report.setCell(repRow, Cols.NAME, wavName);
+              report.setCell(repRow, Cols.LAT, lat);
+              report.setCell(repRow, Cols.LON, lon);
+              int id = csvAnn.getCellAsInt(row, "id");
+              report.setCell(repRow, Cols.NR, id + 1);
+              double startTime = csvAnn.getCellAsDouble(row, "start_time");
+              report.setCell(repRow, Cols.START_TIME, startTime, 3);
+              double fMin = csvAnn.getCellAsDouble(row, "low_freq");
               report.setCell(repRow, Cols.F_MIN, fMin, 1);
-              fMax = csvFeat.getCellAsDouble(row, "high_freq_bb");
+              double fMax = csvAnn.getCellAsDouble(row, "high_freq");
               report.setCell(repRow, Cols.F_MAX, fMax, 1);
-            }
-            else
-            {
-              double endTime = csvAnn.getCellAsDouble(row, "end_time");
-              duration = (endTime - startTime);
-              bandwidth = fMax - fMin;
-            }
-            report.setCell(repRow, Cols.BANDWIDTH, bandwidth);
-            report.setCell(repRow, Cols.CALL_INTERVALL, callInterval * 1000, 1);
-            report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
-            report.setCell(repRow, Cols.SNR, -1.0);
-            string latin = translate(csvAnn.getCell(row, "class"));
+              double duration = -1;
+              double callInterval = -0.001;
+              double bandwidth;
+              if (csvFeat != null)
+              {
+                double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power_bb");
+                report.setCell(repRow, Cols.F_MAX_AMP, fMaxAmp);
+                duration = csvFeat.getCellAsDouble(row, "duration");
+                callInterval = csvFeat.getCellAsDouble(row, "call_interval");
+                if (callInterval < 0)
+                  callInterval = -0.001;
+                bandwidth = csvFeat.getCellAsDouble(row, "bandwidth");
+                fMin = csvFeat.getCellAsDouble(row, "low_freq_bb");
+                report.setCell(repRow, Cols.F_MIN, fMin, 1);
+                fMax = csvFeat.getCellAsDouble(row, "high_freq_bb");
+                report.setCell(repRow, Cols.F_MAX, fMax, 1);
+              }
+              else
+              {
+                double endTime = csvAnn.getCellAsDouble(row, "end_time");
+                duration = (endTime - startTime);
+                bandwidth = fMax - fMin;
+              }
+              report.setCell(repRow, Cols.BANDWIDTH, bandwidth);
+              report.setCell(repRow, Cols.CALL_INTERVALL, callInterval * 1000, 1);
+              report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
+              report.setCell(repRow, Cols.SNR, -1.0);
+              string latin = translate(csvAnn.getCell(row, "class"));
 
-            double prob = csvAnn.getCellAsDouble(row, "class_prob");
-            report.setCell(repRow, Cols.PROBABILITY, prob);
-            string abbr = "";
-            if (prob < minProb)
-              abbr = "??PRO[";
-            SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
-            if ((info != null) && (specInfo != null))
-              abbr += specInfo.Abbreviation;
-            else
-              abbr += latin;
-            if (prob < minProb)
-              abbr += "]";
-            report.setCell(repRow, colSpecies, abbr);
-            report.setCell(repRow, Cols.SPECIES_MAN, "todo");
-            report.setCell(repRow, Cols.REMARKS, "");
+              double prob = csvAnn.getCellAsDouble(row, "class_prob");
+              report.setCell(repRow, Cols.PROBABILITY, prob);
+              string abbr = "";
+              if (prob < minProb)
+                abbr = "??PRO[";
+              SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
+              if ((info != null) && (specInfo != null))
+                abbr += specInfo.Abbreviation;
+              else
+                abbr += latin;
+              if (prob < minProb)
+                abbr += "]";
+              report.setCell(repRow, colSpecies, abbr);
+              report.setCell(repRow, Cols.SPECIES_MAN, "todo");
+              report.setCell(repRow, Cols.REMARKS, "");
+            }
           }
         }
         string dir = Path.GetDirectoryName(reportName);

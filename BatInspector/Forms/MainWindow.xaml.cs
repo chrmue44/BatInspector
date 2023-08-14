@@ -115,15 +115,24 @@ namespace BatInspector.Forms
     {
       trvStructure.Items.Clear();
       DriveInfo[] drives = DriveInfo.GetDrives();
-      foreach (DriveInfo driveInfo in drives)
+      if (AppParams.Inst.ShowOnlyFilteredDirs)
       {
-        DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
-        trvStructure.Items.Add(CreateTreeItem(dir));
+        foreach (string dir in AppParams.Inst.DirFilter)
+        {
+          if ((dir != null) && (dir.Length > 0))
+          {
+            DirectoryInfo batDataDir = new DirectoryInfo(dir);
+            trvStructure.Items.Add(CreateTreeItem(batDataDir));
+          }
+        }
       }
-      if (AppParams.Inst.RootDataDir != null)
+      else
       {
-        DirectoryInfo batDataDir = new DirectoryInfo(AppParams.Inst.RootDataDir);
-        trvStructure.Items.Add(CreateTreeItem(batDataDir));
+        foreach (DriveInfo driveInfo in drives)
+        {
+          DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
+          trvStructure.Items.Add(CreateTreeItem(dir));
+        }
       }
     }
 

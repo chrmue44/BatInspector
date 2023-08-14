@@ -9,15 +9,12 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
-using BatInspector.Properties;
 using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Packaging;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -259,14 +256,22 @@ namespace BatInspector
 
       return retVal;
     }
+
+
+    /// <summary>
+    /// returns the selected files according to search pattern and file creation time
+    /// </summary>
+    /// <param name="prjInfo"></param>
+    /// <param name="searchPattern"></param>
+    /// <returns>a list of file names</returns>
     private static string[] getSelectedFiles(PrjInfo prjInfo, string searchPattern)
     {
       string[] files = Directory.GetFiles(prjInfo.SrcDir, searchPattern);
       List<string> strings = new List<string>();
       foreach (string file in files)
       {
-        FileInfo fileInfo = new FileInfo(file);
-        if ((prjInfo.StartTime <= fileInfo.LastWriteTime) && (fileInfo.LastWriteTime <= prjInfo.EndTime))
+        DateTime fileTime = ElekonInfoFile.getDateTimeFromFileName(file);
+        if ((prjInfo.StartTime <= fileTime) && (fileTime <= prjInfo.EndTime))
           strings.Add(file);
       }
       return strings.ToArray();
@@ -312,7 +317,25 @@ namespace BatInspector
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        string[] files = getSelectedFiles(info, "*.wav");
+        string[] files = getSelectedFiles(info, "._*.wav");
+        if(files.Length > 0)
+        {
+          MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.msgDeleteIntermediate, 
+                                                 BatInspector.Properties.MyResources.msgQuestion, 
+                                                 MessageBoxButton.YesNo, MessageBoxImage.Question);
+          if (res == MessageBoxResult.Yes)
+          {
+            foreach (string file in files)
+              File.Delete(file);
+          }
+          else
+          {
+            DebugLog.log("project creation aborted", enLogType.INFO);
+            return retVal.ToArray();
+          }
+        }
+
+        files = getSelectedFiles(info, "*.wav");
         if (files.Length > 0)
         {
           WavFile wavFile = new WavFile();

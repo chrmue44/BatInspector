@@ -113,18 +113,18 @@ namespace BatInspector
 
     public string Species { get { return _item.Species; } }
     public int Count {  get { return _item.Count; } }
-    public int C18h { get { return _item.CountTime[0]; } }
-    public int C19h { get { return _item.CountTime[1]; } }
-    public int C20h { get { return _item.CountTime[2]; } }
-    public int C21h { get { return _item.CountTime[3]; } }
-    public int C22h { get { return _item.CountTime[4]; } }
-    public int C23h { get { return _item.CountTime[5]; } }
-    public int C00h { get { return _item.CountTime[6]; } }
-    public int C01h { get { return _item.CountTime[7]; } }
-    public int C02h { get { return _item.CountTime[8]; } }
-    public int C03h { get { return _item.CountTime[9]; } }
-    public int C04h { get { return _item.CountTime[10]; } }
-    public int C05h { get { return _item.CountTime[11]; } }
+    public int _18h { get { return _item.CountTime[0]; } }
+    public int _19h { get { return _item.CountTime[1]; } }
+    public int _20h { get { return _item.CountTime[2]; } }
+    public int _21h { get { return _item.CountTime[3]; } }
+    public int _22h { get { return _item.CountTime[4]; } }
+    public int _23h { get { return _item.CountTime[5]; } }
+    public int _00h { get { return _item.CountTime[6]; } }
+    public int _01h { get { return _item.CountTime[7]; } }
+    public int _02h { get { return _item.CountTime[8]; } }
+    public int _03h { get { return _item.CountTime[9]; } }
+    public int _04h { get { return _item.CountTime[10]; } }
+    public int _05h { get { return _item.CountTime[11]; } }
   }
   public class Analysis
   {

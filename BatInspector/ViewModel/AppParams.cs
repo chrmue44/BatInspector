@@ -213,7 +213,8 @@ namespace BatInspector
     const string _fName = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;
-   
+    public const string PythonBin = "\"C:/Program Files/Python310/python.exe\"";
+
     static AppParams _inst = null;
     public static AppParams Inst 
     { 
@@ -231,6 +232,10 @@ namespace BatInspector
       {
         return Path.GetPathRoot(System.Reflection.Assembly.GetExecutingAssembly().Location);
       }
+    }
+    public string FileName
+    {
+      get { return Path.Combine(AppDataPath, _fName); }
     }
 
     [DataMember]
@@ -251,6 +256,16 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescWidthFFT")]
     public string ExeEditor { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrjExplorer")]
+    [LocalizedDescription("SetDescShowOnlyFiltered")]
+    public bool ShowOnlyFilteredDirs { get; set; } = true;
+
+    [DataMember]
+    [LocalizedCategory("SetCatPrjExplorer")]
+    [LocalizedDescription("SetDescDirFilter")]
+    public List<string> DirFilter { get; set; } = new List<string>();
 
     [DataMember]
     [LocalizedDescription("SetDescLanguage")]
@@ -358,23 +373,6 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescWfLog")]
     public bool WaterfallLogarithmic { get; set; }
-
-
-    [DataMember]
-    [LocalizedCategory("SetCatApplication")]
-    [Description("root directory for bat data")]
-    public string RootDataDir { get; set; }
-
-
-   /* [DataMember]
-    [LocalizedCategory("SetCatScripting"),
-    LocalizedDescription("SetDescSpeciesFile")]
-    public string SpeciesFile { get; set; } */
-
-    [DataMember]
-    [LocalizedCategory("SetCatScripting"),
-    LocalizedDescription("SetDescPythonExe")]
-    public string PythonBin { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
@@ -493,9 +491,8 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       initScripts();
-      RootDataDir = DriveLetter + "bat";
-    //  SpeciesFile = "C:/Users/chrmu/bat/tierSta/species.csv";
-      PythonBin = "\"C:/Program Files/Python310/python.exe\"";
+      for (int i = 0; i < 5; i++)
+        DirFilter.Add("");
       ModelRootPath = AppRootPath + "model";
       SelectedModel = 0;
       initModels();
@@ -561,6 +558,10 @@ namespace BatInspector
     {
       try
       {
+        if (DirFilter == null)
+          DirFilter = new List<string>();
+        while (DirFilter.Count < 5)
+          DirFilter.Add("");
         StreamWriter file = new StreamWriter(fName);
         MemoryStream stream = new MemoryStream();
         DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
@@ -580,8 +581,7 @@ namespace BatInspector
 
     public void save()
     {
-      string fPath = Path.Combine(AppDataPath, _fName);
-      saveAs(fPath);
+      saveAs(FileName);
     }
 
     public static void loadFrom(string fPath)

@@ -88,10 +88,8 @@ namespace BatInspector.Forms
         files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
         if (files != null && files.Length > 0)
         {
-          FileInfo info = new FileInfo(files[0]);
-          DateTime start = info.LastWriteTime.Date;
-          start = start.AddHours(21);
-          DateTime end = info.LastWriteTime.Date;
+          DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
+          DateTime end = start.Date;
           end = end.AddDays(1);
           end = end.AddHours(6);
           _dtStart.init(start);

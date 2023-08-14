@@ -7,8 +7,15 @@
     <Style TargetType="GroupBox">
       <Setter Property="Background" Value="#FFF7F9FE"/>
             <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="Black" FontWeight="Bold"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-    <Style TargetType="Grid">
+        <Style TargetType="Grid">
       <Setter Property="Background" Value="#FFF7F9FE"/>
     </Style>
     <Style TargetType="CheckBox">
@@ -62,7 +69,7 @@
                 </Border>
             </Border>
                 <Border x:Name="Header" Grid.Column="1" Padding="5,0,5,0" Grid.RowSpan="2" Grid.Row="0" Background="#FFF7F9FE">
-                <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </Border>
             <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
         </Grid>

@@ -745,7 +745,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create Project(s) from WAV files or another project.
+        ///   Looks up a localized string similar to Import WAV files or another Elekon project.
         /// </summary>
         public static string frmCreatePrjTitle {
             get {
@@ -1582,6 +1582,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete all Mac OS related intermediate files found? (if not project creation will be canceled).
+        /// </summary>
+        public static string msgDeleteIntermediate {
+            get {
+                return ResourceManager.GetString("msgDeleteIntermediate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to reset to factory settings?.
         /// </summary>
         public static string msgFactorySettings {
@@ -1726,6 +1735,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project Explorer.
+        /// </summary>
+        public static string SetCatPrjExplorer {
+            get {
+                return ResourceManager.GetString("SetCatPrjExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scripting.
         /// </summary>
         public static string SetCatScripting {
@@ -1767,6 +1785,15 @@ namespace BatInspector.Properties {
         public static string SetDescDataPath {
             get {
                 return ResourceManager.GetString("SetDescDataPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of filters to apply on root directory in file explorer.
+        /// </summary>
+        public static string SetDescDirFilter {
+            get {
+                return ResourceManager.GetString("SetDescDirFilter", resourceCulture);
             }
         }
         
@@ -1879,15 +1906,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Full path to python executable for executing python scripts.
-        /// </summary>
-        public static string SetDescPythonExe {
-            get {
-                return ResourceManager.GetString("SetDescPythonExe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Range for color gradient in zoom window [dB].
         /// </summary>
         public static string SetDescRangeZoomWin {
@@ -1942,11 +1960,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Csv file containing list of species supported by automatic species detection.
+        ///   Looks up a localized string similar to show only directories in the explorer that matches diectory filters.
         /// </summary>
-        public static string SetDescSpeciesFile {
+        public static string SetDescShowOnlyFiltered {
             get {
-                return ResourceManager.GetString("SetDescSpeciesFile", resourceCulture);
+                return ResourceManager.GetString("SetDescShowOnlyFiltered", resourceCulture);
             }
         }
         

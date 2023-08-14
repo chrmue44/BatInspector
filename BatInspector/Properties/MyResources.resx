@@ -591,12 +591,6 @@
   <data name="SetDescScriptProp" xml:space="preserve">
     <value>full path to R script for determination of call parameters</value>
   </data>
-  <data name="SetDescSpeciesFile" xml:space="preserve">
-    <value>Csv file containing list of species supported by automatic species detection</value>
-  </data>
-  <data name="SetDescPythonExe" xml:space="preserve">
-    <value>Full path to python executable for executing python scripts</value>
-  </data>
   <data name="SetDescScriptPredict" xml:space="preserve">
     <value>full path to python script to predict bat species</value>
   </data>
@@ -748,7 +742,7 @@
     <value>Longitude</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Create Project(s) from WAV files or another project</value>
+    <value>Import WAV files or another Elekon project</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Latitude format error: </value>
@@ -908,5 +902,17 @@
   </data>
   <data name="QueryReportMissing" xml:space="preserve">
     <value>Evaluation for project missing, please run evaluation first!</value>
+  </data>
+  <data name="msgDeleteIntermediate" xml:space="preserve">
+    <value>Delete all Mac OS related intermediate files found? (if not project creation will be canceled)</value>
+  </data>
+  <data name="SetCatPrjExplorer" xml:space="preserve">
+    <value>Project Explorer</value>
+  </data>
+  <data name="SetDescShowOnlyFiltered" xml:space="preserve">
+    <value>show only directories in the explorer that matches diectory filters</value>
+  </data>
+  <data name="SetDescDirFilter" xml:space="preserve">
+    <value>List of filters to apply on root directory in file explorer</value>
   </data>
 </root>

@@ -26,7 +26,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _pg.SelectedObject = settings;
-      Title = MyResources.Settings;
+      Title = MyResources.Settings + ":  " + settings.FileName;
     }
 
     private void _btnFactSettings_Click(object sender, RoutedEventArgs e)

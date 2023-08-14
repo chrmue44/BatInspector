@@ -80,7 +80,7 @@ namespace BatInspector
              " --data " + datFile +
              " --model " + this.Name +
              " --predCol " + Cols.SPECIES;
-        retVal = _proc.LaunchCommandLineApp(AppParams.Inst.PythonBin, null, wrkDir, true, args, true, true);
+        retVal = _proc.LaunchCommandLineApp(AppParams.PythonBin, null, wrkDir, true, args, true, true);
       }
 
       if ((options & OPT_CONF95) != 0)

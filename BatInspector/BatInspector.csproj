@@ -478,6 +478,7 @@
     <Resource Include="images\icons8-save-as-48.png" />
     <Resource Include="images\query.png" />
     <Resource Include="images\pause.png" />
+    <Resource Include="images\icons8-save-48-import.png" />
     <Content Include="scripts\tool_get_from_auto2.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

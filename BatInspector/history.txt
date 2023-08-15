@@ -5,12 +5,14 @@ TODO
 - stop button to kill running script
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 
-14.08.23  V0.3.1.0
+15.08.23  V0.3.1.0
 - bold group headers
 - if classification doesn't get a result (for whatever reason) don't touch the project
-- take start and end time while creatiog project from file name (not write date) if possible
-- show only a use specified list of root directories in the project explorer
+- take start and end time while creating project from file name (not write date) if possible
+- show only a user specified list of root directories in the project explorer
 - show file name in settings dialog
+- more structure in Application Settings
+- Zoom along center or left border: configurable via App Settings
 
 12.08.23  V0.3.0.0
 - bugfix: show cursor inforamtion in zoom view when cursor is enabled

@@ -599,12 +599,19 @@ namespace BatInspector
 
     private void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
-      _outputDevice.Dispose();
-      _outputDevice = null;
-      _audioFile.Dispose();
-      _audioFile = null;
-      //    CurrentPlayTime = 0;
-      stop();
+      try
+      {
+        _outputDevice.Dispose();
+        _outputDevice = null;
+        _audioFile.Dispose();
+        _audioFile = null;
+        //    CurrentPlayTime = 0;
+        stop();
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error stopping WAV play: " + ex.ToString(), enLogType.ERROR);
+      }
     }
   }
 }

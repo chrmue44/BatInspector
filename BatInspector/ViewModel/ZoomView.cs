@@ -154,14 +154,32 @@ namespace BatInspector
 
     public void zoomInH()
     {
-      double max = (_rulerDataT.Max - _rulerDataT.Min) / 2 + _rulerDataT.Min;
-      double min = _rulerDataT.Min;
+      double max, min;
+      if (AppParams.Inst.ZoomType == enZoomType.LEFT)
+      {
+        max = (_rulerDataT.Max - _rulerDataT.Min) / 2 + _rulerDataT.Min;
+        min = _rulerDataT.Min;
+      }
+      else
+      {
+        max = _rulerDataT.Max - (_rulerDataT.Max - _rulerDataT.Min) / 4;
+        min = _rulerDataT.Min + (_rulerDataT.Max - _rulerDataT.Min) / 4;
+      }
       _rulerDataT.setRange(min, max);
     }
     public void zoomOutH()
     {
-      double max = (_rulerDataT.Max - _rulerDataT.Min) * 2 + _rulerDataT.Min;
-      double min = _rulerDataT.Min;
+      double max, min;
+      if (AppParams.Inst.ZoomType == enZoomType.LEFT)
+      {
+        max = (_rulerDataT.Max - _rulerDataT.Min) * 2 + _rulerDataT.Min;
+        min = _rulerDataT.Min;
+      }
+      else
+      {
+        max = _rulerDataT.Max + (_rulerDataT.Max - _rulerDataT.Min) / 4;
+        min = _rulerDataT.Min - (_rulerDataT.Max - _rulerDataT.Min) / 4;
+      }
       _rulerDataT.setRange(min, max);
     }
 

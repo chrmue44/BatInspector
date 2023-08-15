@@ -915,4 +915,13 @@
   <data name="SetDescDirFilter" xml:space="preserve">
     <value>List of filters to apply on root directory in file explorer</value>
   </data>
+  <data name="SetCatZoom" xml:space="preserve">
+    <value>Zoom View</value>
+  </data>
+  <data name="SetCatMainWindow" xml:space="preserve">
+    <value>Main Window</value>
+  </data>
+  <data name="SetDescZoomType" xml:space="preserve">
+    <value>LEFT: Zoom along left edge of image, CENTER: Zoom along center of image</value>
+  </data>
 </root>

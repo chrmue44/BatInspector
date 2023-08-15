@@ -915,4 +915,13 @@
   <data name="SetDescDirFilter" xml:space="preserve">
     <value>Filterliste zur Anzeigefilterung im Wurzelverzeichnis des Explorers</value>
   </data>
+  <data name="SetCatZoom" xml:space="preserve">
+    <value>Zoom Fenster</value>
+  </data>
+  <data name="SetCatMainWindow" xml:space="preserve">
+    <value>Hauptfenster</value>
+  </data>
+  <data name="SetDescZoomType" xml:space="preserve">
+    <value>LEFT zoomen entlang der linken Bildschirmkante, CENTER: zoomen entlang der Bildmitte</value>
+  </data>
 </root>

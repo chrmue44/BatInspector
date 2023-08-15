@@ -40,6 +40,12 @@ namespace BatInspector
     BAT_DETECT2
   };
 
+  public enum enZoomType
+  {
+    LEFT,
+    CENTER
+  }
+
   [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter)]
   class LocalizedDescriptionAttribute : DescriptionAttribute
   {
@@ -241,6 +247,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRootPath")]
+    [Browsable(false)]
     public string AppRootPath { get; set; } = "";
 
  
@@ -285,53 +292,58 @@ namespace BatInspector
     [LocalizedDescription("SetDescWidthFFT")]
     public uint FftWidth { get; set; } = 256;
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescColorOfLine")]
     public Color ColorXtLine { get; set; } = Color.Black;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SpecDescShowZoom")]
     public bool ZoomSeparateWin { get; set; } = false;
 
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescZoomLogarithmic")]
     public bool ZoomSpectrumLogarithmic { get; set; } = false;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescLengthZoomMs")]
     public double ZoomOneCall { get; set; } = 100.0;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescWidthMainWin")]
     public double MainWindowWidth { get; set; } = 1400;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescHeightMainWin")]
     public double MainWindowHeight { get; set; } = 900;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescHeightLogCtrl")]
     public double LogControlHeight { get; set; } = 150;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescWidthFileSel")]
     public double WidthFileSelector { get; set; } = 200;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [Description("width of main window [px]")]
     public double ZoomWindowWidth { get; set; } = 1200;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescHeightMainWin")]
     public double ZoomWindowHeight { get; set; } = 900;
+
+    [DataMember]
+    [LocalizedCategory("SetCatZoom")]
+    [LocalizedDescription("SetDescZoomType")]
+    public enZoomType ZoomType { get; set; } = enZoomType.LEFT;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -339,17 +351,17 @@ namespace BatInspector
     public bool HideInfos { get; set; } = false;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescColorBackgXTDiag")]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescMainWinPosX")]
     public double MainWindowPosX { get; set; } = 0;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescMainWinPosY")]
     public double MainWindowPosY { get; set; } = 0;
 
@@ -375,8 +387,9 @@ namespace BatInspector
     public bool WaterfallLogarithmic { get; set; }
 
     [DataMember]
-    [LocalizedCategory("SetCatScripting"),
+    [LocalizedCategory("SetCatModel"),
     LocalizedDescription("SetDescSamplingRate")]
+    [Browsable(false)]
     public int SamplingRate { get; set; }
 
     [DataMember]
@@ -420,41 +433,50 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescIdentify")]
+    [Browsable(false)]
+
     public bool PredIdentifyCalls { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescCutCalls")]
+    [Browsable(false)]
     public bool PredCutCalls { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescPrepData")]
+    [Browsable(false)]
     public bool PredPrepData { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescPredict")]
+    [Browsable(false)]
     public bool PredPredict1 { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescPredict")]
+    [Browsable(false)]
     public bool PredPredict2 { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
      LocalizedDescription("SpecDescPredict")]
+    [Browsable(false)]
     public bool PredPredict3 { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
      LocalizedDescription("SpecDescConfTest")]
+    [Browsable(false)]
     public bool PredConfTest { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
      LocalizedDescription("SpecDescDelTemp")]
+    [Browsable(false)]
     public bool PredDelTemp { get; set; }
 
     public AppParams()

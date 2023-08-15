@@ -1717,6 +1717,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main Window.
+        /// </summary>
+        public static string SetCatMainWindow {
+            get {
+                return ResourceManager.GetString("SetCatMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Model.
         /// </summary>
         public static string SetCatModel {
@@ -1749,6 +1758,15 @@ namespace BatInspector.Properties {
         public static string SetCatScripting {
             get {
                 return ResourceManager.GetString("SetCatScripting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom View.
+        /// </summary>
+        public static string SetCatZoom {
+            get {
+                return ResourceManager.GetString("SetCatZoom", resourceCulture);
             }
         }
         
@@ -2001,6 +2019,15 @@ namespace BatInspector.Properties {
         public static string SetDescWidthMainWin {
             get {
                 return ResourceManager.GetString("SetDescWidthMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LEFT: Zoom along left edge of image, CENTER: Zoom along center of image.
+        /// </summary>
+        public static string SetDescZoomType {
+            get {
+                return ResourceManager.GetString("SetDescZoomType", resourceCulture);
             }
         }
         

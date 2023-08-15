@@ -8,35 +8,31 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="0" LostFocus="ctlLostFocus" GotFocus="ctlGotFocus">
     <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grp" Margin="3" BorderThickness="1"  Header="Bla">
-    <Grid Name="_grid" >
+    <Grid Name="_grid" Margin="-1,0,1,0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="18" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <CheckBox Grid.Column="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-      <StackPanel>
-        <Button Name="_btnCopy"  Margin="0,40,0,0" Click="_btnCopy_Click">-></Button>
-                <Button Name="_btnIgnore" Margin="0,20,0,0"  Click="_btnIgnore_Click">...</Button>
-      </StackPanel>
-      <GroupBox Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto" Grid.Column="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}">
-      <StackPanel Name="_spDataAuto">
+            <CheckBox Grid.Column="0" Grid.Row="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+            <Button Name="_btnCopy" Grid.Column="2" Grid.Row="0" Margin="5,2,5,2" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
+            <Button Name="_btnTools" Grid.Column="1" Grid.Row="0" Margin="5,2,5,2" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto" Grid.Column="1" Grid.Row="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}">
     <!--    <local:ctlDataItem x:Name="_sampleRate" />
         <local:ctlDataItem x:Name="_duration" /> -->
-      </StackPanel>
-        </GroupBox>
-      <StackPanel Grid.Column="2" VerticalAlignment="Stretch">
-                <GroupBox Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan"  Header="{x:Static res:MyResources.CtlWavManualDetection}">
-        <StackPanel Name="_spDataMan">
-        </StackPanel>
-      </GroupBox>
-        <GroupBox  Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtlWavRemarks}" VerticalAlignment="Stretch">
-          <TextBox Name="_tbRemarks" HorizontalAlignment="Stretch" BorderThickness="0"  VerticalAlignment="Stretch" TextChanged="_tbRemarks_TextChanged"></TextBox>
-        </GroupBox>
-      </StackPanel>
+                <StackPanel x:Name="_spDataAuto" />
+            </GroupBox>
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Grid.Row="1" Grid.Column="2" Name ="_grpInfoMan"  Header="{x:Static res:MyResources.CtlWavManualDetection}">
+                <StackPanel Name="_spDataMan" />
+            </GroupBox>
+            <local:ctlDataItem x:Name="_ctlRemarks" Grid.Row ="0" Grid.Column="3"/>
       <!--<ListView Grid.Column="1" Name="_lvFileInfo"  HorizontalAlignment="Left"  VerticalAlignment="Top" Focusable="False" />-->
-      <Button Grid.Column="3" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
+      <Button Grid.Column="3" Grid.Row="1" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
         <Image  Name ="_img" Focusable="False" Stretch="Fill"/>
       </Button>
         </Grid>

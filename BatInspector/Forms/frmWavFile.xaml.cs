@@ -29,7 +29,7 @@ namespace BatInspector.Forms
       InitializeComponent();
       _model = model;
       int wLbl = 110;
-      _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, wLbl, 600);
+      _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, wLbl);
 
       _ctlFileType.setup("File Type ID", enDataType.STRING, 0, wLbl);
       _ctlFileLength.setup("File length", enDataType.UINT, 0, wLbl);
@@ -39,7 +39,7 @@ namespace BatInspector.Forms
       _ctlChunkSize.setup("Chunk Size", enDataType.UINT, 0, wLbl);
       _ctlFormatTag.setup("Format Tag", enDataType.UINT, 0, wLbl);
       _ctlChannels.setup("Channel count.", Controls.enDataType.UINT, 0, wLbl);
-      _ctlSamplingRate.setup("Sampling rate", Controls.enDataType.UINT, 0, wLbl, 80, true, samplingRateChanged);
+      _ctlSamplingRate.setup("Sampling rate", Controls.enDataType.UINT, 0, wLbl, true, samplingRateChanged);
       _ctlAvgBytesPerSec.setup("Avg Bytes/sec", enDataType.UINT, 0, wLbl);
       _ctlBlockAlign.setup("Block Align", enDataType.UINT, 0, wLbl);
       _ctlBitsPerSample.setup("Bits per Chan", Controls.enDataType.UINT, 0, wLbl);

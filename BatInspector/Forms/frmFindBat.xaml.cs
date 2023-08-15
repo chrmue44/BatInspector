@@ -73,12 +73,12 @@ namespace BatInspector.Forms
 
       int width = 130;
       int widthTb = 60;
-      _ctlLat.setup("Latitude", enDataType.DOUBLE, 6, width, widthTb, true);
-      _ctlLon.setup("Longitude", enDataType.DOUBLE, 6, width, widthTb, true);
-      _ctlFstart.setup("Start Frequency [kHz]", enDataType.DOUBLE, 1, width, widthTb, true);
-      _ctlFend.setup("End Frequency [kHz]", enDataType.DOUBLE, 1, width, widthTb, true);
-      _ctlFME.setup("Freq. max. Energy [kHz]", enDataType.DOUBLE, 1, width, widthTb, true);
-      _ctlDuration.setup("Duration [ms]", enDataType.DOUBLE, 1, width, widthTb, true);
+      _ctlLat.setup("Latitude", enDataType.DOUBLE, 6, width,  true);
+      _ctlLon.setup("Longitude", enDataType.DOUBLE, 6, width , true);
+      _ctlFstart.setup("Start Frequency [kHz]", enDataType.DOUBLE, 1, width,  true);
+      _ctlFend.setup("End Frequency [kHz]", enDataType.DOUBLE, 1, width,  true);
+      _ctlFME.setup("Freq. max. Energy [kHz]", enDataType.DOUBLE, 1, width,  true);
+      _ctlDuration.setup("Duration [ms]", enDataType.DOUBLE, 1, width,  true);
     }
 
     enBoolDC getBoolDC(int idx)

@@ -21,7 +21,7 @@
                 <Button x:Name="_btnZoomTotal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomTotal_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomOutTotal}">
                     <Image Source="../images/icons8-enlarge-maximum.png"></Image>
                 </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="10,0,10,0"/>
                 <Button x:Name="_btnZoomInV"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInV_Click" ToolTip="{x:Static res:MyResources.TooltipZoomInX2V}">
                     <Image Source="../images/icons8-zoom-in-v-64.png"></Image>
                 </Button>
@@ -34,7 +34,7 @@
                 <Button x:Name="_btnmoveDown"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveDown_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveDownF}">
                     <Image Source="../images/icons8-arrow-down.png"></Image>
                 </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="10,0,10,0"/>
                 <Button x:Name="_btnZoomInH"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnZoomInH_Click" ToolTip="{x:Static res:MyResources.ToolTipZoomInX2H}">
                     <Image Source="../images/icons8-zoom-in-h-64.png"></Image>
                 </Button>
@@ -47,17 +47,17 @@
                 <Button x:Name="_btnmoveRight"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnmoveRight_Click" ToolTip="{x:Static res:MyResources.ToolTipMoveRightIT}">
                     <Image Source="../images/icons8-arrow-right-64.png"></Image>
                 </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                <GroupBox Template="{DynamicResource GroupBoxCmu}" VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="10,0,10,0"/>
+              <!--  <GroupBox Template="{DynamicResource GroupBoxCmu}" VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
                     <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
-                </GroupBox>
+                </GroupBox> -->
                 <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
                     <Image Source="../images/icons8-plus-+-48.png"></Image>
                 </Button>
                 <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
                     <Image Source="../images/icons8-minus-48.png"></Image>
                 </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="10,0,10,0"/>
                 <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
           <Image Source="../images/play-button.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
@@ -73,7 +73,7 @@
                 <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
                     <Image Source="../images/stop.png"></Image>
                 </Button>
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="10,0,10,0" />
               <!---
                 <Button x:Name="_btnDenoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDenoise_Click" ToolTip="{x:Static res:MyResources.ToolTipDenoise}">
                   <Image Source="../images/icons8-cleanup-noise-100.png"></Image>

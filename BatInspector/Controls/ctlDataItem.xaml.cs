@@ -1,20 +1,19 @@
-﻿using BatInspector.Controls;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *      Date of cration: 2021-08-10                                       
+ *   Copyright (C) 2022: Christian Müller chrmue44(at)gmail(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+
 using libParser;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace BatInspector.Controls
 {
@@ -35,7 +34,7 @@ namespace BatInspector.Controls
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, bool edit = false, dlgValueChanged dlgValChange = null)
+    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, bool edit = false, dlgValueChanged dlgValChange = null)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
@@ -43,9 +42,8 @@ namespace BatInspector.Controls
       _decimals = decimals;
       _dlgValChange = dlgValChange;
       _tb.Focusable = edit;
-      _tb.Width = widthTb;
+      _grd.ColumnDefinitions[0].Width = new System.Windows.GridLength(widthLbl);
       _lbl.Width = widthLbl;
-
     }
 
     public new bool IsEnabled { get { return _tb.IsEnabled; } set { _tb.IsEnabled = value; _lbl.Opacity = value ? 1 : 0.5; } }

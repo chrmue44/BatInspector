@@ -6,8 +6,23 @@ AI model to detect bat species:
 https://github.com/macaodha/batdetect2
 
 ****************
+*  WAV Files   *
+****************
+
+WAV recordings bats from
+https://www.museumfuernaturkunde.berlin/de/wissenschaft/tierstimmenarchiv
+
+
+****************
 *    Icons     *
 ****************
+
+Icon sources: 
+https://icon-icons.com
+https://www.flaticon.com
+https://icons8.com
+https://www.iconsdb.com
+https://uxwing.com
 
 Bat_icon-icons.com_75012.png:
 https://icon-icons.com/de/download/75012/PNG/128/
@@ -90,9 +105,6 @@ Free for commercial use
 
 debug.png
 https://www.flaticon.com/free-icons/debug Debug icons created by Blaze150 - Flaticon
-
-WAV recordings bats from
-https://www.museumfuernaturkunde.berlin/de/wissenschaft/tierstimmenarchiv
 
 create-task-icon.png
 https://uxwing.com/create-task-icon/

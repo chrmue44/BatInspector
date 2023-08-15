@@ -924,4 +924,16 @@
   <data name="SetDescZoomType" xml:space="preserve">
     <value>LEFT zoomen entlang der linken Bildschirmkante, CENTER: zoomen entlang der Bildmitte</value>
   </data>
+  <data name="MainToolCleanup" xml:space="preserve">
+    <value>Temporäre Dateien löschen</value>
+  </data>
+  <data name="ctlWavTools" xml:space="preserve">
+    <value>Werkzeuge</value>
+  </data>
+  <data name="ctlWavTransfer" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="ctlWavToolTipCall" xml:space="preserve">
+    <value>Klicken, um Ruf in Zoom-Ansicht anzuzeigen</value>
+  </data>
 </root>

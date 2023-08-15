@@ -26,12 +26,12 @@ namespace BatInspector.Controls
     public ctlSpeciesData()
     {
       InitializeComponent();
-      _ctlLocalName.setup("Local Name:", enDataType.STRING, 0, 120, 200);
-      _ctDuration.setup(MyResources.Duration + " [ms]:", enDataType.DOUBLE, 1, 120, 70);
-      _ctCallDist.setup(MyResources.CallDistance + " [ms]", enDataType.DOUBLE, 1, 120, 70);
-      _ctFreqC.setup(MyResources.CharFrequency + "[kHz]", enDataType.DOUBLE, 1, 120, 70);
-      _ctlFmin.setup(MyResources.MinFrequency + "[kHz]", enDataType.DOUBLE, 1, 120, 70);
-      _ctlFmax.setup(MyResources.MaxFrequency + "[kHz]", enDataType.DOUBLE, 1, 120, 70);
+      _ctlLocalName.setup("Local Name:", enDataType.STRING, 0, 120);
+      _ctDuration.setup(MyResources.Duration + " [ms]:", enDataType.DOUBLE, 1, 120);
+      _ctCallDist.setup(MyResources.CallDistance + " [ms]", enDataType.DOUBLE, 1, 120);
+      _ctFreqC.setup(MyResources.CharFrequency + "[kHz]", enDataType.DOUBLE, 1, 120);
+      _ctlFmin.setup(MyResources.MinFrequency + "[kHz]", enDataType.DOUBLE, 1, 120);
+      _ctlFmax.setup(MyResources.MaxFrequency + "[kHz]", enDataType.DOUBLE, 1, 120);
       _ctlSelPic.setup(MyResources.SelectCallType, 0, 150, 150, callTypeChanged);
     }
 

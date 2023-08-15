@@ -421,6 +421,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tools.
+        /// </summary>
+        public static string ctlWavTools {
+            get {
+                return ResourceManager.GetString("ctlWavTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  click to show call in zoom view.
+        /// </summary>
+        public static string ctlWavToolTipCall {
+            get {
+                return ResourceManager.GetString("ctlWavToolTipCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer.
+        /// </summary>
+        public static string ctlWavTransfer {
+            get {
+                return ResourceManager.GetString("ctlWavTransfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dist to previous.
         /// </summary>
         public static string CtlZoomDistToPrev {
@@ -1344,6 +1371,15 @@ namespace BatInspector.Properties {
         public static string MainToolCancelScript {
             get {
                 return ResourceManager.GetString("MainToolCancelScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleanup intermediate files.
+        /// </summary>
+        public static string MainToolCleanup {
+            get {
+                return ResourceManager.GetString("MainToolCleanup", resourceCulture);
             }
         }
         

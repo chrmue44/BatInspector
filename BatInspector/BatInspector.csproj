@@ -164,6 +164,9 @@
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmCleanup.xaml.cs">
+      <DependentUpon>frmCleanup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmColorMap.xaml.cs">
       <DependentUpon>FrmColorMap.xaml</DependentUpon>
     </Compile>
@@ -327,6 +330,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\frmCleanup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\FrmColorMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -479,6 +486,7 @@
     <Resource Include="images\query.png" />
     <Resource Include="images\pause.png" />
     <Resource Include="images\icons8-save-48-import.png" />
+    <Resource Include="images\icons8-staubsauger-64.png" />
     <Content Include="scripts\tool_get_from_auto2.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

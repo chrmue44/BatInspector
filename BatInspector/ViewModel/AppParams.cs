@@ -202,6 +202,7 @@ namespace BatInspector
     public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string PRJ_SUMMARY = "summary.csv";      // report name for project summar
     public const string DIR_WAVS = "Records";             // directory for WAV files
+    public const string DIR_DEL = "del";                  // sub directory to save 'deleted' files
     public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings

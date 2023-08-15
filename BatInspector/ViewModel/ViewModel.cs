@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Management;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 
@@ -177,7 +178,7 @@ namespace BatInspector
         }
         else
           _prj.Analysis.init(_prj.SpeciesInfos);
-        if (_prj.Analysis.Report != null)
+        if (_prj.Ok &&_prj.Analysis.Report != null)
           checkProject();
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
       }
@@ -362,7 +363,7 @@ namespace BatInspector
         string delName = System.IO.Path.GetFileName(wavName);
         delName = delName.Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
-        string destDir = SelectedDir + "/del";
+        string destDir = Path.Combine(SelectedDir, AppParams.DIR_DEL);
         if(!Directory.Exists(destDir))
           Directory.CreateDirectory(destDir);
         foreach (string f in delFiles)
@@ -450,9 +451,62 @@ namespace BatInspector
       return image;
     }
 
+    private bool tidyUpProject(DirectoryInfo dir, bool delWavs, bool pngs)
+    {
+      bool retVal = true;
+      try
+      {
+        if (delWavs)
+        {
+          string delDir = Path.Combine(dir.Name, AppParams.DIR_DEL);
+          if (Directory.Exists(delDir))
+            Directory.Delete(delDir, true);
+          DebugLog.log("deletes files permanently removed from project " + dir.Name, enLogType.INFO);
+        }
+        if(pngs) 
+        {
+          FileInfo[] files = dir.GetFiles("*.png");
+          foreach (FileInfo file in files)
+            File.Delete(file.FullName);
+          string dirRecords = Path.Combine(dir.FullName, AppParams.DIR_WAVS);
+          DirectoryInfo dirWavs = new DirectoryInfo(dirRecords);
+          files = dirWavs.GetFiles("*.png");
+          foreach (FileInfo file in files)
+            File.Delete(file.FullName);
+          DebugLog.log("PNG files deleted in project " + dir.FullName, enLogType.INFO);
+        }
+      }
+      catch
+      {
+
+      }
+      return retVal;
+    }
+
+    private bool crawl(DirectoryInfo dir, bool delWavs, bool pngs)
+    {
+      DirectoryInfo[] dirs = dir.GetDirectories();
+      bool ok = false;
+      foreach (DirectoryInfo d in dirs)
+      {
+        if (Project.containsProject(d) != "")
+          ok = tidyUpProject(d, delWavs, pngs);
+        else
+          ok = crawl(d, delWavs, pngs);
+        if (!ok)
+          break;
+      }
+      return ok;
+    }
+
+    public void cleanup(string root, bool delWavs, bool logs, bool pngs)
+    {
+      DirectoryInfo dir = new DirectoryInfo(root);
+      crawl(dir, delWavs, pngs);
+    }
 
 
-  bool isBusy()
+    bool isBusy()
     {
       bool retVal = _proc.IsRunning | _extBusy;
       return retVal;

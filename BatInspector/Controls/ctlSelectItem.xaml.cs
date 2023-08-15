@@ -25,15 +25,19 @@ namespace BatInspector.Controls
     dlgSelItemChanged _dlgValChange = null;
     int _index;
     Brush _brushDefault;
+    dlgClickLabel _dlgClickLabel;
     
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, int index, int widthLbl = 80, int widthTb = 80, dlgSelItemChanged dlgValChange = null)
+    public void setup(string label, int index, int widthLbl = 80, int widthTb = 80,
+                      dlgSelItemChanged dlgValChange = null, dlgClickLabel dlgClick = null, string tooltip = "")
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
+      _lbl.ToolTip = tooltip;
       _dlgValChange = dlgValChange;
+      _dlgClickLabel = dlgClick;
       _index = index;
       _lbl.Width = widthLbl;
       _cb.Width = widthTb;
@@ -110,6 +114,12 @@ namespace BatInspector.Controls
       }
 
     }
+
+    private void _lbl_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+      if (_dlgClickLabel != null)
+        _dlgClickLabel(_index);
+    }
   }
 
   public enum enDataType
@@ -121,5 +131,6 @@ namespace BatInspector.Controls
   }
 
   public delegate void dlgSelItemChanged(int index, string val);
+  public delegate void dlgClickLabel(int index);
 
 }

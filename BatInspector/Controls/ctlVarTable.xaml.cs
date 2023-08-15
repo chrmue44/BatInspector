@@ -33,7 +33,7 @@ namespace BatInspector.Controls
       foreach(VarListItem var in _varList.getVarList(false))
       {
         ctlDataItem it = new ctlDataItem();
-        it.setup(var.name, enDataType.STRING, 0, 100, 250, true);
+        it.setup(var.name, enDataType.STRING, 0, 100, true);
         it.setValue(var.value.ToString());
         _spVars.Children.Add(it);
       }

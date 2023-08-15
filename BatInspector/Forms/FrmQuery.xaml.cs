@@ -17,7 +17,7 @@ namespace BatInspector.Forms
       InitializeComponent();
       _model = model;
       int wLabel = 150;
-      _ctlName.setup( BatInspector.Properties.MyResources.frmQueryQueryName, Controls.enDataType.STRING, 0, wLabel, 150, true);
+      _ctlName.setup( BatInspector.Properties.MyResources.frmQueryQueryName, Controls.enDataType.STRING, 0, wLabel, true);
       _ctlSelectSource.setup(BatInspector.Properties.MyResources.frmQuerySelSrcDir, wLabel, true);
       _ctlSelectDest.setup(BatInspector.Properties.MyResources.frmQuerySelDestDir, wLabel, true);
       _grdCol1.Width = new GridLength(wLabel);

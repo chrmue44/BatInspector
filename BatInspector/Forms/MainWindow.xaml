@@ -78,7 +78,11 @@
           <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>
-          <Separator Margin="10,2"/>
+          <Button x:Name="_btnCleanup" Click="_btnCleanup_Click"  ToolTip="{x:Static res:MyResources.MainToolCleanup}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Image Source="../images/icons8-staubsauger-64.png"/>
+                        
+                    </Button>
+                    <Separator Margin="10,2"/>
           <!---
                     <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>

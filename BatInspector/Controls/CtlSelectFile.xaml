@@ -6,9 +6,14 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Horizontal" Height="20">
-        <TextBlock Name ="_lbl" Width="150"  >Select Folder</TextBlock>
-        <TextBox Name ="_txt" Width="300" >Tb</TextBox>
-        <Button Name="_btnOpen" Width="30" Click="_btnOpen_Click" >...</Button>
-    </StackPanel>
+    <Grid Name="_grd" Height="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Name ="_lbl" Grid.Column="0"  >Select Folder</TextBlock>
+        <TextBox Name ="_txt" Grid.Column="1" >Tb</TextBox>
+        <Button Name="_btnOpen" Grid.Column="2" Click="_btnOpen_Click" >...</Button>
+    </Grid>
 </UserControl>

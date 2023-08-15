@@ -161,7 +161,7 @@ namespace BatInspector
         {
           string destDir = _fName;
           if (_fName.IndexOf(AppParams.DIR_WAVS) >= 0)
-            destDir = _fName.Replace(AppParams.DIR_WAVS, "/del");
+            destDir = _fName.Replace(AppParams.DIR_WAVS, AppParams.DIR_DEL);
           destDir = Path.GetDirectoryName(destDir);
           if (!Directory.Exists(destDir))
             Directory.CreateDirectory(destDir);

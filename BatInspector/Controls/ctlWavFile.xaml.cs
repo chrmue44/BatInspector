@@ -35,6 +35,7 @@ namespace BatInspector.Controls
     ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
+    bool _isSetupCall = false;
 
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
@@ -50,7 +51,7 @@ namespace BatInspector.Controls
         _grpInfoAuto.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _grpInfoMan.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _btnCopy.Visibility = value ? Visibility.Visible : Visibility.Hidden;
-        _btnIgnore.Visibility = value ? Visibility.Visible : Visibility.Hidden;
+        _btnTools.Visibility = value ? Visibility.Visible : Visibility.Hidden;
         if (!value)
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
@@ -64,13 +65,14 @@ namespace BatInspector.Controls
       }
     }
 
-    public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model, MainWindow parent)
+    public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model, MainWindow parent, bool showButtons)
     {
       _index = index;
       _dlgFocus = setFocus;
       _model = model;
       _parent = parent;
       InitializeComponent();
+      _ctlRemarks.setup(MyResources.CtlWavRemarks, enDataType.STRING, 0, 80, true, _tbRemarks_TextChanged);
       if ((_model.Prj != null) && (_model.Prj.Analysis.Files.Count > index))
       {
         _analysis = _model.Prj.Analysis.Files[index];
@@ -80,6 +82,10 @@ namespace BatInspector.Controls
         if (fName.IndexOf(_wavName) < 0)
           DebugLog.log("WAV name mismatch to Report for " + _wavName, enLogType.ERROR);
       }
+      _btnCopy.Visibility = showButtons ? Visibility.Visible : Visibility.Collapsed;
+      _btnCopy.IsEnabled = showButtons;
+      _btnTools.Visibility = showButtons ? Visibility.Visible : Visibility.Collapsed;
+      _btnTools.IsEnabled = showButtons;
       _cbSel.Focusable = true;
       Visibility = Visibility.Visible;
     }
@@ -108,22 +114,25 @@ namespace BatInspector.Controls
       _wavName = Name;
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
+      _isSetupCall = true;
       if (_analysis != null)
       {
         int callNr = 1;
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();
-        _tbRemarks.Text = _analysis.getString(Cols.REMARKS);
+        _ctlRemarks.setValue(_analysis.getString(Cols.REMARKS));
         foreach (AnalysisCall call in _analysis.Calls)
         {
+          string callStr = call.getString(Cols.NR);
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
-          it.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", enDataType.STRING, 0, 60, 100);
+          it.setup(MyResources.CtlWavCall + " " + callStr + ": ", enDataType.STRING, 0, 60);
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup(MyResources.CtlWavCall + " " + callNr.ToString() + ": ", callNr - 1, 60, 65, selItemChanged);
+          im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, 60, 65, selItemChanged, clickCallLabel,
+          MyResources.ctlWavToolTipCall);
           im.setItems(spec.ToArray());
           im.setValue(call.getString(Cols.SPECIES_MAN));
           _spDataMan.Children.Add(im);
@@ -207,9 +216,21 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _tbRemarks_TextChanged(object sender, TextChangedEventArgs e)
+    private void _tbRemarks_TextChanged(enDataType type, object val)
     {
-      _analysis.setString(Cols.REMARKS, _tbRemarks.Text);
+      if (_isSetupCall)
+        _isSetupCall = false;
+      else
+      {
+        if (type == enDataType.STRING)
+          _analysis.setString(Cols.REMARKS, _ctlRemarks.getValue());
+      }
+    }
+
+    private void clickCallLabel(int index)
+    {
+      Button_Click(null, null);
+      _parent.changeCallInZoom(index);
     }
 
     private void update()
@@ -219,7 +240,7 @@ namespace BatInspector.Controls
       this.UpdateLayout();
     }
 
-    private void _btnIgnore_Click(object sender, RoutedEventArgs e)
+    private void _btnTools_Click(object sender, RoutedEventArgs e)
     {
       if (_analysis != null)
       {
@@ -227,14 +248,6 @@ namespace BatInspector.Controls
         bool upd = frm.ShowDialog() == true;
         if (upd)
           update();
-        /*
-        for (int i = 0; i < _analysis.Calls.Count; i++)
-        {
-          _analysis.Calls[i].setString(Cols.SPECIES_MAN, "---");
-          ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-          ctlm.setValue("---");
-        }
-        */
       }
     }
 

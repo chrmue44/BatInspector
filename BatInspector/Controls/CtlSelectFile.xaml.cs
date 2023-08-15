@@ -35,7 +35,7 @@ namespace BatInspector.Controls
     public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "", dlgVoid dlgAction = null)
     {
       _lbl.Text = label;
-      _lbl.Width = widthLbl;
+      _grd.ColumnDefinitions[0].Width = new GridLength(widthLbl);
       _isFolder = isFolder;
       _txt.Text = "";
       _filter = filter;

@@ -476,7 +476,7 @@ namespace BatInspector
     public void removeFilesNotInReport()
     {
       List<BatExplorerProjectFileRecordsRecord> newList = new List<BatExplorerProjectFileRecordsRecord>();
-      string destDir = this.PrjDir + "/del";
+      string destDir = Path.Combine(this.PrjDir, AppParams.DIR_DEL);
       if (!Directory.Exists(destDir))
         Directory.CreateDirectory(destDir);
 

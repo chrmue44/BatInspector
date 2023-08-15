@@ -924,4 +924,16 @@
   <data name="SetDescZoomType" xml:space="preserve">
     <value>LEFT: Zoom along left edge of image, CENTER: Zoom along center of image</value>
   </data>
+  <data name="MainToolCleanup" xml:space="preserve">
+    <value>Cleanup intermediate files</value>
+  </data>
+  <data name="ctlWavTools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="ctlWavTransfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="ctlWavToolTipCall" xml:space="preserve">
+    <value> click to show call in zoom view</value>
+  </data>
 </root>

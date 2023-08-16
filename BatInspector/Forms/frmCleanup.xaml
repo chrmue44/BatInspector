@@ -4,14 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="Cleanup" Height="180" Width="500" Loaded="Window_Loaded">
+        Title="{x:Static res:MyResources.frmCleanupTitle}" Height="200" Width="500" Loaded="Window_Loaded">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <local:CtlSelectFile x:Name="_ctlSelectFolder"></local:CtlSelectFile>
-            <CheckBox Name="_cbDelWav" Content="deleted WAV files"></CheckBox>
-            <CheckBox Name="_cbDelLog" Content="Log Files"></CheckBox>
-            <CheckBox Name="_cbDelPNG" Content="PNG Files"></CheckBox>
+            <CheckBox Name="_cbDelWav" Content="{x:Static res:MyResources.frmCleanupDeletedFiles}" Margin="0,20,0,0" />
+            <CheckBox Name="_cbDelLog" Content="{x:Static res:MyResources.frmCleanupLogFiles}" />
+            <CheckBox Name="_cbDelPNG" Content="{x:Static res:MyResources.frmCleanupPngFiles}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,20,0">
                 <Button Name="_btnCancel" Content="Cancel" Width="120" Height="25" Margin="0,0,10,0" Click="_btnCancel_Click"></Button>
                 <Button Name="_btnOk" Content="OK" Width="120" Click="_btnOk_Click"></Button>

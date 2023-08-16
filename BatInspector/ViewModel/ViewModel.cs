@@ -458,7 +458,7 @@ namespace BatInspector
       {
         if (delWavs)
         {
-          string delDir = Path.Combine(dir.Name, AppParams.DIR_DEL);
+          string delDir = Path.Combine(dir.FullName, AppParams.DIR_DEL);
           if (Directory.Exists(delDir))
             Directory.Delete(delDir, true);
           DebugLog.log("deletes files permanently removed from project " + dir.Name, enLogType.INFO);
@@ -478,31 +478,124 @@ namespace BatInspector
       }
       catch
       {
-
+        retVal = false;
       }
       return retVal;
     }
 
-    private bool crawl(DirectoryInfo dir, bool delWavs, bool pngs)
+    private bool checkProject(DirectoryInfo dir, ref int wavSpace, ref int pngSpace)
     {
+      bool retVal = true;
+      try
+      {
+        string delDir = Path.Combine(dir.FullName, AppParams.DIR_DEL);
+        if (Directory.Exists(delDir))
+        {
+          DirectoryInfo d = new DirectoryInfo(delDir);
+          foreach(FileInfo file in d.GetFiles())
+            wavSpace += (int)(file.Length / 1024);
+        }
+
+        FileInfo[] files = dir.GetFiles("*.png");
+        foreach (FileInfo file in files)
+          pngSpace += (int)(file.Length / 1024);
+        string dirRecords = Path.Combine(dir.FullName, AppParams.DIR_WAVS);
+        DirectoryInfo dirWavs = new DirectoryInfo(dirRecords);
+        files = dirWavs.GetFiles("*.png");
+        foreach (FileInfo file in files)
+          pngSpace += (int)(file.Length / 1024);
+      }
+      catch
+      {
+        retVal = false;
+      }
+      return retVal;
+    }
+    private bool crawlTidyUp(DirectoryInfo dir, bool delWavs, bool pngs)
+    {
+      if (!dir.Exists)
+        return false;
       DirectoryInfo[] dirs = dir.GetDirectories();
       bool ok = false;
-      foreach (DirectoryInfo d in dirs)
+      if (Project.containsProject(dir) != "")
+        ok = tidyUpProject(dir, delWavs, pngs);
+      else
       {
-        if (Project.containsProject(d) != "")
-          ok = tidyUpProject(d, delWavs, pngs);
-        else
-          ok = crawl(d, delWavs, pngs);
-        if (!ok)
-          break;
+        foreach (DirectoryInfo d in dirs)
+        {
+          if (Project.containsProject(d) != "")
+            ok = tidyUpProject(d, delWavs, pngs);
+          else
+            ok = crawlTidyUp(d, delWavs, pngs);
+          if (!ok)
+            break;
+        }
       }
       return ok;
     }
 
+    private bool crawlCheckSpace(DirectoryInfo dir, ref int wavSpace,  ref int pngSpace)
+    {
+      if (!dir.Exists)
+        return false;
+
+      DirectoryInfo[] dirs = dir.GetDirectories();
+      
+      bool ok = true;
+      if (Project.containsProject(dir) != "")
+        ok = checkProject(dir, ref wavSpace, ref pngSpace);
+      else
+      {
+        foreach (DirectoryInfo d in dirs)
+        {
+          if (Project.containsProject(d) != "")
+            ok = checkProject(d, ref wavSpace, ref pngSpace);
+          else
+            ok = crawlCheckSpace(d, ref wavSpace, ref pngSpace);
+          if (!ok)
+            break;
+        }
+      }
+      return ok;
+    }
+
+
     public void cleanup(string root, bool delWavs, bool logs, bool pngs)
     {
-      DirectoryInfo dir = new DirectoryInfo(root);
-      crawl(dir, delWavs, pngs);
+      if (Directory.Exists(root))
+      {
+        DirectoryInfo dir = new DirectoryInfo(root);
+        crawlTidyUp(dir, delWavs, pngs);
+      }
+
+      if (Directory.Exists(AppParams.LogDataPath))
+      {
+        DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
+        foreach (FileInfo f in dir.GetFiles())
+        {
+          if (f.FullName != DebugLog.FileName)
+            File.Delete(f.FullName);
+        }
+      }
+    }
+
+    public void checkMem(string root, out int wavSpace, out int logSpace, out int pngSpace)
+    {
+      wavSpace = 0;
+      logSpace = 0;
+      pngSpace = 0;
+      if (Directory.Exists(root))
+      {
+        DirectoryInfo dir = new DirectoryInfo(root);
+        crawlCheckSpace(dir, ref wavSpace, ref pngSpace);
+      }
+
+      if (Directory.Exists(AppParams.LogDataPath))
+      {
+        DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
+        foreach (FileInfo f in dir.GetFiles())
+          logSpace += (int)(f.Length / 1024);
+      }
     }
 
 

@@ -673,6 +673,51 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to deleted files.
+        /// </summary>
+        public static string frmCleanupDeletedFiles {
+            get {
+                return ResourceManager.GetString("frmCleanupDeletedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Files.
+        /// </summary>
+        public static string frmCleanupLogFiles {
+            get {
+                return ResourceManager.GetString("frmCleanupLogFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PNG Files.
+        /// </summary>
+        public static string frmCleanupPngFiles {
+            get {
+                return ResourceManager.GetString("frmCleanupPngFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select root folder.
+        /// </summary>
+        public static string frmCleanupSelRootFolder {
+            get {
+                return ResourceManager.GetString("frmCleanupSelRootFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleanup / Free disk space.
+        /// </summary>
+        public static string frmCleanupTitle {
+            get {
+                return ResourceManager.GetString("frmCleanupTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination Folder for Project.
         /// </summary>
         public static string frmCreatePrjDstFolder {

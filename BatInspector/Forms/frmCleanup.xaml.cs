@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BatInspector.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,37 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmCleanup : Window
   {
-    public frmCleanup()
+    ViewModel _model;
+
+    public frmCleanup(ViewModel model)
     {
       InitializeComponent();
-      _ctlSelectFolder.setup("select root folder", 120, true);
+      _model = model;
+      _ctlSelectFolder.setup(MyResources.frmCleanupSelRootFolder, 120, true, "", folderSelected);
+    }
+
+    private void folderSelected()
+    {
+      int logSpace;
+      int wavSpace;
+      int pngSpace;
+      string wavUnit = "kB";
+      string pngUnit = "kB";
+      string logUnit = "kB";
+      _model.checkMem(_ctlSelectFolder.getValue(), out wavSpace, out logSpace, out pngSpace);
+      if( wavSpace > 2048)
+      {
+        wavSpace /= 1024;
+        wavUnit = "MB";
+      }
+      if (pngSpace > 2048)
+      {
+        pngSpace /= 1024;
+        pngUnit = "MB";
+      }
+      _cbDelWav.Content = MyResources.frmCleanupDeletedFiles + "  (" + wavSpace.ToString() + " " + wavUnit + ")";
+      _cbDelPNG.Content = MyResources.frmCleanupPngFiles + "  (" + pngSpace.ToString() + " " + pngUnit + ")";
+      _cbDelLog.Content = MyResources.frmCleanupLogFiles + "  (" + logSpace.ToString() + " " + logUnit + ")";
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -38,6 +66,8 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
+      _model.cleanup(_ctlSelectFolder.getValue(), _cbDelWav.IsChecked == true,
+                     _cbDelLog.IsChecked == true, _cbDelPNG.IsChecked == true);
       this.Visibility = Visibility.Hidden;
     }
   }

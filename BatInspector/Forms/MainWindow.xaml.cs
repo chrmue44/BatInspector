@@ -1171,7 +1171,7 @@ namespace BatInspector.Forms
     {
       DebugLog.log("Windoe Cleanup opened", enLogType.DEBUG);
       if (_frmCleanup == null)
-        _frmCleanup = new frmCleanup();
+        _frmCleanup = new frmCleanup(_model);
       _frmCleanup.Show();
     }
   }

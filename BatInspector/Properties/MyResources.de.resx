@@ -942,4 +942,19 @@
   <data name="MsgSpecifyScript" xml:space="preserve">
     <value>Bitte legen Sie ein Script fest, das Aufgerufen werden soll in Einstellungen 'ScriptAutoToMan'</value>
   </data>
+  <data name="frmCleanupDeletedFiles" xml:space="preserve">
+    <value>gelöschte Dateien</value>
+  </data>
+  <data name="frmCleanupLogFiles" xml:space="preserve">
+    <value>Log-Dateien</value>
+  </data>
+  <data name="frmCleanupPngFiles" xml:space="preserve">
+    <value>PNG-Dateien</value>
+  </data>
+  <data name="frmCleanupSelRootFolder" xml:space="preserve">
+    <value>Wurzelverzeichnis</value>
+  </data>
+  <data name="frmCleanupTitle" xml:space="preserve">
+    <value>Aufräumen / Speicherplatz freigeben</value>
+  </data>
 </root>

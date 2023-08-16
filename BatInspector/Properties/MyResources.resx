@@ -942,4 +942,19 @@
   <data name="MsgSpecifyScript" xml:space="preserve">
     <value>please specify a script to run in Application Settings: 'ScriptAutoToMan</value>
   </data>
+  <data name="frmCleanupDeletedFiles" xml:space="preserve">
+    <value>deleted files</value>
+  </data>
+  <data name="frmCleanupLogFiles" xml:space="preserve">
+    <value>Log Files</value>
+  </data>
+  <data name="frmCleanupPngFiles" xml:space="preserve">
+    <value>PNG Files</value>
+  </data>
+  <data name="frmCleanupSelRootFolder" xml:space="preserve">
+    <value>select root folder</value>
+  </data>
+  <data name="frmCleanupTitle" xml:space="preserve">
+    <value>Cleanup / Free disk space</value>
+  </data>
 </root>

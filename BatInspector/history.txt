@@ -6,11 +6,11 @@ TODO
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 - installer
 
-16.08.23
+17.08.23
 - better separation of buttons in toolbars 
 - bugfix zoom view spectrum: fixed cursor display, fixed mouse over frequency display
 - "even" numbers of x- and y- axis of zoom view
-
+- cleanup of projects works
 
 16.08.23  V0.3.1.0
 - merged play and pause buttons to one in zoom view

@@ -7,6 +7,7 @@
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1100">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="44"></RowDefinition>
@@ -59,7 +60,7 @@
                 </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="10,0,10,0"/>
                 <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
-          <Image Source="../images/play-button.png" Style="{StaticResource ImageEnabled}"></Image>
+                    <Image Source="../images/play-button.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
                 <Button x:Name="_btnPlay_10"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_10_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection10x}">
           <Image Source="../images/play-button-10x.png" Style="{StaticResource ImageEnabled}"></Image>
@@ -67,9 +68,9 @@
                 <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
           <Image Source="../images/play-button-20x.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
-                <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPause_Click" ToolTip="{x:Static res:MyResources.ToolTipPausePlayingAudio}">
+        <!--        <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPause_Click" ToolTip="{x:Static res:MyResources.ToolTipPausePlayingAudio}">
                     <Image Source="../images/pause.png"></Image>
-                </Button>
+                </Button> -->
                 <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnStop_Click" ToolTip="{x:Static res:MyResources.ToolTipStopPlayingAudio}">
                     <Image Source="../images/stop.png"></Image>
                 </Button>

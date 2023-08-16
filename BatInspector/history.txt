@@ -4,11 +4,11 @@ TODO
 - species comparison
 - stop button to kill running script
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
-- play/pause
 - installer
 
 
-15.08.23  V0.3.1.0
+16.08.23  V0.3.1.0
+- merged play and pause buttons to one in zoom view
 - buttons on top of the WAV-informations in project view
 - click on call label in project view opens zoom view of clicked call
 - spread buttons in zoom view and remove setter for dynamic range (buttons +/+ are enough)

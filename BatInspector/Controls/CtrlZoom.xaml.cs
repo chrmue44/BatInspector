@@ -22,8 +22,7 @@ using BatInspector.Properties;
 using System;
 using System.IO;
 using System.Globalization;
-using System.Diagnostics.Eventing.Reader;
-using System.Diagnostics;
+
 
 namespace BatInspector.Controls
 {
@@ -37,10 +36,73 @@ namespace BatInspector.Controls
     ViewModel _model;
     int _stretch;
     int _oldCallIdx = -1;
+    Image[] _playImgs;
 
     public CtrlZoom()
     {
       InitializeComponent();
+      _playImgs = new Image[7];
+      int size = 32;
+      double op = 0.3;
+      _playImgs[0] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/pause.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = size,
+        Width = size,
+      };
+      _playImgs[1] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = size,
+        Width = size
+      };
+      _playImgs[2] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-10x.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = size,
+        Width = size
+      };
+      _playImgs[3] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-20x.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = 32,
+        Width = 32
+      };
+      _playImgs[4] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = size,
+        Width = size,
+        Opacity = op
+      };
+      _playImgs[5] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-10x.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = size,
+        Width = size,
+        Opacity = op
+      };
+      _playImgs[6] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-20x.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = 32,
+        Width = 32,
+        Opacity = op
+      };
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img)
@@ -410,16 +472,22 @@ namespace BatInspector.Controls
         {
           _slider.Value = 0;
           _btnPlay_20.IsEnabled = true;
+          _btnPlay_20.Content = _playImgs[3];
           _btnPlay_10.IsEnabled = true;
+          _btnPlay_10.Content = _playImgs[2];
           _btnPlay_1.IsEnabled = true;
+          _btnPlay_1.Content = _playImgs[1];
         }
       }
       else
       {
         _slider.Value = 0;
         _btnPlay_20.IsEnabled = true;
+        _btnPlay_20.Content = _playImgs[3];
         _btnPlay_10.IsEnabled = true;
+        _btnPlay_10.Content = _playImgs[2];
         _btnPlay_1.IsEnabled = true;
+        _btnPlay_1.Content = _playImgs[1];
       }
     }
     
@@ -574,15 +642,28 @@ namespace BatInspector.Controls
 
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
     {
-      play(1);
-      _btnPlay_20.IsEnabled = false;
-      _btnPlay_10.IsEnabled = false;
+      if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+      {
+        _btnPlay_1.Content = _playImgs[1];
+        _model.ZoomView.Waterfall.pause();
+      }
+      else
+      {
+        play(1);
+        _btnPlay_20.IsEnabled = false;
+        _btnPlay_20.Content = _playImgs[6];
+        _btnPlay_10.IsEnabled = false;
+        _btnPlay_10.Content = _playImgs[5];
+        _btnPlay_1.Content = _playImgs[0];
+      }
     }
 
+    /*
     private void _btnPause_Click(object sender, RoutedEventArgs e)
     {
       _model.ZoomView.Waterfall.pause();
     }
+    */
     private void play(int stretch)
     {
       _stretch = stretch;
@@ -592,16 +673,38 @@ namespace BatInspector.Controls
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
     {
-      play(10);
-      _btnPlay_1.IsEnabled = false;
-      _btnPlay_20.IsEnabled = false;
+      if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+      {
+        _btnPlay_10.Content = _playImgs[2];
+        _model.ZoomView.Waterfall.pause();
+      }
+      else
+      {
+        play(10);
+        _btnPlay_1.IsEnabled = false;
+        _btnPlay_1.Content = _playImgs[4];
+        _btnPlay_20.IsEnabled = false;
+        _btnPlay_20.Content = _playImgs[5];
+        _btnPlay_10.Content = _playImgs[0];
+      }
     }
 
     private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
     {
-      play(20);
-      _btnPlay_1.IsEnabled = false;
-      _btnPlay_10.IsEnabled = false;
+      if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+      {
+        _btnPlay_20.Content = _playImgs[3];
+        _model.ZoomView.Waterfall.pause();
+      }
+      else
+      {
+        play(20);
+        _btnPlay_20.Content = _playImgs[0];
+        _btnPlay_1.IsEnabled = false;
+        _btnPlay_1.Content = _playImgs[4];
+        _btnPlay_10.IsEnabled = false;
+        _btnPlay_10.Content = _playImgs[5];
+      }
     }
 
     private void _imgFt_MouseMove(object sender, MouseEventArgs e)

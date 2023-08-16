@@ -57,6 +57,7 @@ namespace BatInspector.Controls
       _cvSpec.Children.Clear();
       if ((_spectrum != null) && (_spectrum.Amplitude != null))
       {
+        _spectrum.RulerDataF.setRange(fMin, fMax);
         int w = (int)_cvSpec.ActualWidth;
         int h = (int)_cvSpec.ActualHeight;
         int n = h > 0 ? _spectrum.Amplitude.Length / h + 1 : 1;
@@ -66,7 +67,7 @@ namespace BatInspector.Controls
         for (int y = h; y > 0; y--)
         {
           double f = fMin + (double)(h - y) / h * (fMax - fMin);
-          int i = (int)(_spectrum.Amplitude.Length * f / _spectrum.RulerDataF.Max);
+          int i = (int)(_spectrum.Amplitude.Length * f / _spectrum.Fmax);
           if (f > 1)
             spectrum[y - 1] = _spectrum.getMeanAmpl(i, n, logarithmic);
           else
@@ -92,7 +93,7 @@ namespace BatInspector.Controls
     private void _cvSpec_MouseMove(object sender, MouseEventArgs e)
     {
       Point pos = e.GetPosition(this);
-      double f = _spectrum.RulerDataF.Min + (pos.X / _cvSpec.ActualWidth) * (_spectrum.RulerDataF.Max - _spectrum.RulerDataF.Min);
+      double f = _spectrum.RulerDataF.Min + ((_cvSpec.ActualHeight -pos.Y) / _cvSpec.ActualHeight) * (_spectrum.RulerDataF.Max - _spectrum.RulerDataF.Min);
       _cvSpec.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]";
     }
 

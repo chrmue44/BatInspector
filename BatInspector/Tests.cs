@@ -105,6 +105,7 @@ namespace BatInspector
       //testQuery();
       testEffVal();
       //calcNoiseLevel();
+      testRulerTicks();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -450,6 +451,19 @@ namespace BatInspector
       w.createSineWave(1000, 384000, 0, 0.2);
       v = w.calcEffVoltage(0, 1, false);
       assert("effective voltage", (v - 0.2 ) < 0.0001);
+    }
+
+    private void testRulerTicks()
+    {
+      RulerData ruler = new RulerData();
+      ruler.setRange(0, 191);
+      double[] ticks = ZoomView.createTicks(9, ruler);
+      ruler.setRange(20, 170);
+      double[] ticks1 = ZoomView.createTicks(9, ruler);
+      ruler.setRange(47, 67);
+      double[] ticks2 = ZoomView.createTicks(9, ruler);
+      ruler.setRange(67, 126);
+      double[] ticks3 = ZoomView.createTicks(9, ruler);
     }
 
     private void calcNoiseLevel()

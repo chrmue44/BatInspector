@@ -28,7 +28,7 @@
         <RowDefinition Height="10"></RowDefinition>
         <RowDefinition Height="80"></RowDefinition>
       </Grid.RowDefinitions>
-      <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top">
+            <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
         <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
           <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
             <Image Source="../images/icons8-save-48.png"></Image>
@@ -36,7 +36,8 @@
                     <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Image Source="../images/icons8-save-48-import.png"></Image>
                     </Button>
-                    <Separator Margin="10,2"/>
+                    <Separator Margin="15,2" Width="3
+                               "/>
                     <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/settingscog_87317.png"></Image>
           </Button>
@@ -49,7 +50,7 @@
           <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
           </Button>
-          <Separator Margin="10,2"/>
+          <Separator Margin="15,2" Width="3"/>
           <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/magnifying-glass.png"></Image>
           </Button>
@@ -64,7 +65,7 @@
           <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/query.png"></Image>
           </Button>
-          <Separator Margin="10,2"/>
+          <Separator Margin="15,2" Width ="3"/>
           <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/script.png"></Image>
           </Button>
@@ -74,7 +75,7 @@
           <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/debug.png"></Image>
           </Button>
-          <Separator Margin="10,2"/>
+          <Separator Margin="15,2" Width="3"/>
           <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>
@@ -82,7 +83,7 @@
                         <Image Source="../images/icons8-staubsauger-64.png"/>
                         
                     </Button>
-                    <Separator Margin="10,2"/>
+                    <Separator Margin="15,2" Width="3"/>
           <!---
                     <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>

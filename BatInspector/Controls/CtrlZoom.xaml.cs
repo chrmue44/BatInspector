@@ -22,7 +22,8 @@ using BatInspector.Properties;
 using System;
 using System.IO;
 using System.Globalization;
-
+using System.Windows.Documents;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace BatInspector.Controls
 {
@@ -409,29 +410,40 @@ namespace BatInspector.Controls
     void initRulerF()
     {
       _rulerF.Children.Clear();
+      int nrTicks = 9;
+      double[] fTicks = ZoomView.createTicks(nrTicks, _model.ZoomView.RulerDataF);
+      nrTicks = fTicks.Length;
       createLine(_rulerF, _rulerF.ActualWidth - 3, _imgFt.Margin.Top,
                           _rulerF.ActualWidth - 3, _imgFt.ActualHeight + _imgFt.Margin.Top, Brushes.Black);
       RulerData rData = _model.ZoomView.RulerDataF;
-      for (int i = 0; i <= 10; i++)
+      double span = _model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min;
+      double min = _model.ZoomView.RulerDataF.Min;
+      for (int i = 0; i < nrTicks; i++)
       {
-        double y = _imgFt.Margin.Top + _imgFt.ActualHeight * i / 10;
+        double y = _imgFt.ActualHeight -(_imgFt.Margin.Top + (fTicks[i] - min) /span * _imgFt.ActualHeight);
         createLine(_rulerF, _rulerF.ActualWidth - 3, y,
-                            _rulerF.ActualWidth - 10, y, Brushes.Black);
-        string str = ((rData.Max - rData.Min) * (10 - i) / 10 + rData.Min).ToString("0.#", CultureInfo.InvariantCulture);
-        createText(_rulerF, _rulerF.ActualWidth - 40, y - 5, str, Colors.Black);
+                            _rulerF.ActualWidth - nrTicks, y, Brushes.Black);
+        string str = fTicks[i].ToString("0.#", CultureInfo.InvariantCulture);
+        createText(_rulerF, _rulerF.ActualWidth - 37, y - 9, str, Colors.Black);
       }
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
+      int nrTicks = 9;
+      double[] tTicks = ZoomView.createTicks(nrTicks, _model.ZoomView.RulerDataT);
+      nrTicks = tTicks.Length;
       createLine(_rulerT, 0, 3, _rulerT.ActualWidth, 3, Brushes.Black);
       RulerData rData = _model.ZoomView.RulerDataT;
-      for (int i = 0; i <= 10; i++)
+      double span = _model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min;
+      double min = _model.ZoomView.RulerDataT.Min;
+      for (int i = 0; i < nrTicks; i++)
       {
-        createLine(_rulerT, _rulerT.ActualWidth * i / 10, 3, _rulerT.ActualWidth * i / 10, 10, Brushes.Black);
-        string str = ((rData.Max - rData.Min) * i / 10 + rData.Min).ToString("0.###", CultureInfo.InvariantCulture);
-        createText(_rulerT, _rulerT.ActualWidth * i / 10 - 20, 15, str, Colors.Black);
+        double x = _rulerT.ActualWidth * (tTicks[i] - min) / span;
+        createLine(_rulerT, x, 3, x, 10, Brushes.Black);
+        string str = tTicks[i].ToString("0.###", CultureInfo.InvariantCulture);
+        createText(_rulerT, x - 20, 15, str, Colors.Black);
       }
     }
 

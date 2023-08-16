@@ -934,6 +934,12 @@
     <value>Transfer</value>
   </data>
   <data name="ctlWavToolTipCall" xml:space="preserve">
-    <value> click to show call in zoom view</value>
+    <value>click to show call in zoom view</value>
+  </data>
+  <data name="SetDescScriptAutoToMan" xml:space="preserve">
+    <value>'intelligent' Script to copy all automatic detected species to manual</value>
+  </data>
+  <data name="MsgSpecifyScript" xml:space="preserve">
+    <value>please specify a script to run in Application Settings: 'ScriptAutoToMan</value>
   </data>
 </root>

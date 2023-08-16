@@ -430,7 +430,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  click to show call in zoom view.
+        ///   Looks up a localized string similar to click to show call in zoom view.
         /// </summary>
         public static string ctlWavToolTipCall {
             get {
@@ -1663,6 +1663,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to please specify a script to run in Application Settings: &apos;ScriptAutoToMan.
+        /// </summary>
+        public static string MsgSpecifyScript {
+            get {
+                return ResourceManager.GetString("MsgSpecifyScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable both cursors first!.
         /// </summary>
         public static string msgZoomNotPossible {
@@ -1992,6 +2001,15 @@ namespace BatInspector.Properties {
         public static string SetDescSamplingRate {
             get {
                 return ResourceManager.GetString("SetDescSamplingRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;intelligent&apos; Script to copy all automatic detected species to manual.
+        /// </summary>
+        public static string SetDescScriptAutoToMan {
+            get {
+                return ResourceManager.GetString("SetDescScriptAutoToMan", resourceCulture);
             }
         }
         

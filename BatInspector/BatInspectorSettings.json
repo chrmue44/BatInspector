@@ -1,5 +1,5 @@
 {
-  "AppRootPath": "G:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
+  "AppRootPath": "F:\\prj\\BatInspector\\BatInspector\\bin\\Debug\\",
   "ColorGradientBlue": [
     {
       "Color": 128,
@@ -79,7 +79,14 @@
     "value": 0
   },
   "Culture": 0,
-  "ExeEditor": "C:\\Program Files (x86)\\Notepad++\\notepad++.exe",
+  "DirFilter": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "ExeEditor": "C:\\Program Files\\Notepad++\\notepad++.exe",
   "FftWidth": 256,
   "FftWindow": 4,
   "Filter": [
@@ -176,12 +183,12 @@
   ],
   "GradientRange": 18,
   "HideInfos": false,
-  "LogControlHeight": 181,
-  "MainWindowHeight": 1079,
-  "MainWindowPosX": 8,
-  "MainWindowPosY": 107,
-  "MainWindowWidth": 1684,
-  "ModelRootPath": "G:\\prj\\BatInspector\\BatInspector\\models",
+  "LogControlHeight": 322,
+  "MainWindowHeight": 881.6,
+  "MainWindowPosX": 0,
+  "MainWindowPosY": 92,
+  "MainWindowWidth": 1408.8000000000002,
+  "ModelRootPath": "F:\\prj\\BatInspector\\BatInspector\\models",
   "Models": [
     {
       "Active": true,
@@ -211,9 +218,8 @@
   "PredPredict3": false,
   "PredPrepData": true,
   "ProbabilityMin": 0.5,
-  "PythonBin": "\"C:\/Program Files\/Python310\/python.exe\"",
-  "RootDataDir": "G:\/bat",
   "SamplingRate": 312500,
+  "ScriptCopyAutoToMan": "scripts\\copyAutoToMan.scr",
   "ScriptDir": "scripts",
   "Scripts": [
     {
@@ -290,12 +296,14 @@
     }
   ],
   "SelectedModel": 0,
+  "ShowOnlyFilteredDirs": false,
   "WaterfallHeight": 256,
   "WaterfallLogarithmic": true,
   "WaterfallWidth": 512,
   "WidthFileSelector": 241,
   "ZoomOneCall": 100,
   "ZoomSeparateWin": false,
+  "ZoomType": 0,
   "ZoomWindowHeight": 900,
   "ZoomWindowWidth": 1200
 }

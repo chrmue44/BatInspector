@@ -946,13 +946,10 @@ namespace BatInspector.Forms
 
     private void _btnCopySpec_Click(object sender, RoutedEventArgs e)
     {
-      foreach (ctlWavFile ctl in _spSpectrums.Children)
-      {
-        if (ctl._cbSel.IsChecked == true)
-        {
-          ctl._btnCopy_Click(null, null);
-        }
-      }
+      if ((AppParams.Inst.ScriptCopyAutoToMan != null) && (AppParams.Inst.ScriptCopyAutoToMan != ""))
+        _model.executeScript(AppParams.Inst.ScriptCopyAutoToMan);
+      else
+        MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void _grdSplitterH_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

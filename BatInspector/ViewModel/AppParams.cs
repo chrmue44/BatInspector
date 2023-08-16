@@ -394,6 +394,11 @@ namespace BatInspector
     public int SamplingRate { get; set; }
 
     [DataMember]
+    [LocalizedCategory("SetCatModel"),
+    LocalizedDescription("SetDescScriptAutoToMan")]
+    public string ScriptCopyAutoToMan { get; set; }
+
+    [DataMember]
     [LocalizedCategory("SetCatScripting"),
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
@@ -520,6 +525,7 @@ namespace BatInspector
       SelectedModel = 0;
       initModels();
       SamplingRate = 312500;
+      ScriptCopyAutoToMan = "scripts/copyAutoToMan.scr";
 
       PredIdentifyCalls = true;
       PredCutCalls = true;

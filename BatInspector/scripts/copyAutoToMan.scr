@@ -1,0 +1,7 @@
+# intelligent transfer of automatically recognized species to SpeciesMan
+#step 1: handle all files with mostly one species (kickout unplaible results)
+SET Script1 =(APP_DATA_PATH + "/scripts/auto_to_man.scr")
+CALL =(Script1) 
+#step 2: handle the rest
+SET Script2 =(APP_DATA_PATH + "/scripts/all_auto_to_man.scr")
+CALL =(Script2) 

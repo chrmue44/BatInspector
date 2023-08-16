@@ -936,4 +936,10 @@
   <data name="ctlWavToolTipCall" xml:space="preserve">
     <value>Klicken, um Ruf in Zoom-Ansicht anzuzeigen</value>
   </data>
+  <data name="SetDescScriptAutoToMan" xml:space="preserve">
+    <value>'intelligentes Skript zum Kopieren der automatisch erkannten Spezies in das manuelle Feld</value>
+  </data>
+  <data name="MsgSpecifyScript" xml:space="preserve">
+    <value>Bitte legen Sie ein Script fest, das Aufgerufen werden soll in Einstellungen 'ScriptAutoToMan'</value>
+  </data>
 </root>

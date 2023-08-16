@@ -338,6 +338,9 @@ namespace BatInspector
                 case enFileInfo.DURATION:
                   result.assign(_inst._model.Prj.Analysis.Files[idxF].getDouble(Cols.DURATION));
                   break;
+                case enFileInfo.SELECT:
+                 result.assignBool(_inst._model.Prj.Analysis.Files[idxF].Selected);
+                  break;
                 default:
                   result.assign("ERROR: supported data type: " + argv[1].getString());
                   break;

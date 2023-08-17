@@ -196,7 +196,7 @@ namespace BatInspector.Controls
       _ctlTimeMax.setup("tMax[s]", enDataType.DOUBLE, 3, 50);
 
       _cbMode.Items.Clear();
-      _cbMode.Items.Add("Call");
+      _cbMode.Items.Add(BatInspector.Properties.MyResources.CtlWavCall);
       _cbMode.Items.Add("Cursor");
       _cbMode.SelectedIndex = 0;
       _oldCallIdx = -1;

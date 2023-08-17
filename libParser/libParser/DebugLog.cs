@@ -47,6 +47,9 @@ namespace libParser
     delegateLogEntry _dlgLog = null;
     delegateLogClear _dlgClear = null;
     string _logPath = null;
+    string _fName = "";
+
+    public static string FileName { get { return Inst()._fName; } }
 
     static public void log(string msg, enLogType type, bool beep = false)
     {
@@ -66,11 +69,7 @@ namespace libParser
       {
         if (!Directory.Exists(Inst()._logPath))
           Directory.CreateDirectory(Inst()._logPath);
-        DateTime t = DateTime.Now;
-        string fName = t.Year.ToString("D4") + t.Month.ToString("D2") + t.Day.ToString("D2") + "_" +
-                       t.Hour.ToString("D2") + t.Minute.ToString("D2") + t.Second.ToString("D2") + ".log";
-        fName = Path.Combine(Inst()._logPath, fName);
-        File.WriteAllText(fName, log);
+        File.WriteAllText(Inst()._fName, log);
       }
     }
 
@@ -79,6 +78,11 @@ namespace libParser
       Inst()._dlgLog = dlg;
       Inst()._dlgClear = dlgClear;
       Inst()._logPath= logPath;
+      DateTime t = DateTime.Now;
+      Inst()._fName = t.Year.ToString("D4") + t.Month.ToString("D2") + t.Day.ToString("D2") + "_" +
+               t.Hour.ToString("D2") + t.Minute.ToString("D2") + t.Second.ToString("D2") + ".log";
+      Inst()._fName = Path.Combine(Inst()._logPath, Inst()._fName);
+
     }
 
     static public void clear()

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="BatInspector.Controls.ctlExpressionEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition  Height="60"/>
+            <RowDefinition  Height="30"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="{x:Static res:MyResources.ctlExpressionEditorLeftSide}"></Label>
+        <Label Grid.Row="0" Grid.Column="1" Content="{x:Static res:MyResources.ctlExpressionEditorOperator}"></Label>
+        <Label Grid.Row="0" Grid.Column="2" Content="{x:Static res:MyResources.ctlExpressionEditorRightSide}"></Label>
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
+            <ComboBox Name="_cbLeft"  Height="25" VerticalAlignment="Top" SelectionChanged="_cbLeft_SelectionChanged"/>
+            <Label Name="_lblHelpLeft" FontStyle="Italic" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+           <ComboBox Name="_cbOperator"  Height="25" VerticalAlignment="Top"/>
+           <Label Name="_lblTodo" Visibility="Hidden" HorizontalContentAlignment="Right"></Label>
+        </StackPanel>
+         <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical">
+          <ComboBox Name="_cbRight"  Height="25"  MouseLeave="_cbRight_MouseLeave"/>
+          <TextBox Name="_tbFreeTxt" Height="25" Visibility="Hidden" TextChanged="_tbFreeTxt_TextChanged" />
+        </StackPanel>
+        <local:ctlDataItem x:Name="_tbExpression" Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="3"/>
+    </Grid> 
+</UserControl>

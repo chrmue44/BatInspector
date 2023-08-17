@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BatInspector.Forms;
 
-namespace BatInspector.Forms
+namespace BatInspector.Controls
 {
   /// <summary>
   /// Interaktionslogik für ctlFilterItem.xaml
@@ -22,7 +23,7 @@ namespace BatInspector.Forms
   {
     int _index;
     dlgDelete _dlgDelete;
-
+    ExpressionGenerator _gen;
     FilterItem _filter;
     
     public int Index {  get { return _index; } }
@@ -34,7 +35,7 @@ namespace BatInspector.Forms
       InitializeComponent();
     }
 
-    public void setup(FilterItem filter, int index, dlgDelete del)
+    public void setup(FilterItem filter, int index, dlgDelete del, ExpressionGenerator gen)
     {
       _filter = filter;
       _index = index;
@@ -43,6 +44,7 @@ namespace BatInspector.Forms
       _tbName.Text = filter.Name;
       _lblIdx.Text = _filter.Index.ToString();
       _cbAll.IsChecked = filter.IsForAllCalls;
+      _gen = gen;
     }
 
     private void _tbName_LostFocus(object sender, RoutedEventArgs e)
@@ -63,6 +65,18 @@ namespace BatInspector.Forms
     private void _cbAll_Click(object sender, RoutedEventArgs e)
     {
       _filter.IsForAllCalls = (bool)_cbAll.IsChecked;
+    }
+
+    private void _btnCreate_Click(object sender, RoutedEventArgs e)
+    {
+      frmExpression frm = new frmExpression(_gen, false);
+      frm.Topmost = true;
+      bool? res = frm.ShowDialog();
+      if (res == true)
+      {
+        _tbExpression.Text = frm.FilterExpression;
+        _cbAll.IsChecked = frm.AllCalls;
+      }
     }
   }
 }

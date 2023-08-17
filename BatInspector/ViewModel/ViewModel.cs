@@ -58,8 +58,7 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
- 
-    
+     
     
     public string SelectedDir { get { return _selectedDir; } }
     
@@ -120,7 +119,6 @@ namespace BatInspector
       _batSpecRegions = BatSpeciesRegions.load();
       _proc = new ProcessRunner();
       _mainWin = mainWin;
-      _filter = new Filter();
       _speciesInfos = BatInfo.load().Species;
       _version = version;
       _colorTable = new ColorTable(this);
@@ -138,7 +136,11 @@ namespace BatInspector
         _models.Add(BaseModel.Create(index, m.ModelType));
         index++;
       }
-      
+
+      List<string> species = new List<string>();
+      foreach (SpeciesInfos info in _speciesInfos)
+        species.Add(info.Abbreviation);
+      _filter = new Filter(species);
       UpdateUi = false;
     }
 

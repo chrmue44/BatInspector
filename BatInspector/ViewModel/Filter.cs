@@ -15,6 +15,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -28,17 +29,22 @@ namespace BatInspector
     public bool AvailableFile { get; set; } 
     public bool AvailableCall { get;set; }
     public bool AvailableSumReport { get; set; }
+    public AnyType.tType Type { get; set; }
+    public string Help { get; set; }
 
     public FilterVarItem()
     {
 
     }
-    public FilterVarItem(string varName, bool availableFile, bool availableCall, bool availableSumReport)
+    public FilterVarItem(string varName, AnyType.tType type, bool availableFile, bool availableCall,
+                         bool availableSumReport, string help)
     {
       VarName = varName;
       AvailableFile = availableFile;
       AvailableCall = availableCall;
       AvailableSumReport = availableSumReport;
+      Type = type;
+      Help = help;
     }
   }
 
@@ -61,33 +67,34 @@ namespace BatInspector
     const string VAR_FREQ_MAX_AMP = "FreqMaxAmp";
     const string VAR_DURATION = "DurationCall";
     const string VAR_PROBABILITY = "Probability";
-    const string VAR_SNR = "Snr";
     const string VAR_REMARKS = "Remarks";
     const string VAR_TIME = "RecTime";
 
+    ExpressionGenerator _gen;
     List<FilterItem> _list;
     Expression _expression;
     public List<FilterItem> Items { get { return _list; } }
+    public ExpressionGenerator ExpGenerator { get{ return _gen; } }
     
     List<FilterVarItem> _vars;
-    public Filter()
+
+    public Filter(List<string> species)
     {
       _list = new List<FilterItem>();
       _expression = new Expression(null);
       _vars = new List<FilterVarItem>
       {
-        new FilterVarItem (VAR_NR_CALLS, true, false, false ),
-        new FilterVarItem (VAR_SPECIES_AUTO, true, true, false ),
-        new FilterVarItem (VAR_SPECIES_MAN, true, true, true ),
-        new FilterVarItem (VAR_FREQ_MIN, true, true, false ),
-        new FilterVarItem (VAR_FREQ_MAX, true, true, false ),
-        new FilterVarItem (VAR_FREQ_MAX_AMP, true, true, false ),
-        new FilterVarItem (VAR_DURATION, true, true, false ),
-        new FilterVarItem (VAR_PROBABILITY, true, true, false ),
-        new FilterVarItem (VAR_REMARKS, true, true, false ),
-        new FilterVarItem (VAR_TIME, true, false, false ),
-        new FilterVarItem (VAR_SNR, true, true, false ),
-    };
+        new FilterVarItem (VAR_NR_CALLS, AnyType.tType.RT_INT64, true, false, false, BatInspector.Properties.MyResources.FilterHelpVarNrCalls),
+        new FilterVarItem (VAR_SPECIES_AUTO, AnyType.tType.RT_STR, true, true, false , BatInspector.Properties.MyResources.FilterHelpVarSpeciesAuto),
+        new FilterVarItem (VAR_SPECIES_MAN, AnyType.tType.RT_STR, true, true, true, BatInspector.Properties.MyResources.FilterHelpVarSpeciesMan),
+        new FilterVarItem (VAR_FREQ_MIN, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpFmin ),
+        new FilterVarItem (VAR_FREQ_MAX, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpFmax ),
+        new FilterVarItem (VAR_FREQ_MAX_AMP, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpFmaxAmp ),
+        new FilterVarItem (VAR_DURATION, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpDuration ),
+        new FilterVarItem (VAR_PROBABILITY, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpProb ),
+        new FilterVarItem (VAR_REMARKS, AnyType.tType.RT_STR, true, true, false , BatInspector.Properties.MyResources.FilterVarHelpRecording),
+        new FilterVarItem (VAR_TIME, AnyType.tType.RT_TIME, true, false, false, BatInspector.Properties.MyResources.FilterVarHelpTime)
+      };
 
       _expression.Variables.set(VAR_NR_CALLS, 0);
       _expression.Variables.set(VAR_SPECIES_AUTO,"");
@@ -99,7 +106,8 @@ namespace BatInspector
       _expression.Variables.set(VAR_PROBABILITY,"");
       _expression.Variables.set(VAR_REMARKS, "");
       _expression.Variables.set(VAR_TIME, 0);
-      _expression.Variables.set(VAR_SNR,0.0);
+
+      _gen = new ExpressionGenerator(getVariables, species);
     }
 
     public bool apply(FilterItem filter, AnalysisCall call, string remarks, string time, out bool ok)
@@ -114,7 +122,6 @@ namespace BatInspector
       _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
       _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
       _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
-      _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
       AnyType res = _expression.parse(filter.Expression);
       ok = _expression.Errors == 0;
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
@@ -142,7 +149,6 @@ namespace BatInspector
           _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
           _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
           _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
-          _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
           AnyType res = _expression.parse(filter.Expression);
           if (filter.IsForAllCalls)
           {
@@ -169,7 +175,6 @@ namespace BatInspector
       _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MAX));
       _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
       _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
-      _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
       AnyType res = _expression.parse(filter.Expression);
       
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
@@ -205,7 +210,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public string getVariables()
+    public string getVariablesHelpList()
     {
       string retVal = "Variable Name       | File | Call | SumReport |\n" +
                       "--------------------+------+------+-----------+\n";
@@ -226,7 +231,12 @@ namespace BatInspector
       }
       return retVal;
     }
-   
+
+    public List<FilterVarItem> getVariables()
+    {
+      return _vars;
+    }
+
     public static void populateFilterComboBox(ComboBox fiBox, ViewModel model)
     {
       fiBox.Items.Clear();

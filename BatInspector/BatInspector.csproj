@@ -127,6 +127,9 @@
     <Compile Include="Controls\CtlDateTime.xaml.cs">
       <DependentUpon>CtlDateTime.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlExpressionEditor.xaml.cs">
+      <DependentUpon>ctlExpressionEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlScriptItem.xaml.cs">
       <DependentUpon>ctlScriptItem.xaml</DependentUpon>
     </Compile>
@@ -209,6 +212,9 @@
     <Compile Include="Forms\frmWavFile.xaml.cs">
       <DependentUpon>frmWavFile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmExpression.xaml.cs">
+      <DependentUpon>frmExpression.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\MyResources.de.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -226,6 +232,7 @@
     <Compile Include="ViewModel\ClassifierBarataud.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\ElekonInfoFile.cs" />
+    <Compile Include="ViewModel\ExpressionGenerator.cs" />
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\gpx.cs" />
     <Compile Include="ViewModel\gpxPart.cs" />
@@ -271,6 +278,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CtlDateTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlExpressionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -406,6 +417,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Forms\FrmHelpFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmExpression.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

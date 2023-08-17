@@ -232,6 +232,42 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Left Side.
+        /// </summary>
+        public static string ctlExpressionEditorLeftSide {
+            get {
+                return ResourceManager.GetString("ctlExpressionEditorLeftSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator.
+        /// </summary>
+        public static string ctlExpressionEditorOperator {
+            get {
+                return ResourceManager.GetString("ctlExpressionEditorOperator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right Side.
+        /// </summary>
+        public static string ctlExpressionEditorRightSide {
+            get {
+                return ResourceManager.GetString("ctlExpressionEditorRightSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to please enter number.
+        /// </summary>
+        public static string ctlExpressionEditorTodoNr {
+            get {
+                return ResourceManager.GetString("ctlExpressionEditorTodoNr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear.
         /// </summary>
         public static string CtlLogClear {
@@ -619,6 +655,96 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nr of calls in recording.
+        /// </summary>
+        public static string FilterHelpVarNrCalls {
+            get {
+                return ResourceManager.GetString("FilterHelpVarNrCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Species determined by AI.
+        /// </summary>
+        public static string FilterHelpVarSpeciesAuto {
+            get {
+                return ResourceManager.GetString("FilterHelpVarSpeciesAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Species determined manually.
+        /// </summary>
+        public static string FilterHelpVarSpeciesMan {
+            get {
+                return ResourceManager.GetString("FilterHelpVarSpeciesMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration of call [ms].
+        /// </summary>
+        public static string FilterVarHelpDuration {
+            get {
+                return ResourceManager.GetString("FilterVarHelpDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highest frequency in call [Hz].
+        /// </summary>
+        public static string FilterVarHelpFmax {
+            get {
+                return ResourceManager.GetString("FilterVarHelpFmax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to highest intensity in call [Hz].
+        /// </summary>
+        public static string FilterVarHelpFmaxAmp {
+            get {
+                return ResourceManager.GetString("FilterVarHelpFmaxAmp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lowest frequency in call [Hz].
+        /// </summary>
+        public static string FilterVarHelpFmin {
+            get {
+                return ResourceManager.GetString("FilterVarHelpFmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probability AI determination of species.
+        /// </summary>
+        public static string FilterVarHelpProb {
+            get {
+                return ResourceManager.GetString("FilterVarHelpProb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remarks for the recording.
+        /// </summary>
+        public static string FilterVarHelpRecording {
+            get {
+                return ResourceManager.GetString("FilterVarHelpRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to time of recording.
+        /// </summary>
+        public static string FilterVarHelpTime {
+            get {
+                return ResourceManager.GetString("FilterVarHelpTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Narrow down species.
         /// </summary>
         public static string FindBatNarrowDown {
@@ -831,6 +957,42 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjWeather {
             get {
                 return ResourceManager.GetString("frmCreatePrjWeather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apply to all calls of recording.
+        /// </summary>
+        public static string frmExpressionApplyAllCalls {
+            get {
+                return ResourceManager.GetString("frmExpressionApplyAllCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string frmExpressionSave {
+            get {
+                return ResourceManager.GetString("frmExpressionSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add expression permanently to filter list.
+        /// </summary>
+        public static string frmExpressionSaveExp {
+            get {
+                return ResourceManager.GetString("frmExpressionSaveExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generator for Filter Expressions.
+        /// </summary>
+        public static string frmExpressionTitle {
+            get {
+                return ResourceManager.GetString("frmExpressionTitle", resourceCulture);
             }
         }
         

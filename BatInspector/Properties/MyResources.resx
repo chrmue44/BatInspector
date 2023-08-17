@@ -957,4 +957,58 @@
   <data name="frmCleanupTitle" xml:space="preserve">
     <value>Cleanup / Free disk space</value>
   </data>
+  <data name="frmExpressionSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmExpressionApplyAllCalls" xml:space="preserve">
+    <value>apply to all calls of recording</value>
+  </data>
+  <data name="frmExpressionTitle" xml:space="preserve">
+    <value>Generator for Filter Expressions</value>
+  </data>
+  <data name="frmExpressionSaveExp" xml:space="preserve">
+    <value>add expression permanently to filter list</value>
+  </data>
+  <data name="ctlExpressionEditorTodoNr" xml:space="preserve">
+    <value>please enter number</value>
+  </data>
+  <data name="ctlExpressionEditorLeftSide" xml:space="preserve">
+    <value>Left Side</value>
+  </data>
+  <data name="ctlExpressionEditorRightSide" xml:space="preserve">
+    <value>Right Side</value>
+  </data>
+  <data name="ctlExpressionEditorOperator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="FilterHelpVarNrCalls" xml:space="preserve">
+    <value>Nr of calls in recording</value>
+  </data>
+  <data name="FilterHelpVarSpeciesAuto" xml:space="preserve">
+    <value>Species determined by AI</value>
+  </data>
+  <data name="FilterHelpVarSpeciesMan" xml:space="preserve">
+    <value>Species determined manually</value>
+  </data>
+  <data name="FilterVarHelpFmin" xml:space="preserve">
+    <value>Lowest frequency in call [Hz]</value>
+  </data>
+  <data name="FilterVarHelpFmax" xml:space="preserve">
+    <value>Highest frequency in call [Hz]</value>
+  </data>
+  <data name="FilterVarHelpFmaxAmp" xml:space="preserve">
+    <value>highest intensity in call [Hz]</value>
+  </data>
+  <data name="FilterVarHelpDuration" xml:space="preserve">
+    <value>Duration of call [ms]</value>
+  </data>
+  <data name="FilterVarHelpProb" xml:space="preserve">
+    <value>Probability AI determination of species</value>
+  </data>
+  <data name="FilterVarHelpRecording" xml:space="preserve">
+    <value>Remarks for the recording</value>
+  </data>
+  <data name="FilterVarHelpTime" xml:space="preserve">
+    <value>time of recording</value>
+  </data>
 </root>

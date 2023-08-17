@@ -12,6 +12,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Interop;
+using BatInspector.Controls;
 
 namespace BatInspector.Forms
 {
@@ -38,7 +39,7 @@ namespace BatInspector.Forms
       foreach (FilterItem fItem in _filter.Items)
       {
         ctlFilterItem fIt = new ctlFilterItem();
-        fIt.setup(fItem, index++, deleteFilter);
+        fIt.setup(fItem, index++, deleteFilter, _filter.ExpGenerator);
         _sp.Children.Add(fIt);
       }
     }
@@ -51,7 +52,7 @@ namespace BatInspector.Forms
       _filter.Items.Add(fIt);
 
       ctlFilterItem item = new ctlFilterItem();
-      item.setup(fIt, _filter.Items.Count - 1, deleteFilter);
+      item.setup(fIt, _filter.Items.Count - 1, deleteFilter, _filter.ExpGenerator);
       _sp.Children.Add(item);
     }
 
@@ -82,7 +83,7 @@ namespace BatInspector.Forms
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {
       string str = BatInspector.Properties.MyResources.FrmFilterListOfVars + ":\n\n";
-      str += _filter.getVariables();
+      str += _filter.getVariablesHelpList();
       if(_frmHelp == null)
         _frmHelp = new FrmHelpFilter();
       _frmHelp._tbHelp.Text = str;

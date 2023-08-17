@@ -343,7 +343,7 @@
     <value>Filtername</value>
   </data>
   <data name="FrmFilterFilterExpression" xml:space="preserve">
-    <value>Ausdruck</value>
+    <value>Filter Ausdruck</value>
   </data>
   <data name="FrmFilterToolCancel" xml:space="preserve">
     <value>Schließe Fenster ohne Änderungen</value>
@@ -956,5 +956,59 @@
   </data>
   <data name="frmCleanupTitle" xml:space="preserve">
     <value>Aufräumen / Speicherplatz freigeben</value>
+  </data>
+  <data name="frmExpressionSave" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="frmExpressionApplyAllCalls" xml:space="preserve">
+    <value>muss für alle Rufe innerhalb der Aufnahme erfüllt sein</value>
+  </data>
+  <data name="frmExpressionTitle" xml:space="preserve">
+    <value>Generator für Filterausdrücke</value>
+  </data>
+  <data name="frmExpressionSaveExp" xml:space="preserve">
+    <value>Ausdruck dauerhaft in die Filterliste ausfnehmen</value>
+  </data>
+  <data name="ctlExpressionEditorTodoNr" xml:space="preserve">
+    <value>bitte Zahl eingeben</value>
+  </data>
+  <data name="ctlExpressionEditorLeftSide" xml:space="preserve">
+    <value>Linke Seite</value>
+  </data>
+  <data name="ctlExpressionEditorOperator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="ctlExpressionEditorRightSide" xml:space="preserve">
+    <value>Rechte Seite</value>
+  </data>
+  <data name="FilterHelpVarNrCalls" xml:space="preserve">
+    <value>Anzahl der Rufe in der Aufnahme</value>
+  </data>
+  <data name="FilterHelpVarSpeciesAuto" xml:space="preserve">
+    <value>von der KI ermittelte Art</value>
+  </data>
+  <data name="FilterHelpVarSpeciesMan" xml:space="preserve">
+    <value>Manuell ermittelte Art</value>
+  </data>
+  <data name="FilterVarHelpDuration" xml:space="preserve">
+    <value>Dauer des Rufes [ms]</value>
+  </data>
+  <data name="FilterVarHelpFmax" xml:space="preserve">
+    <value>höchste Frequenz im Ruf [Hz]</value>
+  </data>
+  <data name="FilterVarHelpFmaxAmp" xml:space="preserve">
+    <value>Frequenz höchster Intensität im Ruf [Hz]</value>
+  </data>
+  <data name="FilterVarHelpFmin" xml:space="preserve">
+    <value>niedrigste Frequenz im Ruf [Hz]</value>
+  </data>
+  <data name="FilterVarHelpProb" xml:space="preserve">
+    <value>Wahrscheinlichkeit für KI ermittelte Art</value>
+  </data>
+  <data name="FilterVarHelpRecording" xml:space="preserve">
+    <value>Bemerkungen zur Aufnahme</value>
+  </data>
+  <data name="FilterVarHelpTime" xml:space="preserve">
+    <value>Zeitpunkt der Aufnahme</value>
   </data>
 </root>

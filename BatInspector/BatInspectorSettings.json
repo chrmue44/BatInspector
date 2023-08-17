@@ -96,58 +96,13 @@
       "isForAllCalls": false
     },
     {
-      "Expression": "(SpeciesAuto == \"----\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\") || (NrOfCalls == 1)",
-      "Name": "Junk",
-      "isForAllCalls": true
-    },
-    {
-      "Expression": "(SpeciesAuto == \"Ppip\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\") || (SpeciesAuto == \"----\")",
-      "Name": "Ppip",
-      "isForAllCalls": true
-    },
-    {
-      "Expression": "(SpeciesAuto == \"Eser\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\") || (SpeciesAuto == \"----\")",
-      "Name": "Eser",
-      "isForAllCalls": true
-    },
-    {
-      "Expression": "(SpeciesAuto == \"Ppyg\") || (substr(SpeciesAuto,0,2) == \"??\") || (SpeciesAuto == \"Cric\")",
-      "Name": "Ppyg",
-      "isForAllCalls": true
-    },
-    {
       "Expression": "indexOf(Remarks,\"Fangruf\") >= 0",
       "Name": "Fangrufe",
       "isForAllCalls": false
     },
     {
-      "Expression": "(SpeciesMan == \"PPIP\")",
-      "Name": "Man_PPIP",
-      "isForAllCalls": false
-    },
-    {
       "Expression": "(SpeciesMan == \"ESER\")",
       "Name": "Man_ESER",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"NNOC\")",
-      "Name": "Man_NNOC",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"BBAR\")",
-      "Name": "Man_BBAR",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"PNAT\")",
-      "Name": "Man_PNAT",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"MNAT\")",
-      "Name": "Man_MNAT",
       "isForAllCalls": false
     },
     {
@@ -158,11 +113,6 @@
     {
       "Expression": "(SpeciesMan == \"PAUR\")",
       "Name": "Man_PAUR",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"MDAU\")",
-      "Name": "Man_MDAU",
       "isForAllCalls": false
     },
     {

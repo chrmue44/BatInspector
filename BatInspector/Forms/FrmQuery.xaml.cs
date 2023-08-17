@@ -57,7 +57,7 @@ namespace BatInspector.Forms
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {
       string str = BatInspector.Properties.MyResources.FrmFilterListOfVars + ":\n\n";
-      str += _model.Filter.getVariables();
+      str += _model.Filter.getVariablesHelpList();
       if (_frmHelp == null)
         _frmHelp = new FrmHelpFilter();
       _frmHelp._tbHelp.Text = str;

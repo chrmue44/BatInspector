@@ -46,9 +46,8 @@ namespace BatInspector.Forms
 
     private void _btnAdd_Click(object sender, RoutedEventArgs e)
     {
-      FilterItem fIt = new FilterItem();
-      fIt.Index = _filter.Items.Count();
-      fIt.Name = "FILTER" + fIt.Index.ToString();
+      int idx = _filter.Items.Count();
+      FilterItem fIt = new FilterItem(idx, "FILTER" + idx.ToString(), "", false);
       _filter.Items.Add(fIt);
 
       ctlFilterItem item = new ctlFilterItem();

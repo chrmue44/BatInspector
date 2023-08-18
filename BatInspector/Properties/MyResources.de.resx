@@ -1011,4 +1011,7 @@
   <data name="FilterVarHelpTime" xml:space="preserve">
     <value>Zeitpunkt der Aufnahme</value>
   </data>
+  <data name="MainFilterNew" xml:space="preserve">
+    <value>neuer Filter...</value>
+  </data>
 </root>

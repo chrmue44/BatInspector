@@ -13,15 +13,13 @@
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
       <ColumnDefinition Width="20" />
-      <ColumnDefinition Width="25" />
+      <ColumnDefinition Width="35" />
     </Grid.ColumnDefinitions>
     <TextBlock Name="_lblIdx" Grid.Column="0" Margin="0,2,2,0">00</TextBlock>
     <TextBox Name="_tbName" Grid.Column="1" LostFocus="_tbName_LostFocus" Margin="0,2,2,0"></TextBox>
         <Button Name="_btnCreate" Grid.Column="2" Click="_btnCreate_Click" Content="Edit..." />
         <TextBox Name="_tbExpression" Grid.Column="3" LostFocus="_tbExpression_LostFocus" Margin="0,2,2,0"></TextBox>
     <CheckBox Name="_cbAll" Grid.Column="4" Click="_cbAll_Click" Margin="0,2,2,0"></CheckBox>
-    <Button Name ="_btnDel" Grid.Column="5" Click="_btnDel_Click" Margin="0,2,2,0">
-      <Image Source="../images/delete.png"></Image>
-    </Button>
-  </Grid>
+        <Button Name ="_btnDel" Grid.Column="5" Click="_btnDel_Click" Margin="0,2,2,0" Content="del"/>
+    </Grid>
 </UserControl>

@@ -164,7 +164,7 @@
                 <Button x:Name="_btnSize" ToolTip="{x:Static res:MyResources.MainToolBtnSize}" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator></Separator>
                 <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
-                <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0"></ComboBox>
+                <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0" DropDownClosed="_cbFilter_DropDownClosed"></ComboBox>
                 <Button x:Name="_btnApplyFilter" ToolTip="{x:Static res:MyResources.MainToolBtnApplyFilter}" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Separator></Separator>
                 <Button x:Name="_btnCallInfo" ToolTip="{x:Static res:MyResources.MainToolHideCallInfo}" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>

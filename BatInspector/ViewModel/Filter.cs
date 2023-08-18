@@ -55,7 +55,17 @@ namespace BatInspector
     public string Name { get; set; }
     public string Expression { get; set; }
     public bool IsForAllCalls { get; set; }
+  
+    public FilterItem(int index, string name, string expression, bool allCalls)
+    {
+      Index = index;
+      Name = name;
+      Expression = expression;
+      IsForAllCalls = allCalls;
+    }
   }
+
+
  
   public class Filter
   {
@@ -73,9 +83,12 @@ namespace BatInspector
     ExpressionGenerator _gen;
     List<FilterItem> _list;
     Expression _expression;
+   
     public List<FilterItem> Items { get { return _list; } }
     public ExpressionGenerator ExpGenerator { get{ return _gen; } }
-    
+
+    public FilterItem TempFilter = null;
+
     List<FilterVarItem> _vars;
 
     public Filter(List<string> species)
@@ -241,6 +254,7 @@ namespace BatInspector
     {
       fiBox.Items.Clear();
       fiBox.Items.Add(MyResources.MainFilterNone);
+      fiBox.Items.Add(MyResources.MainFilterNew);
       foreach (FilterItem f in model.Filter.Items)
       {
         string name = f.Name;

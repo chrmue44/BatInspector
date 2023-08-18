@@ -42,6 +42,20 @@ namespace libParser
       RT_TIME = TYPEFLAG_TIME | 0x01,
     };
 
+    public static bool isNum(tType t)
+    {
+      return (t == tType.RT_HEXVAL)  || (t == tType.RT_INT64)  || (t == tType.RT_FLOAT) ||
+             (t == tType.RT_COMPLEX) || (t == tType.RT_UINT64) || (t == tType.RT_TIME);
+    }
+    public static bool isStr(tType t)
+    {
+      return (t == tType.RT_STR) || (t == tType.RT_COMMENT);
+    }
+
+    public static bool isBool(tType t)
+    {
+      return (t == tType.RT_BOOL);
+    }
 
     struct stComplex
     {

@@ -17,7 +17,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _gen = gen;
-      _ctlEditor.setup(gen);
+      _ctlEditor.setup(gen, enableOk);
       _ctlExpName.setup("Name", enDataType.STRING, 0, 100, true);
       _ctlExpName.IsEnabled = false;
       if(!withSaveOption)
@@ -26,6 +26,11 @@ namespace BatInspector.Forms
         _grpSave.Visibility = Visibility.Hidden;
         _grd.RowDefinitions[1].Height = new GridLength(5);
       }
+    }
+
+    private void enableOk(bool en)
+    {
+      _btnOk.IsEnabled = en;
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)

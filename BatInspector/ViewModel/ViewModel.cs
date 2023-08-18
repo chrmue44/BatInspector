@@ -241,13 +241,7 @@ namespace BatInspector
       _filter.Items.Clear();
       foreach(FilterParams p in AppParams.Inst.Filter)
       {
-        FilterItem it = new FilterItem
-        {
-          Index = _filter.Items.Count,
-          Name = p.Name,
-          Expression = p.Expression,
-          IsForAllCalls = p.isForAllCalls
-        };
+        FilterItem it = new FilterItem(_filter.Items.Count, p.Name, p.Expression,p.isForAllCalls);
         _filter.Items.Add(it);
       }
       string scriptDir = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.ScriptDir;

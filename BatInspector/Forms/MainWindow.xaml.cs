@@ -28,6 +28,7 @@ using System.Threading;
 using BatInspector.Properties;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 
 namespace BatInspector.Forms
 {
@@ -772,7 +773,16 @@ namespace BatInspector.Forms
 
     private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
     {
-      FilterItem filter = _model.Filter.getFilter(_cbFilter.Text);
+      FilterItem filter = null;
+      if (_cbFilter.SelectedIndex == 1)
+      {
+        filter = _model.Filter.TempFilter;
+        _model.Filter.TempFilter = null;
+        _cbFilter.Items[1] = MyResources.MainFilterNew;
+        _cbFilter.SelectedIndex = 1;
+      }
+      else
+        filter = _model.Filter.getFilter(_cbFilter.Text);
       if (filter != null)
       {
         _filteredWavs.Clear();
@@ -782,7 +792,7 @@ namespace BatInspector.Forms
           c._cbSel.IsChecked = res;
           _filteredWavs.Add(c);
         }
-        DebugLog.log("filter '" + filter.Name + "' applied", enLogType.INFO);
+        DebugLog.log("filter '" + filter.Name + "'  ["+ filter.Expression + "] applied", enLogType.INFO);
       }
       else
         DebugLog.log("no filter applied", enLogType.INFO);
@@ -1173,6 +1183,21 @@ namespace BatInspector.Forms
       if (_frmCleanup == null)
         _frmCleanup = new frmCleanup(_model);
       _frmCleanup.Show();
+    }
+
+    private void _cbFilter_DropDownClosed(object sender, EventArgs e)
+    {
+      if(_cbFilter.SelectedIndex == 1)
+      {
+        frmExpression frm = new frmExpression(_model.Filter.ExpGenerator, true);
+        bool? res = frm.ShowDialog();
+        if (res == true)
+        {
+          _cbFilter.Items[1] = frm.FilterExpression;
+          _cbFilter.SelectedIndex = 1;
+          _model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls); 
+        }
+      }
     }
   }
 

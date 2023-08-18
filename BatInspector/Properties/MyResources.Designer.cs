@@ -1465,6 +1465,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to new Filter....
+        /// </summary>
+        public static string MainFilterNew {
+            get {
+                return ResourceManager.GetString("MainFilterNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
         public static string MainFilterNone {

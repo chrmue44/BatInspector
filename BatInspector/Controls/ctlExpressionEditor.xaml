@@ -12,6 +12,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="160"/>
             <ColumnDefinition />
+            <ColumnDefinition Width="130"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -22,7 +23,7 @@
         <Label Grid.Row="0" Grid.Column="1" Content="{x:Static res:MyResources.ctlExpressionEditorOperator}"></Label>
         <Label Grid.Row="0" Grid.Column="2" Content="{x:Static res:MyResources.ctlExpressionEditorRightSide}"></Label>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
-            <ComboBox Name="_cbLeft"  Height="25" VerticalAlignment="Top" SelectionChanged="_cbLeft_SelectionChanged"/>
+            <ComboBox Name="_cbLeft"  Height="25" VerticalAlignment="Top" DropDownClosed="_cbLeft_DropDownClosed" DropDownOpened="_cbLeft_DropDownOpened"/>
             <Label Name="_lblHelpLeft" FontStyle="Italic" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
@@ -30,9 +31,10 @@
            <Label Name="_lblTodo" Visibility="Hidden" HorizontalContentAlignment="Right"></Label>
         </StackPanel>
          <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical">
-          <ComboBox Name="_cbRight"  Height="25"  MouseLeave="_cbRight_MouseLeave"/>
+          <ComboBox Name="_cbRight"  Height="25" DropDownClosed="_cbRight_DropDownClosed"/>
           <TextBox Name="_tbFreeTxt" Height="25" Visibility="Hidden" TextChanged="_tbFreeTxt_TextChanged" />
         </StackPanel>
+        <ComboBox Name="_cbAppend" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" Height="25" DropDownClosed="_cbAppend_DropDownClosed" />
         <local:ctlDataItem x:Name="_tbExpression" Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="3"/>
     </Grid> 
 </UserControl>

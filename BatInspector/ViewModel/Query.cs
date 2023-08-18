@@ -206,10 +206,8 @@ namespace BatInspector
       Analysis analysis = new Analysis(_model.SpeciesInfos);
       analysis.read(prj.ReportName);
 
-      FilterItem filter = new FilterItem();
-      filter.Expression = _expression.Replace('\n', ' '); ;
-      filter.IsForAllCalls = false;
-      filter.Name = "query";
+      FilterItem filter = new FilterItem(-1, "query",
+       _expression.Replace('\n', ' '), false);
 
       string lastFileName = "";
       if (analysis.Files.Count == 0)

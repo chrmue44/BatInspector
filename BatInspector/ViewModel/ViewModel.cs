@@ -456,8 +456,10 @@ namespace BatInspector
         {
           string delDir = Path.Combine(dir.FullName, AppParams.DIR_DEL);
           if (Directory.Exists(delDir))
+          {
             Directory.Delete(delDir, true);
-          DebugLog.log("deletes files permanently removed from project " + dir.Name, enLogType.INFO);
+            DebugLog.log("deletes files permanently removed from project " + dir.Name, enLogType.INFO);
+          }
         }
         if(pngs) 
         {

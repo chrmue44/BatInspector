@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Media.Animation;
 using libParser;
+using BatInspector.Properties;
 
 namespace BatInspector
 {
@@ -97,7 +99,7 @@ namespace BatInspector
       {
         case enField.LEFT:
           retVal = getVariables();
-          retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, "verschachtelter Ausdruck", AnyType.tType.RT_FLOAT));
+          retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));
           break;
 
         case enField.RIGHT:
@@ -109,7 +111,7 @@ namespace BatInspector
               retVal.Add(new ExpressionItem(enExpType.CONST, bat, AnyType.tType.RT_STR));
           }
           else if (AnyType.isBool(type))
-            retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, "verschachtelter Ausdruck", AnyType.tType.RT_FLOAT));
+            retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));
           break;
 
         case enField.OPERATOR:

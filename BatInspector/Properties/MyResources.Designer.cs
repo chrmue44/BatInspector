@@ -646,6 +646,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to nested expression.
+        /// </summary>
+        public static string ExpGenNested {
+            get {
+                return ResourceManager.GetString("ExpGenNested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Factory settings.
         /// </summary>
         public static string FactorySettings {

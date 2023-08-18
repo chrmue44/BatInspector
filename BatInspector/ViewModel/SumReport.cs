@@ -58,9 +58,8 @@ namespace BatInspector
     private DirectoryInfo _dirInfo;
     private List<ReportListItem> _reports;
 
-    public SumReport(List<SpeciesInfos> species)
+    public SumReport()
     {
-      _species = species;
       _rep = new Csv(true);
       _reports = new List<ReportListItem>();
     }

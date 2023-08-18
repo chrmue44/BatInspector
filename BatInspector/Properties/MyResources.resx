@@ -163,13 +163,13 @@
     <value>None</value>
   </data>
   <data name="MainBtnHideUnselected" xml:space="preserve">
-    <value>Hide unselected</value>
+    <value>Hide unsel.</value>
   </data>
   <data name="MainBtnShowAll" xml:space="preserve">
     <value>Show all</value>
   </data>
   <data name="MainBtnDelSelected" xml:space="preserve">
-    <value>Del selected</value>
+    <value>Del sel.</value>
   </data>
   <data name="MainBtnSize" xml:space="preserve">
     <value>Size</value>
@@ -547,7 +547,7 @@
     <value>Start automatic prediction of species</value>
   </data>
   <data name="MainBtnCopySpec" xml:space="preserve">
-    <value>Apply spec selected</value>
+    <value>Apply  spec. sel.</value>
   </data>
   <data name="frmStartPredConfTest" xml:space="preserve">
     <value>Confidence test</value>

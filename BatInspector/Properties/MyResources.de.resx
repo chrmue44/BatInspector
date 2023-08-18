@@ -163,13 +163,13 @@
     <value>Keine</value>
   </data>
   <data name="MainBtnHideUnselected" xml:space="preserve">
-    <value>Verstecke unselektierte</value>
+    <value>Verstecke unsel.</value>
   </data>
   <data name="MainBtnShowAll" xml:space="preserve">
     <value>Zeige Alle</value>
   </data>
   <data name="MainBtnDelSelected" xml:space="preserve">
-    <value>Lösche selektierte</value>
+    <value>Lösche sel.</value>
   </data>
   <data name="MainBtnSize" xml:space="preserve">
     <value>Größe</value>
@@ -547,7 +547,7 @@
     <value>Starte automatische Artenbestimmung</value>
   </data>
   <data name="MainBtnCopySpec" xml:space="preserve">
-    <value>Übernehme selektierte</value>
+    <value>Übernehme Art sel.</value>
   </data>
   <data name="frmStartPredConfTest" xml:space="preserve">
     <value>Plausibilitätstest</value>

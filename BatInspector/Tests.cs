@@ -119,7 +119,7 @@ namespace BatInspector
     private void testSumReport()
     {
       // calcDays()
-      SumReport rep = new SumReport(null);
+      SumReport rep = new SumReport();
       DateTime dat = new DateTime(2022, 09, 15);
       DateTime end = new DateTime(2022, 09, 30);
       int days = rep.calcDays(dat, end, enPeriod.DAILY);

@@ -1,5 +1,4 @@
 ﻿/********************************************************************************
-d/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
  *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
@@ -684,7 +683,7 @@ namespace BatInspector.Forms
     private void _btnSize_Click(object sender, RoutedEventArgs e)
     {
       _imgHeight >>= 1;
-      if (_imgHeight < 32)
+      if (_imgHeight < 64)
         _imgHeight = MAX_IMG_HEIGHT;
       foreach (UIElement ui in _spSpectrums.Children)
       {
@@ -1193,9 +1192,23 @@ namespace BatInspector.Forms
         bool? res = frm.ShowDialog();
         if (res == true)
         {
-          _cbFilter.Items[1] = frm.FilterExpression;
+          if(frm.SaveFilter)
+          {
+            int idx = _model.Filter.Items.Count;
+            FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
+            _model.Filter.Items.Add(filter);
+            _cbFilter.Items.Add(filter.Name);
+            _cbFilter.SelectedIndex = _cbFilter.Items.Count - 1;
+          }
+          else
+          { 
+          if(frm.FilterExpression.Length < 25)
+            _cbFilter.Items[1] = frm.FilterExpression;
+          else
+            _cbFilter.Items[1] = frm.FilterExpression.Substring(0,21) + "...";
           _cbFilter.SelectedIndex = 1;
-          _model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls); 
+          _model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
+          }
         }
       }
     }

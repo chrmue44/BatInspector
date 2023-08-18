@@ -1402,7 +1402,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply spec selected.
+        ///   Looks up a localized string similar to Apply  spec. sel..
         /// </summary>
         public static string MainBtnCopySpec {
             get {
@@ -1411,7 +1411,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Del selected.
+        ///   Looks up a localized string similar to Del sel..
         /// </summary>
         public static string MainBtnDelSelected {
             get {
@@ -1429,7 +1429,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hide unselected.
+        ///   Looks up a localized string similar to Hide unsel..
         /// </summary>
         public static string MainBtnHideUnselected {
             get {

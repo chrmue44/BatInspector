@@ -1,9 +1,19 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2023-08-18                                       
+ *   Copyright (C) 2022: Christian Müller chrmue44(at)gmail(dot).de
+ *
+ *              Licence:
+ * 
+ * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ ********************************************************************************/
+using BatInspector.Forms;
+using BatInspector.Properties;
+using libParser;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -24,6 +34,8 @@ namespace BatInspector.Controls
     List<ExpressionItem> _append;
     dlgEnableOk  _dlgOk;
     string _prefix;
+    bool _formulaOk;
+    public bool FormulaOk { get { return _formulaOk; } }
 
     public string Expression { get{ return _tbExpression.getValue() ; } }
     public ctlExpressionEditor()
@@ -62,6 +74,19 @@ namespace BatInspector.Controls
     private void _cbLeft_DropDownClosed(object sender, EventArgs e)
     {
       int iLeft = _cbLeft.SelectedIndex;
+      if((string)_cbLeft.SelectedItem == MyResources.ExpGenNested)
+      {
+        frmExpression frm = new frmExpression(_gen, false, false);
+        bool? res = frm.ShowDialog();
+        if(res == true)
+        {
+          _left[iLeft].Text = frm.FilterExpression;
+          _left[iLeft].DataType = AnyType.tType.RT_BOOL;
+          _left[iLeft].Type = enExpType.EXPRESSION;
+          _cbLeft.Items[iLeft] = frm.FilterExpression;
+          _cbLeft.SelectedIndex = iLeft;
+        }
+      }
       _op = _gen.getAvailableOptions(enField.OPERATOR, _left[iLeft].DataType);
       _cbRight.Items.Clear();
       _lblHelpLeft.Content = _left[iLeft].HelpText;
@@ -94,10 +119,12 @@ namespace BatInspector.Controls
         string f = _prefix + "(";
         f += _left[_cbLeft.SelectedIndex].Text + " ";
         f += _op[_cbOperator.SelectedIndex].Text + " ";
-        if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
-          f += "\"" + _right[_cbRight.SelectedIndex].Text + "\"";
-        else
-          f += (_tbFreeTxt.Text);
+      if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
+        f += "\"" + _right[_cbRight.SelectedIndex].Text + "\"";
+      else if (_right[_cbRight.SelectedIndex].Type == enExpType.EXPRESSION) 
+        f += " " +_right[_cbRight.SelectedIndex].Text;
+      else
+        f += (_tbFreeTxt.Text);
         f += ")";
         _tbExpression.setValue(f);
     }
@@ -114,6 +141,21 @@ namespace BatInspector.Controls
 
     private void _cbRight_DropDownClosed(object sender, EventArgs e)
     {
+      int iRight = _cbRight.SelectedIndex;
+      if ((string)_cbRight.SelectedItem == MyResources.ExpGenNested)
+      {
+        frmExpression frm = new frmExpression(_gen, false, false);
+        bool? res = frm.ShowDialog();
+        if (res == true)
+        {
+          _right[iRight].Text = frm.FilterExpression;
+          _right[iRight].DataType = AnyType.tType.RT_BOOL;
+          _right[iRight].Type = enExpType.EXPRESSION;
+          _cbRight.Items[iRight] = frm.FilterExpression;
+          _cbRight.SelectedIndex = iRight;
+        }
+      }
+
       if ((_cbLeft.SelectedIndex >= 0) && (_cbRight.SelectedIndex >= 0) && (_cbOperator.SelectedIndex >= 0))
         generateFormula();
       _cbAppend.IsEnabled = true;
@@ -145,6 +187,7 @@ namespace BatInspector.Controls
 
     private void enableOk(bool en)
     {
+      _formulaOk = en;
       if (_dlgOk != null)
         _dlgOk(en);
     }

@@ -448,33 +448,19 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MyResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="dat\Bbar_13.wav">
+    <None Include="dat\Bbar_13.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav">
+    </None>
+    <None Include="dat\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav" />
+    <Content Include="dat\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav" />
+    <None Include="dat\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav" />
+    <None Include="dat\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav" />
+    <Content Include="dat\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav" />
+    <Content Include="dat\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav" />
+    <None Include="dat\batinfo.json" />
+    <None Include="dat\BatSpeciesRegions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\batinfo.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="dat\BatSpeciesRegions.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="doc\Bestimmung-Fledermausrufe-Teil1.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

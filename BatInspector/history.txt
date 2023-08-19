@@ -6,8 +6,9 @@ TODO
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 - installer
 
-18.08.23 V0.4.0.0
+19.08.23 V0.4.0.0
 - formula expression gererator
+- added logentry (DEBUG) for each button and try-catch-blocks to catch errors
 
 17.08.23
 - better separation of buttons in toolbars 

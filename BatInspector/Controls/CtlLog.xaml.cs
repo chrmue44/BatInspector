@@ -36,14 +36,13 @@ namespace BatInspector.Controls
       _model = model;
     }
 
-    public void log(stLogEntry entry, List<stLogEntry> list)
+    public void log(stLogEntry entry)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.Invoke(new delegateLogEntry(log), entry, list);
+        Dispatcher.Invoke(new delegateLogEntry(log), entry);
         return;
       }
-      list.Add(entry);
       if (
           ((entry.Type == enLogType.ERROR) && _cbErr.IsChecked.Value) ||
           ((entry.Type == enLogType.WARNING) && _cbWarn.IsChecked.Value) ||
@@ -56,6 +55,11 @@ namespace BatInspector.Controls
         _spEntries.Children.Add(text);
         _scrViewer.ScrollToBottom();
       }
+    }
+
+    public bool checkMaxLogSize()
+    {
+      return _spEntries.Children.Count > AppParams.MAX_LOG_COUNT;
     }
 
     public void clearLog()

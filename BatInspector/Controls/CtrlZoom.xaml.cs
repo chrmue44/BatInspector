@@ -32,7 +32,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtrlZoom : UserControl
   {
-  //  AnalysisFile _analysis;
+    //  AnalysisFile _analysis;
     string _wavFilePath;
     ViewModel _model;
     int _stretch;
@@ -258,45 +258,70 @@ namespace BatInspector.Controls
     }
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.Waterfall.Range += 1.0;
-      //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
-      updateRuler();
-      updateImage();
+      try
+      {
+        _model.ZoomView.Waterfall.Range += 1.0;
+        //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
+        updateRuler();
+        updateImage();
+        DebugLog.log("Zoom:BTN 'increase range' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:BTN 'increase range' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnDecRange_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.Waterfall.Range > 3)
+      try
       {
-        _model.ZoomView.Waterfall.Range -= 1.0;
-        //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
-        updateRuler();
-        updateImage();
+        if (_model.ZoomView.Waterfall.Range > 3)
+        {
+          _model.ZoomView.Waterfall.Range -= 1.0;
+          //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
+          updateRuler();
+          updateImage();
+        }
+        DebugLog.log("Zoom:BTN 'decrease range' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:BTN 'decrease range' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
+
     private void ctrlZoomMouseDown(object sender, MouseEventArgs e)
     {
-      Point p = e.GetPosition(_imgFt);
-      ZoomView z = _model.ZoomView;
-      double f = (1.0 - (double)(p.Y) / ((double)_imgFt.ActualHeight)) * (z.RulerDataF.Max - z.RulerDataF.Min) + z.RulerDataF.Min;
-      double t = (double)(p.X - _imgFt.Margin.Left) / (double)_imgFt.ActualWidth * (z.RulerDataT.Max - z.RulerDataT.Min) + z.RulerDataT.Min;
-      if (e.LeftButton == MouseButtonState.Pressed)
+      try
       {
-        if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
+        Point p = e.GetPosition(_imgFt);
+        ZoomView z = _model.ZoomView;
+        double f = (1.0 - (double)(p.Y) / ((double)_imgFt.ActualHeight)) * (z.RulerDataF.Max - z.RulerDataF.Min) + z.RulerDataF.Min;
+        double t = (double)(p.X - _imgFt.Margin.Left) / (double)_imgFt.ActualWidth * (z.RulerDataT.Max - z.RulerDataT.Min) + z.RulerDataT.Min;
+        if (e.LeftButton == MouseButtonState.Pressed)
         {
-          _model.ZoomView.Cursor1.set(t, f, true);
-          drawCursor(1);
-          setFileInformations();
+          if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
+          {
+            _model.ZoomView.Cursor1.set(t, f, true);
+            drawCursor(1);
+            setFileInformations();
+          }
         }
+        if (e.RightButton == MouseButtonState.Pressed)
+        {
+          if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
+          {
+            _model.ZoomView.Cursor2.set(t, f, true);
+            drawCursor(2);
+            setFileInformations();
+          }
+        }
+        DebugLog.log("Zoom: 'Mouse down'", enLogType.DEBUG);
       }
-      if (e.RightButton == MouseButtonState.Pressed)
+      catch (Exception ex)
       {
-        if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
-        {
-          _model.ZoomView.Cursor2.set(t, f, true);
-          drawCursor(2);
-          setFileInformations();
-        }
+        DebugLog.log("Zoom: 'Mouse down' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
@@ -420,7 +445,7 @@ namespace BatInspector.Controls
       double min = _model.ZoomView.RulerDataF.Min;
       for (int i = 0; i < nrTicks; i++)
       {
-        double y = _imgFt.ActualHeight -(_imgFt.Margin.Top + (fTicks[i] - min) /span * _imgFt.ActualHeight);
+        double y = _imgFt.ActualHeight - (_imgFt.Margin.Top + (fTicks[i] - min) / span * _imgFt.ActualHeight);
         createLine(_rulerF, _rulerF.ActualWidth - 3, y,
                             _rulerF.ActualWidth - nrTicks, y, Brushes.Black);
         string str = fTicks[i].ToString("0.#", CultureInfo.InvariantCulture);
@@ -502,92 +527,172 @@ namespace BatInspector.Controls
         _btnPlay_1.Content = _playImgs[1];
       }
     }
-    
+
     private void _btnZoomCursor_Click(object sender, RoutedEventArgs e)
     {
-      ZoomView z = _model.ZoomView;
-      if (z.Cursor1.Visible && z.Cursor2.Visible)
+      try
       {
-        _model.ZoomView.RulerDataF.setRange(z.Cursor1.Freq, z.Cursor2.Freq);
-        _model.ZoomView.RulerDataT.setRange(z.Cursor1.Time, z.Cursor2.Time);
-        hideCursors();
-        createZoomImg();
+        ZoomView z = _model.ZoomView;
+        if (z.Cursor1.Visible && z.Cursor2.Visible)
+        {
+          _model.ZoomView.RulerDataF.setRange(z.Cursor1.Freq, z.Cursor2.Freq);
+          _model.ZoomView.RulerDataT.setRange(z.Cursor1.Time, z.Cursor2.Time);
+          hideCursors();
+          createZoomImg();
+        }
+        else
+        {
+          MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        DebugLog.log("ZoomBtn: 'zoom cursor' clicked", enLogType.DEBUG);
       }
-      else
+      catch (Exception ex)
       {
-        MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+        DebugLog.log("ZoomBtn: 'zoom cursor' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnZoomTotal_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-      _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
-      hideCursors();
-      createZoomImg();
+      try
+      {
+        _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+        _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
+        hideCursors();
+        createZoomImg();
+        DebugLog.log("ZoomBtn: 'zoom total' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'zoom total' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnZoomInV_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.zoomInV();
-      hideCursors();
-      createZoomImg();
+      try
+      {
+        _model.ZoomView.zoomInV();
+        hideCursors();
+        createZoomImg();
+        DebugLog.log("ZoomBtn: 'zoom in V' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'zoom in V' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnZoomOutV_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.zoomOutV();
-      hideCursors();
-      createZoomImg();
+      try
+      {
+        _model.ZoomView.zoomOutV();
+        hideCursors();
+        createZoomImg();
+        DebugLog.log("ZoomBtn: 'zoom out V' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'zoom out V' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnZoomInH_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.zoomInH();
-      hideCursors();
-      createZoomImg();
+      try
+      {
+        _model.ZoomView.zoomInH();
+        hideCursors();
+        createZoomImg();
+        DebugLog.log("ZoomBtn: 'zoom in H' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'zoom in H' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnZoomOutH_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.zoomOutH();
-      hideCursors();
-      createZoomImg();
+      try
+      {
+        _model.ZoomView.zoomOutH();
+        hideCursors();
+        createZoomImg();
+        DebugLog.log("ZoomBtn: 'zoom out H' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'zoom out H' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnmoveLeft_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.moveLeft())
+      try
       {
-        hideCursors();
-        createZoomImg();
+        if (_model.ZoomView.moveLeft())
+        {
+          hideCursors();
+          createZoomImg();
+        }
+        DebugLog.log("ZoomBtn: 'move left' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'move left' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnmoveRight_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.moveRight(_model.ZoomView.Waterfall.Duration))
+      try
       {
-        hideCursors();
-        createZoomImg();
+        if (_model.ZoomView.moveRight(_model.ZoomView.Waterfall.Duration))
+        {
+          hideCursors();
+          createZoomImg();
+        }
+        DebugLog.log("ZoomBtn: 'move right' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'move right' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnmoveUp_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.moveUp(_model.ZoomView.Waterfall.SamplingRate / 2000))
+      try
       {
-        hideCursors();
-        createZoomImg();
+        if (_model.ZoomView.moveUp(_model.ZoomView.Waterfall.SamplingRate / 2000))
+        {
+          hideCursors();
+          createZoomImg();
+        }
+        DebugLog.log("ZoomBtn: 'move up' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'move up' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnmoveDown_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.moveDown(0))
+      try
       {
-        hideCursors();
-        createZoomImg();
+        if (_model.ZoomView.moveDown(0))
+        {
+          hideCursors();
+          createZoomImg();
+        }
+        DebugLog.log("ZoomBtn: 'move down' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'move down' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
@@ -654,19 +759,27 @@ namespace BatInspector.Controls
 
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+      try
       {
-        _btnPlay_1.Content = _playImgs[1];
-        _model.ZoomView.Waterfall.pause();
+        DebugLog.log("ZoomBtn: play 1' clicked", enLogType.DEBUG);
+        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        {
+          _btnPlay_1.Content = _playImgs[1];
+          _model.ZoomView.Waterfall.pause();
+        }
+        else
+        {
+          play(1);
+          _btnPlay_20.IsEnabled = false;
+          _btnPlay_20.Content = _playImgs[6];
+          _btnPlay_10.IsEnabled = false;
+          _btnPlay_10.Content = _playImgs[5];
+          _btnPlay_1.Content = _playImgs[0];
+        }
       }
-      else
+      catch (Exception ex)
       {
-        play(1);
-        _btnPlay_20.IsEnabled = false;
-        _btnPlay_20.Content = _playImgs[6];
-        _btnPlay_10.IsEnabled = false;
-        _btnPlay_10.Content = _playImgs[5];
-        _btnPlay_1.Content = _playImgs[0];
+        DebugLog.log("ZoomBtn: 'play 1' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
@@ -685,67 +798,107 @@ namespace BatInspector.Controls
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+      try
       {
-        _btnPlay_10.Content = _playImgs[2];
-        _model.ZoomView.Waterfall.pause();
+        DebugLog.log("ZoomBtn: 'play 10' clicked", enLogType.DEBUG);
+        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        {
+          _btnPlay_10.Content = _playImgs[2];
+          _model.ZoomView.Waterfall.pause();
+        }
+        else
+        {
+          play(10);
+          _btnPlay_1.IsEnabled = false;
+          _btnPlay_1.Content = _playImgs[4];
+          _btnPlay_20.IsEnabled = false;
+          _btnPlay_20.Content = _playImgs[5];
+          _btnPlay_10.Content = _playImgs[0];
+        }
       }
-      else
+      catch (Exception ex)
       {
-        play(10);
-        _btnPlay_1.IsEnabled = false;
-        _btnPlay_1.Content = _playImgs[4];
-        _btnPlay_20.IsEnabled = false;
-        _btnPlay_20.Content = _playImgs[5];
-        _btnPlay_10.Content = _playImgs[0];
+        DebugLog.log("ZoomBtn: 'play 10' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnPlay_20_Click(object sender, RoutedEventArgs e)
     {
-      if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+      try
       {
-        _btnPlay_20.Content = _playImgs[3];
-        _model.ZoomView.Waterfall.pause();
+        DebugLog.log("ZoomView:BTN 'play 20' clicked", enLogType.DEBUG);
+        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        {
+          _btnPlay_20.Content = _playImgs[3];
+          _model.ZoomView.Waterfall.pause();
+        }
+        else
+        {
+          play(20);
+          _btnPlay_20.Content = _playImgs[0];
+          _btnPlay_1.IsEnabled = false;
+          _btnPlay_1.Content = _playImgs[4];
+          _btnPlay_10.IsEnabled = false;
+          _btnPlay_10.Content = _playImgs[5];
+        }
       }
-      else
+      catch (Exception ex)
       {
-        play(20);
-        _btnPlay_20.Content = _playImgs[0];
-        _btnPlay_1.IsEnabled = false;
-        _btnPlay_1.Content = _playImgs[4];
-        _btnPlay_10.IsEnabled = false;
-        _btnPlay_10.Content = _playImgs[5];
+        DebugLog.log("ZoomBtn: 'play 20' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _imgFt_MouseMove(object sender, MouseEventArgs e)
     {
-      Point p = e.GetPosition(_imgFt);
-      double f = _model.ZoomView.RulerDataF.Min +
-                 (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
-      double t = _model.ZoomView.RulerDataT.Min +
-      p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-      _imgFt.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" +
-                       t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+      try
+      {
+        Point p = e.GetPosition(_imgFt);
+        double f = _model.ZoomView.RulerDataF.Min +
+                   (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
+        double t = _model.ZoomView.RulerDataT.Min +
+        p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
+        _imgFt.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" +
+        t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+        DebugLog.log("ZoomBtn: image Ft mouse move", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: image Ft mouse move failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.Waterfall.stop();
-      _slider.Value = 0;
-      _btnPlay_20.IsEnabled = true;
-      _btnPlay_10.IsEnabled = true;
-      _btnPlay_1.IsEnabled = true;
+      try
+      {
+        _model.ZoomView.Waterfall.stop();
+        _slider.Value = 0;
+        _btnPlay_20.IsEnabled = true;
+        _btnPlay_10.IsEnabled = true;
+        _btnPlay_1.IsEnabled = true;
+        DebugLog.log("ZoomBtn: 'stop' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'stop' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void ctlSelCallChanged(int index, string val)
     {
-      int.TryParse(val, out int Val);
-      int idx = _ctlSelectCall.getSelectedIndex();
-      if ((idx != _oldCallIdx) && (idx >= 0))
+      try
       {
-        changeCall(idx);
+        int.TryParse(val, out int Val);
+        int idx = _ctlSelectCall.getSelectedIndex();
+        if ((idx != _oldCallIdx) && (idx >= 0))
+        {
+          changeCall(idx);
+        }
+        DebugLog.log("ZoomBtn: 'select call' changed", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'select call' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
@@ -859,91 +1012,155 @@ namespace BatInspector.Controls
 
     private void _btnPrev_Click(object sender, RoutedEventArgs e)
     {
-      int idx = _oldCallIdx - 1;
-      if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
+      try
       {
-        changeCall(idx);
-        string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
-        _ctlSelectCall.setValue(callNr);
+        int idx = _oldCallIdx - 1;
+        if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
+        {
+          changeCall(idx);
+          string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
+          _ctlSelectCall.setValue(callNr);
+        }
+        DebugLog.log("ZoomBtn: 'previous' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'previous' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnNext_Click(object sender, RoutedEventArgs e)
     {
-      int idx = _oldCallIdx + 1;
-      if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
+      try
       {
-        changeCall(idx);
-        string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
-        _ctlSelectCall.setValue(callNr);
+        int idx = _oldCallIdx + 1;
+        if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
+        {
+          changeCall(idx);
+          string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
+          _ctlSelectCall.setValue(callNr);
+        }
+        DebugLog.log("ZoomBtn: 'next' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'next' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _cbZoomAmpl_Click(object sender, RoutedEventArgs e)
     {
-      if (_cbZoomAmpl.IsChecked == true)
-        _model.ZoomView.findMaxAmplitude();
-      else
-        _model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
-      updateXtImage();
-      initRulerA();
+      try
+      {
+        if (_cbZoomAmpl.IsChecked == true)
+          _model.ZoomView.findMaxAmplitude();
+        else
+          _model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
+        updateXtImage();
+        initRulerA();
+        DebugLog.log("ZoomBtn: 'Zoom Amplitude' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'Toom Amplitude: " + ex.ToString(), enLogType.ERROR);
+      }
+
     }
 
     private void _imgXt_MouseMove(object sender, MouseEventArgs e)
     {
-      Point pos = e.GetPosition(_imgXt);
-      double t = _model.ZoomView.RulerDataT.Min +
-      pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-      _imgXt.ToolTip = t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+      try
+      {
+        Point pos = e.GetPosition(_imgXt);
+        double t = _model.ZoomView.RulerDataT.Min +
+        pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
+        _imgXt.ToolTip = t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+        DebugLog.log("Zoom: image Xt 'mouse move'", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom: image Xt 'mouse move' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnSaveAs_Click(object sender, RoutedEventArgs e)
     {
-      System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
-      dlg.Filter = "WAV files (*.wav)|*.wav";
-      System.Windows.Forms.DialogResult res = dlg.ShowDialog();
-      if (res == System.Windows.Forms.DialogResult.OK)
+      try
       {
-        WavFile wav = new WavFile();
-        int iStart = (int)(_model.ZoomView.RulerDataT.Min * _model.ZoomView.Waterfall.SamplingRate);
-        int iEnd = (int)(_model.ZoomView.RulerDataT.Max * _model.ZoomView.Waterfall.SamplingRate);
-        wav.createFile(1, _model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, _model.ZoomView.Waterfall.Audio.Samples);
-        wav.saveFileAs(dlg.FileName);
+        System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
+        dlg.Filter = "WAV files (*.wav)|*.wav";
+        System.Windows.Forms.DialogResult res = dlg.ShowDialog();
+        if (res == System.Windows.Forms.DialogResult.OK)
+        {
+          WavFile wav = new WavFile();
+          int iStart = (int)(_model.ZoomView.RulerDataT.Min * _model.ZoomView.Waterfall.SamplingRate);
+          int iEnd = (int)(_model.ZoomView.RulerDataT.Max * _model.ZoomView.Waterfall.SamplingRate);
+          wav.createFile(1, _model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, _model.ZoomView.Waterfall.Audio.Samples);
+          wav.saveFileAs(dlg.FileName);
+        }
+        DebugLog.log("Zoom:Btn 'save As' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:Btn 'save As' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName);
+      try
+      {
+        _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName);
+        DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:Btn 'save' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
-      private void _btnDenoise_Click(object sender, RoutedEventArgs e)
+    /*
+    private void _btnDenoise_Click(object sender, RoutedEventArgs e)
     {
       _model.ZoomView.denoise();
       createZoomImg();
     }
+    */
+
 
     private void _btnBandpass_Click(object sender, RoutedEventArgs e)
     {
-      if((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible)) 
+      try
       {
-        double fMin = _model.ZoomView.Cursor1.Freq * 1000;
-        double fMax = _model.ZoomView.Cursor2.Freq * 1000;
-        _model.ZoomView.applyBandpass(fMin, fMax);
-        createZoomImg();
+        if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
+        {
+          double fMin = _model.ZoomView.Cursor1.Freq * 1000;
+          double fMax = _model.ZoomView.Cursor2.Freq * 1000;
+          _model.ZoomView.applyBandpass(fMin, fMax);
+          createZoomImg();
+        }
+        else
+          MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+        DebugLog.log("Zoom:Btn 'Bandpass' clicked", enLogType.DEBUG);
       }
-      else
-        MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:Btn 'Bandpass' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnUndo_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.undoChanges();
-      createZoomImg();
-    }
-
-    private void _slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
+      try
+      {
+        _model.ZoomView.undoChanges();
+        createZoomImg();
+        DebugLog.log("Zoom:Btn 'Undo' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:Btn 'und' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
   }
 }

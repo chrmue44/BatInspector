@@ -46,7 +46,11 @@ namespace BatInspector
       string reportName = prj.ReportName;
       reportName = reportName.Replace("\\", "/");
       ModelItem modPar = AppParams.Inst.Models[this.Index];
-      string speciesFile = Path.Combine(AppParams.Inst.ModelRootPath, modPar.Dir,"species.csv");
+      string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
+                 AppParams.Inst.ModelRootPath :
+                 Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
+
+      string speciesFile = Path.Combine(modPath, modPar.Dir,"species.csv");
       addSpeciesColsToReport(reportName, speciesFile);
       string datFile = prj.PrjDir + "/Xdata000.npy";
       string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
@@ -73,14 +77,14 @@ namespace BatInspector
           args += " --prepPredict";
         if ((options & OPT_PREDICT1) != 0)
           args += " --predict";
-        string modelDir = AppParams.Inst.ModelRootPath + "/" + modPar.Dir;
+        string modelDir = modPath + "/" + modPar.Dir;
         args += " --csvcalls " + reportName +
              " --root " + modelDir + " --specFile " + modelDir + "/speies.csv" +
              " --dataDir " + prj.PrjDir +
              " --data " + datFile +
              " --model " + this.Name +
              " --predCol " + Cols.SPECIES;
-        retVal = _proc.LaunchCommandLineApp(AppParams.PythonBin, null, wrkDir, true, args, true, true);
+        retVal = _proc.launchCommandLineApp(AppParams.PythonBin, null, wrkDir, true, args, true, true);
       }
 
       if ((options & OPT_CONF95) != 0)

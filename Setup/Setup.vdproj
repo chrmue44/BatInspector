@@ -15,13 +15,19 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0EC91DBA4123437284E5502690335A39"
+        "MsmKey" = "8:_083DA18DE1DF404ABCDE4ABFCABC3FC8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1DE78B1F2E284FF4BC954CE1CBAFD2AB"
+        "MsmKey" = "8:_085C139A14654C40A76CB338E5CB00A6"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0EC91DBA4123437284E5502690335A39"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -99,6 +105,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5B658AD152F34B51B8DBC4043D55F53D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_65607DD7FB6244328D868246ADB9A715"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -141,6 +153,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8BD1319E1188E1CA9580B7359B518951"
+        "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8DDB320204B346BAA9188B5E293A0FFF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -171,8 +189,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
-        "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
+        "MsmKey" = "8:_A63E189DE11D461B972AC65A45B9243E"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -185,18 +203,6 @@
         {
         "MsmKey" = "8:_AD4F277B6FB24058A037537ED487183F"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
-        "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
-        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -255,6 +261,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_BCE9DFAF273C4FA192800B05242E42D9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_BCFB8E8DCCDD8371D5DB62936995F617"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
@@ -291,6 +303,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C4116AEEDEF14F339C65E470E3799A61"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C5D7DD69D2A94BB8B6140D9E3C7D6424"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -298,6 +316,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C9D7CA4DC7E14DD3916E7E7A51FEB4D0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E56F8A42812D44F9ADF42E55604DBAA1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -369,6 +393,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_FEFBF2636AEDE3685A6C9968EC8A596B"
+        "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FEFBF2636AEDE3685A6C9968EC8A596B"
+        "OwnerKey" = "8:_8BD1319E1188E1CA9580B7359B518951"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_80552BF44B6A45858FFCBEFCB0A31FE6"
         "MsmSig" = "8:_UNDEFINED"
@@ -430,13 +466,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
+        "OwnerKey" = "8:_8BD1319E1188E1CA9580B7359B518951"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
+        "OwnerKey" = "8:_FEFBF2636AEDE3685A6C9968EC8A596B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -547,20 +583,6 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_1553823F4F6D446390C61E858481BC7D"
-            {
-            "Name" = "8:cmd.exe"
-            "Condition" = "8:"
-            "Object" = "8:_C9D7CA4DC7E14DD3916E7E7A51FEB4D0"
-            "FileType" = "3:2"
-            "InstallAction" = "3:2"
-            "Arguments" = "8:\\c \"[BIDATA]\\setup\\install_model.bat\" [BIDATA]"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_D388B44B_EAF8_41A6_A195_763EA8037DDF"
-            "InstallerClass" = "11:FALSE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
@@ -584,12 +606,12 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0EC91DBA4123437284E5502690335A39"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_083DA18DE1DF404ABCDE4ABFCABC3FC8"
             {
-            "SourcePath" = "8:..\\BatInspector\\dat\\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
-            "TargetName" = "8:Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
+            "SourcePath" = "8:..\\BatInspector\\scripts\\copyAutoToMan.scr"
+            "TargetName" = "8:copyAutoToMan.scr"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_DB068BB190A843D98AC6CC7C9F30A059"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -604,12 +626,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1DE78B1F2E284FF4BC954CE1CBAFD2AB"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_085C139A14654C40A76CB338E5CB00A6"
             {
-            "SourcePath" = "8:bats.ico"
-            "TargetName" = "8:bats.ico"
+            "SourcePath" = "8:..\\BatInspector\\scripts\\tool_replace_nyctalus.scr"
+            "TargetName" = "8:tool_replace_nyctalus.scr"
             "Tag" = "8:"
-            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
+            "Folder" = "8:_DB068BB190A843D98AC6CC7C9F30A059"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0EC91DBA4123437284E5502690335A39"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
+            "TargetName" = "8:Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -660,7 +702,7 @@
             "SourcePath" = "8:..\\InstallerAddOns\\Install_model.bat"
             "TargetName" = "8:Install_model.bat"
             "Tag" = "8:"
-            "Folder" = "8:_C9D5D0A32CFD412FA33949A9785C94E4"
+            "Folder" = "8:_EA9F322D833E4C5DB57FF39373951478"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -912,12 +954,32 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5B658AD152F34B51B8DBC4043D55F53D"
+            {
+            "SourcePath" = "8:..\\BatInspector\\scripts\\tool_replace_pipstrelle.scr"
+            "TargetName" = "8:tool_replace_pipstrelle.scr"
+            "Tag" = "8:"
+            "Folder" = "8:_DB068BB190A843D98AC6CC7C9F30A059"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_65607DD7FB6244328D868246ADB9A715"
             {
             "SourcePath" = "8:..\\BatInspector\\dat\\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
             "TargetName" = "8:Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -968,7 +1030,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Bbar_13.wav"
             "TargetName" = "8:Bbar_13.wav"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1076,12 +1138,43 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8BD1319E1188E1CA9580B7359B518951"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:libScripter, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64"
+                "ScatterAssemblies"
+                {
+                    "_8BD1319E1188E1CA9580B7359B518951"
+                    {
+                    "Name" = "8:libScripter.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:libScripter.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8DDB320204B346BAA9188B5E293A0FFF"
             {
             "SourcePath" = "8:..\\BatInspector\\dat\\BatSpeciesRegions.json"
             "TargetName" = "8:BatSpeciesRegions.json"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1158,23 +1251,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A6B8F23C1B1504D5961B03125B2EB2E6"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A63E189DE11D461B972AC65A45B9243E"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:libScripter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_A6B8F23C1B1504D5961B03125B2EB2E6"
-                    {
-                    "Name" = "8:libScripter.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:libScripter.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\BatInspector\\scripts\\reset_man.scr"
+            "TargetName" = "8:reset_man.scr"
             "Tag" = "8:"
-            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
+            "Folder" = "8:_DB068BB190A843D98AC6CC7C9F30A059"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1186,7 +1268,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A894ABEBD2C341039E9A248F4408C974"
@@ -1194,7 +1276,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
             "TargetName" = "8:Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1227,37 +1309,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ADE540FD97246E2B4BB9D45C25530505"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:libParser, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_ADE540FD97246E2B4BB9D45C25530505"
-                    {
-                    "Name" = "8:libParser.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:libParser.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AED119A8B2B3A9DF2A39FFCC2D98DE7D"
@@ -1296,7 +1347,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
             "TargetName" = "8:Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1316,7 +1367,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
             "TargetName" = "8:Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1393,6 +1444,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCE9DFAF273C4FA192800B05242E42D9"
+            {
+            "SourcePath" = "8:..\\BatInspector\\datapath.txt"
+            "TargetName" = "8:datapath.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BCFB8E8DCCDD8371D5DB62936995F617"
             {
             "AssemblyRegister" = "3:1"
@@ -1424,12 +1495,32 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4116AEEDEF14F339C65E470E3799A61"
+            {
+            "SourcePath" = "8:..\\BatInspector\\scripts\\tool_all_todo.scr"
+            "TargetName" = "8:tool_all_todo.scr"
+            "Tag" = "8:"
+            "Folder" = "8:_DB068BB190A843D98AC6CC7C9F30A059"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C5D7DD69D2A94BB8B6140D9E3C7D6424"
             {
             "SourcePath" = "8:..\\BatInspector\\dat\\batinfo.json"
             "TargetName" = "8:batinfo.json"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1449,7 +1540,27 @@
             "SourcePath" = "8:C:\\Windows\\System32\\cmd.exe"
             "TargetName" = "8:cmd.exe"
             "Tag" = "8:"
-            "Folder" = "8:_C9D5D0A32CFD412FA33949A9785C94E4"
+            "Folder" = "8:_EA9F322D833E4C5DB57FF39373951478"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E56F8A42812D44F9ADF42E55604DBAA1"
+            {
+            "SourcePath" = "8:..\\BatInspector\\images\\bats_mini.ico"
+            "TargetName" = "8:bats_mini.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1489,7 +1600,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
             "TargetName" = "8:Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_DB4F03C409D54204BC9A428E2B8B6A79"
+            "Folder" = "8:_99965DE95F1241DA8ABC6FD6FD8DE858"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1566,6 +1677,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FEFBF2636AEDE3685A6C9968EC8A596B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:libParser, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64"
+                "ScatterAssemblies"
+                {
+                    "_FEFBF2636AEDE3685A6C9968EC8A596B"
+                    {
+                    "Name" = "8:libParser.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:libParser.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1582,17 +1724,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_1828F7FC555E4E20A5522374E8CB502B"
-                    {
-                    "Name" = "8:setup"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_4DDCB5E06F494A63864FC914A1F0C1FA"
-                        "Folders"
-                        {
-                        }
-                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_23A4F7130D434673BC148CB78C2FC4D6"
                     {
                     "Name" = "8:de"
@@ -1615,71 +1746,70 @@
             "Property" = "8:AppDataFolder"
                 "Folders"
                 {
-                }
-            }
-            "{994432C3-9487-495D-8656-3E829A8DBDDE}:_740A296B4FE94C3C90E24D11AEC9439E"
-            {
-            "DefaultLocation" = "8:[CommonFilesFolder]"
-            "Name" = "8:BatIspectorData"
-            "AlwaysCreate" = "11:TRUE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:BIDATA"
-                "Folders"
-                {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_058F9BA761E14A4598BA535408055A25"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_365C5910FC5744118C6268A3DE3FAEF1"
                     {
-                    "Name" = "8:scripts"
+                    "Name" = "8:BatInspector"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_9C5D1B51BD1B4ED4A27AAF550B7EF652"
+                    "Property" = "8:_0DD8919BDE6244BFAD22C9F01033160A"
                         "Folders"
                         {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_91F9500F83044789B456807A9826A613"
-                    {
-                    "Name" = "8:models"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_6630CB0828544631AD725652FD539A3D"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_3CABD39BD8AC40FDA00AC87F35CD66DC"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_99965DE95F1241DA8ABC6FD6FD8DE858"
                             {
-                            "Name" = "8:bd2"
+                            "Name" = "8:dat"
                             "AlwaysCreate" = "11:FALSE"
                             "Condition" = "8:"
                             "Transitive" = "11:FALSE"
-                            "Property" = "8:_6F388F90AAAE494FB73F5911106F364D"
+                            "Property" = "8:_064D4F8532AA4C55A720182F1FCBD8E9"
                                 "Folders"
                                 {
                                 }
                             }
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C9D5D0A32CFD412FA33949A9785C94E4"
-                    {
-                    "Name" = "8:setup"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_C282BBB89FF34504A0B388DBE36498C8"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_DB4F03C409D54204BC9A428E2B8B6A79"
-                    {
-                    "Name" = "8:dat"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_064D4F8532AA4C55A720182F1FCBD8E9"
-                        "Folders"
-                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_DB068BB190A843D98AC6CC7C9F30A059"
+                            {
+                            "Name" = "8:scripts"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_9C5D1B51BD1B4ED4A27AAF550B7EF652"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_E9686BEBCEC346098482F99ACDB61601"
+                            {
+                            "Name" = "8:models"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_6630CB0828544631AD725652FD539A3D"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3CABD39BD8AC40FDA00AC87F35CD66DC"
+                                    {
+                                    "Name" = "8:bd2"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_6F388F90AAAE494FB73F5911106F364D"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_EA9F322D833E4C5DB57FF39373951478"
+                            {
+                            "Name" = "8:setup"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_C282BBB89FF34504A0B388DBE36498C8"
+                                "Folders"
+                                {
+                                }
+                            }
                         }
                     }
                 }
@@ -1723,7 +1853,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BatInspector"
         "ProductCode" = "8:{8676C82D-5459-43A1-B15C-059D3AAD1429}"
-        "PackageCode" = "8:{01C7D2D4-6C14-45CF-89AA-289570447386}"
+        "PackageCode" = "8:{66DF1C2B-FC9C-429E-A25A-1383E6532ECB}"
         "UpgradeCode" = "8:{2F80E232-395E-4CCC-A22E-523AA645308B}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -1843,18 +1973,18 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_98F971465C1C4790A780FA64B0D73BB9"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_17D72035F2454700A17C84E00000D3B8"
             {
-            "Name" = "8:Shortcut to Primary output from BatInspector (Active)"
+            "Name" = "8:BatInspector"
             "Arguments" = "8:"
-            "Description" = "8:"
+            "Description" = "8:BatInspector"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_714BB7A88658470C8AACECD7825ABC60"
             "Folder" = "8:_AAE6B0A6A92C41FC93AB120C1696CC98"
             "WorkingFolder" = "8:_267AA20976D04426AA2D0AAB62014673"
-            "Icon" = "8:_1DE78B1F2E284FF4BC954CE1CBAFD2AB"
+            "Icon" = "8:_E56F8A42812D44F9ADF42E55604DBAA1"
             "Feature" = "8:"
             }
         }
@@ -2286,7 +2416,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_714BB7A88658470C8AACECD7825ABC60"
             {
-            "SourcePath" = "8:..\\BatInspector\\obj\\Release\\BatInspector.exe"
+            "SourcePath" = "8:..\\BatInspector\\obj\\Debug\\BatInspector.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"

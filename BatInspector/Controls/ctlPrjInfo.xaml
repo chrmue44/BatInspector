@@ -13,7 +13,7 @@
       <TextBlock Name="_tbCreated" TextWrapping="Wrap"></TextBlock>
     </GroupBox>
         <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoNotes}" Height="80">
-      <TextBox Name="_tbNotes" TextWrapping="Wrap"></TextBox>
+            <TextBox Name="_tbNotes" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
     </GroupBox>
   </StackPanel>
 </UserControl>

@@ -1017,4 +1017,19 @@
   <data name="ExpGenNested" xml:space="preserve">
     <value>nested expression</value>
   </data>
+  <data name="SetCatLog" xml:space="preserve">
+    <value>Log View</value>
+  </data>
+  <data name="SpecDescShowError" xml:space="preserve">
+    <value>Show error messages in log view</value>
+  </data>
+  <data name="SpecDescShowWarning" xml:space="preserve">
+    <value>Show warnings in log view</value>
+  </data>
+  <data name="SpecDescShowInfo" xml:space="preserve">
+    <value>Show info messages in log view</value>
+  </data>
+  <data name="SpecDescShowDebug" xml:space="preserve">
+    <value>Show debug messages in log view</value>
+  </data>
 </root>

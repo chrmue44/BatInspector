@@ -1987,6 +1987,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log View.
+        /// </summary>
+        public static string SetCatLog {
+            get {
+                return ResourceManager.GetString("SetCatLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Window.
         /// </summary>
         public static string SetCatMainWindow {
@@ -2482,11 +2491,47 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show debug messages in log view.
+        /// </summary>
+        public static string SpecDescShowDebug {
+            get {
+                return ResourceManager.GetString("SpecDescShowDebug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show error messages in log view.
+        /// </summary>
+        public static string SpecDescShowError {
+            get {
+                return ResourceManager.GetString("SpecDescShowError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show info messages in log view.
+        /// </summary>
+        public static string SpecDescShowInfo {
+            get {
+                return ResourceManager.GetString("SpecDescShowInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show species in comboboxes to select species.
         /// </summary>
         public static string SpecDescShowSpec {
             get {
                 return ResourceManager.GetString("SpecDescShowSpec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show warnings in log view.
+        /// </summary>
+        public static string SpecDescShowWarning {
+            get {
+                return ResourceManager.GetString("SpecDescShowWarning", resourceCulture);
             }
         }
         

@@ -23,10 +23,11 @@ using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
 using System.Resources;
+using System.Diagnostics.Eventing.Reader;
+using OxyPlot.Series;
 
 namespace BatInspector
 {
-
   public enum enCulture
   {
     de_DE,
@@ -224,12 +225,18 @@ namespace BatInspector
     public const int MAX_LOG_COUNT = 600;
 
     static AppParams _inst = null;
+
+    bool _isInitialized = false;
+    static public  bool IsInitialized { get { return _inst._isInitialized; } }
     public static AppParams Inst 
     { 
       get 
       {
         if (_inst == null)
+        {
           AppParams.load();
+          _inst._isInitialized = true;
+        }
         return _inst;
       }
     }
@@ -241,6 +248,8 @@ namespace BatInspector
         return Path.GetPathRoot(System.Reflection.Assembly.GetExecutingAssembly().Location);
       }
     }
+
+    [Browsable(false)]
     public string FileName
     {
       get { return Path.Combine(AppDataPath, _fName); }
@@ -269,7 +278,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatPrjExplorer")]
     [LocalizedDescription("SetDescShowOnlyFiltered")]
-    public bool ShowOnlyFilteredDirs { get; set; } = true;
+    public bool ShowOnlyFilteredDirs { get; set; } = false;
 
     [DataMember]
     [LocalizedCategory("SetCatPrjExplorer")]
@@ -285,17 +294,21 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SpecDescWidthWf")]
     public uint WaterfallHeight { get; set; } = 256;
+
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescHeightWf")]
     public uint WaterfallWidth { get; set; } = 512;
+
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescWidthFFT")]
     public uint FftWidth { get; set; } = 256;
+
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescColorOfLine")]
+    [Browsable(false)]
     public Color ColorXtLine { get; set; } = Color.Black;
 
     [DataMember]
@@ -315,31 +328,37 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescWidthMainWin")]
+    [Browsable(false)]
     public double MainWindowWidth { get; set; } = 1400;
 
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescHeightMainWin")]
+    [Browsable(false)]
     public double MainWindowHeight { get; set; } = 900;
 
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescHeightLogCtrl")]
+    [Browsable(false)]
     public double LogControlHeight { get; set; } = 150;
 
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescWidthFileSel")]
+    [Browsable(false)]
     public double WidthFileSelector { get; set; } = 200;
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [Description("width of main window [px]")]
+    [Browsable(false)]
     public double ZoomWindowWidth { get; set; } = 1200;
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescHeightMainWin")]
+    [Browsable(false)]
     public double ZoomWindowHeight { get; set; } = 900;
 
     [DataMember]
@@ -360,11 +379,13 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescMainWinPosX")]
+    [Browsable(false)]
     public double MainWindowPosX { get; set; } = 0;
 
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
     [LocalizedDescription("SetDescMainWinPosY")]
+    [Browsable(false)]
     public double MainWindowPosY { get; set; } = 0;
 
     [DataMember]
@@ -373,13 +394,14 @@ namespace BatInspector
     public double GradientRange { get; set; } = 15;
 
     [DataMember]
-    [LocalizedCategory("SetCatApplication")]
+    [LocalizedCategory("SetCatModel")]
     [LocalizedDescription("SetDescProb")]
     public double ProbabilityMin { get; set; } = 0.5;
 
     [DataMember]
     [Category("Filter")]
     [LocalizedDescription("SetDescFilter")]
+    [Browsable(false)]
     public List<FilterParams> Filter { get; set; }
 
 
@@ -402,6 +424,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatScripting"),
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
 
     [DataMember]
@@ -423,25 +446,27 @@ namespace BatInspector
     [LocalizedCategory("SetCatColorGradient"),
      LocalizedDescription("SpecDescColorRed"),
      DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+     [Browsable(false)]
     public List<ColorItem> ColorGradientRed { get; set; } = new List<ColorItem>();
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient"),
     LocalizedDescription("SpecDescColorGreen"),
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public List<ColorItem> ColorGradientGreen { get; set; } = new List<ColorItem>();
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient"),
     LocalizedDescription("SpecDescColorBlue"),
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public List<ColorItem> ColorGradientBlue { get; set; } = new List<ColorItem>();
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescIdentify")]
     [Browsable(false)]
-
     public bool PredIdentifyCalls { get; set; }
 
     [DataMember]
@@ -486,6 +511,23 @@ namespace BatInspector
     [Browsable(false)]
     public bool PredDelTemp { get; set; }
 
+    [DataMember]
+    [LocalizedCategory("SetCatLog"),
+     LocalizedDescription("SpecDescShowError")]
+    public bool LogShowError { get; set; }
+    [DataMember]
+    [LocalizedCategory("SetCatLog"),
+     LocalizedDescription("SpecDescShowWarning")]
+    public bool LogShowWarning { get; set; }
+    [DataMember]
+    [LocalizedCategory("SetCatLog"),
+     LocalizedDescription("SpecDescShowInfo")]
+    public bool LogShowInfo { get; set; }
+    [DataMember]
+    [LocalizedCategory("SetCatLog"),
+     LocalizedDescription("SpecDescShowDebug")]
+    public bool LogShowDebug { get; set; }
+
     public AppParams()
     {
       init();
@@ -494,7 +536,6 @@ namespace BatInspector
     public void init()
     {
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
-      AppDataPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
       LogDataPath = Path.Combine(AppDataPath, "log");
       ScriptDir = "scripts";
       ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
@@ -520,13 +561,16 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       initScripts();
-      for (int i = 0; i < 5; i++)
-        DirFilter.Add("");
-      ModelRootPath = AppRootPath + "model";
+      ModelRootPath = Path.Combine(AppDataPath, "models");
       SelectedModel = 0;
       initModels();
       SamplingRate = 312500;
       ScriptCopyAutoToMan = "scripts/copyAutoToMan.scr";
+
+      LogShowError = true;
+      LogShowWarning = true;
+      LogShowInfo = true;
+      LogShowDebug = false;
 
       PredIdentifyCalls = true;
       PredCutCalls = true;
@@ -536,6 +580,10 @@ namespace BatInspector
       PredPredict3 = false;
       PredConfTest = false;
       PredDelTemp = true;
+      ShowOnlyFilteredDirs = false;
+      DirFilter = new List<string>();
+      for (int i = 0; i < 5; i++)
+        DirFilter.Add("");
     }
 
     private void initFilterParams()
@@ -552,16 +600,18 @@ namespace BatInspector
     private void initScripts()
     {
       string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-      string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-      strWorkPath += "/" + PATH_SCRIPT + "/";
       Scripts = new List<ScriptItem>
       {
-        new ScriptItem(0, strWorkPath + "auto_to_man.scr",
+        new ScriptItem(0, "copyAutoToMan.scr",
                   "take over all unambiguously automatically recognized species", false),
-        new ScriptItem(1, strWorkPath + "reset_man.scr",
-                  "reset all manual species to 'todo'", false),
-        new ScriptItem(2, strWorkPath + "junk.scr",
-                  "select all recordings that seem to contain only junk", false)
+        new ScriptItem(1, "reset_man.scr",
+                  "reset all manual species to 'todo'",false),
+        new ScriptItem(2, "tool_all_todo.scr",
+                  "set all SpeciesMan to 'todo'", true),
+        new ScriptItem(3, "tool_replace_pipistrelle.scr",
+                   "replace all pipistelle with genus 'Pipistrellus'", true),
+        new ScriptItem(4, "tool_replace_nyctalus.scr",
+                   "replace all Nyctalus with genus 'Nyctalus'", true)
       };
     }
 
@@ -570,10 +620,11 @@ namespace BatInspector
       Models = new List<ModelItem>();
       Models.Add(new ModelItem());
       Models[0].Active = true;
-      Models[0].Script = "bd2/run.bat";
+      Models[0].Script = "run.bat";
       Models[0].Dir = "bd2";
       Models[0].Epochs = 0;
       Models[0].LearningRate = 0;
+      Models[0].ModelType = enModel.BAT_DETECT2;
       Models[0].ReportColumn = "Species";
       Models.Add(new ModelItem());
       Models[1].Active = false;
@@ -582,6 +633,7 @@ namespace BatInspector
       Models[1].Epochs = 30;
       Models[1].LearningRate = 0.00002;
       Models[1].ReportColumn = "Species";
+      Models[1].ModelType = enModel.rnn6aModel;
     }
 
     public void saveAs(string fName)
@@ -601,7 +653,7 @@ namespace BatInspector
         string str = sr.ReadToEnd();
         file.Write(JsonHelper.FormatJson(str));
         file.Close();
-        DebugLog.log("settings saved to '" + fName + "'", enLogType.DEBUG);
+        DebugLog.log("settings saved to '" + fName + "'", enLogType.INFO);
       }
       catch (Exception e)
       {
@@ -620,6 +672,7 @@ namespace BatInspector
       FileStream file = null;
       try
       {
+        DebugLog.log("try to load:" + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
           file = new FileStream(fPath, FileMode.Open);
@@ -633,10 +686,12 @@ namespace BatInspector
             retVal.initScripts();
           if (retVal.Models == null)
             retVal.initModels();
+          DebugLog.log("successfully loaded", enLogType.DEBUG);
           retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
         }
         else
         {
+          DebugLog.log("load failed", enLogType.DEBUG);
           retVal = new AppParams();
           retVal.init();
           retVal.save();
@@ -654,13 +709,13 @@ namespace BatInspector
       }
 
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
-      retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
+    //  retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
       //retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
       LogDataPath = replaceDriveLetter(LogDataPath);
       AppDataPath = replaceDriveLetter(AppDataPath);
       DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);
 
-      retVal.adjustActivateBat();
+  //    retVal.adjustActivateBat();
       _inst = retVal;
     }
 
@@ -680,11 +735,26 @@ namespace BatInspector
 
     public static void load()
     {
-      //string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
-      if(File.Exists(_dataPath))
-        AppDataPath = replaceDriveLetter(File.ReadAllText(_dataPath));
-     else
+      DebugLog.log("searching " + _dataPath + " in directory " + AppDomain.CurrentDomain.BaseDirectory, enLogType.INFO);
+      if (File.Exists(_dataPath))
+      {
+        DebugLog.log(_dataPath + " found", enLogType.INFO);
+        string path = File.ReadAllText(_dataPath);
+        DebugLog.log("content " + _dataPath + ": " + path, enLogType.INFO);
+        if (path == VAR_DATA_PATH)
+          AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                     "BatInspector");
+        else
+        {
+          AppDataPath = replaceDriveLetter(path);
+        }
+      }
+      else
+      {
         AppDataPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        DebugLog.log("datapath.txt NOT found", enLogType.INFO);
+      }
+      DebugLog.log("resulting data path: " + AppDataPath, enLogType.INFO);
       LogDataPath = Path.Combine(AppDataPath, "log");
       string fPath = Path.Combine(AppDataPath, _fName);
       if (!File.Exists(fPath))
@@ -721,10 +791,10 @@ namespace BatInspector
       };
     }
 
-    public void adjustActivateBat()
+/*    public void adjustActivateBat()
     {
       string str = "VIRTUAL_ENV=";
-      string path = ModelRootPath + "/_venv/Scripts/activate.bat";
+      string path =  ModelRootPath + "/_venv/Scripts/activate.bat";
       try
       {
         string activateBat = File.ReadAllText(path);
@@ -737,6 +807,6 @@ namespace BatInspector
         }
       }
       catch { }
-    }
-  }
+    }*/
+  } 
 }

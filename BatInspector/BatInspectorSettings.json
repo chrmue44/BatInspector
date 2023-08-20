@@ -101,26 +101,6 @@
       "isForAllCalls": false
     },
     {
-      "Expression": "(SpeciesMan == \"ESER\")",
-      "Name": "Man_ESER",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"PPYG\")",
-      "Name": "Man_PPYG",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesMan == \"PAUR\")",
-      "Name": "Man_PAUR",
-      "isForAllCalls": false
-    },
-    {
-      "Expression": "(SpeciesAuto == \"MDAU\")",
-      "Name": "Auto_MDAU",
-      "isForAllCalls": false
-    },
-    {
       "Expression": "(SpeciesMan == \"PNAT\") && (FreqMin > 43000)",
       "Name": "checkPNAT",
       "isForAllCalls": false
@@ -129,10 +109,20 @@
       "Expression": "(SpeciesMan == \"PPIP\") && ((FreqMin < 43000) || (FreqMin > 51000))",
       "Name": "checkPPIP",
       "isForAllCalls": false
+    },
+    {
+      "Expression": "",
+      "Name": "Sozialruf",
+      "isForAllCalls": false
     }
   ],
   "GradientRange": 18,
+  "HideInfos": false,
   "LogControlHeight": 140,
+  "LogShowDebug": true,
+  "LogShowError": true,
+  "LogShowInfo": true,
+  "LogShowWarning": true,
   "MainWindowHeight": 881.6,
   "MainWindowPosX": 0,
   "MainWindowPosY": 92,

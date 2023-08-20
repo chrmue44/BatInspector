@@ -59,7 +59,13 @@ namespace BatInspector.Controls
 
     public bool checkMaxLogSize()
     {
-      return _spEntries.Children.Count > AppParams.MAX_LOG_COUNT;
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        return (bool)Dispatcher.Invoke(new dlgCheckMaxLogSize(checkMaxLogSize));
+      }
+      if ((_spEntries != null) && (_spEntries.Children != null))
+        return _spEntries.Children.Count > AppParams.MAX_LOG_COUNT;
+      return false;
     }
 
     public void clearLog()

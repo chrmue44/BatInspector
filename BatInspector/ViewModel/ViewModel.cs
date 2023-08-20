@@ -116,6 +116,8 @@ namespace BatInspector
 
     public ViewModel(Forms.MainWindow mainWin, string version)
     {
+      if (!AppParams.IsInitialized)
+        AppParams.load();
       _batSpecRegions = BatSpeciesRegions.load();
       _proc = new ProcessRunner();
       _mainWin = mainWin;
@@ -141,6 +143,10 @@ namespace BatInspector
       foreach (SpeciesInfos info in _speciesInfos)
         species.Add(info.Abbreviation);
       _filter = new Filter(species);
+      initFilter();
+      string scriptDir = Path.Combine(AppParams.AppDataPath, AppParams.Inst.ScriptDir);
+      _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
+      //_prj.Analysis.init(_prj.SpeciesInfos);
       UpdateUi = false;
     }
 
@@ -238,15 +244,7 @@ namespace BatInspector
     public void loadSettings()
     {
       AppParams.load();
-      _filter.Items.Clear();
-      foreach(FilterParams p in AppParams.Inst.Filter)
-      {
-        FilterItem it = new FilterItem(_filter.Items.Count, p.Name, p.Expression,p.isForAllCalls);
-        _filter.Items.Add(it);
-      }
-      string scriptDir = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.ScriptDir;
-      _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
-      _prj.Analysis.init(_prj.SpeciesInfos);
+      initFilter();
     }
 
     public void saveSettings()
@@ -309,7 +307,7 @@ namespace BatInspector
     public int executeScript(string path, bool  initVars = true)
     {
       if (!System.IO.Path.IsPathRooted(path))
-        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath , path);
+        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath, AppParams.Inst.ScriptDir, path);
       else
         _scriptName = path;
       int retVal = _scripter.RunScript(_scriptName, true, initVars);
@@ -330,7 +328,7 @@ namespace BatInspector
       else
         _scriptName = path;
       string args = _scriptName;
-      _proc.LaunchCommandLineApp(exe, null, null, false, args, true, false);
+      _proc.launchCommandLineApp(exe, null, null, false, args, true, false);
     }
 
     public void deleteFiles(List<string> files)
@@ -445,6 +443,16 @@ namespace BatInspector
       image.EndInit();
 
       return image;
+    }
+
+    private void initFilter()
+    {
+      _filter.Items.Clear();
+      foreach (FilterParams p in AppParams.Inst.Filter)
+      {
+        FilterItem it = new FilterItem(_filter.Items.Count, p.Name, p.Expression, p.isForAllCalls);
+        _filter.Items.Add(it);
+      }
     }
 
     private bool tidyUpProject(DirectoryInfo dir, bool delWavs, bool pngs)

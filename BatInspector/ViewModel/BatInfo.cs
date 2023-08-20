@@ -162,7 +162,7 @@ namespace BatInspector
 
     public void save()
     {
-      string fPath = "\"" + Environment.CurrentDirectory + "/" + _fName + "\"";
+      string fPath = Path.Combine(AppParams.AppDataPath, _fName);
       try
       {
         StreamWriter file = new StreamWriter(fPath);
@@ -185,9 +185,10 @@ namespace BatInspector
     {
       BatInfo retVal = null;
       FileStream file = null;
-      string fPath = Environment.CurrentDirectory + "/" + _fName;
+      string fPath = Path.Combine(AppParams.AppDataPath, _fName);
       try
       {
+        DebugLog.log("try loading BatInfo: " + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
           file = new FileStream(fPath, FileMode.Open);
@@ -198,6 +199,7 @@ namespace BatInspector
         }
         else
         {
+          DebugLog.log("BatInfo does not exist, create new file: " + fPath, enLogType.DEBUG);
           retVal = new BatInfo();
           retVal.initSpeciesInfos();
           retVal.save();

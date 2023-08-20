@@ -84,6 +84,7 @@ namespace libParser
       Inst()._logPath= logPath;
       Inst()._dlgCheckMaxLogSize = checkMax;
       Inst().setupLogFile();
+      Inst().transmitEarlyMessagesToControl();
     }
 
     static public void clear()
@@ -124,6 +125,15 @@ namespace libParser
           entry = new stLogEntry("log reopened after automatic save", enLogType.INFO, DateTime.Now);
           _list.Add(entry);
         }
+      }
+    }
+
+    void transmitEarlyMessagesToControl()
+    {
+      foreach(stLogEntry entry in _list) 
+      {
+        if(_dlgLog != null)
+          _dlgLog(entry);
       }
     }
 

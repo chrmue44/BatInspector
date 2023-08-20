@@ -27,8 +27,7 @@ using System.Threading;
 using BatInspector.Properties;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq.Expressions;
+
 
 namespace BatInspector.Forms
 {
@@ -60,7 +59,7 @@ namespace BatInspector.Forms
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
-    List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
+    //List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
     bool _fastOpen = true;
     Thread _worker = null;
     System.Windows.Threading.DispatcherTimer _timer;
@@ -78,14 +77,17 @@ namespace BatInspector.Forms
       {
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
-
+      AppParams.load();
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
       string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
       _model = new ViewModel(this, versionStr);
-      _model.loadSettings();
-
       setLanguage();
       InitializeComponent();
+      _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
+      _ctlLog._cbWarn.IsChecked = AppParams.Inst.LogShowWarning;
+      _ctlLog._cbInfo.IsChecked = AppParams.Inst.LogShowInfo;
+      _ctlLog._cbDebug.IsChecked = AppParams.Inst.LogShowDebug;
+      DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog, _ctlLog.checkMaxLogSize, AppParams.LogDataPath);
       initTreeView();
       populateFilterComboBoxes();
       initZoomWindow();
@@ -103,12 +105,14 @@ namespace BatInspector.Forms
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
       _timer.Start();
-      DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog, _ctlLog.checkMaxLogSize, AppParams.LogDataPath);
       _ctlLog.setViewModel(_model);
-#if DEBUG
-      Tests tests = new Tests(_model);
-      tests.exec();
-      _switchTabToPrj = true;
+      /*#if DEBUG
+            Tests tests = new Tests(_model);
+            tests.exec();
+            _switchTabToPrj = true;
+      #endif*/
+      Installer.installToolsIfNotPresent("3.10","1.0.6");
+#if !DEBUG
 #endif
     }
 
@@ -863,17 +867,16 @@ namespace BatInspector.Forms
           filter = _model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
         {
-          _filteredWavs.Clear();
           foreach (ctlWavFile c in _spSpectrums.Children)
           {
             bool res = _model.Filter.apply(filter, c.Analysis);
             c._cbSel.IsChecked = res;
-            _filteredWavs.Add(c);
           }
+          _btnHideUnSelected_Click(sender, e);
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
         }
         else
-          DebugLog.log("no filter applied", enLogType.INFO);
+          DebugLog.log("no filter applied", enLogType.INFO);        
       }
       catch (Exception ex)
       {
@@ -1046,7 +1049,7 @@ namespace BatInspector.Forms
 
       if (_model.ReloadPrj)
       {
-        if ((_model.Prj != null) && (_model.Prj.Analysis != null))
+        if ((_model.Prj != null) && _model.Prj.Ok && (_model.Prj.Analysis != null))
         {
           _spSpectrums.Children.Clear();
           _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);

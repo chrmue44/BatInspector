@@ -75,7 +75,9 @@ namespace BatInspector.Controls
       if (res == true)
       {
         _tbExpression.Text = frm.FilterExpression;
+        _filter.Expression = frm.FilterExpression;
         _cbAll.IsChecked = frm.AllCalls;
+        _filter.IsForAllCalls = frm.AllCalls;
       }
     }
   }

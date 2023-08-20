@@ -10,6 +10,7 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 using BatInspector.Properties;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -60,7 +61,9 @@ namespace BatInspector.Forms
         if (AppParams.Inst.Scripts[index].IsTool)
         {
           _model.Scripter.VarList.set("VAR_FILE_NAME", _fileName);
-          string scriptName = AppParams.Inst.AppRootPath + "/" + AppParams.Inst.Scripts[index].Name;
+          string scriptName = Path.Combine(AppParams.AppDataPath, 
+                                           AppParams.Inst.ScriptDir,
+                                           AppParams.Inst.Scripts[index].Name);
           _model.executeScript(scriptName, false);
           this.DialogResult = true;
         }

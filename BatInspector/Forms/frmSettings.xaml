@@ -6,7 +6,7 @@
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.titleFrmSettings}" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="{x:Static res:MyResources.titleFrmSettings}" Height="700" Width="600" Loaded="Window_Loaded">
   <Grid>
     <Grid.RowDefinitions>
             <RowDefinition Height="*" />

@@ -27,7 +27,7 @@ namespace libScripter
     {
     }
 
-    public int LaunchCommandLineApp(string exePath, DataReceivedEventHandler handler = null, string workDir = "", bool wait = false,
+    public int launchCommandLineApp(string exePath, DataReceivedEventHandler handler = null, string workDir = "", bool wait = false,
                                     string args = "", bool newWindow = false, bool logOutput = false)
     {
       int retVal = 0;
@@ -37,7 +37,6 @@ namespace libScripter
       _pr.StartInfo.Arguments = args;
       _pr.StartInfo.CreateNoWindow = !newWindow;
       _pr.StartInfo.UseShellExecute = false;
-      //      pr.StartInfo.WindowStyle = winStyle;
       if (!newWindow)
       {
         _pr.StartInfo.RedirectStandardOutput = true;
@@ -57,16 +56,11 @@ namespace libScripter
         _pr.StartInfo.WorkingDirectory = workDir;
       try
       {
-        // Start the process with the info we specified.
-        // Call WaitForExit and then the using statement will close.
         LogMsg("CMD " + exePath + " " + args, enLogType.INFO);
         _pr.Start();
-     //   _pr.BeginOutputReadLine();
         if (wait)
         {
-//          System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
           _pr.WaitForExit();
-//          System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
           if (_pr.ExitCode != 0)
           {
             retVal = _pr.ExitCode;

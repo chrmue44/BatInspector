@@ -1017,4 +1017,19 @@
   <data name="ExpGenNested" xml:space="preserve">
     <value>verschachtelter Ausdruck</value>
   </data>
+  <data name="SetCatLog" xml:space="preserve">
+    <value>Log-Anzeige</value>
+  </data>
+  <data name="SpecDescShowError" xml:space="preserve">
+    <value>Zeige Fehlermeldungen in der Log-Anzeige</value>
+  </data>
+  <data name="SpecDescShowWarning" xml:space="preserve">
+    <value>Zeige Warnmeldungen in der Log-Anzeige</value>
+  </data>
+  <data name="SpecDescShowInfo" xml:space="preserve">
+    <value>Zeige Informationsmeldungen in der Log-Anzeige</value>
+  </data>
+  <data name="SpecDescShowDebug" xml:space="preserve">
+    <value>Zeige Debug-Meldungen in der Log-Anzeige</value>
+  </data>
 </root>

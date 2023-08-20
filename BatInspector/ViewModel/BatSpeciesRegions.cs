@@ -66,7 +66,7 @@ namespace BatInspector
   [DataContract]
   public class BatSpeciesRegions
   {
-    const string _fName = "dat/BatSpeciesRegions.json";
+    const string _fName = "dat\\BatSpeciesRegions.json";
     [DataMember]
     List<ParRegion> Regions { get; set; }
 
@@ -79,9 +79,10 @@ namespace BatInspector
     {
       BatSpeciesRegions retVal = null;
       FileStream file = null;
-      string fPath = Environment.CurrentDirectory + "/" + _fName;
+      string fPath = Path.Combine(AppParams.AppDataPath,  _fName);
       try
       {
+        DebugLog.log("try loading BatSpeciesRegions: " + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
           file = new FileStream(fPath, FileMode.Open);
@@ -92,6 +93,7 @@ namespace BatInspector
         }
         else
         {
+          DebugLog.log("BatSpeciesRegions does not exist, create new file: " + fPath, enLogType.DEBUG);
           retVal = new BatSpeciesRegions();
           retVal.init();
           retVal.save();
@@ -117,8 +119,7 @@ namespace BatInspector
 
     public void save()
     {
-      string fPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + _fName;
-      try
+      string fPath = Path.Combine(AppParams.AppDataPath, _fName); try
       {
         StreamWriter file = new StreamWriter(fPath);
         MemoryStream stream = new MemoryStream();

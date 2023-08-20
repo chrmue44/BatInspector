@@ -6,6 +6,13 @@ TODO
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
 - installer
 
+20.08.23 
+- bugfix Filter checkbox "apply to all calls" did not work properly
+- button "apply Filter" checks all checkboxes and hides unchecked immediately
+- bugfix better separation of DataPath and ExePath for Settings, species and BatSpeciesRegions
+- Selection boxes of log view are now setup by AppSettings
+- project notes accept return (\n)
+
 19.08.23 V0.4.0.0
 - formula expression gererator
 - added logentry (DEBUG) for each button and try-catch-blocks to catch errors

@@ -166,12 +166,18 @@ namespace BatInspector
           if (filter.IsForAllCalls)
           {
             if ((res.getType() != AnyType.tType.RT_BOOL) || !res.getBool())
+            {
               retVal = false;
+              break;
+            }
           }
           else
           {
             if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
+            {
               retVal = true;
+              break;
+            }
           }
         }
       }

@@ -216,6 +216,7 @@ namespace BatInspector
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE_DE = "/doc/BatInspector_DE.pdf"; // software manual
     public const string HELP_FILE_EN = "/doc/BatInspector_EN.pdf"; // software manual
+    public const string PROG_DAT_DIR = "BatInspector";    // sub directory for program data
     public const string VAR_WRK_DIR = "WRK_DIR";            // variable name for work dir
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
     const string _fName = "BatInspectorSettings.json";
@@ -374,6 +375,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescColorBackgXTDiag")]
+    [Browsable (false)]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 
     [DataMember]
@@ -542,6 +544,7 @@ namespace BatInspector
       WaterfallHeight = 256;
       WaterfallWidth = 512;
       FftWidth = 256;
+      FftWindow = DSPLib.DSP.Window.Type.Hann;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
       MainWindowWidth = 1400;
@@ -553,7 +556,7 @@ namespace BatInspector
       ZoomOneCall = 100;
       MainWindowPosX = 0;
       MainWindowPosY = 0;
-      GradientRange = 15;
+      GradientRange = 25;
       ProbabilityMin = 0.5;
       HideInfos = false;
       WaterfallLogarithmic = true;
@@ -565,7 +568,7 @@ namespace BatInspector
       SelectedModel = 0;
       initModels();
       SamplingRate = 312500;
-      ScriptCopyAutoToMan = "scripts/copyAutoToMan.scr";
+      ScriptCopyAutoToMan = "copyAutoToMan.scr";
 
       LogShowError = true;
       LogShowWarning = true;
@@ -742,8 +745,11 @@ namespace BatInspector
         string path = File.ReadAllText(_dataPath);
         DebugLog.log("content " + _dataPath + ": " + path, enLogType.INFO);
         if (path == VAR_DATA_PATH)
-          AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                     "BatInspector");
+        {
+
+          AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+                                     PROG_DAT_DIR);
+        }
         else
         {
           AppDataPath = replaceDriveLetter(path);
@@ -767,17 +773,17 @@ namespace BatInspector
     {
       ColorGradientBlue = new List<ColorItem>
       {
-        new ColorItem(128, 0),
-        new ColorItem(255, 30),
+        new ColorItem(0, 0),
+        new ColorItem(0, 30),
         new ColorItem(0, 70),
-        new ColorItem(0, 100),
+        new ColorItem(0, 75),
         new ColorItem(40, 100)
       };
       ColorGradientGreen = new List<ColorItem>
       {
         new ColorItem(0, 0),
-        new ColorItem(200, 30),
-        new ColorItem(255, 70),
+        new ColorItem(70, 30),
+        new ColorItem(200, 70),
         new ColorItem(200, 75),
         new ColorItem(0, 100)
       };
@@ -785,8 +791,8 @@ namespace BatInspector
       {
         new ColorItem(0, 0),
         new ColorItem(0, 30),
-        new ColorItem(255, 70),
-        new ColorItem(255, 75),
+        new ColorItem(200, 70),
+        new ColorItem(200, 75),
         new ColorItem(255, 100)
       };
     }

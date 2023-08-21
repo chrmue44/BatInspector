@@ -14,8 +14,6 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libScripter", "libScripter\libScripter.csproj", "{D3341F96-D18D-44AF-9A16-1AEA7296E1D4}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "batclassify", "py\batclassify.pyproj", "{A73DB092-9948-4C46-A2E0-99365055DC91}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libBioAcoustics", "libBioAcoustics\libBioAcoustics.vcxproj", "{6CB409BD-1D5C-4114-8963-F92DE90B3693}"
 EndProject
 Global
@@ -72,12 +70,6 @@ Global
 		{D3341F96-D18D-44AF-9A16-1AEA7296E1D4}.Release|x64.Build.0 = Release|Any CPU
 		{D3341F96-D18D-44AF-9A16-1AEA7296E1D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{D3341F96-D18D-44AF-9A16-1AEA7296E1D4}.Release|x86.Build.0 = Release|Any CPU
-		{A73DB092-9948-4C46-A2E0-99365055DC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A73DB092-9948-4C46-A2E0-99365055DC91}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A73DB092-9948-4C46-A2E0-99365055DC91}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A73DB092-9948-4C46-A2E0-99365055DC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A73DB092-9948-4C46-A2E0-99365055DC91}.Release|x64.ActiveCfg = Release|Any CPU
-		{A73DB092-9948-4C46-A2E0-99365055DC91}.Release|x86.ActiveCfg = Release|Any CPU
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693}.Debug|Any CPU.Build.0 = Debug|x64
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693}.Debug|x64.ActiveCfg = Debug|x64

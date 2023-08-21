@@ -292,7 +292,7 @@ namespace BatInspector
     bool _isOpen;
     WaveOutEvent _outputDevice = null;
     AudioFileReader _audioFile = null;
-    string _tmpName = "$$$.wav";
+    string _tmpName = Path.Combine(AppParams.AppDataPath,"$$$.wav");
     PlaybackState _playbackState = PlaybackState.Stopped;
 
     public WaveHeader WavHeader { get { return _header;} }

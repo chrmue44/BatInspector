@@ -106,11 +106,11 @@ namespace BatInspector.Forms
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
       _timer.Start();
       _ctlLog.setViewModel(_model);
-      /*#if DEBUG
+      #if DEBUG
             Tests tests = new Tests(_model);
             tests.exec();
             _switchTabToPrj = true;
-      #endif*/
+      #endif
       Installer.installToolsIfNotPresent("3.10","1.0.6");
 #if !DEBUG
 #endif

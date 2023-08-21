@@ -45,11 +45,12 @@ namespace BatInspector
         string wavDir = Path.Combine(prj.PrjDir ,prj.WavSubDir);
         string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
-                         AppParams.Inst.ModelRootPath :
+                         AppParams.Inst.ModelRootPath  :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
-        string args = modPath + " " + wavDir + " " +
-                     annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
         string wrkDir = Path.Combine(modPath, AppParams.Inst.Models[this.Index].Dir);
+
+        string args = wrkDir + " " + wavDir + " " +
+                     annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
         string cmd = Path.Combine(wrkDir, AppParams.Inst.Models[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
         bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);

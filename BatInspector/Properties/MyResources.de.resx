@@ -1032,4 +1032,34 @@
   <data name="SpecDescShowDebug" xml:space="preserve">
     <value>Zeige Debug-Meldungen in der Log-Anzeige</value>
   </data>
+  <data name="InstallerDataTxt1" xml:space="preserve">
+    <value>kopiere Programmdaten nach 'öffentliche Dokumente'</value>
+  </data>
+  <data name="InstallerModTxt1" xml:space="preserve">
+    <value>Installiere KI-Modell (Universität Edinborough)\n</value>
+  </data>
+  <data name="InstallerModTxt2" xml:space="preserve">
+    <value>Der Vorgang wird eine Weile dauern. Bitte warten bis das Fenster geschlossen wird!</value>
+  </data>
+  <data name="InstallerPyTxt1" xml:space="preserve">
+    <value>installiere Python</value>
+  </data>
+  <data name="InstallerPyTxt2" xml:space="preserve">
+    <value>WICHTIG</value>
+  </data>
+  <data name="InstallerPyTxt3" xml:space="preserve">
+    <value>siehe Kapitel 2 in der Bedienungsanleitung\n</value>
+  </data>
+  <data name="InstallerPyTxt4" xml:space="preserve">
+    <value>1. Warten bis Installer gestartet ist (nach Drücken von OK)\n</value>
+  </data>
+  <data name="InstallerPyTxt5" xml:space="preserve">
+    <value>2. 'add python exe to path' anklicken</value>
+  </data>
+  <data name="InstallerPyTxt6" xml:space="preserve">
+    <value>3. 'Customize Installation' starten</value>
+  </data>
+  <data name="InstallerPyTxt7" xml:space="preserve">
+    <value>4. auf der dritten Seite 'install for all users' anwählen</value>
+  </data>
 </root>

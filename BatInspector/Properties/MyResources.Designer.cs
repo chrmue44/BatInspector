@@ -1330,6 +1330,96 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to copy program data files to &apos;shared documents.
+        /// </summary>
+        public static string InstallerDataTxt1 {
+            get {
+                return ResourceManager.GetString("InstallerDataTxt1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to install AI model batdetect2 (Univerity of Edinborough)\n.
+        /// </summary>
+        public static string InstallerModTxt1 {
+            get {
+                return ResourceManager.GetString("InstallerModTxt1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The process may take a while, please wait until it is finished!.
+        /// </summary>
+        public static string InstallerModTxt2 {
+            get {
+                return ResourceManager.GetString("InstallerModTxt2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to install Python.
+        /// </summary>
+        public static string InstallerPyTxt1 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IMPORTANT.
+        /// </summary>
+        public static string InstallerPyTxt2 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to refer to chapter 2 in the manual\n.
+        /// </summary>
+        public static string InstallerPyTxt3 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1. wait for installer starting after pressing OK\n.
+        /// </summary>
+        public static string InstallerPyTxt4 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2. Check the box &apos;add python.exe to path&apos;\n.
+        /// </summary>
+        public static string InstallerPyTxt5 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3. start &apos;Customize Installation&apos;\n.
+        /// </summary>
+        public static string InstallerPyTxt6 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 4. check box &apos;install for all users&apos; on 3rd page.
+        /// </summary>
+        public static string InstallerPyTxt7 {
+            get {
+                return ResourceManager.GetString("InstallerPyTxt7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latitude.
         /// </summary>
         public static string Latitude {

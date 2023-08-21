@@ -1032,4 +1032,34 @@
   <data name="SpecDescShowDebug" xml:space="preserve">
     <value>Show debug messages in log view</value>
   </data>
+  <data name="InstallerModTxt1" xml:space="preserve">
+    <value>install AI model batdetect2 (Univerity of Edinborough)\n</value>
+  </data>
+  <data name="InstallerModTxt2" xml:space="preserve">
+    <value>The process may take a while, please wait until it is finished!</value>
+  </data>
+  <data name="InstallerPyTxt1" xml:space="preserve">
+    <value>install Python</value>
+  </data>
+  <data name="InstallerPyTxt2" xml:space="preserve">
+    <value>IMPORTANT</value>
+  </data>
+  <data name="InstallerPyTxt3" xml:space="preserve">
+    <value>refer to chapter 2 in the manual\n</value>
+  </data>
+  <data name="InstallerPyTxt4" xml:space="preserve">
+    <value>1. wait for installer starting after pressing OK\n</value>
+  </data>
+  <data name="InstallerPyTxt5" xml:space="preserve">
+    <value>2. Check the box 'add python.exe to path'\n</value>
+  </data>
+  <data name="InstallerPyTxt6" xml:space="preserve">
+    <value>3. start 'Customize Installation'\n</value>
+  </data>
+  <data name="InstallerPyTxt7" xml:space="preserve">
+    <value>4. check box 'install for all users' on 3rd page</value>
+  </data>
+  <data name="InstallerDataTxt1" xml:space="preserve">
+    <value>copy program data files to 'shared documents</value>
+  </data>
 </root>

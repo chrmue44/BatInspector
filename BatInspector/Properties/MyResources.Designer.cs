@@ -1339,7 +1339,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to install AI model batdetect2 (Univerity of Edinborough)\n.
+        ///   Looks up a localized string similar to install AI model batdetect2 (Univerity of Edinborough).
         /// </summary>
         public static string InstallerModTxt1 {
             get {
@@ -1375,7 +1375,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to refer to chapter 2 in the manual\n.
+        ///   Looks up a localized string similar to refer to chapter 2 in the manual.
         /// </summary>
         public static string InstallerPyTxt3 {
             get {
@@ -1384,7 +1384,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1. wait for installer starting after pressing OK\n.
+        ///   Looks up a localized string similar to 1. wait for installer starting after pressing OK.
         /// </summary>
         public static string InstallerPyTxt4 {
             get {
@@ -1393,7 +1393,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2. Check the box &apos;add python.exe to path&apos;\n.
+        ///   Looks up a localized string similar to 2. Check the box &apos;add python.exe to path&apos;.
         /// </summary>
         public static string InstallerPyTxt5 {
             get {
@@ -1402,7 +1402,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3. start &apos;Customize Installation&apos;\n.
+        ///   Looks up a localized string similar to 3. start &apos;Customize Installation&apos;.
         /// </summary>
         public static string InstallerPyTxt6 {
             get {

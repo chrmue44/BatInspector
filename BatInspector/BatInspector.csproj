@@ -448,6 +448,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="versions.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\MyResources.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MyResources.de.Designer.cs</LastGenOutput>
@@ -581,9 +584,7 @@
     <Resource Include="images\icons8-plus-+-48.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="history.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="history.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\icons8-zoom-in-64.png" />

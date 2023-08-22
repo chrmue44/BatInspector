@@ -16,7 +16,7 @@ namespace BatInspector
     static string _outputData;
     public static void installToolsIfNotPresent(string pythonVer, string modelVer)
     {
-      bool instData = !isDataInstalled();
+      bool instData = !isDataInstalled(); // call before isModelInstalled
       bool instPy = !isPythonInstalled("3.10");
       bool instMod = !isModelInstalled();
 
@@ -29,18 +29,18 @@ namespace BatInspector
   
         frm._cbModel.IsChecked = instMod;
         frm._cbModel.IsEnabled = instMod;
-        frm._cbModel.Content = BatInspector.Properties.MyResources.InstallerModTxt1 +
+        frm._cbModel.Content = BatInspector.Properties.MyResources.InstallerModTxt1 +"\n"+
                               BatInspector.Properties.MyResources.InstallerModTxt2;
         
         frm._cbPython.IsEnabled = instPy;
         frm._cbPython.IsChecked = instPy;
         frm._cbPython.Content = BatInspector.Properties.MyResources.InstallerPyTxt1 + " 3.10.10\n\n" +
                               "**********    !!! " + BatInspector.Properties.MyResources.InstallerPyTxt2 + " !!!   *********\n" +
-                              "*   "+ BatInspector.Properties.MyResources.InstallerPyTxt3 +
+                              "*   "+ BatInspector.Properties.MyResources.InstallerPyTxt3 +"\n"+
                               "******************************************\n\n" +
-                              BatInspector.Properties.MyResources.InstallerPyTxt4 +
-                              BatInspector.Properties.MyResources.InstallerPyTxt5 +
-                              BatInspector.Properties.MyResources.InstallerPyTxt6 +
+                              BatInspector.Properties.MyResources.InstallerPyTxt4 +"\n"+
+                              BatInspector.Properties.MyResources.InstallerPyTxt5 +"\n"+
+                              BatInspector.Properties.MyResources.InstallerPyTxt6 +"\n"+
                               BatInspector.Properties.MyResources.InstallerPyTxt7;
       frm.ShowDialog();
       }
@@ -78,10 +78,12 @@ namespace BatInspector
         if (instMod)
         {
             string wrkDir = Path.Combine(AppParams.AppDataPath, "setup");
-            p.launchCommandLineApp("cmd.exe", null, wrkDir, true, "/C install_tools.bat", true);
+          string installBat = Path.Combine(wrkDir, "install_tools.bat");
+            p.launchCommandLineApp("cmd.exe", null, wrkDir, true, "/C " + installBat, true);
         }
         if (restart)
         {
+          AppParams.Inst.save();
           Process.Start(AppDomain.CurrentDomain.FriendlyName);
           Environment.Exit(0);
         }
@@ -102,6 +104,21 @@ namespace BatInspector
                                    AppParams.PROG_DAT_DIR);
 
       bool retVal =  File.Exists(fInstall) && Directory.Exists(dstDir);
+      if (retVal)
+      {
+        string datDirDst = Path.Combine(dstDir, "dat");
+        string datDirSrc = Path.Combine(srcDir, "dat");
+        if (Directory.Exists(datDirDst) && Directory.Exists(datDirSrc))
+        {
+          DirectoryInfo dst = new DirectoryInfo(datDirDst);
+          DirectoryInfo src = new DirectoryInfo(datDirSrc);
+          if (dst.CreationTime < src.CreationTime)
+          {
+            Directory.Delete(dstDir, true);
+            retVal = false;
+          }
+        }
+      }
       return retVal;
     }
 
@@ -123,17 +140,13 @@ namespace BatInspector
           err = p.launchCommandLineApp("cmd.exe", null,
                                         AppParams.AppDataPath, true,
                                         "/C python --version > version.txt 2>&1");
-          if (err == 0)
-          {
-            fName = Path.Combine(AppParams.AppDataPath, "version.txt");
-            _outputData = File.ReadAllText(fName);
-            File.Delete(fName);
-            string verStr = "Python " + ver;
-            if (_outputData.IndexOf(verStr) >= 0)
-            {
+          fName = Path.Combine(AppParams.AppDataPath, "version.txt");
+          _outputData = File.ReadAllText(fName);
+          File.Delete(fName);
+          DebugLog.log("found " + _outputData, enLogType.INFO);
+          string verStr = "Python " + ver;
+          if (_outputData.IndexOf(verStr) >= 0)
               retVal = true;
-            }
-          }
         }
       }
       return retVal;

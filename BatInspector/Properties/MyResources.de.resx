@@ -1036,7 +1036,7 @@
     <value>kopiere Programmdaten nach 'öffentliche Dokumente'</value>
   </data>
   <data name="InstallerModTxt1" xml:space="preserve">
-    <value>Installiere KI-Modell (Universität Edinborough)\n</value>
+    <value>Installiere KI-Modell (Universität Edinborough)</value>
   </data>
   <data name="InstallerModTxt2" xml:space="preserve">
     <value>Der Vorgang wird eine Weile dauern. Bitte warten bis das Fenster geschlossen wird!</value>
@@ -1048,10 +1048,10 @@
     <value>WICHTIG</value>
   </data>
   <data name="InstallerPyTxt3" xml:space="preserve">
-    <value>siehe Kapitel 2 in der Bedienungsanleitung\n</value>
+    <value>siehe Kapitel 2 in der Bedienungsanleitung</value>
   </data>
   <data name="InstallerPyTxt4" xml:space="preserve">
-    <value>1. Warten bis Installer gestartet ist (nach Drücken von OK)\n</value>
+    <value>1. Warten bis Installer gestartet ist (nach Drücken von OK)</value>
   </data>
   <data name="InstallerPyTxt5" xml:space="preserve">
     <value>2. 'add python exe to path' anklicken</value>

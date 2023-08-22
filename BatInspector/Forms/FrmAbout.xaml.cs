@@ -30,7 +30,7 @@ namespace BatInspector.Forms
       try
       {
         _tbLicences.Text = File.ReadAllText("Licenses.txt");
-        _tbHistory.Text = File.ReadAllText("history.txt");
+        _tbHistory.Text = File.ReadAllText("versions.txt");
       }
       catch { }
     }

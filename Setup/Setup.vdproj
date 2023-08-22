@@ -153,6 +153,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9226D146FB154E8C8BF70C7BDF76F33A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_968547B6565FBC953155D6080A874B06"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
@@ -406,18 +412,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -467,6 +461,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BBF75597F63B7AED10A2F5576B5F5F7F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1118,6 +1124,26 @@
             "TargetName" = "8:BatSpeciesRegions.json"
             "Tag" = "8:"
             "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9226D146FB154E8C8BF70C7BDF76F33A"
+            {
+            "SourcePath" = "8:python\\python-3.10.10-amd64.exe"
+            "TargetName" = "8:python-3.10.10-amd64.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_CA516577E73147DB8342AED72FEE67F1"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

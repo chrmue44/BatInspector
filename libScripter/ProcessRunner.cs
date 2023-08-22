@@ -64,7 +64,7 @@ namespace libScripter
           if (_pr.ExitCode != 0)
           {
             retVal = _pr.ExitCode;
-            LogMsg("command " + exePath + " " + args + " terminated with exit code " + _pr.ExitCode.ToString(), enLogType.ERROR);
+            LogMsg("command " + exePath + " " + args + " terminated with exit code " + _pr.ExitCode.ToString() + "; workDir: " + workDir, enLogType.ERROR);
           }
           else
             LogMsg(_pr.ExitCode.ToString(), enLogType.INFO);
@@ -73,7 +73,7 @@ namespace libScripter
       }
       catch (Exception ex)
       {
-        LogMsg("Error starting " + exePath + " " + args + ": " + ex.ToString(), enLogType.ERROR);
+        LogMsg("Error starting " + exePath + " " + args + ": " + "; workDir: " + workDir + "; "+ ex.ToString(), enLogType.ERROR);
         retVal = 1;
         _pr = null;
       }

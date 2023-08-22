@@ -14,6 +14,14 @@ https://www.museumfuernaturkunde.berlin/de/wissenschaft/tierstimmenarchiv
 
 
 ****************
+*     PDFs     *
+****************
+Bayrisches Landesamt für Umwelt
+Teil1: https://www.bestellen.bayern.de/application/applstarter?APPL=eshop&DIR=eshop&ACTIONxSETVAL(artdtl.htm,APGxNODENR:34,AARTxNR:lfu_nat_00378,AARTxNODENR:357135,USERxBODYURL:artdtl.htm,KATALOG:StMUG,AKATxNAME:StMUG,ALLE:x)=X
+Teil2: https://www.bestellen.bayern.de/application/applstarter?APPL=eshop&DIR=eshop&ACTIONxSETVAL(artdtl.htm,APGxNODENR:34,AARTxNR:lfu_nat_00427,AARTxNODENR:366581,USERxBODYURL:artdtl.htm,KATALOG:StMUG,AKATxNAME:StMUG,ALLE:x)=X
+
+
+****************
 *    Icons     *
 ****************
 

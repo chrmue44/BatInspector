@@ -13,6 +13,8 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -36,6 +38,7 @@ namespace BatInspector
     public DateTime EndTime { get; set; }
     public bool IsProjectFolder { get; set; } 
 
+    public bool OverwriteLocation { get; set; }
 
   }
 
@@ -318,6 +321,8 @@ namespace BatInspector
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
         string[] files = getSelectedFiles(info, "._*.wav");
+        gpx gpxFile = null;
+        
         if(files.Length > 0)
         {
           MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.msgDeleteIntermediate, 
@@ -336,6 +341,13 @@ namespace BatInspector
         }
 
         files = getSelectedFiles(info, "*.wav");
+        if(info.OverwriteLocation)
+        {
+          gpxFile = gpx.read(info.GpxFile);
+          if (gpxFile == null)
+            return retVal.ToArray();
+        }  
+        
         if (files.Length > 0)
         {
           WavFile wavFile = new WavFile();
@@ -393,7 +405,10 @@ namespace BatInspector
               string[] xmlFiles = new string[prjFiles.Length];
               for (int i = 0; i < xmlFiles.Length; i++)
                 xmlFiles[i] = prjFiles[i].Replace(".wav", ".xml");
-              Utils.copyFiles(xmlFiles, wavDir);
+              if (info.OverwriteLocation)
+                replaceLocations(xmlFiles, wavDir, gpxFile);
+              else
+                Utils.copyFiles(xmlFiles, wavDir);
             }
             Project prj = new Project(regions, speciesInfo);
             DirectoryInfo dir = new DirectoryInfo(fullDir);
@@ -411,6 +426,19 @@ namespace BatInspector
         DebugLog.log("error creating Project " + info.Name + " " + e.ToString(), enLogType.ERROR);
       }
       return retVal.ToArray();
+    }
+
+    private static void replaceLocations(string[] xmlfiles, string wavDir, gpx gpxFile)
+    {
+      foreach(string fName in xmlfiles)
+      { 
+        BatRecord f = ElekonInfoFile.read(fName);
+        double[] pos = gpxFile.getPosition(ElekonInfoFile.getDateTimeFromFileName(fName));
+        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
+        string dstName = Path.GetFileName(fName);
+        dstName = Path.Combine(wavDir, dstName);
+        ElekonInfoFile.write(dstName, f);
+      }
     }
 
     public void readPrjFile(string fName)

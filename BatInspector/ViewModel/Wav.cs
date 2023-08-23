@@ -284,7 +284,7 @@ namespace BatInspector
 
   public class WavFile
   {
-    private byte[] _waveData;
+    private byte[] _rawData;
     WaveHeader _header;
     FormatChunk _format;
     DataChunk _data;
@@ -338,23 +338,23 @@ namespace BatInspector
       int retVal = 0;
       try
       {
-        _waveData = File.ReadAllBytes(name);
-        byte[] hdr = partArray(_waveData, 0, 12);
+        _rawData = File.ReadAllBytes(name);
+        byte[] hdr = partArray(_rawData, 0, 12);
         _header = new WaveHeader(hdr);
-        byte[] format = partArray(_waveData, 12, 24);
+        byte[] format = partArray(_rawData, 12, 24);
         _format = new FormatChunk(format);
 
         int pos = 12;
-        while (!(_waveData[pos] == 'd' && _waveData[pos + 1] == 'a' && _waveData[pos + 2] == 't' && _waveData[pos + 3] == 'a'))
+        while (!(_rawData[pos] == 'd' && _rawData[pos + 1] == 'a' && _rawData[pos + 2] == 't' && _rawData[pos + 3] == 'a'))
         {
           pos += 4;
-          int chunkSize = _waveData[pos] + _waveData[pos + 1] * 256 + _waveData[pos + 2] * 65536 + _waveData[pos + 3] * 16777216;
+          int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
           pos += 4 + chunkSize;
         }
-        byte[] data = partArray(_waveData, pos, 8);
+        byte[] data = partArray(_rawData, pos, 8);
         _data = new DataChunk(data);
         pos += 8;
-        _data.AddSampleData(_waveData, pos, _waveData.Length - pos);
+        _data.AddSampleData(_rawData, pos, _rawData.Length - pos);
         _fName = name;
         _isOpen = true;
       }
@@ -370,23 +370,23 @@ namespace BatInspector
       int retVal = 0;
       try
       {
-        _waveData = File.ReadAllBytes(name);
-        byte[] hdr = partArray(_waveData, 0, 12);
+        _rawData = File.ReadAllBytes(name);
+        byte[] hdr = partArray(_rawData, 0, 12);
         _header = new WaveHeader(hdr);
-        byte[] format = partArray(_waveData, 12, 24);
+        byte[] format = partArray(_rawData, 12, 24);
         _format = new FormatChunk(format);
 
         int pos = 12;
-        while (!(_waveData[pos] == 'd' && _waveData[pos + 1] == 'a' && _waveData[pos + 2] == 't' && _waveData[pos + 3] == 'a'))
+        while (!(_rawData[pos] == 'd' && _rawData[pos + 1] == 'a' && _rawData[pos + 2] == 't' && _rawData[pos + 3] == 'a'))
         {
           pos += 4;
-          int chunkSize = _waveData[pos] + _waveData[pos + 1] * 256 + _waveData[pos + 2] * 65536 + _waveData[pos + 3] * 16777216;
+          int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
           pos += 4 + chunkSize;
         }
-        byte[] data = partArray(_waveData, pos, 8);
+        byte[] data = partArray(_rawData, pos, 8);
         _data = new DataChunk(data);
         pos += 8;
-        _data.AddSampleData(_waveData, pos, _waveData.Length - pos, ref samples);
+        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, ref samples);
         _fName = name;
         _isOpen = true;
       }
@@ -424,8 +424,8 @@ namespace BatInspector
             tempBytes.AddRange(dummy);
           }
           tempBytes.AddRange(_data.GetBytes());
-          _waveData = tempBytes.ToArray();
-          foreach (byte b in _waveData)
+          _rawData = tempBytes.ToArray();
+          foreach (byte b in _rawData)
             f.WriteByte(b);
           f.Close();
         }
@@ -453,7 +453,7 @@ namespace BatInspector
       tempBytes.AddRange(_header.GetBytes());
       tempBytes.AddRange(_format.GetBytes());
       tempBytes.AddRange(_data.GetBytes());
-      _waveData = tempBytes.ToArray();
+      _rawData = tempBytes.ToArray();
       _isOpen = true;
     }
 
@@ -472,7 +472,7 @@ namespace BatInspector
       tempBytes.AddRange(_header.GetBytes());
       tempBytes.AddRange(_format.GetBytes());
       tempBytes.AddRange(_data.GetBytes());
-      _waveData = tempBytes.ToArray();
+      _rawData = tempBytes.ToArray();
       _isOpen = true;
     }
 
@@ -486,7 +486,7 @@ namespace BatInspector
 
     public void pause()
     {
-      if ((_waveData != null) && (_outputDevice != null))
+      if ((_rawData != null) && (_outputDevice != null))
       {
         if (_outputDevice.PlaybackState == PlaybackState.Playing)
         {
@@ -494,6 +494,29 @@ namespace BatInspector
           _playbackState = PlaybackState.Paused;
         }
       }
+    }
+
+    public void play_HET(ushort chanCount, int sampleRate, double f_HET, int idxStart, int idxEnd, double[] left, double[] right = null, double playPosition = 0.0)
+    {
+      if (_playbackState != PlaybackState.Paused)
+      {
+        createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
+        applyHetFrequency(f_HET);
+        saveFileAs(_tmpName);
+      }
+      else
+      {
+        if ((_outputDevice != null) && (_audioFile != null))
+        {
+          if (_outputDevice.PlaybackState == PlaybackState.Paused)
+          {
+            double length = (double)_data.WaveData.Length / _format.Frequency;
+            int pos = (int)(playPosition / length * _audioFile.Length);
+            _audioFile.Position = pos;
+          }
+        }
+      }
+      play();
     }
 
     public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null, double playPosition = 0.0)
@@ -523,7 +546,7 @@ namespace BatInspector
       try
       {
 
-        if (_waveData != null)
+        if (_rawData != null)
         {
           if (_outputDevice == null)
           {
@@ -611,6 +634,16 @@ namespace BatInspector
       catch (Exception ex)
       {
         DebugLog.log("error stopping WAV play: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+
+    private void applyHetFrequency(double f_HET)
+    {
+      for (int i = 0; i < AudioSamples.Length; i++)
+      {
+        double s = Math.Sin(f_HET / _format.Frequency * i * 2 * Math.PI);
+        AudioSamples[i] = (short)(s * AudioSamples[i]);
       }
     }
   }

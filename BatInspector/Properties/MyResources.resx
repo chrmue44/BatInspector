@@ -331,7 +331,7 @@
     <value>Define filters for lists</value>
   </data>
   <data name="MainToolEvalBatCalls" xml:space="preserve">
-    <value>Evaluate and classify bat calls in project</value>
+    <value>AI supported evaluation and classification of bat calls in project</value>
   </data>
   <data name="MainToolEditColorScheme" xml:space="preserve">
     <value>Edit color scheme for waterfall diagram</value>
@@ -1061,5 +1061,26 @@
   </data>
   <data name="InstallerDataTxt1" xml:space="preserve">
     <value>copy program data files to 'shared documents</value>
+  </data>
+  <data name="ToolTipPlayDispSectionHET" xml:space="preserve">
+    <value>play displayed section in Heterodyne mode</value>
+  </data>
+  <data name="SetDescFrequencyHET" xml:space="preserve">
+    <value>Heterodyne frequency [Hz] for playback in HET mode in zoom view</value>
+  </data>
+  <data name="CtrlZoomToolHeterodyneFreq" xml:space="preserve">
+    <value>set heterodyne frequency</value>
+  </data>
+  <data name="FrmCreatePrjFileSelection" xml:space="preserve">
+    <value>File Selection</value>
+  </data>
+  <data name="FrmCreatePrjProjectsToCreate" xml:space="preserve">
+    <value>Project(s) to Create</value>
+  </data>
+  <data name="FrmCreatePrjLLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="FrmCreatePrjCbOverwriteLoc" xml:space="preserve">
+    <value>Overwrite location in source files</value>
   </data>
 </root>

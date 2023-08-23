@@ -199,7 +199,7 @@ namespace BatInspector
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
     public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
     public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports
-    public const string GPX_DATETIME_FORMAT = "yyyy-MM-ddThh:mm:ssZ"; // date format for reports
+    public const string GPX_DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:ssZ"; // date format for reports
     public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string PRJ_SUMMARY = "summary.csv";      // report name for project summar
     public const string DIR_WAVS = "Records";             // directory for WAV files
@@ -311,6 +311,11 @@ namespace BatInspector
     [LocalizedDescription("SetDescColorOfLine")]
     [Browsable(false)]
     public Color ColorXtLine { get; set; } = Color.Black;
+
+    [DataMember]
+    [LocalizedCategory("SetCatZoom")]
+    [LocalizedDescription("SetDescFrequencyHET")]
+    public double FrequencyHET { get; set; } = 40000;
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
@@ -554,6 +559,7 @@ namespace BatInspector
       ZoomWindowWidth = 1200;
       ZoomWindowHeight = 900;
       ZoomOneCall = 100;
+      FrequencyHET = 40000;
       MainWindowPosX = 0;
       MainWindowPosY = 0;
       GradientRange = 25;

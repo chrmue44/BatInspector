@@ -619,6 +619,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to set heterodyne frequency.
+        /// </summary>
+        public static string CtrlZoomToolHeterodyneFreq {
+            get {
+                return ResourceManager.GetString("CtrlZoomToolHeterodyneFreq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Lag.
         /// </summary>
         public static string DeltaT {
@@ -853,6 +862,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overwrite location in source files.
+        /// </summary>
+        public static string FrmCreatePrjCbOverwriteLoc {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjCbOverwriteLoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination Folder for Project.
         /// </summary>
         public static string frmCreatePrjDstFolder {
@@ -867,6 +885,15 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjEvalPrj {
             get {
                 return ResourceManager.GetString("frmCreatePrjEvalPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Selection.
+        /// </summary>
+        public static string FrmCreatePrjFileSelection {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjFileSelection", resourceCulture);
             }
         }
         
@@ -894,6 +921,15 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjLandscape {
             get {
                 return ResourceManager.GetString("frmCreatePrjLandscape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string FrmCreatePrjLLocation {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjLLocation", resourceCulture);
             }
         }
         
@@ -930,6 +966,15 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjPosFromGpx {
             get {
                 return ResourceManager.GetString("frmCreatePrjPosFromGpx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project(s) to Create.
+        /// </summary>
+        public static string FrmCreatePrjProjectsToCreate {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjProjectsToCreate", resourceCulture);
             }
         }
         
@@ -1771,7 +1816,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluate and classify bat calls in project.
+        ///   Looks up a localized string similar to AI supported evaluation and classification of bat calls in project.
         /// </summary>
         public static string MainToolEvalBatCalls {
             get {
@@ -2199,6 +2244,15 @@ namespace BatInspector.Properties {
         public static string SetDescFilter {
             get {
                 return ResourceManager.GetString("SetDescFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heterodyne frequency [Hz] for playback in HET mode in zoom view.
+        /// </summary>
+        public static string SetDescFrequencyHET {
+            get {
+                return ResourceManager.GetString("SetDescFrequencyHET", resourceCulture);
             }
         }
         
@@ -2784,6 +2838,15 @@ namespace BatInspector.Properties {
         public static string ToolTipPlayDispSection20x {
             get {
                 return ResourceManager.GetString("ToolTipPlayDispSection20x", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to play displayed section in Heterodyne mode.
+        /// </summary>
+        public static string ToolTipPlayDispSectionHET {
+            get {
+                return ResourceManager.GetString("ToolTipPlayDispSectionHET", resourceCulture);
             }
         }
         

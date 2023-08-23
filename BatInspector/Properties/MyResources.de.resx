@@ -331,7 +331,7 @@
     <value>Definiere Filter für Auswertung</value>
   </data>
   <data name="MainToolEvalBatCalls" xml:space="preserve">
-    <value>Klassifizierung und Auswertung von Rufen</value>
+    <value>KI gestützte Klassifizierung und Auswertung von Rufen</value>
   </data>
   <data name="MainToolEditColorScheme" xml:space="preserve">
     <value>Bearbeite Farbverlauf für Wasserfalldiagramm</value>
@@ -1061,5 +1061,26 @@
   </data>
   <data name="InstallerPyTxt7" xml:space="preserve">
     <value>4. auf der dritten Seite 'install for all users' anwählen</value>
+  </data>
+  <data name="ToolTipPlayDispSectionHET" xml:space="preserve">
+    <value>Spiele angezeigten Abschnitt im Heterodyn-Betrieb</value>
+  </data>
+  <data name="SetDescFrequencyHET" xml:space="preserve">
+    <value>Heterodyn-Frequenz [Hz] zum Abspielen in Zoomansicht</value>
+  </data>
+  <data name="CtrlZoomToolHeterodyneFreq" xml:space="preserve">
+    <value>Heterodyn-Frequenz einstellen</value>
+  </data>
+  <data name="FrmCreatePrjFileSelection" xml:space="preserve">
+    <value>Dateiauswahl</value>
+  </data>
+  <data name="FrmCreatePrjProjectsToCreate" xml:space="preserve">
+    <value>Erzeugte(s) Projekt(e)</value>
+  </data>
+  <data name="FrmCreatePrjLLocation" xml:space="preserve">
+    <value>Positionsangaben</value>
+  </data>
+  <data name="FrmCreatePrjCbOverwriteLoc" xml:space="preserve">
+    <value>Überschreibe Positionsangaben aus Quelldateien</value>
   </data>
 </root>

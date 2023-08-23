@@ -161,6 +161,15 @@ namespace BatInspector
       _wav.play(1, _audio.SamplingRate / stretch, iStart, iEnd, _audio.Samples, null, playPosition * stretch);
     }
 
+    public void play_HET(double freq_HET, double tStart, double tEnd, double playPosition)
+    {
+      if (_wav == null)
+        _wav = new WavFile();
+      int iStart = Math.Max((int)(tStart * SamplingRate), 0);
+      int iEnd = Math.Min((int)(tEnd * SamplingRate), _audio.Samples.Length);
+      _wav.play_HET(1, _audio.SamplingRate, freq_HET, iStart, iEnd, _audio.Samples, null, playPosition);
+    }
+
     public void pause()
     {
       if (_wav != null)

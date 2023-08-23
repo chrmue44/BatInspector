@@ -42,7 +42,7 @@ namespace BatInspector.Controls
     public CtrlZoom()
     {
       InitializeComponent();
-      _playImgs = new Image[7];
+      _playImgs = new Image[9];
       int size = 32;
       double op = 0.3;
       _playImgs[0] = new Image
@@ -104,6 +104,23 @@ namespace BatInspector.Controls
         Width = 32,
         Opacity = op
       };
+      _playImgs[7] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-het.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = 32,
+        Width = 32,
+      };
+      _playImgs[8] = new Image
+      {
+        Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-het.png", UriKind.Absolute)),
+        VerticalAlignment = VerticalAlignment.Center,
+        Stretch = Stretch.Fill,
+        Height = 32,
+        Width = 32,
+        Opacity = op
+      };
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img)
@@ -123,6 +140,7 @@ namespace BatInspector.Controls
       _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, 100);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, 100);
       _wavFilePath = wavFilePath;
+      
       string fName = System.IO.Path.GetFileName(analysis.Name);
       string wavName = File.Exists(fName) ? fName : _wavFilePath + "/" + fName;
 
@@ -200,6 +218,7 @@ namespace BatInspector.Controls
       _cbMode.Items.Add("Cursor");
       _cbMode.SelectedIndex = 0;
       _oldCallIdx = -1;
+      _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
     }
 
     void setVisabilityCallData(bool on)
@@ -502,7 +521,7 @@ namespace BatInspector.Controls
       {
         if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
-          double val = _model.ZoomView.Waterfall.PlayPosition / (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) / _stretch * 100;
+          double val = _model.ZoomView.Waterfall.PlayPosition / (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) / Math.Abs(_stretch) * 100;
           _slider.Value = val;
         }
         else if (_model.ZoomView.Waterfall.PlaybackState != NAudio.Wave.PlaybackState.Paused)
@@ -514,6 +533,8 @@ namespace BatInspector.Controls
           _btnPlay_10.Content = _playImgs[2];
           _btnPlay_1.IsEnabled = true;
           _btnPlay_1.Content = _playImgs[1];
+          _btnPlay_HET.IsEnabled = true;
+          _btnPlay_HET.Content = _playImgs[7];
         }
       }
       else
@@ -525,6 +546,8 @@ namespace BatInspector.Controls
         _btnPlay_10.Content = _playImgs[2];
         _btnPlay_1.IsEnabled = true;
         _btnPlay_1.Content = _playImgs[1];
+        _btnPlay_HET.IsEnabled = true;
+        _btnPlay_HET.Content = _playImgs[7];
       }
     }
 
@@ -775,6 +798,9 @@ namespace BatInspector.Controls
           _btnPlay_10.IsEnabled = false;
           _btnPlay_10.Content = _playImgs[5];
           _btnPlay_1.Content = _playImgs[0];
+          _btnPlay_HET.IsEnabled = false;
+          _btnPlay_HET.Content = _playImgs[8];
+
         }
       }
       catch (Exception ex)
@@ -793,6 +819,10 @@ namespace BatInspector.Controls
     {
       _stretch = stretch;
       double pos = _slider.Value / 100.0 * _model.ZoomView.Waterfall.Duration;
+      if (stretch < 0)
+        _model.ZoomView.Waterfall.play_HET(AppParams.Inst.FrequencyHET, 
+                                           _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, pos);
+      else
       _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, pos);
     }
 
@@ -812,7 +842,9 @@ namespace BatInspector.Controls
           _btnPlay_1.IsEnabled = false;
           _btnPlay_1.Content = _playImgs[4];
           _btnPlay_20.IsEnabled = false;
-          _btnPlay_20.Content = _playImgs[5];
+          _btnPlay_20.Content = _playImgs[6];
+          _btnPlay_HET.IsEnabled = false;
+          _btnPlay_HET.Content = _playImgs[8];
           _btnPlay_10.Content = _playImgs[0];
         }
       }
@@ -840,11 +872,42 @@ namespace BatInspector.Controls
           _btnPlay_1.Content = _playImgs[4];
           _btnPlay_10.IsEnabled = false;
           _btnPlay_10.Content = _playImgs[5];
+          _btnPlay_HET.IsEnabled = false;
+          _btnPlay_HET.Content = _playImgs[8];
         }
       }
       catch (Exception ex)
       {
         DebugLog.log("ZoomBtn: 'play 20' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+
+    private void _btnPlay_HET_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        DebugLog.log("ZoomView:BTN 'play HET' clicked", enLogType.DEBUG);
+        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        {
+          _btnPlay_HET.Content = _playImgs[3];
+          _model.ZoomView.Waterfall.pause();
+        }
+        else
+        {
+          play(-1);
+          _btnPlay_HET.Content = _playImgs[0];
+          _btnPlay_1.IsEnabled = false;
+          _btnPlay_1.Content = _playImgs[4];
+          _btnPlay_10.IsEnabled = false;
+          _btnPlay_10.Content = _playImgs[5];
+          _btnPlay_20.IsEnabled = false;
+          _btnPlay_20.Content = _playImgs[6];
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'play HET' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
@@ -1160,6 +1223,18 @@ namespace BatInspector.Controls
       catch (Exception ex)
       {
         DebugLog.log("Zoom:Btn 'und' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+    private void _tbFreHET_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      int fHet = 0;
+      bool ok = int.TryParse(_tbFreqHET.Text, out fHet);
+      if(ok && _model.ZoomView.Waterfall != null)
+      {
+        double f = fHet * 1000;
+        if (fHet < _model.ZoomView.Waterfall.SamplingRate / 2)
+          AppParams.Inst.FrequencyHET = f;
       }
     }
   }

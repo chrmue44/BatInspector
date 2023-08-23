@@ -16,7 +16,8 @@ using System.IO;
 using System.Xml.Serialization;
 using BatInspector;
 using System.Globalization;
-
+using System.Xml;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public partial class gpx
 {
@@ -25,13 +26,13 @@ public partial class gpx
     double[] retVal = new double[2];
     retVal[0] = 0.0;
     retVal[1] = 0.0;
-    for(int i = 0; i < this.trk.trkseg.Length; i++)
+    for (int i = 0; i < this.trk.trkseg.Length; i++)
     {
-      if(i < (trk.trkseg.Length - 1))
+      if (i < (trk.trkseg.Length - 1))
       {
         DateTime t1 = getTime(i);
-        DateTime t2 = getTime(i + 1); 
-        if((t1 <= t) && (t <= t2))
+        DateTime t2 = getTime(i + 1);
+        if ((t1 <= t) && (t <= t2))
         {
           TimeSpan dt1 = t - t1;
           TimeSpan dt2 = t2 - t;
@@ -40,7 +41,7 @@ public partial class gpx
           double.TryParse(trk.trkseg[i].lon, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon1);
           double.TryParse(trk.trkseg[i + 1].lat, NumberStyles.Any, CultureInfo.InvariantCulture, out double lat2);
           double.TryParse(trk.trkseg[i + 1].lon, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon2);
-          retVal[0] = f * lat1 + (1 - f)* lat2;
+          retVal[0] = f * lat1 + (1 - f) * lat2;
           retVal[1] = f * lon1 + (1 - f) * lon2;
           break;
         }
@@ -65,16 +66,72 @@ public partial class gpx
     {
       if (File.Exists(fileName))
       {
-        StreamReader reader = new StreamReader(fileName);
-        reader.ReadToEnd();
-        XmlSerializer ser = new XmlSerializer(typeof(gpx));
-        retVal = (gpx)ser.Deserialize(reader);
+        //does not work with newer garmin files:
+        //StreamReader reader = new StreamReader(fileName);
+        //reader.ReadToEnd();
+        //XmlSerializer ser = new XmlSerializer(typeof(gpx));
+
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.Load(fileName);
+        retVal = createGpx(xmlDoc);
       }
     }
-    catch(Exception ex) 
+    catch (Exception ex)
     {
       DebugLog.log("unable to open file: " + fileName + ", " + ex.ToString(), enLogType.ERROR);
     }
-    return retVal;  
+    return retVal;
+  }
+
+  static gpx createGpx(XmlDocument doc)
+  {
+    gpx retVal = new gpx();
+    try
+    {
+      retVal.trk = new gpxTrk();
+
+      //    XmlNodeList nl = doc.SelectNodes("gpx/trk/trkseg");  // does not work, why??
+
+      // the ugly way work:
+      if (doc.ChildNodes.Count < 2)
+        return null;
+      if (doc.ChildNodes[1].Name != "gpx")
+        return null;
+      XmlNode n = doc.ChildNodes[1];
+      if (n.ChildNodes.Count < 2)
+        return null;
+      n = doc.ChildNodes[1];
+      if (n.ChildNodes[1].Name != "trk")
+        return null;
+      n = n.ChildNodes[1];
+      if (n.ChildNodes.Count < 3)
+        return null;
+      if (n.ChildNodes[2].Name != "trkseg")
+        return null;
+      n = n.ChildNodes[2];
+
+      XmlNodeList list = n.ChildNodes;
+      retVal.trk.trkseg = new gpxTrkTrkpt[list.Count];
+
+      for (int i = 0; i < list.Count; i++)
+      {
+        string latStr = list[i].Attributes["lat"].Value;
+        string lonStr = list[i].Attributes["lon"].Value;
+        string ele = list[i].ChildNodes[0].InnerText;
+        n = list[i].ChildNodes[1];
+        string timeStr = n.FirstChild.Value;
+        retVal.trk.trkseg[i] = new gpxTrkTrkpt();
+        retVal.trk.trkseg[i].ele = ele;
+        retVal.trk.trkseg[i].lat = latStr;
+        retVal.trk.trkseg[i].lon = lonStr;
+        retVal.trk.trkseg[i].time = timeStr;
+      }
+    }
+    catch (Exception ex)
+    {
+      DebugLog.log("error reading gpx file: " + ex.ToString(), enLogType.ERROR);
+      retVal = null;
+    }
+    return retVal;
   }
 }

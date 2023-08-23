@@ -6,10 +6,12 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.frmCreatePrjTitle}" Height="580" Width="700" Loaded="Window_Loaded">
+        Title="{x:Static res:MyResources.frmCreatePrjTitle}" Height="700" Width="700" Loaded="Window_Loaded">
     <Grid>
         <StackPanel Margin="10,10,10,-11">
             <Label Content="{x:Static res:MyResources.frmCreatePrjInfo}"></Label>
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.FrmCreatePrjFileSelection}">
+                <StackPanel Margin="5">
             <local:CtlSelectFile x:Name="_ctlSrcFolder" Margin=" 0,20,0,0"/>
             <local:CtlSelectFile x:Name="_ctlDstFolder" Margin=" 0,0,0,0"/>
       <local:ctlDataItem x:Name="_ctlPrjName" Margin=" 0,10,0,0"/>
@@ -18,17 +20,28 @@
                 <local:CtlDateTime x:Name="_dtStart"></local:CtlDateTime>
         <Label Name="_lblDateEnd" Content="{x:Static res:MyResources.CtlSumReportEndDate}" HorizontalContentAlignment="Right" Width="120"/>
                 <local:CtlDateTime x:Name="_dtEnd"></local:CtlDateTime>
-      </StackPanel>
-            <local:ctlDataItem x:Name="_ctlMaxFiles" Margin=" 0,0,0,0"/>
-            <local:ctlDataItem x:Name="_ctlMaxFileLen" Margin=" 0,0,0,0"/>
-            <local:ctlDataItem x:Name="_ctlPrjWeather" Margin=" 0,0,0,0"/>
-            <local:ctlDataItem x:Name="_ctlPrjLandscape" Margin=" 0,0,0,0"/>
-            <RadioButton x:Name="_rbGpxFile" Content="{x:Static res:MyResources.frmCreatePrjPosFromGpx}" Margin=" 0,20,0,0" Click="btnRadioClick"/>
+                </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.FrmCreatePrjProjectsToCreate}">
+                <StackPanel Margin="5">
+                    <local:ctlDataItem x:Name="_ctlMaxFiles" Margin=" 0,0,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlMaxFileLen" Margin=" 0,0,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlPrjWeather" Margin=" 0,0,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlPrjLandscape" Margin=" 0,0,0,0"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.FrmCreatePrjLLocation}" >
+                <StackPanel Margin="5">
+                    <CheckBox Name="_cbOverwriteLoc" Content="{x:Static res:MyResources.FrmCreatePrjCbOverwriteLoc}" Click="_cbOverwriteLoc_Click"/>
+                    <RadioButton x:Name="_rbGpxFile" Content="{x:Static res:MyResources.frmCreatePrjPosFromGpx}" Margin=" 0,20,0,0" Click="btnRadioClick"/>
       <RadioButton x:Name="_rbFixedPos" Content="{x:Static res:MyResources.frmCreatePrjFixedPos}" Click="btnRadioClick"/>
             <local:CtlSelectFile x:Name="_ctlGpxFile" Margin=" 0,5,0,20"/>
             <local:ctlDataItem x:Name="_ctlLat" Margin=" 0,0,0,0"/>
             <local:ctlDataItem x:Name="_ctlLon"/>
-      <CheckBox Name="_cbEvalPrj" Content="{x:Static res:MyResources.frmCreatePrjEvalPrj}" Margin="0,20,0,0"/>
+                </StackPanel>
+            </GroupBox>
+            <CheckBox Name="_cbEvalPrj" Content="{x:Static res:MyResources.frmCreatePrjEvalPrj}" Margin="0,20,0,0"/>
       <StackPanel Orientation="Horizontal" Margin="0,30,0,0" HorizontalAlignment="right">
                 <Button Name="_btnOk" Height="25" Width="100" Content="{x:Static res:MyResources.BtnOK}" Margin ="0,0,10,0" Click="_btnOk_Click"/>
                 <Button Name="_btnCancel"  Height="25" Width="100" Content="{x:Static res:MyResources.BtnCancel}" Margin ="0,0,20,0" Click="_btnCancel_Click" />

@@ -94,6 +94,7 @@ namespace BatInspector
       testCsvFuncs(wrkDir);
       testClassifier();
       testSumReport();
+      //testGpx();
       //testSignalForm();
       testSimCall();
       //testReportModelBatdetect2();
@@ -464,6 +465,13 @@ namespace BatInspector
       double[] ticks2 = ZoomView.createTicks(9, ruler);
       ruler.setRange(67, 126);
       double[] ticks3 = ZoomView.createTicks(9, ruler);
+    }
+
+
+    private void testGpx()
+    {
+      string fName = "F:\\bat\\2023\\GrubeMessel\\Track_2023-08-22_GrubeMessel.gpx";
+      gpx g = gpx.read(fName);
     }
 
     private void calcNoiseLevel()

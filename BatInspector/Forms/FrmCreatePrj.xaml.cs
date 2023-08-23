@@ -52,10 +52,11 @@ namespace BatInspector.Forms
       _ctlPrjWeather.setValue("");
       _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING,0, widthLbl, true);
       _ctlPrjLandscape.setValue("");
-      _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, widthLbl, false, "gpx Files (*.gpx)|*.gpx |All files(*.*)|*.*");
+      _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, widthLbl, false, "gpx Files (*.gpx)|*.gpx|All files(*.*)|*.*");
       _ctlGpxFile.IsEnabled = false;
       _rbGpxFile.IsChecked = false;
       _rbFixedPos.IsChecked = true;
+      _cbOverwriteLoc.Visibility = Visibility.Hidden;
     }
 
 
@@ -102,31 +103,15 @@ namespace BatInspector.Forms
     private void enableGuiElements()
     {
       _ctlPrjName.IsEnabled = !_isProjectFolder;
-      //      _ctlLat.IsEnabled = !_isProjectFolder;
-      _ctlLat.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _ctlLon.IsEnabled = !_isProjectFolder;
-      _ctlLon.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _ctlPrjWeather.IsEnabled = !_isProjectFolder;
       _ctlPrjWeather.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _ctlPrjLandscape.IsEnabled = !_isProjectFolder;
       _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _ctlGpxFile.IsEnabled = !_isProjectFolder;
-      _ctlGpxFile.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _rbGpxFile.Opacity = !_isProjectFolder ? 1 : 0.5;
-      //      _rbGpxFile.IsEnabled = !_isProjectFolder;
-      _rbGpxFile.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _rbFixedPos.Opacity = !_isProjectFolder ? 1 : 0.5;
-      //      _rbFixedPos.IsEnabled = !_isProjectFolder;
-      _rbFixedPos.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _dtStart.IsEnabled = !_isProjectFolder;
       _dtStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _dtEnd.IsEnabled = !_isProjectFolder;
       _dtEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
 
-      //      _lblDateStart.Opacity = !_isProjectFolder ? 1 : 0.5;
       _lblDateStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      //      _lblDateEnd.Opacity = !_isProjectFolder ? 1 : 0.5;
       _lblDateEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      _cbOverwriteLoc.Visibility = _isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+        enableLocationItems(!_isProjectFolder ||(_cbOverwriteLoc.IsChecked == true));
     }
 
     /// <summary>
@@ -200,6 +185,8 @@ namespace BatInspector.Forms
       _info.DstDir = _ctlDstFolder.getValue();
       _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
       _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
+      _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
+      _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
       _inspect = _cbEvalPrj.IsChecked == true;
       _info.IsProjectFolder = _isProjectFolder;
       if (_isProjectFolder)
@@ -289,6 +276,20 @@ namespace BatInspector.Forms
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
+
+    private void _cbOverwriteLoc_Click(object sender, RoutedEventArgs e)
+    {
+      enableLocationItems(_cbOverwriteLoc.IsChecked == true);
+    }
+
+    private void enableLocationItems(bool en)
+    {
+      _ctlGpxFile.IsEnabled = en & (_rbGpxFile.IsChecked == true);
+      _ctlLat.IsEnabled = en & (_rbFixedPos.IsChecked == true);
+      _ctlLon.IsEnabled = en & (_rbFixedPos.IsChecked == true);
+      _rbGpxFile.IsEnabled = en;
+      _rbFixedPos.IsEnabled = en;
     }
   }
 }

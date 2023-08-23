@@ -68,6 +68,13 @@
                 <Button x:Name="_btnPlay_20"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_20_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection20x}">
                     <Image Source="../images/play-button-20x.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
+                <Button x:Name="_btnPlay_HET"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_HET_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSectionHET}">
+                    <Image Source="../images/play-het.png" Style="{StaticResource ImageEnabled}"></Image>
+                </Button>
+                <StackPanel Orientation="Vertical">
+                    <TextBox Text="[kHz]" Height="18" Background="#FFCCD5F0" BorderThickness="0" Focusable="False"/>
+                    <TextBox x:Name="_tbFreqHET" Height="20" TextChanged="_tbFreHET_TextChanged" ToolTip="{x:Static res:MyResources.CtrlZoomToolHeterodyneFreq}" />
+                </StackPanel>
                 <!--        <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPause_Click" ToolTip="{x:Static res:MyResources.ToolTipPausePlayingAudio}">
                     <Image Source="../images/pause.png"></Image>
                 </Button> -->

@@ -31,6 +31,7 @@ using System.Diagnostics;
 
 namespace BatInspector.Forms
 {
+  delegate void dlgProgress(string pngName);
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
@@ -61,7 +62,8 @@ namespace BatInspector.Forms
     frmSpeciesData _frmSpecies = null;
     //List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
     bool _fastOpen = true;
-    Thread _worker = null;
+    Thread _workerPredict = null;
+    Thread _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
 
@@ -159,7 +161,6 @@ namespace BatInspector.Forms
         {
           if (expandedDir != null)
           {
-            _model.Busy = true;
             DebugLog.log("start evaluation TODO", enLogType.DEBUG);
             foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
             {
@@ -190,12 +191,10 @@ namespace BatInspector.Forms
 
 
             DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
-            _model.Busy = false;
           }
         }
         catch
         {
-          _model.Busy = false;
         }
       }
     }
@@ -417,67 +416,53 @@ namespace BatInspector.Forms
 
     private void populateFiles()
     {
+      _model.Busy = true;
+      setMouseStatus();
       _spSpectrums.Children.Clear();
-
-      BackgroundWorker worker = new BackgroundWorker();
-      worker.WorkerReportsProgress = true;
-      worker.DoWork += createImageFiles;
-      worker.ProgressChanged += worker_ProgressChanged;
-      worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-      worker.RunWorkerAsync();
+      setStatus("creating PNGs for project " + _model.Prj.Name + ", wait a moment...");
+      _workerStartup = new Thread(new ThreadStart(createImageFiles));
     }
 
-    void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+    void worker_ProgressChanged(string pngName)
     {
-      if (e.UserState != null)
-        this.setStatus("generating PNG image " + e.UserState);
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.Invoke(new dlgProgress(worker_ProgressChanged));
+      }
+      this.setStatus("generating PNG image " + pngName);
 
     }
 
-    void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    private void populateControls()
     {
-      populateControls();
+      createFftImages();
     }
 
-    private async void populateControls()
-    {
-      await createFftImages();
-    }
-
-    private void createImageFiles(object sender, DoWorkEventArgs e)
+    private void createImageFiles()
     {
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
-        _model.Busy = true;
         Parallel.ForEach(_model.Prj.Records, rec =>
         //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
           _model.getFtImage(rec, out newImage, false);
           if (newImage)
-          {
-            (sender as BackgroundWorker).ReportProgress(55, rec.Name);
-          }
+            worker_ProgressChanged(rec.Name);
         });
-        _model.Busy = false;
       }
       else if (_model.Query != null)
       {
-        _model.Busy = true;
         Parallel.ForEach(_model.Query.Records, rec =>
         //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           bool newImage;
           _model.getFtImage(rec, out newImage, true);
           if (newImage)
-          {
-            (sender as BackgroundWorker).ReportProgress(55, rec.Name);
-          }
+            worker_ProgressChanged(rec.Name);
         });
-        _model.Busy = false;
       }
     }
-
 
     void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
     {
@@ -512,7 +497,7 @@ namespace BatInspector.Forms
         setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
     }
 
-    internal async Task createFftImages()
+    void createFftImages()
     {
       int index = 0;
 
@@ -535,7 +520,6 @@ namespace BatInspector.Forms
           {
             initCtlWav(ctl, rec, false);
           }
-          await Task.Delay(1);
         }
         DebugLog.log("project opened: " + _model.Prj.Name, enLogType.INFO);
         showStatus();
@@ -559,7 +543,6 @@ namespace BatInspector.Forms
           {
             initCtlWav(ctl, rec, true);
           }
-          await Task.Delay(1);
         }
         if (_model.Prj != null)
           DebugLog.log("Project opened: " + _model.Prj.Name, enLogType.INFO);
@@ -717,9 +700,9 @@ namespace BatInspector.Forms
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
       try
-      {
-        _worker = new Thread(new ThreadStart(workerPrediction));
-        _worker.Start();
+      { 
+        _workerPredict = new Thread(new ThreadStart(workerPrediction));
+        _workerPredict.Start();
         DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1033,12 +1016,17 @@ namespace BatInspector.Forms
       AppParams.Inst.MainWindowHeight = this.Height;
     }
 
-    private void timer_Tick(object sender, EventArgs e)
+    void setMouseStatus()
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        Mouse.OverrideCursor = _model.Busy ? Cursors.Wait : null;
+        Mouse.OverrideCursor = _model.Busy? Cursors.Wait : null;
       });
+    }
+
+    private void timer_Tick(object sender, EventArgs e)
+    {
+      setMouseStatus();
       if (_model.UpdateUi)
       {
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
@@ -1061,11 +1049,17 @@ namespace BatInspector.Forms
         _model.ReloadPrj = false;
       }
 
-      if ((_worker != null) && (!_worker.IsAlive))
+      if ((_workerPredict != null) && (!_workerPredict.IsAlive))
       {
-        _worker = null;
+        _workerPredict = null;
         _model.updateReport();
         updateWavControls();
+      }
+      if((_workerStartup != null) && (!_workerStartup.IsAlive))
+      {
+        _workerStartup = null;
+        populateControls();
+        _model.Busy = false;
       }
       if (_switchTabToPrj)
       {

@@ -83,7 +83,7 @@ namespace BatInspector
         }
         if (restart)
         {
-          AppParams.Inst.save();
+          DebugLog.save();
           Process.Start(AppDomain.CurrentDomain.FriendlyName);
           Environment.Exit(0);
         }
@@ -127,20 +127,20 @@ namespace BatInspector
       bool retVal = false;
       _outputData = "";
       ProcessRunner p = new ProcessRunner();
-      int err = p.launchCommandLineApp("cmd.exe", null,
-                                       AppParams.AppDataPath, true, "/C where python > where.txt");
+      string fName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                "$$where.txt");
+      int err = p.launchCommandLineApp("cmd.exe", null, "", true, "/C where python > " + fName);
       if (err == 0)
       {
-        string fName = Path.Combine(AppParams.AppDataPath, "where.txt");
         _outputData = File.ReadAllText(fName);
         File.Delete(fName);
         int pos1 = _outputData.IndexOf("C:\\Pro");
         if (pos1 >= 0)
         {
-          err = p.launchCommandLineApp("cmd.exe", null,
-                                        AppParams.AppDataPath, true,
-                                        "/C python --version > version.txt 2>&1");
-          fName = Path.Combine(AppParams.AppDataPath, "version.txt");
+          fName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                               "$$version.txt");
+          err = p.launchCommandLineApp("cmd.exe", null, "", true,
+                                        "/C python --version > "+ fName + " 2>&1");
           _outputData = File.ReadAllText(fName);
           File.Delete(fName);
           DebugLog.log("found " + _outputData, enLogType.INFO);

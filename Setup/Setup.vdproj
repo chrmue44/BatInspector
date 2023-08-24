@@ -412,6 +412,18 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -461,18 +473,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BBF75597F63B7AED10A2F5576B5F5F7F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1091,7 +1091,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BatInspector.resources, Version=0.4.0.0, Culture=de, processorArchitecture=AMD64"
+            "AssemblyAsmDisplayName" = "8:BatInspector.resources, Version=0.5.1.0, Culture=de, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
                     "_80552BF44B6A45858FFCBEFCB0A31FE6"
@@ -1852,15 +1852,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BatInspector"
-        "ProductCode" = "8:{B1DE31EE-D759-429D-960E-36FF33A4FCB5}"
-        "PackageCode" = "8:{9D0DBA8A-1A08-46FD-99AB-1B64D29A7195}"
+        "ProductCode" = "8:{4750CD79-C1C6-4EEC-82DF-B6CAF769E803}"
+        "PackageCode" = "8:{F13172E4-0E89-4207-98EB-1EE6A40C7D0F}"
         "UpgradeCode" = "8:{2F80E232-395E-4CCC-A22E-523AA645308B}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.5"
+        "ProductVersion" = "8:0.5.1"
         "Manufacturer" = "8:CM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

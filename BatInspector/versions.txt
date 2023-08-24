@@ -2,8 +2,9 @@
 V 0.5.1   23.08.23 
 - bugfix play 20 image when button pressed
 - improved some icons in the menu bar
-- play back in heteryne mode
+- play back in heterodyne mode
 - replace positions in project with positions from gpx file
+- faster opening of projects and initial image generation
 
 V 0.5.0   21.08.23 
 - first official software version with installer

@@ -780,45 +780,72 @@ namespace BatInspector
       ColorGradientBlue = new List<ColorItem>
       {
         new ColorItem(0, 0),
-        new ColorItem(0, 30),
-        new ColorItem(0, 70),
+        new ColorItem(100, 20),
+        new ColorItem(0, 40),
         new ColorItem(0, 75),
         new ColorItem(40, 100)
       };
       ColorGradientGreen = new List<ColorItem>
       {
         new ColorItem(0, 0),
-        new ColorItem(70, 30),
-        new ColorItem(200, 70),
+        new ColorItem(0, 20),
+        new ColorItem(200, 60),
         new ColorItem(200, 75),
         new ColorItem(0, 100)
       };
       ColorGradientRed = new List<ColorItem>
       {
         new ColorItem(0, 0),
-        new ColorItem(0, 30),
-        new ColorItem(200, 70),
+        new ColorItem(0, 20),
+        new ColorItem(100, 60),
         new ColorItem(200, 75),
         new ColorItem(255, 100)
       };
+
+      /* black - green
+        ColorGradientBlue = new List<ColorItem>
+        {
+          new ColorItem(0, 0),
+          new ColorItem(0, 30),
+          new ColorItem(0, 70),
+          new ColorItem(0, 75),
+          new ColorItem(40, 100)
+        };
+        ColorGradientGreen = new List<ColorItem>
+        {
+          new ColorItem(0, 0),
+          new ColorItem(70, 30),
+          new ColorItem(200, 70),
+          new ColorItem(200, 75),
+          new ColorItem(0, 100)
+        };
+        ColorGradientRed = new List<ColorItem>
+        {
+          new ColorItem(0, 0),
+          new ColorItem(0, 30),
+          new ColorItem(200, 70),
+          new ColorItem(200, 75),
+          new ColorItem(255, 100)
+        }; 
+      */
     }
 
-/*    public void adjustActivateBat()
-    {
-      string str = "VIRTUAL_ENV=";
-      string path =  ModelRootPath + "/_venv/Scripts/activate.bat";
-      try
-      {
-        string activateBat = File.ReadAllText(path);
-        int pos = activateBat.IndexOf(str) + str.Length;
-        if (activateBat[pos + 1] != DriveLetter[0])
+    /*    public void adjustActivateBat()
         {
-          string newBat = activateBat.Substring(0, pos) + DriveLetter[0] + activateBat.Substring(pos + 1);
-          File.WriteAllText(path, newBat);
-          DebugLog.log("python scripts adapted to drive " + DriveLetter, enLogType.INFO);
-        }
-      }
-      catch { }
-    }*/
+          string str = "VIRTUAL_ENV=";
+          string path =  ModelRootPath + "/_venv/Scripts/activate.bat";
+          try
+          {
+            string activateBat = File.ReadAllText(path);
+            int pos = activateBat.IndexOf(str) + str.Length;
+            if (activateBat[pos + 1] != DriveLetter[0])
+            {
+              string newBat = activateBat.Substring(0, pos) + DriveLetter[0] + activateBat.Substring(pos + 1);
+              File.WriteAllText(path, newBat);
+              DebugLog.log("python scripts adapted to drive " + DriveLetter, enLogType.INFO);
+            }
+          }
+          catch { }
+        }*/
   } 
 }

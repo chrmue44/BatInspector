@@ -19,12 +19,11 @@ A windows desktop software to analyze bat calls
 
 ![grafik](https://github.com/chrmue44/BatInspector/assets/18011976/65b8daa4-9401-42cb-981b-29f44985306e)
 
+## Deployment
+- integrated installer project that installs software, python 3.10 and the AI modell
+
 ## Status
 - under development
 
 ## Open issues
 - English help file
-- installer
-
-## Deployment
-coming soon...

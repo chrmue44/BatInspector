@@ -449,6 +449,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="images\play-HET.png" />
+    <Resource Include="images\toolhammerconstruction_81806.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -1933,6 +1933,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute custom tools.
+        /// </summary>
+        public static string MainToolTools {
+            get {
+                return ResourceManager.GetString("MainToolTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Training Data.
         /// </summary>
         public static string MainTrainData {

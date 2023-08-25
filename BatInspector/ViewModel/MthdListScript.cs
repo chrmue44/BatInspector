@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
 *               Author: Christian Müller
 *      Date of cration: 2021-08-10                                       
-*   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+*   Copyright (C) 2022: christian Müller chrmue44(at)gmail(dot).com
 *
 *              Licence:
 * 
@@ -14,7 +14,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
+
 
 namespace BatInspector
 {
@@ -115,6 +115,16 @@ namespace BatInspector
       addMethod(new FuncTabItem("savePrj", savePrj));
       _scriptHelpTab.Add(new HelpTabItem("savePrj", "save the currently opened project",
                       new List<string> { }, new List<string> { "1: result" }));
+      addMethod(new FuncTabItem("cleanup", cleanup));
+      _scriptHelpTab.Add(new HelpTabItem("cleanup", "remove files not needed permanently from disk",
+                      new List<string> { "1: root directory to start cleanup (string)", "2: delWavs (bool)", "3: delLogs (bool)", "4: delPngs (bool)" }, new List<string> { "1: result" }));
+      addMethod(new FuncTabItem("reloadPrj", reloadPrj));
+      _scriptHelpTab.Add(new HelpTabItem("reloaPrj", "reload project",
+                      new List<string> { }, new List<string> { "1: result" }));
+      addMethod(new FuncTabItem("getPrjInfo", getPrjInfo));
+      _scriptHelpTab.Add(new HelpTabItem("getPrjInfo", "get project info",
+                      new List<string> { "1: type of info"}, new List<string> { "1: result" }));
+      
     }
 
     static tParseError openPrj(List<AnyType> argv, out AnyType result)
@@ -239,6 +249,12 @@ namespace BatInspector
       NAME
     }
 
+    enum enPrjInfo
+    {
+      ROOT,
+      OK,
+    }
+
     static tParseError setFileInfo(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
@@ -309,6 +325,42 @@ namespace BatInspector
     }
 
 
+    static tParseError getPrjInfo(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      {
+        if (argv.Count >= 1)
+        {
+          argv[0].changeType(AnyType.tType.RT_STR);
+          enPrjInfo prjInfo;
+          bool ok = Enum.TryParse(argv[0].getString(), out prjInfo);
+          if (ok)
+          {
+             switch(prjInfo)
+             {
+              case enPrjInfo.ROOT:
+                result.assign(_inst._model.Prj.PrjDir);
+                break;
+
+              case enPrjInfo.OK:
+                result.assignBool(_inst._model.Prj.Ok);
+                break;
+            }
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.RESSOURCE;
+      return err;
+    }
+
+
     static tParseError getFileInfo(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
@@ -369,28 +421,32 @@ namespace BatInspector
         argv[1].changeType(AnyType.tType.RT_FLOAT);
         argv[2].changeType(AnyType.tType.RT_FLOAT);
         string fName = "";
-        if (argv[0].getType() == AnyType.tType.RT_STR)
+        if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
         {
-          fName = argv[0].getString();
+          if (argv[0].getType() == AnyType.tType.RT_STR)
+            fName = argv[0].getString();
+          else
+          {
+            argv[0].changeType(AnyType.tType.RT_INT64);
+            int idx = (int)argv[0].getInt64();
+            if (_inst._model.Prj.Records.Length > idx)
+              fName = _inst._model.Prj.PrjDir + "/" + _inst._model.Prj.WavSubDir + "/" + _inst._model.Prj.Records[idx].File;
+            else
+              err = tParseError.ARG1_OUT_OF_RANGE;
+          }
         }
         else
-        {
-          argv[0].changeType(AnyType.tType.RT_INT64);
-          int idx = (int)argv[0].getInt64();
-          if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok) && (_inst._model.Prj.Records.Length > idx))
-          {
-            fName = _inst._model.Prj.PrjDir + "/" + _inst._model.Prj.WavSubDir + "/" + _inst._model.Prj.Records[idx].File;
-          }
-          else
-            err = tParseError.ARG1_OUT_OF_RANGE;
-        }
-
+          err = tParseError.RESSOURCE;
         if (err == 0)
         {
+          double fMin = argv[1].getFloat();
+          double fMax = argv[2].getFloat();
           SoundEdit edit = new SoundEdit();
           edit.readWav(fName);
-          edit.bandpass(argv[1].getFloat(), argv[2].getFloat());
-          edit.saveAs(fName);
+          edit.FftForward();
+          edit.bandpass(fMin, fMax);
+          edit.FftBackward();
+          edit.saveAs(fName, _inst._model.Prj.WavSubDir);
         }
       }
       return err;
@@ -526,7 +582,11 @@ namespace BatInspector
       SPEC_AUTO,
       SPEC_MAN,
       PROB_RATIO,
-      PROBABILITY
+      PROBABILITY,
+      F_MIN,
+      F_MAX,
+      F_MAX_AMP,
+      DURATION
     }
 
     static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
@@ -565,6 +625,18 @@ namespace BatInspector
                     break;
                   case enCallInfo.PROBABILITY:
                     result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.PROBABILITY));
+                    break;
+                  case enCallInfo.F_MIN:
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.F_MIN));
+                    break;
+                  case enCallInfo.F_MAX:
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.F_MAX));
+                    break;
+                  case enCallInfo.F_MAX_AMP:
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.F_MAX_AMP));
+                    break;
+                  case enCallInfo.DURATION:
+                    result.assign(_inst._model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.DURATION));
                     break;
                 }
               }
@@ -873,7 +945,36 @@ namespace BatInspector
         err = tParseError.NR_OF_ARGUMENTS;
       return err;
     }
-      
+
+    static tParseError cleanup(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 4)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_BOOL);
+        argv[2].changeType(AnyType.tType.RT_BOOL);
+        argv[3].changeType(AnyType.tType.RT_BOOL);
+        string root = argv[0].getString();
+        bool delWavs = argv[1].getBool();
+        bool logs = argv[2].getBool();
+        bool pngs = argv[3].getBool();
+        _inst._model.cleanup(root, delWavs, logs, pngs);
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
+    
+    static tParseError reloadPrj(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      _inst._model.ReloadPrj = true;
+      return err;
+    }
 
     // liefert die Tabelle mit detaillierter Hilfe zu den Methoden
     public override List<HelpTabItem> getHelpTab()
@@ -884,9 +985,7 @@ namespace BatInspector
     // Ueberschrift fuer Hilfe zur Methodenliste
     public override string getMthdListHelp()
     {
-      return "\nlist of math commands";
+      return "\nlist of project related commands";
     }
-
-
   }
 }

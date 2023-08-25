@@ -83,6 +83,7 @@ namespace libParser
     ARGUMENT_TYPE_ARG3 = -51173, ///< type of argument 3 wrong
     ARGUMENT_TYPE_ARG4 = -51174, ///< type of argument 4 wrong
     ARGUMENT_TYPE_ARG5 = -51175, ///< type of argument 5 wrong
+    RESSOURCE = -51200,         ///<summary external ressource error
     NOT_IMPLEMENTED = -52000,  ///< not implemented
   };
 

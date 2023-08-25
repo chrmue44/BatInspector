@@ -108,6 +108,7 @@ namespace BatInspector.Forms
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
       _timer.Start();
       _ctlLog.setViewModel(_model);
+      populateToolsMenu();
       #if DEBUG
             Tests tests = new Tests(_model);
             tests.exec();
@@ -1020,7 +1021,10 @@ namespace BatInspector.Forms
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        Mouse.OverrideCursor = _model.Busy? Cursors.Wait : null;
+        if (_model.Busy)
+          Mouse.OverrideCursor = Cursors.Wait;
+        else
+          Mouse.OverrideCursor = null;
       });
     }
 
@@ -1059,8 +1063,10 @@ namespace BatInspector.Forms
       {
         _workerStartup = null;
         populateControls();
-        _model.Busy = false;
       }
+      if(_workerStartup == null)
+        _model.Busy = false;
+
       if (_switchTabToPrj)
       {
         _tbPrj.IsSelected = true;
@@ -1129,7 +1135,7 @@ namespace BatInspector.Forms
       try
       {
         if (_frmScript == null)
-          _frmScript = new FrmScript(_model);
+          _frmScript = new FrmScript(_model, populateToolsMenu);
         _frmScript.Show();
         DebugLog.log("MainWin:BTN 'Script' clicked", enLogType.DEBUG);
       }
@@ -1240,10 +1246,6 @@ namespace BatInspector.Forms
       ((sender as ContextMenu).PlacementTarget as ToggleButton).IsChecked = false;
     }
 
-    private void DropdownButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-    {
-      e.Handled = true;
-    }
 
     private void showPdf(string name)
     {
@@ -1438,6 +1440,29 @@ namespace BatInspector.Forms
         DebugLog.log("Main: Filter dropdown close failed: " + ex.ToString(), enLogType.ERROR);
       }
 
+    }
+
+    private void populateToolsMenu()
+    {
+      _mnuToolsItems.Items.Clear();
+      foreach (ScriptItem s in AppParams.Inst.Scripts)
+      {
+        if (!s.IsTool)
+        {
+          MenuItem m = new MenuItem();
+          m.Header = s.Description;
+          m.Tag = s.Name;
+          m.Click += _mnTool1_Click;
+          _mnuToolsItems.Items.Add(m);
+        }
+      }
+    }
+
+    private void _mnTool1_Click(object sender, RoutedEventArgs e)
+    {
+      MenuItem m = sender as MenuItem;
+      string script = (string)m.Tag;
+      _model.executeScript(script);
     }
   }
 

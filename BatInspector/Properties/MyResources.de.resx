@@ -1083,4 +1083,7 @@
   <data name="FrmCreatePrjCbOverwriteLoc" xml:space="preserve">
     <value>Überschreibe Positionsangaben aus Quelldateien</value>
   </data>
+  <data name="MainToolTools" xml:space="preserve">
+    <value>Benutzerdefinierte Werkzeuge ausführen</value>
+  </data>
 </root>

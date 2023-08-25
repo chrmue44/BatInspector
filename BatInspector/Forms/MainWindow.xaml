@@ -76,7 +76,23 @@
             <Image Source="../images/debug.png"></Image>
           </Button>
           <Separator Margin="15,2" Width="3"/>
-          <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <ToggleButton x:Name="_btnTools" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolTools}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <ToggleButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Image Source="mysrc.png" /-->
+                                <Image Source="../images/toolhammerconstruction_81806.png"></Image>
+
+                                <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+                            </StackPanel>
+                        </ToggleButton.Content>
+                        <ToggleButton.ContextMenu>
+                            <ContextMenu Closed="ContextMenu_Closed" Name="_mnuToolsItems">
+                                <MenuItem Header="Tool1" Click="_mnTool1_Click" Tag="0" />
+                            </ContextMenu>
+                        </ToggleButton.ContextMenu>
+                    </ToggleButton>
+
+                    <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/wav-file-format-symbol.png"></Image>
           </Button>
           <Button x:Name="_btnCleanup" Click="_btnCleanup_Click"  ToolTip="{x:Static res:MyResources.MainToolCleanup}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -89,7 +105,7 @@
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                     </Button>
      -->
-          <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked" MouseRightButtonUp="DropdownButton_MouseRightButtonUp"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+          <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <ToggleButton.Content>
               <StackPanel Orientation="Horizontal">
                 <!-- Image Source="mysrc.png" /-->

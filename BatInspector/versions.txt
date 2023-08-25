@@ -1,3 +1,6 @@
+V 0.5.2
+- bugfix edit script
+- more options for script function "getCallInfo"
 
 V 0.5.1   23.08.23 
 - bugfix play 20 image when button pressed

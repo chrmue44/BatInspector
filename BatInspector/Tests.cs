@@ -440,7 +440,7 @@ namespace BatInspector
       result.bandpass(15000, 40000);
       result.FftBackward();
       string newName = file.Replace(".wav", "_edit.wav");
-      result.saveAs(newName);
+      result.saveAs(newName, "Records");
     }
 
     private void testEffVal()

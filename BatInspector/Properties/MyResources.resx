@@ -1083,4 +1083,7 @@
   <data name="FrmCreatePrjCbOverwriteLoc" xml:space="preserve">
     <value>Overwrite location in source files</value>
   </data>
+  <data name="MainToolTools" xml:space="preserve">
+    <value>Execute custom tools</value>
+  </data>
 </root>

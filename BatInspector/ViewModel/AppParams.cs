@@ -203,6 +203,7 @@ namespace BatInspector
     public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string PRJ_SUMMARY = "summary.csv";      // report name for project summar
     public const string DIR_WAVS = "Records";             // directory for WAV files
+    public const string DIR_ORIG = "orig";                // sub directory to store original files
     public const string DIR_DEL = "del";                  // sub directory to save 'deleted' files
     public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
@@ -447,6 +448,7 @@ namespace BatInspector
     public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
 
     [DataMember]
+    [Browsable(false)]
     public DSPLib.DSP.Window.Type FftWindow { get; set; }
 
     [DataMember]
@@ -545,7 +547,7 @@ namespace BatInspector
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
       LogDataPath = Path.Combine(AppDataPath, "log");
       ScriptDir = "scripts";
-      ExeEditor = "\"C:\\Program Files (x86)\\Notepad++\\notepad++.exe\"";
+      ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
       WaterfallHeight = 256;
       WaterfallWidth = 512;
       FftWidth = 256;

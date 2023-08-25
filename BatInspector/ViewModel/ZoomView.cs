@@ -337,5 +337,20 @@ namespace BatInspector
       }
       return retVal;
     }
+
+    public static void saveWavWithBackup(string wavName, string wavSubDir)
+    {
+      string srcPath = Path.GetDirectoryName(wavName);
+      string dstPath;
+      if(wavSubDir != "")
+        dstPath = srcPath.Replace(wavSubDir, AppParams.DIR_ORIG);
+      else
+        dstPath = Path.Combine(srcPath, AppParams.DIR_ORIG);
+      if(!Directory.Exists(dstPath)) 
+        Directory.CreateDirectory(dstPath);
+      string dstFile = Path.Combine(dstPath, Path.GetFileName(wavName));
+      if (!File.Exists(dstFile))
+        File.Copy(wavName, dstFile);
+    }
   }
 }

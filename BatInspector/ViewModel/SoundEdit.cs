@@ -151,24 +151,19 @@ namespace BatInspector
       return retVal;
     }
 
-
-    public void saveAs(string name)
+    /// <summary>
+    /// save wav file. If the name equals to the original name a backup in the sub folder 
+    /// 'orig' of the related project will be created
+    /// </summary>
+    /// <param name="name">name of the wav file</param>
+    /// <param name="wavSubDir">sub directory containing wav files</param>
+    public void saveAs(string name, string wavSubDir)
     {
       try
       {
         // backup in folder del if possible
         if ((_fName != "") && (name == _fName))
-        {
-          string destDir = _fName;
-          if (_fName.IndexOf(AppParams.DIR_WAVS) >= 0)
-            destDir = _fName.Replace(AppParams.DIR_WAVS, AppParams.DIR_DEL);
-          destDir = Path.GetDirectoryName(destDir);
-          if (!Directory.Exists(destDir))
-            Directory.CreateDirectory(destDir);
-          string destFile = destDir + "/" + Path.GetFileName(_fName);
-          if (!File.Exists(destFile))
-            File.Copy(_fName, destFile);
-        }
+          ZoomView.saveWavWithBackup(name, wavSubDir);
         WavFile outFile = new WavFile();
         outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
         outFile.saveFileAs(name);

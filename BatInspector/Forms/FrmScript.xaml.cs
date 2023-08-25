@@ -17,6 +17,8 @@ using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
+  public delegate void dlgUpdateMenu();
+
   /// <summary>
   /// Interaktionslogik für FrmFilter.xaml
   /// </summary>
@@ -24,13 +26,15 @@ namespace BatInspector.Forms
   {
     ViewModel _model;
     List<ScriptItem> _temp;
+    dlgUpdateMenu _updateMenu;
 
-    public FrmScript(ViewModel model)
+    public FrmScript(ViewModel model, dlgUpdateMenu updateMenu)
     {
       _model = model;
       _temp = _model.Scripter.getScripts();
       InitializeComponent();
       populateTree();
+      _updateMenu = updateMenu;
     }
 
 
@@ -80,6 +84,8 @@ namespace BatInspector.Forms
       }
       _model.Scripter.setScripts(_temp);
       this.Visibility = Visibility.Hidden;
+      if (_updateMenu != null)
+        _updateMenu();
     }
 
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
@@ -102,5 +108,4 @@ namespace BatInspector.Forms
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
   }
-
 }

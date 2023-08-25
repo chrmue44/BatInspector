@@ -1173,7 +1173,8 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName);
+        _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, 
+                                               _model.Prj.WavSubDir);
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1197,6 +1198,7 @@ namespace BatInspector.Controls
       {
         if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
         {
+          ZoomView.saveWavWithBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
           double fMin = _model.ZoomView.Cursor1.Freq * 1000;
           double fMax = _model.ZoomView.Cursor2.Freq * 1000;
           _model.ZoomView.applyBandpass(fMin, fMax);

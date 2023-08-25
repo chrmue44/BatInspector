@@ -324,7 +324,7 @@ namespace BatInspector
     {
       string exe = AppParams.Inst.ExeEditor;
       if (!System.IO.Path.IsPathRooted(path))
-        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath, path);
+        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath,AppParams.Inst.ScriptDir, path);
       else
         _scriptName = path;
       string args = _scriptName;
@@ -574,7 +574,7 @@ namespace BatInspector
         crawlTidyUp(dir, delWavs, pngs);
       }
 
-      if (Directory.Exists(AppParams.LogDataPath))
+      if (logs && Directory.Exists(AppParams.LogDataPath))
       {
         DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
         foreach (FileInfo f in dir.GetFiles())

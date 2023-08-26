@@ -144,7 +144,7 @@ namespace BatInspector
         species.Add(info.Abbreviation);
       _filter = new Filter(species);
       initFilter();
-      string scriptDir = Path.Combine(AppParams.AppDataPath, AppParams.Inst.ScriptDir);
+      string scriptDir = Path.Combine(AppParams.AppDataPath, AppParams.DIR_SCRIPTS);
       _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
       //_prj.Analysis.init(_prj.SpeciesInfos);
       UpdateUi = false;
@@ -307,7 +307,7 @@ namespace BatInspector
     public int executeScript(string path, bool  initVars = true)
     {
       if (!System.IO.Path.IsPathRooted(path))
-        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath, AppParams.Inst.ScriptDir, path);
+        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath, AppParams.DIR_SCRIPTS, path);
       else
         _scriptName = path;
       int retVal = _scripter.RunScript(_scriptName, true, initVars);
@@ -324,7 +324,7 @@ namespace BatInspector
     {
       string exe = AppParams.Inst.ExeEditor;
       if (!System.IO.Path.IsPathRooted(path))
-        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath,AppParams.Inst.ScriptDir, path);
+        _scriptName = System.IO.Path.Combine(AppParams.AppDataPath,AppParams.DIR_SCRIPTS, path);
       else
         _scriptName = path;
       string args = _scriptName;

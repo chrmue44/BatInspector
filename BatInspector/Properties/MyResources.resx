@@ -970,7 +970,7 @@
     <value>add expression permanently to filter list</value>
   </data>
   <data name="ctlExpressionEditorTodoNr" xml:space="preserve">
-    <value>please enter number</value>
+    <value>Please enter number</value>
   </data>
   <data name="ctlExpressionEditorLeftSide" xml:space="preserve">
     <value>Left Side</value>
@@ -1085,5 +1085,44 @@
   </data>
   <data name="MainToolTools" xml:space="preserve">
     <value>Execute custom tools</value>
+  </data>
+  <data name="ExpGen_LT" xml:space="preserve">
+    <value>less than</value>
+  </data>
+  <data name="ExpGen_LTE" xml:space="preserve">
+    <value>less than or equal</value>
+  </data>
+  <data name="ExpGen_EQ" xml:space="preserve">
+    <value>equal to</value>
+  </data>
+  <data name="ExpGen_NE" xml:space="preserve">
+    <value>not equal to</value>
+  </data>
+  <data name="ExpGen_GT" xml:space="preserve">
+    <value>greater than</value>
+  </data>
+  <data name="ExpGen_GTE" xml:space="preserve">
+    <value>greater than or equal</value>
+  </data>
+  <data name="ExpGen_OR" xml:space="preserve">
+    <value>or</value>
+  </data>
+  <data name="ExpGen_AND" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="ExpGen_CONTAINS" xml:space="preserve">
+    <value>contains</value>
+  </data>
+  <data name="ExpGen_CONTAINS_NOT" xml:space="preserve">
+    <value>doesn't contain</value>
+  </data>
+  <data name="ExpGen_Nr" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="ExpGenUserString" xml:space="preserve">
+    <value>user defined string</value>
+  </data>
+  <data name="ctlExpressionEditorTodString" xml:space="preserve">
+    <value>Please enter string</value>
   </data>
 </root>

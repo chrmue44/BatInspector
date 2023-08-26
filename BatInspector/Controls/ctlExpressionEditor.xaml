@@ -27,7 +27,7 @@
             <Label Name="_lblHelpLeft" FontStyle="Italic" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-           <ComboBox Name="_cbOperator"  Height="25" VerticalAlignment="Top"/>
+           <ComboBox Name="_cbOperator"  Height="25" VerticalAlignment="Top"  DropDownClosed="_cbOperator_DropDownClosed"/>
            <Label Name="_lblTodo" Visibility="Hidden" HorizontalContentAlignment="Right"></Label>
         </StackPanel>
          <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical">

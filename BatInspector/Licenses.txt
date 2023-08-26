@@ -12,6 +12,7 @@ https://github.com/macaodha/batdetect2
 WAV recordings bats from
 https://www.museumfuernaturkunde.berlin/de/wissenschaft/tierstimmenarchiv
 
+https://creativecommons.org/licenses/by-nc-sa/3.0/de/legalcode
 
 ****************
 *     PDFs     *

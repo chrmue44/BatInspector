@@ -85,7 +85,7 @@ namespace BatInspector
         DebugLog.log("try loading BatSpeciesRegions: " + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
-          file = new FileStream(fPath, FileMode.Open);
+          file = new FileStream(fPath, FileMode.Open, FileAccess.Read);
           DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatSpeciesRegions));
           retVal = (BatSpeciesRegions)ser.ReadObject(file);
           if (retVal == null)

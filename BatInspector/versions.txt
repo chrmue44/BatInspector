@@ -1,6 +1,14 @@
-V 0.5.2
+V 0.5.3 26.08.23
+- installer improved: data now in c:\ProgramData\BatInspector
+- bugfix species data: exmaple works
+
+V 0.5.2 25.08.23
 - bugfix edit script
 - more options for script function "getCallInfo"
+- more script functions
+- custumizable tool menu in taskbar of main window
+- new operators CONTAIN, CONTAIN_NOT in filter generator
+- small fixes
 
 V 0.5.1   23.08.23 
 - bugfix play 20 image when button pressed

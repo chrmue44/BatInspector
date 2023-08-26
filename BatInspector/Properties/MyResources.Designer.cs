@@ -259,11 +259,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to please enter number.
+        ///   Looks up a localized string similar to Please enter number.
         /// </summary>
         public static string ctlExpressionEditorTodoNr {
             get {
                 return ResourceManager.GetString("ctlExpressionEditorTodoNr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter string.
+        /// </summary>
+        public static string ctlExpressionEditorTodString {
+            get {
+                return ResourceManager.GetString("ctlExpressionEditorTodString", resourceCulture);
             }
         }
         
@@ -655,11 +664,119 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to and.
+        /// </summary>
+        public static string ExpGen_AND {
+            get {
+                return ResourceManager.GetString("ExpGen_AND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to contains.
+        /// </summary>
+        public static string ExpGen_CONTAINS {
+            get {
+                return ResourceManager.GetString("ExpGen_CONTAINS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to doesn&apos;t contain.
+        /// </summary>
+        public static string ExpGen_CONTAINS_NOT {
+            get {
+                return ResourceManager.GetString("ExpGen_CONTAINS_NOT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to equal to.
+        /// </summary>
+        public static string ExpGen_EQ {
+            get {
+                return ResourceManager.GetString("ExpGen_EQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to greater than.
+        /// </summary>
+        public static string ExpGen_GT {
+            get {
+                return ResourceManager.GetString("ExpGen_GT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to greater than or equal.
+        /// </summary>
+        public static string ExpGen_GTE {
+            get {
+                return ResourceManager.GetString("ExpGen_GTE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to less than.
+        /// </summary>
+        public static string ExpGen_LT {
+            get {
+                return ResourceManager.GetString("ExpGen_LT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to less than or equal.
+        /// </summary>
+        public static string ExpGen_LTE {
+            get {
+                return ResourceManager.GetString("ExpGen_LTE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to not equal to.
+        /// </summary>
+        public static string ExpGen_NE {
+            get {
+                return ResourceManager.GetString("ExpGen_NE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        public static string ExpGen_Nr {
+            get {
+                return ResourceManager.GetString("ExpGen_Nr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to or.
+        /// </summary>
+        public static string ExpGen_OR {
+            get {
+                return ResourceManager.GetString("ExpGen_OR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nested expression.
         /// </summary>
         public static string ExpGenNested {
             get {
                 return ResourceManager.GetString("ExpGenNested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to user defined string.
+        /// </summary>
+        public static string ExpGenUserString {
+            get {
+                return ResourceManager.GetString("ExpGenUserString", resourceCulture);
             }
         }
         

@@ -14,6 +14,7 @@ using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -114,28 +115,18 @@ namespace BatInspector.Controls
       _cbRight.IsEnabled = true;
     }
 
-    private void generateFormula()
+    private void _cbOperator_DropDownClosed(object sender, EventArgs e)
     {
-        string f = _prefix + "(";
-        f += _left[_cbLeft.SelectedIndex].Text + " ";
-        f += _op[_cbOperator.SelectedIndex].Text + " ";
-      if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
-        f += "\"" + _right[_cbRight.SelectedIndex].Text + "\"";
-      else if (_right[_cbRight.SelectedIndex].Type == enExpType.EXPRESSION) 
-        f += " " +_right[_cbRight.SelectedIndex].Text;
-      else
-        f += (_tbFreeTxt.Text);
-        f += ")";
-        _tbExpression.setValue(f);
-    }
-
-    private void _tbFreeTxt_TextChanged(object sender, TextChangedEventArgs e)
-    {
-      if ((_tbFreeTxt.Text.Length > 0) && (_cbRight.SelectedIndex == 0))
+      if((_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS) ||
+      (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
       {
-        generateFormula();
-        _cbAppend.IsEnabled = true;
-        enableOk(true);
+        _cbRight.Items.Clear();
+        _cbRight.Items.Add(BatInspector.Properties.MyResources.ExpGenUserString);
+        _cbRight.SelectedIndex = 0;
+        _lblTodo.Visibility = Visibility.Visible;
+        _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodString;
+        _tbFreeTxt.Visibility = Visibility.Visible;
+        _tbFreeTxt.Text = "";
       }
     }
 
@@ -155,12 +146,73 @@ namespace BatInspector.Controls
           _cbRight.SelectedIndex = iRight;
         }
       }
-
+      else
+      {
+        if ((_cbRight.SelectedIndex == 0) && (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_STR))
+        {
+          _lblTodo.Visibility = Visibility.Visible;
+          _lblTodo.Content = "Bitte String eingeben";
+          _tbFreeTxt.Visibility = Visibility.Visible;
+        }
+        else
+        {
+          _lblTodo.Visibility = Visibility.Hidden;
+          _tbFreeTxt.Visibility = Visibility.Hidden;
+        }
+      }
       if ((_cbLeft.SelectedIndex >= 0) && (_cbRight.SelectedIndex >= 0) && (_cbOperator.SelectedIndex >= 0))
         generateFormula();
       _cbAppend.IsEnabled = true;
       enableOk(true);
     }
+
+    private void generateFormula()
+    {
+        string f = _prefix + "(";
+      if ((_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS) ||
+         (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
+      {
+        f += "indexOf(" + _left[_cbLeft.SelectedIndex].Text + ",\"";
+        if (_right[_cbRight.SelectedIndex].Type == enExpType.EXPRESSION)
+          f += " " + _right[_cbRight.SelectedIndex].Text;
+        else
+          f += _tbFreeTxt.Text + "\"";
+        f += ")";
+        if (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS)
+          f += ">=0";
+        else
+          f += "<0";
+      }
+      else
+      {
+        f += _left[_cbLeft.SelectedIndex].Text + " ";
+        f += _op[_cbOperator.SelectedIndex].Text + " ";
+        if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
+        {
+          if ((string)_cbRight.SelectedItem == BatInspector.Properties.MyResources.ExpGenUserString) 
+            f += "\"" + _tbFreeTxt.Text + "\"";
+          else
+            f += "\"" + _right[_cbRight.SelectedIndex].Text + "\"";
+        }
+        else if (_right[_cbRight.SelectedIndex].Type == enExpType.EXPRESSION)
+          f += " " + _right[_cbRight.SelectedIndex].Text;
+        else
+          f += (_tbFreeTxt.Text);
+      }
+      f += ")";
+      _tbExpression.setValue(f);
+    }
+
+    private void _tbFreeTxt_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      if ((_tbFreeTxt.Text.Length > 0) && (_cbRight.SelectedIndex == 0))
+      {
+        generateFormula();
+        _cbAppend.IsEnabled = true;
+        enableOk(true);
+      }
+    }
+
 
     private void _cbAppend_DropDownClosed(object sender, EventArgs e)
     {

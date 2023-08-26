@@ -23,6 +23,8 @@ namespace BatInspector
     UNEQUAL,
     OR,
     AND,
+    CONTAINS,
+    CONTAINS_NOT,
     END_OF_EXPRESSION
   }
 
@@ -104,9 +106,10 @@ namespace BatInspector
 
         case enField.RIGHT:
           if (AnyType.isNum(type))
-            retVal.Add(new ExpressionItem(enExpType.CONST, "Zahl", AnyType.tType.RT_FLOAT));
+            retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_Nr, AnyType.tType.RT_FLOAT));
           else if (AnyType.isStr(type))
           {
+            retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGenUserString, AnyType.tType.RT_STR));
             foreach (string bat in _species)
               retVal.Add(new ExpressionItem(enExpType.CONST, bat, AnyType.tType.RT_STR));
           }
@@ -137,24 +140,29 @@ namespace BatInspector
       List<ExpressionItem> retVal = new List<ExpressionItem>();
       if (AnyType.isNum(type))
       {
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.LESS, "<","kleiner als"));
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.LESS_OR_EQUAL, "<=","kleiner oder gleich"));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.LESS, "<",BatInspector.Properties.MyResources.ExpGen_LT));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.LESS_OR_EQUAL, "<=",BatInspector.Properties.MyResources.ExpGen_LTE));
       }
       if (AnyType.isNum(type) || AnyType.isStr(type) || AnyType.isBool(type))
       {
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.EQUAL, "==", "ist gleich"));
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.UNEQUAL, "!=", "ist nicht gleich"));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.EQUAL, "==", BatInspector.Properties.MyResources.ExpGen_EQ));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.UNEQUAL, "!=", BatInspector.Properties.MyResources.ExpGen_NE));
       }
       if (AnyType.isNum(type))
       {
 
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.GREATER, ">", "größer als"));
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.GREATER_OR_EQUAL, ">=","größer oder gleich"));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.GREATER, ">", BatInspector.Properties.MyResources.ExpGen_GT));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.GREATER_OR_EQUAL, ">=",BatInspector.Properties.MyResources.ExpGen_GTE));
       }
       if (AnyType.isBool(type))
       {
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.OR, "||", "oder"));
-        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.AND, "&&", "und"));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.OR, "||", BatInspector.Properties.MyResources.ExpGen_OR));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.AND, "&&", BatInspector.Properties.MyResources.ExpGen_AND));
+      }
+      if(AnyType.isStr(type))
+      {
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.CONTAINS, "", BatInspector.Properties.MyResources.ExpGen_CONTAINS));
+        retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.CONTAINS_NOT, "", BatInspector.Properties.MyResources.ExpGen_CONTAINS_NOT));
       }
       return retVal;
     }

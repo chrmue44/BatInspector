@@ -970,7 +970,7 @@
     <value>Ausdruck dauerhaft in die Filterliste ausfnehmen</value>
   </data>
   <data name="ctlExpressionEditorTodoNr" xml:space="preserve">
-    <value>bitte Zahl eingeben</value>
+    <value>Bitte Zahl eingeben</value>
   </data>
   <data name="ctlExpressionEditorLeftSide" xml:space="preserve">
     <value>Linke Seite</value>
@@ -1033,7 +1033,7 @@
     <value>Zeige Debug-Meldungen in der Log-Anzeige</value>
   </data>
   <data name="InstallerDataTxt1" xml:space="preserve">
-    <value>kopiere Programmdaten nach 'öffentliche Dokumente'</value>
+    <value>Kopiere Skripte ins Arbeitsverzeichnis</value>
   </data>
   <data name="InstallerModTxt1" xml:space="preserve">
     <value>Installiere KI-Modell (Universität Edinborough)</value>
@@ -1085,5 +1085,44 @@
   </data>
   <data name="MainToolTools" xml:space="preserve">
     <value>Benutzerdefinierte Werkzeuge ausführen</value>
+  </data>
+  <data name="ExpGen_LT" xml:space="preserve">
+    <value>kleiner als</value>
+  </data>
+  <data name="ExpGen_LTE" xml:space="preserve">
+    <value>kleiner oder gleich</value>
+  </data>
+  <data name="ExpGen_EQ" xml:space="preserve">
+    <value>ist gleich</value>
+  </data>
+  <data name="ExpGen_NE" xml:space="preserve">
+    <value>ist nicht gleich</value>
+  </data>
+  <data name="ExpGen_GT" xml:space="preserve">
+    <value>größer als</value>
+  </data>
+  <data name="ExpGen_GTE" xml:space="preserve">
+    <value>größer oder gleich</value>
+  </data>
+  <data name="ExpGen_OR" xml:space="preserve">
+    <value>oder</value>
+  </data>
+  <data name="ExpGen_AND" xml:space="preserve">
+    <value>und</value>
+  </data>
+  <data name="ExpGen_CONTAINS" xml:space="preserve">
+    <value>enhält</value>
+  </data>
+  <data name="ExpGen_CONTAINS_NOT" xml:space="preserve">
+    <value>enhält nicht</value>
+  </data>
+  <data name="ExpGen_Nr" xml:space="preserve">
+    <value>Zahl</value>
+  </data>
+  <data name="ExpGenUserString" xml:space="preserve">
+    <value>Benutzerdefinierter String</value>
+  </data>
+  <data name="ctlExpressionEditorTodString" xml:space="preserve">
+    <value>Bitte String eingeben</value>
   </data>
 </root>

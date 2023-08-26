@@ -4,11 +4,10 @@ using libScripter;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
 
 namespace BatInspector
 {
-  public delegate void dlgInstall(bool instDat, bool instPy, bool instMod);
+  public delegate void dlgInstall(bool instData, bool instPy, bool instMod);
   public class Installer
   {
     const string INST_TOOLS = "install_tools.bat";
@@ -50,42 +49,35 @@ namespace BatInspector
     {
       try
       {
-        bool restart = false;
         ProcessRunner p = new ProcessRunner();
-        if (instData)
+        if(instData)
         {
-          string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                     AppParams.PROG_DAT_DIR);
-          string dstDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
-                                       AppParams.PROG_DAT_DIR);
-          string fInstall = Path.Combine(srcDir, "install.txt");
-            if (Directory.Exists(dstDir))
-              Directory.Delete(dstDir, true);
-            dirCopy(srcDir, dstDir);
+          string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                     AppParams.PROG_DAT_DIR, "setup", AppParams.DIR_SCRIPTS);
+          string fInstall = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                     AppParams.PROG_DAT_DIR, "install.txt");
+          string dstDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                       AppParams.PROG_DAT_DIR, AppParams.DIR_SCRIPTS);
+          if(!Directory.Exists(dstDir))
+            Directory.CreateDirectory(dstDir);
+          dirCopy(srcDir, dstDir);
             string inst = DateTime.Now.ToString();
             File.WriteAllText(fInstall, inst);
-          restart = true;
         }
 
         if (instPy)
         {
-            string wrkDir = Path.Combine(AppParams.AppDataPath, "setup");
-            string exe = Path.Combine(wrkDir, INST_PYTHON);
-            p.launchCommandLineApp(exe, null, wrkDir, true, "", true);
+          string wrkDir = Path.Combine(AppParams.AppDataPath, "setup");
+          string exe = Path.Combine(wrkDir, INST_PYTHON);
+          p.launchCommandLineApp(exe, null, "", true, "", true);    
         }
 
         // install AI model
         if (instMod)
         {
-            string wrkDir = Path.Combine(AppParams.AppDataPath, "setup");
+          string wrkDir = Path.Combine(AppParams.AppDataPath, "setup");
           string installBat = Path.Combine(wrkDir, "install_tools.bat");
-            p.launchCommandLineApp("cmd.exe", null, wrkDir, true, "/C " + installBat, true);
-        }
-        if (restart)
-        {
-          DebugLog.save();
-          Process.Start(AppDomain.CurrentDomain.FriendlyName);
-          Environment.Exit(0);
+          p.launchCommandLineApp("cmd.exe", null, wrkDir, true, "/C " + installBat, true);
         }
       }
       catch (Exception ex)
@@ -97,11 +89,12 @@ namespace BatInspector
 
     static bool isDataInstalled()
     {
-      string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                 AppParams.PROG_DAT_DIR);
-      string fInstall = Path.Combine(srcDir, "install.txt");
-      string dstDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
-                                   AppParams.PROG_DAT_DIR);
+      string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                 AppParams.PROG_DAT_DIR, "setup", AppParams.DIR_SCRIPTS);
+      string fInstall = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                 AppParams.PROG_DAT_DIR, "install.txt");
+      string dstDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                   AppParams.PROG_DAT_DIR, AppParams.DIR_SCRIPTS);
 
       bool retVal =  File.Exists(fInstall) && Directory.Exists(dstDir);
       if (retVal)
@@ -121,6 +114,7 @@ namespace BatInspector
       }
       return retVal;
     }
+
 
     static bool isPythonInstalled(string ver)
     {
@@ -168,6 +162,13 @@ namespace BatInspector
           retVal = true;
       }
       return retVal;
+    }
+
+    void restartApp()
+    {
+      DebugLog.save();
+      Process.Start(AppDomain.CurrentDomain.FriendlyName);
+      Environment.Exit(0);
     }
 
     static void dirCopy(string src, string dst)

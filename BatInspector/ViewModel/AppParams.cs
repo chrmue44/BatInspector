@@ -205,6 +205,7 @@ namespace BatInspector
     public const string DIR_WAVS = "Records";             // directory for WAV files
     public const string DIR_ORIG = "orig";                // sub directory to store original files
     public const string DIR_DEL = "del";                  // sub directory to save 'deleted' files
+    public const string DIR_SCRIPTS = "scripts";          // sub directory to store scripts
     public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings
@@ -220,6 +221,7 @@ namespace BatInspector
     public const string PROG_DAT_DIR = "BatInspector";    // sub directory for program data
     public const string VAR_WRK_DIR = "WRK_DIR";            // variable name for work dir
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
+
     const string _fName = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;
@@ -265,12 +267,9 @@ namespace BatInspector
 
  
     public static string AppDataPath { get; set; } = "";
+
     public static string LogDataPath { get; set; } = "";
 
-    [DataMember]
-    [LocalizedCategory("SetCatApplication")]
-    [LocalizedDescription("SetDescWidthFFT")]
-    public string ScriptDir { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -546,7 +545,6 @@ namespace BatInspector
     {
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
       LogDataPath = Path.Combine(AppDataPath, "log");
-      ScriptDir = "scripts";
       ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
       WaterfallHeight = 256;
       WaterfallWidth = 512;
@@ -577,7 +575,6 @@ namespace BatInspector
       initModels();
       SamplingRate = 312500;
       ScriptCopyAutoToMan = "copyAutoToMan.scr";
-
       LogShowError = true;
       LogShowWarning = true;
       LogShowInfo = true;
@@ -615,13 +612,13 @@ namespace BatInspector
       {
         new ScriptItem(0, "copyAutoToMan.scr",
                   "take over all unambiguously automatically recognized species", false),
-        new ScriptItem(1, "reset_man.scr",
-                  "reset all manual species to 'todo'",false),
-        new ScriptItem(2, "tool_all_todo.scr",
+        new ScriptItem(1, "reset_man.scr", "reset all manual species to 'todo'",false),
+        new ScriptItem(2, "bandpass.scr", "automatic bandpass to all selected files", false),
+        new ScriptItem(3, "tool_all_todo.scr",
                   "set all SpeciesMan to 'todo'", true),
-        new ScriptItem(3, "tool_replace_pipistrelle.scr",
+        new ScriptItem(4, "tool_replace_pipistrelle.scr",
                    "replace all pipistelle with genus 'Pipistrellus'", true),
-        new ScriptItem(4, "tool_replace_nyctalus.scr",
+        new ScriptItem(5, "tool_replace_nyctalus.scr",
                    "replace all Nyctalus with genus 'Nyctalus'", true)
       };
     }
@@ -686,7 +683,7 @@ namespace BatInspector
         DebugLog.log("try to load:" + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
-          file = new FileStream(fPath, FileMode.Open);
+          file = new FileStream(fPath, FileMode.Open, FileAccess.Read);
           DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
           retVal = (AppParams)ser.ReadObject(file);
           if (retVal == null)
@@ -755,7 +752,7 @@ namespace BatInspector
         if (path == VAR_DATA_PATH)
         {
 
-          AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+          AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                                      PROG_DAT_DIR);
         }
         else

@@ -450,6 +450,9 @@
     </Compile>
     <Resource Include="images\play-HET.png" />
     <Resource Include="images\toolhammerconstruction_81806.png" />
+    <Resource Include="images\splash.png" />
+    <Resource Include="images\kopf64.png" />
+    <Resource Include="images\kopf256.jpg" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -496,7 +499,6 @@
     <Resource Include="images\icons8-cleanup-noise-100.png" />
     <Resource Include="images\filter_settings_icon_143016.png" />
     <Resource Include="images\Undo_icon-icons.com_73701.png" />
-    <Resource Include="images\bats.png" />
     <Resource Include="images\icons8-save-as-48.png" />
     <Resource Include="images\query.png" />
     <Resource Include="images\pause.png" />
@@ -593,9 +595,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\filter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\delete.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libParser\libParser\libParser.csproj">

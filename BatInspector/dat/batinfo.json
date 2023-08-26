@@ -38,7 +38,7 @@
       "Local": "Nordfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"
     },
     {
       "Abbreviation": "ESER",
@@ -78,7 +78,7 @@
       "Local": "Große Bartfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"
     },
     {
       "Abbreviation": "MBEC",
@@ -98,7 +98,7 @@
       "Local": "Bechsteinfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Myotis_bechsteinii_Rid_6059.wav"
     },
     {
       "Abbreviation": "MMYS",
@@ -118,7 +118,7 @@
       "Local": "Kleine Bartfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
     },
     {
       "Abbreviation": "MNAT",
@@ -138,7 +138,7 @@
       "Local": "Fransenfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Myotis_nattereri_Rid_6373.wav"
     },
     {
       "Abbreviation": "MMYO",
@@ -218,7 +218,7 @@
       "Local": "Großer Abendsegler",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Nyctalus_noctula_Rid_5953.wav"
     },
     {
       "Abbreviation": "NLEI",
@@ -278,7 +278,7 @@
       "Local": "Mückenfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Pipistrellus_pygmaeus_Rid_6162.wav"
     },
     {
       "Abbreviation": "PNAT",
@@ -318,7 +318,7 @@
       "Local": "Braunes Langohr",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
     },
     {
       "Abbreviation": "PAUS",
@@ -338,7 +338,28 @@
       "Local": "Graues Langohr",
       "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null
+      "WavExample": "dat/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
+    },
+	{
+      "Abbreviation": "VMUR",
+      "CallDistMax": 75,
+      "CallDistMin": 130,
+      "CharCalls": "TODO",
+      "DurationMax": 21,
+      "DurationMin": 10,
+      "FreqCharMax": 27,
+      "FreqCharMin": 22,
+      "FreqMaxMax": 45,
+      "FreqMaxMin": 30,
+      "FreqMinMax": 24,
+      "FreqMinMin": 21,
+      "Habitat": "Jagd in offenem Gelände, im Herbst auch in der Nähe hoher Gebäude",
+      "Latin": "Vespertilio murinus",
+      "Local": "Zweifarbfledermaus",
+      "ProofSpecies": "TODO",
+      "Show": true,
+      "WavExample": "dat/Vespertilio_murinus_Ski0136_S2_From2577494ms_To2593017ms_echoLoc.wav",
+	  "WavSocial": "dat/Vespertilio_murinus_Ski0136_S2_From2445870ms_To2450281ms_social.wav"
     }
   ],
 }

@@ -1,0 +1,24 @@
+SET NrFiles =(getPrjFileCount() - 1)
+FOR FileNr 0 NrFiles
+  IF =(getFileInfo(FileNr, "SELECT"))
+    SET NrCalls =(getCallCount(FileNr) - 1)
+    SET Flow 100000
+    SET Fhi 0
+    FOR i 0 NrCalls
+	  SET Fmin =(getCallInfo(FileNr, i, "F_MIN"))
+	  SET Fmax =(getCallInfo(FileNr, i, "F_MAX"))
+      IF =(Fmin < Flow)
+	    SET Flow =(Fmin)
+      END
+      IF =(Fmax > Fhi)
+        SET Fhi =(Fmax)
+      END
+    END
+    SET Fname =(getFileInfo(FileNr, "NAME"))
+    =(bandPass(FileNr, Flow - 1000, Fhi + 5000))
+    LOG =("apply bandPass(" + Flow + "," + Fhi +") to file (" + FileNr +") " + Fname)
+  END
+END
+SET PrjDir =(getPrjInfo("ROOT"))
+=(cleanup(PrjDir, 0, 0, 1))
+=(reloadPrj())

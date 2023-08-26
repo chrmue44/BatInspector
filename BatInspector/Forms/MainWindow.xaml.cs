@@ -79,6 +79,8 @@ namespace BatInspector.Forms
       {
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
+      var splashScreen = new SplashScreen("..\\images\\splash.png");
+      splashScreen.Show(false);
       AppParams.load();
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
       string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
@@ -109,11 +111,13 @@ namespace BatInspector.Forms
       _timer.Start();
       _ctlLog.setViewModel(_model);
       populateToolsMenu();
-      #if DEBUG
-            Tests tests = new Tests(_model);
-            tests.exec();
-            _switchTabToPrj = true;
-      #endif
+#if DEBUG
+      Tests tests = new Tests(_model);
+      tests.exec();
+      _switchTabToPrj = true;
+#endif
+      DebugLog.log(versionStr + " started", enLogType.DEBUG);
+      splashScreen.Close(TimeSpan.FromSeconds(1));
       Installer.installToolsIfNotPresent("3.10","1.0.6");
 #if !DEBUG
 #endif
@@ -950,7 +954,7 @@ namespace BatInspector.Forms
           _frmSpecies = new frmSpeciesData(_model, closeWindow, this);
         _frmSpecies.Show();
         _frmSpecies.Visibility = Visibility.Visible;
-        _frmSpecies.Topmost = true;
+        //_frmSpecies.Topmost = true;
         DebugLog.log("MainWin:BTN 'Species' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)

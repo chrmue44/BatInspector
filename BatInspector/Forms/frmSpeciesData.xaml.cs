@@ -66,12 +66,12 @@ namespace BatInspector.Forms
           {
             string wavName = Path.GetFileName(spec.WavExample);
 
-            string fullName = Environment.CurrentDirectory + "/" + spec.WavExample;
+            string fullName = Path.Combine(AppParams.AppDataPath,spec.WavExample);
             WavFile w = new WavFile();
             w.readFile(fullName);
             double duration = (double)w.AudioSamples.Length / w.FormatChunk.Frequency;
             AnalysisFile ana = new AnalysisFile(fullName, (int)w.FormatChunk.Frequency, duration);
-            _parent.setZoom(wavName, ana, fullName, null);
+            _parent.setZoom(wavName, ana, Path.GetDirectoryName(fullName), null);
           }
         }
       }

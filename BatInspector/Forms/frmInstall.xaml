@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:properties="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="Install Features for BatInspector" Height="450" Width="800">
+        Title="Install Features for BatInspector" Height="450" Width="800"
+        Icon="../images/kopf64.png">
     <Grid>
         <StackPanel Orientation="Vertical">
             <CheckBox Name ="_cbData" Content="" Margin="10"></CheckBox>

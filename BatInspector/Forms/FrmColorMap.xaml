@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.ColorMapConfig}" Height="550" Width="1000" Loaded="Window_Loaded">
+        Title="{x:Static res:MyResources.ColorMapConfig}" Height="550" Width="1000" Loaded="Window_Loaded"
+        Icon="../images/color-palette.png">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="280*"/>

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties" 
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.FrmQueryTitle}" Height="350" Width="800" Loaded="Window_Loaded_1">
+        Title="{x:Static res:MyResources.FrmQueryTitle}" Height="350" Width="800" Loaded="Window_Loaded_1"
+        Icon="../images/query.png">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="32*"/>

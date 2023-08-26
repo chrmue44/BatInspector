@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="About..." Height="843.97" Width="682.227" Loaded="Window_Loaded">
+        Title="About..." Height="843.97" Width="682.227" Loaded="Window_Loaded"
+        Icon="../images/kopf64.png">
     <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="100"></RowDefinition>
+      <RowDefinition Height="138"></RowDefinition>
       <RowDefinition Height="*"></RowDefinition>
       <RowDefinition Height="*"></RowDefinition>
       <RowDefinition Height="33"></RowDefinition>
@@ -16,7 +17,7 @@
     <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
       <TextBlock Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version</TextBlock>
       <TextBlock Name="_tbVersion" Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version 0.1.2</TextBlock>
-      <Image Source="..\images\bats.png" Height="64" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
+      <Image Source="..\images\kopf256.jpg" Height="128" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
     </StackPanel>
     <GroupBox Header="{x:Static res:MyResources.AboutHistory}" Grid.Row="1" Margin="8,3,8,3">
       <TextBox Name="_tbHistory" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" BorderThickness="0"></TextBox>

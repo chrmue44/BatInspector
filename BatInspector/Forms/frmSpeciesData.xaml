@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
-        Title="Edit Species Data" Height="750" Closing="Window_Closing" Loaded="Window_Loaded">
+        Title="Edit Species Data" Height="750" Closing="Window_Closing" Loaded="Window_Loaded"
+        Icon="../images/kopf64.png">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>

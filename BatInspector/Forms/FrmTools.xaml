@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.titleFrmTools}" Height="383" Width="400">
+        Title="{x:Static res:MyResources.titleFrmTools}" Height="383" Width="400"
+        Icon="../images/toolhammerconstruction_81806.png">
     <Grid>
         <StackPanel x:Name ="_sp" Orientation="Vertical">
             <Button></Button>

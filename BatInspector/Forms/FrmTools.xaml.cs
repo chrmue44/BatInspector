@@ -62,7 +62,7 @@ namespace BatInspector.Forms
         {
           _model.Scripter.VarList.set("VAR_FILE_NAME", _fileName);
           string scriptName = Path.Combine(AppParams.AppDataPath, 
-                                           AppParams.Inst.ScriptDir,
+                                           AppParams.DIR_SCRIPTS,
                                            AppParams.Inst.Scripts[index].Name);
           _model.executeScript(scriptName, false);
           this.DialogResult = true;

@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatInspector.Controls"        
         mc:Ignorable="d"
-        Title="WAV File Properties" Height="500" Width="800">
-  <Grid>
+        Title="WAV File Properties" Height="500" Width="800" Icon="../images/wav-file-format-symbol.png"  >
+        
+    <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="44"/>
       <RowDefinition/>

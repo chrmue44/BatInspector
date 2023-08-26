@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using libParser;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace BatInspector
 {
@@ -291,8 +292,9 @@ namespace BatInspector
     string _fName;
     bool _isOpen;
     WaveOutEvent _outputDevice = null;
-    AudioFileReader _audioFile = null;
-    string _tmpName = Path.Combine(AppParams.AppDataPath,"$$$.wav");
+    MemoryStream _memStream = null;
+    RawSourceWaveStream _rawStream = null;
+    Pcm16BitToSampleProvider _sampleProvider = null;
     PlaybackState _playbackState = PlaybackState.Stopped;
 
     public WaveHeader WavHeader { get { return _header;} }
@@ -315,7 +317,7 @@ namespace BatInspector
     
     public double PlayPosition
     {
-      get { return (_audioFile!= null) ? (double)_audioFile.Position / _audioFile.Length * _data.WaveData.Length/_format.Frequency  : 0.0; }
+      get { return (_rawStream!= null) ? (double)_rawStream.Position / _rawStream.Length * _data.WaveData.Length/_format.Frequency  : 0.0; }
     }
 
 
@@ -437,7 +439,25 @@ namespace BatInspector
       }
       return retVal;
     }
-    
+
+
+    //
+    // converts WAV samples to a raw byte array that can be played with NAUDIO
+    //
+    private void convertToRawData()
+    {
+      try
+      {
+        List<Byte> tempBytes = new List<byte>();
+        tempBytes.AddRange(_data.GetBytes());
+        _rawData = tempBytes.ToArray();
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error writing WAV file to memory stream", enLogType.ERROR);
+      }
+    }
+
     public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
     {
       _header = new WaveHeader();
@@ -502,17 +522,17 @@ namespace BatInspector
       {
         createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
         applyHetFrequency(f_HET);
-        saveFileAs(_tmpName);
+        convertToRawData();
       }
       else
       {
-        if ((_outputDevice != null) && (_audioFile != null))
+        if ((_outputDevice != null) && (_rawStream != null))
         {
           if (_outputDevice.PlaybackState == PlaybackState.Paused)
           {
             double length = (double)_data.WaveData.Length / _format.Frequency;
-            int pos = (int)(playPosition / length * _audioFile.Length);
-            _audioFile.Position = pos;
+            int pos = (int)(playPosition / length * _rawStream.Length);
+            _rawStream.Position = pos;
           }
         }
       }
@@ -524,17 +544,17 @@ namespace BatInspector
       if (_playbackState != PlaybackState.Paused)
       {
         createFile(chanCount, sampleRate, idxStart, idxEnd, left, right);
-        saveFileAs(_tmpName);
+        convertToRawData();
       }
       else
       {
-        if ((_outputDevice != null) && (_audioFile != null))
+        if ((_outputDevice != null) && (_rawStream != null))
         {
           if (_outputDevice.PlaybackState == PlaybackState.Paused)
           {
             double length = (double)_data.WaveData.Length / _format.Frequency;
-            int pos = (int)(playPosition / length * _audioFile.Length);
-            _audioFile.Position = pos;
+            int pos = (int)(playPosition / length * _rawStream.Length);
+            _rawStream.Position = pos;
           }
         }
       }
@@ -553,10 +573,13 @@ namespace BatInspector
             _outputDevice = new WaveOutEvent();
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
           }
-          if (_audioFile == null)
+          if(_rawStream == null)
           {
-            _audioFile = new AudioFileReader(_tmpName);
-            _outputDevice.Init(_audioFile);
+            WaveFormat fmt = new WaveFormat((int)_format.Frequency, _format.BitsPerSample, _format.Channels);
+            _memStream = new MemoryStream(_rawData);
+            _rawStream = new RawSourceWaveStream(_memStream, fmt);
+            _sampleProvider = new Pcm16BitToSampleProvider(_rawStream);
+            _outputDevice.Init(_sampleProvider);
           }
           _playbackState = PlaybackState.Playing;
           _outputDevice.Play();
@@ -564,7 +587,7 @@ namespace BatInspector
       }
       catch (Exception ex)
       {
-        DebugLog.log("could not play wav file: " + _fName + " :" + ex.ToString(), enLogType.ERROR);
+        DebugLog.log("could not play wav:" + ex.ToString(), enLogType.ERROR);
       }
     }
 
@@ -591,12 +614,6 @@ namespace BatInspector
       _outputDevice?.Stop();
       _playbackState = PlaybackState.Stopped;
       Thread.Sleep(20);
-      try
-      {
-        if (File.Exists(_tmpName))
-          File.Delete(_tmpName);
-      }
-      catch { }
     }
 
     public short calcMean(int iStart, int iEnd)
@@ -626,9 +643,11 @@ namespace BatInspector
       {
         _outputDevice.Dispose();
         _outputDevice = null;
-        _audioFile.Dispose();
-        _audioFile = null;
-        //    CurrentPlayTime = 0;
+        _rawStream.Dispose();
+        _rawStream = null;
+        _memStream.Dispose();
+        _memStream = null;
+        _sampleProvider = null;
         stop();
       }
       catch (Exception ex)

@@ -430,7 +430,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatic Classification.
+        ///   Looks up a localized string similar to AI Classification.
         /// </summary>
         public static string CtlWavAutoDetection {
             get {
@@ -448,7 +448,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manual Classification.
+        ///   Looks up a localized string similar to Man. Classification.
         /// </summary>
         public static string CtlWavManualDetection {
             get {
@@ -1371,6 +1371,33 @@ namespace BatInspector.Properties {
         public static string FrmScriptName {
             get {
                 return ResourceManager.GetString("FrmScriptName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of Parameter .
+        /// </summary>
+        public static string FrmScriptParamEditorNameParam {
+            get {
+                return ResourceManager.GetString("FrmScriptParamEditorNameParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter for script.
+        /// </summary>
+        public static string FrmScriptParamEditorTitle {
+            get {
+                return ResourceManager.GetString("FrmScriptParamEditorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters for script.
+        /// </summary>
+        public static string frmScriptParamTitle {
+            get {
+                return ResourceManager.GetString("frmScriptParamTitle", resourceCulture);
             }
         }
         

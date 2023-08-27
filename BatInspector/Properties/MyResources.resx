@@ -208,10 +208,10 @@
     <value>Apply</value>
   </data>
   <data name="CtlWavAutoDetection" xml:space="preserve">
-    <value>Automatic Classification</value>
+    <value>AI Classification</value>
   </data>
   <data name="CtlWavManualDetection" xml:space="preserve">
-    <value>Manual Classification</value>
+    <value>Man. Classification</value>
   </data>
   <data name="CtlWavCall" xml:space="preserve">
     <value>Call</value>
@@ -1124,5 +1124,14 @@
   </data>
   <data name="ctlExpressionEditorTodString" xml:space="preserve">
     <value>Please enter string</value>
+  </data>
+  <data name="frmScriptParamTitle" xml:space="preserve">
+    <value>Parameters for script</value>
+  </data>
+  <data name="FrmScriptParamEditorTitle" xml:space="preserve">
+    <value>Parameter for script</value>
+  </data>
+  <data name="FrmScriptParamEditorNameParam" xml:space="preserve">
+    <value>Name of Parameter </value>
   </data>
 </root>

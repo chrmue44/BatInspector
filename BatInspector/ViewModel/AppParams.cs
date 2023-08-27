@@ -139,12 +139,13 @@ namespace BatInspector
   [DataContract]
   public class ScriptItem
   {
-    public ScriptItem(int index, string name, string description, bool isTool)
+    public ScriptItem(int index, string name, string description, bool isTool, List<string> parameter)
     {
       Index = index;
       Name = name;
       Description = description;
       IsTool = isTool;
+      Parameter = parameter;
     }
 
     [DataMember]
@@ -158,6 +159,8 @@ namespace BatInspector
 
     [DataMember]
     public bool IsTool { get; set; }
+    [DataMember]
+    public List<string> Parameter { get; set; }
   }
 
   [DataContract]
@@ -611,15 +614,15 @@ namespace BatInspector
       Scripts = new List<ScriptItem>
       {
         new ScriptItem(0, "copyAutoToMan.scr",
-                  "take over all unambiguously automatically recognized species", false),
-        new ScriptItem(1, "reset_man.scr", "reset all manual species to 'todo'",false),
-        new ScriptItem(2, "bandpass.scr", "automatic bandpass to all selected files", false),
+                  "take over all unambiguously automatically recognized species", false,new List<string>()),
+        new ScriptItem(1, "reset_man.scr", "reset all manual species to 'todo'",false,new List<string>()),
+        new ScriptItem(2, "bandpass.scr", "automatic bandpass to all selected files", false,new List<string>()),
         new ScriptItem(3, "tool_all_todo.scr",
-                  "set all SpeciesMan to 'todo'", true),
+                  "set all SpeciesMan to 'todo'", true,new List<string>()),
         new ScriptItem(4, "tool_replace_pipistrelle.scr",
-                   "replace all pipistelle with genus 'Pipistrellus'", true),
+                   "replace all pipistelle with genus 'Pipistrellus'", true, new List<string>()),
         new ScriptItem(5, "tool_replace_nyctalus.scr",
-                   "replace all Nyctalus with genus 'Nyctalus'", true)
+                   "replace all Nyctalus with genus 'Nyctalus'", true, new List<string>())
       };
     }
 

@@ -163,7 +163,7 @@ namespace BatInspector
       {
         // backup in folder del if possible
         if ((_fName != "") && (name == _fName))
-          ZoomView.saveWavWithBackup(name, wavSubDir);
+          ZoomView.saveWavBackup(name, wavSubDir);
         WavFile outFile = new WavFile();
         outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
         outFile.saveFileAs(name);

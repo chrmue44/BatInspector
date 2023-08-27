@@ -1464,9 +1464,38 @@ namespace BatInspector.Forms
 
     private void _mnTool1_Click(object sender, RoutedEventArgs e)
     {
-      MenuItem m = sender as MenuItem;
-      string script = (string)m.Tag;
-      _model.executeScript(script);
+      try
+      {
+        DebugLog.log("BTN custom tool pressed", enLogType.DEBUG);
+        MenuItem m = sender as MenuItem;
+        string script = (string)m.Tag;
+        ScriptItem item = _model.Scripter.getScript(script);
+        if (item != null)
+        {
+          if (item.Parameter.Count > 0)
+          {
+            string winTitle = BatInspector.Properties.MyResources.frmScriptParamTitle +": " + script;
+            frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
+            frm.ShowDialog();
+            _model.Scripter.VarList.init();
+            if (frm.DialogResult == true)
+            {
+              for (int i = 0; i < item.Parameter.Count; i++)
+              {
+                string varName = "PAR" + (i + 1).ToString();
+                _model.Scripter.VarList.set(varName, frm.ParameteValues[i]);
+              }
+              _model.executeScript(script, false);
+            }
+          }
+          else
+            _model.executeScript(script);
+        }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("Error BTN custom tool: " + ex.ToString(), enLogType.ERROR);
+      }
     }
   }
 

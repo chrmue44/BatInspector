@@ -81,7 +81,7 @@ namespace BatInspector
       set { _frequency = value; RecalcBlockSizes(); }
     }
 
-    public UInt32 AverageBytesPerSec { get;  set; }
+    public UInt32 AverageBytesPerSec { get;  private set; }
 
     public UInt16 BlockAlign { get; private set; }
 
@@ -453,6 +453,7 @@ namespace BatInspector
         {
           if(File.Exists(_fName))
             File.Delete(_fName);
+          _format.BitsPerSample = 16;
           FileStream f = File.OpenWrite(_fName);
           List<Byte> tempBytes = new List<byte>();
           _header.FileLength = 4 + _format.Length() + _data.Length();

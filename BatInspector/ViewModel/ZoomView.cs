@@ -338,7 +338,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public static void saveWavWithBackup(string wavName, string wavSubDir)
+    public static void saveWavBackup(string wavName, string wavSubDir)
     {
       string srcPath = Path.GetDirectoryName(wavName);
       string dstPath;

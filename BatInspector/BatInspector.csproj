@@ -186,6 +186,12 @@
     <Compile Include="Forms\frmInstall.xaml.cs">
       <DependentUpon>frmInstall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmScriptParamEditor.xaml.cs">
+      <DependentUpon>FrmScriptParamEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmScriptParams.xaml.cs">
+      <DependentUpon>frmScriptParams.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmQuery.xaml.cs">
       <DependentUpon>FrmQuery.xaml</DependentUpon>
     </Compile>
@@ -367,6 +373,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\frmInstall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmScriptParamEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmScriptParams.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

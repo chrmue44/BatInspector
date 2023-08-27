@@ -15,8 +15,8 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="18" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="140" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Grid.Row="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Center"/>

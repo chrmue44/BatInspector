@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using libParser;
+using Microsoft.Win32;
+using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,27 +57,41 @@ namespace BatInspector.Controls
 
     private void _btnOpen_Click(object sender, RoutedEventArgs e)
     {
-      if (_isFolder)
+      try
       {
-        System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
-        System.Windows.Forms.DialogResult res = ofo.ShowDialog();
-        if (res == System.Windows.Forms.DialogResult.OK)
+        if (_isFolder)
         {
-          _txt.Text = ofo.SelectedPath;
+          System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
+          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
+          if (res == System.Windows.Forms.DialogResult.OK)
+          {
+            _txt.Text = ofo.SelectedPath;
+          }
         }
+        else
+        {
+          OpenFileDialog ofi = new OpenFileDialog();
+          ofi.Filter = _filter;
+          bool? ok = ofi.ShowDialog();
+          if (ok == true)
+          {
+            _txt.Text = ofi.FileName;
+          }
+        }
+        if (_dlgAction != null)
+          _dlgAction();
       }
-      else
+      catch (Exception ex)
       {
-        OpenFileDialog ofi = new OpenFileDialog();
-        ofi.Filter = _filter;
-        bool? ok = ofi.ShowDialog();
-        if(ok == true) 
-        {
-          _txt.Text = ofi.FileName;
-        }
+        DebugLog.log("error file open dialog: " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+
+    private void _txt_TextChanged(object sender, TextChangedEventArgs e)
+    {
       if (_dlgAction != null)
         _dlgAction();
-    }   
+    }
   }
 }

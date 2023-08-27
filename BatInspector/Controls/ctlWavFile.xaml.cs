@@ -59,8 +59,8 @@ namespace BatInspector.Controls
         }
         else
         {
-          _grid.ColumnDefinitions[1].Width = new GridLength(200);
-          _grid.ColumnDefinitions[2].Width = new GridLength(200);
+          _grid.ColumnDefinitions[1].Width = new GridLength(160);
+          _grid.ColumnDefinitions[2].Width = new GridLength(160);
         }
       }
     }
@@ -131,7 +131,7 @@ namespace BatInspector.Controls
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, 60, 65, selItemChanged, clickCallLabel,
+          im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, 45, 90, selItemChanged, clickCallLabel,
           MyResources.ctlWavToolTipCall);
           im.setItems(spec.ToArray());
           im.setValue(call.getString(Cols.SPECIES_MAN));

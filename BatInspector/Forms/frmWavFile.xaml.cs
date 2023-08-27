@@ -87,7 +87,10 @@ namespace BatInspector.Forms
     private void samplingRateChanged(enDataType type, object val)
     {
       int sr = _ctlSamplingRate.getIntValue();
+  //    uint oldSr = _model.WavFile.FormatChunk.Frequency;
       _model.WavFile.FormatChunk.Frequency = (uint)sr;
+  //    double fact = (double)sr / oldSr;
+  //    _model.WavFile.FormatChunk.AverageBytesPerSec = (uint)(fact * _model.WavFile.FormatChunk.AverageBytesPerSec);
     }
 
     private void windowLoaded(object sender, RoutedEventArgs e)

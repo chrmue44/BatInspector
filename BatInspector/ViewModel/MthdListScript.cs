@@ -11,10 +11,12 @@
 ********************************************************************************/
 using libParser;
 using libScripter;
+using NAudio.Wave.SampleProviders;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Diagnostics.Contracts;
 
 namespace BatInspector
 {
@@ -46,6 +48,9 @@ namespace BatInspector
       addMethod(new FuncTabItem("getSampleRate", getSampleRate)); 
       _scriptHelpTab.Add(new HelpTabItem("getSampleRate", "returns the samplerate of a file",
                       new List<string> { "1: fileName" }, new List<string> { "1: sampling rate" }));
+      addMethod(new FuncTabItem("resampleWav", resampleWav));
+      _scriptHelpTab.Add(new HelpTabItem("resampleWav", "resamples a WAV file to a new sampleRate",
+                      new List<string> { "1: fileName", "2:new sampling rate"}, new List<string> { "1: sampling rate" }));
       addMethod(new FuncTabItem("openCsv", openCsv));
       _scriptHelpTab.Add(new HelpTabItem("openCsv", "opens a csv file and reads content to memory",
                       new List<string> { "1: fileName", "2: 1=with header (optional)","3: separator (optional)" }, new List<string> { "1: csv file handle" })) ;
@@ -91,9 +96,6 @@ namespace BatInspector
       addMethod(new FuncTabItem("getRankCount", getRankCount));
       _scriptHelpTab.Add(new HelpTabItem("getRankCount", "get the number of calls of a species for the specified rank in specified file in open project",
                       new List<string> { "1: file index (0..n)", "2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
-/*      addMethod(new FuncTabItem("calcProbabilityRatios", calcProbabilityRatios));
-      _scriptHelpTab.Add(new HelpTabItem("calcProbabilityRatios", "calculate the probability ratio for each call for 1st and 2nd rank in open project",
-                      new List<string> { }, new List<string> { "1: error code" })); */
       addMethod(new FuncTabItem("getFileIndex", getFileIndex));
       _scriptHelpTab.Add(new HelpTabItem("getFileIndex", "get file index in opended project",
                       new List<string> { "1: file name"}, new List<string> { "1: index (-1: not found)" }));
@@ -866,9 +868,7 @@ namespace BatInspector
         {
           WavFile wav = new WavFile();
           wav.readFile(fName);
-          double fact = (double)sampleRate / wav.FormatChunk.Frequency;
           wav.FormatChunk.Frequency= (uint)sampleRate;
-          wav.FormatChunk.AverageBytesPerSec = (uint)fact * wav.FormatChunk.AverageBytesPerSec;  
           wav.saveFile();
         }
         else
@@ -879,6 +879,54 @@ namespace BatInspector
       return err;
     }
 
+    static tParseError resampleWav(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 2)
+      {
+        bool withBackup = true;
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string fName = argv[0].getString();
+        argv[1].changeType(AnyType.tType.RT_INT64);
+        int sampleRate = (int)argv[1].getInt64();
+        if(argv.Count == 3)
+        {
+          argv[2].changeType(AnyType.tType.RT_BOOL);
+          withBackup = argv[2].getBool();
+        }
+        if (File.Exists(fName))
+        {
+          if (Path.GetExtension(fName) == ".wav")
+          {
+            string bakName = fName.Replace(".wav", "_bak.wav");
+            if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+            {
+              string fileName = Path.GetFileName(fName);
+              bakName = Path.Combine(_inst._model.Prj.PrjDir, AppParams.DIR_ORIG, fileName);
+              ZoomView.saveWavBackup(fileName, _inst._model.Prj.WavSubDir);
+              File.Delete(fName);
+            }
+            else
+              File.Move(fName, bakName);
+            using (AudioFileReader reader = new AudioFileReader(bakName))
+            {
+              var resampler = new WdlResamplingSampleProvider(reader, sampleRate);
+              WaveFileWriter.CreateWaveFile16(fName, resampler);
+            }
+            if(!withBackup)
+              File.Delete(fName);
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.ARG1_OUT_OF_RANGE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
 
     /*
     static tParseError calcProbabilityRatios(List<AnyType> argv, out AnyType result)

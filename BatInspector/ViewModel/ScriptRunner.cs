@@ -19,7 +19,7 @@ using libScripter;
 
 namespace BatInspector
 {
- 
+
 
   public class ScriptRunner
   {
@@ -50,13 +50,13 @@ namespace BatInspector
       _model = model;
     }
 
-    public bool IsBusy {  get { return _parser.Busy; } }
+    public bool IsBusy { get { return _parser.Busy; } }
 
     public void execCmd(string cmd)
     {
       string[] lines = new string[1];
       lines[0] = cmd;
-  
+
       _parser.ParseLines(lines);
       string res = _parser.VarTable.GetValue(Parser.ERROR_LEVEL);
       DebugLog.log("ConsoleCmd:" + cmd + ": " + res, enLogType.INFO);
@@ -67,19 +67,20 @@ namespace BatInspector
       string ext = Path.GetExtension(fileName);
       if (ext.ToLower() == ".scr")
       {
-        if(initVars)
+        if (initVars)
           _parser.VarTable.VarList.init();
         SetVariable(AppParams.VAR_WRK_DIR, _wrkDir);
         SetVariable(AppParams.VAR_DATA_PATH, AppParams.AppDataPath);
 
         if (background)
           _parser.StartParsing(fileName);
-        else {
+        else
+        {
           retVal = _parser.ParseScript(fileName);
           if (_parser.VarTable.GetValue(Parser.ERROR_LEVEL) != "0")
             retVal = 2;
-          if((_parser.VarTable.GetValue(Parser.RET_VALUE) != "") &&
-            (_parser.VarTable.GetValue(Parser.RET_VALUE) != "0") )
+          if ((_parser.VarTable.GetValue(Parser.RET_VALUE) != "") &&
+            (_parser.VarTable.GetValue(Parser.RET_VALUE) != "0"))
             retVal = 3;
         }
       }
@@ -124,23 +125,36 @@ namespace BatInspector
       _parser.VarTable.Remove(name);
     }
 
+    public ScriptItem getScript(string name)
+    {
+      ScriptItem retVal = null;
+      foreach (ScriptItem sItem in AppParams.Inst.Scripts)
+      {
+        if (sItem.Name == name)
+        {
+          retVal = sItem;
+          break;
+        }
+      }
+      return retVal;
+    }
 
     public List<ScriptItem> getScripts()
     {
       List<ScriptItem> retVal = new List<ScriptItem>();
       foreach (ScriptItem sItem in AppParams.Inst.Scripts)
-          retVal.Add(sItem);
+        retVal.Add(sItem);
       return retVal;
     }
 
     public void setScripts(List<ScriptItem> list)
     {
-      foreach(ScriptItem sItem in AppParams.Inst.Scripts)
+      foreach (ScriptItem sItem in AppParams.Inst.Scripts)
       {
         bool foundFile = false;
-        foreach(ScriptItem lItem in list)
+        foreach (ScriptItem lItem in list)
         {
-          if(lItem.Name == sItem.Name)
+          if (lItem.Name == sItem.Name)
           {
             foundFile = true;
             break;

@@ -99,15 +99,17 @@ namespace BatInspector
       bool retVal =  File.Exists(fInstall) && Directory.Exists(dstDir);
       if (retVal)
       {
-        string datDirDst = Path.Combine(dstDir, "dat");
-        string datDirSrc = Path.Combine(srcDir, "dat");
-        if (Directory.Exists(datDirDst) && Directory.Exists(datDirSrc))
+        if (Directory.Exists(dstDir) && Directory.Exists(srcDir))
         {
-          DirectoryInfo dst = new DirectoryInfo(datDirDst);
-          DirectoryInfo src = new DirectoryInfo(datDirSrc);
-          if (dst.CreationTime < src.CreationTime)
+          DirectoryInfo dst = new DirectoryInfo(dstDir);
+          DirectoryInfo src = new DirectoryInfo(srcDir);
+          if (dst.LastWriteTime < src.LastWriteTime)
           {
-            Directory.Delete(dstDir, true);
+            string delDir = srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                                  AppParams.PROG_DAT_DIR);
+            Directory.Delete(Path.Combine(delDir, "models"), true);
+            Directory.Delete(Path.Combine(delDir, "dat"), true);
+            Directory.Delete(Path.Combine(delDir, "setup"), true);
             retVal = false;
           }
         }

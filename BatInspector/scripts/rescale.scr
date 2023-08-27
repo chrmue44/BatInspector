@@ -4,5 +4,6 @@ SET NrFiles =(getPrjFileCount() - 1)
 SET Factor 10
 FOR FileNr 0 NrFiles
   SET FileName =(getFileName(FileNr))
-  =(rescaleSampleRate(FileName, Factor))
+  SET oldSampleRate =(getSampleRate(FileName))
+  =(setSampleRate(FileName, (oldSampleRate * Factor)))
 END

@@ -1,6 +1,7 @@
-V 0.5.3 26.08.23
+V 0.5.3 27.08.23
 - installer improved: data now in c:\ProgramData\BatInspector
 - bugfix species data: exmaple works
+- support of 24bit and 32 bit WAV files added
 
 V 0.5.2 25.08.23
 - bugfix edit script

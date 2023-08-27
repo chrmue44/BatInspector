@@ -33,6 +33,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_149FA94082884850B9C827DA78923B13"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1B7674B0D1244631861FAB9320FF96EB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_24461C5AD7F84B5583780E1D09A34DC1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2DF7494D2FBE73468AECB185159531AE"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
@@ -69,6 +87,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4CC450DF99914654AD18DE3D89B01E75"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4EFED75E345B6D644E5C8B8F55F7A915"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
@@ -99,6 +123,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5B5895BFD24747C19ADF34C1DD97C64B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5B658AD152F34B51B8DBC4043D55F53D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -117,13 +147,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7002C65D1106468C874E44A31B8E3DC7"
+        "MsmKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
+        "MsmKey" = "8:_74DB702536FA4F4A9E6DC93BD9CD9DDE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -135,8 +165,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_790F5D94B957465485B568320CDD9CCB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7DE15C308AA1CF9A858739FF63143147"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7FDAC0D46382472BA559944A4E5453E0"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -147,7 +189,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_85DCE22CE9C84E0DA2109DEDEA8F70FD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8DDB320204B346BAA9188B5E293A0FFF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8F063E20989A475BBD3B23F0942DE1FF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -161,6 +215,12 @@
         {
         "MsmKey" = "8:_968547B6565FBC953155D6080A874B06"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9BA0714D7AB94670923883494AACCE40"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -195,12 +255,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A894ABEBD2C341039E9A248F4408C974"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_AD4F277B6FB24058A037537ED487183F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -231,12 +285,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B71A042D5B0C43978EC0134E749DA68A"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B7C5DA68FDCEAFA1EC54AFDBEFB6EAA1"
         "OwnerKey" = "8:_714BB7A88658470C8AACECD7825ABC60"
         "MsmSig" = "8:_UNDEFINED"
@@ -251,6 +299,12 @@
         {
         "MsmKey" = "8:_B7C5DA68FDCEAFA1EC54AFDBEFB6EAA1"
         "OwnerKey" = "8:_573987E580B428B6088C6EC5A3007F71"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BB3118ABC4934E4BA6CE1B9C9C5BFF39"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -327,7 +381,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E56F8A42812D44F9ADF42E55604DBAA1"
+        "MsmKey" = "8:_D2A16AB5756049EE84E6ADB2D42FF360"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E6A7611DC14640FEBD1A61BF7A2AFEA2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -345,7 +405,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F9585204EB2044D9B66C5C56A0CEDDFF"
+        "MsmKey" = "8:_F69769875C794FF9A7FB6012B9320581"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -405,20 +465,14 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_FC09D048434E46CEBA8AEE23659EB81A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_80552BF44B6A45858FFCBEFCB0A31FE6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -473,6 +527,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BBF75597F63B7AED10A2F5576B5F5F7F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A6B8F23C1B1504D5961B03125B2EB2E6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ADE540FD97246E2B4BB9D45C25530505"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -611,7 +677,7 @@
             "SourcePath" = "8:..\\BatInspector\\scripts\\copyAutoToMan.scr"
             "TargetName" = "8:copyAutoToMan.scr"
             "Tag" = "8:"
-            "Folder" = "8:_56B7090A78C441ABA842794A96746323"
+            "Folder" = "8:_9B7BA6CD21164EE586905473E8A93854"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -631,7 +697,7 @@
             "SourcePath" = "8:..\\BatInspector\\scripts\\tool_replace_nyctalus.scr"
             "TargetName" = "8:tool_replace_nyctalus.scr"
             "Tag" = "8:"
-            "Folder" = "8:_56B7090A78C441ABA842794A96746323"
+            "Folder" = "8:_9B7BA6CD21164EE586905473E8A93854"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -651,7 +717,67 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
             "TargetName" = "8:Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_149FA94082884850B9C827DA78923B13"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Vespertilio_murinus_Ski0136_S2_From2445870ms_To2450281ms_social.wav"
+            "TargetName" = "8:Vespertilio_murinus_Ski0136_S2_From2445870ms_To2450281ms_social.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1B7674B0D1244631861FAB9320FF96EB"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Vespertilio_murinus_Ski0136_S2_From2577494ms_To2593017ms_echoLoc.wav"
+            "TargetName" = "8:Vespertilio_murinus_Ski0136_S2_From2577494ms_To2593017ms_echoLoc.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_24461C5AD7F84B5583780E1D09A34DC1"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
+            "TargetName" = "8:Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -810,6 +936,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4CC450DF99914654AD18DE3D89B01E75"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Bbar_13.wav"
+            "TargetName" = "8:Bbar_13.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4EFED75E345B6D644E5C8B8F55F7A915"
             {
             "AssemblyRegister" = "3:1"
@@ -934,12 +1080,32 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5B5895BFD24747C19ADF34C1DD97C64B"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
+            "TargetName" = "8:Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5B658AD152F34B51B8DBC4043D55F53D"
             {
             "SourcePath" = "8:..\\BatInspector\\scripts\\tool_replace_pipstrelle.scr"
             "TargetName" = "8:tool_replace_pipstrelle.scr"
             "Tag" = "8:"
-            "Folder" = "8:_56B7090A78C441ABA842794A96746323"
+            "Folder" = "8:_9B7BA6CD21164EE586905473E8A93854"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -959,7 +1125,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
             "TargetName" = "8:Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1005,12 +1171,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7002C65D1106468C874E44A31B8E3DC7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74DB702536FA4F4A9E6DC93BD9CD9DDE"
             {
-            "SourcePath" = "8:..\\BatInspector\\dat\\Bbar_13.wav"
-            "TargetName" = "8:Bbar_13.wav"
+            "SourcePath" = "8:..\\BatInspector\\dat\\Myotis_nattereri_Rid_6373.wav"
+            "TargetName" = "8:Myotis_nattereri_Rid_6373.wav"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1056,6 +1222,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_790F5D94B957465485B568320CDD9CCB"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Pipistrellus_pygmaeus_Rid_6162.wav"
+            "TargetName" = "8:Pipistrellus_pygmaeus_Rid_6162.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7DE15C308AA1CF9A858739FF63143147"
             {
             "AssemblyRegister" = "3:1"
@@ -1087,11 +1273,31 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7FDAC0D46382472BA559944A4E5453E0"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
+            "TargetName" = "8:Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_80552BF44B6A45858FFCBEFCB0A31FE6"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BatInspector.resources, Version=0.5.1.0, Culture=de, processorArchitecture=AMD64"
+            "AssemblyAsmDisplayName" = "8:BatInspector.resources, Version=0.5.3.0, Culture=de, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
                     "_80552BF44B6A45858FFCBEFCB0A31FE6"
@@ -1118,12 +1324,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_85DCE22CE9C84E0DA2109DEDEA8F70FD"
+            {
+            "SourcePath" = "8:..\\BatInspector\\scripts\\bandpass.scr"
+            "TargetName" = "8:bandpass.scr"
+            "Tag" = "8:"
+            "Folder" = "8:_9B7BA6CD21164EE586905473E8A93854"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8DDB320204B346BAA9188B5E293A0FFF"
             {
             "SourcePath" = "8:..\\BatInspector\\dat\\BatSpeciesRegions.json"
             "TargetName" = "8:BatSpeciesRegions.json"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F063E20989A475BBD3B23F0942DE1FF"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Myotis_bechsteinii_Rid_6059.wav"
+            "TargetName" = "8:Myotis_bechsteinii_Rid_6059.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1143,7 +1389,7 @@
             "SourcePath" = "8:python\\python-3.10.10-amd64.exe"
             "TargetName" = "8:python-3.10.10-amd64.exe"
             "Tag" = "8:"
-            "Folder" = "8:_CA516577E73147DB8342AED72FEE67F1"
+            "Folder" = "8:_E827974F79214698AAFE8D9517794DA0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1189,6 +1435,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9BA0714D7AB94670923883494AACCE40"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
+            "TargetName" = "8:Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A5DB30087B5F09C4899AA4A4A0ADCCAC"
             {
             "AssemblyRegister" = "3:1"
@@ -1225,7 +1491,7 @@
             "SourcePath" = "8:..\\BatInspector\\scripts\\reset_man.scr"
             "TargetName" = "8:reset_man.scr"
             "Tag" = "8:"
-            "Folder" = "8:_56B7090A78C441ABA842794A96746323"
+            "Folder" = "8:_9B7BA6CD21164EE586905473E8A93854"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1269,26 +1535,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A894ABEBD2C341039E9A248F4408C974"
-            {
-            "SourcePath" = "8:..\\BatInspector\\dat\\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
-            "TargetName" = "8:Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
-            "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD4F277B6FB24058A037537ED487183F"
@@ -1378,27 +1624,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
             "TargetName" = "8:Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B71A042D5B0C43978EC0134E749DA68A"
-            {
-            "SourcePath" = "8:..\\BatInspector\\dat\\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
-            "TargetName" = "8:Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
-            "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1442,6 +1668,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB3118ABC4934E4BA6CE1B9C9C5BFF39"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"
+            "TargetName" = "8:Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BBF75597F63B7AED10A2F5576B5F5F7F"
@@ -1531,7 +1777,7 @@
             "SourcePath" = "8:..\\BatInspector\\scripts\\tool_all_todo.scr"
             "TargetName" = "8:tool_all_todo.scr"
             "Tag" = "8:"
-            "Folder" = "8:_56B7090A78C441ABA842794A96746323"
+            "Folder" = "8:_9B7BA6CD21164EE586905473E8A93854"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1551,7 +1797,7 @@
             "SourcePath" = "8:..\\BatInspector\\dat\\batinfo.json"
             "TargetName" = "8:batinfo.json"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1566,12 +1812,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E56F8A42812D44F9ADF42E55604DBAA1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D2A16AB5756049EE84E6ADB2D42FF360"
             {
-            "SourcePath" = "8:..\\BatInspector\\images\\bats_mini.ico"
-            "TargetName" = "8:bats_mini.ico"
+            "SourcePath" = "8:..\\BatInspector\\images\\kopf64.ico"
+            "TargetName" = "8:kopf64.ico"
             "Tag" = "8:"
             "Folder" = "8:_267AA20976D04426AA2D0AAB62014673"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E6A7611DC14640FEBD1A61BF7A2AFEA2"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
+            "TargetName" = "8:Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1611,7 +1877,7 @@
             "SourcePath" = "8:python\\install_tools.bat"
             "TargetName" = "8:install_tools.bat"
             "Tag" = "8:"
-            "Folder" = "8:_CA516577E73147DB8342AED72FEE67F1"
+            "Folder" = "8:_E827974F79214698AAFE8D9517794DA0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1626,12 +1892,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F9585204EB2044D9B66C5C56A0CEDDFF"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F69769875C794FF9A7FB6012B9320581"
             {
-            "SourcePath" = "8:..\\BatInspector\\dat\\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
-            "TargetName" = "8:Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
+            "SourcePath" = "8:..\\BatInspector\\dat\\Nyctalus_noctula_Rid_5953.wav"
+            "TargetName" = "8:Nyctalus_noctula_Rid_5953.wav"
             "Tag" = "8:"
-            "Folder" = "8:_8986542ED8904D1198245532637A5D1B"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1708,6 +1974,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FC09D048434E46CEBA8AEE23659EB81A"
+            {
+            "SourcePath" = "8:..\\BatInspector\\dat\\Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"
+            "TargetName" = "8:Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"
+            "Tag" = "8:"
+            "Folder" = "8:_DCA892B2EE1141688E027870E158CF1B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1737,47 +2023,26 @@
                     }
                 }
             }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_40D6999FFCBA45C6AD8E3921B1D87F3A"
+            "{994432C3-9487-495D-8656-3E829A8DBDDE}:_3F54B06DE5E74BD3943DF210B126B4E2"
             {
-            "Name" = "8:#1915"
+            "DefaultLocation" = "8:[CommonAppDataFolder]"
+            "Name" = "8:BatInspector"
             "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
-            "Property" = "8:AppDataFolder"
+            "Property" = "8:NEWPROPERTY1"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_365C5910FC5744118C6268A3DE3FAEF1"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_DE18D08DDDF647D9A3489000E3CA2037"
                     {
                     "Name" = "8:BatInspector"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_0DD8919BDE6244BFAD22C9F01033160A"
+                    "Property" = "8:_1348A6876E654A22BC6B71F7BF0F3888"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_56B7090A78C441ABA842794A96746323"
-                            {
-                            "Name" = "8:scripts"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_9C5D1B51BD1B4ED4A27AAF550B7EF652"
-                                "Folders"
-                                {
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_8986542ED8904D1198245532637A5D1B"
-                            {
-                            "Name" = "8:dat"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_064D4F8532AA4C55A720182F1FCBD8E9"
-                                "Folders"
-                                {
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_9215B23DB13946DDAE23EB80CFAB6FE1"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_2FFB64E9D73747ECB2AEFAE86515D365"
                             {
                             "Name" = "8:models"
                             "AlwaysCreate" = "11:FALSE"
@@ -1799,7 +2064,18 @@
                                     }
                                 }
                             }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_CA516577E73147DB8342AED72FEE67F1"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_DCA892B2EE1141688E027870E158CF1B"
+                            {
+                            "Name" = "8:dat"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_064D4F8532AA4C55A720182F1FCBD8E9"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_E827974F79214698AAFE8D9517794DA0"
                             {
                             "Name" = "8:setup"
                             "AlwaysCreate" = "11:FALSE"
@@ -1808,10 +2084,32 @@
                             "Property" = "8:_C282BBB89FF34504A0B388DBE36498C8"
                                 "Folders"
                                 {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_9B7BA6CD21164EE586905473E8A93854"
+                                    {
+                                    "Name" = "8:scripts"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_9C5D1B51BD1B4ED4A27AAF550B7EF652"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_40D6999FFCBA45C6AD8E3921B1D87F3A"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:TRUE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_AAE6B0A6A92C41FC93AB120C1696CC98"
@@ -1852,15 +2150,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BatInspector"
-        "ProductCode" = "8:{4750CD79-C1C6-4EEC-82DF-B6CAF769E803}"
-        "PackageCode" = "8:{F13172E4-0E89-4207-98EB-1EE6A40C7D0F}"
+        "ProductCode" = "8:{8258F627-0B1A-4E67-B80C-CD1599C7250D}"
+        "PackageCode" = "8:{3565B1D6-341A-479B-9F47-595CAD25B14B}"
         "UpgradeCode" = "8:{2F80E232-395E-4CCC-A22E-523AA645308B}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.5.1"
+        "ProductVersion" = "8:3"
         "Manufacturer" = "8:CM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1870,7 +2168,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Installer for BatInspector"
         "ARPURLINFOABOUT" = "8:www.chrmue.de"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_D2A16AB5756049EE84E6ADB2D42FF360"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1984,7 +2282,7 @@
             "Target" = "8:_714BB7A88658470C8AACECD7825ABC60"
             "Folder" = "8:_AAE6B0A6A92C41FC93AB120C1696CC98"
             "WorkingFolder" = "8:_267AA20976D04426AA2D0AAB62014673"
-            "Icon" = "8:_E56F8A42812D44F9ADF42E55604DBAA1"
+            "Icon" = "8:_D2A16AB5756049EE84E6ADB2D42FF360"
             "Feature" = "8:"
             }
         }

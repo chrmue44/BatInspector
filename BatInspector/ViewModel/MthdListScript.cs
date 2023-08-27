@@ -46,9 +46,6 @@ namespace BatInspector
       addMethod(new FuncTabItem("getSampleRate", getSampleRate)); 
       _scriptHelpTab.Add(new HelpTabItem("getSampleRate", "returns the samplerate of a file",
                       new List<string> { "1: fileName" }, new List<string> { "1: sampling rate" }));
-      addMethod(new FuncTabItem("rescaleSampleRate", rescaleSampleRate));
-      _scriptHelpTab.Add(new HelpTabItem("rescaleSampleRate", "rescales the samplerate of a file",
-                      new List<string> { "1: fileName", "2:factor" }, new List<string> { "1: new sampling rate" }));
       addMethod(new FuncTabItem("openCsv", openCsv));
       _scriptHelpTab.Add(new HelpTabItem("openCsv", "opens a csv file and reads content to memory",
                       new List<string> { "1: fileName", "2: 1=with header (optional)","3: separator (optional)" }, new List<string> { "1: csv file handle" })) ;
@@ -869,7 +866,9 @@ namespace BatInspector
         {
           WavFile wav = new WavFile();
           wav.readFile(fName);
+          double fact = (double)sampleRate / wav.FormatChunk.Frequency;
           wav.FormatChunk.Frequency= (uint)sampleRate;
+          wav.FormatChunk.AverageBytesPerSec = (uint)fact * wav.FormatChunk.AverageBytesPerSec;  
           wav.saveFile();
         }
         else
@@ -880,31 +879,6 @@ namespace BatInspector
       return err;
     }
 
-    static tParseError rescaleSampleRate(List<AnyType> argv, out AnyType result)
-    {
-      tParseError err = 0;
-      result = new AnyType();
-      if (argv.Count == 2)
-      {
-        argv[0].changeType(AnyType.tType.RT_STR);
-        string fName = argv[0].getString();
-        argv[1].changeType(AnyType.tType.RT_FLOAT);
-        double fact = argv[1].getFloat();
-        if (File.Exists(fName))
-        {
-          WavFile wav = new WavFile();
-          wav.readFile(fName);
-          result.assignInt64((long)(fact * wav.FormatChunk.Frequency));
-          wav.FormatChunk.Frequency = (uint)result.getInt64();
-          wav.saveFile();
-        }
-        else
-          err = tParseError.ARG1_OUT_OF_RANGE;
-      }
-      else
-        err = tParseError.NR_OF_ARGUMENTS;
-      return err;
-    }
 
     /*
     static tParseError calcProbabilityRatios(List<AnyType> argv, out AnyType result)

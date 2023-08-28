@@ -613,16 +613,13 @@ namespace BatInspector
       string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
       Scripts = new List<ScriptItem>
       {
-        new ScriptItem(0, "copyAutoToMan.scr",
-                  "take over all unambiguously automatically recognized species", false,new List<string>()),
-        new ScriptItem(1, "reset_man.scr", "reset all manual species to 'todo'",false,new List<string>()),
-        new ScriptItem(2, "bandpass.scr", "automatic bandpass to all selected files", false,new List<string>()),
-        new ScriptItem(3, "tool_all_todo.scr",
-                  "set all SpeciesMan to 'todo'", true,new List<string>()),
-        new ScriptItem(4, "tool_replace_pipistrelle.scr",
-                   "replace all pipistelle with genus 'Pipistrellus'", true, new List<string>()),
-        new ScriptItem(5, "tool_replace_nyctalus.scr",
-                   "replace all Nyctalus with genus 'Nyctalus'", true, new List<string>())
+        new ScriptItem(0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,new List<string>()),
+        new ScriptItem(1, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false,new List<string>()),
+        new ScriptItem(2, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateie", false,new List<string>()),
+        new ScriptItem(3, "resample.scr", "Resampling einer WAV-Datei",false,new List<string>(){"Name der WAV-Datei", "neue Sampling-Rate [Hz]"}),
+        new ScriptItem(4, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<string>()),
+        new ScriptItem(5, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<string>()),
+        new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<string>())
       };
     }
 

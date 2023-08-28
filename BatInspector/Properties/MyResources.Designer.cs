@@ -1375,11 +1375,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name of Parameter .
+        ///   Looks up a localized string similar to Parameter Description.
         /// </summary>
         public static string FrmScriptParamEditorNameParam {
             get {
                 return ResourceManager.GetString("FrmScriptParamEditorNameParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of Parameters.
+        /// </summary>
+        public static string FrmScriptParamEditorNrPars {
+            get {
+                return ResourceManager.GetString("FrmScriptParamEditorNrPars", resourceCulture);
             }
         }
         

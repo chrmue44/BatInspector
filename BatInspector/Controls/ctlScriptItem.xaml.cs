@@ -42,7 +42,10 @@ namespace BatInspector.Forms
       _tbDescription.Text = script.Description;
       _cbTool.IsChecked = script.IsTool;
       if (_cbTool.IsChecked == true)
+      {
         _btnRun.Visibility = Visibility.Hidden;
+        _btnPars.Visibility = Visibility.Hidden;
+      }
       _lblIdx.Text = _index.ToString();
       _btnPars.Content = "Pars(" + Parameter.Count.ToString() + ")";
     }

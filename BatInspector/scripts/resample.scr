@@ -1,0 +1,5 @@
+# resample a WAV file (change sampling rate)
+SET fName =(PAR1)
+SET SampleRate =(PAR2)
+=(resampleWav(fName, SampleRate))
+LOG =("resampled " + fName + " to " + SampleRate) 

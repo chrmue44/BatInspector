@@ -1,8 +1,0 @@
-SET FileNr =(getFileIndex(VAR_FILE_NAME))
-SET NrOfCalls =(getCallCount(FileNr) - 1)
-FOR i 1 NrOfCalls
-  SET Species =(getCallInfo(FileNr, i, "SPEC_MAN"))
-  IF =((Species == "PPIP")|| (Species == "PNAT") || (Species == "PPYG"))
-    =(setCallInfo(FileNr, i, "SPEC_MAN", "Pipistrellus"))
-  END
-END

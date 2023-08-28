@@ -1132,6 +1132,9 @@
     <value>Parameter für Skript</value>
   </data>
   <data name="FrmScriptParamEditorNameParam" xml:space="preserve">
-    <value>Name des Parameters </value>
+    <value>Parameterbeschreibung</value>
+  </data>
+  <data name="FrmScriptParamEditorNrPars" xml:space="preserve">
+    <value>Parameteranzahl</value>
   </data>
 </root>

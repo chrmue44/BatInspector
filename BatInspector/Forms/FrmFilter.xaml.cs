@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2022: Christian Müller christian(at)chrmue(dot).de
+ *   Copyright (C) 2022: Christian Müller chrmue44(at)gmail(dot).com
  *
  *              Licence:
  * 

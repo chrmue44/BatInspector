@@ -79,9 +79,6 @@ namespace BatInspector.Forms
       {
         version = Assembly.GetExecutingAssembly().GetName().Version;
       }
-      var splashScreen = new SplashScreen("..\\images\\splash.png");
-      splashScreen.Show(false);
-      AppParams.load();
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
       string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
       _model = new ViewModel(this, versionStr);
@@ -117,8 +114,7 @@ namespace BatInspector.Forms
       _switchTabToPrj = true;
 #endif
       DebugLog.log(versionStr + " started", enLogType.DEBUG);
-      splashScreen.Close(TimeSpan.FromSeconds(1));
-      Installer.installToolsIfNotPresent("3.10","1.0.6");
+      Installer.hideSplash();
 #if !DEBUG
 #endif
     }

@@ -44,13 +44,13 @@ namespace BatInspector.Forms
       _ctlLon.setValue("8° 38.032 E");
       _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, widthLbl, true, "", setupStartEndTime);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, widthLbl, true);
-      _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl,  true);
+      _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl, true);
       _ctlMaxFiles.setValue(500);
-      _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, widthLbl,  true);
+      _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, widthLbl, true);
       _ctlMaxFileLen.setValue(5.0);
-      _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl,  true);
+      _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl, true);
       _ctlPrjWeather.setValue("");
-      _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING,0, widthLbl, true);
+      _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING, 0, widthLbl, true);
       _ctlPrjLandscape.setValue("");
       _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, widthLbl, false, "gpx Files (*.gpx)|*.gpx|All files(*.*)|*.*");
       _ctlGpxFile.IsEnabled = false;
@@ -80,7 +80,7 @@ namespace BatInspector.Forms
       if (files != null && files.Length > 0)
       {
         _isProjectFolder = true;
-        _info.Name = Path.GetFileNameWithoutExtension( files[0]);
+        _info.Name = Path.GetFileNameWithoutExtension(files[0]);
         _ctlPrjName.setValue(_info.Name);
       }
       else
@@ -111,7 +111,7 @@ namespace BatInspector.Forms
       _lblDateStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       _lblDateEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       _cbOverwriteLoc.Visibility = _isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-        enableLocationItems(!_isProjectFolder ||(_cbOverwriteLoc.IsChecked == true));
+      enableLocationItems(!_isProjectFolder || (_cbOverwriteLoc.IsChecked == true));
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace BatInspector.Forms
     bool parseGeoCoord(string coordStr, out double coord, string hem1, string hem2, int maxDeg)
     {
       bool retVal = true;
-      bool ok = double.TryParse(coordStr,  NumberStyles.Any, CultureInfo.InvariantCulture, out coord);
+      bool ok = double.TryParse(coordStr, NumberStyles.Any, CultureInfo.InvariantCulture, out coord);
       if (ok)
       {
         if ((coord < -maxDeg) || (coord > maxDeg))
@@ -187,8 +187,29 @@ namespace BatInspector.Forms
       _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
       _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
       _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+      _info.LocSourceGpx = _rbGpxFile.IsChecked == true;
       _inspect = _cbEvalPrj.IsChecked == true;
       _info.IsProjectFolder = _isProjectFolder;
+      bool ok = false;
+      double lat = 0;
+      double lon = 0;
+      if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
+      {
+        ok = parseLatitude(_ctlLat.getValue(), out lat);
+        if (!ok)
+          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        else
+        {
+          ok = parseLongitude(_ctlLon.getValue(), out lon);
+          if (!ok)
+            MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+      }
+      if (!ok)
+        return;
+      _info.Latitude = lat;
+      _info.Longitude = lon;
+
       if (_isProjectFolder)
       {
         this.Visibility = Visibility.Hidden;
@@ -197,34 +218,20 @@ namespace BatInspector.Forms
       }
       else
       {
-        bool ok = parseLatitude(_ctlLat.getValue(), out double lat);
-        if (!ok)
-          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        else
+        try
         {
-          ok = parseLongitude(_ctlLon.getValue(), out double lon);
-          if (!ok)
-            MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-          else
-          {
-            try
-            {
-              this.Visibility = Visibility.Hidden;
-              _info.Weather = _ctlPrjWeather.getValue();
-              _info.Landscape = _ctlPrjLandscape.getValue();
-              _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
-              _info.Latitude = lat;
-              _info.Longitude = lon;
-              _info.StartTime = _dtStart.DateTime;
-              _info.EndTime = _dtEnd.DateTime;
-              Thread thr = new Thread(createProject);
-              thr.Start();
-            }
-            catch (Exception ex)
-            {
-              DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
-            }
-          }
+          this.Visibility = Visibility.Hidden;
+          _info.Weather = _ctlPrjWeather.getValue();
+          _info.Landscape = _ctlPrjLandscape.getValue();
+          _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+          _info.StartTime = _dtStart.DateTime;
+          _info.EndTime = _dtEnd.DateTime;
+          Thread thr = new Thread(createProject);
+          thr.Start();
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
         }
       }
     }

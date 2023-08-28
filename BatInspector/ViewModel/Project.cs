@@ -34,6 +34,7 @@ namespace BatInspector
     public string Weather { get; set; } 
     public string Landscape { get; set; } 
     public string GpxFile { get; set; }
+    public bool LocSourceGpx { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public bool IsProjectFolder { get; set; } 
@@ -343,9 +344,15 @@ namespace BatInspector
         files = getSelectedFiles(info, "*.wav");
         if(info.OverwriteLocation)
         {
-          gpxFile = gpx.read(info.GpxFile);
-          if (gpxFile == null)
-            return retVal.ToArray();
+          if (info.LocSourceGpx)
+          {
+            gpxFile = gpx.read(info.GpxFile);
+            if (gpxFile == null)
+            {
+              DebugLog.log("gpx file not readable: " + info.GpxFile, enLogType.ERROR);
+              return retVal.ToArray();
+            }
+          }
         }  
         
         if (files.Length > 0)
@@ -405,8 +412,10 @@ namespace BatInspector
               string[] xmlFiles = new string[prjFiles.Length];
               for (int i = 0; i < xmlFiles.Length; i++)
                 xmlFiles[i] = prjFiles[i].Replace(".wav", ".xml");
-              if (info.OverwriteLocation)
+              if (info.OverwriteLocation && info.LocSourceGpx)
                 replaceLocations(xmlFiles, wavDir, gpxFile);
+              else if (info.OverwriteLocation)
+                replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
               else
                 Utils.copyFiles(xmlFiles, wavDir);
             }
@@ -435,6 +444,18 @@ namespace BatInspector
         BatRecord f = ElekonInfoFile.read(fName);
         double[] pos = gpxFile.getPosition(ElekonInfoFile.getDateTimeFromFileName(fName));
         f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
+        string dstName = Path.GetFileName(fName);
+        dstName = Path.Combine(wavDir, dstName);
+        ElekonInfoFile.write(dstName, f);
+      }
+    }
+
+    private static void replaceLocations(string[] xmlfiles, string wavDir, double lat, double lon)
+    {
+      foreach (string fName in xmlfiles)
+      {
+        BatRecord f = ElekonInfoFile.read(fName);
+        f.GPS.Position = lat.ToString(CultureInfo.InvariantCulture) + " " + lon.ToString(CultureInfo.InvariantCulture);
         string dstName = Path.GetFileName(fName);
         dstName = Path.Combine(wavDir, dstName);
         ElekonInfoFile.write(dstName, f);

@@ -34,11 +34,11 @@ namespace BatInspector
       AppParams.load();
       DebugLog.setLogDelegate(null, null, null, AppParams.LogDataPath);
 
-      bool ok = Installer.checkTools("3.10", "1.0.6");
-      if (ok)
+     // bool ok = Installer.checkTools("3.10", "1.0.6");
+     // if (ok)
         this.StartupUri = new System.Uri("Forms/MainWindow.xaml", System.UriKind.Relative);
-      else
-        this.StartupUri = new System.Uri("Forms/frmInstall.xaml", System.UriKind.Relative);
+     // else
+     //   this.StartupUri = new System.Uri("Forms/frmInstall.xaml", System.UriKind.Relative);
     }
   }
 }

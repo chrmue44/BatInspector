@@ -1,51 +1,8 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@chrmue44 
-chrmue44
-/
-BatSpy
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-BatSpy/LICENSE
-chrmue44/BatSpy is licensed under the
+chrmue44/BatInspector is licensed under the
 
 GNU General Public License v3.0
 Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
 
-Permissions
- Commercial use
- Modification
- Distribution
- Patent use
- Private use
-Limitations
- Liability
- Warranty
-Conditions
- License and copyright notice
- State changes
- Disclose source
- Same license
-This is not legal advice. Learn more about repository licenses.
-@chrmue44
-chrmue44 Initial commit
-Latest commit 18bfd49 on 6 Sep 2021
- History
- 1 contributor
-674 lines (553 sloc)  34.3 KB
    
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -722,15 +679,4 @@ the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
 © 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete
+

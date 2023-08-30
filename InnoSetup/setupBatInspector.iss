@@ -2,18 +2,22 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyAppVersion "0.6"
+#define MyInstallerName "SetupBatInspector_0600"
+#define MyAppVersion "0.6.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
 #define MyAppDataFolder "{commonappdata}\BatInspector"
 #define SourceFolder "F:\prj\BatInspector"
+#define PythonInstaller "python-3.10.10-amd64.exe"
+#define PythonInstFolder "python310"
+#define ReqPythonVersion "Python 3.10"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{53943C5B-3AE1-42FB-9AE6-137319FDB48C}
-AppName={#MyAppName}
+AppName=BatInspector
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
@@ -22,39 +26,40 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={commonpf64}\{#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=F:\prj\BatInspector\LICENSE
+LicenseFile=F:\prj\{#MyAppName}\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir={#SourceFolder}\InnoSetup\bin
-OutputBaseFilename=setupBatInspector
+OutputBaseFilename={#MyInstallerName}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile={#SourceFolder}\BatInspector\images\kopf64.ico
-UninstallDisplayIcon={#SourceFolder}\BatInspector\images\kopf64.ico
+SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
+UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "starticon"; Description: "{cm:CreateStartIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; 
+Name: "starticon"; Description: "{cm:CreateStartIcon}"; GroupDescription: "{cm:AdditionalIcons}"; 
 
 [Files]
-Source: "{#SourceFolder}\BatInspector\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\BatInspector\datapath.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\BatInspector\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\BatInspector\bin\Release\*.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\BatInspector\bin\Release\*.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\BatInspector\bin\Release\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
-Source: "{#SourceFolder}\BatInspector\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
-source: "{#SourceFolder}\BatInspector\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
-source: "{#SourceFolder}\BatInspector\dat\*.json"; DestDir: "{#MyAppDataFolder}\dat"; Permissions: everyone-full
-source: "{#SourceFolder}\BatInspector\doc\*"; DestDir: "{app}\doc";
-source: "{#SourceFolder}\BatInspector\scripts\*"; DestDir: "{#MyAppDataFolder}\scripts"; Permissions: everyone-full
-source: "{#SourceFolder}\BatInspector\models\bd2\run.bat"; DestDir: "{#MyAppDataFolder}\models\bd2";
-source: "{#SourceFolder}\Setup\python\*"; DestDir: "{#MyAppDataFolder}\setup";
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\datapath.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
+source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
+source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\dat"; Permissions: everyone-full
+source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
+source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\scripts"; Permissions: everyone-full
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\run.bat"; DestDir: "{#MyAppDataFolder}\models\bd2";
+source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup";
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 
 [Dirs]
@@ -67,11 +72,10 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Flags:runasoriginaluser
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} {#ReqPythonVersion}"; Flags:runasoriginaluser
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked
 
 [UninstallDelete]
-Type: files; Name: "{win}\MYPROG.INI"
 Type: files; Name: "{app}\{#MyAppExeName}";
 Type: files; Name: "{app}\*.dll";
 Type: files; Name: "{app}\*.xml"; 
@@ -82,3 +86,7 @@ Type: filesandordirs; Name: "{#MyAppDataFolder}";
 
 [CustomMessages]
 CreateStartIcon =Verknüpfung im Startmenü erstellen
+
+[UninstallRun]
+Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"""; RunOnceId: "DelService"
+

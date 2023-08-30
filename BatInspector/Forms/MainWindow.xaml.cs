@@ -10,24 +10,25 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Interop;
+using System.Windows.Input;
 using System.Deployment.Application;
 using System.Reflection;
 using BatInspector.Controls;
-using System.Windows.Input;
-using System;
 using libParser;
-using System.Threading;
 using BatInspector.Properties;
-using System.Windows.Controls.Primitives;
-using System.Diagnostics;
-
+using System.Runtime.InteropServices;
 
 namespace BatInspector.Forms
 {
@@ -1493,8 +1494,26 @@ namespace BatInspector.Forms
         DebugLog.log("Error BTN custom tool: " + ex.ToString(), enLogType.ERROR);
       }
     }
-  }
 
+   // https://stackoverflow.com/questions/16245706/check-for-device-change-add-remove-events/16245901#16245901
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+      base.OnSourceInitialized(e);
+      HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+      source.AddHook(WndProc);
+    }
+    protected IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+      switch (msg)
+      {
+        case 0x0219:       //WM_DEVICECHANGE 
+          initTreeView();
+          break;             
+      }
+      return IntPtr.Zero;
+    }
+  }
   public enum enWinType
   {
     ZOOM,

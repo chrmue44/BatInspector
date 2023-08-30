@@ -222,7 +222,7 @@ namespace BatInspector.Controls
         _isSetupCall = false;
       else
       {
-        if (type == enDataType.STRING)
+        if ((type == enDataType.STRING) && (_analysis != null))
           _analysis.setString(Cols.REMARKS, _ctlRemarks.getValue());
       }
     }

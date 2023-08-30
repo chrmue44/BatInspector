@@ -1,8 +1,11 @@
-V 0.5.3 27.08.23
-- installer improved: data now in c:\ProgramData\BatInspector
-- bugfix species data: exmaple works
+V 0.6.0 30.08.23
+- new installer: complete installation in one pass, 
+  no user interaction with python installer needed
+- user data now in c:\ProgramData\BatInspector
+- bugfix species data: 'show exmaple' works
 - support of 24bit and 32 bit WAV files added
 - parameters for user scripts
+- recognizes connection/disconnection of USB drives and flash cards
 
 V 0.5.2 25.08.23
 - bugfix edit script

@@ -721,7 +721,7 @@ namespace BatInspector
       //retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
       LogDataPath = replaceDriveLetter(LogDataPath);
       AppDataPath = replaceDriveLetter(AppDataPath);
-      DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.INFO);
+      DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.DEBUG);
 
   //    retVal.adjustActivateBat();
       _inst = retVal;
@@ -743,12 +743,12 @@ namespace BatInspector
 
     public static void load()
     {
-      DebugLog.log("searching " + _dataPath + " in directory " + AppDomain.CurrentDomain.BaseDirectory, enLogType.INFO);
+      DebugLog.log("searching " + _dataPath + " in directory " + AppDomain.CurrentDomain.BaseDirectory, enLogType.DEBUG);
       if (File.Exists(_dataPath))
       {
-        DebugLog.log(_dataPath + " found", enLogType.INFO);
+        DebugLog.log(_dataPath + " found", enLogType.DEBUG);
         string path = File.ReadAllText(_dataPath);
-        DebugLog.log("content " + _dataPath + ": " + path, enLogType.INFO);
+        DebugLog.log("content " + _dataPath + ": " + path, enLogType.DEBUG);
         if (path == VAR_DATA_PATH)
         {
 

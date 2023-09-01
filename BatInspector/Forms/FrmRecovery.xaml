@@ -1,0 +1,20 @@
+﻿<Window x:Class="BatInspector.Forms.FrmRecovery"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Forms"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static res:MyResources.FrmRecoveryTitle}" Height="200" Width="500"
+        Icon="../images/data-recovery.png">
+    <StackPanel Margin="10">
+        <CheckBox Name="_cbDel" Content="{x:Static res:MyResources.FrmRecoveryDelFiles}" Margin="0,10,0,5"/>
+        <CheckBox Name="_cbChanged" Content="{x:Static res:MyResources.FrmRecoveryChangedFiles}" />
+        <StackPanel Orientation="Horizontal" Margin="0,60,0,0" Height="25" HorizontalAlignment="Right">
+            <Button Name="_btnCancel"  Content="{x:Static res:MyResources.BtnCancel}" Click="_btnCancel_Click" Width="100" />
+            <Button Name="_btnOk" Content="{x:Static res:MyResources.BtnOK}" Width="100"  Click="_btnOk_Click" Margin="20,0,0,0"/>
+
+        </StackPanel>
+    </StackPanel>
+</Window>

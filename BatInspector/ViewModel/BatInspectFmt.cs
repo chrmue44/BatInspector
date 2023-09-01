@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Windows.Documents;
 using System.Xml.Serialization;
@@ -192,7 +193,7 @@ public partial class BatExplorerProjectFile
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class BatExplorerProjectFileRecordsRecord
+public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplorerProjectFileRecordsRecord>
 {
 
   private string fileField;
@@ -225,6 +226,10 @@ public partial class BatExplorerProjectFileRecordsRecord
     {
       this.nameField = value;
     }
+  }
+  public int CompareTo(BatExplorerProjectFileRecordsRecord obj)
+  { 
+    return string.Compare(File, obj.File); 
   }
 }
 

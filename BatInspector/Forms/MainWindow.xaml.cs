@@ -554,7 +554,6 @@ namespace BatInspector.Forms
       }
     }
 
-
     void showStatus()
     {
       string report = "";
@@ -775,8 +774,6 @@ namespace BatInspector.Forms
               _dgData.Columns[0].Visibility = Visibility.Hidden; // hide 'changed'
             _dgData.IsReadOnly = true;
           }
-          if (_model.CurrentlyOpen.Analysis.Summary != null)
-            _dgSum.ItemsSource = _model.CurrentlyOpen.Analysis.Summary;
         }
         DebugLog.log("TAB 'Report' got focus", enLogType.DEBUG);
       }
@@ -785,6 +782,21 @@ namespace BatInspector.Forms
         DebugLog.log("TAB 'Report' focus failed:" + ex.ToString(), enLogType.ERROR);
       }
     }
+
+    private void _tbSum_GotFocus(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        if (_model.CurrentlyOpen.Analysis.Summary != null)
+          _dgSum.ItemsSource = _model.CurrentlyOpen.Analysis.Summary;
+        DebugLog.log("TAB 'Summary' got focus", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("TAB 'Summary' focus failed:" + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
@@ -951,7 +963,6 @@ namespace BatInspector.Forms
           _frmSpecies = new frmSpeciesData(_model, closeWindow, this);
         _frmSpecies.Show();
         _frmSpecies.Visibility = Visibility.Visible;
-        //_frmSpecies.Topmost = true;
         DebugLog.log("MainWin:BTN 'Species' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1040,18 +1051,15 @@ namespace BatInspector.Forms
         _model.UpdateUi = false;
       }
 
-      if (_model.ReloadPrj)
+      if (_model.Prj.ReloadInGui)
       {
         if ((_model.Prj != null) && _model.Prj.Ok && (_model.Prj.Analysis != null))
         {
           _spSpectrums.Children.Clear();
-          _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
-          _model.Prj.removeFilesNotInReport();
-          _model.Prj.writePrjFile();
           DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
           initializeProject(dir);
         }
-        _model.ReloadPrj = false;
+        _model.Prj.ReloadInGui = false;
       }
 
       if ((_workerPredict != null) && (!_workerPredict.IsAlive))
@@ -1097,13 +1105,6 @@ namespace BatInspector.Forms
         DebugLog.log("MainWin:BTN 'Report' failed:" + ex.ToString(), enLogType.ERROR);
       }
     }
-    /*
-    private void _btnFindSpecies_Click(object sender, RoutedEventArgs e)
-    {
-      frmFindBat frm = new frmFindBat(_model);
-      frm.Show();
-    }
-    */
 
     private void _btnCopySpec_Click(object sender, RoutedEventArgs e)
     {
@@ -1158,16 +1159,6 @@ namespace BatInspector.Forms
         DebugLog.log("MainWin:BTN 'Cancel Script' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
-
-    /*
-    private void _btnRefresh_Click(object sender, RoutedEventArgs e)
-    {
-      updateWavControls();
-      _spSpectrums.UpdateLayout();
-      DebugLog.log("update done", enLogType.INFO);
-    }
-    */
-
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
@@ -1440,7 +1431,6 @@ namespace BatInspector.Forms
       {
         DebugLog.log("Main: Filter dropdown close failed: " + ex.ToString(), enLogType.ERROR);
       }
-
     }
 
     private void populateToolsMenu()
@@ -1474,16 +1464,8 @@ namespace BatInspector.Forms
             string winTitle = BatInspector.Properties.MyResources.frmScriptParamTitle +": " + script;
             frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
             frm.ShowDialog();
-            _model.Scripter.VarList.init();
             if (frm.DialogResult == true)
-            {
-              for (int i = 0; i < item.Parameter.Count; i++)
-              {
-                string varName = "PAR" + (i + 1).ToString();
-                _model.Scripter.VarList.set(varName, frm.ParameteValues[i]);
-              }
-              _model.executeScript(script, false);
-            }
+              _model.executeScript(script, frm.ParameteValues);
           }
           else
             _model.executeScript(script);
@@ -1512,6 +1494,25 @@ namespace BatInspector.Forms
           break;             
       }
       return IntPtr.Zero;
+    }
+
+    private void _btnRecovery_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        DebugLog.log("Main:BTN Recovery clicked", enLogType.DEBUG);
+        if ((_model.Prj != null) && _model.Prj.Ok)
+        {
+          FrmRecovery frm = new FrmRecovery(_model.Prj.Name);
+          bool res = frm.ShowDialog() == true;
+          if (res)
+            _model.Prj.recovery(frm._cbDel.IsChecked == true, frm._cbChanged.IsChecked == true);
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Main:BTN Recovery click failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
   }
   public enum enWinType

@@ -105,13 +105,15 @@ namespace libParser
       }
     }
 
-    static public void copyFiles(string[] files, string dstFolder)
+    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false)
     {
       foreach (string file in files)
       {
         string name = Path.GetFileName(file);
         string dest = Path.Combine(dstFolder, name);
         File.Copy(file, dest);
+        if (removeSrc)
+          File.Delete(file);
       }
     }
 

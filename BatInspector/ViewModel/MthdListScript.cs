@@ -994,7 +994,7 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      _inst._model.ReloadPrj = true;
+      _inst._model.Prj.ReloadInGui = true;
       return err;
     }
 

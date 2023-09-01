@@ -53,15 +53,18 @@ namespace BatInspector
                      annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
         string cmd = Path.Combine(wrkDir, AppParams.Inst.Models[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
-        bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
-        if (ok)
+        if (retVal == 0)
         {
-          cleanup(prj.PrjDir);
-          prj.Analysis.read(prj.ReportName);
-          prj.removeFilesNotInReport();
+          bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
+          if (ok)
+          {
+            cleanup(prj.PrjDir);
+            prj.Analysis.read(prj.ReportName);
+            prj.removeFilesNotInReport();
+          }
+          else
+            retVal = 2;
         }
-        else
-          retVal = 2;
       }
       catch 
       {

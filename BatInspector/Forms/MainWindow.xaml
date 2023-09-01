@@ -65,7 +65,10 @@
           <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/query.png"></Image>
           </Button>
-          <Separator Margin="15,2" Width ="3"/>
+                    <Button x:Name="_btnRecovery" Click="_btnRecovery_Click"  ToolTip="{x:Static res:MyResources.MainToolRecovery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Image Source="../images/data-recovery.png"></Image>
+                    </Button>
+                    <Separator Margin="15,2" Width ="3"/>
           <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/script.png"></Image>
           </Button>
@@ -201,7 +204,7 @@
               <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" MouseDoubleClick="_dgData_MouseDoubleClick"/>
             </Grid>
           </TabItem>
-          <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" >
+          <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" GotFocus="_tbReport_GotFocus" >
             <Grid >
               <DataGrid x:Name="_dgSum" Margin="0,0,0,10" />
             </Grid>

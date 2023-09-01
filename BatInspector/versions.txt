@@ -1,3 +1,5 @@
+-bugfix: update summary tab when click on it
+
 V 0.6.0 30.08.23
 - new installer: complete installation in one pass, 
   no user interaction with python installer needed

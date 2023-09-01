@@ -11,7 +11,6 @@ https://github.com/macaodha/batdetect2
 
 WAV recordings bats from
 https://www.museumfuernaturkunde.berlin/de/wissenschaft/tierstimmenarchiv
-
 https://creativecommons.org/licenses/by-nc-sa/3.0/de/legalcode
 
 ****************
@@ -33,21 +32,40 @@ https://icons8.com
 https://www.iconsdb.com
 https://uxwing.com
 
+
 Bat_icon-icons.com_75012.png:
 https://icon-icons.com/de/download/75012/PNG/128/
 License: https://creativecommons.org/licenses/by/4.0/
 
-recycle.png
-https://www.flaticon.com/free-icon/recycle_702609?related_id=702609
-made by Good Ware from https://www.flaticon.com Icons made by Eucalyp https://creativemarket.com/eucalyp
-
-magnifying_glass.png
-https://www.flaticon.com/free-icon/magnifying-glass_1166881
-Icon made by https://www.freepik.com  from https://www.flaticon.com
-
 bug_48.png:
 https://www.iconsdb.com/green-icons/bug-icon.html
 License: Creative Commons Attribution-NoDerivs 3.0. 
+
+cancel_77947.png:
+https://icon-icons.com/icon/cancel/77947#48
+License: https://creativecommons.org/licenses/by/4.0/
+
+cleanup-noise.png
+https://icons8.com/icon/d4S3iPAJbxHV/cleanup-noise Cleanup Noise  icon by <a href="https://icons8.com">icons8</a>
+
+color-palette.png
+https://www.flaticon.com/free-icons/art Art icons created by Freepik - Flaticon
+
+create-task-icon.png
+https://uxwing.com/create-task-icon/
+
+data-recovery.png
+<a href="https://www.flaticon.com/free-icons/recovery" title="recovery icons">Recovery icons created by kerismaker - Flaticon</a>
+
+debug.png
+https://www.flaticon.com/free-icons/debug Debug icons created by Blaze150 - Flaticon
+
+filter.png
+https://www.flaticon.com/free-icons/filter
+
+filter_settings_icon_143016.png
+https://icon-icons.com/icon/filter-settings/143016
+free for commercial use
 
 icons8-zoom-in-v-64.png
 https://icons8.com/icons/set/zoom-in
@@ -62,17 +80,14 @@ https://icons8.com/icons/set/arrow-left
 icons8-enlarge-maximum.png
 https://icons8.com/icons/set/zoom-in
 
+icons8-folder-48.png
+https://icons8.com/icons/set/folder
+
 icons8-plus-+-48.png
 https://icons8.com/icons/set/plus
 
 icons8-minus-48.png
 https://icons8.com/icons/set/minus
-
-filter.png
-https://www.flaticon.com/free-icons/filter
-
-delete.png
-https://www.flaticon.com/free-icons/trash  Trash icons created by Freepik - Flaticon
 
 icons8-save-48.png
 https://icons8.com/icons/set/save
@@ -80,23 +95,21 @@ https://icons8.com/icons/set/save
 icons8-save-as-48.png
 https://icons8.com/icons/set/save-as
 
+magnifying_glass.png
+https://www.flaticon.com/free-icon/magnifying-glass_1166881
+Icon made by https://www.freepik.com  from https://www.flaticon.com
+
+pause.png
+https://www.flaticon.com/free-icons/pause-button Pause-button icons created by Hilmy Abiyyu A. - Flaticon
+
 play-button.png
 https://www.flaticon.com/free-icons/play-button Play button icons created by Roundicons - Flaticon
 
 stop.png
 https://www.flaticon.com/free-icons/stop Stop icons created by DinosoftLabs - Flaticon
 
-pause.png
-https://www.flaticon.com/free-icons/pause-button Pause-button icons created by Hilmy Abiyyu A. - Flaticon
-
-color-palette.png
-https://www.flaticon.com/free-icons/art Art icons created by Freepik - Flaticon
-
 wav-file-format-symbol.png:
 https://www.flaticon.com/free-icons/wav Wav icons created by Freepik - Flaticon
-
-icons8-folder-48.png
-https://icons8.com/icons/set/folder
 
 report.png
 https://www.flaticon.com/free-icons/report Report icons created by Good Ware  Flaticon
@@ -104,34 +117,13 @@ https://www.flaticon.com/free-icons/report Report icons created by Good Ware  Fl
 script.png
 https://www.flaticon.com/free-icons/script Script icons created by uicon.mee - Flaticon
 
-cancel_77947.png:
-https://icon-icons.com/icon/cancel/77947#48
-License: https://creativecommons.org/licenses/by/4.0/
-
 vcsupdaterequired_93493.png
 https://icon-icons.com/icon/update-refresh/93493
 Free for commercial use
 
-debug.png
-https://www.flaticon.com/free-icons/debug Debug icons created by Blaze150 - Flaticon
-
-create-task-icon.png
-https://uxwing.com/create-task-icon/
-
-cleanup-noise.png
-https://icons8.com/icon/d4S3iPAJbxHV/cleanup-noise Cleanup Noise  icon by <a href="https://icons8.com">icons8</a>
-
-filter_settings_icon_143016.png
-https://icon-icons.com/icon/filter-settings/143016
-free for commercial use
-
 Undo_icon-icons.com_73701.png
 https://icon-icons.com/icon/undo/73701
 Creative commons Attribution 4.0 International (CC BY 4.0) 
-
-bats.png
-https://www.flaticon.com/free-icons/vampire title="vampire icons" Vampire icons created by AbtoCreative - Flaticon
-Flaticon license
 
 query.png
 https://www.flaticon.com/free-icons/database title="database icons">Database icons created by Freepik

@@ -186,6 +186,9 @@
     <Compile Include="Forms\frmInstall.xaml.cs">
       <DependentUpon>frmInstall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmRecovery.xaml.cs">
+      <DependentUpon>FrmRecovery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmScriptParamEditor.xaml.cs">
       <DependentUpon>FrmScriptParamEditor.xaml</DependentUpon>
     </Compile>
@@ -376,6 +379,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\FrmRecovery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\FrmScriptParamEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -467,6 +474,7 @@
     <Resource Include="images\splash.png" />
     <Resource Include="images\kopf64.png" />
     <Resource Include="images\kopf256.jpg" />
+    <Resource Include="images\data-recovery.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -1137,4 +1137,16 @@
   <data name="FrmScriptParamEditorNrPars" xml:space="preserve">
     <value>Parameteranzahl</value>
   </data>
+  <data name="MainToolRecovery" xml:space="preserve">
+    <value>Wiederherstellung von gelöschten oder editierten Dateien</value>
+  </data>
+  <data name="FrmRecoveryTitle" xml:space="preserve">
+    <value>Dateienwiederherstellung im Projekt</value>
+  </data>
+  <data name="FrmRecoveryDelFiles" xml:space="preserve">
+    <value>Wiederherstellung von gelöschten Dateien im Projekt</value>
+  </data>
+  <data name="FrmRecoveryChangedFiles" xml:space="preserve">
+    <value>Wiederherstellung von veränderten Dateien im Projekt</value>
+  </data>
 </root>

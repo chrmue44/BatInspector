@@ -1357,6 +1357,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recovery of changed files in project.
+        /// </summary>
+        public static string FrmRecoveryChangedFiles {
+            get {
+                return ResourceManager.GetString("FrmRecoveryChangedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recovery of deleted files in project.
+        /// </summary>
+        public static string FrmRecoveryDelFiles {
+            get {
+                return ResourceManager.GetString("FrmRecoveryDelFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Recovery in Project.
+        /// </summary>
+        public static string FrmRecoveryTitle {
+            get {
+                return ResourceManager.GetString("FrmRecoveryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Script Description.
         /// </summary>
         public static string FrmScriptDescription {
@@ -2046,6 +2073,15 @@ namespace BatInspector.Properties {
         public static string MainToolQuery {
             get {
                 return ResourceManager.GetString("MainToolQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recovery of deleted or edited files.
+        /// </summary>
+        public static string MainToolRecovery {
+            get {
+                return ResourceManager.GetString("MainToolRecovery", resourceCulture);
             }
         }
         

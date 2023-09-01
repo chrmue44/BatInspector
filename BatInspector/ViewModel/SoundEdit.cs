@@ -163,7 +163,13 @@ namespace BatInspector
       {
         // backup in folder del if possible
         if ((_fName != "") && (name == _fName))
+        {
           ZoomView.saveWavBackup(name, wavSubDir);
+          // force new generation of png by deleting it
+          string pngName = _fName.Replace(".wav", ".png");
+          if (File.Exists(pngName))
+            File.Delete(pngName);
+        }
         WavFile outFile = new WavFile();
         outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
         outFile.saveFileAs(name);

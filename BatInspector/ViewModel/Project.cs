@@ -109,6 +109,7 @@ namespace BatInspector
     private bool _ok;
     private string _selectedDir;
     private BatExplorerProjectFile _batExplorerPrj;
+    private bool _reloadInGui;
 
     public bool Ok { get { return _ok; } }
 
@@ -140,6 +141,9 @@ namespace BatInspector
     public string ReportName { get { return getReportName(_selectedDir); } }
 
     public string SummaryName { get { return getSummaryName(_selectedDir); } }
+
+    public bool ReloadInGui { get { return _reloadInGui; } set { _reloadInGui = value; } }
+
 
     bool _changed = false;
 
@@ -563,6 +567,7 @@ namespace BatInspector
         }
         else
           newList.Add(rec);
+        _reloadInGui = true;
       }
       _batExplorerPrj.Records = newList.ToArray();
     }
@@ -587,7 +592,7 @@ namespace BatInspector
     }
 
 
-    public void addFiles(string[] files)
+    public void addFiles(string[] files, bool removeSrc = false)
     {
       List<BatExplorerProjectFileRecordsRecord> list = new List<BatExplorerProjectFileRecordsRecord>();
       foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
@@ -603,7 +608,9 @@ namespace BatInspector
                             (double)wFile.AudioSamples.Length / wFile.FormatChunk.Frequency);
         }
       }
+
       _batExplorerPrj.Records = list.ToArray();
+      Array.Sort(_batExplorerPrj.Records);
 
       string dstPath = Path.Combine(PrjDir, _wavSubDir);
       List<string> fileList = new List<string>();
@@ -613,9 +620,13 @@ namespace BatInspector
         string xmlFile = file.Replace(".wav", ".xml");
         if (File.Exists(xmlFile))
           fileList.Add(xmlFile);
+        string pngFile = file.Replace(".wav", ".png");
+        if (File.Exists(pngFile))
+          fileList.Add(pngFile);
       }
-      Utils.copyFiles(fileList.ToArray(), dstPath);
+      Utils.copyFiles(fileList.ToArray(), dstPath, removeSrc);
       _changed = true;
+      _reloadInGui = true;
     }
 
     private void addRecord(string filePath, ref List<BatExplorerProjectFileRecordsRecord> list)
@@ -738,6 +749,37 @@ namespace BatInspector
             ElekonInfoFile.create(fullName, pos[0], pos[1], time);
           }
         }
+      }
+    }
+
+    public void recovery(bool delFiles, bool changedFiles)
+    {
+      if (changedFiles)
+      {
+        string srcDir = Path.Combine(PrjDir, AppParams.DIR_ORIG);
+        string dstDir = Path.Combine(PrjDir, WavSubDir);
+        DirectoryInfo dir = new DirectoryInfo(srcDir);
+        foreach (FileInfo file in dir.GetFiles())
+        {
+          string dstFile = Path.Combine(dstDir, file.Name);
+          if (File.Exists(dstFile))
+            File.Delete(dstFile);
+          File.Copy(file.FullName, dstFile);
+          File.Delete(file.FullName);
+        }
+        DebugLog.log("original files of Prj '" + Name + "' recovered", enLogType.INFO);
+      }
+      if (delFiles)
+      {
+        string srcDir = Path.Combine(PrjDir, AppParams.DIR_DEL);
+        DirectoryInfo dir = new DirectoryInfo(srcDir);
+        List<string> files = new List<string>();
+        foreach (FileInfo file in dir.GetFiles("*.wav"))
+          files.Add(file.FullName);
+        addFiles(files.ToArray(), true);
+        writePrjFile();
+        _analysis.save(_selectedDir, Notes);
+        DebugLog.log("deleted files of Prj '" + Name + "' recovered", enLogType.INFO);
       }
     }
 

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Management;
+using System.Windows.Forms;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
@@ -91,8 +92,6 @@ namespace BatInspector
     public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
 
     public bool UpdateUi { get; set; }
-
-    public bool ReloadPrj { get; set; }
 
     public Query Query { get { return _query; } set { _query = value; } }
 
@@ -304,6 +303,18 @@ namespace BatInspector
       _scripter.execCmd(cmd);
     }
 
+    public int executeScript(string path, List<string> pars)
+    {
+      Scripter.VarList.init();
+      for (int i = 0; i < pars.Count; i++)
+      {
+        string varName = "PAR" + (i + 1).ToString();
+        Scripter.VarList.set(varName, pars[i]);
+      }
+      return executeScript(path, false);
+    }
+
+
     public int executeScript(string path, bool  initVars = true)
     {
       if (!System.IO.Path.IsPathRooted(path))
@@ -396,7 +407,8 @@ namespace BatInspector
             retVal = _models[i].classify(Prj);
           }
         }
-        ReloadPrj = true;
+        _prj.Analysis.save(SelectedDir, _prj.Notes);
+        _prj.writePrjFile();
       }
       DebugLog.log("evaluation of species done", enLogType.INFO);
       return retVal;

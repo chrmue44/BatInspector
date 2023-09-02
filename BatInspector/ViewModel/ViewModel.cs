@@ -467,7 +467,7 @@ namespace BatInspector
       }
     }
 
-    private bool tidyUpProject(DirectoryInfo dir, bool delWavs, bool pngs)
+    private bool tidyUpProject(DirectoryInfo dir, bool delWavs, bool pngs, bool delOrig)
     {
       bool retVal = true;
       try
@@ -481,7 +481,16 @@ namespace BatInspector
             DebugLog.log("deletes files permanently removed from project " + dir.Name, enLogType.INFO);
           }
         }
-        if(pngs) 
+        if (delOrig)
+        {
+          string origDir = Path.Combine(dir.FullName, AppParams.DIR_ORIG);
+          if (Directory.Exists(origDir))
+          {
+            Directory.Delete(origDir, true);
+            DebugLog.log("original files permanently removed from project " + dir.Name, enLogType.INFO);
+          }
+        }
+        if (pngs) 
         {
           FileInfo[] files = dir.GetFiles("*.png");
           foreach (FileInfo file in files)
@@ -501,7 +510,7 @@ namespace BatInspector
       return retVal;
     }
 
-    private bool checkProject(DirectoryInfo dir, ref int wavSpace, ref int pngSpace)
+    private bool checkProjectMem(DirectoryInfo dir, ref int wavSpace, ref int pngSpace, ref int origSpace)
     {
       bool retVal = true;
       try
@@ -512,6 +521,14 @@ namespace BatInspector
           DirectoryInfo d = new DirectoryInfo(delDir);
           foreach(FileInfo file in d.GetFiles())
             wavSpace += (int)(file.Length / 1024);
+        }
+
+        string origDir = Path.Combine(dir.FullName, AppParams.DIR_ORIG);
+        if (Directory.Exists(origDir))
+        {
+          DirectoryInfo d = new DirectoryInfo(origDir);
+          foreach (FileInfo file in d.GetFiles())
+            origSpace += (int)(file.Length / 1024);
         }
 
         FileInfo[] files = dir.GetFiles("*.png");
@@ -529,22 +546,22 @@ namespace BatInspector
       }
       return retVal;
     }
-    private bool crawlTidyUp(DirectoryInfo dir, bool delWavs, bool pngs)
+    private bool crawlTidyUp(DirectoryInfo dir, bool delWavs, bool pngs, bool delOrig)
     {
       if (!dir.Exists)
         return false;
       DirectoryInfo[] dirs = dir.GetDirectories();
       bool ok = false;
       if (Project.containsProject(dir) != "")
-        ok = tidyUpProject(dir, delWavs, pngs);
+        ok = tidyUpProject(dir, delWavs, pngs, delOrig);
       else
       {
         foreach (DirectoryInfo d in dirs)
         {
           if (Project.containsProject(d) != "")
-            ok = tidyUpProject(d, delWavs, pngs);
+            ok = tidyUpProject(d, delWavs, pngs, delOrig);
           else
-            ok = crawlTidyUp(d, delWavs, pngs);
+            ok = crawlTidyUp(d, delWavs, pngs, delOrig);
           if (!ok)
             break;
         }
@@ -552,7 +569,7 @@ namespace BatInspector
       return ok;
     }
 
-    private bool crawlCheckSpace(DirectoryInfo dir, ref int wavSpace,  ref int pngSpace)
+    private bool crawlCheckSpace(DirectoryInfo dir, ref int wavSpace,  ref int pngSpace, ref int origSpace)
     {
       if (!dir.Exists)
         return false;
@@ -561,15 +578,15 @@ namespace BatInspector
       
       bool ok = true;
       if (Project.containsProject(dir) != "")
-        ok = checkProject(dir, ref wavSpace, ref pngSpace);
+        ok = checkProjectMem(dir, ref wavSpace, ref pngSpace, ref origSpace);
       else
       {
         foreach (DirectoryInfo d in dirs)
         {
           if (Project.containsProject(d) != "")
-            ok = checkProject(d, ref wavSpace, ref pngSpace);
+            ok = checkProjectMem(d, ref wavSpace, ref pngSpace, ref origSpace);
           else
-            ok = crawlCheckSpace(d, ref wavSpace, ref pngSpace);
+            ok = crawlCheckSpace(d, ref wavSpace, ref pngSpace, ref origSpace);
           if (!ok)
             break;
         }
@@ -578,12 +595,12 @@ namespace BatInspector
     }
 
 
-    public void cleanup(string root, bool delWavs, bool logs, bool pngs)
+    public void cleanup(string root, bool delWavs, bool logs, bool pngs, bool delOrig)
     {
       if (Directory.Exists(root))
       {
         DirectoryInfo dir = new DirectoryInfo(root);
-        crawlTidyUp(dir, delWavs, pngs);
+        crawlTidyUp(dir, delWavs, pngs, delOrig);
       }
 
       if (logs && Directory.Exists(AppParams.LogDataPath))
@@ -597,15 +614,16 @@ namespace BatInspector
       }
     }
 
-    public void checkMem(string root, out int wavSpace, out int logSpace, out int pngSpace)
+    public void checkMem(string root, out int wavSpace, out int logSpace, out int pngSpace, out int origSpace)
     {
       wavSpace = 0;
       logSpace = 0;
       pngSpace = 0;
+      origSpace = 0;
       if (Directory.Exists(root))
       {
         DirectoryInfo dir = new DirectoryInfo(root);
-        crawlCheckSpace(dir, ref wavSpace, ref pngSpace);
+        crawlCheckSpace(dir, ref wavSpace, ref pngSpace, ref origSpace);
       }
 
       if (Directory.Exists(AppParams.LogDataPath))

@@ -952,6 +952,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Original Files.
+        /// </summary>
+        public static string frmCleanupOrigFiles {
+            get {
+                return ResourceManager.GetString("frmCleanupOrigFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PNG Files.
         /// </summary>
         public static string frmCleanupPngFiles {

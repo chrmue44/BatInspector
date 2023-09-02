@@ -70,5 +70,16 @@ namespace BatInspector.Forms
     {
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
     }
+
+    private void _btnEdit_Click(object sender, RoutedEventArgs e)
+    {
+      frmExpression frm = new frmExpression(_model.Filter.ExpGenerator, false);
+      frm.Topmost = true;
+      bool? res = frm.ShowDialog();
+      if (res == true)
+      {
+        _tbQuery.Text = frm.FilterExpression;
+      }
+    }
   }
 }

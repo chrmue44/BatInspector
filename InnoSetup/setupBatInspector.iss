@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0600"
-#define MyAppVersion "0.6.0"
+#define MyInstallerName "SetupBatInspector_0610"
+#define MyAppVersion "0.6.1"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -16,7 +16,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{53943C5B-3AE1-42FB-9AE6-137319FDB48C}
+AppId={{D439856D-1301-41E9-99F3-C0DF38D53E9B}
 AppName=BatInspector
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}

@@ -1,4 +1,6 @@
--bugfix: update summary tab when click on it
+- data recovery for project files (deleted / changed)
+- bugfix: update summary tab when click on it
+- edit button in Query form
 
 V 0.6.0 30.08.23
 - new installer: complete installation in one pass, 

@@ -1149,4 +1149,7 @@
   <data name="FrmRecoveryChangedFiles" xml:space="preserve">
     <value>Recovery of changed files in project</value>
   </data>
+  <data name="frmCleanupOrigFiles" xml:space="preserve">
+    <value>Original Files</value>
+  </data>
 </root>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties" 
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.FrmQueryTitle}" Height="350" Width="800" Loaded="Window_Loaded_1"
+        Title="{x:Static res:MyResources.FrmQueryTitle}" Height="500" Width="800" Loaded="Window_Loaded_1"
         Icon="../images/query.png">
   <Grid>
     <Grid.ColumnDefinitions>
@@ -32,18 +32,20 @@
       <local:CtlSelectFile x:Name="_ctlSelectDest" Margin="0,5,0,0"/>
       <Grid Margin="0,5,0,0">
         <Grid.RowDefinitions>
-          <RowDefinition Height="80"></RowDefinition>
-        </Grid.RowDefinitions>
+          <RowDefinition Height="25"></RowDefinition>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="120" x:Name="_grdCol1"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0" Text="{x:Static res:MyResources.frmQueryQuery}"></TextBlock>
-        <TextBox Grid.Column="1" x:Name="_tbQuery" AcceptsReturn="True" ></TextBox>
+                <Button Name="_btnEdit" Content="Edit..." Width="80" Grid.Column="1" Grid.Row="0"  HorizontalAlignment="Left" Click="_btnEdit_Click"/>
+                <TextBox Grid.Column="1"  Grid.Row="1" x:Name="_tbQuery" AcceptsReturn="True" ></TextBox>
       </Grid>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,30,10,0">
-        <Button x:Name="_btnCancel" Height="25" Width="120" Content="Cancel" Margin="10,0" Click="btnCancel_Click"></Button>
-        <Button x:Name="_btnOK" Height="25" Width="120" Content="OK"  Click="btnOK_Click"></Button>
+        <Button x:Name="_btnCancel" Height="25" Width="120" Content="{x:Static res:MyResources.BtnCancel}" Margin="10,0" Click="btnCancel_Click"></Button>
+        <Button x:Name="_btnOK" Height="25" Width="120" Content="{x:Static res:MyResources.BtnOK}"  Click="btnOK_Click"></Button>
       </StackPanel>
     </StackPanel>
   </Grid>

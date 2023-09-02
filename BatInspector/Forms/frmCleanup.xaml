@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.frmCleanupTitle}" Height="200" Width="500" Loaded="Window_Loaded"
+        Title="{x:Static res:MyResources.frmCleanupTitle}" Height="230" Width="500" Loaded="Window_Loaded"
         Icon="../images/icons8-staubsauger-64.png">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <local:CtlSelectFile x:Name="_ctlSelectFolder"></local:CtlSelectFile>
             <CheckBox Name="_cbDelWav" Content="{x:Static res:MyResources.frmCleanupDeletedFiles}" Margin="0,20,0,0" />
             <CheckBox Name="_cbDelLog" Content="{x:Static res:MyResources.frmCleanupLogFiles}" />
+            <CheckBox Name="_cbOriginal" Content="{x:Static res:MyResources.frmCleanupOrigFiles}" />
             <CheckBox Name="_cbDelPNG" Content="{x:Static res:MyResources.frmCleanupPngFiles}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,20,0">
                 <Button Name="_btnCancel" Content="Cancel" Width="120" Height="25" Margin="0,0,10,0" Click="_btnCancel_Click"></Button>

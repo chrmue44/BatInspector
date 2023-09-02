@@ -972,17 +972,19 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if (argv.Count == 4)
+      if (argv.Count == 5)
       {
         argv[0].changeType(AnyType.tType.RT_STR);
         argv[1].changeType(AnyType.tType.RT_BOOL);
         argv[2].changeType(AnyType.tType.RT_BOOL);
         argv[3].changeType(AnyType.tType.RT_BOOL);
+        argv[4].changeType(AnyType.tType.RT_BOOL);
         string root = argv[0].getString();
         bool delWavs = argv[1].getBool();
         bool logs = argv[2].getBool();
         bool pngs = argv[3].getBool();
-        _inst._model.cleanup(root, delWavs, logs, pngs);
+        bool origs = argv[4].getBool();
+        _inst._model.cleanup(root, delWavs, logs, pngs, origs);
       }
       else
         err = tParseError.NR_OF_ARGUMENTS;

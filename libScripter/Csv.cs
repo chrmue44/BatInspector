@@ -83,11 +83,14 @@ namespace libScripter
           _cells.Clear();
           foreach (string line in lines)
           {
-            string[] s = line.Split(separator[0]);
-            List<string> row = s.ToList();
-            _cells.Add(row);
-            if (_colCnt < s.Length)
-              _colCnt = s.Length;
+            if (line.Length > 0)
+            {
+              string[] s = line.Split(separator[0]);
+              List<string> row = s.ToList();
+              _cells.Add(row);
+              if (_colCnt < s.Length)
+                _colCnt = s.Length;
+            }
           }
           if(_withHdr)
             initColNames(lines[0]);
@@ -503,6 +506,30 @@ namespace libScripter
         log("removeRow: invalid row nr:" + row.ToString(), enLogType.ERROR);
     }
 
+
+    public void removeCol(string colName)
+    {
+      int col = getColNr(colName);
+      removeCol(col);
+    }
+
+    public void removeCol(int col)
+    {
+      if ((col > 0) && (col <= ColCnt) && (_colCnt > 0))
+      {
+        foreach(List<string> r in _cells)
+        {
+          if (col < r.Count)
+            r.RemoveAt(col - 1);
+        }
+        _colCnt--;
+        if (_withHdr)
+          initColsFromExistingCols();
+      }
+      else
+        log("remove col: invalic col nr: " + col.ToString(), enLogType.ERROR);
+    }
+
     public int getColNr(string colName)
     {
       int retVal = -1;
@@ -516,6 +543,12 @@ namespace libScripter
       return retVal;
     }
 
+    void initColsFromExistingCols()
+    {
+      _cols = new Dictionary<string, int>();
+      for (int c = 1; c <= ColCnt; c++)
+        _cols.Add(getCell(1, c), c);
+    }
 
     public void initColNames(string[] cols, bool createCols = false)
     {

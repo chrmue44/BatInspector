@@ -20,9 +20,26 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlPrjInfo : UserControl
   {
+    Project _prj = null;
+
     public ctlPrjInfo()
     {
       InitializeComponent();
+    }
+
+    private void _tbNotes_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      if(_prj != null) 
+      {
+        _prj.Notes = _tbNotes.Text;
+      }
+    }
+
+    public void setup(Project prj) 
+    {
+      _prj = prj;
+      _tbCreated.Text = _prj.Created;
+      _tbNotes.Text = _prj.Notes;
     }
   }
 }

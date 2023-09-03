@@ -124,7 +124,21 @@ namespace BatInspector
     }
     public string Name { get { return _prjFileName; } }
     public string WavSubDir { get { return _wavSubDir; } }
-    public string Notes { get { return _batExplorerPrj != null ? _batExplorerPrj.Notes : ""; } set { if (_batExplorerPrj != null) _batExplorerPrj.Notes = value; } }
+    public string Notes
+    {
+      get
+      {
+        return _batExplorerPrj != null ? _batExplorerPrj.Notes : "";
+      }
+      set
+      {
+        if (_batExplorerPrj != null)
+        {
+          _batExplorerPrj.Notes = value;
+          _changed = true;
+        }
+      }
+    }
     public string Created
     {
       get

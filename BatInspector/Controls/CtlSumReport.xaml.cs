@@ -11,8 +11,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlSumReport : UserControl
   {
-    ViewModel _model = null;
-
+    Window _parent = null;
     public CtlSumReport()
     {
       InitializeComponent();
@@ -20,9 +19,9 @@ namespace BatInspector.Controls
       _tbReportName.Text = "sum_report.csv";
     }
 
-    public void setModel(ViewModel model)
+    public void setup( Window parent)
     {
-      _model = model;
+      _parent = parent;
     }
 
     private void btnSetDir_Click(object sender, RoutedEventArgs e)
@@ -32,6 +31,7 @@ namespace BatInspector.Controls
       {
         _tbRootDir.Text = dlg.ResultPath;
       }
+      bringParentToFront();
     }
 
     private void btnSetDestDir_Click(object sender, RoutedEventArgs e)
@@ -41,19 +41,15 @@ namespace BatInspector.Controls
       {
         _tbDstDir.Text = dlg.ResultPath;
       }
+      bringParentToFront();
     }
-
- /*   private void _btnCreate_Click(object sender, RoutedEventArgs e)
+    private void bringParentToFront()
     {
-      if ((_dtStart.SelectedDate != null) && (_dtEnd.SelectedDate != null))
+      if (_parent != null)
       {
-        DateTime start = (DateTime)_dtStart.SelectedDate;
-        DateTime end = (DateTime)_dtEnd.SelectedDate;
-        enPeriod period = (enPeriod)_cbPeriod.SelectedIndex;
-        _model.SumReport.createReport(start, end, period, _tbRootDir.Text);
+        _parent.Topmost = true;
+        _parent.Topmost = false;
       }
-      else
-        MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-    }*/
+    }
   }
 }

@@ -1,4 +1,6 @@
-V 0.6.1.1.
+V 0.6.2.0
+- enhanced sum report: alphabetically ordered species, total sums
+- bugfix: Notes are now saved back to project
 - bugfix: load prj with missing xml file
 - bugfix: error messages after species detection
 - bugfix: dead lock while saving log

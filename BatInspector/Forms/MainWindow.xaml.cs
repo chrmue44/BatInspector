@@ -291,8 +291,7 @@ namespace BatInspector.Forms
       _lblProject.Text = "PROJECT: " + dir.FullName;
       if ((_model.Prj != null) && _model.Prj.Ok)
       {
-        _ctlPrjInfo._tbCreated.Text = _model.Prj.Created;
-        _ctlPrjInfo._tbNotes.Text = _model.Prj.Notes;
+        _ctlPrjInfo.setup(_model.Prj);
         foreach (stAxisItem it in _scattDiagram.AxisItems)
         {
           _cbXaxis.Items.Add(it.Name);
@@ -1097,7 +1096,7 @@ namespace BatInspector.Forms
         Filter.populateFilterComboBox(_frmCreateReport._ctlReport._cbFilter, _model);
         _frmCreateReport.Show();
         _frmCreateReport.Visibility = Visibility.Visible;
-        _frmCreateReport.Topmost = true;
+//        _frmCreateReport.Topmost = true;
         DebugLog.log("MainWin:BTN 'Report' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)

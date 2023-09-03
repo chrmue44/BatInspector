@@ -41,9 +41,14 @@ namespace BatInspector
     public string Weather { get; set; }
     public List<SumItem> SpecList { get; set; }
 
-    public SumReportItem()
+    public SumReportItem(List<SpeciesInfos> species)
     {
       SpecList = new List<SumItem>();
+      foreach(SpeciesInfos spec in species) 
+      {
+        SumItem it = new SumItem(spec.Abbreviation, 0);
+        SpecList.Add(it);
+      }
     }
   }
 
@@ -52,16 +57,17 @@ namespace BatInspector
   /// </summary>
   public class SumReport
   {
-    private List<SpeciesInfos> _species;
     private Csv _rep;
     private string _rootDir;
     private DirectoryInfo _dirInfo;
     private List<ReportListItem> _reports;
-
+    private List<SumItem> _totalSum;
+    
     public SumReport()
     {
       _rep = new Csv(true);
       _reports = new List<ReportListItem>();
+      _totalSum = new List<SumItem>();
     }
 
     /// <summary>
@@ -71,22 +77,51 @@ namespace BatInspector
     /// <param name="end">end time</param>
     /// <param name="period">granularity of time</param>
     /// <param name="rootDir">root dir to start search for projects</param>
-    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir, string reportName)
+    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir, string reportName,
+                             List<SpeciesInfos> species)
     {
       initDirTree(rootDir);
       _rep = new Csv(true);
       string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.LANDSCAPE, Cols.WEATHER };
       _rep.initColNames(header, true);
+      _totalSum.Clear();
+      foreach (SpeciesInfos sp in species)
+        _totalSum.Add(new SumItem(sp.Abbreviation, 0));
 
       SumReportItem item;
       DateTime date = start;
       while (date < end)
       {
         int days = calcDays(date, end, period);        
-        item = getSums(date, days);
-        if(item.SpecList.Count > 0)
+        item = getSums(date, days, species);
+        
+        int nrCalls = 0;
+        foreach (SumItem it in item.SpecList)
+        {
+          SumItem t = SumItem.find(it.Species, _totalSum);
+          if(t == null)
+          {
+            t = new SumItem(it.Species, 0);
+            _totalSum.Add(t);            
+          }
+          t.Count += it.Count;
+          nrCalls += it.Count;
+        }
+        if(nrCalls > 0)
           addEntry(item);
+        
         date = incrementDate(date, period);
+      }
+
+      _rep.addRow();
+      _rep.addRow();
+      _rep.setCell(_rep.RowCnt, Cols.DATE, "Sum Total");
+      foreach(SumItem it in _totalSum)
+      {
+        if (it.Count <= 0)
+          _rep.removeCol(it.Species);
+        else
+          _rep.setCell(_rep.RowCnt, it.Species, it.Count);
       }
 
       if (Directory.Exists(rootDir))
@@ -204,11 +239,6 @@ namespace BatInspector
           if (_rep.findInRow(1, sc.Species) == 0)
             _rep.insertCol(_rep.ColCnt + 1, "0", sc.Species);
           _rep.setCell(row, sc.Species, sc.Count);
-/*          if (startColTime > 0)
-          {
-            for (int i = 0; i < sc.CountTime.Length; i++)
-              _rep.setCell(row, startColTime + i, sc.CountTime[i]);
-          } */
         }
       }    
     }
@@ -219,13 +249,15 @@ namespace BatInspector
     /// <param name="date"></param>
     /// <param name="days"></param>
     /// <returns></returns>
-    private SumReportItem getSums(DateTime date, int days)
+    private SumReportItem getSums(DateTime date, int days, List<SpeciesInfos> species)
     {
-      SumReportItem retVal = new SumReportItem();
+      SumReportItem retVal = new SumReportItem(species);
       retVal.Date = date;
       DateTime end = date.AddDays(days);
       retVal.Days = days;
       List<SumItem> list = new List<SumItem>();
+      foreach (SpeciesInfos speciesInfo in species)
+        list.Add(new SumItem(speciesInfo.Abbreviation, 0));
       double latitude = 0;
       double longitude = 0; ;
       int sumCnt = 0;
@@ -238,8 +270,8 @@ namespace BatInspector
           Csv summary = new Csv();
           summary.read(rep.FileName, ";", true);
           int startColTime = summary.findInRow(1, Cols.T18H);
-          retVal.Weather = summary.getCell(2, Cols.WEATHER);
-          retVal.Landscape = summary.getCell(2, Cols.LANDSCAPE);
+          retVal.Weather = summary.getCell(2, Cols.WEATHER).Replace(',', ' ');
+          retVal.Landscape = summary.getCell(2, Cols.LANDSCAPE).Replace(',', ' ');
           for (int row = 2; row <= summary.RowCnt; row++)
           {
             latitude += summary.getCellAsDouble(row, Cols.LAT);
@@ -248,7 +280,7 @@ namespace BatInspector
             int count = summary.getCellAsInt(row, Cols.COUNT);  
             SumItem item = SumItem.find(spec, list);
             if (item == null)
-            {
+            { 
               item = new SumItem(spec, 0);
               list.Add(item);
             }

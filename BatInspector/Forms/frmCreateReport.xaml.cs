@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BatInspector.Forms
 {
@@ -25,6 +14,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _model = model;
+      _ctlReport.setup(this);
     }
 
     private void _btnCreate_Click(object sender, RoutedEventArgs e)
@@ -36,7 +26,7 @@ namespace BatInspector.Forms
           DateTime end = (DateTime)_ctlReport._dtEnd.SelectedDate;
           enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
           _model.SumReport.createReport(start, end, period, _ctlReport._tbRootDir.Text,
-                                        _ctlReport._tbReportName.Text);
+                                        _ctlReport._tbReportName.Text, _model.SpeciesInfos);
         }
         else
           MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);

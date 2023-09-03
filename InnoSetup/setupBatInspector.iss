@@ -16,7 +16,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{D439856D-1301-41E9-99F3-C0DF38D53E9B}
+AppId={{2262E983-FEA5-4A59-80C3-EAD3FA0EED19}
 AppName=BatInspector
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}

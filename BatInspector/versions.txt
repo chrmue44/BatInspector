@@ -1,3 +1,11 @@
+V 0.6.1.1.
+- bugfix: load prj with missing xml file
+- bugfix: error messages after species detection
+- bugfix: dead lock while saving log
+- bugfix: update summary when click on summary tab
+- bugfix: cmds AdjustProject, AdjustReport: save results
+
+V 0.6.1.0  02.09.23
 - data recovery for project files (deleted / changed)
 - bugfix: update summary tab when click on it
 - edit button in Query form

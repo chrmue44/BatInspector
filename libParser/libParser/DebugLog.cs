@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace libParser
 {
@@ -36,7 +37,7 @@ namespace libParser
     public DateTime Time;
   }
 
-//  public delegate void delegateLogMsg(string Text, enLogType logType);
+  //  public delegate void delegateLogMsg(string Text, enLogType logType);
   public delegate void delegateLogEntry(stLogEntry entry);
   public delegate void delegateLogClear();
   public delegate bool dlgCheckMaxLogSize();
@@ -45,6 +46,7 @@ namespace libParser
   {
     const int MAX_LOG_ENTRIES = 50000;
     static DebugLog _inst = null;
+    static bool _saving = false;
     List<stLogEntry> _list;
     delegateLogEntry _dlgLog = null;
     delegateLogClear _dlgClear = null;
@@ -57,6 +59,8 @@ namespace libParser
 
     static public void log(string msg, enLogType type, bool beep = false)
     {
+      while (_saving)
+        Thread.Sleep(20);
       if (beep)
         Console.Beep();
       Inst().logMsg(msg, type);
@@ -64,10 +68,12 @@ namespace libParser
 
     static public void save()
     {
+
       string log = "";
-      foreach(stLogEntry entry in Inst()._list)
+      _saving = true;
+      foreach (stLogEntry entry in Inst()._list)
       {
-        log += entry.Time.ToString() + " " + entry.Type.ToString() + " " + entry.Text + "\n"; 
+        log += entry.Time.ToString() + " " + entry.Type.ToString() + " " + entry.Text + "\n";
       }
       if (Inst()._list.Count > 0)
       {
@@ -75,13 +81,14 @@ namespace libParser
           Directory.CreateDirectory(Inst()._logPath);
         File.WriteAllText(Inst()._fName, log);
       }
+      _saving = false;
     }
 
     static public void setLogDelegate(delegateLogEntry dlg, delegateLogClear dlgClear, dlgCheckMaxLogSize checkMax, string logPath)
     {
       Inst()._dlgLog = dlg;
       Inst()._dlgClear = dlgClear;
-      Inst()._logPath= logPath;
+      Inst()._logPath = logPath;
       Inst()._dlgCheckMaxLogSize = checkMax;
       Inst().setupLogFile();
       Inst().transmitEarlyMessagesToControl();
@@ -116,7 +123,7 @@ namespace libParser
         if (_dlgLog != null)
           _dlgLog(entry);
 
-        if(((_dlgCheckMaxLogSize != null) && _dlgCheckMaxLogSize()) || (_list.Count > MAX_LOG_ENTRIES))
+        if (((_dlgCheckMaxLogSize != null) && _dlgCheckMaxLogSize()) || (_list.Count > MAX_LOG_ENTRIES))
         {
           entry = new stLogEntry("log reached max capacity", enLogType.INFO, DateTime.Now);
           _list.Add(entry);
@@ -130,9 +137,9 @@ namespace libParser
 
     void transmitEarlyMessagesToControl()
     {
-      foreach(stLogEntry entry in _list) 
+      foreach (stLogEntry entry in _list)
       {
-        if(_dlgLog != null)
+        if (_dlgLog != null)
           _dlgLog(entry);
       }
     }

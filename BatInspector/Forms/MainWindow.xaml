@@ -204,7 +204,7 @@
               <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" MouseDoubleClick="_dgData_MouseDoubleClick"/>
             </Grid>
           </TabItem>
-          <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" GotFocus="_tbReport_GotFocus" >
+          <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" GotFocus="_tbSum_GotFocus" >
             <Grid >
               <DataGrid x:Name="_dgSum" Margin="0,0,0,10" />
             </Grid>

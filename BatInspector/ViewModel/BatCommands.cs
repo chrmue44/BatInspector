@@ -37,12 +37,14 @@ namespace BatInspector
     {
       ErrText = "";
       _model.removeDeletedWavsFromReport(_model.Prj.ReportName);
+      _model.Prj?.Analysis?.save(_model.Prj.ReportName, _model.Prj.Notes);
       return 0;
     }
     int fctAdjustProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
       _model.Prj?.removeFilesNotInReport();
+      _model.Prj?.writePrjFile();
       return 0;
     }
   }

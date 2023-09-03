@@ -61,6 +61,7 @@ namespace BatInspector
             cleanup(prj.PrjDir);
             prj.Analysis.read(prj.ReportName);
             prj.removeFilesNotInReport();
+            prj.writePrjFile();
           }
           else
             retVal = 2;

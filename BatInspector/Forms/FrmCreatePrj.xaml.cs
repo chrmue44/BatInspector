@@ -190,7 +190,7 @@ namespace BatInspector.Forms
       _info.LocSourceGpx = _rbGpxFile.IsChecked == true;
       _inspect = _cbEvalPrj.IsChecked == true;
       _info.IsProjectFolder = _isProjectFolder;
-      bool ok = false;
+      bool ok = true;
       double lat = 0;
       double lon = 0;
       if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)

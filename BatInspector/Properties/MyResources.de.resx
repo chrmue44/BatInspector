@@ -1152,4 +1152,25 @@
   <data name="frmCleanupOrigFiles" xml:space="preserve">
     <value>Originaldateien</value>
   </data>
+  <data name="MainWindowMsgLoading" xml:space="preserve">
+    <value>Lade Projekt ...</value>
+  </data>
+  <data name="MainWindowMsgReport" xml:space="preserve">
+    <value>Auswertung verfügbar</value>
+  </data>
+  <data name="MainWindow_showStatus_NoReport" xml:space="preserve">
+    <value>Keine Auswertung</value>
+  </data>
+  <data name="MainWindowFiles" xml:space="preserve">
+    <value>Dateien</value>
+  </data>
+  <data name="MainWindowPROJECT" xml:space="preserve">
+    <value>PROJEKT</value>
+  </data>
+  <data name="MainWindow_timer_Tick_QUERY" xml:space="preserve">
+    <value>ABFRAGE</value>
+  </data>
+  <data name="MainWindowFilesProcessed" xml:space="preserve">
+    <value>Dateien verarbeitet</value>
+  </data>
 </root>

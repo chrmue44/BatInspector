@@ -44,7 +44,6 @@ namespace BatInspector
     {
       ErrText = "";
       _model.Prj?.removeFilesNotInReport();
-      _model.Prj?.writePrjFile();
       return 0;
     }
   }

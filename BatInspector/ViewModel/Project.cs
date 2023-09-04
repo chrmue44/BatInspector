@@ -581,9 +581,10 @@ namespace BatInspector
         }
         else
           newList.Add(rec);
-        _reloadInGui = true;
       }
       _batExplorerPrj.Records = newList.ToArray();
+      writePrjFile();
+      _reloadInGui = true;
     }
 
     /// <summary>
@@ -639,7 +640,8 @@ namespace BatInspector
           fileList.Add(pngFile);
       }
       Utils.copyFiles(fileList.ToArray(), dstPath, removeSrc);
-      _changed = true;
+      writePrjFile();
+      _analysis?.save(_selectedDir, Notes);
       _reloadInGui = true;
     }
 
@@ -791,8 +793,6 @@ namespace BatInspector
         foreach (FileInfo file in dir.GetFiles("*.wav"))
           files.Add(file.FullName);
         addFiles(files.ToArray(), true);
-        writePrjFile();
-        _analysis.save(_selectedDir, Notes);
         DebugLog.log("deleted files of Prj '" + Name + "' recovered", enLogType.INFO);
       }
     }

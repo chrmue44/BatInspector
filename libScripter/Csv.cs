@@ -237,8 +237,10 @@ namespace libScripter
       if((row >= 0) && (row < _cells.Count))
       {
         col--;
-        if ((col >= 0) && (col < _cells[row].Count))
+        if ((col >= 0) && (col < _colCnt))
         {
+          while (_cells[row].Count < _colCnt)
+            _cells[row].Add("");
           retVal = _cells[row][col];
         }
         else

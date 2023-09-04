@@ -2149,6 +2149,69 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to no report.
+        /// </summary>
+        public static string MainWindow_showStatus_NoReport {
+            get {
+                return ResourceManager.GetString("MainWindow_showStatus_NoReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QUERY.
+        /// </summary>
+        public static string MainWindow_timer_Tick_QUERY {
+            get {
+                return ResourceManager.GetString("MainWindow_timer_Tick_QUERY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string MainWindowFiles {
+            get {
+                return ResourceManager.GetString("MainWindowFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to files processed.
+        /// </summary>
+        public static string MainWindowFilesProcessed {
+            get {
+                return ResourceManager.GetString("MainWindowFilesProcessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading project ....
+        /// </summary>
+        public static string MainWindowMsgLoading {
+            get {
+                return ResourceManager.GetString("MainWindowMsgLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report available.
+        /// </summary>
+        public static string MainWindowMsgReport {
+            get {
+                return ResourceManager.GetString("MainWindowMsgReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PROJECT.
+        /// </summary>
+        public static string MainWindowPROJECT {
+            get {
+                return ResourceManager.GetString("MainWindowPROJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project View.
         /// </summary>
         public static string MainWinProjectView {

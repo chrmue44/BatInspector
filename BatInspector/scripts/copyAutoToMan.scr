@@ -52,7 +52,7 @@ FOR FileNr 0 NrFiles
 	  SET prob =(getCallInfo(FileNr, i, "PROBABILITY"))
 	  IF =(toupper(specMan) == "TODO")
 	    SET Replace 1
-	    IF =(prob > 0.6)
+	    IF =(prob > 0.5)
           =(setCallInfo(FileNr, i, "SPEC_MAN", specAuto))
 	    ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))

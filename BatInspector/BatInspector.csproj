@@ -533,6 +533,7 @@
     <Content Include="scripts\reset_man.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="scripts\copyAutoToMan.scr" />
     <None Include="scripts\rescale.scr" />
     <Content Include="scripts\tool_all_todo.scr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

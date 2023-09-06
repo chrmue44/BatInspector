@@ -9,6 +9,7 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using Microsoft.VisualBasic;
@@ -17,7 +18,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Management;
+using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
@@ -59,32 +62,32 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
-     
-    
+
+
     public string SelectedDir { get { return _selectedDir; } }
-    
-    public ScriptRunner Scripter {  get { return _scripter; } }
-    
+
+    public ScriptRunner Scripter { get { return _scripter; } }
+
     public string Version { get { return _version; } }
-       
+
     public ClassifierBarataud Classifier { get { return _clsBarataud; } }
-    
+
     public Project Prj { get { return _prj; } }
-    
+
     public ZoomView ZoomView { get { return _zoom; } }
-    
+
     public Filter Filter { get { return _filter; } }
-    
+
     public ColorTable ColorTable { get { return _colorTable; } }
-    
+
     public bool Busy { get { return isBusy(); } set { _extBusy = value; } }
-    
+
     public WavFile WavFile { get { return _wav; } }
-    
+
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfos; } }
-    
+
     public System.Windows.Input.Key LastKey { get; set; }
-    
+
     public System.Windows.Input.Key KeyPressed { get; set; }
 
     public SumReport SumReport { get { return _sumReport; } }
@@ -132,7 +135,7 @@ namespace BatInspector
       _models = new List<BaseModel>();
       _query = null;
       int index = 0;
-      foreach(ModelItem m in AppParams.Inst.Models)
+      foreach (ModelItem m in AppParams.Inst.Models)
       {
         _models.Add(BaseModel.Create(index, m.ModelType));
         index++;
@@ -185,7 +188,7 @@ namespace BatInspector
         }
         else
           _prj.Analysis.init(_prj.SpeciesInfos);
-        if (_prj.Ok &&_prj.Analysis.Report != null)
+        if (_prj.Ok && _prj.Analysis.Report != null)
           checkProject();
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
       }
@@ -198,12 +201,6 @@ namespace BatInspector
       }
       else
         _prj = null;
-      if (_prj != null)
-      {
-        double maxFreq = 150;
-        if ((_prj.Analysis != null) && (_prj.Analysis.Report != null) && (_prj.Analysis.Files.Count > 0))
-          maxFreq = _prj.Analysis.Files[0].getInt(Cols.SAMPLERATE) / 2000;
-      }
     }
 
     void updateProgress(int percent)
@@ -215,7 +212,7 @@ namespace BatInspector
     void checkProject()
     {
       bool ok = true;
-      foreach(BatExplorerProjectFileRecordsRecord rec in _prj.Records)
+      foreach (BatExplorerProjectFileRecordsRecord rec in _prj.Records)
       {
         AnalysisFile a = _prj.Analysis.find(rec.File);
         if (a == null)
@@ -226,7 +223,7 @@ namespace BatInspector
       }
       foreach (AnalysisFile a in _prj.Analysis.Files)
       {
-        BatExplorerProjectFileRecordsRecord r  = _prj.find(a.Name);
+        BatExplorerProjectFileRecordsRecord r = _prj.find(a.Name);
         if (r == null)
         {
           DebugLog.log("mismatch Prj against Report, missing file " + a.Name + " in project", enLogType.ERROR);
@@ -249,7 +246,7 @@ namespace BatInspector
     public void saveSettings()
     {
       AppParams.Inst.Filter.Clear();
-      foreach(FilterItem fItem in _filter.Items)
+      foreach (FilterItem fItem in _filter.Items)
       {
         FilterParams fPar = new FilterParams
         {
@@ -262,39 +259,74 @@ namespace BatInspector
       AppParams.Inst.save();
     }
 
-    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage, bool fromQuery)
+    public void createPngIfMissing(BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
     {
       string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
       string pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-      Bitmap bmp = null;
-      BitmapImage bImg = null;
-      newImage = false;
-      if (File.Exists(pngName))
+      if (!File.Exists(pngName))
       {
-        bmp = new Bitmap(pngName);
+        createPng(fullName, pngName);
+      }
+    }
+
+    private void createPng(string fullName, string pngName)
+    {
+      Waterfall wf = new Waterfall(fullName, _colorTable);
+      if (wf.Ok)
+      {
+        wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
+        using (Bitmap bmp = wf.generateFtPicture(0, wf.SamplingRate / 2000))
+        {
+          bmp.Save(pngName);
+        }
       }
       else
+        DebugLog.log("could not create PNG for " + fullName, enLogType.WARNING);
+    }
+
+
+    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage, bool fromQuery)
+    {
+      BitmapImage bImg = null;
+      newImage = false;
+      string pngName = "";
+      try
       {
-        Waterfall wf = new Waterfall(fullName, _colorTable);
-        if (wf.Ok)
+        string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
+        pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        Bitmap bmp = null;
+        newImage = false;
+        if (File.Exists(pngName))
         {
-          wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-          bmp = wf.generateFtPicture(0, wf.SamplingRate/2000);
-          bmp.Save(pngName);
-          newImage = true;
+          bmp = new Bitmap(pngName);
         }
         else
         {
-           DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
-          if (_prj != null)
+          Waterfall wf = new Waterfall(fullName, _colorTable);
+          if (wf.Ok)
           {
-            _prj.removeFile(rec.File);
-            _prj.Analysis.removeFile(Prj.ReportName, rec.File);
+            wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
+            bmp = wf.generateFtPicture(0, wf.SamplingRate / 2000);
+            bmp.Save(pngName);
+            newImage = true;
+          }
+          else
+          {
+            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
+            if (_prj != null)
+            {
+              _prj.removeFile(rec.File);
+              _prj.Analysis.removeFile(Prj.ReportName, rec.File);
+            }
           }
         }
+        if (bmp != null)
+          bImg = Convert(bmp);
       }
-      if(bmp != null)
-        bImg = Convert(bmp);
+      catch (Exception ex)
+      { 
+        DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
+      }
       return bImg;
     }
 
@@ -407,7 +439,7 @@ namespace BatInspector
             retVal = _models[i].classify(Prj);
           }
         }
-        _prj.Analysis.save(SelectedDir, _prj.Notes);
+//        _prj.Analysis.save(SelectedDir, _prj.Notes);
         _prj.writePrjFile();
       }
       DebugLog.log("evaluation of species done", enLogType.INFO);
@@ -442,12 +474,13 @@ namespace BatInspector
       }
       return retVal;
     }
-
+/*
     //http://www.shujaat.net/2010/08/wpf-images-from-project-resource.html
-    static public BitmapImage Convert(Bitmap value)
+    //has suspicious memory problems
+    static public BitmapImage ConvertOld(Bitmap value)
     {
       MemoryStream ms = new MemoryStream();
-      value.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+      value.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
       BitmapImage image = new BitmapImage();
       image.BeginInit();
       ms.Seek(0, SeekOrigin.Begin);
@@ -456,6 +489,56 @@ namespace BatInspector
 
       return image;
     }
+
+
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    public static extern bool DeleteObject(IntPtr hObject);
+
+    //https://stackoverflow.com/questions/6484357/converting-bitmapimage-to-bitmap-and-vice-versa
+    static public BitmapImage Convert2(Bitmap bitmap)
+    {
+      IntPtr hBitmap = bitmap.GetHbitmap();
+      BitmapImage retval;
+
+      try
+      {
+        retval = (BitmapImage)Imaging.CreateBitmapSourceFromHBitmap(
+                     hBitmap,
+                     IntPtr.Zero,
+                     Int32Rect.Empty,
+                     BitmapSizeOptions.FromEmptyOptions());
+      }
+      finally
+      {
+        DeleteObject(hBitmap);
+      }
+      return retval;
+    }
+    */
+
+    public static BitmapImage Convert(Bitmap bitmap)
+    {
+      var bitmapImage = new BitmapImage();
+      try
+      {
+        using (MemoryStream memory = new MemoryStream())
+        {
+          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+          memory.Position = 0;
+
+          bitmapImage.BeginInit();
+          bitmapImage.StreamSource = memory;
+          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+          bitmapImage.EndInit();
+          bitmapImage.Freeze();
+        }
+      }
+      catch(Exception ex) 
+      {
+        DebugLog.log("error creating PNG", enLogType.ERROR);
+      }
+      return bitmapImage;
+      }
 
     private void initFilter()
     {

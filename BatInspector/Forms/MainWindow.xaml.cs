@@ -67,6 +67,8 @@ namespace BatInspector.Forms
     Thread _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
+    bool _newStatus = false;
+    string _statusText = "";
 
 
     public MainWindow()
@@ -270,10 +272,7 @@ namespace BatInspector.Forms
       if (_model.Query != null)
       {
         if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
-        {
-          setStatus("   loading...");
           populateFiles();
-        }
         else
           DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
       }
@@ -285,10 +284,10 @@ namespace BatInspector.Forms
       DebugLog.log("start to open project", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
+      _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
+      setStatus("");
+      _spSpectrums.Children.Clear();
       _model.initProject(dir);
-      if (_model.Prj == null)              //remove all spectrograms if project was closed
-        _spSpectrums.Children.Clear();
-      _lblProject.Text = "PROJECT: " + dir.FullName;
       if ((_model.Prj != null) && _model.Prj.Ok)
       {
         _ctlPrjInfo.setup(_model.Prj);
@@ -299,10 +298,7 @@ namespace BatInspector.Forms
         }
         _switchTabToPrj = true;
         if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
-        {
-          setStatus("   loading...");
           populateFiles();
-        }
         else
           DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
       }
@@ -326,6 +322,7 @@ namespace BatInspector.Forms
         _ctlZoom = new CtrlZoom();
         _tbZoom.Content = _ctlZoom;
         _tbZoom.IsSelected = false;
+        _tbZoom.Visibility = Visibility.Hidden;
       }
     }
 
@@ -344,6 +341,7 @@ namespace BatInspector.Forms
       {
         _ctlZoom.setup(analysis, wavFilePath, _model, img);
         _tbZoom.Header = "Zoom: " + name;
+        _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
         Dispatcher.BeginInvoke((Action)(() => _tbMain.SelectedItem = _tbZoom));
       }
@@ -386,7 +384,7 @@ namespace BatInspector.Forms
       TreeViewItem item = new TreeViewItem();
       item.Header = o.ToString();
       item.Tag = o;
-      item.Items.Add("Loading...");
+      item.Items.Add(BatInspector.Properties.MyResources.MainWindowMsgLoading);
       return item;
     }
 
@@ -419,9 +417,9 @@ namespace BatInspector.Forms
     {
       _model.Busy = true;
       setMouseStatus();
-      _spSpectrums.Children.Clear();
-      setStatus("creating PNGs for project " + _model.Prj.Name + ", wait a moment...");
-      _workerStartup = new Thread(new ThreadStart(createImageFiles));
+      _workerStartup = new Thread(createImageFiles);
+      _workerStartup.Priority = ThreadPriority.AboveNormal;
+      _workerStartup.Start();
     }
 
     void worker_ProgressChanged(string pngName)
@@ -430,7 +428,7 @@ namespace BatInspector.Forms
       {
         Dispatcher.Invoke(new dlgProgress(worker_ProgressChanged));
       }
-      this.setStatus("generating PNG image " + pngName);
+      this.setStatus(pngName);
 
     }
 
@@ -443,13 +441,24 @@ namespace BatInspector.Forms
     {
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
+        int tot = _model.Prj.Records.Length;
+        int cnt = 0;
+        Stopwatch s = new Stopwatch();
+        s.Start();
         Parallel.ForEach(_model.Prj.Records, rec =>
         //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
-          bool newImage;
-          _model.getFtImage(rec, out newImage, false);
-          if (newImage)
-            worker_ProgressChanged(rec.Name);
+          Thread.BeginCriticalRegion();
+          _model.createPngIfMissing(rec, false);
+          cnt++;
+          Thread.EndCriticalRegion();
+          if(s.ElapsedMilliseconds > 2500)
+          {
+            _statusText = cnt.ToString() + "/" + tot.ToString() + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
+            _newStatus = true;
+           s.Restart();
+            Thread.Yield();
+          }
         });
       }
       else if (_model.Query != null)
@@ -457,10 +466,7 @@ namespace BatInspector.Forms
         Parallel.ForEach(_model.Query.Records, rec =>
         //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
-          bool newImage;
-          _model.getFtImage(rec, out newImage, true);
-          if (newImage)
-            worker_ProgressChanged(rec.Name);
+          _model.createPngIfMissing(rec, true);
         });
       }
     }
@@ -557,7 +563,9 @@ namespace BatInspector.Forms
     {
       string report = "";
       if (_model.CurrentlyOpen != null)
-        report = _model.CurrentlyOpen.Analysis.Report != null ? "report available" : "no report";
+        report = _model.CurrentlyOpen.Analysis.Report != null ?
+                 BatInspector.Properties.MyResources.MainWindowMsgReport :
+                 BatInspector.Properties.MyResources.MainWindow_showStatus_NoReport;
 
       int vis = 0;
       foreach (ctlWavFile c in _spSpectrums.Children)
@@ -565,7 +573,7 @@ namespace BatInspector.Forms
         if (c.Visibility == Visibility.Visible)
           vis++;
       }
-      setStatus("  [ nr of files: " + vis.ToString() + "/" + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
+      setStatus("  [ "+ BatInspector.Properties.MyResources.MainWindowFiles + ": " + vis.ToString() + "/" + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)
@@ -1050,6 +1058,12 @@ namespace BatInspector.Forms
         _model.UpdateUi = false;
       }
 
+      if(_newStatus)
+      {
+        _lblStatus.Text = _statusText;
+        _newStatus = false;
+      }
+
       if (_model.Prj.ReloadInGui)
       {
         if ((_model.Prj != null) && _model.Prj.Ok && (_model.Prj.Analysis != null))
@@ -1071,8 +1085,12 @@ namespace BatInspector.Forms
       {
         _workerStartup = null;
         populateControls();
+        if((_model.Prj != null) && _model.Prj.Ok)
+          _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
+        if (_model.Query != null)
+          _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
       }
-      if(_workerStartup == null)
+      if (_workerStartup == null)
         _model.Busy = false;
 
       if (_switchTabToPrj)

@@ -57,6 +57,7 @@ namespace BatInspector.Forms
       _rbGpxFile.IsChecked = false;
       _rbFixedPos.IsChecked = true;
       _cbOverwriteLoc.Visibility = Visibility.Hidden;
+      setVisibilityTimeFilter();
     }
 
 
@@ -72,6 +73,14 @@ namespace BatInspector.Forms
     }
 
 
+    private void setVisibilityTimeFilter()
+    {
+      Visibility vis = _cbTimeFilter.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+      _dtStart.Visibility = vis;
+      _dtEnd.Visibility = vis;
+      _lblDateStart.Visibility = vis;
+      _lblDateEnd.Visibility = vis;
+    }
 
     private void setupStartEndTime()
     {
@@ -82,19 +91,29 @@ namespace BatInspector.Forms
         _isProjectFolder = true;
         _info.Name = Path.GetFileNameWithoutExtension(files[0]);
         _ctlPrjName.setValue(_info.Name);
+        _cbTimeFilter.IsEnabled = false;
       }
       else
       {
         _isProjectFolder = false;
+        _cbTimeFilter.IsEnabled = true;
         files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
         if (files != null && files.Length > 0)
         {
-          DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
-          DateTime end = start.Date;
-          end = end.AddDays(1);
-          end = end.AddHours(6);
-          _dtStart.init(start);
-          _dtEnd.init(end);
+          if (_cbTimeFilter.IsEnabled)
+          {
+            DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
+            DateTime end = start.Date;
+            end = end.AddDays(1);
+            end = end.AddHours(6);
+            _dtStart.init(start);
+            _dtEnd.init(end);
+          }
+          else
+          {
+            _dtStart.init(new DateTime(1950, 1, 1));
+            _dtEnd.init(new DateTime(2099, 12, 31));
+          }
         }
       }
       enableGuiElements();
@@ -297,6 +316,11 @@ namespace BatInspector.Forms
       _ctlLon.IsEnabled = en & (_rbFixedPos.IsChecked == true);
       _rbGpxFile.IsEnabled = en;
       _rbFixedPos.IsEnabled = en;
+    }
+
+    private void _cbTimeFilter_Click(object sender, RoutedEventArgs e)
+    {
+      setVisibilityTimeFilter();
     }
   }
 }

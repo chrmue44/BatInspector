@@ -1173,4 +1173,7 @@
   <data name="MainWindowFilesProcessed" xml:space="preserve">
     <value>Dateien verarbeitet</value>
   </data>
+  <data name="FrmCreatePrjFilterByTime" xml:space="preserve">
+    <value>Filtern nach Zeit</value>
+  </data>
 </root>

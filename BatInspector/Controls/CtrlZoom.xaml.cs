@@ -157,7 +157,7 @@ namespace BatInspector.Controls
       _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
       _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, 130);
+      //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, 130);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 130);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, enDataType.STRING, 1, 130);
@@ -233,7 +233,7 @@ namespace BatInspector.Controls
       _ctlFMax.Visibility = vis;
       _ctlFMaxAmpl.Visibility = vis;
       _ctlFMin.Visibility = vis;
-      _ctlSnr.Visibility = vis;
+      //_ctlSnr.Visibility = vis;
       _ctlDist.Visibility = vis;
       _ctlDuration.Visibility = vis;
     }
@@ -1028,7 +1028,7 @@ namespace BatInspector.Controls
         _ctlFMax.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MAX) / 1000);
         _ctlFMaxAmpl.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MAX_AMP) / 1000);
         _ctlDuration.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION));
-        _ctlSnr.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.SNR));
+        //_ctlSnr.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.SNR));
         _ctlDist.setValue(_model.ZoomView.Analysis.Calls[idx].DistToPrev);
         _ctlSpecAuto.setValue(_model.ZoomView.Analysis.Calls[idx].getString(Cols.SPECIES));
         _ctlSpecMan.setValue(_model.ZoomView.Analysis.Calls[idx].getString(Cols.SPECIES_MAN));

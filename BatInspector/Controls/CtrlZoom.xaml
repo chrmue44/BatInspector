@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="44"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="182"></RowDefinition>
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" VerticalAlignment="Top">
             <ToolBar x:Name="_tb"  HorizontalAlignment="Left" Height="44" VerticalAlignment="Top">
@@ -155,7 +155,7 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
             <Canvas Name ="_rulerT" Grid.Row="3" Grid.Column="2" ></Canvas>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" >
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Spectrum">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Spectrum" MinWidth="120">
                 <StackPanel Orientation="Vertical"  Margin="5,5,5,5">
                     <local:ctlDataItem x:Name="_ctlTimeMin"/>
                     <local:ctlDataItem x:Name="_ctlTimeMax"/>
@@ -173,7 +173,6 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
                     <local:ctlDataItem x:Name="_ctlFMax"/>
                     <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
                     <local:ctlDataItem x:Name="_ctlDuration"/>
-                    <local:ctlDataItem x:Name="_ctlSnr"/>
                     <local:ctlDataItem x:Name="_ctlDist"/>
                     <local:ctlDataItem x:Name="_ctlSpecAuto"/>
                     <local:ctlDataItem x:Name="_ctlSpecMan"/>
@@ -193,7 +192,7 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
                     <local:ctlDataItem x:Name="_ctlMeanDist"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtlZoomFileInfo}">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtlZoomFileInfo}" MinWidth="180">
                 <StackPanel>
                     <local:ctlDataItem x:Name="_ctlDateTime" />
                     <local:ctlDataItem x:Name="_ctlGpsPos" />
@@ -204,7 +203,7 @@ ToolTipService.BetweenShowDelay="50" ToolTip="This is a tool tip." MouseMove="_i
 
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpData" Header="Info" Margin="5" Padding="2">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpData" Header="Info" Margin="5" Padding="2" MinWidth="180">
                 <StackPanel>
                     <local:ctlDataItem x:Name="_sampleRate" />
                     <local:ctlDataItem x:Name="_duration" />

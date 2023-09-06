@@ -27,7 +27,7 @@ namespace BatInspector
     int _size;
     double[] _samples;
     double[] _spectrum;
-    double[] _originalSamples;
+    double[] _originalSamples = null;
     int _samplingRate;
     string _fName = "";
     bool _fftInitDone = false;
@@ -37,7 +37,6 @@ namespace BatInspector
       _size = size;
       _samplingRate = samplingRate;
       _samples = new double[size];
-      _originalSamples= new double[size];
     }
 
     /// <summary>
@@ -235,8 +234,11 @@ namespace BatInspector
 
     public void undo()
     {
-      for(int i = 0; i < _samples.Length; i++)
-        _samples[i] = _originalSamples[i];
+      if (_originalSamples != null)
+      {
+        for (int i = 0; i < _samples.Length; i++)
+          _samples[i] = _originalSamples[i];
+      }
     }
 
     public void applyHeterodynModulation(double freq)

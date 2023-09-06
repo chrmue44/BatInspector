@@ -1024,6 +1024,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter by time.
+        /// </summary>
+        public static string FrmCreatePrjFilterByTime {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjFilterByTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fixed position.
         /// </summary>
         public static string frmCreatePrjFixedPos {

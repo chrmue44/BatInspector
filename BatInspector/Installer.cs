@@ -47,7 +47,7 @@ namespace BatInspector
         ProcessRunner p = new ProcessRunner();
         if(instData)
         {
-          string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+/*          string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                                      AppParams.PROG_DAT_DIR, "setup", AppParams.DIR_SCRIPTS);
           string fInstall = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                                      AppParams.PROG_DAT_DIR, "install.txt");
@@ -57,7 +57,7 @@ namespace BatInspector
             Directory.CreateDirectory(dstDir);
           dirCopy(srcDir, dstDir);
             string inst = DateTime.Now.ToString();
-            File.WriteAllText(fInstall, inst);
+            File.WriteAllText(fInstall, inst); */
         }
 
         if (instPy)
@@ -85,62 +85,63 @@ namespace BatInspector
 
     static bool isDataInstalled()
     {
-      string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                 AppParams.PROG_DAT_DIR, "setup", AppParams.DIR_SCRIPTS);
-      string fInstall = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                 AppParams.PROG_DAT_DIR, "install.txt");
-      string dstDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                   AppParams.PROG_DAT_DIR, AppParams.DIR_SCRIPTS);
+      /*    string srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                     AppParams.PROG_DAT_DIR, "setup", AppParams.DIR_SCRIPTS);
+          string fInstall = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                     AppParams.PROG_DAT_DIR, "install.txt");
+          string dstDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                       AppParams.PROG_DAT_DIR, AppParams.DIR_SCRIPTS);
 
-      bool retVal =  File.Exists(fInstall) && Directory.Exists(dstDir);
-      if (retVal)
-      {
-        string instTimeStr = File.ReadAllText(fInstall);
-        DateTime.TryParse(instTimeStr, out DateTime instTime);
-        if (Directory.Exists(dstDir) && Directory.Exists(srcDir))
-        {
-          DirectoryInfo src = new DirectoryInfo(srcDir);
-          if (instTime < src.LastWriteTime)
+          bool retVal =  File.Exists(fInstall) && Directory.Exists(dstDir);
+          if (retVal)
           {
-            if (!IsRunAsAdmin())
+            string instTimeStr = File.ReadAllText(fInstall);
+            DateTime.TryParse(instTimeStr, out DateTime instTime);
+            if (Directory.Exists(dstDir) && Directory.Exists(srcDir))
             {
-              // Launch itself as administrator
-              ProcessStartInfo proc = new ProcessStartInfo();
-              proc.UseShellExecute = true;
-              proc.WorkingDirectory = Environment.CurrentDirectory;
-              proc.FileName = AppDomain.CurrentDomain.FriendlyName;
-              proc.Verb = "runas";
-              try
+              DirectoryInfo src = new DirectoryInfo(srcDir);
+              if (instTime < src.LastWriteTime)
               {
-                DebugLog.log("restart application in admin mode", enLogType.DEBUG);
+                if (!IsRunAsAdmin())
+                {
+                  // Launch itself as administrator
+                  ProcessStartInfo proc = new ProcessStartInfo();
+                  proc.UseShellExecute = true;
+                  proc.WorkingDirectory = Environment.CurrentDirectory;
+                  proc.FileName = AppDomain.CurrentDomain.FriendlyName;
+                  proc.Verb = "runas";
+                  try
+                  {
+                    DebugLog.log("restart application in admin mode", enLogType.DEBUG);
+                    DebugLog.save();
+                    Process.Start(proc);
+                    Environment.Exit(0);
+                  }
+                  catch
+                  {
+                    // The user refused the elevation.
+                    // Do nothing and return directly ...
+                    return false;
+                  }
+                }
+
+                string delDir = srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                                      AppParams.PROG_DAT_DIR);
+                string venvDir = Path.Combine(delDir, "models", "bd2", "_venv");
+                if (Directory.Exists(venvDir))
+                  Directory.Delete(venvDir, true);
+                File.Delete(fInstall);
+                string appName = Path.Combine(Environment.CurrentDirectory, AppDomain.CurrentDomain.FriendlyName);
+                DebugLog.log("deleted data files, restart application in user mode: " + appName, enLogType.DEBUG);
                 DebugLog.save();
-                Process.Start(proc);
+                RunAsDesktopUser(appName);
                 Environment.Exit(0);
-              }
-              catch
-              {
-                // The user refused the elevation.
-                // Do nothing and return directly ...
-                return false;
+                retVal = false;
               }
             }
-
-            string delDir = srcDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                                  AppParams.PROG_DAT_DIR);
-            string venvDir = Path.Combine(delDir, "models", "bd2", "_venv");
-            if (Directory.Exists(venvDir))
-              Directory.Delete(venvDir, true);
-            File.Delete(fInstall);
-            string appName = Path.Combine(Environment.CurrentDirectory, AppDomain.CurrentDomain.FriendlyName);
-            DebugLog.log("deleted data files, restart application in user mode: " + appName, enLogType.DEBUG);
-            DebugLog.save();
-            RunAsDesktopUser(appName);
-            Environment.Exit(0);
-            retVal = false;
           }
-        }
-      }
-      return retVal;
+          return retVal; */
+      return true;
     }
 
 

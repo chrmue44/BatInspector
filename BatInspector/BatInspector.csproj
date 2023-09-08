@@ -257,6 +257,7 @@
     <Compile Include="ViewModel\Query.cs" />
     <Compile Include="ViewModel\QueryFile.cs" />
     <Compile Include="ViewModel\ScatterDiagram.cs" />
+    <Compile Include="ViewModel\ScriptInventory.cs" />
     <Compile Include="ViewModel\ScriptRunner.cs" />
     <Compile Include="ViewModel\SimCall.cs" />
     <Compile Include="ViewModel\SoundEdit.cs" />

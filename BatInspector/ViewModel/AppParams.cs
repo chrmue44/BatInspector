@@ -136,33 +136,7 @@ namespace BatInspector
     public int Value { get; set; }
   }
 
-  [DataContract]
-  public class ScriptItem
-  {
-    public ScriptItem(int index, string name, string description, bool isTool, List<string> parameter)
-    {
-      Index = index;
-      Name = name;
-      Description = description;
-      IsTool = isTool;
-      Parameter = parameter;
-    }
-
-    [DataMember]
-    public int Index { get; set; }
-
-    [DataMember]
-    public string Name { get; set; }
-
-    [DataMember]
-    public string Description { get; set; }
-
-    [DataMember]
-    public bool IsTool { get; set; }
-    [DataMember]
-    public List<string> Parameter { get; set; }
-  }
-
+  
   [DataContract]
   public class ModelItem
   {
@@ -208,7 +182,6 @@ namespace BatInspector
     public const string DIR_WAVS = "Records";             // directory for WAV files
     public const string DIR_ORIG = "orig";                // sub directory to store original files
     public const string DIR_DEL = "del";                  // sub directory to save 'deleted' files
-    public const string DIR_SCRIPTS = "scripts";          // sub directory to store scripts
     public const string ANNOTATION_SUBDIR = "ann";        // subdirectory for annotations for specific models
     public const string EXT_WAV = ".wav";                 // file extension for wav files 
     public const string EXT_IMG = ".png";                 // file extension for image files of recordings
@@ -234,6 +207,7 @@ namespace BatInspector
     static AppParams _inst = null;
 
     bool _isInitialized = false;
+    ScriptInventory _scriptInventory = null;
     static public  bool IsInitialized { get { return _inst._isInitialized; } }
     public static AppParams Inst 
     { 
@@ -242,7 +216,6 @@ namespace BatInspector
         if (_inst == null)
         {
           AppParams.load();
-          _inst._isInitialized = true;
         }
         return _inst;
       }
@@ -432,21 +405,18 @@ namespace BatInspector
     public string ScriptCopyAutoToMan { get; set; }
 
     [DataMember]
-    [LocalizedCategory("SetCatScripting"),
-    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    [Browsable(false)]
-    public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
-
-    [DataMember]
     [LocalizedCategory("SetCatModel")]
+    [Browsable(false)]
     public string ModelRootPath { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatModel")]
+    [Browsable(false)]
     public int SelectedModel { get; set; } = 0;
 
     [DataMember]
     [LocalizedCategory("SetCatModel")]
+    [Browsable(false)]
     public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
 
     [DataMember]
@@ -539,6 +509,13 @@ namespace BatInspector
      LocalizedDescription("SpecDescShowDebug")]
     public bool LogShowDebug { get; set; }
 
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SerDescScriptInventory")]
+    public string ScriptInventoryPath { get; set; }
+
+    [Browsable(false)]
+    public ScriptInventory ScriptInventory { get { return _scriptInventory; } }
     public AppParams()
     {
       init();
@@ -548,6 +525,9 @@ namespace BatInspector
     {
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
       LogDataPath = Path.Combine(AppDataPath, "log");
+      ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+                                         PROG_DAT_DIR, ScriptInventory.DIR_SCRIPTS);
+
       ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
       WaterfallHeight = 256;
       WaterfallWidth = 512;
@@ -572,7 +552,6 @@ namespace BatInspector
       Culture = enCulture.de_DE;
       initFilterParams();
       initColorGradient();
-      initScripts();
       ModelRootPath = Path.Combine(AppDataPath, "models");
       SelectedModel = 0;
       initModels();
@@ -606,21 +585,6 @@ namespace BatInspector
       p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);
-    }
-
-    private void initScripts()
-    {
-      string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-      Scripts = new List<ScriptItem>
-      {
-        new ScriptItem(0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,new List<string>()),
-        new ScriptItem(1, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false,new List<string>()),
-        new ScriptItem(2, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateie", false,new List<string>()),
-        new ScriptItem(3, "resample.scr", "Resampling einer WAV-Datei",false,new List<string>(){"Name der WAV-Datei", "neue Sampling-Rate [Hz]"}),
-        new ScriptItem(4, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<string>()),
-        new ScriptItem(5, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<string>()),
-        new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<string>())
-      };
     }
 
     private void initModels()
@@ -690,8 +654,6 @@ namespace BatInspector
             DebugLog.log("settings file not well formed!", enLogType.ERROR);
           if (retVal.ColorGradientBlue == null)
             retVal.initColorGradient();
-          if (retVal.Scripts == null)
-            retVal.initScripts();
           if (retVal.Models == null)
             retVal.initModels();
           DebugLog.log("successfully loaded", enLogType.DEBUG);
@@ -715,6 +677,12 @@ namespace BatInspector
         if (file != null)
           file.Close();
       }
+      if (string.IsNullOrEmpty(retVal.ScriptInventoryPath))
+      {
+        retVal.ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+                                         PROG_DAT_DIR, ScriptInventory.DIR_SCRIPTS);
+      }
+      retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath);
 
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
     //  retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
@@ -723,7 +691,8 @@ namespace BatInspector
       AppDataPath = replaceDriveLetter(AppDataPath);
       DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.DEBUG);
 
-  //    retVal.adjustActivateBat();
+      //    retVal.adjustActivateBat();
+      retVal._isInitialized = true;
       _inst = retVal;
     }
 

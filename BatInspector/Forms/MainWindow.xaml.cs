@@ -986,7 +986,7 @@ namespace BatInspector.Forms
           _frmSettings = new frmSettings(AppParams.Inst);
         _frmSettings.Show();
         _frmSettings.Visibility = Visibility.Visible;
-        _frmSettings.Topmost = true;
+//        _frmSettings.Topmost = true;
         DebugLog.log("MainWin:BTN 'Settings' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1453,7 +1453,7 @@ namespace BatInspector.Forms
     private void populateToolsMenu()
     {
       _mnuToolsItems.Items.Clear();
-      foreach (ScriptItem s in AppParams.Inst.Scripts)
+      foreach (ScriptItem s in AppParams.Inst.ScriptInventory.Scripts)
       {
         if (!s.IsTool)
         {

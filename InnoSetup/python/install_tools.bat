@@ -19,6 +19,10 @@ if not errorlevel 1 (
 :model
 
 rem install missing python libraries
+@echo ******************************************************
+@echo * installing AI model. This may take several minutes *
+@echo * Be patient! Ooohmm....                             *
+@echo ******************************************************
 cd ..
 cd %OUT_DIR%
 cd %MODEL_DIR%

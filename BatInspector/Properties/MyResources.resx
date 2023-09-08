@@ -1176,4 +1176,7 @@
   <data name="FrmCreatePrjFilterByTime" xml:space="preserve">
     <value>Filter by time</value>
   </data>
+  <data name="SerDescScriptInventory" xml:space="preserve">
+    <value>Path for the user scripts. This location is kept untouched during installation of newer versions</value>
+  </data>
 </root>

@@ -2374,6 +2374,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path for the user scripts. This location is kept untouched during installation of newer versions.
+        /// </summary>
+        public static string SerDescScriptInventory {
+            get {
+                return ResourceManager.GetString("SerDescScriptInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         public static string SetCatApplication {

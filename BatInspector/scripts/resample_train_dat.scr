@@ -1,0 +1,19 @@
+SET resamplingRate 384000
+SET dirName =(PAR1)
+SET NrFiles =(readDir(dirName, "*.wav") - 1)
+LOG =("reading dir " + dirName)
+FOR FileNr 0 NrFiles
+  SET FileName =(getFile(FileNr))
+  SET samplingRate =(getSampleRate(FileName))
+  LOG =(FileName + ": samplingRate = " + samplingRate)
+  IF =(samplingRate < 100000)
+    SET samplingRate =(samplingRate * 10)
+    =(setSampleRate(FileName, samplingRate))
+    LOG =("samplingRate changed to: " + samplingRate)
+    IF =(samplingRate > resamplingRate)
+      =(reSampleWav(FileName, resamplingRate))
+      LOG =("resampled from " + samplingRate + " to " + resamplingRate)
+    END
+  END
+END
+

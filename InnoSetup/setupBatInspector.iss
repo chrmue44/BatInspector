@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0620"
-#define MyAppVersion "0.6.2.0"
+#define MyInstallerName "SetupBatInspector_0630"
+#define MyAppVersion "0.6.3.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -16,7 +16,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{2262E983-FEA5-4A59-80C3-EAD3FA0EED19}
+AppId={{A404CA3A-EDF3-4B99-ABCF-1C6AC9229C33}
 AppName=BatInspector
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -38,8 +38,8 @@ SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "german"; MessagesFile: "compiler:Languages\German.isl"
+Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; 
@@ -57,7 +57,7 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; F
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\dat"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
-source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\scripts"; Permissions: everyone-full
+source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\run.bat"; DestDir: "{#MyAppDataFolder}\models\bd2";
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup";
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
@@ -73,7 +73,7 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilen
 
 [Run]
 Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} {#ReqPythonVersion}"; Flags:runasoriginaluser
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]
 Type: files; Name: "{app}\{#MyAppExeName}";
@@ -83,9 +83,12 @@ Type: files; Name: "{app}\*.txt";
 Type: files; Name: "{app}\de\*"; 
 Type: files; Name: "{app}\*.config"; 
 Type: filesandordirs; Name: "{#MyAppDataFolder}";
+Type: filesandordirs; Name: "{app}";
 
 [CustomMessages]
-CreateStartIcon =Verknüpfung im Startmenü erstellen
+de.CreateStartIcon =Verknüpfung im Startmenü erstellen
+de.MsgInstModell = "Installation des KI-Modells. Dieser Vorgang dauert einige Minuten, bitte Geduld!..."
+en.MsgInstModell = "Installing AI model. This will take several minutes, be patient!..."
 
 [UninstallRun]
 Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"""; RunOnceId: "DelService"

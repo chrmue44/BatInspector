@@ -1295,7 +1295,7 @@ namespace BatInspector.Forms
           _frmCreatePrj = new FrmCreatePrj(_model);
         _frmCreatePrj.Show();
         _frmCreatePrj.Visibility = Visibility.Visible;
-        _frmCreatePrj.Topmost = true;
+     //   _frmCreatePrj.Topmost = true;
         DebugLog.log("MainWin:BTN 'Create Project' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)

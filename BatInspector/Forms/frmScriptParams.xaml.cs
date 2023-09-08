@@ -20,7 +20,6 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmScriptParams : Window
   {
-    int _cnt;
     List<string> _paramVals;
     List<string> _paramText;
 
@@ -65,7 +64,7 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      for(int i = 0; i < _cnt; i++) 
+      for(int i = 0; i < _paramText.Count; i++) 
       {
         CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
         _paramVals.Add(ctl.getValue());

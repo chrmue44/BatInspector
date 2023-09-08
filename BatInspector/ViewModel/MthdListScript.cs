@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 
 namespace BatInspector
 {
@@ -27,6 +28,7 @@ namespace BatInspector
     List<HelpTabItem> _scriptHelpTab = new List<HelpTabItem>();
     ViewModel _model;
     string _wrkDir;
+    List<string> _files = null;
 
     public MthdListScript(ViewModel model, string wrkDir) : base()
     {
@@ -48,8 +50,8 @@ namespace BatInspector
       addMethod(new FuncTabItem("getSampleRate", getSampleRate)); 
       _scriptHelpTab.Add(new HelpTabItem("getSampleRate", "returns the samplerate of a file",
                       new List<string> { "1: fileName" }, new List<string> { "1: sampling rate" }));
-      addMethod(new FuncTabItem("resampleWav", resampleWav));
-      _scriptHelpTab.Add(new HelpTabItem("resampleWav", "resamples a WAV file to a new sampleRate",
+      addMethod(new FuncTabItem("reSampleWav", resampleWav));
+      _scriptHelpTab.Add(new HelpTabItem("reSampleWav", "resamples a WAV file to a new sampleRate",
                       new List<string> { "1: fileName", "2:new sampling rate"}, new List<string> { "1: sampling rate" }));
       addMethod(new FuncTabItem("openCsv", openCsv));
       _scriptHelpTab.Add(new HelpTabItem("openCsv", "opens a csv file and reads content to memory",
@@ -123,7 +125,13 @@ namespace BatInspector
       addMethod(new FuncTabItem("getPrjInfo", getPrjInfo));
       _scriptHelpTab.Add(new HelpTabItem("getPrjInfo", "get project info",
                       new List<string> { "1: type of info"}, new List<string> { "1: result" }));
-      
+      addMethod(new FuncTabItem("readDir", readDir));
+      _scriptHelpTab.Add(new HelpTabItem("readDir", "read directory info",
+                      new List<string> { "1: path", "2: filter" }, new List<string> { "1: nr of files" }));
+      addMethod(new FuncTabItem("getFile", getFile));
+      _scriptHelpTab.Add(new HelpTabItem("getFile", "get file from previously read dir info",
+                      new List<string> { "1: index" }, new List<string> { "1: full file name" }));
+
     }
 
     static tParseError openPrj(List<AnyType> argv, out AnyType result)
@@ -904,11 +912,14 @@ namespace BatInspector
             {
               string fileName = Path.GetFileName(fName);
               bakName = Path.Combine(_inst._model.Prj.PrjDir, AppParams.DIR_ORIG, fileName);
-              ZoomView.saveWavBackup(fileName, _inst._model.Prj.WavSubDir);
+              ZoomView.saveWavBackup(fName, _inst._model.Prj.WavSubDir);
               File.Delete(fName);
             }
             else
-              File.Move(fName, bakName);
+            {
+              if(!File.Exists(bakName))
+                File.Move(fName, bakName);
+            }
             using (AudioFileReader reader = new AudioFileReader(bakName))
             {
               var resampler = new WdlResamplingSampleProvider(reader, sampleRate);
@@ -991,7 +1002,61 @@ namespace BatInspector
       return err;
     }
 
-    
+    static tParseError readDir(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 2)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        string root = argv[0].getString();
+        string filter = argv[1].getString();
+        try
+        {
+          DirectoryInfo dir = new DirectoryInfo(root);
+          FileInfo[] files = dir.GetFiles(filter);
+          _inst._files = new List<string>();
+          foreach (FileInfo f in files)
+            _inst._files.Add(f.FullName);
+          result.assign(_inst._files.Count);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("Script function 'readDir': " + ex.ToString(), enLogType.ERROR);
+          err = tParseError.RESSOURCE;
+        }
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
+    static tParseError getFile(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_INT64);
+        int index = (int)argv[0].getInt64();
+        if (_inst._files != null)
+        {
+          if (index < _inst._files.Count)
+          {
+            result.assign(_inst._files[index]);
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.RESSOURCE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
     static tParseError reloadPrj(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;

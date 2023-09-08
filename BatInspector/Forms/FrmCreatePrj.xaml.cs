@@ -86,6 +86,7 @@ namespace BatInspector.Forms
     {
       string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.bpr");
       // folder contains project file
+      _cbTimeFilter.IsChecked = false;
       if (files != null && files.Length > 0)
       {
         _isProjectFolder = true;
@@ -100,7 +101,7 @@ namespace BatInspector.Forms
         files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
         if (files != null && files.Length > 0)
         {
-          if (_cbTimeFilter.IsEnabled)
+          if (_cbTimeFilter.IsChecked == true)
           {
             DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
             DateTime end = start.Date;
@@ -124,11 +125,7 @@ namespace BatInspector.Forms
       _ctlPrjName.IsEnabled = !_isProjectFolder;
       _ctlPrjWeather.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      _dtStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      _dtEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-
-      _lblDateStart.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      _lblDateEnd.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      setVisibilityTimeFilter();
       _cbOverwriteLoc.Visibility = _isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       enableLocationItems(!_isProjectFolder || (_cbOverwriteLoc.IsChecked == true));
     }

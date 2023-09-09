@@ -116,7 +116,7 @@ namespace BatInspector
 
     //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
-    public ViewModel(Forms.MainWindow mainWin, string version)
+    public ViewModel(Forms.MainWindow mainWin, string version, DlgUpdateFile dlgUpdate)
     {
       if (!AppParams.IsInitialized)
         AppParams.load();
@@ -131,7 +131,7 @@ namespace BatInspector
       _wav = new WavFile();
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
       _sumReport = new SumReport();
-      _prj = new Project(_batSpecRegions, _speciesInfos);
+      _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
       _models = new List<BaseModel>();
       _query = null;
       int index = 0;
@@ -171,7 +171,7 @@ namespace BatInspector
         _query = null;
     }
 
-    public void initProject(DirectoryInfo dir)
+    public void initProject(DirectoryInfo dir, DlgUpdateFile dlgUpdate)
     {
       if (Project.containsProject(dir) != "")
       {
@@ -179,7 +179,7 @@ namespace BatInspector
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
-          _prj = new Project(_batSpecRegions, _speciesInfos);
+          _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
         _prj.readPrjFile(files[0]);
         if (File.Exists(Prj.ReportName))
         {
@@ -194,7 +194,7 @@ namespace BatInspector
       }
       else if (Project.containsWavs(dir))
       {
-        _prj = new Project(_batSpecRegions, _speciesInfos);
+        _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName + "/";
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
@@ -316,7 +316,8 @@ namespace BatInspector
             if (_prj != null)
             {
               _prj.removeFile(rec.File);
-              _prj.Analysis.removeFile(Prj.ReportName, rec.File);
+              if(_prj.Analysis?.IsEmpty == false)
+                _prj.Analysis.removeFile(Prj.ReportName, rec.File);
             }
           }
         }
@@ -419,7 +420,8 @@ namespace BatInspector
 
         _prj.removeFile(wavName);
         _prj.writePrjFile();
-        _prj.Analysis.removeFile(_prj.ReportName, wavName);
+        if(_prj.Analysis.IsEmpty == false)
+          _prj.Analysis.removeFile(_prj.ReportName, wavName);
       }
     }
 

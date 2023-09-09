@@ -565,6 +565,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Species.
+        /// </summary>
+        public static string CtlZoomSpecInfo {
+            get {
+                return ResourceManager.GetString("CtlZoomSpecInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trigger Filter.
         /// </summary>
         public static string CtlZoomTrigFilt {

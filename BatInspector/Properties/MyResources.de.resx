@@ -1179,4 +1179,7 @@
   <data name="SerDescScriptInventory" xml:space="preserve">
     <value>Pfad zur Ablage von benutzerdefinierten Skripten. Dieses Verzeichnis bleibt bei der Installation neuer Versionen unangetastet</value>
   </data>
+  <data name="CtlZoomSpecInfo" xml:space="preserve">
+    <value>Spezies</value>
+  </data>
 </root>

@@ -9,6 +9,7 @@
  * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using System;
@@ -57,12 +58,11 @@ namespace BatInspector
     public List<string> Species { get { return _speciesList; } }
     public Analysis Analysis { get { return _analysis; } }
 
-    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions)
+    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions, DlgUpdateFile dlgUpdate)
     {
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
-
-      _analysis = new Analysis(this.SpeciesInfos);
+      _analysis = new Analysis(this.SpeciesInfos, dlgUpdate);
       _batSpecRegions = batSpecRegions;
     }
 
@@ -161,8 +161,8 @@ namespace BatInspector
 
     bool _changed = false;
 
-    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, string wavSubDir = "")
-    : base(speciesInfo, regions)
+    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, DlgUpdateFile dlgUpdate, string wavSubDir = "")
+    : base(speciesInfo, regions, dlgUpdate)
     {
       _wavSubDir = wavSubDir;
     }
@@ -312,7 +312,7 @@ namespace BatInspector
       if (Directory.Exists(wavDir))
         wavSubDir = AppParams.DIR_WAVS;
 
-      Project prjSrc = new Project(regions, speciesInfo, wavSubDir);
+      Project prjSrc = new Project(regions, speciesInfo, null, wavSubDir);
       string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
       prjSrc.readPrjFile(fName);
       string[] notes = prjSrc.Notes.Split('\n');
@@ -437,7 +437,7 @@ namespace BatInspector
               else
                 Utils.copyFiles(xmlFiles, wavDir);
             }
-            Project prj = new Project(regions, speciesInfo);
+            Project prj = new Project(regions, speciesInfo, null);
             DirectoryInfo dir = new DirectoryInfo(fullDir);
             prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
             if (!info.IsProjectFolder)
@@ -614,8 +614,9 @@ namespace BatInspector
         list.Add(rec);
       foreach (string file in files)
       {
+        _changed = true;
         addRecord(file, ref list);
-        if (_analysis != null)
+        if (_analysis?.IsEmpty == false)
         {
           WavFile wFile = new WavFile();
           wFile.readFile(file);
@@ -635,13 +636,14 @@ namespace BatInspector
         string xmlFile = file.Replace(".wav", ".xml");
         if (File.Exists(xmlFile))
           fileList.Add(xmlFile);
-        string pngFile = file.Replace(".wav", ".png");
-        if (File.Exists(pngFile))
-          fileList.Add(pngFile);
+        //string pngFile = file.Replace(".wav", ".png");
+        //if (File.Exists(pngFile))
+        //  fileList.Add(pngFile);
       }
       Utils.copyFiles(fileList.ToArray(), dstPath, removeSrc);
       writePrjFile();
-      _analysis?.save(_selectedDir, Notes);
+      if(_analysis?.IsEmpty == false)
+        _analysis?.save(_selectedDir, Notes);
       _reloadInGui = true;
     }
 

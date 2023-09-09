@@ -56,7 +56,7 @@ namespace BatInspector
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
 
     public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions) :
-    base(speciesInfo, regions)
+    base(speciesInfo, regions, null)
     {
       _name = name;
       _srcDir = srcDir; 
@@ -77,7 +77,7 @@ namespace BatInspector
         {
           DirectoryInfo dir = new DirectoryInfo(_srcDir);
           _model = model;
-          _analysis = new Analysis(_model.SpeciesInfos);
+          _analysis = new Analysis(_model.SpeciesInfos, null);
           _cntCall = 0;
           _cntFile = 0;
           createQueryFile();
@@ -163,7 +163,7 @@ namespace BatInspector
           retVal._records.Add(rec);
         retVal._queryFile = qFile;
         retVal._model = model;
-        retVal._analysis = new Analysis(model.SpeciesInfos);
+        retVal._analysis = new Analysis(model.SpeciesInfos, null);
         string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
         retVal._analysis.read(fullReportName);
         retVal.initSpeciesList();
@@ -201,9 +201,9 @@ namespace BatInspector
       bool retVal = false;
       string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                    System.IO.SearchOption.TopDirectoryOnly);
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
       prj.readPrjFile(files[0]);
-      Analysis analysis = new Analysis(_model.SpeciesInfos);
+      Analysis analysis = new Analysis(_model.SpeciesInfos, null);
       analysis.read(prj.ReportName);
 
       FilterItem filter = new FilterItem(-1, "query",

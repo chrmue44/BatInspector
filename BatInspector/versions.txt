@@ -3,6 +3,7 @@ V 0.6.3.0  07.09.23
 - Scripts are now located in public documents to protect them from overwriting when installing newer version
 - bugfix: import project
 - bugfix: scripting
+- bugfix: add files to project
 
 V 0.6.2.0  06.09.23
 - enhanced sum report: alphabetically ordered species, total sums

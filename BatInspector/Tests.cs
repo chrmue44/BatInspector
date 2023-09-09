@@ -355,8 +355,8 @@ namespace BatInspector
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos);
-      Analysis a = new Analysis(prj.SpeciesInfos);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      Analysis a = new Analysis(prj.SpeciesInfos, null);
       a.read(reportName);
       a.save(reportName, prj.Notes);
     }
@@ -380,8 +380,8 @@ namespace BatInspector
         string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
         if (repName != "")
         {
-          Project p = new Project(_model.Regions, _model.SpeciesInfos);
-          Analysis a = new Analysis(p.SpeciesInfos);
+          Project p = new Project(_model.Regions, _model.SpeciesInfos, null);
+          Analysis a = new Analysis(p.SpeciesInfos, null);
           a.read(repName);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
           a.createSummary(sumName, p.Notes);
@@ -395,7 +395,7 @@ namespace BatInspector
       i.Latitude = lat;
       i.Longitude = lon;
       DirectoryInfo dirInfo = new DirectoryInfo(prjName);
-      _model.initProject(dirInfo);
+      _model.initProject(dirInfo, null);
       _model.Prj.createXmlInfoFiles(i);
     }
 
@@ -503,7 +503,7 @@ namespace BatInspector
         string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
         if (repName != "")
         {
-          _model.initProject(subDir);
+          _model.initProject(subDir, null);
           foreach(AnalysisFile f in _model.Prj.Analysis.Files)
           {
             string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.Replace(".wav", ".xml");
@@ -523,7 +523,7 @@ namespace BatInspector
         string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
         if (repName != "")
         {
-          _model.initProject(subDir);
+          _model.initProject(subDir, null);
           foreach (AnalysisFile f in _model.Prj.Analysis.Files)
           {
             string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.Replace(".wav", ".xml");

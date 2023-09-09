@@ -1179,4 +1179,7 @@
   <data name="SerDescScriptInventory" xml:space="preserve">
     <value>Path for the user scripts. This location is kept untouched during installation of newer versions</value>
   </data>
+  <data name="CtlZoomSpecInfo" xml:space="preserve">
+    <value>Species</value>
+  </data>
 </root>

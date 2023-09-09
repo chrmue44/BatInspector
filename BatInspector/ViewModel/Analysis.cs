@@ -126,6 +126,9 @@ namespace BatInspector
     public int _04h { get { return _item.CountTime[10]; } }
     public int _05h { get { return _item.CountTime[11]; } }
   }
+
+  public delegate void DlgUpdateFile(string fName);
+
   public class Analysis
   {
 
@@ -136,12 +139,15 @@ namespace BatInspector
     private Csv _csv;
     private List<SumItem> _summary;
     private List<SpeciesInfos> _speciesInfos;
+    private DlgUpdateFile _dlgUpdate;
  //   private string _notes;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
 
     public List<ReportItem> Report { get { return _report; } }
+
+    public bool IsEmpty { get { return _list.Count == 0; } }
 
     public List<SumItemReport> Summary {
       get {
@@ -160,9 +166,10 @@ namespace BatInspector
       } 
     }
 
-    public Analysis(List<SpeciesInfos> specInfos)
+    public Analysis(List<SpeciesInfos> specInfos, DlgUpdateFile dlgUpdate)
     {
       init(specInfos);
+      _dlgUpdate = dlgUpdate;
     }
 
     public AnalysisFile find(string name)
@@ -277,7 +284,7 @@ namespace BatInspector
             callNr = 1;
           }
          
-          AnalysisCall call = new AnalysisCall(_csv, row);
+          AnalysisCall call = new AnalysisCall(_csv, row, _dlgUpdate);
           if(callNr == 1)
           {
             oldStartTime = 0;
@@ -703,6 +710,7 @@ namespace BatInspector
     private Csv _csv;
     private int _row;
     private double _firstToSecond;
+    private DlgUpdateFile _dlgUpdate;
 
    public double FirstToSecond { get { return _firstToSecond; } }
     
@@ -711,10 +719,11 @@ namespace BatInspector
    /// </summary>
    public double DistToPrev { get; set; }
 
-    public AnalysisCall(Csv csv, int row)
+    public AnalysisCall(Csv csv, int row, DlgUpdateFile delegateUpdate)
     {
       _csv = csv;
       _row = row;
+      _dlgUpdate = delegateUpdate;
     }
 
     public void updateRow(int row)
@@ -745,6 +754,8 @@ namespace BatInspector
     public void setString(string key, string value)
     {
       _csv.setCell(_row, key, value);
+      if (_dlgUpdate != null)
+        _dlgUpdate(_csv.getCell(_row, Cols.NAME));
     }
 
 

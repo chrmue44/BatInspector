@@ -144,7 +144,7 @@ namespace BatInspector
         try
         {
            DirectoryInfo dir = new DirectoryInfo(argv[0].getString());
-           _inst._model.initProject(dir);
+           _inst._model.initProject(dir, null);
         }
         catch { }
       }

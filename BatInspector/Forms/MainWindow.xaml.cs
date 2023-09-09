@@ -84,7 +84,7 @@ namespace BatInspector.Forms
       }
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
       string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
-      _model = new ViewModel(this, versionStr);
+      _model = new ViewModel(this, versionStr, callbackUpdateAnalysis);
       setLanguage();
       InitializeComponent();
       _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
@@ -279,6 +279,26 @@ namespace BatInspector.Forms
 
     }
 
+    /// <summary>
+    /// callback in case of Analysis has changed (manual species)
+    /// All connected GUI elements are updated
+    /// </summary>
+    /// <param name="fName">Name of the WAV file</param>
+    void callbackUpdateAnalysis(string fName)
+    {
+      _tbReport_GotFocus(null, null);
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+      {
+        if(ctl.Analysis.getString(Cols.NAME) == fName) 
+        {
+          ctl.updateCallInformations(ctl.Analysis);
+          if(ctl.Analysis == _model.ZoomView.Analysis)
+            _ctlZoom.updateManSpecies();
+          break;
+        }
+      }
+    }
+
     void initializeProject(DirectoryInfo dir)
     {
       DebugLog.log("start to open project", enLogType.DEBUG);
@@ -287,7 +307,7 @@ namespace BatInspector.Forms
       _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
       setStatus("");
       _spSpectrums.Children.Clear();
-      _model.initProject(dir);
+      _model.initProject(dir, callbackUpdateAnalysis);
       if ((_model.Prj != null) && _model.Prj.Ok)
       {
         _ctlPrjInfo.setup(_model.Prj);
@@ -313,6 +333,7 @@ namespace BatInspector.Forms
           Width = AppParams.Inst.ZoomWindowWidth,
           Height = AppParams.Inst.ZoomWindowHeight
         };
+        _ctlZoom = _frmZoom._ctl;
       }
       else
       {
@@ -339,7 +360,7 @@ namespace BatInspector.Forms
       }
       else
       {
-        _ctlZoom.setup(analysis, wavFilePath, _model, img);
+        _ctlZoom.setup(analysis, wavFilePath, _model, img, _model.Prj.Species);
         _tbZoom.Header = "Zoom: " + name;
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -349,8 +370,6 @@ namespace BatInspector.Forms
 
     public void changeCallInZoom(int call)
     {
-      if (_frmZoom != null)
-        _frmZoom.changeCall(call);
       if (_ctlZoom != null)
         _ctlZoom.changeCall(call);
     }

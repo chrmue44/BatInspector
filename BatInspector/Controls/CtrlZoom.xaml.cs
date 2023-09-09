@@ -22,8 +22,7 @@ using BatInspector.Properties;
 using System;
 using System.IO;
 using System.Globalization;
-using System.Windows.Documents;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using System.Collections.Generic;
 
 namespace BatInspector.Controls
 {
@@ -123,7 +122,7 @@ namespace BatInspector.Controls
       };
     }
 
-    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img)
+    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img, List<string> species)
     {
       InitializeComponent();
       _model = model;
@@ -159,9 +158,9 @@ namespace BatInspector.Controls
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
       //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, 130);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 130);
-      _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, enDataType.STRING, 1, 130);
-
+      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 110);
+      _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, 100, 85, ctlSpecManChanged);
+      _ctlSpecMan.setItems(species.ToArray());
       _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 40, 40, calcMeanValues);
       _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 40, 40, calcMeanValues);
       _ctlMeanDist.setup(MyResources.CtlZoomDistToPrev, enDataType.DOUBLE, 1, 130);
@@ -255,6 +254,17 @@ namespace BatInspector.Controls
       }
     }
 
+    private void ctlSpecManChanged(int index, string val)
+    {
+
+      if (_model.ZoomView.Analysis != null)
+      {
+        if ((_model.ZoomView.SelectedCallIdx >= 0) && (_model.ZoomView.SelectedCallIdx < _model.ZoomView.Analysis.Calls.Count))
+          _model.ZoomView.Analysis.Calls[_model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, val);
+        else
+          DebugLog.log("ctlZoom.ctlSpecManChanged(): index error", enLogType.ERROR);
+      }
+    }
 
     public void rangeChanged(enDataType type, object val)
     {
@@ -275,6 +285,12 @@ namespace BatInspector.Controls
       _ctlTimeMin.setValue(tMin);
       _ctlTimeMax.setValue(tMax);
     }
+
+    public void updateManSpecies()
+    {
+      _ctlSpecMan.setValue(_model.ZoomView.Analysis.Calls[_model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+    }
+
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
     {
       try

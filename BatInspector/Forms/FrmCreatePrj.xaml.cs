@@ -261,7 +261,7 @@ namespace BatInspector.Forms
         {
           string prjPath = _info.DstDir + "/" + prj;
           DirectoryInfo dir = new DirectoryInfo(prjPath);
-          _model.initProject(dir);
+          _model.initProject(dir, null);
           _model.evaluate();
         }
       }
@@ -276,7 +276,7 @@ namespace BatInspector.Forms
         {
           string prjPath = _info.DstDir + "/" + prj;
           DirectoryInfo dir = new DirectoryInfo(prjPath);
-          _model.initProject(dir);
+          _model.initProject(dir, null);
           _model.evaluate();
         }
       }

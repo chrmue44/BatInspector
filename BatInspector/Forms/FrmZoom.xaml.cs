@@ -39,13 +39,8 @@ namespace BatInspector.Forms
 
     public void setup(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
     {
-      _ctl.setup(analysis, wavFilePath, _model, img);
+      _ctl.setup(analysis, wavFilePath, _model, img, _model.Prj.Species);
       this.Title = name;
-    }
-
-    public void changeCall(int idx)
-    {
-      _ctl.changeCall(idx);
     }
 
 
@@ -78,7 +73,6 @@ namespace BatInspector.Forms
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
-
     }
   }
 }

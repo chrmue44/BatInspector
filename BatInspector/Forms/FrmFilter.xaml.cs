@@ -22,9 +22,9 @@ namespace BatInspector.Forms
   public partial class FrmFilter : Window
   {
     Filter _filter;
-    dlgUpdate _dlgUpdate;
+    DlgUpdate _dlgUpdate;
     FrmHelpFilter _frmHelp =null;
-    public FrmFilter(Filter filter, dlgUpdate dlgUpdate)
+    public FrmFilter(Filter filter, DlgUpdate dlgUpdate)
     {
       _filter = filter;
       _dlgUpdate = dlgUpdate;
@@ -109,5 +109,5 @@ namespace BatInspector.Forms
 
     }
   }
-  public delegate void dlgUpdate();
+  public delegate void DlgUpdate();
 }

@@ -17,16 +17,19 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Management;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Interop;
-using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 
 namespace BatInspector
 {
+  public enum enAppState
+  {
+    IDLE,
+    OPEN_PRJ,
+    AI_ANALYZE,
+    IMPORT_PRJ
+  }
+
   public class SpeciesItem
   {
     public string Abbreviation { get; set; }
@@ -62,8 +65,9 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
+    string _statusText = null;
 
-
+    public enAppState State { get; set; }
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -97,6 +101,9 @@ namespace BatInspector
     public bool UpdateUi { get; set; }
 
     public Query Query { get { return _query; } set { _query = value; } }
+
+    public string StatusText { get { return _statusText;} set { _statusText = value; } }
+
 
     /// <summary>
     /// currently opened object (prj, query or null)
@@ -137,7 +144,7 @@ namespace BatInspector
       int index = 0;
       foreach (ModelItem m in AppParams.Inst.Models)
       {
-        _models.Add(BaseModel.Create(index, m.ModelType));
+        _models.Add(BaseModel.Create(index, m.ModelType, this));
         index++;
       }
 
@@ -431,7 +438,6 @@ namespace BatInspector
     public int evaluate()
     {
       int retVal = 2;
-      
       if(Prj != null)
       {
         for(int i = 0; i < AppParams.Inst.Models.Count; i++)

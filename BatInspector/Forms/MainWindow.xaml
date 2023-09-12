@@ -176,8 +176,7 @@
                                 <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" />
                                 <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                                 <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
-                                <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0" DropDownClosed="_cbFilter_DropDownClosed"></ComboBox>
-                                <Button x:Name="_btnApplyFilter" ToolTip="{x:Static res:MyResources.MainToolBtnApplyFilter}" Click ="_btnApplyFilter_Click"  Content="{x:Static res:MyResources.MainBtnApplyFilter}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                                <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"></ComboBox>
                                 <Separator Margin="10,0,5,0" Width="3"  />
                 <Button x:Name="_btnHideUnSelected" ToolTip="{x:Static res:MyResources.MainToolHideUnsel}" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
                 <Button x:Name="_btnShowAll" ToolTip="{x:Static res:MyResources.MainToolBtnShowAll}" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>

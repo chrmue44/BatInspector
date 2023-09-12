@@ -1,3 +1,13 @@
+- Zoomview: remove mean calculation, added call nr to species
+- list of available species: added 'social'
+- show message during long running processes (clssification, open project)
+- removed button apply filter
+- bugfix: project directories not expandable anymore in project explorer
+- bugfix: correct spectrum, when changing call in zoom view
+
+V 0.6.4.0  09.09.23
+- SpeciesMan can be modified in ZoomView as well
+
 V 0.6.3.0  07.09.23
 - new script functions readDir(), getFile()
 - Scripts are now located in public documents to protect them from overwriting when installing newer version

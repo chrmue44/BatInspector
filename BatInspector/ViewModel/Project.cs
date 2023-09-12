@@ -94,7 +94,7 @@ namespace BatInspector
           foreach (SpeciesInfos sp in _speciesInfo)
             _speciesList.Add(sp.Abbreviation);
         }
-        _speciesList.Add("----");
+        _speciesList.Add("Social");
         _speciesList.Add("?");
         _speciesList.Add("todo");
       }

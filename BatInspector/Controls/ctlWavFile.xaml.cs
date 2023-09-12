@@ -115,6 +115,7 @@ namespace BatInspector.Controls
       _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
       _isSetupCall = true;
+      int wLbl = 48;
       if (_analysis != null)
       {
         int callNr = 1;
@@ -126,12 +127,12 @@ namespace BatInspector.Controls
           string callStr = call.getString(Cols.NR);
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
-          it.setup(MyResources.CtlWavCall + " " + callStr + ": ", enDataType.STRING, 0, 60);
+          it.setup(MyResources.CtlWavCall + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, 45, 90, selItemChanged, clickCallLabel,
+          im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
           MyResources.ctlWavToolTipCall);
           im.setItems(spec.ToArray());
           im.setValue(call.getString(Cols.SPECIES_MAN));

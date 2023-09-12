@@ -174,9 +174,6 @@
   <data name="MainBtnSize" xml:space="preserve">
     <value>Größe</value>
   </data>
-  <data name="MainBtnApplyFilter" xml:space="preserve">
-    <value>Filter anwenden</value>
-  </data>
   <data name="MainBtnHideShowInfo" xml:space="preserve">
     <value>Zeige/Verberge Info</value>
   </data>
@@ -291,8 +288,8 @@
   <data name="CtlLogClear" xml:space="preserve">
     <value>Löschen</value>
   </data>
-  <data name="CtlZoomFileInfo" xml:space="preserve">
-    <value>Datei Informationen</value>
+  <data name="CtlZoomRecInfo" xml:space="preserve">
+    <value>Aufnahme-Informationen</value>
   </data>
   <data name="CtlZoomRecTime" xml:space="preserve">
     <value>Aufnahmezeitpunkt</value>
@@ -816,9 +813,6 @@
   <data name="MainToolBtnSize" xml:space="preserve">
     <value>Ändere die Höhe der angezeigten Sonogramme</value>
   </data>
-  <data name="MainToolBtnApplyFilter" xml:space="preserve">
-    <value>Selektiere alle Dateien, für die die Filterbedingung erfüllt ist</value>
-  </data>
   <data name="MainToolHideCallInfo" xml:space="preserve">
     <value>zeige/verstecke Ruf-Informationen in der Dateiliste</value>
   </data>
@@ -901,7 +895,7 @@
     <value>Laufende Abspielung pausieren</value>
   </data>
   <data name="QueryReportMissing" xml:space="preserve">
-    <value>Auswertung für das Projekt fehlt, bitte erst Auswertung durchführen!</value>
+    <value>Auswertung für das Projekt fehlt, Überspringen und fortfahren: Ja, Abbrechen: Nein</value>
   </data>
   <data name="msgDeleteIntermediate" xml:space="preserve">
     <value>Alle temporären Mac OS-Dateien löschen? (wenn nein, wird die Erzeugung des Projekts abgebrochen)</value>
@@ -1181,5 +1175,20 @@
   </data>
   <data name="CtlZoomSpecInfo" xml:space="preserve">
     <value>Spezies</value>
+  </data>
+  <data name="MainWindowMsgClassification" xml:space="preserve">
+    <value>Klassifizierung der Rufe gestartet, bitte warten!</value>
+  </data>
+  <data name="MainWindowMsgOpenPrj" xml:space="preserve">
+    <value>Öffne Projekt, bitte warten!</value>
+  </data>
+  <data name="ModelBatDetect2msgProcessing" xml:space="preserve">
+    <value>KI analysiert Datei </value>
+  </data>
+  <data name="MainWinMsgOverwriteReport" xml:space="preserve">
+    <value>Bereits bestehende Auswertung überschreiben?</value>
+  </data>
+  <data name="CtrlZoomFileInfos" xml:space="preserve">
+    <value>Datei-Informationen</value>
   </data>
 </root>

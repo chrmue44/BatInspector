@@ -6,6 +6,7 @@
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="{x:Static res:MyResources.titleFrmSettings}" Height="700" Width="600" Loaded="Window_Loaded"
         Icon="../images/settingscog_87317.png">
   <Grid>

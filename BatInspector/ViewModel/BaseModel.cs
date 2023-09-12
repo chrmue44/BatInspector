@@ -1,4 +1,5 @@
-﻿using libParser;
+﻿using BatInspector.Forms;
+using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,15 @@ namespace BatInspector
     int _index = 0;
     enModel _type;
     protected bool _isBusy = false;
+    protected ViewModel _model;
 
     protected ProcessRunner _proc = new ProcessRunner();
-    protected BaseModel(int index, enModel type)
+    protected BaseModel(int index, enModel type, ViewModel model)
     {
       _index = index;
       _type = type;
       Name = _type.ToString();
+      _model = model;
     }
 
     public string Name { get; }
@@ -33,14 +36,14 @@ namespace BatInspector
     public abstract void train();
     public abstract int classify(Project prj);
 
-    public static BaseModel Create(int index, enModel type)
+    public static BaseModel Create(int index, enModel type, ViewModel model)
     {
       switch (type) 
       {
         case enModel.rnn6aModel:
-           return new ModelCmuTsa(index) as BaseModel;
+           return new ModelCmuTsa(index, model) as BaseModel;
         case enModel.BAT_DETECT2:
-          return new ModelBatDetect2(index) as BaseModel;
+          return new ModelBatDetect2(index, model) as BaseModel;
         default:
           return null;  
       }    

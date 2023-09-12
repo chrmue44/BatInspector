@@ -186,6 +186,9 @@
     <Compile Include="Forms\frmInstall.xaml.cs">
       <DependentUpon>frmInstall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmMessage.xaml.cs">
+      <DependentUpon>FrmMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmRecovery.xaml.cs">
       <DependentUpon>FrmRecovery.xaml</DependentUpon>
     </Compile>
@@ -377,6 +380,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\frmInstall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

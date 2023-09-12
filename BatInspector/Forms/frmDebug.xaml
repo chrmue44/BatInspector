@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ctrl="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="frmDebug" Height="450" Width="800" Loaded="Window_Loaded"
         Icon="../images/debug.png">
     <Grid>

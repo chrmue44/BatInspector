@@ -30,8 +30,8 @@ namespace BatInspector
     public const int OPT_PREDICT3 = 0x80;
     public const int OPT_CLEANUP = 0x100;
 
-    public ModelCmuTsa(int index) :
-      base(index, enModel.rnn6aModel)
+    public ModelCmuTsa(int index, ViewModel model) :
+      base(index, enModel.rnn6aModel, model)
     {
 
     }

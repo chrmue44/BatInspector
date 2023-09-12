@@ -1,7 +1,7 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
  *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2023: christian Müller christian(at)chrmue(dot).de
+ *   Copyright (C) 2023: christian Müller chrmue44(at)gmail(dot).com
  *
  *              Licence:
  * 
@@ -135,12 +135,13 @@ namespace BatInspector.Controls
       _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3, 100);
       _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, 100);
       _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, 100);
-      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, 100);
-      _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, 100);
+      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, 110);
+      _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, 110);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, 100);
       _wavFilePath = wavFilePath;
       
       string fName = System.IO.Path.GetFileName(analysis.Name);
+      _tbWavName.Text = fName;
       string wavName = File.Exists(fName) ? fName : _wavFilePath + "/" + fName;
 
       _model.ZoomView.initWaterfallDiagram(wavName);
@@ -151,16 +152,18 @@ namespace BatInspector.Controls
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
-      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 50, 40, ctlSelCallChanged);
+      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 45, ctlSelCallChanged);
+      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 55, 45, ctlSelCallChanged2);
       _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
       _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
       _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
       //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, 130);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 110);
+      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 100);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, 100, 85, ctlSpecManChanged);
       _ctlSpecMan.setItems(species.ToArray());
+      _gbMean.Visibility = Visibility.Collapsed;
       _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 40, 40, calcMeanValues);
       _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 40, 40, calcMeanValues);
       _ctlMeanDist.setup(MyResources.CtlZoomDistToPrev, enDataType.DOUBLE, 1, 130);
@@ -193,6 +196,7 @@ namespace BatInspector.Controls
         for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
           items[i] = _model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
         _ctlSelectCall.setItems(items);
+        _ctlSelectCall2.setItems(items);
         _ctlMeanCallMin.setItems(items);
         _ctlMeanCallMax.setItems(items);
         setupCallData(0);
@@ -224,6 +228,7 @@ namespace BatInspector.Controls
     {
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
       _ctlSelectCall.Visibility = vis;
+      _ctlSelectCall2.Visibility = vis;
       _ctlSpectrum.Visibility = vis;
       _ctlTimeMin.Visibility = vis;
       _ctlTimeMax.Visibility = vis;
@@ -251,6 +256,7 @@ namespace BatInspector.Controls
         initRulerA();
 
         _ctlSelectCall._cb.SelectedIndex = 0;
+        _ctlSelectCall2._cb.SelectedIndex = 0;
       }
     }
 
@@ -766,8 +772,11 @@ namespace BatInspector.Controls
       double fMin = _model.ZoomView.RulerDataF.Min;
       double fMax = _model.ZoomView.RulerDataF.Max;
       int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
-      if (((tEnd - tStart) > 0) && ((tEnd - tStart) < 0.2))
-        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+      double tStartCall = _model.ZoomView.Analysis.getStartTime(_oldCallIdx);
+      double tEndCall = _model.ZoomView.Analysis.getEndTime(_oldCallIdx);
+
+      if (((tEndCall - tStartCall) > 0) && ((tEndCall - tStartCall) < 0.2))
+        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
       double dt = (double)AppParams.Inst.FftWidth / samplingRate;
       _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.WaterfallWidth);
@@ -981,11 +990,30 @@ namespace BatInspector.Controls
       }
     }
 
+    private void ctlSelCallChanged2(int index, string val)
+    {
+      try
+      {
+        int.TryParse(val, out int Val);
+        int idx = _ctlSelectCall2.getSelectedIndex();
+        if ((idx != _oldCallIdx) && (idx >= 0))
+        {
+          changeCall(idx);
+        }
+        DebugLog.log("ZoomBtn: 'select call' changed", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("ZoomBtn: 'select call' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
     public void changeCall(int idx)
     {
       _model.ZoomView.SelectedCallIdx = idx;
       string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
       _ctlSelectCall.setValue(callNr);
+      _ctlSelectCall2.setValue(callNr);
       _oldCallIdx = idx;
       setupCallData(idx);
       double tStart = _model.ZoomView.Analysis.getStartTime(idx);
@@ -1099,6 +1127,7 @@ namespace BatInspector.Controls
           changeCall(idx);
           string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
           _ctlSelectCall.setValue(callNr);
+          _ctlSelectCall2.setValue(callNr);
         }
         DebugLog.log("ZoomBtn: 'previous' clicked", enLogType.DEBUG);
       }
@@ -1118,6 +1147,7 @@ namespace BatInspector.Controls
           changeCall(idx);
           string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
           _ctlSelectCall.setValue(callNr);
+          _ctlSelectCall2.setValue(callNr);
         }
         DebugLog.log("ZoomBtn: 'next' clicked", enLogType.DEBUG);
       }

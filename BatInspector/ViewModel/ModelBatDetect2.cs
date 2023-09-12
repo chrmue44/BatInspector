@@ -10,10 +10,12 @@
  * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
  ********************************************************************************/
 
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
@@ -29,16 +31,19 @@ namespace BatInspector
   public class ModelBatDetect2 : BaseModel
   {
     double _minProb = 0.5;
+    Project _prj;
+
     public double MinProb {  get { return _minProb; } set { _minProb = value; } }
 
-    public ModelBatDetect2(int index) : 
-      base(index, enModel.BAT_DETECT2)
+    public ModelBatDetect2(int index, ViewModel model) : 
+      base(index, enModel.BAT_DETECT2, model)
     {
     }
 
     public override int classify(Project prj)
     {
       _isBusy = true;
+      _prj = prj;
       int retVal = 0;
       try
       {
@@ -52,7 +57,7 @@ namespace BatInspector
         string args = wrkDir + " " + wavDir + " " +
                      annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
         string cmd = Path.Combine(wrkDir, AppParams.Inst.Models[this.Index].Script);
-        retVal = _proc.launchCommandLineApp(cmd, null, wrkDir, true, args, true, true);
+        retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
           bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
@@ -90,8 +95,12 @@ namespace BatInspector
       {
         string colSpecies = AppParams.Inst.Models[this.Index].ReportColumn;
         Csv report;
-        if ((mode == enRepMode.REPLACE) || !File.Exists(reportName))
+        if (mode == enRepMode.REPLACE)
+        {
+          if (File.Exists(reportName))
+            File.Delete(reportName);
           report = createReport(colSpecies);
+        }
         else
         {
           report = new Csv();
@@ -258,6 +267,25 @@ namespace BatInspector
       csv.initColNames(header, true);
       return csv;
     }
+
+    private void outputDataHandler(object sender, DataReceivedEventArgs ev)
+    {
+      if (ev.Data?.IndexOf(".wav") > 0)
+      {
+        int pos = ev.Data.IndexOf(' ');
+        if (pos > 0) 
+        {
+          string intStr = ev.Data.Substring(0, pos);
+          if (int.TryParse(intStr, out int val) && (_prj != null) && _prj.Ok)
+          {
+            val++;
+            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
+            _model.StatusText = msg;
+          }
+        }
+      }
+    }
+
 
     void cleanup(string root)
     {

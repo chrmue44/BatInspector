@@ -350,7 +350,7 @@ namespace BatInspector
     private void testReportModelBatdetect2()
     {
       List <SpeciesInfos> species = BatInfo.load().Species;
-      ModelBatDetect2 model = new ModelBatDetect2(1);
+      ModelBatDetect2 model = new ModelBatDetect2(1, null);
       string WavDir = "G:\\bat\\2022\\20220326\\Records";
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";

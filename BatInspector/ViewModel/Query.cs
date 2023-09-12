@@ -211,7 +211,10 @@ namespace BatInspector
 
       string lastFileName = "";
       if (analysis.Files.Count == 0)
-        MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+      {
+        MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        retVal = res == MessageBoxResult.Yes;
+      }
       else
       {
         DebugLog.log("evaluating project " + prj.Name, enLogType.INFO);
@@ -236,7 +239,7 @@ namespace BatInspector
                 BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
 
                 string absPath = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
-                rec.File = Utils.relativePath( this._destDir, absPath);
+                rec.File = Utils.relativePath(this._destDir, absPath);
                 rec.Name = Path.GetFileNameWithoutExtension(file.Name);
                 _records.Add(rec);
                 file.Name = rec.File;

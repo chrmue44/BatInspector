@@ -29,10 +29,13 @@ using BatInspector.Controls;
 using libParser;
 using BatInspector.Properties;
 using System.Runtime.InteropServices;
+using System.Windows.Threading;
 
 namespace BatInspector.Forms
 {
+
   delegate void dlgProgress(string pngName);
+
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
@@ -54,7 +57,7 @@ namespace BatInspector.Forms
     frmDebug _frmDebug = null;
     FrmQuery _frmQuery = null;
     frmCleanup _frmCleanup = null;
-
+    FrmMessage _frmMsg = new FrmMessage();
     int _imgHeight = MAX_IMG_HEIGHT;
 
     FrmZoom _frmZoom = null;
@@ -67,8 +70,6 @@ namespace BatInspector.Forms
     Thread _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
-    bool _newStatus = false;
-    string _statusText = "";
 
 
     public MainWindow()
@@ -85,6 +86,7 @@ namespace BatInspector.Forms
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
       string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
       _model = new ViewModel(this, versionStr, callbackUpdateAnalysis);
+      _model.State = enAppState.IDLE;
       setLanguage();
       InitializeComponent();
       _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
@@ -165,35 +167,36 @@ namespace BatInspector.Forms
         {
           if (expandedDir != null)
           {
-            DebugLog.log("start evaluation TODO", enLogType.DEBUG);
-            foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
+            if (Project.containsProject(expandedDir) == "")
             {
-              TreeViewItem childItem = CreateTreeItem(subDir);
-              item.Items.Add(childItem);
-              if (Project.containsProject(subDir) != "")
+              DebugLog.log("start evaluation TODO", enLogType.DEBUG);
+              foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
               {
-                childItem.FontWeight = FontWeights.Bold;
-                if (Project.evaluationDone(subDir))
-                  childItem.Foreground = new SolidColorBrush(Colors.Green);
-                else
-                  childItem.Foreground = new SolidColorBrush(Colors.Violet);
-              }
-              else if (Project.containsWavs(subDir))
-                childItem.Foreground = new SolidColorBrush(Colors.Blue);
-            }
-
-            foreach (FileInfo subFile in expandedDir.GetFiles())
-            {
-              if (Query.isQuery(subFile))
-              {
-                TreeViewItem childItem = CreateTreeItem(subFile);
+                TreeViewItem childItem = CreateTreeItem(subDir);
                 item.Items.Add(childItem);
-                childItem.FontWeight = FontWeights.Bold;
-                childItem.Foreground = new SolidColorBrush(Colors.Orange);
+                if (Project.containsProject(subDir) != "")
+                {
+                  childItem.FontWeight = FontWeights.Bold;
+                  if (Project.evaluationDone(subDir))
+                    childItem.Foreground = new SolidColorBrush(Colors.Green);
+                  else
+                    childItem.Foreground = new SolidColorBrush(Colors.Violet);
+                }
+                else if (Project.containsWavs(subDir))
+                  childItem.Foreground = new SolidColorBrush(Colors.Blue);
+              }
+
+              foreach (FileInfo subFile in expandedDir.GetFiles())
+              {
+                if (Query.isQuery(subFile))
+                {
+                  TreeViewItem childItem = CreateTreeItem(subFile);
+                  item.Items.Add(childItem);
+                  childItem.FontWeight = FontWeights.Bold;
+                  childItem.Foreground = new SolidColorBrush(Colors.Orange);
+                }
               }
             }
-
-
             DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
           }
         }
@@ -257,6 +260,7 @@ namespace BatInspector.Forms
 
     void initializeQuery(FileInfo file)
     {
+      _model.State = enAppState.OPEN_PRJ;
       DebugLog.log("start to open query", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
@@ -286,21 +290,25 @@ namespace BatInspector.Forms
     /// <param name="fName">Name of the WAV file</param>
     void callbackUpdateAnalysis(string fName)
     {
-      _tbReport_GotFocus(null, null);
-      foreach (ctlWavFile ctl in _spSpectrums.Children)
+      if (Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        if(ctl.Analysis.getString(Cols.NAME) == fName) 
+        _tbReport_GotFocus(null, null);
+        foreach (ctlWavFile ctl in _spSpectrums.Children)
         {
-          ctl.updateCallInformations(ctl.Analysis);
-          if(ctl.Analysis == _model.ZoomView.Analysis)
-            _ctlZoom.updateManSpecies();
-          break;
-        }
-      }
+          if (ctl.Analysis.getString(Cols.NAME) == fName)
+          {
+            ctl.updateCallInformations(ctl.Analysis);
+            if (ctl.Analysis == _model.ZoomView.Analysis)
+              _ctlZoom.updateManSpecies();
+            break;
+          }
+        } }
     }
 
     void initializeProject(DirectoryInfo dir)
     {
+      _model.State = enAppState.OPEN_PRJ;
+      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading);
       DebugLog.log("start to open project", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
@@ -460,6 +468,7 @@ namespace BatInspector.Forms
     {
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
+        showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgOpenPrj);
         int tot = _model.Prj.Records.Length;
         int cnt = 0;
         Stopwatch s = new Stopwatch();
@@ -473,9 +482,8 @@ namespace BatInspector.Forms
           Thread.EndCriticalRegion();
           if(s.ElapsedMilliseconds > 2500)
           {
-            _statusText = cnt.ToString() + "/" + tot.ToString() + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
-            _newStatus = true;
-           s.Restart();
+            _model.StatusText = cnt.ToString() + "/" + tot.ToString() + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
+            s.Restart();
             Thread.Yield();
           }
         });
@@ -718,8 +726,26 @@ namespace BatInspector.Forms
       }
     }
 
+    void showMsg(string title, string msg)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        _frmMsg.showMessage(title, msg);
+        _frmMsg.Visibility = Visibility.Visible;
+      });
+    }
+
+    void hideMsg()
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        _frmMsg.Visibility = Visibility.Hidden;
+      }, DispatcherPriority.ContextIdle);
+    }
+
     private void workerPrediction()
     {
+      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification);
       _model.evaluate();
     }
 
@@ -727,13 +753,23 @@ namespace BatInspector.Forms
     private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
       try
-      { 
-        _workerPredict = new Thread(new ThreadStart(workerPrediction));
-        _workerPredict.Start();
+      {
+        MessageBoxResult res = MessageBoxResult.Yes;
         DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
+        if (_model.CurrentlyOpen?.Analysis.Report != null)
+          res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
+          BatInspector.Properties.MyResources.msgQuestion, 
+          MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (res == MessageBoxResult.Yes)
+        {
+          _model.State = enAppState.AI_ANALYZE;
+          _workerPredict = new Thread(new ThreadStart(workerPrediction));
+          _workerPredict.Start();
+        }
       }
       catch (Exception ex)
       {
+        _model.State = enAppState.IDLE;
         DebugLog.log("MainWin:BTN 'Find calls' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
@@ -854,6 +890,8 @@ namespace BatInspector.Forms
         _frmQuery.Close();
       if (_frmCleanup != null)
         _frmCleanup.Close();
+      if(_frmMsg != null)
+        _frmMsg.Close();
       DebugLog.save();
     }
 
@@ -878,16 +916,8 @@ namespace BatInspector.Forms
     {
       try
       {
-        FilterItem filter = null;
-        if (_cbFilter.SelectedIndex == 1)
-        {
-          filter = _model.Filter.TempFilter;
-          _model.Filter.TempFilter = null;
-          _cbFilter.Items[1] = MyResources.MainFilterNew;
-          _cbFilter.SelectedIndex = 1;
-        }
-        else
-          filter = _model.Filter.getFilter(_cbFilter.Text);
+        FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
+                         filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
         {
           foreach (ctlWavFile c in _spSpectrums.Children)
@@ -1069,6 +1099,13 @@ namespace BatInspector.Forms
     private void timer_Tick(object sender, EventArgs e)
     {
       setMouseStatus();
+      if (_model.StatusText != null)
+      {
+        showMsg(BatInspector.Properties.MyResources.msgInformation, _model.StatusText);
+        _lblStatus.Text = _model.StatusText;
+        _model.StatusText = null;
+      }
+
       if (_model.UpdateUi)
       {
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
@@ -1077,13 +1114,7 @@ namespace BatInspector.Forms
         _model.UpdateUi = false;
       }
 
-      if(_newStatus)
-      {
-        _lblStatus.Text = _statusText;
-        _newStatus = false;
-      }
-
-      if (_model.Prj.ReloadInGui)
+      if ((_model.Prj != null) && (_model.Prj.ReloadInGui))
       {
         if ((_model.Prj != null) && _model.Prj.Ok && (_model.Prj.Analysis != null))
         {
@@ -1094,24 +1125,39 @@ namespace BatInspector.Forms
         _model.Prj.ReloadInGui = false;
       }
 
-      if ((_workerPredict != null) && (!_workerPredict.IsAlive))
+      switch (_model.State)
       {
-        _workerPredict = null;
-        _model.updateReport();
-        updateWavControls();
-      }
-      if((_workerStartup != null) && (!_workerStartup.IsAlive))
-      {
-        _workerStartup = null;
-        populateControls();
-        if((_model.Prj != null) && _model.Prj.Ok)
-          _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
-        if (_model.Query != null)
-          _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
+        case enAppState.IDLE:
+          break;
+
+        case enAppState.AI_ANALYZE:
+          if ((_workerPredict != null) && (!_workerPredict.IsAlive))
+          {
+            _workerPredict = null;
+            _model.updateReport();
+            updateWavControls();
+            hideMsg();
+            _model.State = enAppState.IDLE;
+          }
+          break;
+
+        case enAppState.OPEN_PRJ:
+          if ((_workerStartup != null) && (!_workerStartup.IsAlive))
+          {
+            _workerStartup = null;
+            populateControls();
+            if ((_model.Prj != null) && _model.Prj.Ok)
+              _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
+            if (_model.Query != null)
+              _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
+            hideMsg();
+            _model.State = enAppState.IDLE;
+          }
+          break;
       }
       if (_workerStartup == null)
         _model.Busy = false;
-
+    
       if (_switchTabToPrj)
       {
         _tbPrj.IsSelected = true;
@@ -1432,35 +1478,50 @@ namespace BatInspector.Forms
       }
     }
 
+
+    private void _cbFilter_DropDownOpened(object sender, EventArgs e)
+    {
+      _model.Filter.TempFilter = null;
+      _cbFilter.Items[1] = MyResources.MainFilterNew;
+    }
+
     private void _cbFilter_DropDownClosed(object sender, EventArgs e)
     {
       try
       {
-        if (_cbFilter.SelectedIndex == 1)
+        if (_cbFilter.SelectedIndex == 0)
         {
-          DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
-          frmExpression frm = new frmExpression(_model.Filter.ExpGenerator, true);
-          bool? res = frm.ShowDialog();
-          if (res == true)
+          _btnShowAll_Click(sender, null);
+        }
+        else
+        {
+          if (_cbFilter.SelectedIndex == 1)
           {
-            if (frm.SaveFilter)
+            DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
+            frmExpression frm = new frmExpression(_model.Filter.ExpGenerator, true);
+            bool? res = frm.ShowDialog();
+            if (res == true)
             {
-              int idx = _model.Filter.Items.Count;
-              FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
-              _model.Filter.Items.Add(filter);
-              _cbFilter.Items.Add(filter.Name);
-              _cbFilter.SelectedIndex = _cbFilter.Items.Count - 1;
-            }
-            else
-            {
-              if (frm.FilterExpression.Length < 25)
-                _cbFilter.Items[1] = frm.FilterExpression;
+              if (frm.SaveFilter)
+              {
+                int idx = _model.Filter.Items.Count;
+                FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
+                _model.Filter.Items.Add(filter);
+                _cbFilter.Items.Add(filter.Name);
+                _cbFilter.SelectedIndex = _cbFilter.Items.Count - 1;
+              }
               else
-                _cbFilter.Items[1] = frm.FilterExpression.Substring(0, 21) + "...";
-              _cbFilter.SelectedIndex = 1;
-              _model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
+              {
+                if (frm.FilterExpression.Length < 25)
+                  _cbFilter.Items[1] = frm.FilterExpression;
+                else
+                  _cbFilter.Items[1] = frm.FilterExpression.Substring(0, 21) + "...";
+                _cbFilter.SelectedIndex = 1;
+                _model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
+              }
             }
           }
+          _btnApplyFilter_Click(sender, null);
         }
       }
       catch (Exception ex)

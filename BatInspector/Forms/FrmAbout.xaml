@@ -6,6 +6,7 @@
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
         Title="About..." Height="650" Width="650" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
         Icon="../images/kopf64.png">
     <Grid>
     <Grid.RowDefinitions>

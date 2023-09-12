@@ -41,6 +41,7 @@ namespace libScripter
       {
         _pr.StartInfo.RedirectStandardOutput = true;
         _pr.StartInfo.RedirectStandardError = true;
+        _pr.EnableRaisingEvents = true;
         if (handler != null)
         {
           _pr.OutputDataReceived += handler;
@@ -58,6 +59,8 @@ namespace libScripter
       {
         LogMsg("CMD " + exePath + " " + args, enLogType.INFO);
         _pr.Start();
+        if (!newWindow)
+          _pr.BeginOutputReadLine();
         if (wait)
         {
           _pr.WaitForExit();

@@ -223,6 +223,8 @@ namespace BatInspector.Forms
       }
       if (!ok)
         return;
+      _model.StatusText = "Importing project...";
+      _model.State = enAppState.IMPORT_PRJ;
       _info.Latitude = lat;
       _info.Longitude = lon;
 
@@ -255,31 +257,34 @@ namespace BatInspector.Forms
     private void splitProject()
     {
       string[] projects = Project.splitPrj(_info, _model.Regions, _model.SpeciesInfos);
-      if (_inspect)
+      if (projects.Length > 0)
       {
-        foreach (string prj in projects)
-        {
-          string prjPath = _info.DstDir + "/" + prj;
-          DirectoryInfo dir = new DirectoryInfo(prjPath);
+        string prjPath = Path.Combine(_info.DstDir, projects[0]);
+        DirectoryInfo dir = new DirectoryInfo(prjPath);
+        _model.State = enAppState.OPEN_PRJ;
           _model.initProject(dir, null);
+        if (_inspect)
           _model.evaluate();
-        }
       }
+      else
+        _model.State = enAppState.IDLE;
     }
+
 
     private void createProject()
     {
-      string[] projects = Project.createPrj(_info, _model.Regions, _model.SpeciesInfos);
-      if (_inspect)
+      string[] projects = Project.createPrj(_info, _model.Regions, _model.SpeciesInfos);    
+      if(projects.Length > 0)
       {
-        foreach (string prj in projects)
-        {
-          string prjPath = _info.DstDir + "/" + prj;
-          DirectoryInfo dir = new DirectoryInfo(prjPath);
-          _model.initProject(dir, null);
+        string prjPath = Path.Combine(_info.DstDir, projects[0]);
+        DirectoryInfo dir = new DirectoryInfo(prjPath);
+        _model.State = enAppState.OPEN_PRJ;
+        _model.initProject(dir, null);
+        if (_inspect)
           _model.evaluate();
-        }
       }
+      else
+        _model.State = enAppState.IDLE;
     }
 
 

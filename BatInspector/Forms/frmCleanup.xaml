@@ -7,6 +7,7 @@
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
         Title="{x:Static res:MyResources.frmCleanupTitle}" Height="230" Width="500" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
         Icon="../images/icons8-staubsauger-64.png">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">

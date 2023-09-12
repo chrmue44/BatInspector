@@ -502,15 +502,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Information.
-        /// </summary>
-        public static string CtlZoomFileInfo {
-            get {
-                return ResourceManager.GetString("CtlZoomFileInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Gain.
         /// </summary>
         public static string CtlZoomGain {
@@ -534,6 +525,15 @@ namespace BatInspector.Properties {
         public static string CtlZoomRange {
             get {
                 return ResourceManager.GetString("CtlZoomRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording Information.
+        /// </summary>
+        public static string CtlZoomRecInfo {
+            get {
+                return ResourceManager.GetString("CtlZoomRecInfo", resourceCulture);
             }
         }
         
@@ -606,6 +606,15 @@ namespace BatInspector.Properties {
         public static string ctlZoomZoomAplitude {
             get {
                 return ResourceManager.GetString("ctlZoomZoomAplitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Information.
+        /// </summary>
+        public static string CtrlZoomFileInfos {
+            get {
+                return ResourceManager.GetString("CtrlZoomFileInfos", resourceCulture);
             }
         }
         
@@ -1735,15 +1744,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply Filter.
-        /// </summary>
-        public static string MainBtnApplyFilter {
-            get {
-                return ResourceManager.GetString("MainBtnApplyFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Apply  spec. sel..
         /// </summary>
         public static string MainBtnCopySpec {
@@ -1884,15 +1884,6 @@ namespace BatInspector.Properties {
         public static string MainToolBtnAll {
             get {
                 return ResourceManager.GetString("MainToolBtnAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to select all files matching selected filter.
-        /// </summary>
-        public static string MainToolBtnApplyFilter {
-            get {
-                return ResourceManager.GetString("MainToolBtnApplyFilter", resourceCulture);
             }
         }
         
@@ -2203,11 +2194,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Classification of calls started, please wait!.
+        /// </summary>
+        public static string MainWindowMsgClassification {
+            get {
+                return ResourceManager.GetString("MainWindowMsgClassification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading project ....
         /// </summary>
         public static string MainWindowMsgLoading {
             get {
                 return ResourceManager.GetString("MainWindowMsgLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opening project, please wait!.
+        /// </summary>
+        public static string MainWindowMsgOpenPrj {
+            get {
+                return ResourceManager.GetString("MainWindowMsgOpenPrj", resourceCulture);
             }
         }
         
@@ -2226,6 +2235,15 @@ namespace BatInspector.Properties {
         public static string MainWindowPROJECT {
             get {
                 return ResourceManager.GetString("MainWindowPROJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite already existing report?.
+        /// </summary>
+        public static string MainWinMsgOverwriteReport {
+            get {
+                return ResourceManager.GetString("MainWinMsgOverwriteReport", resourceCulture);
             }
         }
         
@@ -2253,6 +2271,15 @@ namespace BatInspector.Properties {
         public static string MinFrequency {
             get {
                 return ResourceManager.GetString("MinFrequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AI analyzing file .
+        /// </summary>
+        public static string ModelBatDetect2msgProcessing {
+            get {
+                return ResourceManager.GetString("ModelBatDetect2msgProcessing", resourceCulture);
             }
         }
         
@@ -2347,7 +2374,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluation for project missing, please run evaluation first!.
+        ///   Looks up a localized string similar to Evaluation for project missing, to skip and continue press Yes, to abort press No.
         /// </summary>
         public static string QueryReportMissing {
             get {

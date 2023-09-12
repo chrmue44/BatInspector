@@ -468,7 +468,7 @@ namespace BatInspector.Forms
     {
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
-        showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgOpenPrj);
+        _model.StatusText = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
         int tot = _model.Prj.Records.Length;
         int cnt = 0;
         Stopwatch s = new Stopwatch();
@@ -732,7 +732,7 @@ namespace BatInspector.Forms
       {
         _frmMsg.showMessage(title, msg);
         _frmMsg.Visibility = Visibility.Visible;
-      });
+      }, DispatcherPriority.Send);
     }
 
     void hideMsg()

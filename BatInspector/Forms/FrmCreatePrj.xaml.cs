@@ -84,40 +84,43 @@ namespace BatInspector.Forms
 
     private void setupStartEndTime()
     {
-      string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.bpr");
-      // folder contains project file
-      _cbTimeFilter.IsChecked = false;
-      if (files != null && files.Length > 0)
+      if (Directory.Exists(_ctlSrcFolder.getValue()))
       {
-        _isProjectFolder = true;
-        _info.Name = Path.GetFileNameWithoutExtension(files[0]);
-        _ctlPrjName.setValue(_info.Name);
-        _cbTimeFilter.IsEnabled = false;
-      }
-      else
-      {
-        _isProjectFolder = false;
-        _cbTimeFilter.IsEnabled = true;
-        files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
+        string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.bpr");
+        // folder contains project file
+        _cbTimeFilter.IsChecked = false;
         if (files != null && files.Length > 0)
         {
-          if (_cbTimeFilter.IsChecked == true)
+          _isProjectFolder = true;
+          _info.Name = Path.GetFileNameWithoutExtension(files[0]);
+          _ctlPrjName.setValue(_info.Name);
+          _cbTimeFilter.IsEnabled = false;
+        }
+        else
+        {
+          _isProjectFolder = false;
+          _cbTimeFilter.IsEnabled = true;
+          files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
+          if (files != null && files.Length > 0)
           {
-            DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
-            DateTime end = start.Date;
-            end = end.AddDays(1);
-            end = end.AddHours(6);
-            _dtStart.init(start);
-            _dtEnd.init(end);
-          }
-          else
-          {
-            _dtStart.init(new DateTime(1950, 1, 1));
-            _dtEnd.init(new DateTime(2099, 12, 31));
+            if (_cbTimeFilter.IsChecked == true)
+            {
+              DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
+              DateTime end = start.Date;
+              end = end.AddDays(1);
+              end = end.AddHours(6);
+              _dtStart.init(start);
+              _dtEnd.init(end);
+            }
+            else
+            {
+              _dtStart.init(new DateTime(1950, 1, 1));
+              _dtEnd.init(new DateTime(2099, 12, 31));
+            }
           }
         }
+        enableGuiElements();
       }
-      enableGuiElements();
     }
 
     private void enableGuiElements()
@@ -223,7 +226,7 @@ namespace BatInspector.Forms
       }
       if (!ok)
         return;
-      _model.StatusText = "Importing project...";
+      _model.StatusText = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
       _model.State = enAppState.IMPORT_PRJ;
       _info.Latitude = lat;
       _info.Longitude = lon;
@@ -262,9 +265,10 @@ namespace BatInspector.Forms
         string prjPath = Path.Combine(_info.DstDir, projects[0]);
         DirectoryInfo dir = new DirectoryInfo(prjPath);
         _model.State = enAppState.OPEN_PRJ;
-          _model.initProject(dir, null);
+        _model.initProject(dir, null);
         if (_inspect)
           _model.evaluate();
+        _model.Prj.ReloadInGui = true;
       }
       else
         _model.State = enAppState.IDLE;
@@ -282,6 +286,7 @@ namespace BatInspector.Forms
         _model.initProject(dir, null);
         if (_inspect)
           _model.evaluate();
+        _model.Prj.ReloadInGui = true;
       }
       else
         _model.State = enAppState.IDLE;

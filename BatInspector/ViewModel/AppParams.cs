@@ -581,7 +581,7 @@ namespace BatInspector
       Filter = new List<FilterParams>();
       FilterParams p = new FilterParams();
       p.Name = "Example";
-      p.Expression = "(Species == \"PPIP\")";
+      p.Expression = "(SpeciesMan == \"PPIP\")";
       p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);

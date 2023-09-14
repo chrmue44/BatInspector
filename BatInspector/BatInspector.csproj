@@ -483,6 +483,7 @@
     <Resource Include="images\kopf64.png" />
     <Resource Include="images\kopf256.jpg" />
     <Resource Include="images\data-recovery.png" />
+    <Resource Include="images\tea-cup.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -494,6 +495,7 @@
     <EmbeddedResource Include="Properties\MyResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MyResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="dat\Bbar_13.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

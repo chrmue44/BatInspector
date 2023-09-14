@@ -1191,4 +1191,7 @@
   <data name="CtrlZoomFileInfos" xml:space="preserve">
     <value>File Information</value>
   </data>
+  <data name="FrmCreatePrjImportingProject" xml:space="preserve">
+    <value>Importing project...</value>
+  </data>
 </root>

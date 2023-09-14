@@ -1060,6 +1060,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Importing project....
+        /// </summary>
+        public static string FrmCreatePrjImportingProject {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjImportingProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter missing information to create a project from a selection of WAV files.
         /// </summary>
         public static string frmCreatePrjInfo {

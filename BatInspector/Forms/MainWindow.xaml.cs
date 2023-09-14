@@ -388,7 +388,7 @@ namespace BatInspector.Forms
     {
       if (_model.Prj != null)
       {
-        if (_model.Prj.Ok && _model.Prj.Analysis.Changed)
+        if (_model.Prj.Ok && _model.Prj.Analysis.Changed && (_model.Prj.Analysis.Files.Count > 0))
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)

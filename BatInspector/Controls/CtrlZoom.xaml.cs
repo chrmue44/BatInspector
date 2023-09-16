@@ -120,6 +120,7 @@ namespace BatInspector.Controls
 
     public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img, List<string> species)
     {
+      int lblWidth = 100;
       InitializeComponent();
       _model = model;
       _imgFt.Source = img;
@@ -127,13 +128,15 @@ namespace BatInspector.Controls
       _model.ZoomView.Cursor1.set(0, 0, false);
       _model.ZoomView.Cursor2.set(0, 0, false);
 
-      _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, 100);
-      _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3, 100);
-      _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, 100);
-      _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, 100);
-      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, 110);
-      _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, 110);
-      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, 100);
+      _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, lblWidth);
+      _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3, lblWidth);
+      _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, lblWidth);
+      _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, lblWidth);
+
+      lblWidth = 110;
+      _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, lblWidth);
+      _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, lblWidth);
+      _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, lblWidth);
       _wavFilePath = wavFilePath;
       
       string fName = System.IO.Path.GetFileName(analysis.Name);
@@ -148,17 +151,21 @@ namespace BatInspector.Controls
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
-      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 45, ctlSelCallChanged);
-      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 55, 45, ctlSelCallChanged2);
-      _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
-      _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
-      _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
-      _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, 130);
-      _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, 100);
-      _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, 100, 85, ctlSpecManChanged);
+      lblWidth = 130;
+      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 50, ctlSelCallChanged);
+      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 50, ctlSelCallChanged2);
+      _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, lblWidth);
+      _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, lblWidth);
+      _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, lblWidth);
+      _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
+      //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, lblWidth);
+      _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
+
+      lblWidth = 110;
+      _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, lblWidth);
+      _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 85, ctlSpecManChanged);
       _ctlSpecMan.setItems(species.ToArray());
+      _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
       _gbMean.Visibility = Visibility.Collapsed;
       _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 40, 40, calcMeanValues);
       _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 40, 40, calcMeanValues);
@@ -1064,17 +1071,15 @@ namespace BatInspector.Controls
     {
       if (idx < _model.ZoomView.Analysis.Calls.Count)
       {
-        _ctlFMin.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MIN) / 1000);
-        _ctlFMax.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MAX) / 1000);
-        _ctlFMaxAmpl.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.F_MAX_AMP) / 1000);
-        _ctlDuration.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION));
-        //_ctlSnr.setValue(_model.ZoomView.Analysis.Calls[idx].getDouble(Cols.SNR));
-        _ctlDist.setValue(_model.ZoomView.Analysis.Calls[idx].DistToPrev);
-        _ctlSpecAuto.setValue(_model.ZoomView.Analysis.Calls[idx].getString(Cols.SPECIES));
-        _ctlSpecMan.setValue(_model.ZoomView.Analysis.Calls[idx].getString(Cols.SPECIES_MAN));
-        if (idx > 0)
-        {
-        }
+        AnalysisCall call = _model.ZoomView.Analysis.Calls[idx];
+        _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
+        _ctlFMax.setValue(call.getDouble(Cols.F_MAX) / 1000);
+        _ctlFMaxAmpl.setValue(call.getDouble(Cols.F_MAX_AMP) / 1000);
+        _ctlDuration.setValue(call.getDouble(Cols.DURATION));
+        _ctlDist.setValue(call.DistToPrev);
+        _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));
+        _ctlProbability.setValue(call.getDouble(Cols.PROBABILITY));
+        _ctlSpecMan.setValue(call.getString(Cols.SPECIES_MAN));
       }
     }
 

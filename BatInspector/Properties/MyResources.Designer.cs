@@ -646,6 +646,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Probability.
+        /// </summary>
+        public static string CtrlZoomProbability {
+            get {
+                return ResourceManager.GetString("CtrlZoomProbability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to set heterodyne frequency.
         /// </summary>
         public static string CtrlZoomToolHeterodyneFreq {

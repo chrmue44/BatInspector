@@ -1194,4 +1194,7 @@
   <data name="FrmCreatePrjImportingProject" xml:space="preserve">
     <value>Importing project...</value>
   </data>
+  <data name="CtrlZoomProbability" xml:space="preserve">
+    <value>Probability</value>
+  </data>
 </root>

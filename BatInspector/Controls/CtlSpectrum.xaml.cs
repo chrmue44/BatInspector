@@ -1,18 +1,15 @@
-﻿using BatInspector.Forms;
-using System;
-using System.Collections.Generic;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2023-08-18                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace BatInspector.Controls

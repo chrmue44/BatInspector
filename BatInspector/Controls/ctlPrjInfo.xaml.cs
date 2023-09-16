@@ -1,4 +1,11 @@
-﻿using System;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2023-08-18                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -1,4 +1,11 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2023-08-18                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+ using libParser;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;

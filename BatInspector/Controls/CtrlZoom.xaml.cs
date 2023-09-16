@@ -1,13 +1,9 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
- *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2023: christian Müller chrmue44(at)gmail(dot).com
+ *     Date of creation: 2023-08-18                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
  *
- *              Licence:
- * 
- * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
- * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
 using System.Threading;
@@ -1258,6 +1254,21 @@ namespace BatInspector.Controls
       {
         DebugLog.log("Zoom:Btn 'Bandpass' failed: " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+    private void _btnReduceNoise_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        _model.ZoomView.reduceNoise(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+        createZoomImg();
+        DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:Btn 'ReduceNoise' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+
     }
 
     private void _btnUndo_Click(object sender, RoutedEventArgs e)

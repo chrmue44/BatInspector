@@ -1,17 +1,18 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
- *      Date of cration: 2021-08-10                                       
- *   Copyright (C) 2022: christian Müller christian(at)chrmue(dot).de
+ *     Date of creation: 2021-08-10                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
  *
- *              Licence:
- * 
- * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
- * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using libParser;
+using libScripter;
+using OxyPlot;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
@@ -102,6 +103,7 @@ namespace BatInspector
     ColorTable _colorTable;
     BatRecord _fileInfo;
     AnalysisFile _analysis;
+    ProcessRunner _proc;
 
 
     public ZoomView(ColorTable colorTable)
@@ -253,6 +255,16 @@ namespace BatInspector
       _wf.Audio.FftBackward();
     }
 
+    public void reduceNoise(string wavName, string wavSubDir)
+    {
+      string srcPath = getDestPathForOriginal(wavName, wavSubDir);
+      string srcFile = Path.Combine(srcPath, Path.GetFileName(wavName));
+      File.Delete(wavName);
+      string exe = AppParams.AppDataPath + "/models/bd2/reduce_noise.bat";
+      string args = srcFile + " " + wavName;
+      _proc.launchCommandLineApp(exe, null, "", true, args);
+    }
+
     public void undoChanges()
     {
       _wf.Audio.undo();
@@ -338,14 +350,20 @@ namespace BatInspector
       return retVal;
     }
 
+    public static string getDestPathForOriginal(string wavName, string wavSubDir)
+    {
+      string retVal;
+      string srcPath = Path.GetDirectoryName(wavName);
+      if (wavSubDir != "")
+        retVal = srcPath.Replace(wavSubDir, AppParams.DIR_ORIG);
+      else
+        retVal = Path.Combine(srcPath, AppParams.DIR_ORIG);
+      return retVal;
+    }
+
     public static void saveWavBackup(string wavName, string wavSubDir)
     {
-      string srcPath = Path.GetDirectoryName(wavName);
-      string dstPath;
-      if(wavSubDir != "")
-        dstPath = srcPath.Replace(wavSubDir, AppParams.DIR_ORIG);
-      else
-        dstPath = Path.Combine(srcPath, AppParams.DIR_ORIG);
+      string dstPath = getDestPathForOriginal(wavName, wavSubDir);
       if(!Directory.Exists(dstPath)) 
         Directory.CreateDirectory(dstPath);
       string dstFile = Path.Combine(dstPath, Path.GetFileName(wavName));

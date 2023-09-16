@@ -1,4 +1,12 @@
-﻿using System.Windows;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2021-08-10                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+
+using System.Windows;
 using System.Windows.Interop;
 
 namespace BatInspector.Forms

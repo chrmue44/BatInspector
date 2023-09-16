@@ -1,14 +1,11 @@
 ﻿/********************************************************************************
  *               Author: Christian Müller
- *      Date of cration: 2023-07-31                                       
- *   Copyright (C) 2023: christian Müller chrmue44(at)gmail(dot).com
+ *     Date of creation: 2023-07-31                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
  *
- *              Licence:
- * 
- * THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
- * EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+
 
 using System;
 using System.Drawing;

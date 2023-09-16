@@ -2,12 +2,8 @@ TODO
 - GUI themes 
 - progress bar for long running tasks
 - species comparison
-- stop button to kill running script
 - bioacoustics dll is not suitable for parallel processing. one instance of fft object per thread would be needed (Task.CurrentId, see https://stackoverflow.com/questions/32253912/get-a-thread-id-inside-parallel-foreach-loop)
-- installer
-- Wartemeldung als Fenster
-- Rufnummer im Zoom-Fenster bei Art anzeigen
-- Mittelwertanzeige weg
+- overdrive detection for calls
 
 21.08.23 V 0.5.0
 - installer for the software

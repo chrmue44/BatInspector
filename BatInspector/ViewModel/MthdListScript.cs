@@ -1,14 +1,11 @@
 ﻿/********************************************************************************
 *               Author: Christian Müller
-*      Date of cration: 2021-08-10                                       
-*   Copyright (C) 2022: christian Müller chrmue44(at)gmail(dot).com
+*     Date of creation: 2021-08-10                                       
+*   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
 *
-*              Licence:
-* 
-* THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
-* EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
-* WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+*              Licence:  CC BY-NC 4.0 
 ********************************************************************************/
+
 using libParser;
 using libScripter;
 using NAudio.Wave.SampleProviders;
@@ -16,8 +13,6 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Diagnostics.Contracts;
-using System.Reflection;
 
 namespace BatInspector
 {

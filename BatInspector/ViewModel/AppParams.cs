@@ -18,9 +18,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
-using System.Resources;
-using System.Diagnostics.Eventing.Reader;
-using OxyPlot.Series;
+
 
 namespace BatInspector
 {
@@ -193,6 +191,7 @@ namespace BatInspector
     public const string PROG_DAT_DIR = "BatInspector";    // sub directory for program data
     public const string VAR_WRK_DIR = "WRK_DIR";            // variable name for work dir
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
+    public const string CMD_REDUCE_NOISE = "reduce_noise.bat"; //command to reduce the background noise in WAV file
 
     const string _fName = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";

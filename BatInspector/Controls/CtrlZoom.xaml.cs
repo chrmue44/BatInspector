@@ -561,6 +561,12 @@ namespace BatInspector.Controls
           _btnPlay_HET.IsEnabled = true;
           _btnPlay_HET.Content = _playImgs[7];
         }
+        if (_model.ZoomView.RefreshZoomImg)
+        {
+          createZoomImg();
+          _model.ZoomView.RefreshZoomImg = false;
+        }
+
       }
       else
       {
@@ -1263,17 +1269,22 @@ namespace BatInspector.Controls
 
     private void _btnReduceNoise_Click(object sender, RoutedEventArgs e)
     {
+        DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
+        _model.ZoomView.reduceNoise();
+    }
+
+    private void _btnNormalize_Click(object sender, RoutedEventArgs e)
+    {
       try
       {
-        _model.ZoomView.reduceNoise(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+        _model.ZoomView.normalize();
         createZoomImg();
-        DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
+        DebugLog.log("Zoom:Btn 'Normalize' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
       {
-        DebugLog.log("Zoom:Btn 'ReduceNoise' failed: " + ex.ToString(), enLogType.ERROR);
+        DebugLog.log("Zoom:Btn 'Normalize' failed: " + ex.ToString(), enLogType.ERROR);
       }
-
     }
 
     private void _btnUndo_Click(object sender, RoutedEventArgs e)

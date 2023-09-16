@@ -8,13 +8,9 @@
 
 using libParser;
 using libScripter;
-using OxyPlot;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Input;
-using System.Xml.Serialization;
+using System.Threading;
 
 namespace BatInspector
 {
@@ -104,9 +100,12 @@ namespace BatInspector
     BatRecord _fileInfo;
     AnalysisFile _analysis;
     ProcessRunner _proc;
+    string _tmp1Wav;
+    string _tmp2Wav;
+    string _wrkDir;
+    ModelState _modelState;
 
-
-    public ZoomView(ColorTable colorTable)
+    public ZoomView(ColorTable colorTable, ProcessRunner pr, ModelState modelState)
     {
       _colorTable = colorTable;
       _rulerDataT = new RulerData();
@@ -116,7 +115,15 @@ namespace BatInspector
       _cursor2 = new Cursor();
       _spectrum = new Spectrum();
       _fileInfo = new BatRecord();
+      _proc = pr;
       _analysis = null;
+      _modelState = modelState;
+      _wrkDir = Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath,
+                             AppParams.Inst.Models[0].Dir);
+
+      _tmp1Wav = Path.Combine(_wrkDir, "temp1.wav");
+      _tmp2Wav = Path.Combine(_wrkDir, "temp2.wav");
+
     }
 
 
@@ -133,6 +140,7 @@ namespace BatInspector
     public AnalysisFile Analysis { get { return _analysis; } set { _analysis = value; } }
 
     public int SelectedCallIdx { get; set; }
+    public bool RefreshZoomImg { get; set; } = false;
 
     public void initWaterfallDiagram(string wavName)
     {
@@ -255,26 +263,45 @@ namespace BatInspector
       _wf.Audio.FftBackward();
     }
 
-    public void reduceNoise(string wavName, string wavSubDir)
+    public void normalize()
     {
-      string srcPath = getDestPathForOriginal(wavName, wavSubDir);
-      string srcFile = Path.Combine(srcPath, Path.GetFileName(wavName));
-      File.Delete(wavName);
-      string exe = AppParams.AppDataPath + "/models/bd2/reduce_noise.bat";
-      string args = srcFile + " " + wavName;
-      _proc.launchCommandLineApp(exe, null, "", true, args);
+      _wf.Audio.normalize();
     }
+
+    public void reduceNoise()
+    {
+      try
+      {
+        _modelState.State = enAppState.TOOL_RUNNING;
+        _modelState.Msg = BatInspector.Properties.MyResources.ZoomViewMsgNoiseReduction;       
+        _wf.Audio.saveAs(_tmp1Wav, "");
+        string exe = Path.Combine(_wrkDir,AppParams.CMD_REDUCE_NOISE);
+        string args = _tmp1Wav + " " + _tmp2Wav;
+        _proc.launchCommandLineApp(exe, null, _wrkDir, false, args, false, false, onExitNoiseReduction);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error noise reduction: " + ex.ToString(), enLogType.ERROR);
+        onExitNoiseReduction(null, null);
+      }
+    }
+
+
+    private void onExitNoiseReduction(object sender, EventArgs e)
+    {
+      _wf.Audio.readWav(_tmp2Wav, true);
+      _modelState.State = enAppState.IDLE;
+      if (File.Exists(_tmp1Wav))
+        File.Delete(_tmp1Wav);
+      if (File.Exists(_tmp2Wav))
+        File.Delete(_tmp2Wav);
+      RefreshZoomImg = true;
+    }
+
 
     public void undoChanges()
     {
       _wf.Audio.undo();
-    }
-
-    public void denoise()
-    {
-        _wf.Audio.FftForward();
-        _wf.Audio.reduceNoise(-30);
-        _wf.Audio.FftBackward();
     }
 
     private static double nextStepDown(double step)

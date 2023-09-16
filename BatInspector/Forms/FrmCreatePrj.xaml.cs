@@ -222,8 +222,8 @@ namespace BatInspector.Forms
       }
       if (!ok)
         return;
-      _model.StatusText = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
-      _model.State = enAppState.IMPORT_PRJ;
+      _model.Status.Msg = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
+      _model.Status.State = enAppState.IMPORT_PRJ;
       _info.Latitude = lat;
       _info.Longitude = lon;
 
@@ -260,14 +260,14 @@ namespace BatInspector.Forms
       {
         string prjPath = Path.Combine(_info.DstDir, projects[0]);
         DirectoryInfo dir = new DirectoryInfo(prjPath);
-        _model.State = enAppState.OPEN_PRJ;
+        _model.Status.State = enAppState.OPEN_PRJ;
         _model.initProject(dir, null);
         if (_inspect)
           _model.evaluate();
         _model.Prj.ReloadInGui = true;
       }
       else
-        _model.State = enAppState.IDLE;
+        _model.Status.State = enAppState.IDLE;
     }
 
 
@@ -278,14 +278,14 @@ namespace BatInspector.Forms
       {
         string prjPath = Path.Combine(_info.DstDir, projects[0]);
         DirectoryInfo dir = new DirectoryInfo(prjPath);
-        _model.State = enAppState.OPEN_PRJ;
+        _model.Status.State = enAppState.OPEN_PRJ;
         _model.initProject(dir, null);
         if (_inspect)
           _model.evaluate();
         _model.Prj.ReloadInGui = true;
       }
       else
-        _model.State = enAppState.IDLE;
+        _model.Status.State = enAppState.IDLE;
     }
 
 

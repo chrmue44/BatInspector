@@ -3148,6 +3148,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to normalize volume.
+        /// </summary>
+        public static string ToolTipNormalizeVol {
+            get {
+                return ResourceManager.GetString("ToolTipNormalizeVol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pause playing audio.
         /// </summary>
         public static string ToolTipPausePlayingAudio {
@@ -3189,6 +3198,15 @@ namespace BatInspector.Properties {
         public static string ToolTipPlayDispSectionHET {
             get {
                 return ResourceManager.GetString("ToolTipPlayDispSectionHET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to apply noise reduction.
+        /// </summary>
+        public static string ToolTipReduceNoise {
+            get {
+                return ResourceManager.GetString("ToolTipReduceNoise", resourceCulture);
             }
         }
         
@@ -3297,6 +3315,15 @@ namespace BatInspector.Properties {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to applying noise reduction....
+        /// </summary>
+        public static string ZoomViewMsgNoiseReduction {
+            get {
+                return ResourceManager.GetString("ZoomViewMsgNoiseReduction", resourceCulture);
             }
         }
     }

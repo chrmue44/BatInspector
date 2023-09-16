@@ -1,3 +1,6 @@
+V 0.7.0.0
+- probability for auto species is shown in zoom view
+
 V 0.6.5.0  14.09.23
 - Zoomview: remove mean calculation, added call nr to species
 - list of available species: added 'social'

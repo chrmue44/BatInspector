@@ -1197,4 +1197,13 @@
   <data name="CtrlZoomProbability" xml:space="preserve">
     <value>Probability</value>
   </data>
+  <data name="ZoomViewMsgNoiseReduction" xml:space="preserve">
+    <value>applying noise reduction...</value>
+  </data>
+  <data name="ToolTipReduceNoise" xml:space="preserve">
+    <value>apply noise reduction</value>
+  </data>
+  <data name="ToolTipNormalizeVol" xml:space="preserve">
+    <value>normalize volume</value>
+  </data>
 </root>

@@ -10,7 +10,9 @@ using libParser;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 
 namespace BatInspector
@@ -127,15 +129,24 @@ namespace BatInspector
       _samples = BioAcoustics.calculateFftReversed(_spectrum);
     }
 
-    public int readWav(string name)
+    /// <summary>
+    /// read content of WAV file
+    /// </summary>
+    /// <param name="name">name of the wav file</param>
+    /// <param name="keepOriginal">keep content of _originalSamples</param>
+    /// <returns></returns>
+    public int readWav(string name, bool keepOriginal = false)
     {
       int retVal = 0;
       WavFile inFile = new WavFile();
       retVal = inFile.readFile(name, ref _samples);
       _samplingRate = (int)inFile.FormatChunk.Frequency;
-      _originalSamples = new double[_samples.Length];
       _size = _samples.Length;
-      Array.Copy(_samples, _originalSamples, _samples.Length);
+      if ((_originalSamples == null) || !keepOriginal)
+      {
+        _originalSamples = new double[_samples.Length];
+        Array.Copy(_samples, _originalSamples, _samples.Length);
+      }
       if (retVal == 0)
       {
         _fName = name;
@@ -174,6 +185,21 @@ namespace BatInspector
         DebugLog.log("unable to save file: " + name, enLogType.ERROR);
       }
     }
+
+    public void normalize()
+    {
+      double max = 0;
+      foreach(double sp in _samples)
+      {
+        double s = Math.Abs(sp);
+        if (s > max)
+          max = s;
+      }
+      double fact = 0.95 / max;
+      for (int i = 0; i < _samples.Length; i++)
+        _samples[i] *= fact;
+    }
+
 
     public void bandpass(double fmin, double fmax)
     {
@@ -232,8 +258,8 @@ namespace BatInspector
     {
       if (_originalSamples != null)
       {
-        for (int i = 0; i < _samples.Length; i++)
-          _samples[i] = _originalSamples[i];
+        _samples = new double[_originalSamples.Length];
+        Array.Copy(_originalSamples, _samples, _originalSamples.Length);
       }
     }
 

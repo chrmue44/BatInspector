@@ -90,8 +90,11 @@
                 <Button x:Name="_btnBandpass"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnBandpass_Click" ToolTip="{x:Static res:MyResources.ToolTipBandpass}">
                     <Image Source="../images/filter_settings_icon_143016.png"></Image>
                 </Button>
-                <Button x:Name="_btnReduceNoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnReduceNoise_Click" ToolTip="{x:Static res:MyResources.ToolTipBandpass}">
+                <Button x:Name="_btnReduceNoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnReduceNoise_Click" ToolTip="{x:Static res:MyResources.ToolTipReduceNoise}">
                     <Image Source="../images/icons8-cleanup-noise-100.png"></Image>
+                </Button>
+                <Button x:Name="_btnNormalize"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnNormalize_Click" ToolTip="{x:Static res:MyResources.ToolTipNormalizeVol}">
+                    <Image Source="../images/volume.png"></Image>
                 </Button>
                 <Button x:Name="_btnUndo"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnUndo_Click" ToolTip="{x:Static res:MyResources.ToolTipUndo}">
                     <Image Source="../images/Undo_icon-icons.com_73701.png"></Image>

@@ -80,7 +80,7 @@ namespace BatInspector.Forms
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
       string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
       _model = new ViewModel(this, versionStr, callbackUpdateAnalysis);
-      _model.State = enAppState.IDLE;
+      _model.Status.State = enAppState.IDLE;
       setLanguage();
       InitializeComponent();
       _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
@@ -254,7 +254,7 @@ namespace BatInspector.Forms
 
     void initializeQuery(FileInfo file)
     {
-      _model.State = enAppState.OPEN_PRJ;
+      _model.Status.State = enAppState.OPEN_PRJ;
       DebugLog.log("start to open query", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
@@ -301,7 +301,7 @@ namespace BatInspector.Forms
 
     void initializeProject(DirectoryInfo dir)
     {
-      _model.State = enAppState.OPEN_PRJ;
+      _model.Status.State = enAppState.OPEN_PRJ;
       showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading);
       DebugLog.log("start to open project", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
@@ -462,7 +462,7 @@ namespace BatInspector.Forms
     {
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
-        _model.StatusText = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
+        _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
         int tot = _model.Prj.Records.Length;
         int cnt = 0;
         Stopwatch s = new Stopwatch();
@@ -476,7 +476,7 @@ namespace BatInspector.Forms
           Thread.EndCriticalRegion();
           if(s.ElapsedMilliseconds > 2500)
           {
-            _model.StatusText = cnt.ToString() + "/" + tot.ToString() + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
+            _model.Status.Msg = cnt.ToString() + "/" + tot.ToString() + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
             s.Restart();
             Thread.Yield();
           }
@@ -756,14 +756,14 @@ namespace BatInspector.Forms
           MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (res == MessageBoxResult.Yes)
         {
-          _model.State = enAppState.AI_ANALYZE;
+          _model.Status.State = enAppState.AI_ANALYZE;
           _workerPredict = new Thread(new ThreadStart(workerPrediction));
           _workerPredict.Start();
         }
       }
       catch (Exception ex)
       {
-        _model.State = enAppState.IDLE;
+        _model.Status.State = enAppState.IDLE;
         DebugLog.log("MainWin:BTN 'Find calls' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
@@ -1093,11 +1093,11 @@ namespace BatInspector.Forms
     private void timer_Tick(object sender, EventArgs e)
     {
       setMouseStatus();
-      if (_model.StatusText != null)
+      if (_model.Status.Msg != null)
       {
-        showMsg(BatInspector.Properties.MyResources.msgInformation, _model.StatusText);
-        _lblStatus.Text = _model.StatusText;
-        _model.StatusText = null;
+        showMsg(BatInspector.Properties.MyResources.msgInformation, _model.Status.Msg);
+        _lblStatus.Text = _model.Status.Msg;
+        _model.Status.Msg = null;
       }
 
       if (_model.UpdateUi)
@@ -1119,9 +1119,10 @@ namespace BatInspector.Forms
         _model.Prj.ReloadInGui = false;
       }
 
-      switch (_model.State)
+      switch (_model.Status.State)
       {
         case enAppState.IDLE:
+          hideMsg();
           break;
 
         case enAppState.AI_ANALYZE:
@@ -1130,8 +1131,7 @@ namespace BatInspector.Forms
             _workerPredict = null;
             _model.updateReport();
             updateWavControls();
-            hideMsg();
-            _model.State = enAppState.IDLE;
+            _model.Status.State = enAppState.IDLE;
           }
           break;
 
@@ -1144,8 +1144,7 @@ namespace BatInspector.Forms
               _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
             if (_model.Query != null)
               _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
-            hideMsg();
-            _model.State = enAppState.IDLE;
+            _model.Status.State = enAppState.IDLE;
           }
           break;
       }

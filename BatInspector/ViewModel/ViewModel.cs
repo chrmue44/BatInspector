@@ -21,7 +21,8 @@ namespace BatInspector
     IDLE,
     OPEN_PRJ,
     AI_ANALYZE,
-    IMPORT_PRJ
+    IMPORT_PRJ,
+    TOOL_RUNNING
   }
 
   public class SpeciesItem
@@ -36,6 +37,11 @@ namespace BatInspector
     public double CallDistMax { get; set; }
   }
 
+  public class ModelState
+  {
+    public string Msg { get; set; } = null;
+    public enAppState State { get; set; } = enAppState.IDLE;
+  }
 
   public class ViewModel
   {
@@ -61,7 +67,6 @@ namespace BatInspector
     Query _query;
     string _statusText = null;
 
-    public enAppState State { get; set; }
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -96,8 +101,8 @@ namespace BatInspector
 
     public Query Query { get { return _query; } set { _query = value; } }
 
-    public string StatusText { get { return _statusText;} set { _statusText = value; } }
-
+    public ModelState Status { get; set; }
+    
 
     /// <summary>
     /// currently opened object (prj, query or null)
@@ -128,7 +133,8 @@ namespace BatInspector
       _version = version;
       _colorTable = new ColorTable(this);
       _colorTable.createColorLookupTable();
-      _zoom = new ZoomView(_colorTable);
+      Status = new ModelState();
+      _zoom = new ZoomView(_colorTable, _proc, Status);
       _wav = new WavFile();
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
       _sumReport = new SumReport();

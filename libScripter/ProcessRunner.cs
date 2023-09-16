@@ -24,7 +24,7 @@ namespace libScripter
     }
 
     public int launchCommandLineApp(string exePath, DataReceivedEventHandler handler = null, string workDir = "", bool wait = false,
-                                    string args = "", bool newWindow = false, bool logOutput = false)
+                                    string args = "", bool newWindow = false, bool logOutput = false, EventHandler exitHandler = null)
     {
       int retVal = 0;
       _pr = new Process();
@@ -33,6 +33,8 @@ namespace libScripter
       _pr.StartInfo.Arguments = args;
       _pr.StartInfo.CreateNoWindow = !newWindow;
       _pr.StartInfo.UseShellExecute = false;
+      if (exitHandler != null)
+        _pr.Exited += exitHandler;
       if (!newWindow)
       {
         _pr.StartInfo.RedirectStandardOutput = true;

@@ -277,7 +277,7 @@ namespace BatInspector
           {
             val++;
             string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
-            _model.StatusText = msg;
+            _model.Status.Msg = msg;
           }
         }
       }

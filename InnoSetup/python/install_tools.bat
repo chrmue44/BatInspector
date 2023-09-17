@@ -29,4 +29,5 @@ cd %MODEL_DIR%
 %PYTHON% -m venv %VENV%
 call %VENV%/Scripts/activate
 pip install batdetect2==1.0.6
+pip install noisereduce==3.0.0
 

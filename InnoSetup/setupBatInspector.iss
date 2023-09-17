@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0650"
-#define MyAppVersion "0.6.5.0"
+#define MyInstallerName "SetupBatInspector_0700"
+#define MyAppVersion "0.7.7.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -58,7 +58,7 @@ source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\d
 source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\dat"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
-source: "{#SourceFolder}\{#MyAppName}\models\bd2\run.bat"; DestDir: "{#MyAppDataFolder}\models\bd2";
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2";
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup";
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 

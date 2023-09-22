@@ -687,7 +687,7 @@ namespace BatInspector
           short[] samples = new short[iEnd - iStart + 1];
           Array.Copy(wav.AudioSamples, iStart, samples, 0, iEnd - iStart + 1);
           WavFile newWav = new WavFile();
-          newWav.createFile(wav.FormatChunk.Channels, (int)wav.FormatChunk.Frequency, 0, samples.Length - 1, samples);
+          newWav.createFile((int)wav.FormatChunk.Frequency, 0, samples.Length - 1, samples);
           string name = Path.GetDirectoryName(fName) + "/" +
                         Path.GetFileNameWithoutExtension(fName) + "_" + i.ToString("D3") + Path.GetExtension(fName);
           newWav.saveFileAs(name);

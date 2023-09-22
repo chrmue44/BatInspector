@@ -178,26 +178,13 @@ namespace BatInspector
       return chunkBytes.ToArray();
     }
 
-    public void AddSampleData(double[] leftBuffer,
-       double[] rightBuffer, int idxStart, int idxEnd)
-    {
-      WaveData = new short[leftBuffer.Length +
-         rightBuffer.Length];
-      int bufferOffset = 0;
-      for (int index = 0; index < WaveData.Length; index += 2)
-      {
-        WaveData[index] = (short)(leftBuffer[bufferOffset] * 32767.0);
-        WaveData[index + 1] = (short)(rightBuffer[bufferOffset] * 32767.0);
-        bufferOffset++;
-      }
-      ChunkSize = (UInt32)WaveData.Length * 2;
-    }
-
     public void AddSampleData(short[] leftBuffer,
      short[] rightBuffer, int idxStart, int idxEnd)
     {
-      WaveData = new short[leftBuffer.Length +
-         rightBuffer.Length];
+      int len = leftBuffer.Length;
+      if (rightBuffer != null)
+        len += rightBuffer.Length;
+      WaveData = new short[len];
       int bufferOffset = 0;
       for (int index = 0; index < WaveData.Length; index += 2)
       {
@@ -209,17 +196,61 @@ namespace BatInspector
     }
 
 
-    public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample)
+    public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount, ref double[] samples)
     {
-      int size = len * 8 / bitsPerSample ;
+      AddSampleData(data, offs, len, bitsPerSample, chanCount);
+      samples = new double[WaveData.Length];
+      for(int i = 0; i <  samples.Length; i++)
+        samples[i] = (double)WaveData[i]/32768.0;
+    }
+
+    public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount)
+    {
+      int size = len * 8 / bitsPerSample/chanCount;
       WaveData = new short[size];
-      if (bitsPerSample == 16)
+      if (chanCount == 1)
+      {
+        if (bitsPerSample == 16)
+        {
+          for (int i = 0; i < size; i++)
+          {
+            int s = (data[offs] << 16) | (data[offs + 1] << 24);
+            WaveData[i] = (short)(s >> 16);
+            offs += 2;
+          }
+          ChunkSize = (UInt32)(WaveData.Length * 2);
+        }
+        else if (bitsPerSample == 24)
+        {
+          for (int i = 0; i < size; i++)
+          {
+            int s = (data[offs] << 8) | (data[offs + 1] << 16) | (data[offs + 2] << 24);
+            WaveData[i] = (short)(s >> 16);
+            offs += 3;
+          }
+          ChunkSize = (UInt32)(WaveData.Length * 3);
+        }
+        else if (bitsPerSample == 32)
+        {
+          for (int i = 0; i < size; i++)
+          {
+            int s = data[offs] | (data[offs + 1] << 8) | (data[offs + 2] << 16) | (data[offs + 3] << 24);
+            WaveData[i] = (short)(s >> 16);
+            offs += 4;
+          }
+          ChunkSize = (UInt32)(WaveData.Length * 4);
+        }
+      }
+      else
+      { 
+        if (bitsPerSample == 16)
       {
         for (int i = 0; i < size; i++)
         {
-          int s = (data[offs] << 16) | (data[offs + 1] << 24);
-          WaveData[i] = (short)(s >> 16);
-          offs += 2;
+          int sl = (data[offs] << 16) | (data[offs + 1] << 24);
+          int sr = (data[offs+2] << 16) | (data[offs + 3] << 24);
+          WaveData[i] = (short)((sl + sr) >> 17);
+          offs += 4;
         }
         ChunkSize = (UInt32)(WaveData.Length * 2);
       }
@@ -227,9 +258,10 @@ namespace BatInspector
       {
         for (int i = 0; i < size; i++)
         {
-          int s = (data[offs] << 8) | (data[offs + 1] << 16) | (data[offs + 2] << 24);
-          WaveData[i] = (short)(s >> 16);
-          offs += 3;
+          int sl = (data[offs] << 8) | (data[offs + 1] << 16) | (data[offs + 2] << 24);
+          int sr = (data[offs+3] << 8) | (data[offs + 4] << 16) | (data[offs + 5] << 24);
+            WaveData[i] = (short)((sl+sr) >> 17);
+          offs += 6;
         }
         ChunkSize = (UInt32)(WaveData.Length * 3);
       }
@@ -237,15 +269,18 @@ namespace BatInspector
       {
         for (int i = 0; i < size; i++)
         {
-          int s = data[offs] | (data[offs + 1] << 8) | (data[offs + 2] << 16) | (data[offs + 3] << 24);
-          WaveData[i] = (short)(s >> 16);
-          offs += 4;
+          long sl = data[offs] | (data[offs + 1] << 8) | (data[offs + 2] << 16) | (data[offs + 3] << 24);
+          long sr = data[offs+4] | (data[offs + 5] << 8) | (data[offs + 6] << 16) | (data[offs + 7] << 24);
+            WaveData[i] = (short)((sl + sr) >> 17);
+          offs += 8;
         }
         ChunkSize = (UInt32)(WaveData.Length * 4);
       }
     }
 
-    public void AddSampleData(byte[] data, int offs, int len, ref double[] samples, int bitsPerSample)
+  }
+
+  public void AddSampleData(byte[] data, int offs, int len, ref double[] samples, int bitsPerSample)
     {
       int size = len * 8 / bitsPerSample;
       WaveData = new short[size];
@@ -389,7 +424,7 @@ namespace BatInspector
         byte[] data = partArray(_rawData, pos, 8);
         _data = new DataChunk(data);
         pos += 8;
-        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample);
+        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels);
         _fName = name;
         _isOpen = true;
       }
@@ -421,7 +456,7 @@ namespace BatInspector
         byte[] data = partArray(_rawData, pos, 8);
         _data = new DataChunk(data);
         pos += 8;
-        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, ref samples, _format.BitsPerSample);
+        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels, ref samples);
         _fName = name;
         _isOpen = true;
       }
@@ -500,10 +535,7 @@ namespace BatInspector
       _data = new DataChunk();
       List<Byte> tempBytes = new List<byte>();
 
-      if (chanCount == 1)
-        _data.AddSampleData(left, idxStart, idxEnd);
-      else
-        _data.AddSampleData(left, right, idxStart, idxEnd);
+      _data.AddSampleData(left, idxStart, idxEnd);
 
       tempBytes.AddRange(_header.GetBytes());
       tempBytes.AddRange(_format.GetBytes());
@@ -512,17 +544,14 @@ namespace BatInspector
       _isOpen = true;
     }
 
-    public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, short[] left, short[] right = null)
+    public void createFile(int sampleRate, int idxStart, int idxEnd, short[] left)
     {
       _header = new WaveHeader();
-      _format = new FormatChunk(chanCount, (uint)sampleRate);
+      _format = new FormatChunk(1, (uint)sampleRate);
       _data = new DataChunk();
       List<Byte> tempBytes = new List<byte>();
 
-      if (chanCount == 1)
-        _data.AddSampleData(left, idxStart, idxEnd);
-      else
-        _data.AddSampleData(left, right, idxStart, idxEnd);
+      _data.AddSampleData(left, idxStart, idxEnd);
 
       tempBytes.AddRange(_header.GetBytes());
       tempBytes.AddRange(_format.GetBytes());

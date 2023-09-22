@@ -21,10 +21,14 @@ namespace BatInspector.Forms
       InitializeComponent();
     }
 
-    public void showMessage(string title, string text)
+    public void showMessage(string title, string text, bool topmost = false)
     {
       this.Title = "BatInspector   " + title;
-      this.Topmost = true;
+      if (topmost)
+      {
+        this.Topmost = true;
+        this.Topmost = false;
+      }
       _tbMsg.Text = text;
     }
 

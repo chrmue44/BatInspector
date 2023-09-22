@@ -272,7 +272,10 @@ namespace BatInspector.Forms
         if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
           populateFiles();
         else
+        {
           DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
+          hideMsg();
+        }
       }
 
     }
@@ -302,7 +305,7 @@ namespace BatInspector.Forms
     void initializeProject(DirectoryInfo dir)
     {
       _model.Status.State = enAppState.OPEN_PRJ;
-      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading);
+      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading, true);
       DebugLog.log("start to open project", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
@@ -720,11 +723,11 @@ namespace BatInspector.Forms
       }
     }
 
-    void showMsg(string title, string msg)
+    void showMsg(string title, string msg, bool topmost = false)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        _frmMsg.showMessage(title, msg);
+        _frmMsg.showMessage(title, msg, topmost);
         _frmMsg.Visibility = Visibility.Visible;
       }, DispatcherPriority.Send);
     }
@@ -739,7 +742,7 @@ namespace BatInspector.Forms
 
     private void workerPrediction()
     {
-      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification);
+      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification, true);
       _model.evaluate();
     }
 

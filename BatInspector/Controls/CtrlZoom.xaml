@@ -93,6 +93,9 @@
                 <Button x:Name="_btnReduceNoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnReduceNoise_Click" ToolTip="{x:Static res:MyResources.ToolTipReduceNoise}">
                     <Image Source="../images/icons8-cleanup-noise-100.png"></Image>
                 </Button>
+                <Button x:Name="_btnCutOuat"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnCutOut_Click"  ToolTip="{x:Static res:MyResources.ToolTipCutOut}">
+                    <Image Source="../images/scissors.png"></Image>
+                </Button>
                 <Button x:Name="_btnNormalize"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnNormalize_Click" ToolTip="{x:Static res:MyResources.ToolTipNormalizeVol}">
                     <Image Source="../images/volume.png"></Image>
                 </Button>

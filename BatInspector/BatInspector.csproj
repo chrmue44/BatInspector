@@ -485,6 +485,7 @@
     <Resource Include="images\data-recovery.png" />
     <Resource Include="images\tea-cup.png" />
     <Resource Include="images\volume.png" />
+    <Resource Include="images\scissors.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

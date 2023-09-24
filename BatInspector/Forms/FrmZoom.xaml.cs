@@ -5,11 +5,13 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using BatInspector.Controls;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace BatInspector.Forms
 {
@@ -33,9 +35,9 @@ namespace BatInspector.Forms
       ContentRendered += FrmZoom_ContentRendered;
     }
 
-    public void setup(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
+    public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav)
     {
-      _ctl.setup(analysis, wavFilePath, _model, img, _model.Prj.Species);
+      _ctl.setup(analysis, wavFilePath, _model, _model.Prj.Species, ctlWav);
       this.Title = name;
     }
 

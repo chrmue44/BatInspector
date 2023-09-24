@@ -121,6 +121,9 @@ Flaticon License
 report.png
 https://www.flaticon.com/free-icons/report Report icons created by Good Ware  Flaticon
 
+scissors.png
+https://www.flaticon.com/free-icons/scissors Scissors icons created by Freepik - Flaticon
+
 script.png
 https://www.flaticon.com/free-icons/script Script icons created by uicon.mee - Flaticon
 

@@ -263,6 +263,11 @@ namespace BatInspector
       _wf.Audio.FftBackward();
     }
 
+    public void removeSection(double tMin, double tMax)
+    {
+      _wf.Audio.removeSection(tMin, tMax);
+    }
+
     public void normalize()
     {
       _wf.Audio.normalize();

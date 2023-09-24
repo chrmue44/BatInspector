@@ -6,14 +6,12 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Forms;
 using libParser;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
-using System.IO.IsolatedStorage;
-using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace BatInspector
 {
@@ -29,12 +27,14 @@ namespace BatInspector
     int _samplingRate;
     string _fName = "";
     bool _fftInitDone = false;
+    List<Tuple<int, int>> _overdrive;
 
     public SoundEdit(int samplingRate = 384000, int size = 384000)
     {
       _size = size;
       _samplingRate = samplingRate;
       _samples = new double[size];
+      _overdrive = new List<Tuple<int, int>>();
     }
 
     /// <summary>
@@ -89,6 +89,78 @@ namespace BatInspector
       {
         _spectrum[i] -= spectrum[i];
       }
+    }
+
+    public void removeSection(double tMin, double tMax)
+    {
+      int iStart = (int)(tMin * _samplingRate);
+      if(iStart > _samples.Length - 1)
+        iStart = _samples.Length - 1;
+      int iEnd = (int)(tMax * _samplingRate);
+      if (iEnd > _samples.Length - 1)
+        iEnd = _samples.Length - 1;
+      double[] s = new double[_samples.Length - (iEnd - iStart)];
+      for(int i = 0; i < iStart; i++)
+        s[i] = _samples[i];
+      for (int i = iStart, j = iEnd; i < s.Length; i++, j++)
+        s[i] = _samples[j];
+
+      _samples = s;
+    }
+
+    public bool findOverdrive(double tMin, double tMax)
+    {
+      _overdrive.Clear();
+      int cntOv = 0;
+      int cntRange = 0;
+      bool nonOverDrive = true;
+      int start = 0;
+      int end = 0;
+      int iStart = (int)(tMin * _samplingRate);
+      int iEnd = (int)(tMax * _samplingRate);
+      if (iEnd > _samples.Length)
+        iEnd = _samples.Length;
+      int cntRangeMax = (int)(0.001 * _samplingRate);
+      for(int i = iStart; i < iEnd; i++)
+      {
+        if ((_samples[i] >= 0.995) || (_samples[i] <= -0.995))
+          cntOv++;
+        else
+        {
+          cntOv = 0;
+          cntRange++;
+        }
+        if (nonOverDrive)
+        {
+          if (cntOv > 0)
+          {
+            start = i;
+            cntRange = 0;
+            nonOverDrive = false;
+          }
+        }
+        else
+        {
+          if (cntRange > cntRangeMax)
+          {
+            end = i;
+            Tuple<int, int> t = new Tuple<int, int>(start, end);
+            _overdrive.Add(t);
+            nonOverDrive = true;
+          }
+        }
+      }
+      return _overdrive.Count > 0;
+    }
+
+    public bool isOverdrive(int idx)
+    {
+      foreach(Tuple<int, int> t in _overdrive)
+      {
+        if((t.Item1 <= idx) && (idx <= t.Item2))
+          return true;
+      }
+      return false;
     }
 
     public void FftForward()

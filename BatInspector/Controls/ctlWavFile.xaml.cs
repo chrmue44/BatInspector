@@ -158,12 +158,12 @@ namespace BatInspector.Controls
       {
         if (_analysis != null)
         {
-          _parent.setZoom(_wavName, _analysis, _wavFilePath, _img.Source);
+          _parent.setZoom(_wavName, _analysis, _wavFilePath, this);
         }
         else
         {
           AnalysisFile ana = new AnalysisFile(_wavName, 383500, 3.001);
-           _parent.setZoom(_wavName, ana, _wavFilePath, _img.Source);
+           _parent.setZoom(_wavName, ana, _wavFilePath, this);
         }
       }
       else

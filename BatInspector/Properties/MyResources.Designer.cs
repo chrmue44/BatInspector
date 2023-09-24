@@ -3076,7 +3076,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to apply bandpass for frequency range indicated by cursors.
+        ///   Looks up a localized string similar to Apply bandpass for frequency range indicated by cursors.
         /// </summary>
         public static string ToolTipBandpass {
             get {
@@ -3085,7 +3085,16 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to decrease dynamic range.
+        ///   Looks up a localized string similar to Cutout and delete range between cursors.
+        /// </summary>
+        public static string ToolTipCutOut {
+            get {
+                return ResourceManager.GetString("ToolTipCutOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease dynamic range.
         /// </summary>
         public static string ToolTipDecRange {
             get {
@@ -3094,7 +3103,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to denoise the current file.
+        ///   Looks up a localized string similar to Denoise the current file.
         /// </summary>
         public static string ToolTipDenoise {
             get {
@@ -3103,7 +3112,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to increase dynamic range.
+        ///   Looks up a localized string similar to Increase dynamic range.
         /// </summary>
         public static string ToolTipIncRange {
             get {

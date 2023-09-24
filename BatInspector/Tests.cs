@@ -103,6 +103,7 @@ namespace BatInspector
       testEffVal();
       //calcNoiseLevel();
       testRulerTicks();
+      testRemoveSection();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -437,6 +438,21 @@ namespace BatInspector
       result.FftBackward();
       string newName = file.Replace(".wav", "_edit.wav");
       result.saveAs(newName, "Records");
+    }
+
+    private void testRemoveSection()
+    {
+      SoundEdit s = new SoundEdit(1, 100);
+      double[] samples = new double[100];
+      for (int i = 0; i < samples.Length; i++)
+      {
+        samples[i] = 0.01 * i;
+      }
+      s.copySamples(samples);
+      s.removeSection(10, 20);
+      assert("Length", s.Samples.Length == 90);
+      assert("sample[11]", s.Samples[11] == 0.21);
+      assert("Last sample", s.Samples[89] == 0.99);
     }
 
     private void testEffVal()

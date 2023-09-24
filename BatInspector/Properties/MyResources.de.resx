@@ -250,10 +250,10 @@
     <value>Gehe nach rechts auf der Zeitachse</value>
   </data>
   <data name="ToolTipIncRange" xml:space="preserve">
-    <value>vergrößere Dynamik-Bereich für Darstellung</value>
+    <value>Vergrößere Dynamik-Bereich für Darstellung</value>
   </data>
   <data name="ToolTipDecRange" xml:space="preserve">
-    <value>verkleinere Dynamik-Bereich für Darstellung</value>
+    <value>Verkleinere Dynamik-Bereich für Darstellung</value>
   </data>
   <data name="ToolTipPlayDispSection" xml:space="preserve">
     <value>Spiele angezeigten Abschnitt ab</value>
@@ -1205,5 +1205,8 @@
   </data>
   <data name="ToolTipNormalizeVol" xml:space="preserve">
     <value>Normalisiere Lautstärke</value>
+  </data>
+  <data name="ToolTipCutOut" xml:space="preserve">
+    <value>Lösche Bereich zwischen Cursoren</value>
   </data>
 </root>

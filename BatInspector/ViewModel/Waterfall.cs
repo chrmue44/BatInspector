@@ -15,7 +15,6 @@ using libParser;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using NAudio.Wave;
-using System.Runtime.InteropServices;
 
 namespace BatInspector
 {
@@ -292,11 +291,11 @@ namespace BatInspector
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int heightXt = (int)AppParams.Inst.WaterfallHeight / XT_TO_FT_RATIO;
-
-      Bitmap bmp = new Bitmap(width, heightXt);
+      bool ovrdrive = _audio.findOverdrive(tMin, tMax);
+      BitmapFast bmp = new BitmapFast(width, heightXt);
       for (int x = 0; x < width; x++)
         for (int y = 0; y < heightXt; y++)
-          bmp.SetPixel(x, y, AppParams.Inst.ColorXtBackground);
+          bmp.setPixel(x, y, AppParams.Inst.ColorXtBackground);
 
       if (_ok)
       {
@@ -316,21 +315,22 @@ namespace BatInspector
         }
 
       }
-      return bmp;
+      return bmp.Bmp;
     }
 
-    void drawLine(int x, int ymin, int ymax, Bitmap bmp) 
+    void drawLine(int x, int ymin, int ymax, BitmapFast bmp, Color color) 
     {
       for (int y = ymin; y <= ymax; y++)
-        bmp.SetPixel(x, y, AppParams.Inst.ColorXtLine);
+        bmp.setPixel(x, y, color);
     }
 
 
-  void plotAsBand(double aMin, double aMax,  int idxMin, int idxMax, Bitmap bmp) 
+  void plotAsBand(double aMin, double aMax,  int idxMin, int idxMax, BitmapFast bmp) 
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int samplesPerPixel = (idxMax - idxMin) / width;
       int heightXt = (int)AppParams.Inst.WaterfallHeight / XT_TO_FT_RATIO;
+      int ovrDriveCnt = 0;
 
       for (int x =0; x < width; x++) 
       {
@@ -353,11 +353,19 @@ namespace BatInspector
           min = aMin;
         int y1 = (int)((1 - (max - aMin) / (aMax - aMin)) * (heightXt-1));
         int y2 = (int)((1 - (min - aMin) / (aMax - aMin)) * (heightXt-1));
-        drawLine(x, y1, y2, bmp);
+        Color color = AppParams.Inst.ColorXtLine;
+        if (_audio.isOverdrive(idx))
+          ovrDriveCnt = 3;
+        if (ovrDriveCnt > 0)
+        {
+          color = Color.Red;
+          ovrDriveCnt--;
+        }
+        drawLine(x, y1, y2, bmp, color);
       }
     }
 
-    void plotAsSinglePixels(double aMin, double aMax, int idxMin, int idxMax, Bitmap bmp)
+    void plotAsSinglePixels(double aMin, double aMax, int idxMin, int idxMax, BitmapFast bmp)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int samplesPerPixel = (idxMax - idxMin) / width;
@@ -367,7 +375,10 @@ namespace BatInspector
       {
         int idx = (idxMax - idxMin) * x / width + idxMin;
         int y1 = (int)((1 - (this._audio.Samples[idx] - aMin) / (aMax - aMin)) * (heightXt - 1));
-        bmp.SetPixel(x, y1, AppParams.Inst.ColorXtLine);
+        Color color = AppParams.Inst.ColorXtLine;
+        if (_audio.isOverdrive(idx))
+          color = Color.Red;
+        bmp.setPixel(x, y1, color);
       }
     }
 

@@ -250,10 +250,10 @@
     <value>Move right (increasing time)</value>
   </data>
   <data name="ToolTipIncRange" xml:space="preserve">
-    <value>increase dynamic range</value>
+    <value>Increase dynamic range</value>
   </data>
   <data name="ToolTipDecRange" xml:space="preserve">
-    <value>decrease dynamic range</value>
+    <value>Decrease dynamic range</value>
   </data>
   <data name="ToolTipPlayDispSection" xml:space="preserve">
     <value>play displayed section</value>
@@ -829,10 +829,10 @@
     <value>Evaluate created Project(s) automatically</value>
   </data>
   <data name="ToolTipDenoise" xml:space="preserve">
-    <value>denoise the current file</value>
+    <value>Denoise the current file</value>
   </data>
   <data name="ToolTipBandpass" xml:space="preserve">
-    <value>apply bandpass for frequency range indicated by cursors</value>
+    <value>Apply bandpass for frequency range indicated by cursors</value>
   </data>
   <data name="ToolTipUndo" xml:space="preserve">
     <value>undo changes</value>
@@ -1205,5 +1205,8 @@
   </data>
   <data name="ToolTipNormalizeVol" xml:space="preserve">
     <value>normalize volume</value>
+  </data>
+  <data name="ToolTipCutOut" xml:space="preserve">
+    <value>Cutout and delete range between cursors</value>
   </data>
 </root>

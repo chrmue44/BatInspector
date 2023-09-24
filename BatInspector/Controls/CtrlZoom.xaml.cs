@@ -6,7 +6,6 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,6 +32,7 @@ namespace BatInspector.Controls
     int _stretch;
     int _oldCallIdx = -1;
     Image[] _playImgs;
+    ctlWavFile _ctlWav = null;
 
     public CtrlZoom()
     {
@@ -118,12 +118,14 @@ namespace BatInspector.Controls
       };
     }
 
-    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, System.Windows.Media.ImageSource img, List<string> species)
+    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, 
+                       List<string> species, ctlWavFile ctlWav)
     {
       int lblWidth = 100;
       InitializeComponent();
       _model = model;
-      _imgFt.Source = img;
+      _ctlWav = ctlWav;
+      _imgFt.Source = (ctlWav != null) ? ctlWav._img.Source : null;
       _model.ZoomView.Analysis = analysis;
       _model.ZoomView.Cursor1.set(0, 0, false);
       _model.ZoomView.Cursor2.set(0, 0, false);
@@ -399,6 +401,8 @@ namespace BatInspector.Controls
       else
         _deltaT.Visibility = Visibility.Hidden;
     }
+
+
     private void drawCursor(int cursorNr)
     {
       Line lx = _cursorX1;
@@ -1228,6 +1232,14 @@ namespace BatInspector.Controls
       {
         _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, 
                                                _model.Prj.WavSubDir);
+        string pngName = _model.ZoomView.Waterfall.WavName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        if (_ctlWav != null)
+        {
+          // delete ixisting PNG to force creation of a new one
+          if (File.Exists(pngName))
+            File.Delete(pngName);
+          _ctlWav._img.Source = _model.getFtImage(_model.ZoomView.Waterfall.WavName);
+        }
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1235,14 +1247,6 @@ namespace BatInspector.Controls
         DebugLog.log("Zoom:Btn 'save' failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
-
-    /*
-    private void _btnDenoise_Click(object sender, RoutedEventArgs e)
-    {
-      _model.ZoomView.denoise();
-      createZoomImg();
-    }
-    */
 
 
     private void _btnBandpass_Click(object sender, RoutedEventArgs e)
@@ -1255,6 +1259,7 @@ namespace BatInspector.Controls
           double fMin = _model.ZoomView.Cursor1.Freq * 1000;
           double fMax = _model.ZoomView.Cursor2.Freq * 1000;
           _model.ZoomView.applyBandpass(fMin, fMax);
+          hideCursors();
           createZoomImg();
         }
         else
@@ -1271,6 +1276,31 @@ namespace BatInspector.Controls
     {
         DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
         _model.ZoomView.reduceNoise();
+    }
+
+    private void _btnCutOut_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
+        {
+          ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+          double tMin = _model.ZoomView.Cursor1.Time;
+          double tMax = _model.ZoomView.Cursor2.Time;
+          _model.ZoomView.removeSection(tMin, tMax);
+          hideCursors();
+          createZoomImg();
+          update();
+        }
+        else
+          MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+        DebugLog.log("Zoom:Btn 'Cutout' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:Btn 'Cutout' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+
     }
 
     private void _btnNormalize_Click(object sender, RoutedEventArgs e)

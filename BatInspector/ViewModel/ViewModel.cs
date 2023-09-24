@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 
@@ -276,64 +277,65 @@ namespace BatInspector
       }
     }
 
-    private void createPng(string fullName, string pngName)
+
+    public void createPng(string wavName, string pngName)
     {
-      Waterfall wf = new Waterfall(fullName, _colorTable);
+      Waterfall wf = new Waterfall(wavName, _colorTable);
       if (wf.Ok)
       {
         wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
         using (Bitmap bmp = wf.generateFtPicture(0, wf.SamplingRate / 2000))
         {
+          if (File.Exists(pngName))
+            File.Delete(pngName);
           bmp.Save(pngName);
         }
       }
       else
-        DebugLog.log("could not create PNG for " + fullName, enLogType.WARNING);
+        DebugLog.log("could not create PNG for " + wavName, enLogType.WARNING);
     }
 
-
-    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec, out bool newImage, bool fromQuery)
+    public BitmapImage getFtImage(string wavName)
     {
       BitmapImage bImg = null;
-      newImage = false;
       string pngName = "";
       try
       {
-        string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
-        pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        pngName = wavName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
         Bitmap bmp = null;
-        newImage = false;
         if (File.Exists(pngName))
-        {
           bmp = new Bitmap(pngName);
-        }
         else
         {
-          Waterfall wf = new Waterfall(fullName, _colorTable);
+          Waterfall wf = new Waterfall(wavName, _colorTable);
           if (wf.Ok)
           {
             wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
             bmp = wf.generateFtPicture(0, wf.SamplingRate / 2000);
             bmp.Save(pngName);
-            newImage = true;
           }
           else
-          {
-            DebugLog.log("File '" + rec.File + "'does not exist, removed from project and report", enLogType.WARNING);
-            if (_prj != null)
-            {
-              _prj.removeFile(rec.File);
-              if(_prj.Analysis?.IsEmpty == false)
-                _prj.Analysis.removeFile(Prj.ReportName, rec.File);
-            }
-          }
+            DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
         }
         if (bmp != null)
           bImg = Convert(bmp);
       }
       catch (Exception ex)
-      { 
+      {
         DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
+      }
+      return bImg;
+    }
+
+    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec,  bool fromQuery)
+    {
+      string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
+      BitmapImage bImg = getFtImage(wavName);
+      if ((bImg == null) && (_prj != null))
+      {
+        _prj.removeFile(rec.File);
+        if (_prj.Analysis?.IsEmpty == false)
+          _prj.Analysis.removeFile(Prj.ReportName, rec.File);
       }
       return bImg;
     }

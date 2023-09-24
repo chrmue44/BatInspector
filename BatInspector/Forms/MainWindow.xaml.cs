@@ -352,20 +352,20 @@ namespace BatInspector.Forms
       }
     }
 
-    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, System.Windows.Media.ImageSource img)
+    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav)
     {
       DebugLog.log("activate zoom view of: " + name, enLogType.DEBUG);
       if (AppParams.Inst.ZoomSeparateWin)
       {
         if (_frmZoom == null)
           _frmZoom = new FrmZoom(_model, closeWindow);
-        _frmZoom.setup(name, analysis, wavFilePath, img);
+        _frmZoom.setup(name, analysis, wavFilePath, ctlWav);
         setZoomPosition();
         _frmZoom.Show();
       }
       else
       {
-        _ctlZoom.setup(analysis, wavFilePath, _model, img, _model.Prj.Species);
+        _ctlZoom.setup(analysis, wavFilePath, _model, _model.Prj.Species, ctlWav);
         _tbZoom.Header = "Zoom: " + name;
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -497,8 +497,7 @@ namespace BatInspector.Forms
 
     void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
     {
-      bool newImage;
-      ctl._img.Source = _model.getFtImage(rec, out newImage, fromQuery);
+      ctl._img.Source = _model.getFtImage(rec, fromQuery);
       ctl._img.MaxHeight = _imgHeight;
       AnalysisFile analysis;
       List<string> species;

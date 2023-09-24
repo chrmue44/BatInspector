@@ -67,7 +67,7 @@ namespace BatInspector.Forms
             w.readFile(fullName);
             double duration = (double)w.AudioSamples.Length / w.FormatChunk.Frequency;
             AnalysisFile ana = new AnalysisFile(fullName, (int)w.FormatChunk.Frequency, duration);
-            _parent.setZoom(wavName, ana, Path.GetDirectoryName(fullName), null);
+            _parent.setZoom(wavName, ana, Path.GetDirectoryName(fullName),  null);
           }
         }
       }

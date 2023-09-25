@@ -244,7 +244,7 @@ namespace BatInspector
         {
           ZoomView.saveWavBackup(name, wavSubDir);
           // force new generation of png by deleting it
-          string pngName = _fName.Replace(".wav", ".png");
+          string pngName = _fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
           if (File.Exists(pngName))
             File.Delete(pngName);
         }

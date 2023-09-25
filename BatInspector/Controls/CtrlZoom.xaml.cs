@@ -1232,7 +1232,7 @@ namespace BatInspector.Controls
       {
         _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, 
                                                _model.Prj.WavSubDir);
-        string pngName = _model.ZoomView.Waterfall.WavName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
         if (_ctlWav != null)
         {
           // delete ixisting PNG to force creation of a new one

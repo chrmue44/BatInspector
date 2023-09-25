@@ -76,7 +76,7 @@ namespace BatInspector
       if (records.Length > 0)
       {
         string fName = getFullFilePath(records[0].File);
-        fName = fName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+        fName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         BatRecord info = ElekonInfoFile.read(fName);
         ElekonInfoFile.parsePosition(info, out double lat, out double lon);
         ParRegion reg = _batSpecRegions.findRegion(lat, lon);
@@ -426,7 +426,7 @@ namespace BatInspector
             {
               string[] xmlFiles = new string[prjFiles.Length];
               for (int i = 0; i < xmlFiles.Length; i++)
-                xmlFiles[i] = prjFiles[i].Replace(".wav", ".xml");
+                xmlFiles[i] = prjFiles[i].ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
               if (info.OverwriteLocation && info.LocSourceGpx)
                 replaceLocations(xmlFiles, wavDir, gpxFile);
               else if (info.OverwriteLocation)
@@ -557,13 +557,13 @@ namespace BatInspector
               File.Copy(name, destDir + "/" + Path.GetFileName(name));
               File.Delete(name);
             }
-            name = name.Replace(".wav", ".xml");
+            name = name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
             if (File.Exists(name))
             {
               File.Copy(name, destDir + "/" + Path.GetFileName(name));
               File.Delete(name);
             }
-            name = name.Replace(".xml", ".png");
+            name = name.Replace(AppParams.EXT_INFO, AppParams.EXT_IMG);
             if (File.Exists(name))
             {
               File.Copy(name, destDir + "/" + Path.GetFileName(name));
@@ -594,7 +594,7 @@ namespace BatInspector
       BatExplorerProjectFileRecordsRecord retVal = null;
       foreach (BatExplorerProjectFileRecordsRecord r in _batExplorerPrj.Records)
       {
-        if (fileName.Contains(r.File))
+        if (fileName.ToLower().Contains(r.File.ToLower()))
         {
           retVal = r;
           break;
@@ -630,7 +630,7 @@ namespace BatInspector
       foreach (string file in files)
       {
         fileList.Add(file);
-        string xmlFile = file.Replace(".wav", ".xml");
+        string xmlFile = file.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         if (File.Exists(xmlFile))
           fileList.Add(xmlFile);
         //string pngFile = file.Replace(".wav", ".png");
@@ -658,10 +658,10 @@ namespace BatInspector
 
     private static void createSplitXmls(string fName, string[] newNames)
     {
-      fName = fName.Replace(".wav", ".xml");
+      fName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
       foreach (string newName in newNames)
       {
-        string xmlName = newName.Replace(".wav", ".xml");
+        string xmlName = newName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         File.Copy(fName, xmlName, true);
       }
     }
@@ -742,7 +742,7 @@ namespace BatInspector
         string fullName = _selectedDir + "/" + _wavSubDir + "/" + record.File;
         if (File.Exists(fullName))
         {
-          if (!replaceAll && File.Exists(fullName.Replace(".wav", ".xml")))
+          if (!replaceAll && File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))
           {
             MessageBoxResult res = MessageBox.Show("Replace all existing info files in this project?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res == MessageBoxResult.Yes)

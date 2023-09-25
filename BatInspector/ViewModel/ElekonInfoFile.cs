@@ -62,7 +62,7 @@ namespace BatInspector
       double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
       batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
       batRecord.DateTime = time.ToString(DATE_FORMAT);
-      string infoName = fileName.Replace(".wav", ".xml");
+      string infoName = fileName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
       ElekonInfoFile.write(infoName, batRecord);
     }
 

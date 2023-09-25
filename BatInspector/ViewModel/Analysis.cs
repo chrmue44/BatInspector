@@ -173,7 +173,7 @@ namespace BatInspector
       AnalysisFile retVal = null;
       foreach (AnalysisFile f in _list)
       {
-        if (f.Name.IndexOf(name) >= 0)
+        if (f.Name.ToLower().IndexOf(name.ToLower()) >= 0)
         {
           retVal = f;
           break;
@@ -598,7 +598,7 @@ namespace BatInspector
         string fName = _csv.getCell(r, Cols.NAME);
         if (fName != oldF)
         {
-          string xmlName = fName.Replace(".wav", ".xml");
+          string xmlName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
           BatRecord rec = ElekonInfoFile.read(xmlName);
           if (rec != null)
           {
@@ -970,7 +970,7 @@ namespace BatInspector
       foreach(AnalysisFile f in list)
       {
         string fileName = f.getString(Cols.NAME);
-        if(fileName.Contains(fName))
+        if(fileName.ToLower().Contains(fName.ToLower()))
         {
           retVal = f;
           break;

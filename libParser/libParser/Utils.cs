@@ -413,5 +413,10 @@ namespace libParser
       double min = (lon - deg) * 60;
       return deg.ToString() + "° " + min.ToString("0.000") + hem;
     }
+
+    public static string replaceExtension(string path, string oldExt, string newExt)
+    {
+      return path.ToLower().Replace(oldExt, newExt);
+    }
   }
 }

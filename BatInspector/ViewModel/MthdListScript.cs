@@ -900,9 +900,9 @@ namespace BatInspector
         }
         if (File.Exists(fName))
         {
-          if (Path.GetExtension(fName) == ".wav")
+          if (Path.GetExtension(fName).ToLower() == AppParams.EXT_WAV)
           {
-            string bakName = fName.Replace(".wav", "_bak.wav");
+            string bakName = fName.ToLower().Replace(AppParams.EXT_WAV, "_bak.wav");
             if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
             {
               string fileName = Path.GetFileName(fName);

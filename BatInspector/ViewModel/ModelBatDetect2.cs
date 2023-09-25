@@ -115,8 +115,8 @@ namespace BatInspector
           foreach (string file in files)
           {
             // read infoFile
-            string wavName = /*wavDir + "/" + */ Path.GetFileName(file).Replace(".csv", "");
-            string infoName = wavDir + "/" + Path.GetFileName(file).Replace(".wav.csv", ".xml");
+            string wavName = /*wavDir + "/" + */ Path.GetFileName(file).ToLower().Replace(".csv", "");
+            string infoName = wavDir + "/" + Path.GetFileName(file).ToLower().Replace(".wav.csv", ".xml");
             string sampleRate = "?";
             string fileLen = "?";
             string recTime = "?";
@@ -134,7 +134,7 @@ namespace BatInspector
             // read annontation for one wav file
             Csv csvAnn = new Csv();
             csvAnn.read(file, ",", true);
-            string fileFeat = file.Replace("wav.csv", "wav_spec_features.csv");
+            string fileFeat = file.ToLower().Replace("wav.csv", "wav_spec_features.csv");
             Csv csvFeat = null;
             if (File.Exists(fileFeat))
             {
@@ -267,7 +267,7 @@ namespace BatInspector
 
     private void outputDataHandler(object sender, DataReceivedEventArgs ev)
     {
-      if (ev.Data?.IndexOf(".wav") > 0)
+      if (ev.Data?.ToLower().IndexOf(AppParams.EXT_WAV) > 0)
       {
         int pos = ev.Data.IndexOf(' ');
         if (pos > 0) 

@@ -3,7 +3,7 @@
 
 #define MyAppName "BatInspector"
 #define MyInstallerName "SetupBatInspector_0700"
-#define MyAppVersion "0.7.7.0"
+#define MyAppVersion "0.7.0.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"

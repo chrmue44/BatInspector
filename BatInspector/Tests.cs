@@ -436,7 +436,7 @@ namespace BatInspector
       result.FftForward();
       result.bandpass(15000, 40000);
       result.FftBackward();
-      string newName = file.Replace(".wav", "_edit.wav");
+      string newName = file.ToLower().Replace(".wav", "_edit.wav");
       result.saveAs(newName, "Records");
     }
 
@@ -518,7 +518,7 @@ namespace BatInspector
           _model.initProject(subDir, null);
           foreach(AnalysisFile f in _model.Prj.Analysis.Files)
           {
-            string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.Replace(".wav", ".xml");
+            string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.ToLower().Replace(".wav", ".xml");
             BatRecord rec = ElekonInfoFile.read(info);
             foreach(AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);

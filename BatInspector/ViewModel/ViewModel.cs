@@ -66,7 +66,6 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
-    string _statusText = null;
 
     public string SelectedDir { get { return _selectedDir; } }
 
@@ -270,7 +269,7 @@ namespace BatInspector
     public void createPngIfMissing(BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
     {
       string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
-      string pngName = fullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+      string pngName = fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       if (!File.Exists(pngName))
       {
         createPng(fullName, pngName);
@@ -301,7 +300,7 @@ namespace BatInspector
       string pngName = "";
       try
       {
-        pngName = wavName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
         Bitmap bmp = null;
         if (File.Exists(pngName))
           bmp = new Bitmap(pngName);
@@ -408,7 +407,7 @@ namespace BatInspector
       {
         string dirName = Path.Combine(_selectedDir, _prj.WavSubDir);
         string delName = System.IO.Path.GetFileName(wavName);
-        delName = delName.Replace(AppParams.EXT_WAV, ".*");
+        delName = delName.ToLower().Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
         string destDir = Path.Combine(SelectedDir, AppParams.DIR_DEL);
         if(!Directory.Exists(destDir))

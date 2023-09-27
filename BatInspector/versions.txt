@@ -5,7 +5,9 @@ V 0.7.0.0  17.09.23
 - new tool in zoom view: normalize volume
 - new tool in zoom view: cutout section (good for removing overdriven parts)
 - support for wav files with 2 channels (will be converted to 1 chan: L + R)
+- Custum window title bar
 - bugfix: support files with upper case ending WAV
+- bugfix: summary: no new line char in weather or landscape cols
 
 V 0.6.5.0  14.09.23
 - Zoomview: remove mean calculation, added call nr to species

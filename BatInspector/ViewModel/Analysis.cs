@@ -562,9 +562,9 @@ namespace BatInspector
         sum.setCell(row, Cols.LON, _list[0].Calls[0].getDouble(Cols.LON));
         string[] note = notes.Split('\n');
         if (note.Length > 0)
-          sum.setCell(row, Cols.WEATHER, note[0]);
+          sum.setCell(row, Cols.WEATHER, note[0].Replace("\n",""));
         if (note.Length > 1)
-          sum.setCell(row, Cols.LANDSCAPE, note[1]);
+          sum.setCell(row, Cols.LANDSCAPE, note[1].Replace("\n",""));
 
         int startTimeCol = sum.findInRow(1, Cols.T18H);
         if (startTimeCol > 0)

@@ -53,18 +53,15 @@ namespace BatInspector.Forms
     frmCleanup _frmCleanup = null;
     FrmMessage _frmMsg = new FrmMessage();
     int _imgHeight = MAX_IMG_HEIGHT;
-
     FrmZoom _frmZoom = null;
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
-    //List<ctlWavFile> _filteredWavs = new List<ctlWavFile>();
     bool _fastOpen = true;
     Thread _workerPredict = null;
     Thread _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
-
 
     public MainWindow()
     {
@@ -83,6 +80,7 @@ namespace BatInspector.Forms
       _model.Status.State = enAppState.IDLE;
       setLanguage();
       InitializeComponent();
+      StateChanged += MainWindowStateChangeRaised;
       _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
       _ctlLog._cbWarn.IsChecked = AppParams.Inst.LogShowWarning;
       _ctlLog._cbInfo.IsChecked = AppParams.Inst.LogShowInfo;
@@ -91,7 +89,7 @@ namespace BatInspector.Forms
       initTreeView();
       populateFilterComboBoxes();
       initZoomWindow();
-      this.Title = versionStr;
+      this._windowTitle.Text = versionStr;
       if ((AppParams.Inst.MainWindowWidth > 100) && (AppParams.Inst.MainWindowHeight > 100))
       {
         this.Width = AppParams.Inst.MainWindowWidth;
@@ -471,7 +469,7 @@ namespace BatInspector.Forms
         Stopwatch s = new Stopwatch();
         s.Start();
         Parallel.ForEach(_model.Prj.Records, rec =>
-        //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+  //      foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           Thread.BeginCriticalRegion();
           _model.createPngIfMissing(rec, false);
@@ -483,15 +481,17 @@ namespace BatInspector.Forms
             s.Restart();
             Thread.Yield();
           }
-        });
+        }
+        );
       }
       else if (_model.Query != null)
       {
         Parallel.ForEach(_model.Query.Records, rec =>
-        //        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+        //foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           _model.createPngIfMissing(rec, true);
-        });
+        }
+        );
       }
     }
 
@@ -1606,6 +1606,55 @@ namespace BatInspector.Forms
         DebugLog.log("Main:BTN Recovery click failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
+
+    #region WindowChrome
+    // Can execute
+    private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = true;
+    }
+
+    // Minimize
+    private void CommandBinding_Executed_Minimize(object sender, ExecutedRoutedEventArgs e)
+    {
+      SystemCommands.MinimizeWindow(this);
+    }
+
+    // Maximize
+    private void CommandBinding_Executed_Maximize(object sender, ExecutedRoutedEventArgs e)
+    {
+      SystemCommands.MaximizeWindow(this);
+    }
+
+    // Restore
+    private void CommandBinding_Executed_Restore(object sender, ExecutedRoutedEventArgs e)
+    {
+      SystemCommands.RestoreWindow(this);
+    }
+
+    // Close
+    private void CommandBinding_Executed_Close(object sender, ExecutedRoutedEventArgs e)
+    {
+      SystemCommands.CloseWindow(this);
+    }
+
+    // State change
+    private void MainWindowStateChangeRaised(object sender, EventArgs e)
+    {
+      if (WindowState == WindowState.Maximized)
+      {
+        MainWindowBorder.BorderThickness = new Thickness(8);
+        RestoreButton.Visibility = Visibility.Visible;
+        MaximizeButton.Visibility = Visibility.Collapsed;
+      }
+      else
+      {
+        MainWindowBorder.BorderThickness = new Thickness(0);
+        RestoreButton.Visibility = Visibility.Collapsed;
+        MaximizeButton.Visibility = Visibility.Visible;
+      }
+    }
+    #endregion
   }
   public enum enWinType
   {

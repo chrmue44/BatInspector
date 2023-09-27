@@ -9,247 +9,336 @@
         xmlns:viewmodel="clr-namespace:BatInspector"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="BatInspector" Height="900" Width="1400"
+        Title="BatInspector" Height="900" Width="1400" MinWidth="1200" MinHeight="640"
         Icon="../images/kopf64.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
+  <WindowChrome.WindowChrome>
+    <WindowChrome CaptionHeight="34" />
+  </WindowChrome.WindowChrome>
+
+  <Window.Resources>
+    <ResourceDictionary>
+
+      <!--Base style for title bar buttons-->
+      <Style x:Key="CaptionButtonStyle" TargetType="Button">
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Button">
+              <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+              </Grid>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter TargetName="LayoutRoot" Property="Background" Value="#E5E5E5"/>
+                  <Setter TargetName="txt" Property="Foreground" Value="#000000"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <!--Minimize-->
+      <Style x:Key="MinimizeButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE949;"/>
+      </Style>
+
+      <!--Maximize-->
+      <Style x:Key="MaximizeButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE739;"/>
+      </Style>
+
+      <!--Restore-->
+      <Style x:Key="RestoreButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE923;"/>
+      </Style>
+
+      <!--Close-->
+      <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE106;"/>
+      </Style>
+
+    </ResourceDictionary>
+  </Window.Resources>
+  <!--Title bar button commands-->
+  <!-- https://www.codeproject.com/Articles/5255192/Use-WindowChrome-to-Customize-the-Title-Bar-in-WPF -->
+  <Window.CommandBindings>
+    <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Close" />
+    <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Maximize" />
+    <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Minimize" />
+    <CommandBinding Command="{x:Static SystemCommands.RestoreWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Restore" />
+  </Window.CommandBindings>
   <Window.DataContext>
     <!--    <controls:DropDownCmds /> -->
     <viewmodel:ScatterDiagram x:Name="_scattDiagram"/>
   </Window.DataContext>
-  <DockPanel>
-    <StatusBar DockPanel.Dock="Bottom" Background="#FF40508D">
-      <TextBlock Name="_lblProject" Text="---" Foreground="White"></TextBlock>
-      <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="White"></TextBlock>
-    </StatusBar>
-    <Grid Name="_grdMain" Background="#FF5D6B99">
+  <Border x:Name="MainWindowBorder" BorderBrush="LightCoral" BorderThickness="0">
+    <Grid x:Name="parentContainer" Background="LightBlue">
       <Grid.RowDefinitions>
-        <RowDefinition Height="44"></RowDefinition>
-        <RowDefinition Height="*" ></RowDefinition>
-        <RowDefinition Height="10"></RowDefinition>
-        <RowDefinition Height="80"></RowDefinition>
+        <RowDefinition Height ="Auto"/>
+        <RowDefinition Height ="*"/>
       </Grid.RowDefinitions>
-            <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
-        <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-          <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
-            <Image Source="../images/icons8-save-48.png"></Image>
-          </Button>
-                    <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Image Source="../images/icons8-save-48-import.png"></Image>
-                    </Button>
-                    <Separator Margin="15,2" Width="3
+
+      <!--Window chrome-->
+      <Grid Grid.Row="0" Height="25" Background="#FF5D6B99">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+          <!--App icon-->
+          <Image Source="/images/kopf64.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+          <TextBlock Name ="_windowTitle" Text="Batinspector" FontFamily="Arial" Foreground="White"  FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
+        </StackPanel>
+
+        <!--Caption buttons-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-2,0,0" >
+          <Button Style="{StaticResource MinimizeButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" 
+                            Command="{x:Static SystemCommands.MinimizeWindowCommand}" Foreground="White"/>
+          <Button x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource RestoreButtonStyle}" 
+                            Command="{x:Static SystemCommands.RestoreWindowCommand}" WindowChrome.IsHitTestVisibleInChrome="True" />
+          <Button x:Name="MaximizeButton" Visibility="Visible" Style="{StaticResource MaximizeButtonStyle}" 
+                            Command="{x:Static SystemCommands.MaximizeWindowCommand}" WindowChrome.IsHitTestVisibleInChrome="True"  />
+          <Button Style="{StaticResource CloseButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" 
+                            Command="{x:Static SystemCommands.CloseWindowCommand}"/>
+        </StackPanel>
+      </Grid>
+      <!-- App Content -->
+      <DockPanel Grid.Row="1">
+        <StatusBar DockPanel.Dock="Bottom" Background="#FF5D6B99" Height="20">
+          <TextBlock Name="_lblProject" Text="---" Foreground="White" Margin="0,-3,0,0" />
+          <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="White" Margin="0,-3,0,0"/>
+        </StatusBar>
+
+        <Grid Name="_grdMain" Background="#FF5D6B99">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="44"></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
+          </Grid.RowDefinitions>
+          <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
+            <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
+              <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
+                <Image Source="../images/icons8-save-48.png"></Image>
+              </Button>
+              <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/icons8-save-48-import.png"></Image>
+              </Button>
+              <Separator Margin="15,2" Width="3
                                "/>
-                    <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/settingscog_87317.png"></Image>
-          </Button>
-          <Button x:Name="_btnColorPal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.MainToolEditColorScheme}" Click="_btnColorPalette_Click">
-            <Image Source="../images/color-palette.png"></Image>
-          </Button>
-          <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="{x:Static res:MyResources.MainToolDefFilters}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/filter.png"></Image>
-          </Button>
-          <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
-          </Button>
-          <Separator Margin="15,2" Width="3"/>
-          <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/magnifying-glass.png"></Image>
-          </Button>
-          <!---
+              <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/settingscog_87317.png"></Image>
+              </Button>
+              <Button x:Name="_btnColorPal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.MainToolEditColorScheme}" Click="_btnColorPalette_Click">
+                <Image Source="../images/color-palette.png"></Image>
+              </Button>
+              <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="{x:Static res:MyResources.MainToolDefFilters}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/filter.png"></Image>
+              </Button>
+              <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
+              </Button>
+              <Separator Margin="15,2" Width="3"/>
+              <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/magnifying-glass.png"></Image>
+              </Button>
+              <!---
           <Button x:Name="_btnFindSpecies" Click="_btnFindSpecies_Click" ToolTip="{x:Static res:MyResources.MainToolFindSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Image Source="../images/Bat_icon-icons.com_Q.png"></Image>
           </Button>
             -->
-          <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/report.png"></Image>
-          </Button>
-          <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/query.png"></Image>
-          </Button>
-                    <Button x:Name="_btnRecovery" Click="_btnRecovery_Click"  ToolTip="{x:Static res:MyResources.MainToolRecovery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Image Source="../images/data-recovery.png"></Image>
-                    </Button>
-                    <Separator Margin="15,2" Width ="3"/>
-          <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/script.png"></Image>
-          </Button>
-          <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/cancel_77947.png"></Image>
-          </Button>
-          <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/debug.png"></Image>
-          </Button>
-          <Separator Margin="15,2" Width="3"/>
-                    <ToggleButton x:Name="_btnTools" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolTools}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <ToggleButton.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <!-- Image Source="mysrc.png" /-->
-                                <Image Source="../images/toolhammerconstruction_81806.png"></Image>
+              <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/report.png"></Image>
+              </Button>
+              <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/query.png"></Image>
+              </Button>
+              <Button x:Name="_btnRecovery" Click="_btnRecovery_Click"  ToolTip="{x:Static res:MyResources.MainToolRecovery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/data-recovery.png"></Image>
+              </Button>
+              <Separator Margin="15,2" Width ="3"/>
+              <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/script.png"></Image>
+              </Button>
+              <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/cancel_77947.png"></Image>
+              </Button>
+              <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/debug.png"></Image>
+              </Button>
+              <Separator Margin="15,2" Width="3"/>
+              <ToggleButton x:Name="_btnTools" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolTools}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <ToggleButton.Content>
+                  <StackPanel Orientation="Horizontal">
+                    <!-- Image Source="mysrc.png" /-->
+                    <Image Source="../images/toolhammerconstruction_81806.png"></Image>
 
-                                <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
-                            </StackPanel>
-                        </ToggleButton.Content>
-                        <ToggleButton.ContextMenu>
-                            <ContextMenu Closed="ContextMenu_Closed" Name="_mnuToolsItems">
-                                <MenuItem Header="Tool1" Click="_mnTool1_Click" Tag="0" />
-                            </ContextMenu>
-                        </ToggleButton.ContextMenu>
-                    </ToggleButton>
+                    <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+                  </StackPanel>
+                </ToggleButton.Content>
+                <ToggleButton.ContextMenu>
+                  <ContextMenu Closed="ContextMenu_Closed" Name="_mnuToolsItems">
+                    <MenuItem Header="Tool1" Click="_mnTool1_Click" Tag="0" />
+                  </ContextMenu>
+                </ToggleButton.ContextMenu>
+              </ToggleButton>
 
-                    <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/wav-file-format-symbol.png"></Image>
-          </Button>
-          <Button x:Name="_btnCleanup" Click="_btnCleanup_Click"  ToolTip="{x:Static res:MyResources.MainToolCleanup}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Image Source="../images/icons8-staubsauger-64.png"/>
-                        
-                    </Button>
-                    <Separator Margin="15,2" Width="3"/>
-          <!---
+              <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/wav-file-format-symbol.png"></Image>
+              </Button>
+              <Button x:Name="_btnCleanup" Click="_btnCleanup_Click"  ToolTip="{x:Static res:MyResources.MainToolCleanup}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/icons8-staubsauger-64.png"/>
+
+              </Button>
+              <Separator Margin="15,2" Width="3"/>
+              <!---
                     <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                     </Button>
      -->
-          <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <ToggleButton.Content>
-              <StackPanel Orientation="Horizontal">
-                <!-- Image Source="mysrc.png" /-->
-                <Image Source="../images/Button_Help_icon_32.png"></Image>
+              <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <ToggleButton.Content>
+                  <StackPanel Orientation="Horizontal">
+                    <!-- Image Source="mysrc.png" /-->
+                    <Image Source="../images/Button_Help_icon_32.png"></Image>
 
-                <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
-              </StackPanel>
-            </ToggleButton.Content>
-            <ToggleButton.ContextMenu>
-              <ContextMenu Closed="ContextMenu_Closed">
-                <MenuItem Header="{x:Static res:MyResources.frmMainSoftwareManual}" Name="_mnHelpSw" Click="_mnHelpSw_Click" />
-                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
-                <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
-              </ContextMenu>
-            </ToggleButton.ContextMenu>
-          </ToggleButton>
+                    <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+                  </StackPanel>
+                </ToggleButton.Content>
+                <ToggleButton.ContextMenu>
+                  <ContextMenu Closed="ContextMenu_Closed">
+                    <MenuItem Header="{x:Static res:MyResources.frmMainSoftwareManual}" Name="_mnHelpSw" Click="_mnHelpSw_Click" />
+                    <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
+                    <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
+                  </ContextMenu>
+                </ToggleButton.ContextMenu>
+              </ToggleButton>
 
-          <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="{x:Static res:MyResources.MainToolShowSoftwareInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/Actions_help_about_icon.png"></Image>
-          </Button>
-        </ToolBar>
-      </ToolBarTray>
-      <Grid Grid.Row="1" Name="_grdCtrl">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*" />
-          <ColumnDefinition Width="8" />
-          <ColumnDefinition Width="5*" />
-        </Grid.ColumnDefinitions>
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="*" ></RowDefinition>
-          </Grid.RowDefinitions>
+              <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="{x:Static res:MyResources.MainToolShowSoftwareInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Image Source="../images/Actions_help_about_icon.png"></Image>
+              </Button>
+            </ToolBar>
+          </ToolBarTray>
+          <Grid Grid.Row="1" Name="_grdCtrl">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*" />
+              <ColumnDefinition Width="8" />
+              <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*" ></RowDefinition>
+              </Grid.RowDefinitions>
 
-          <Label Grid.Row="0" Content="{x:Static res:MyResources.MainSelectFolder}" Background="#FF5D6B99" Foreground="White" VerticalContentAlignment="Center"/>
-          <Grid  Grid.Row="1">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*"/>
-              <RowDefinition Height="155"/>
-            </Grid.RowDefinitions>
-            <TreeView  Name="trvStructure" BorderThickness="0" Grid.Row="0"  TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5"/>
+              <Label Grid.Row="0" Content="{x:Static res:MyResources.MainSelectFolder}" Background="#FF5D6B99" Foreground="White" VerticalContentAlignment="Center"/>
+              <Grid  Grid.Row="1">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="155"/>
+                </Grid.RowDefinitions>
+                <TreeView  Name="trvStructure" BorderThickness="0" Grid.Row="0"  TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5"/>
 
-            <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="1"/>
+                <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="1"/>
+              </Grid>
+            </Grid>
+            <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
+            <TabControl  Grid.Column="2" x:Name="_tbMain"  BorderThickness="0" Margin="0,10,0,0" Background="#FF5D6B99" Template="{DynamicResource TabControlCm}">
+
+              <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0" BorderThickness="0" >
+                <Grid Grid.Column="2" Margin="0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="391*"/>
+                    <ColumnDefinition Width="763*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="26"></RowDefinition>
+                    <RowDefinition Height="3.75"/>
+                    <RowDefinition Height="11*"/>
+                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="628*"/>
+                  </Grid.RowDefinitions>
+
+                  <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="3,5,5,1" Grid.Column="1" Grid.ColumnSpan="2">
+                    <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" />
+                    <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                    <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                    <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"></ComboBox>
+                    <Separator Margin="10,0,5,0" Width="3"  />
+                    <Button x:Name="_btnHideUnSelected" ToolTip="{x:Static res:MyResources.MainToolHideUnsel}" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                    <Button x:Name="_btnShowAll" ToolTip="{x:Static res:MyResources.MainToolBtnShowAll}" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                    <Button x:Name="_btnDelSelected" ToolTip="{x:Static res:MyResources.MainToolBtnDelSel}" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                    <Button x:Name="_btnCopySpec" ToolTip="{x:Static res:MyResources.MainToolCopySelected}" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                    <Separator Margin="10,0,5,0" Width="3"/>
+                    <Button x:Name="_btnCallInfo" ToolTip="{x:Static res:MyResources.MainToolHideCallInfo}" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                    <Button x:Name="_btnSize" ToolTip="{x:Static res:MyResources.MainToolBtnSize}" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                    <Separator Margin="10,0,5,0" Width="3"/>
+                    <Button x:Name="_btnaddFile" ToolTip="{x:Static res:MyResources.MainToolAddFile}" Click ="_btnaddFile_Click" Content="{x:Static res:MyResources.MainBtnAddFile}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
+                  </StackPanel>
+                  <ScrollViewer Grid.Row="2" Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="3" ScrollChanged="ScrollViewer_ScrollChanged" >
+                    <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
+                    </StackPanel>
+                  </ScrollViewer>
+                </Grid>
+              </TabItem>
+              <TabItem Name="_tbReport" Header="{x:Static res:MyResources.MainReportProject}" GotFocus="_tbReport_GotFocus" Margin="0,0,0,0" >
+                <Grid >
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="51*"/>
+                    <ColumnDefinition Width="1099*"/>
+                  </Grid.ColumnDefinitions>
+                  <DataGrid x:Name="_dgData" Margin="0,0,0,0" Grid.ColumnSpan="2" MouseDoubleClick="_dgData_MouseDoubleClick"/>
+                </Grid>
+              </TabItem>
+              <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" GotFocus="_tbSum_GotFocus" >
+                <Grid >
+                  <DataGrid x:Name="_dgSum" Margin="0,0,0,0" />
+                </Grid>
+              </TabItem>
+              <TabItem Name="_tbScatter" Header="{x:Static res:MyResources.frmMainScatterDiagram}" Margin="0,0,0,0"  >
+                <Grid Background="AliceBlue">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+                  <StackPanel Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                      <Label Content="{x:Static res:MyResources.frmMainXAxis}" Width="80" HorizontalContentAlignment="Right"/>
+                      <ComboBox Name="_cbXaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                      <CheckBox Name="_cbFreezeAxis" Content="{x:Static res:MyResources.frmMainFreezeAxes}" Margin="200,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                      <Label Content="{x:Static res:MyResources.frmMainYAxis}" Width="80" HorizontalContentAlignment="Right" />
+                      <ComboBox Name="_cbYaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                      <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right"/>
+                      <ComboBox Name="_cbFilterScatter" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
+                    </StackPanel>
+                  </StackPanel>
+                  <oxy:PlotView Model="{Binding PlotModel}" x:Name="_scatterModel" Grid.Row="1">
+                    <oxy:PlotView.DefaultTrackerTemplate>
+                      <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
+                          <oxy:TrackerControl.Background>
+                            <SolidColorBrush Color="LightBlue" />
+                          </oxy:TrackerControl.Background>
+                          <oxy:TrackerControl.Content>
+                            <TextBlock Text="{Binding}" Margin="7" Foreground="Black" />
+                          </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                      </ControlTemplate>
+                    </oxy:PlotView.DefaultTrackerTemplate>
+                  </oxy:PlotView>
+                </Grid>
+
+              </TabItem>
+            </TabControl>
           </Grid>
+          <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" Margin="0" BorderThickness="0" DragCompleted="_grdSplitterH_DragCompleted"/>
+          <controls:CtlLog x:Name="_ctlLog" Grid.Row="3" Margin="10,0,10,5"/>
         </Grid>
-        <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
-        <TabControl  Grid.Column="2" x:Name="_tbMain"  BorderThickness="0" Margin="0,10,0,0" Background="#FF5D6B99" Template="{DynamicResource TabControlCm}">
-
-          <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0" BorderThickness="0" >
-            <Grid Grid.Column="2" Margin="0">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="391*"/>
-                <ColumnDefinition Width="763*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="26"></RowDefinition>
-                <RowDefinition Height="3.75"/>
-                <RowDefinition Height="11*"/>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="628*"/>
-              </Grid.RowDefinitions>
-
-              <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="3,5,5,1" Grid.Column="1" Grid.ColumnSpan="2">
-                                <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" />
-                                <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                                <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
-                                <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"></ComboBox>
-                                <Separator Margin="10,0,5,0" Width="3"  />
-                <Button x:Name="_btnHideUnSelected" ToolTip="{x:Static res:MyResources.MainToolHideUnsel}" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Button x:Name="_btnShowAll" ToolTip="{x:Static res:MyResources.MainToolBtnShowAll}" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Button x:Name="_btnDelSelected" ToolTip="{x:Static res:MyResources.MainToolBtnDelSel}" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                <Button x:Name="_btnCopySpec" ToolTip="{x:Static res:MyResources.MainToolCopySelected}" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                                <Separator Margin="10,0,5,0" Width="3"/>
-                <Button x:Name="_btnCallInfo" ToolTip="{x:Static res:MyResources.MainToolHideCallInfo}" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                                <Button x:Name="_btnSize" ToolTip="{x:Static res:MyResources.MainToolBtnSize}" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-                                <Separator Margin="10,0,5,0" Width="3"/>
-                <Button x:Name="_btnaddFile" ToolTip="{x:Static res:MyResources.MainToolAddFile}" Click ="_btnaddFile_Click" Content="{x:Static res:MyResources.MainBtnAddFile}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-              </StackPanel>
-              <ScrollViewer Grid.Row="2" Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3" Grid.ColumnSpan="3" ScrollChanged="ScrollViewer_ScrollChanged" >
-                <StackPanel  Name="_spSpectrums" Orientation="Vertical" >
-                </StackPanel>
-              </ScrollViewer>
-            </Grid>
-          </TabItem>
-                    <TabItem Name="_tbReport" Header="{x:Static res:MyResources.MainReportProject}" GotFocus="_tbReport_GotFocus" Margin="0,0,0,0" >
-            <Grid >
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="51*"/>
-                <ColumnDefinition Width="1099*"/>
-              </Grid.ColumnDefinitions>
-              <DataGrid x:Name="_dgData" Margin="0,0,0,10" Grid.ColumnSpan="2" MouseDoubleClick="_dgData_MouseDoubleClick"/>
-            </Grid>
-          </TabItem>
-          <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" GotFocus="_tbSum_GotFocus" >
-            <Grid >
-              <DataGrid x:Name="_dgSum" Margin="0,0,0,10" />
-            </Grid>
-          </TabItem>
-          <TabItem Name="_tbScatter" Header="{x:Static res:MyResources.frmMainScatterDiagram}" Margin="0,0,0,0"  >
-            <Grid Background="AliceBlue">
-              <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-              </Grid.RowDefinitions>
-              <StackPanel Grid.Row="0">
-                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                  <Label Content="{x:Static res:MyResources.frmMainXAxis}" Width="80" HorizontalContentAlignment="Right"/>
-                  <ComboBox Name="_cbXaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                  <CheckBox Name="_cbFreezeAxis" Content="{x:Static res:MyResources.frmMainFreezeAxes}" Margin="200,0,0,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                  <Label Content="{x:Static res:MyResources.frmMainYAxis}" Width="80" HorizontalContentAlignment="Right" />
-                  <ComboBox Name="_cbYaxis" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                  <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right"/>
-                  <ComboBox Name="_cbFilterScatter" Margin="5,0,0,0" SelectionChanged="_cbXaxis_SelectionChanged"/>
-                </StackPanel>
-              </StackPanel>
-              <oxy:PlotView Model="{Binding PlotModel}" x:Name="_scatterModel" Grid.Row="1">
-                <oxy:PlotView.DefaultTrackerTemplate>
-                  <ControlTemplate>
-                    <oxy:TrackerControl Position="{Binding Position}" LineExtents="{Binding PlotModel.PlotArea}">
-                      <oxy:TrackerControl.Background>
-                        <SolidColorBrush Color="LightBlue" />
-                      </oxy:TrackerControl.Background>
-                      <oxy:TrackerControl.Content>
-                        <TextBlock Text="{Binding}" Margin="7" Foreground="Black" />
-                      </oxy:TrackerControl.Content>
-                    </oxy:TrackerControl>
-                  </ControlTemplate>
-                </oxy:PlotView.DefaultTrackerTemplate>
-              </oxy:PlotView>
-            </Grid>
-
-          </TabItem>
-        </TabControl>
-      </Grid>
-      <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" Margin="0" BorderThickness="0" DragCompleted="_grdSplitterH_DragCompleted"/>
-      <controls:CtlLog x:Name="_ctlLog" Grid.Row="3" Margin="10,0,10,5"/>
+      </DockPanel>
     </Grid>
-  </DockPanel>
+  </Border>
 </Window>

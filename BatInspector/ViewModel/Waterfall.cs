@@ -115,8 +115,8 @@ namespace BatInspector
         int max = (int)(idxEnd - idxStart) / (int)step;
         for (int i = 0; i < max; i++)
           _spec.Add(null);
-        if (FFT_W3)
-        {
+/*        if (FFT_W3)   // not too helpul here
+        { */
           for (int i = 0; i < max; i++)
           {
             int idx = idxStart + i * step;
@@ -126,7 +126,7 @@ namespace BatInspector
               _spec[i] = sp;
             }
           }
-        }
+   /*     }
         else
         {
           Parallel.For(0, max, i =>
@@ -138,7 +138,7 @@ namespace BatInspector
               _spec[i] = sp;
             }
           });
-        }
+        } */
         sw.Stop();
       }
       else

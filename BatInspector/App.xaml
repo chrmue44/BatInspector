@@ -4,6 +4,16 @@
              xmlns:local="clr-namespace:BatInspector"
              >
     <Application.Resources>
+    <SolidColorBrush x:Key="colorBackGround" Color="#FFF7F9FE" />
+    <SolidColorBrush x:Key="colorBackGroundCheckB" Color="White"/>
+    <SolidColorBrush x:Key="colorBackGroundTextB" Color="White"/>
+    <SolidColorBrush x:Key="colorBackGroundWindow" Color="#FF5D6B99"/>
+    <SolidColorBrush x:Key="colorForeGroundWindow" Color="White" />
+    <SolidColorBrush x:Key="colorBackGroundToolB" Color="#FFCCD5F0" />
+    <SolidColorBrush x:Key="colorBackGroundButton" Color="#FF95A4D3" />
+    <SolidColorBrush x:Key="colorForeGroundButton" Color="White" />
+    <SolidColorBrush x:Key="colorForeGroundLabel" Color="Black" />
+
     <Style TargetType="GroupBox">
       <Setter Property="Background" Value="#FFF7F9FE"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -16,28 +26,28 @@
             </Setter>
         </Style>
         <Style TargetType="Grid">
-      <Setter Property="Background" Value="#FFF7F9FE"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
     </Style>
     <Style TargetType="CheckBox">
-      <Setter Property="Background" Value="White"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundCheckB}"/>
     </Style>
     <Style TargetType="TreeView">
-      <Setter Property="Background" Value="#FFF7F9FE"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
     </Style>
     <Style TargetType="TextBox">
-      <Setter Property="Background" Value="White"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundTextB}"/>
     </Style>
     <Style TargetType="Window">
-      <Setter Property="Background" Value="#FF5D6B99" />
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundWindow}" />
     </Style>
     <Style TargetType="GridSplitter">
-      <Setter Property="Background" Value="#FF5D6B99"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundWindow}"/>
     </Style>
     <Style TargetType="ToolBar">
-      <Setter Property="Background" Value="#FFCCD5F0"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundToolB}"/>
     </Style>
     <Style TargetType="ToolBarTray">
-      <Setter Property="Background" Value="#FFCCD5F0"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundToolB}"/>
     </Style>
  
     <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
@@ -75,13 +85,13 @@
         </Grid>
     </ControlTemplate>
     <Style TargetType="Label">
-      <Setter Property="Background" Value="#FFF7F9FE"/>
-      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
+      <Setter Property="Foreground" Value="{DynamicResource colorForeGroundLabel}"/>
     </Style>
 
     <Style TargetType="Button">
-      <Setter Property="Background" Value="#FF95A4D3"/>
-      <Setter Property="Foreground" Value="#FFFFFFFF" />
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundButton}"/>
+      <Setter Property="Foreground" Value="{DynamicResource colorForeGroundButton}" />
       <Setter Property="Padding"    Value="6,0,6,0" />
       <Style.Resources>
         <Style TargetType="Border">
@@ -111,7 +121,7 @@
                 <Grid>
                   <Border x:Name="border" 
                                             CornerRadius="5,5,0,0"
-                                            Background="#FF5D6B99" Margin="1,0,1,0"/>
+                                            Background="{DynamicResource colorBackGroundWindow}" Margin="1,0,1,0"/>
                 </Grid>
                 <ContentPresenter ContentSource="Header"
                                                       HorizontalAlignment="Center"
@@ -122,8 +132,8 @@
               <Trigger Property="IsSelected"
                                      Value="False">
                 <Setter TargetName="border"
-                                        Property="Background" Value="#FFCCD5F0" />
-                <Setter Property="Foreground" Value="Black" />
+                                        Property="Background" Value="{DynamicResource colorBackGroundToolB}" />
+                <Setter Property="Foreground" Value="{DynamicResource colorForeGroundLabel}" />
 
                 <Setter Property="Height" Value="20"/>
               </Trigger>
@@ -131,7 +141,7 @@
                                      Value="True">
                 <Setter TargetName="border"
                                         Property="Background"
-                                        Value="#FF5D6B99" />
+                                        Value="{DynamicResource colorBackGroundWindow}" />
                 <Setter Property="Foreground" Value="White" />
                 <Setter Property="Height" Value="24"/>
               </Trigger>

@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:BatInspector.Properties" 
-        xmlns:forms="clr-namespace:BatInspector.Forms"
         xmlns:controls="clr-namespace:BatInspector.Controls"
         xmlns:viewmodel="clr-namespace:BatInspector"
         xmlns:oxy="http://oxyplot.org/wpf"
@@ -82,7 +81,7 @@
       </Grid.RowDefinitions>
 
       <!--Window chrome-->
-      <Grid Grid.Row="0" Height="25" Background="#FF5D6B99">
+      <Grid Grid.Row="0" Height="25" Background="{DynamicResource colorBackGroundWindow}">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
           <!--App icon-->
           <Image Source="/images/kopf64.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -103,12 +102,12 @@
       </Grid>
       <!-- App Content -->
       <DockPanel Grid.Row="1">
-        <StatusBar DockPanel.Dock="Bottom" Background="#FF5D6B99" Height="20">
-          <TextBlock Name="_lblProject" Text="---" Foreground="White" Margin="0,-3,0,0" />
-          <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="White" Margin="0,-3,0,0"/>
+        <StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource colorBackGroundWindow}" Height="20">
+          <TextBlock Name="_lblProject" Text="---" Foreground="{DynamicResource colorForeGroundWindow}" Margin="0,-3,0,0" />
+          <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="{DynamicResource colorForeGroundWindow}" Margin="0,-3,0,0"/>
         </StatusBar>
 
-        <Grid Name="_grdMain" Background="#FF5D6B99">
+        <Grid Name="_grdMain" Background="{DynamicResource colorBackGroundWindow}">
           <Grid.RowDefinitions>
             <RowDefinition Height="44"></RowDefinition>
             <RowDefinition Height="*" ></RowDefinition>
@@ -172,7 +171,7 @@
                     <!-- Image Source="mysrc.png" /-->
                     <Image Source="../images/toolhammerconstruction_81806.png"></Image>
 
-                    <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+                    <Path Margin="4" Width="5" Fill="{DynamicResource colorForeGroundLabel}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
                   </StackPanel>
                 </ToggleButton.Content>
                 <ToggleButton.ContextMenu>
@@ -190,18 +189,14 @@
 
               </Button>
               <Separator Margin="15,2" Width="3"/>
-              <!---
-                    <Button x:Name="_btnRefresh" Click="_btnRefresh_Click"  ToolTip="{x:Static res:MyResources.MainToolRefresh}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Image Source="../images/vcsupdaterequired_93493.png"></Image>
-                    </Button>
-     -->
+    
               <ToggleButton x:Name="_btnHelp" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolHelp}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <ToggleButton.Content>
                   <StackPanel Orientation="Horizontal">
                     <!-- Image Source="mysrc.png" /-->
                     <Image Source="../images/Button_Help_icon_32.png"></Image>
 
-                    <Path Margin="4" Width="5" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+                    <Path Margin="4" Width="5" Fill="{DynamicResource colorForeGroundLabel}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
                   </StackPanel>
                 </ToggleButton.Content>
                 <ToggleButton.ContextMenu>
@@ -230,7 +225,7 @@
                 <RowDefinition Height="*" ></RowDefinition>
               </Grid.RowDefinitions>
 
-              <Label Grid.Row="0" Content="{x:Static res:MyResources.MainSelectFolder}" Background="#FF5D6B99" Foreground="White" VerticalContentAlignment="Center"/>
+              <Label Grid.Row="0" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center"/>
               <Grid  Grid.Row="1">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="*"/>
@@ -242,7 +237,7 @@
               </Grid>
             </Grid>
             <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
-            <TabControl  Grid.Column="2" x:Name="_tbMain"  BorderThickness="0" Margin="0,10,0,0" Background="#FF5D6B99" Template="{DynamicResource TabControlCm}">
+            <TabControl  Grid.Column="2" x:Name="_tbMain"  BorderThickness="0" Margin="0,10,0,0" Background="{DynamicResource colorBackGroundWindow}" Template="{DynamicResource TabControlCm}">
 
               <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0" BorderThickness="0" >
                 <Grid Grid.Column="2" Margin="0">
@@ -262,7 +257,7 @@
                   <StackPanel Grid.Row ="0"  Orientation="Horizontal" Margin="3,5,5,1" Grid.Column="1" Grid.ColumnSpan="2">
                     <Button x:Name="_btnAll"  ToolTip="{x:Static res:MyResources.MainToolBtnAll}" Click ="_btnAll_Click" Content="{x:Static res:MyResources.MainBtnAll}" HorizontalAlignment="Left" />
                     <Button x:Name="_btnNone" ToolTip="{x:Static res:MyResources.MainToolBtnNone}" Click="_btnNone_Click" Content="{x:Static res:MyResources.MainBtnNone}" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                    <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Margin="5,0,0,0" Text="{x:Static res:MyResources.MainFilter}" Foreground="{DynamicResource colorForeGroundLabel}" VerticalAlignment="Center"></TextBlock>
                     <ComboBox Name="_cbFilter" ToolTip="{x:Static res:MyResources.MainToolFilter}" Margin="5,0,0,0" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"></ComboBox>
                     <Separator Margin="10,0,5,0" Width="3"  />
                     <Button x:Name="_btnHideUnSelected" ToolTip="{x:Static res:MyResources.MainToolHideUnsel}" Click="_btnHideUnSelected_Click" Content="{x:Static res:MyResources.MainBtnHideUnselected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
@@ -324,7 +319,7 @@
                             <SolidColorBrush Color="LightBlue" />
                           </oxy:TrackerControl.Background>
                           <oxy:TrackerControl.Content>
-                            <TextBlock Text="{Binding}" Margin="7" Foreground="Black" />
+                            <TextBlock Text="{Binding}" Margin="7" Foreground="{DynamicResource colorForeGroundLabel}" />
                           </oxy:TrackerControl.Content>
                         </oxy:TrackerControl>
                       </ControlTemplate>

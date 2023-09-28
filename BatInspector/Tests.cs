@@ -403,7 +403,6 @@ namespace BatInspector
       double[] samples = new double[size];
       int scale = 100;
       Random random = new Random();
-      BioAcoustics.initFft(size, enWIN_TYPE.HANN);
       Csv src = new Csv();
       for (int i = 0; i < size; i++)
       {
@@ -413,9 +412,11 @@ namespace BatInspector
         src.setCell(i, 1, samples[i]);
       }
       src.saveAs("src.csv");
-      double[] specC = BioAcoustics.calculateFftComplexOut(samples);
+      int handle = BioAcoustics.getFft(size, enWIN_TYPE.HANN);
+      double[] specC = BioAcoustics.calculateFftComplexOut(handle, samples);
       BioAcoustics.applyBandpassFilterComplex(ref specC, 2, 10, 256);
-      double[] reversed = BioAcoustics.calculateFftReversed(specC);
+      handle = BioAcoustics.getFft(size, enWIN_TYPE.HANN);
+      double[] reversed = BioAcoustics.calculateFftReversed(handle, specC);
       Csv csv = new Csv();
       for (int i = 0; i < reversed.Length; i++)
       {

@@ -191,42 +191,43 @@ namespace BatInspector
 
     public static double[] calculateFft(int size, enWIN_TYPE window, int[] samples)
     {
+      int handle = getFft((uint)size, window);
       double[] retVal = new double[size / 2];
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal));
-      calcFftInt(samples, ref buffer);
+      calcFftInt(handle, samples, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size);
       Marshal.FreeCoTaskMem(buffer);
       return retVal;
     }
 
-    public static double[] calculateFft(double[] samples)
+    public static double[] calculateFft(int handle, double[] samples)
     {
-      int size = getFftSize();
+      int size = getFftSize(handle);
       double[] retVal = new double[size / 2];
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size / 2 + 100);
-      calcFftDouble(samples, ref buffer);
+      calcFftDouble(handle,samples, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size / 2);
       Marshal.FreeCoTaskMem(buffer);
       return retVal;
     }
 
-    public static double[] calculateFftComplexOut(double[] samples)
+    public static double[] calculateFftComplexOut(int handle, double[] samples)
     {
-      int size = getFftSize();
+      int size = getFftSize(handle);
       double[] retVal = new double[size];
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size + 100);
-      calcFftComplexOut(samples, ref buffer);
+      calcFftComplexOut(handle, samples, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size);
       Marshal.FreeCoTaskMem(buffer);
       return retVal;
     }
 
-    public static double[] calculateFftReversed(double[] spec)
+    public static double[] calculateFftReversed(int handle, double[] spec)
     {
-      int size = getFftSize();
+      int size = getFftSize(handle);
       double[] retVal = new double[size];
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size + 100);
-      calcFftInverseComplex(spec, ref buffer);
+      calcFftInverseComplex(handle, spec, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size);
       Marshal.FreeCoTaskMem(buffer);
       return retVal;
@@ -292,24 +293,24 @@ namespace BatInspector
     static extern void releaseMemory();
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern void calcFftInt(int[] samples, ref IntPtr spectrum);
+    static public extern void calcFftInt(int handle, int[] samples, ref IntPtr spectrum);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern void initFft(uint size, enWIN_TYPE win);
+    static public extern int getFft(uint size, enWIN_TYPE win);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern void calcFftDouble(double[] samples, ref IntPtr spectrum);
+    static public extern void calcFftDouble(int handle, double[] samples, ref IntPtr spectrum);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern void calcFftComplexOut(double[] samples, ref IntPtr spectrum);
+    static public extern void calcFftComplexOut(int handle, double[] samples, ref IntPtr spectrum);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern void calcFftInverse(double[] spectrum, ref IntPtr samples);
+    static public extern void calcFftInverse(int handle, double[] spectrum, ref IntPtr samples);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern void calcFftInverseComplex(double[] spectrum, ref IntPtr samples);
+    static public extern void calcFftInverseComplex(int handle, double[] spectrum, ref IntPtr samples);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern int getFftSize();
+    static public extern int getFftSize(int handle);
   }
 }

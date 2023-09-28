@@ -20,7 +20,7 @@ namespace BatInspector
 {
   public class Waterfall
   {
-    const bool FFT_W3 = false;  // FFT_W3:(no multithreading) 143 ms, DSPLib (with multithreading): 50ms
+    const bool FFT_W3 = true;  // FFT_W3:(no multithreading) 143 ms, DSPLib (with multithreading): 50ms
     const int XT_TO_FT_RATIO = 5;
     string _wavName;
     SoundEdit _audio;
@@ -73,10 +73,6 @@ namespace BatInspector
       _spec = new List<double[]>();
       _maxAmplitude = _minAmplitude;
       _audio = new SoundEdit(384000, (int)AppParams.Inst.FftWidth);
-      if(FFT_W3)
-      {
-        BioAcoustics.initFft(AppParams.Inst.FftWidth, enWIN_TYPE.HANN);
-      }
       if (File.Exists(_wavName))
       {
         _ok = _audio.readWav(wavName) == 0;
@@ -115,30 +111,17 @@ namespace BatInspector
         int max = (int)(idxEnd - idxStart) / (int)step;
         for (int i = 0; i < max; i++)
           _spec.Add(null);
-/*        if (FFT_W3)   // not too helpul here
-        { */
-          for (int i = 0; i < max; i++)
-          {
-            int idx = idxStart + i * step;
-            if (idx >= 0)
-            {
-              double[] sp = generateFft(idx, (int)fftSize, AppParams.Inst.FftWindow);
-              _spec[i] = sp;
-            }
-          }
-   /*     }
-        else
+
+        Parallel.For(0, max, i =>
         {
-          Parallel.For(0, max, i =>
+          int idx = idxStart + i * step;
+          if (idx >= 0)
           {
-            int idx = idxStart + i * step;
-            if (idx >= 0)
-            {
-              double[] sp = generateFft(idx, (int)fftSize, AppParams.Inst.FftWindow);
-              _spec[i] = sp;
-            }
-          });
-        } */
+            double[] sp = generateFft(idx, (int)fftSize, AppParams.Inst.FftWindow);
+            _spec[i] = sp;
+          }
+        }
+        );
         sw.Stop();
       }
       else
@@ -206,7 +189,15 @@ namespace BatInspector
       double wScaleFactor = 1.0;
       if (FFT_W3)
       {
-        lmSpectrum = BioAcoustics.calculateFft(inputSignal); 
+        enWIN_TYPE win = enWIN_TYPE.HANN;
+        switch(window)
+        {
+          case DSP.Window.Type.None:
+            win = enWIN_TYPE.NONE;
+            break;
+        }
+        int handle = BioAcoustics.getFft((uint)length, win);
+        lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal); 
       }
       else
       {

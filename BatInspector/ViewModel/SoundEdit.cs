@@ -48,6 +48,8 @@ namespace BatInspector
     public double[] Samples { get { return _samples; }   }
 
     public int SamplingRate {  get{ return  _samplingRate; } }
+
+    /*
     public void expandSamples(double[] samples, int size)
     {
       _samples = new double[size];
@@ -62,6 +64,7 @@ namespace BatInspector
       } while (iDst < samples.Length);
       initFft();
     }
+    */
 
     public void applyThresholdToSpectrum(double thresh)
     {
@@ -165,8 +168,8 @@ namespace BatInspector
 
     public void FftForward()
     {
-      initFft();
-      _spectrum = BioAcoustics.calculateFftComplexOut(_samples);
+      int handle = initFft();
+      _spectrum = BioAcoustics.calculateFftComplexOut(handle, _samples);
     }
 
     public void copySamples(short[] samples)
@@ -197,8 +200,8 @@ namespace BatInspector
 
     public void FftBackward()
     {
-      initFft();  
-      _samples = BioAcoustics.calculateFftReversed(_spectrum);
+      int handle = initFft();  
+      _samples = BioAcoustics.calculateFftReversed(handle, _spectrum);
     }
 
     /// <summary>
@@ -344,13 +347,10 @@ namespace BatInspector
       }
     }
 
-    void initFft()
+    int initFft()
     {
-      if (!_fftInitDone)
-      {
-        BioAcoustics.initFft((uint)_size, enWIN_TYPE.NONE);
-        _fftInitDone = true;
-      }
+      int retVal = BioAcoustics.getFft((uint)_size, enWIN_TYPE.NONE);
+      return retVal;
     }
 
     void findMaxPower(out double p, out double f)

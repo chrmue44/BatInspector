@@ -39,9 +39,9 @@ public:
     NONE = 3
   };
 
-  FFT();
   FFT(size_t fft_sz, WIN_TYPE win_type);
   ~FFT();
+  FFT();
 
   std::vector<double> m_magnitude, m_original, m_transformed;
 
@@ -50,16 +50,22 @@ public:
   void implReverse(std::size_t seek, const std::vector<double>& samples);
   void set_plan(const size_t &fft_sz);
   void set_window(const FFT::WIN_TYPE& win_type);
-
-  std::size_t fft_size;
   double getNormFactor() { return m_normalise; }
+  std::size_t getSize() { return m_fftSize; }
+  WIN_TYPE getWinType() { return m_winType; }
+  bool inUse() { return m_inUse; }
+  void lock() { m_inUse = true; }
+  void unlock() { m_inUse = false; }
+
 
 private:
   double m_normalise, m_z;
   std::vector<double> m_window;
+  std::size_t m_fftSize;
   fftw_plan m_plan;
   fftw_plan m_planInv;
-
+  WIN_TYPE m_winType;
+  bool m_inUse = false;
   void blackman_harris_4 (const size_t fft_sz);
   void blackman_harris_7 (const size_t fft_sz);
   void hann (const size_t fft_sz);

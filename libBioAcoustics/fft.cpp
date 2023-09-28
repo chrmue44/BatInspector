@@ -30,8 +30,8 @@ FFT::~FFT() { fftw_destroy_plan(m_plan); }
 
 FFT::FFT(size_t fft_sz, FFT::WIN_TYPE win_type)
 {
-  this->fft_size = fft_sz;
-
+  m_fftSize = fft_sz;
+  m_winType = win_type;
   set_window(win_type);
   set_plan(fft_sz);
 }
@@ -47,22 +47,22 @@ void FFT::set_plan(const size_t &fft_sz)
 
 void FFT::set_window(const WIN_TYPE& win_type)
 {
-  m_window.resize(fft_size, 0);
-  m_z = M_PI / (fft_size-1);
+  m_window.resize(m_fftSize, 0);
+  m_z = M_PI / (m_fftSize-1);
 
   switch(win_type)
   {
   case WIN_TYPE::BLACKMAN_HARRIS_4 :
-    blackman_harris_4 (fft_size);
+    blackman_harris_4 (m_fftSize);
     break;
   case WIN_TYPE::BLACKMAN_HARRIS_7 :
-    blackman_harris_7 (fft_size);
+    blackman_harris_7 (m_fftSize);
     break;
   case WIN_TYPE::HANN :
-    hann (fft_size);
+    hann (m_fftSize);
     break;
   case WIN_TYPE::NONE:
-    none(fft_size);
+    none(m_fftSize);
     break;
   }
 
@@ -143,7 +143,7 @@ void FFT::implForwardInt(std::size_t seek, const std::vector<int>& samples)
   std::fill(m_original.begin(), m_original.end(), 0.0);
   std::fill(m_transformed.begin(), m_transformed.end(), 0.0);
 
-  for (size_t i = 0; i < fft_size; i++, seek++)
+  for (size_t i = 0; i < m_fftSize; i++, seek++)
   {
     if (seek < N)
     {
@@ -152,9 +152,9 @@ void FFT::implForwardInt(std::size_t seek, const std::vector<int>& samples)
   }
 
   fftw_execute(m_plan);
-  size_t sk = fft_size;
+  size_t sk = m_fftSize;
 
-  for (size_t i = 0; i < fft_size / 2; i++)
+  for (size_t i = 0; i < m_fftSize / 2; i++)
   {
     m_magnitude[i] = std::abs(std::complex<double>(m_transformed[i], m_transformed[--sk])) * m_normalise;
   }
@@ -167,7 +167,7 @@ void FFT::implForwardDouble(std::size_t seek, const std::vector<double>& samples
   std::fill(m_original.begin(), m_original.end(), 0.0);
   std::fill(m_transformed.begin(), m_transformed.end(), 0.0);
 
-  for (size_t i = 0; i < fft_size; i++, seek++)
+  for (size_t i = 0; i < m_fftSize; i++, seek++)
   {
     if (seek < N)
     {
@@ -176,9 +176,9 @@ void FFT::implForwardDouble(std::size_t seek, const std::vector<double>& samples
   }
 
   fftw_execute(m_plan);
-  size_t sk = fft_size;
+  size_t sk = m_fftSize;
 
-  for (size_t i = 0; i < fft_size / 2; i++)
+  for (size_t i = 0; i < m_fftSize / 2; i++)
   {
     m_magnitude[i] = std::abs(std::complex<double>(m_transformed[i], m_transformed[--sk])) * m_normalise;
   }
@@ -192,7 +192,7 @@ void FFT::implReverse(std::size_t seek, const std::vector<double>& spectrum)
   std::fill(m_original.begin(), m_original.end(), 0.0);
   std::fill(m_transformed.begin(), m_transformed.end(), 0.0);
 
-  for (size_t i = 0; i < fft_size; i++, seek++)
+  for (size_t i = 0; i < m_fftSize; i++, seek++)
   {
     if (seek < N)
     {
@@ -201,7 +201,7 @@ void FFT::implReverse(std::size_t seek, const std::vector<double>& spectrum)
   }
 
   fftw_execute(m_planInv);
-  for (size_t i = 0; i < fft_size; i++, seek++)
+  for (size_t i = 0; i < m_fftSize; i++, seek++)
   {
     m_transformed[i] = m_transformed[i] / m_window[i];
   }

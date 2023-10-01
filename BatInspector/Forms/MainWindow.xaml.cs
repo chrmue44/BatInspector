@@ -363,7 +363,7 @@ namespace BatInspector.Forms
       }
       else
       {
-        _ctlZoom.setup(analysis, wavFilePath, _model, _model.Prj.Species, ctlWav);
+        _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav);
         _tbZoom.Header = "Zoom: " + name;
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -448,7 +448,7 @@ namespace BatInspector.Forms
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.Invoke(new dlgProgress(worker_ProgressChanged));
+        Dispatcher.BeginInvoke(new dlgProgress(worker_ProgressChanged));
       }
       this.setStatus(pngName);
 
@@ -540,11 +540,11 @@ namespace BatInspector.Forms
         {
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this, true);
           DockPanel.SetDock(ctl, Dock.Bottom);
-          _spSpectrums.Dispatcher.Invoke(() =>
+          _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
           {
             _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
-          });
+          }));
 
           if (!_fastOpen || (ctl.Index < 5))
           {
@@ -563,11 +563,11 @@ namespace BatInspector.Forms
         {
           ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this, false);
           DockPanel.SetDock(ctl, Dock.Bottom);
-          _spSpectrums.Dispatcher.Invoke(() =>
+          _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
           {
             _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
-          });
+          }));
 
           if (!_fastOpen || (ctl.Index < 5))
           {
@@ -724,19 +724,19 @@ namespace BatInspector.Forms
 
     void showMsg(string title, string msg, bool topmost = false)
     {
-      Application.Current.Dispatcher.Invoke(() =>
+      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         _frmMsg.showMessage(title, msg, topmost);
         _frmMsg.Visibility = Visibility.Visible;
-      }, DispatcherPriority.Send);
+      }), DispatcherPriority.Send);
     }
 
     void hideMsg()
     {
-      Application.Current.Dispatcher.Invoke(() =>
+      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         _frmMsg.Visibility = Visibility.Hidden;
-      }, DispatcherPriority.ContextIdle);
+      }), DispatcherPriority.ContextIdle);
     }
 
     private void workerPrediction()
@@ -1083,13 +1083,13 @@ namespace BatInspector.Forms
 
     void setMouseStatus()
     {
-      Application.Current.Dispatcher.Invoke(() =>
+      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         if (_model.Busy)
           Mouse.OverrideCursor = Cursors.Wait;
         else
           Mouse.OverrideCursor = null;
-      });
+      }));
     }
 
     private void timer_Tick(object sender, EventArgs e)

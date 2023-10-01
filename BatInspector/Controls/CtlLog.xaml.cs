@@ -37,7 +37,7 @@ namespace BatInspector.Controls
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.Invoke(new delegateLogEntry(log), entry);
+        Dispatcher.BeginInvoke(new delegateLogEntry(log), entry);
         return;
       }
       if (
@@ -69,7 +69,7 @@ namespace BatInspector.Controls
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.Invoke(new delegateLogClear(clearLog));
+        Dispatcher.BeginInvoke(new delegateLogClear(clearLog));
         return;
       }
       _spEntries.Children.Clear();

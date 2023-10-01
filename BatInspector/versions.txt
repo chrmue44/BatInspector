@@ -1,4 +1,4 @@
-V 0.7.0.0  17.09.23
+V 0.7.0.0  01.10.23
 - probability for auto species is shown in zoom view
 - overdriven parts of recording show in red in XT graph
 - new tool in zoom view: noise reduction
@@ -9,6 +9,7 @@ V 0.7.0.0  17.09.23
 - Custum window title bar
 - bugfix: support files with upper case ending WAV
 - bugfix: summary: no new line char in weather or landscape cols
+- bugifx: crash zoomview in query mode
 
 V 0.6.5.0  14.09.23
 - Zoomview: remove mean calculation, added call nr to species

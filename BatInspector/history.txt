@@ -2,6 +2,7 @@ TODO
 - GUI themes 
 - progress bar for long running tasks
 - species comparison
+- remove overdriven calls from report
 
 21.08.23 V 0.5.0
 - installer for the software

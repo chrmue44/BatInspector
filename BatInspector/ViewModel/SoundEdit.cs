@@ -166,6 +166,17 @@ namespace BatInspector
       return false;
     }
 
+    public bool isOverdrive(int idxS, int idxE)
+    {
+      foreach (Tuple<int, int> t in _overdrive)
+      {
+        if ((idxE >= t.Item1) && (idxE <= t.Item2) || (idxS >= t.Item1) && (idxS <= t.Item2) || 
+            (t.Item1 >= idxS) && (t.Item1 <= idxE) || (t.Item2 >= idxS) && (t.Item2 <= idxE))
+          return true;
+      }
+      return false;
+    }
+
     public void FftForward()
     {
       int handle = initFft();
@@ -215,19 +226,22 @@ namespace BatInspector
       int retVal = 0;
       WavFile inFile = new WavFile();
       retVal = inFile.readFile(name, ref _samples);
-      _samplingRate = (int)inFile.FormatChunk.Frequency;
-      _size = _samples.Length;
-      if ((_originalSamples == null) || !keepOriginal)
-      {
-        _originalSamples = new double[_samples.Length];
-        Array.Copy(_samples, _originalSamples, _samples.Length);
-      }
       if (retVal == 0)
       {
-        _fName = name;
         _samplingRate = (int)inFile.FormatChunk.Frequency;
-        _size = inFile.AudioSamples.Length;
-        _fftInitDone = false;
+        _size = _samples.Length;
+        if ((_originalSamples == null) || !keepOriginal)
+        {
+          _originalSamples = new double[_samples.Length];
+          Array.Copy(_samples, _originalSamples, _samples.Length);
+        }
+        if (retVal == 0)
+        {
+          _fName = name;
+          _samplingRate = (int)inFile.FormatChunk.Frequency;
+          _size = inFile.AudioSamples.Length;
+          _fftInitDone = false;
+        }
       }
       return retVal;
     }

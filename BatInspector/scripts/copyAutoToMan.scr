@@ -1,5 +1,29 @@
 # intelligent transfer of automatically recognized species to SpeciesMan
-#step 1: handle all files with mostly one species (kickout unplaible results)
+
+#step 1: kick out all files overdriven calls
+#take over all unambiguously automatically recognized species
+SET NrFiles =(getPrjFileCount() - 1)
+SET Count 0
+FOR FileNr 0 NrFiles
+  IF =(getFileInfo(FileNr, "SELECT"))
+    SET NrCalls =(getCallCount(FileNr) - 1)
+    FOR i 0 NrCalls
+	  SET OverDr =(checkOverdrive(FileNr, i))
+	  IF =(OverDr)
+   	    SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+	    IF =(toupper(specMan) == "TODO")
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+  	      SET fileName =(getFileInfo(FileNr, "NAME"))
+		  SET Count =(Count + 1)
+          LOG =("file:" + fileName + ", overdriven call:" + (i + 1) + " set to '?')		  
+		END
+	  END
+	END
+  END
+END
+LOG =("detected " + Count + " overdriven calls")
+
+#step 2: handle all files with mostly one species (kickout unplausible results)
 #take over all unambiguously automatically recognized species
 SET NrFiles =(getPrjFileCount() - 1)
 SET Count 0
@@ -38,7 +62,8 @@ FOR FileNr 0 NrFiles
   END
 END
 LOG =("replace SpeciesMan in " + Count + " files")
-#step 2: handle the rest
+
+#step 3: handle the rest
 #take over all unambiguously automatically recognized species
 SET NrFiles =(getPrjFileCount() - 1)
 SET Count 0

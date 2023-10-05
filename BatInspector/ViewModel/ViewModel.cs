@@ -46,7 +46,6 @@ namespace BatInspector
 
   public class ViewModel
   {
-
     string _selectedDir = "";
     Project _prj;
     string _version;
@@ -356,13 +355,13 @@ namespace BatInspector
     }
 
 
-    public int executeScript(string path, bool  initVars = true)
+    public int executeScript(string path, bool  initVars = true, bool backGround = true)
     {
       if (!System.IO.Path.IsPathRooted(path))
         _scriptName = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, path);
       else
         _scriptName = path;
-      int retVal = _scripter.RunScript(_scriptName, true, initVars);
+      int retVal = _scripter.RunScript(_scriptName, backGround, initVars);
       return retVal;
     }
 

@@ -17,16 +17,13 @@ namespace BatInspector
 {
   public class Spectrum
   {
-
     double[] _samples;
     RulerData _rulerDataF;
     uint _fftSize;
     double[] _ampl;
     double _fMax;
-
     public RulerData RulerDataF { get { return _rulerDataF; } }
     public double[] Amplitude {  get { return _ampl; } }
-
     public double Fmax { get { return _fMax; } }
 
     public Spectrum()

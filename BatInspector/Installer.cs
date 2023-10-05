@@ -23,13 +23,13 @@ namespace BatInspector
 
     static public void showSplash()
     {
-      _splashScreen = new SplashScreen("..\\images\\splash.png");
-      _splashScreen.Show(false);
+     // _splashScreen = new SplashScreen("..\\images\\splash.png");
+     // _splashScreen.Show(false);
     }
 
     static public void hideSplash() 
     {
-      _splashScreen.Close(TimeSpan.FromSeconds(1));
+     // _splashScreen.Close(TimeSpan.FromSeconds(1));
     }
 
     public static bool checkTools(string pythonVer, string modelVer)

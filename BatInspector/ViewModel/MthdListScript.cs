@@ -24,6 +24,8 @@ namespace BatInspector
     ViewModel _model;
     string _wrkDir;
     List<string> _files = null;
+    SoundEdit _audio = null;
+    int _lastFileIdx = -1;
 
     public MthdListScript(ViewModel model, string wrkDir) : base()
     {
@@ -126,6 +128,10 @@ namespace BatInspector
       addMethod(new FuncTabItem("getFile", getFile));
       _scriptHelpTab.Add(new HelpTabItem("getFile", "get file from previously read dir info",
                       new List<string> { "1: index" }, new List<string> { "1: full file name" }));
+      addMethod(new FuncTabItem("checkOverdrive", checkOverdrive));
+      _scriptHelpTab.Add(new HelpTabItem("checkOverdrive", "check if a given call is overdriven",
+                      new List<string> { "1: file index", "2:call index" }, new List<string> { "1: TRUE if call is overdriven" }));
+
 
     }
 
@@ -141,7 +147,10 @@ namespace BatInspector
            DirectoryInfo dir = new DirectoryInfo(argv[0].getString());
            _inst._model.initProject(dir, null);
         }
-        catch { }
+        catch 
+        {
+          DebugLog.log("openPrj: Error opening project: " + argv[0], enLogType.ERROR);
+        }
       }
       return err;
     }
@@ -595,7 +604,7 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok))
+      if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok) && (_inst._model.Prj.Analysis.Files.Count > 0))
       {
         if (argv.Count >= 3)
         {
@@ -1051,6 +1060,63 @@ namespace BatInspector
         err = tParseError.NR_OF_ARGUMENTS;
       return err;
     }
+
+
+    static tParseError checkOverdrive(List<AnyType> argv, out AnyType result)
+    {
+      result = new AnyType();
+      tParseError err = 0;
+      if (argv.Count >= 2)
+      {
+        if ((_inst._model.Prj != null) && (_inst._model.Prj.Ok) && (_inst._model.Prj.Analysis.Files.Count > 0))
+        {
+          argv[0].changeType(AnyType.tType.RT_UINT64);
+          argv[1].changeType(AnyType.tType.RT_UINT64);
+          int idxF = (int)argv[0].getUint64();
+          int idxC = (int)argv[1].getUint64();
+          int maxIdxF = _inst._model.Prj.Analysis.Files.Count;
+          if (idxF < maxIdxF)
+          {
+            if ((_inst._audio == null) || (_inst._lastFileIdx != idxF))
+            {
+              _inst._audio = new SoundEdit();
+              string file = _inst._model.Prj.Analysis.Files[idxF].getString(Cols.NAME);
+              string fullPath = _inst._model.Prj.getFullFilePath(file);
+              int ret = _inst._audio.readWav(fullPath);
+              if (ret == 0)
+              {
+                double maxT = (double)_inst._audio.Samples.Length / _inst._audio.SamplingRate;
+                _inst._audio.findOverdrive(0, maxT);
+                _inst._lastFileIdx = idxF;
+              }
+              else
+                err = tParseError.ARG1_OUT_OF_RANGE;
+            }
+            int maxIdxC = _inst._model.Prj.Analysis.Files[idxF].Calls.Count;
+            if (idxC < maxIdxC)
+            {
+              AnalysisCall call = _inst._model.Prj.Analysis.Files[idxF].Calls[idxC];
+              double tStart = call.getDouble(Cols.START_TIME) - 0.02;
+              double tEnd = tStart + call.getDouble(Cols.DURATION) / 1000 + 0.02;
+              int idxS = (int)(tStart * _inst._audio.SamplingRate);
+              int idxE = (int)(tEnd * _inst._audio.SamplingRate);
+              bool ovr = _inst._audio.isOverdrive(idxS, idxE);
+              result.assignBool(ovr);
+            }
+            else
+              err = tParseError.ARG2_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.RESSOURCE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
 
     static tParseError reloadPrj(List<AnyType> argv, out AnyType result)
     {

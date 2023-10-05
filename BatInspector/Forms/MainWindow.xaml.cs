@@ -407,6 +407,7 @@ namespace BatInspector.Forms
       item.Header = o.ToString();
       item.Tag = o;
       item.Items.Add(BatInspector.Properties.MyResources.MainWindowMsgLoading);
+      item.Foreground = (SolidColorBrush)Application.Current.Resources["colorForeGroundLabel"];
       return item;
     }
 

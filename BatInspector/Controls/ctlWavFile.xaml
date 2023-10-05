@@ -7,8 +7,8 @@
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Margin="0" LostFocus="ctlLostFocus" GotFocus="ctlGotFocus">
-    <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grp" Margin="3" BorderThickness="1"  Header="Bla">
-    <Grid Name="_grid" Margin="-1,0,1,0" >
+  <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grp" Margin="3" BorderThickness="1"  Header="---" Background="{DynamicResource colorBackGround}">
+    <Grid Name="_grid" Margin="-1,0,1,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition/>
@@ -22,12 +22,12 @@
             <CheckBox Grid.Column="0" Grid.Row="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
             <Button Name="_btnCopy" Grid.Column="2" Grid.Row="0" Margin="5,2,5,2" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
             <Button Name="_btnTools" Grid.Column="1" Grid.Row="0" Margin="5,2,5,2" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto" Grid.Column="1" Grid.Row="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}">
+      <GroupBox Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto" Grid.Column="1" Grid.Row="1" Header="{x:Static res:MyResources.CtlWavAutoDetection}" Background="{DynamicResource colorBackGround}">
     <!--    <local:ctlDataItem x:Name="_sampleRate" />
         <local:ctlDataItem x:Name="_duration" /> -->
                 <StackPanel x:Name="_spDataAuto" />
             </GroupBox>
-        <GroupBox Template="{DynamicResource GroupBoxCmu}" Grid.Row="1" Grid.Column="2" Name ="_grpInfoMan"  Header="{x:Static res:MyResources.CtlWavManualDetection}">
+      <GroupBox Template="{DynamicResource GroupBoxCmu}" Grid.Row="1" Grid.Column="2" Name ="_grpInfoMan"  Header="{x:Static res:MyResources.CtlWavManualDetection}" Background="{DynamicResource colorBackGround}">
                 <StackPanel Name="_spDataMan" />
             </GroupBox>
             <local:ctlDataItem x:Name="_ctlRemarks" Grid.Row ="0" Grid.Column="3"/>

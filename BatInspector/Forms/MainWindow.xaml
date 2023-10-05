@@ -231,7 +231,7 @@
                   <RowDefinition Height="*"/>
                   <RowDefinition Height="155"/>
                 </Grid.RowDefinitions>
-                <TreeView  Name="trvStructure" BorderThickness="0" Grid.Row="0"  TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Margin="5"/>
+                <TreeView  Name="trvStructure" BorderThickness="0" Grid.Row="0"  TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5"/>
 
                 <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="1"/>
               </Grid>

@@ -13,6 +13,9 @@
     <SolidColorBrush x:Key="colorBackGroundButton" Color="#FF95A4D3" />
     <SolidColorBrush x:Key="colorForeGroundButton" Color="White" />
     <SolidColorBrush x:Key="colorForeGroundLabel" Color="Black" />
+    <SolidColorBrush x:Key="colorBackGroundGrpFrame" Color="White" />
+    <SolidColorBrush x:Key="colorBackGroundCombo" Color="#FFF7F9FE" />
+    <SolidColorBrush x:Key="colorForeGroundSlider" Color="#FFC7C9CE" />
 
     <Style TargetType="GroupBox">
       <Setter Property="Background" Value="#FFF7F9FE"/>
@@ -20,7 +23,7 @@
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="Black" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding}" Foreground="{DynamicResource colorForeGroundLabel}" FontWeight="Bold"/>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
@@ -49,7 +52,14 @@
     <Style TargetType="ToolBarTray">
       <Setter Property="Background" Value="{DynamicResource colorBackGroundToolB}"/>
     </Style>
- 
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Background" Value="{DynamicResource colorBackGroundCombo}"/>
+      <Setter Property="Foreground" Value="{DynamicResource colorForeGroundLabel}"/>
+    </Style>
+    <Style TargetType="ScrollBar">
+      <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
+      <Setter Property="Foreground" Value="{DynamicResource colorForeGroundSlider}"/>
+    </Style>
     <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
     <ControlTemplate x:Key="GroupBoxCmu" TargetType="{x:Type GroupBox}">
             <Grid SnapsToDevicePixels="true">
@@ -66,7 +76,7 @@
                 <RowDefinition Height="6"/>
             </Grid.RowDefinitions>
             <Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1"/>
-            <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1">
+        <Border BorderBrush="{DynamicResource colorBackGroundGrpFrame}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1">
                 <Border.OpacityMask>
                     <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
                         <Binding ElementName="Header" Path="ActualWidth"/>
@@ -75,11 +85,11 @@
                     </MultiBinding>
                 </Border.OpacityMask>
                 <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
-                    <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
+            <Border BorderBrush="{DynamicResource colorBackGroundGrpFrame}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
                 </Border>
             </Border>
-                <Border x:Name="Header" Grid.Column="1" Padding="5,0,5,0" Grid.RowSpan="2" Grid.Row="0" Background="#FFF7F9FE">
-                <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+        <Border x:Name="Header" Grid.Column="1" Padding="5,0,5,0" Grid.RowSpan="2" Grid.Row="0" Background="{DynamicResource colorBackGround}">
+                <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             </Border>
             <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
         </Grid>
@@ -151,7 +161,7 @@
       </Setter>
     </Style>
     <ControlTemplate x:Key="TabControlCm" TargetType="{x:Type TabControl}">
-      <Grid x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+      <Grid x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local" Background="{DynamicResource colorBackGround}">
         <Grid.ColumnDefinitions>
           <ColumnDefinition x:Name="ColumnDefinition0"/>
           <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
@@ -160,8 +170,8 @@
           <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
           <RowDefinition x:Name="RowDefinition1" Height="*"/>
         </Grid.RowDefinitions>
-        <TabPanel x:Name="HeaderPanel" Background="Transparent" Grid.Column="0" IsItemsHost="True" Margin="0,0,0,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" Height="20"/>
-        <Border x:Name="ContentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+        <TabPanel x:Name="HeaderPanel" Background="Transparent"  Grid.Column="0" IsItemsHost="True" Margin="0,0,0,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" Height="20"/>
+        <Border x:Name="ContentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{DynamicResource colorBackGround}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
           <ContentPresenter x:Name="PART_SelectedContentHost" ContentTemplate="{TemplateBinding SelectedContentTemplate}" Content="{TemplateBinding SelectedContent}" ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
         </Border>
       </Grid>
@@ -197,6 +207,9 @@
         </Trigger>
         <Trigger Property="IsEnabled" Value="False">
           <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+        </Trigger>
+        <Trigger Property="IsEnabled" Value="True">
+          <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource colorForeGroundLabel}"/>
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>

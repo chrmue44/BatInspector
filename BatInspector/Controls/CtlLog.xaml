@@ -12,7 +12,7 @@
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel  Orientation="Horizontal" Background="#FFCCD5F0" Grid.Row="0">
+    <StackPanel  Orientation="Horizontal" Background="{DynamicResource colorBackGroundToolB}" Grid.Row="0">
       <CheckBox  Name="_cbErr" Content="{x:Static res:MyResources.Error}" Margin="5,5,0,0"></CheckBox>
       <CheckBox  Name="_cbWarn"  Content="{x:Static res:MyResources.Warning}" Margin="5,5,0,0"></CheckBox>
         <CheckBox  Name="_cbInfo"  Content="Info" Margin="5,5,0,0"></CheckBox>
@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Content="{x:Static res:MyResources.CtlLogCommand}" Grid.Column="0" HorizontalAlignment="Stretch" Background="#FFCCD5F0"> </Label>
+      <Label Content="{x:Static res:MyResources.CtlLogCommand}" Grid.Column="0" HorizontalAlignment="Stretch" Background="{DynamicResource colorBackGroundToolB}"> </Label>
             <TextBox x:Name="_tbCmd" Grid.Column="1" Text="{x:Static res:MyResources.CtlLogEnterCommandHere}" KeyDown="_tbCmd_KeyDown" VerticalAlignment="Center" Height="25"> </TextBox>
         </Grid>
     <ScrollViewer   Name="_scrViewer" VerticalScrollBarVisibility="Auto" Grid.Row="2">

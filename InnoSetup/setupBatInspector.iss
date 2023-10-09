@@ -26,6 +26,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={commonpf64}\{#MyAppName}
 DisableProgramGroupPage=yes
+DisableDirPage=no
 LicenseFile=F:\prj\{#MyAppName}\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
@@ -33,6 +34,7 @@ OutputDir={#SourceFolder}\InnoSetup\bin
 OutputBaseFilename={#MyInstallerName}
 Compression=lzma
 SolidCompression=yes
+AlwaysShowDirOnReadyPage=yes
 WizardStyle=modern
 SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico

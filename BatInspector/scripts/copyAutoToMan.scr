@@ -15,7 +15,7 @@ FOR FileNr 0 NrFiles
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
   	      SET fileName =(getFileInfo(FileNr, "NAME"))
 		  SET Count =(Count + 1)
-          LOG =("file:" + fileName + ", overdriven call:" + (i + 1) + " set to '?')		  
+          LOG =("file:" + fileName + ", overdriven call:" + (i + 1) + " set to '?'")		  
 		END
 	  END
 	END

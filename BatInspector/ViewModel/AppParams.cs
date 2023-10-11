@@ -183,7 +183,7 @@ namespace BatInspector
     public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
     public const string EXT_QUERY = ".qry";               // file extension for query files
     public const string CSV_SEPARATOR = ";";              // CSV separator
-    public const string PATH_SCRIPT = "scripts";          // sub directory containig scripts
+    public const string DIR_SCRIPT = "scripts";          // sub directory containig scripts
     public const string BAT_INFO1_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE_DE = "/doc/BatInspector_DE.pdf"; // software manual
@@ -521,7 +521,7 @@ namespace BatInspector
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
       LogDataPath = Path.Combine(AppDataPath, "log");
       ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
-                                         PROG_DAT_DIR, ScriptInventory.DIR_SCRIPTS);
+                                         PROG_DAT_DIR, AppParams.DIR_SCRIPT);
 
       ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
       WaterfallHeight = 256;
@@ -675,7 +675,7 @@ namespace BatInspector
       if (string.IsNullOrEmpty(retVal.ScriptInventoryPath))
       {
         retVal.ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
-                                         PROG_DAT_DIR, ScriptInventory.DIR_SCRIPTS);
+                                         PROG_DAT_DIR, AppParams.DIR_SCRIPT);
       }
       retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath);
 

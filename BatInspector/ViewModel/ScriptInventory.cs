@@ -49,7 +49,8 @@ namespace BatInspector
   {
 
     public const string FName = "Scripts.json";
-    public const string DIR_SCRIPTS = "scripts";          // sub directory to store scripts
+    public const string InstallFile = "scriptinst.txt";
+    public const string INST_FLAG = "INSTALLED";
 
     static string _scriptPath = "";
 
@@ -68,6 +69,7 @@ namespace BatInspector
       try
       {
         DebugLog.log("try to load:" + fileName, enLogType.DEBUG);
+        
         if (File.Exists(fileName))
         {
           file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
@@ -84,13 +86,28 @@ namespace BatInspector
           DebugLog.log("load failed", enLogType.DEBUG);
           retVal = new ScriptInventory();
           retVal.initScripts();
-          if (!Directory.Exists(_scriptPath))
-          {
-            Directory.CreateDirectory(_scriptPath);
-            retVal.CopyScriptsFromInstaller();
-          }
           retVal.save();
         }
+
+        string instFile = Path.Combine(AppParams.AppDataPath, "setup",  InstallFile);
+        bool copyScripts = false;
+        if (File.Exists(instFile))
+        {
+          string str = File.ReadAllText(instFile);
+          if (str != INST_FLAG)
+          {
+            File.WriteAllText(instFile, INST_FLAG);
+            copyScripts = true;
+          }
+        }
+        else
+        {
+          File.WriteAllText(instFile, INST_FLAG);
+          copyScripts = true;
+        }
+
+        if (copyScripts)
+          retVal.CopyScriptsFromInstaller();
       }
       catch (Exception e)
       {
@@ -128,6 +145,8 @@ namespace BatInspector
 
     public void save()
     {
+      if (!Directory.Exists(_scriptPath))
+        Directory.CreateDirectory(_scriptPath);
       saveAs(Path.Combine(_scriptPath, FName));
     }
 
@@ -142,18 +161,21 @@ namespace BatInspector
         new ScriptItem(3, "resample.scr", "Resampling einer WAV-Datei",false,new List<string>(){"Name der WAV-Datei", "neue Sampling-Rate [Hz]"}),
         new ScriptItem(4, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<string>()),
         new ScriptItem(5, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<string>()),
-        new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<string>())
+        new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<string>()),
+        new ScriptItem(7, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<string>())
       };
     }
 
     private void CopyScriptsFromInstaller()
     {
-        string srcDir = Path.Combine(AppParams.AppDataPath, "setup", DIR_SCRIPTS);
-        List<string> files = new List<string>();
-
-        foreach (ScriptItem item in Scripts)
-          files.Add(Path.Combine(srcDir, item.Name));
-        Utils.copyFiles(files.ToArray(), _scriptPath);
+      string srcDir = Path.Combine(AppParams.AppDataPath, "setup", AppParams.DIR_SCRIPT);
+      DirectoryInfo dir = new DirectoryInfo(srcDir);
+      FileInfo[] files = dir.GetFiles("*.scr");
+      string [] fileNames = new string[files.Length];
+      for (int i = 0; i < files.Length; i++)
+        fileNames[i] = files[i].FullName;
+        
+      Utils.copyFiles(fileNames, _scriptPath, false, true);
         DebugLog.log("initialized script folder", enLogType.INFO);
     }
   }

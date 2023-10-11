@@ -1,17 +1,21 @@
-V 0.7.0.0  05.10.23
+V 0.7.0.0  11.10.23
 - script func: checkOverdrive ==> script copyAutoToMan now rejects also overdriven calls
 - introduced command line 
 - probability for auto species is shown in zoom view
 - overdriven parts of recording show in red in XT graph
+- filter now also works on scatter diagram
 - new tool in zoom view: noise reduction
 - new tool in zoom view: normalize volume
 - new tool in zoom view: cutout section (good for removing overdriven parts)
-- support for wav files with 2 channels (will be converted to 1 chan: L + R)
+- support for wav files with 2 channels (will be converted to 1 chan: (L + R)/2)
 - faster FFT generation
 - Custum window title bar
+- select call controls in zoom view 5 pixel wider to show three digit numbers
+- show project name in project info box
 - bugfix: support files with upper case extension WAV
 - bugfix: summary: no new line char in weather or landscape cols
 - bugifx: crash zoomview in query mode
+- bugfix: show correct nubmer of files in status bar after opening project
 
 V 0.6.5.0  14.09.23
 - Zoomview: remove mean calculation, added call nr to species

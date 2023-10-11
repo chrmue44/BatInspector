@@ -21,6 +21,7 @@ namespace BatInspector
   {
     IDLE,
     OPEN_PRJ,
+    WAIT_FOR_GUI,
     AI_ANALYZE,
     IMPORT_PRJ,
     TOOL_RUNNING

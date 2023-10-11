@@ -3,15 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:res="clr-namespace:BatInspector.Properties" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
-    <Label Background="{DynamicResource colorBackGroundWindow}" Foreground="{DynamicResource colorForeGroundWindow}" Content="{x:Static res:MyResources.ctlProjectInfo}"></Label>
-    <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoCreated}" Height="45" Background="{DynamicResource colorBackGround}">
+    <Label Name="_lblPrj" Background="{DynamicResource colorBackGroundWindow}" Foreground="{DynamicResource colorForeGroundWindow}" Content="{x:Static res:MyResources.ctlProjectInfo}"></Label>
+<!--    <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoCreated}" Height="45" Background="{DynamicResource colorBackGround}">
       <TextBlock Name="_tbCreated" TextWrapping="Wrap" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}" ></TextBlock>
-    </GroupBox>
+    </GroupBox> -->
     <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoNotes}" Height="80" Background="{DynamicResource colorBackGround}">
       <TextBox Name="_tbNotes" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="_tbNotes_TextChanged" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
     </GroupBox>

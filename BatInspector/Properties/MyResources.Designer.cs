@@ -322,7 +322,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Project Information.
+        ///   Looks up a localized string similar to Project.
         /// </summary>
         public static string ctlProjectInfo {
             get {

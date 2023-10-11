@@ -688,7 +688,7 @@
     <value>Erstellt</value>
   </data>
   <data name="ctlProjectInfo" xml:space="preserve">
-    <value>Projekt Informationen</value>
+    <value>Projekt</value>
   </data>
   <data name="CtlSumReportDstDirectory" xml:space="preserve">
     <value>Zielverzeichnis</value>

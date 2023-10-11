@@ -61,7 +61,7 @@ source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2";
-source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup";
+source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 
 [Dirs]

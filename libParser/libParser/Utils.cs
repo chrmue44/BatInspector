@@ -101,7 +101,7 @@ namespace libParser
       }
     }
 
-    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false)
+    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false, bool overWrite = false)
     {
       foreach (string file in files)
       {
@@ -109,7 +109,7 @@ namespace libParser
         string dest = Path.Combine(dstFolder, name);
         if (File.Exists(file))
         {
-          File.Copy(file, dest);
+          File.Copy(file, dest, overWrite);
           if (removeSrc)
             File.Delete(file);
         }

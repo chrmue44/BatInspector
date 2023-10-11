@@ -46,7 +46,7 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      Installer.install(_cbData.IsChecked == true, _cbPython.IsChecked == true, _cbModel.IsChecked == true);
+      Installer.install(_cbPython.IsChecked == true);
    //   MessageBox.Show("Please restart BatInspector!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
       Installer.restartApp();
       this.Close();

@@ -80,6 +80,7 @@ namespace BatInspector.Forms
       _model.Status.State = enAppState.IDLE;
       setLanguage();
       InitializeComponent();
+      _ctlScatter.setup(_model);
       StateChanged += MainWindowStateChangeRaised;
       _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
       _ctlLog._cbWarn.IsChecked = AppParams.Inst.LogShowWarning;
@@ -231,9 +232,7 @@ namespace BatInspector.Forms
     public void populateFilterComboBoxes()
     {
       Filter.populateFilterComboBox(_cbFilter, _model);
-      Filter.populateFilterComboBox(_cbFilterScatter, _model);
-
-      //      populateFilterComboBox(_ctlSum._cbFilter);
+      _ctlScatter.populateComboBoxes();
     }
 
 
@@ -252,7 +251,6 @@ namespace BatInspector.Forms
 
     void initializeQuery(FileInfo file)
     {
-      _model.Status.State = enAppState.OPEN_PRJ;
       DebugLog.log("start to open query", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
       checkSavePrj();
@@ -302,7 +300,6 @@ namespace BatInspector.Forms
 
     void initializeProject(DirectoryInfo dir)
     {
-      _model.Status.State = enAppState.OPEN_PRJ;
       showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading, true);
       DebugLog.log("start to open project", enLogType.DEBUG);
       _scrlViewer.ScrollToVerticalOffset(0);
@@ -314,11 +311,7 @@ namespace BatInspector.Forms
       if ((_model.Prj != null) && _model.Prj.Ok)
       {
         _ctlPrjInfo.setup(_model.Prj);
-        foreach (stAxisItem it in _scattDiagram.AxisItems)
-        {
-          _cbXaxis.Items.Add(it.Name);
-          _cbYaxis.Items.Add(it.Name);
-        }
+        _ctlScatter.initPrj();
         _switchTabToPrj = true;
         if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
           populateFiles();
@@ -443,6 +436,7 @@ namespace BatInspector.Forms
       _workerStartup = new Thread(createImageFiles);
       _workerStartup.Priority = ThreadPriority.AboveNormal;
       _workerStartup.Start();
+      _model.Status.State = enAppState.OPEN_PRJ;
     }
 
     void worker_ProgressChanged(string pngName)
@@ -1147,9 +1141,15 @@ namespace BatInspector.Forms
               _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
             if (_model.Query != null)
               _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
-            _model.Status.State = enAppState.IDLE;
+            _model.Status.State = enAppState.WAIT_FOR_GUI;
           }
           break;
+
+        case enAppState.WAIT_FOR_GUI:
+          showStatus();
+          _model.Status.State = enAppState.IDLE;
+          break;
+
       }
       if (_workerStartup == null)
         _model.Busy = false;
@@ -1289,19 +1289,6 @@ namespace BatInspector.Forms
       }
     }
 
-
-    private void _cbXaxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-      if ((_cbXaxis.Items.Count > 0) && (_cbXaxis.SelectedItem != null) && (_cbYaxis.SelectedItem != null) && (_cbFilterScatter.SelectedItem != null))
-      {
-        stAxisItem x = _scattDiagram.findAxisItem(_cbXaxis.SelectedItem.ToString());
-        stAxisItem y = _scattDiagram.findAxisItem(_cbYaxis.SelectedItem.ToString());
-        FilterItem filter = _model.Filter.getFilter(_cbFilterScatter.SelectedItem.ToString());
-
-        _scattDiagram.createScatterDiagram(x, y, _model, filter, _cbFreezeAxis.IsChecked == true);
-        _scatterModel.InvalidatePlot();
-      }
-    }
 
     private void DropdownButton_Checked(object sender, RoutedEventArgs e)
     {
@@ -1483,48 +1470,16 @@ namespace BatInspector.Forms
 
     private void _cbFilter_DropDownClosed(object sender, EventArgs e)
     {
-      try
-      {
-        if (_cbFilter.SelectedIndex == 0)
-        {
-          _btnShowAll_Click(sender, null);
-        }
-        else
-        {
-          if (_cbFilter.SelectedIndex == 1)
-          {
-            DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
-            frmExpression frm = new frmExpression(_model.Filter.ExpGenerator, true);
-            bool? res = frm.ShowDialog();
-            if (res == true)
-            {
-              if (frm.SaveFilter)
-              {
-                int idx = _model.Filter.Items.Count;
-                FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
-                _model.Filter.Items.Add(filter);
-                _cbFilter.Items.Add(filter.Name);
-                _cbFilter.SelectedIndex = _cbFilter.Items.Count - 1;
-              }
-              else
-              {
-                if (frm.FilterExpression.Length < 25)
-                  _cbFilter.Items[1] = frm.FilterExpression;
-                else
-                  _cbFilter.Items[1] = frm.FilterExpression.Substring(0, 21) + "...";
-                _cbFilter.SelectedIndex = 1;
-                _model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
-              }
-            }
-          }
-          _btnApplyFilter_Click(sender, null);
-        }
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("Main: Filter dropdown close failed: " + ex.ToString(), enLogType.ERROR);
-      }
+      DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
+      bool apply;
+      bool resetFilter;
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _model, _cbFilter);
+      if(apply)
+        _btnApplyFilter_Click(sender, null);
+      if(resetFilter)
+        _btnShowAll_Click(sender, null);
     }
+
 
     private void populateToolsMenu()
     {

@@ -5,20 +5,11 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+
+using BatInspector.Properties;
+using System.IO;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace BatInspector.Controls
 {
@@ -45,8 +36,9 @@ namespace BatInspector.Controls
     public void setup(Project prj) 
     {
       _prj = prj;
-      _tbCreated.Text = _prj.Created;
+   //   _tbCreated.Text = _prj.Created;
       _tbNotes.Text = _prj.Notes;
+      _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileName(_prj.Name) + "]";
     }
   }
 }

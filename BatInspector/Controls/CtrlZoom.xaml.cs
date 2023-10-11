@@ -154,8 +154,8 @@ namespace BatInspector.Controls
       MouseDown += ctrlZoomMouseDown;
 
       lblWidth = 130;
-      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 50, ctlSelCallChanged);
-      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 50, ctlSelCallChanged2);
+      _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 55, ctlSelCallChanged);
+      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
       _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, lblWidth);
       _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, lblWidth);
       _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, lblWidth);

@@ -56,17 +56,13 @@ namespace BatInspector.Forms
       setVisibilityTimeFilter();
     }
 
-
-    public bool parseLatitude(string coordStr, out double coord)
+    public void init()
     {
-      return parseGeoCoord(coordStr, out coord, "N", "S", 90);
+      _ctlLat.setValue("");
+      _ctlLon.setValue("");
+      _cbEvalPrj.IsChecked = true;
     }
 
-
-    public bool parseLongitude(string coordStr, out double coord)
-    {
-      return parseGeoCoord(coordStr, out coord, "E", "W", 180);
-    }
 
 
     private void setVisibilityTimeFilter()
@@ -129,68 +125,7 @@ namespace BatInspector.Forms
       enableLocationItems(!_isProjectFolder || (_cbOverwriteLoc.IsChecked == true));
     }
 
-    /// <summary>
-    /// parse geographical coordinates, two formats are allowed:
-    /// 1.: plain double e.g. 49.657489, -33.5679864
-    /// 2.: degrees and minutes e.g. "49° 38.012 N", "8° 37.443 W"
-    /// </summary>
-    /// <param name="coordStr">coordinat as string</param>
-    /// <param name="coord">output coordinate</param>
-    /// <param name="hem1">hemesphere character positive direction</param>
-    /// <param name="hem2">hemisphere character negative direction</param>
-    /// <param name="maxDeg">max value for degrees</param>
-    /// <returns></returns>
-    bool parseGeoCoord(string coordStr, out double coord, string hem1, string hem2, int maxDeg)
-    {
-      bool retVal = true;
-      bool ok = double.TryParse(coordStr, NumberStyles.Any, CultureInfo.InvariantCulture, out coord);
-      if (ok)
-      {
-        if ((coord < -maxDeg) || (coord > maxDeg))
-          retVal = false;
-      }
-      else
-      {
-        int deg = 0;
-        int sign = 0;
-        int pos = coordStr.IndexOf("°");
-        if (pos >= 0)
-        {
-          string degStr = coordStr.Substring(0, pos);
-          retVal = int.TryParse(degStr, out deg);
-        }
-        else
-          retVal = false;
-        coord = 0;
-        int pos2 = coordStr.IndexOf(hem1);
-        if (pos2 < 0)
-        {
-          pos2 = coordStr.IndexOf(hem2);
-          if (pos2 >= 0)
-            sign = 1;
-          else
-            retVal = false;
-        }
-
-        if ((deg < -maxDeg) || (deg > maxDeg))
-          retVal = false;
-
-        if (retVal)
-        {
-          string minStr = coordStr.Substring(pos + 1, pos2 - pos - 1);
-          retVal = double.TryParse(minStr, NumberStyles.Any, CultureInfo.InvariantCulture, out double minval);
-          if ((minval >= 60) || (minval < 0))
-            retVal = false;
-          if (retVal)
-          {
-            coord = deg + minval / 60;
-            if (sign == 1)
-              coord *= -1;
-          }
-        }
-      }
-      return retVal;
-    }
+   
 
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
@@ -210,12 +145,12 @@ namespace BatInspector.Forms
       double lon = 0;
       if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
       {
-        ok = parseLatitude(_ctlLat.getValue(), out lat);
+        ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
         if (!ok)
           MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         else
         {
-          ok = parseLongitude(_ctlLon.getValue(), out lon);
+          ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
           if (!ok)
             MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }

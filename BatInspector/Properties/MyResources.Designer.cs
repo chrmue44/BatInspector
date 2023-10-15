@@ -1870,7 +1870,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Folder.
+        ///   Looks up a localized string similar to Select Project.
         /// </summary>
         public static string MainSelectFolder {
             get {

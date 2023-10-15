@@ -457,7 +457,7 @@
     <value>Auswertung Projekt</value>
   </data>
   <data name="MainSelectFolder" xml:space="preserve">
-    <value>Verzeichnis auswählen</value>
+    <value>Projekt auswählen</value>
   </data>
   <data name="MainReportTimespan" xml:space="preserve">
     <value>Auswertung Zeitabschnitt</value>

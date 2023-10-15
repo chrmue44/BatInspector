@@ -806,5 +806,79 @@ namespace BatInspector
     {
       return _batExplorerPrj.Records;
     }
+
+    public static bool parseLatitude(string coordStr, out double coord)
+    {
+      return parseGeoCoord(coordStr, out coord, "N", "S", 90);
+    }
+
+
+    public static bool parseLongitude(string coordStr, out double coord)
+    {
+      return parseGeoCoord(coordStr, out coord, "E", "W", 180);
+    }
+
+    /// <summary>
+    /// parse geographical coordinates, two formats are allowed:
+    /// 1.: plain double e.g. 49.657489, -33.5679864
+    /// 2.: degrees and minutes e.g. "49° 38.012 N", "8° 37.443 W"
+    /// </summary>
+    /// <param name="coordStr">coordinat as string</param>
+    /// <param name="coord">output coordinate</param>
+    /// <param name="hem1">hemesphere character positive direction</param>
+    /// <param name="hem2">hemisphere character negative direction</param>
+    /// <param name="maxDeg">max value for degrees</param>
+    /// <returns></returns>
+    static bool parseGeoCoord(string coordStr, out double coord, string hem1, string hem2, int maxDeg)
+    {
+      bool retVal = true;
+      bool ok = double.TryParse(coordStr, NumberStyles.Any, CultureInfo.InvariantCulture, out coord);
+      if (ok)
+      {
+        if ((coord < -maxDeg) || (coord > maxDeg))
+          retVal = false;
+      }
+      else
+      {
+        int deg = 0;
+        int sign = 0;
+        int pos = coordStr.IndexOf("°");
+        if (pos >= 0)
+        {
+          string degStr = coordStr.Substring(0, pos);
+          retVal = int.TryParse(degStr, out deg);
+        }
+        else
+          retVal = false;
+        coord = 0;
+        int pos2 = coordStr.IndexOf(hem1);
+        if (pos2 < 0)
+        {
+          pos2 = coordStr.IndexOf(hem2);
+          if (pos2 >= 0)
+            sign = 1;
+          else
+            retVal = false;
+        }
+
+        if ((deg < -maxDeg) || (deg > maxDeg))
+          retVal = false;
+
+        if (retVal)
+        {
+          string minStr = coordStr.Substring(pos + 1, pos2 - pos - 1);
+          retVal = double.TryParse(minStr, NumberStyles.Any, CultureInfo.InvariantCulture, out double minval);
+          if ((minval >= 60) || (minval < 0))
+            retVal = false;
+          if (retVal)
+          {
+            coord = deg + minval / 60;
+            if (sign == 1)
+              coord *= -1;
+          }
+        }
+      }
+      return retVal;
+    }
   }
 }

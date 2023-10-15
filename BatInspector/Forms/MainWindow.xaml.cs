@@ -1341,6 +1341,7 @@ namespace BatInspector.Forms
       {
         if (_frmCreatePrj == null)
           _frmCreatePrj = new FrmCreatePrj(_model);
+        _frmCreatePrj.init();
         _frmCreatePrj.Show();
         _frmCreatePrj.Visibility = Visibility.Visible;
      //   _frmCreatePrj.Topmost = true;

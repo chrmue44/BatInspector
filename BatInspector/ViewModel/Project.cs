@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Controls;
 using BatInspector.Forms;
 using libParser;
 using libScripter;
@@ -15,6 +16,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -146,7 +148,7 @@ namespace BatInspector
           return "";
       }
       set { _batExplorerPrj.Created = value; } }
-    public string PrjDir { get { return _selectedDir + "/"; } }
+    public string PrjDir { get { return _selectedDir; } }
 
 
     public string ReportName { get { return getReportName(_selectedDir); } }
@@ -167,12 +169,12 @@ namespace BatInspector
 
     public static string getReportName(string dir)
     {
-      return dir + "/" + AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir + "/" + AppParams.PRJ_REPORT;
+      return Path.Combine (dir ,AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir, AppParams.PRJ_REPORT);
     }
 
     public static string getSummaryName(string dir)
     {
-      return dir + "/" + AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir + "/" + AppParams.PRJ_SUMMARY;
+      return Path.Combine(dir, AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir, AppParams.PRJ_SUMMARY);
     }
 
     /// <summary>
@@ -302,7 +304,7 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static string[] splitPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+   /* public static void splitPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
     {
       string wavDir = Path.Combine(info.SrcDir, AppParams.DIR_WAVS);
       string wavSubDir = "";
@@ -321,7 +323,67 @@ namespace BatInspector
       if (notes.Length > 1)
         info.Weather = notes[1];
 
-      return createPrj(info, regions, speciesInfo);
+      createPrj(info, regions, speciesInfo);
+    } */
+
+    private static bool removeAppleTempFiles(PrjInfo info)
+    {
+      bool retVal = true;
+      string[] files = getSelectedFiles(info, "._*.wav");
+      if (files.Length > 0)
+      {
+        MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.msgDeleteIntermediate,
+                                               BatInspector.Properties.MyResources.msgQuestion,
+                                               MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (res == MessageBoxResult.Yes)
+        {
+          foreach (string file in files)
+            File.Delete(file);
+        }
+        else
+        {
+          DebugLog.log("project creation aborted", enLogType.INFO);
+          retVal = false;
+        }
+      }
+      return retVal;
+    }
+
+    private static bool readGpxFile(PrjInfo info, out gpx gpxFile)
+    {
+      bool retVal = true;
+      gpxFile = null;
+      // read gpx file if needed
+      if (info.OverwriteLocation)
+      {
+        if (info.LocSourceGpx)
+        {
+          gpxFile = gpx.read(info.GpxFile);
+          if (gpxFile == null)
+          {
+            DebugLog.log("gpx file not readable: " + info.GpxFile, enLogType.ERROR);
+            retVal = false;
+          }
+        }
+      }
+      return retVal;
+    }
+
+    private static bool createPrjDirStructure(string prjDir, out string wavDir)
+    {
+      bool retVal = true;
+      DebugLog.log("creating project " + prjDir, enLogType.INFO);
+      wavDir = prjDir + "/" + AppParams.DIR_WAVS;
+      if (Directory.Exists(prjDir))
+      {
+        DebugLog.log("directory '" + prjDir + "' already exists, project creation aborted!", enLogType.ERROR);
+        retVal = false;
+      }
+      else
+        Directory.CreateDirectory(prjDir);
+      if (!Directory.Exists(wavDir))
+        Directory.CreateDirectory(wavDir);
+      return retVal;
     }
 
     /// <summary>
@@ -330,46 +392,34 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static string[] createPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
     {
-      List<string> retVal = new List<string>();
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        string[] files = getSelectedFiles(info, "._*.wav");
-        gpx gpxFile = null;
         
-        if(files.Length > 0)
+        // in case of project folder get infos from project
+        if (info.IsProjectFolder)
         {
-          MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.msgDeleteIntermediate, 
-                                                 BatInspector.Properties.MyResources.msgQuestion, 
-                                                 MessageBoxButton.YesNo, MessageBoxImage.Question);
-          if (res == MessageBoxResult.Yes)
-          {
-            foreach (string file in files)
-              File.Delete(file);
-          }
-          else
-          {
-            DebugLog.log("project creation aborted", enLogType.INFO);
-            return retVal.ToArray();
-          }
+          string wavDir = Path.Combine(info.SrcDir, AppParams.DIR_WAVS);
+          string wavSubDir = "";
+          if (Directory.Exists(wavDir))
+            wavSubDir = AppParams.DIR_WAVS;
+
+          Project prjSrc = new Project(regions, speciesInfo, null, wavSubDir);
+          string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
+          prjSrc.readPrjFile(fName);
+          string[] notes = prjSrc.Notes.Split('\n');
+
+          info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
+          info.Landscape = notes[0];
+          info.StartTime = new DateTime(1900, 1, 1);
+          info.EndTime = new DateTime(2100, 1, 1);
+          if (notes.Length > 1)
+            info.Weather = notes[1];
         }
 
-        files = getSelectedFiles(info, "*.wav");
-        if(info.OverwriteLocation)
-        {
-          if (info.LocSourceGpx)
-          {
-            gpxFile = gpx.read(info.GpxFile);
-            if (gpxFile == null)
-            {
-              DebugLog.log("gpx file not readable: " + info.GpxFile, enLogType.ERROR);
-              return retVal.ToArray();
-            }
-          }
-        }  
-        
+        string[] files = getSelectedFiles(info, "*.wav");
         if (files.Length > 0)
         {
           WavFile wavFile = new WavFile();
@@ -377,7 +427,31 @@ namespace BatInspector
           uint sampleRate = wavFile.FormatChunk.Frequency;
           int maxFileLen = (int)((double)sampleRate * 2 * info.MaxFileLenSec + 2048);
 
-          // 1st step split all 
+          // copy files to a single project at destination and create project
+          string fullDir = Path.Combine(info.DstDir, info.Name);
+          createPrjDirStructure(fullDir, out string wavDir);
+          Utils.copyFiles(files, wavDir);
+          files = getSelectedFiles(info, "*.xml");
+          Utils.copyFiles(files, wavDir);
+          Project prj = new Project(regions, speciesInfo, null);
+          DirectoryInfo dir = new DirectoryInfo(fullDir);
+          prj.fillFromDirectory(dir, AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
+          if (!info.IsProjectFolder)
+            prj.createXmlInfoFiles(info);
+
+          // replace gpx locations
+          string[] xmlFiles = Directory.GetFiles(wavDir, "*.xml");
+          if (info.OverwriteLocation && info.LocSourceGpx)
+          {
+            bool ok = readGpxFile(info, out gpx gpxFile);
+            if (ok)
+              replaceLocations(xmlFiles, wavDir, gpxFile);
+            else
+              DebugLog.log("error reading GPX file, could not generate location information", enLogType.ERROR);
+          }
+          else if (info.OverwriteLocation)
+            replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
+
           DebugLog.log("split files exceeding max. length", enLogType.INFO);
           foreach (string f in files)
           {
@@ -389,58 +463,6 @@ namespace BatInspector
                 Project.createSplitXmls(f, names);
             }
           }
-
-          // 2nd step create projects
-          files = getSelectedFiles(info, "*.wav");
-          double prjCntd = (double)files.Length / info.MaxFileCnt;
-          int prjCnt = (int)prjCntd;
-          if (prjCntd > prjCnt)
-            prjCnt++;
-          int fileCnt = files.Length / prjCnt;
-          for (int p = 0; p < prjCnt; p++)
-          {
-            string dirName = info.Name;
-            if (prjCnt > 1)
-              dirName += "_" + p.ToString("D2");
-            DebugLog.log("creating project " + dirName, enLogType.INFO);
-            int iFirst = p * fileCnt;
-            int iLast = (p + 1) * fileCnt - 1;
-            char[] invalid = Path.GetInvalidPathChars();
-            string fullDir = info.DstDir + "/" + dirName;
-            string wavDir = fullDir + "/" + AppParams.DIR_WAVS;
-            if (Directory.Exists(fullDir))
-            {
-              DebugLog.log("directory '" + fullDir + "' already exists, project creation aborted!", enLogType.ERROR);
-              return retVal.ToArray();
-            }
-            else
-              Directory.CreateDirectory(fullDir);
-            if (!Directory.Exists(wavDir))
-              Directory.CreateDirectory(wavDir);
-            if (iLast > (files.Length - 1))
-              fileCnt = files.Length - iFirst;
-            string[] prjFiles = new string[fileCnt];
-            Array.Copy(files, iFirst, prjFiles, 0, fileCnt);
-            Utils.copyFiles(prjFiles, wavDir);
-            if (info.IsProjectFolder)
-            {
-              string[] xmlFiles = new string[prjFiles.Length];
-              for (int i = 0; i < xmlFiles.Length; i++)
-                xmlFiles[i] = prjFiles[i].ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-              if (info.OverwriteLocation && info.LocSourceGpx)
-                replaceLocations(xmlFiles, wavDir, gpxFile);
-              else if (info.OverwriteLocation)
-                replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
-              else
-                Utils.copyFiles(xmlFiles, wavDir);
-            }
-            Project prj = new Project(regions, speciesInfo, null);
-            DirectoryInfo dir = new DirectoryInfo(fullDir);
-            prj.fillFromDirectory(dir, "/" + AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
-            if (!info.IsProjectFolder)
-              prj.createXmlInfoFiles(info);
-            retVal.Add(dirName);
-          }
         }
         else
           DebugLog.log("No WAV files in directory " + info.SrcDir, enLogType.ERROR);
@@ -449,7 +471,65 @@ namespace BatInspector
       {
         DebugLog.log("error creating Project " + info.Name + " " + e.ToString(), enLogType.ERROR);
       }
-      return retVal.ToArray();
+      return;
+    }
+
+    /// <summary>
+    /// split a project into multiple projects
+    /// </summary>
+    /// <param name="prj">the project to split</param>
+    public static List<string> splitProject(Project prj, int prjCnt, BatSpeciesRegions regions)
+    {
+      List<string> retVal = new List<string>();
+      string wavSrc = Path.Combine(prj.PrjDir, prj.WavSubDir);
+      string[] files = Directory.GetFiles(wavSrc, "*.wav");
+      int fileCnt = files.Length / prjCnt;
+
+      for (int p = 0; p < prjCnt; p++)
+      { 
+        int iFirst = p * fileCnt;
+        if((p + 1) == prjCnt) 
+          fileCnt = files.Length - iFirst;
+        string dirName = prj.PrjDir + "_" + p.ToString("D2");
+        bool ok = createPrjDirStructure(dirName, out string wavDir);
+        if (!ok)
+          return retVal;
+        DebugLog.log("Creating project " + dirName, enLogType.INFO);
+
+        string[] prjFiles = new string[fileCnt];
+        Array.Copy(files, iFirst, prjFiles, 0, fileCnt);
+        Utils.copyFiles(prjFiles, wavDir);
+
+        string[] xmlFiles = new string[prjFiles.Length];
+        for (int i = 0; i < xmlFiles.Length; i++)
+          xmlFiles[i] = prjFiles[i].ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+        Utils.copyFiles(xmlFiles, wavDir);
+
+        Project dstprj = new Project(regions, prj.SpeciesInfos, null);
+        dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
+
+        copyAnalysisPart(prj, dstprj);
+        retVal.Add(dirName);
+      }
+      // remove src project
+      Directory.Delete(prj.PrjDir, true);
+      return retVal;
+    }
+
+    private static void copyAnalysisPart(Project prjSrc, Project prjDest)
+    {
+      foreach(BatExplorerProjectFileRecordsRecord rec in prjDest.Records)
+      {
+        AnalysisFile f = prjSrc.Analysis.getAnalysis(rec.File);
+        if(f != null)
+        {
+          prjDest.Analysis.addFile(f, true);
+        }
+      }
+      string dir = Path.GetDirectoryName(prjDest.ReportName);
+      if (!Directory.Exists(dir))
+        Directory.CreateDirectory(dir);
+      prjDest.Analysis.save(prjDest.ReportName, prjDest.Notes);
     }
 
     private static void replaceLocations(string[] xmlfiles, string wavDir, gpx gpxFile)
@@ -548,7 +628,7 @@ namespace BatInspector
       {
         if (Analysis.find(rec.Name) == null)
         {
-          string name = PrjDir + "/" + WavSubDir + "/" + rec.File;
+          string name = Path.Combine(PrjDir, WavSubDir, rec.File);
           DebugLog.log("delete file " + name, enLogType.DEBUG);
           try
           {
@@ -633,14 +713,11 @@ namespace BatInspector
         string xmlFile = file.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         if (File.Exists(xmlFile))
           fileList.Add(xmlFile);
-        //string pngFile = file.Replace(".wav", ".png");
-        //if (File.Exists(pngFile))
-        //  fileList.Add(pngFile);
       }
       Utils.copyFiles(fileList.ToArray(), dstPath, removeSrc);
       writePrjFile();
       if(_analysis?.IsEmpty == false)
-        _analysis?.save(_selectedDir, Notes);
+        _analysis?.save(ReportName, Notes);
       _reloadInGui = true;
     }
 
@@ -707,11 +784,12 @@ namespace BatInspector
     /// </summary>
     /// <param name="dir">directory info of prj directory</param>
     /// <param name="wavSubDir">subdir with leading '/' for wav files</param>
-    public void fillFromDirectory(DirectoryInfo dir, string wavSubDir = "/", string notes = "")
+    public void fillFromDirectory(DirectoryInfo dir, string wavSubDir = "", string notes = "")
     {
       try
       {
-        string[] files = System.IO.Directory.GetFiles(dir.FullName + wavSubDir, "*.wav",
+        string dirName = Path.Combine(dir.FullName, wavSubDir);
+        string[] files = System.IO.Directory.GetFiles(dirName, "*.wav",
                          System.IO.SearchOption.TopDirectoryOnly);
         List<BatExplorerProjectFileRecordsRecord> records = new List<BatExplorerProjectFileRecordsRecord>();
         _selectedDir = dir.FullName;
@@ -729,7 +807,10 @@ namespace BatInspector
         Notes = notes;
         writePrjFile();
       }
-      catch { }
+      catch (Exception ex)
+      {
+        DebugLog.log("error creating prject: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     public void createXmlInfoFiles(PrjInfo info)

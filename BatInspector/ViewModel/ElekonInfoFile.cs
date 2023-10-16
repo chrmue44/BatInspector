@@ -10,6 +10,7 @@ using libParser;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -66,9 +67,9 @@ namespace BatInspector
       ElekonInfoFile.write(infoName, batRecord);
     }
 
-    public static void parsePosition(BatRecord rec, out double lat, out double lon)
+    public static void parsePosition(string gpsPos, out double lat, out double lon)
     {
-      string[] pos = rec.GPS.Position.Split(' ');
+      string[] pos = gpsPos.Split(' ');
       lat = 0.0;
       lon = 0.0;
       if (pos.Length == 2)
@@ -76,6 +77,20 @@ namespace BatInspector
         double.TryParse(pos[0], NumberStyles.Any, CultureInfo.InvariantCulture, out lat);
         double.TryParse(pos[1], NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
       }
+    }
+
+    public static void parsePosition(BatRecord rec, out double lat, out double lon)
+    {
+      parsePosition(rec.GPS.Position, out lat, out lon);
+    }
+
+    public static string formatPosition(string position, int decimals)
+    {
+      parsePosition(position, out double lat, out double lon);
+      string fmt = "N" + decimals.ToString();
+      string retVal = lat.ToString(fmt, CultureInfo.InvariantCulture) + " " +
+                      lon.ToString(fmt, CultureInfo.InvariantCulture);
+      return retVal;
     }
 
     public static DateTime getDateTimeFromFileName(string fileName)
@@ -90,21 +105,23 @@ namespace BatInspector
         string timeStr = "";
         foreach (string t in token)
         {
-          if(t.Length == 8)
+
+          string str = Utils.removeNonNumerics(t);
+          if(str.Length == 8)
           {
             try
             {
-              DateTime tim = DateTime.ParseExact(t, "yyyyMMdd", CultureInfo.InvariantCulture);
-              dateStr = t;
+              DateTime tim = DateTime.ParseExact(str, "yyyyMMdd", CultureInfo.InvariantCulture);
+              dateStr = str;
             }
             catch { }
           }
-          if(t.Length == 6)
+          if(str.Length == 6)
           {
             try 
             {
-              DateTime tim = DateTime.ParseExact(t, "HHmmss", CultureInfo.InvariantCulture);
-              timeStr = t;
+              DateTime tim = DateTime.ParseExact(str, "HHmmss", CultureInfo.InvariantCulture);
+              timeStr = str;
             }
             catch { }
           }

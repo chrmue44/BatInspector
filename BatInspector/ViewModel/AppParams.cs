@@ -540,7 +540,7 @@ namespace BatInspector
       FrequencyHET = 40000;
       MainWindowPosX = 0;
       MainWindowPosY = 0;
-      GradientRange = 25;
+      GradientRange = 12;
       ProbabilityMin = 0.5;
       HideInfos = false;
       WaterfallLogarithmic = true;

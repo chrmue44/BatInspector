@@ -9,6 +9,7 @@
 using BatInspector.Properties;
 using libParser;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -41,7 +42,7 @@ namespace BatInspector.Forms
       _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, widthLbl, true, "", setupStartEndTime);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, widthLbl, true);
       _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl, true);
-      _ctlMaxFiles.setValue(500);
+      _ctlMaxFiles.setValue(1000);
       _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, widthLbl, true);
       _ctlMaxFileLen.setValue(5.0);
       _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl, true);
@@ -130,47 +131,42 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      _info.Name = _ctlPrjName.getValue();
-      _info.SrcDir = _ctlSrcFolder.getValue();
-      _info.DstDir = _ctlDstFolder.getValue();
-      _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
-      _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
-      _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
-      _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
-      _info.LocSourceGpx = _rbGpxFile.IsChecked == true;
-      _inspect = _cbEvalPrj.IsChecked == true;
-      _info.IsProjectFolder = _isProjectFolder;
-      bool ok = true;
-      double lat = 0;
-      double lon = 0;
-      if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
+      try
       {
-        ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
-        if (!ok)
-          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        else
+        _info.Name = _ctlPrjName.getValue();
+        _info.SrcDir = _ctlSrcFolder.getValue();
+        _info.DstDir = _ctlDstFolder.getValue();
+        _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
+        _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
+        _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
+        _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+        _info.LocSourceGpx = _rbGpxFile.IsChecked == true;
+        _inspect = _cbEvalPrj.IsChecked == true;
+        _info.IsProjectFolder = _isProjectFolder;
+        bool ok = true;
+        double lat = 0;
+        double lon = 0;
+        if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
         {
-          ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
+          ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
           if (!ok)
-            MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          else
+          {
+            ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
+            if (!ok)
+              MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          }
         }
-      }
-      if (!ok)
-        return;
-      _model.Status.Msg = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
-      _model.Status.State = enAppState.IMPORT_PRJ;
-      _info.Latitude = lat;
-      _info.Longitude = lon;
+        if (!ok)
+          return;
+        _model.Status.Msg = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
+        _model.Status.State = enAppState.IMPORT_PRJ;
+        _info.Latitude = lat;
+        _info.Longitude = lon;
 
-      if (_isProjectFolder)
-      {
-        this.Visibility = Visibility.Hidden;
-        Thread thr = new Thread(splitProject);
-        thr.Start();
-      }
-      else
-      {
-        try
+        Thread thr = new Thread(createProject);
+        if (!_isProjectFolder)
         {
           this.Visibility = Visibility.Hidden;
           _info.Weather = _ctlPrjWeather.getValue();
@@ -178,49 +174,36 @@ namespace BatInspector.Forms
           _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
           _info.StartTime = _dtStart.DateTime;
           _info.EndTime = _dtEnd.DateTime;
-          Thread thr = new Thread(createProject);
-          thr.Start();
         }
-        catch (Exception ex)
-        {
-          DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
-        }
+        thr.Start();
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("invalid project data, creation of project failed!: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
-    private void splitProject()
-    {
-      string[] projects = Project.splitPrj(_info, _model.Regions, _model.SpeciesInfos);
-      if (projects.Length > 0)
-      {
-        string prjPath = Path.Combine(_info.DstDir, projects[0]);
-        DirectoryInfo dir = new DirectoryInfo(prjPath);
-        _model.Status.State = enAppState.OPEN_PRJ;
-        _model.initProject(dir, null);
-        if (_inspect)
-          _model.evaluate();
-        _model.Prj.ReloadInGui = true;
-      }
-      else
-        _model.Status.State = enAppState.IDLE;
-    }
 
 
     private void createProject()
     {
-      string[] projects = Project.createPrj(_info, _model.Regions, _model.SpeciesInfos);    
-      if(projects.Length > 0)
-      {
-        string prjPath = Path.Combine(_info.DstDir, projects[0]);
-        DirectoryInfo dir = new DirectoryInfo(prjPath);
-        _model.Status.State = enAppState.OPEN_PRJ;
-        _model.initProject(dir, null);
-        if (_inspect)
-          _model.evaluate();
-        _model.Prj.ReloadInGui = true;
-      }
-      else
-        _model.Status.State = enAppState.IDLE;
+       Project.createPrjFromWavs(_info, _model.Regions, _model.SpeciesInfos);    
+       string prjPath = Path.Combine(_info.DstDir, _info.Name);
+       DirectoryInfo dir = new DirectoryInfo(prjPath);
+       _model.initProject(dir, null);
+       if (_inspect)
+         _model.evaluate();
+        if(_model.Prj.Records.Length > _info.MaxFileCnt)
+        {
+          double prjCnt = (double)_model.Prj.Records.Length / _info.MaxFileCnt;
+          if (prjCnt > (int)prjCnt)
+            prjCnt+= 1;
+          List<string> prjs = Project.splitProject(_model.Prj, (int)prjCnt, _model.Regions);
+          if (prjs.Count > 0) 
+            _model.initProject(new DirectoryInfo(prjs[0]), null);
+        }
+       _model.Status.State = enAppState.OPEN_PRJ;
+       _model.Prj.ReloadInGui = true;
     }
 
 

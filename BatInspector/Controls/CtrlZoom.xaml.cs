@@ -182,7 +182,7 @@ namespace BatInspector.Controls
       _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt);
       _ctlDateTime.setValue(_model.ZoomView.FileInfo.DateTime);
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
-      _ctlGpsPos.setValue(_model.ZoomView.FileInfo.GPS.Position);
+      _ctlGpsPos.setValue(ElekonInfoFile.formatPosition(_model.ZoomView.FileInfo.GPS.Position, 4));
       _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, enDataType.STRING, 0, wt);
       _ctlGain.setValue(_model.ZoomView.FileInfo.Gain);
       _ctlTrigLevel.setup(BatInspector.Properties.MyResources.CtlZoomTrigLevel, enDataType.STRING, 0, wt);

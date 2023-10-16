@@ -341,7 +341,7 @@ namespace BatInspector
         StartTime = new DateTime(2022,7,12),
         EndTime = new DateTime(2022,7,14),
       };
-      Project.createPrj(prj, _model.Regions, _model.SpeciesInfos);
+      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos);
     }
 
     private void testReportModelBatdetect2()
@@ -519,7 +519,7 @@ namespace BatInspector
           _model.initProject(subDir, null);
           foreach(AnalysisFile f in _model.Prj.Analysis.Files)
           {
-            string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.ToLower().Replace(".wav", ".xml");
+            string info = Path.Combine(_model.Prj.PrjDir, _model.Prj.WavSubDir, f.Name.ToLower().Replace(".wav", ".xml"));
             BatRecord rec = ElekonInfoFile.read(info);
             foreach(AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
@@ -539,7 +539,7 @@ namespace BatInspector
           _model.initProject(subDir, null);
           foreach (AnalysisFile f in _model.Prj.Analysis.Files)
           {
-            string info = _model.Prj.PrjDir + "/" + _model.Prj.WavSubDir + "/" + f.Name.Replace(".wav", ".xml");
+            string info = Path.Combine(_model.Prj.PrjDir, _model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
             BatRecord rec = ElekonInfoFile.read(info);
             foreach (AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);

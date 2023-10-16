@@ -184,9 +184,10 @@ namespace BatInspector
           Landscape = argv[7].getString(),
           Weather = argv[8].getString(),
         };
-        string[] res = Project.createPrj(info, _inst._model.Regions, _inst._model.SpeciesInfos);
-        string resStr = string.Join(";", res);
-        result.assign(resStr); 
+        //string[] res = Project.createPrj(info, _inst._model.Regions, _inst._model.SpeciesInfos);
+        //string resStr = string.Join(";", res);
+        Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);
+        //result.assign(resStr); 
       }
       else
         err = tParseError.NR_OF_ARGUMENTS;
@@ -211,7 +212,7 @@ namespace BatInspector
       if (_inst._model.Prj.Name != "")
       {
         _inst._model.Prj.writePrjFile();
-        _inst._model.Prj.Analysis.save(_inst._model.SelectedDir, _inst._model.Prj.Notes);
+        _inst._model.Prj.Analysis.save(_inst._model.Prj.ReportName, _inst._model.Prj.Notes);
       }
       return err;
     }
@@ -441,7 +442,7 @@ namespace BatInspector
             argv[0].changeType(AnyType.tType.RT_INT64);
             int idx = (int)argv[0].getInt64();
             if (_inst._model.Prj.Records.Length > idx)
-              fName = _inst._model.Prj.PrjDir + "/" + _inst._model.Prj.WavSubDir + "/" + _inst._model.Prj.Records[idx].File;
+              fName = Path.Combine(_inst._model.Prj.PrjDir, _inst._model.Prj.WavSubDir, _inst._model.Prj.Records[idx].File);
             else
               err = tParseError.ARG1_OUT_OF_RANGE;
           }

@@ -48,14 +48,14 @@ namespace BatInspector
 
       string speciesFile = Path.Combine(modPath, modPar.Dir,"species.csv");
       addSpeciesColsToReport(reportName, speciesFile);
-      string datFile = prj.PrjDir + "/Xdata000.npy";
+      string datFile = Path.Combine(prj.PrjDir, "Xdata000.npy");
       string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
       string args = modPar.Script;
 
       if ((options & OPT_INSPECT) != 0)
       {
         //internal:
-        string dir = prj.PrjDir + "/" + prj.WavSubDir;
+        string dir = Path.Combine(prj.PrjDir, prj.WavSubDir);
 
         if (File.Exists(reportName))
           File.Delete(reportName);
@@ -88,7 +88,7 @@ namespace BatInspector
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
         prj.Analysis.read(reportName);
         prj.Analysis.checkConfidence(prj.SpeciesInfos);
-        prj.Analysis.save(Path.GetDirectoryName(reportName), prj.Notes);
+        prj.Analysis.save(reportName, prj.Notes);
         prj.Analysis.read(reportName);
       }
 

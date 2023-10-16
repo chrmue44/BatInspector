@@ -7,6 +7,7 @@
  ********************************************************************************/
 
 
+using DSPLib;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -20,24 +21,31 @@ namespace BatInspector
     int _h;
     int[] _pixel;
     int _stride;
-    Bitmap _bmp;  
+    PixelFormat _fmt;
 
-    public Bitmap Bmp { get { return _bmp; } }
+    public Bitmap Bmp 
+    { get
+      {
+        lock (this)
+        {
+          IntPtr addr = Marshal.UnsafeAddrOfPinnedArrayElement(_pixel, 0);
+          return new Bitmap(_w, _h, _stride / 8, _fmt, addr);
+        }
+      }
+    }
 
     public BitmapFast(int width, int height)
     {
       _w = width;
       _h = height;
-      PixelFormat fmt = PixelFormat.Format32bppRgb;
+      _fmt = PixelFormat.Format32bppRgb;
 
-      int pixelFormatSize = Image.GetPixelFormatSize(fmt);
+      int pixelFormatSize = Image.GetPixelFormatSize(_fmt);
       _stride = width * pixelFormatSize;
       int padding = 32 - (_stride % 32);
       if (padding < 32)
         _stride += padding;
       _pixel = new int[(_stride / 32) * _h];
-      IntPtr addr = Marshal.UnsafeAddrOfPinnedArrayElement(_pixel, 0);
-      _bmp = new Bitmap(_w, _h, _stride / 8, fmt, addr);
     }
 
     public void setPixel(int x, int y, Color col)

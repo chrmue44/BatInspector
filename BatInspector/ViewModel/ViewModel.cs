@@ -182,7 +182,7 @@ namespace BatInspector
     {
       if (Project.containsProject(dir) != "")
       {
-        _selectedDir = dir.FullName + "/";
+        _selectedDir = dir.FullName;
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);
         if (_prj == null)
@@ -203,7 +203,7 @@ namespace BatInspector
       {
         _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
         _prj.fillFromDirectory(dir);
-        _selectedDir = dir.FullName + "/";
+        _selectedDir = dir.FullName;
         _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
       }
       else
@@ -391,7 +391,7 @@ namespace BatInspector
       foreach (string f in files)
         deleteFile(f);
 
-      _prj.Analysis.save(SelectedDir, _prj.Notes);
+      _prj.Analysis.save(_prj.ReportName, _prj.Notes);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
@@ -448,7 +448,6 @@ namespace BatInspector
             retVal = _models[i].classify(Prj);
           }
         }
-//        _prj.Analysis.save(SelectedDir, _prj.Notes);
         _prj.writePrjFile();
       }
       DebugLog.log("evaluation of species done", enLogType.INFO);

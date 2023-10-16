@@ -72,7 +72,7 @@ namespace BatInspector
   }
 
 
-    public class SumItem
+  public class SumItem
   {
     public string Species { get; set; }
     public int Count { get; set; }
@@ -349,7 +349,7 @@ namespace BatInspector
       foreach (AnalysisFile f in _list)
       {
         string fName = f.getString(Cols.NAME);
-        if (fName.IndexOf(fileName) >= 0)
+        if (fName.IndexOf(fileName.ToLower()) >= 0)
         {
           retVal = f;
           break;
@@ -358,9 +358,17 @@ namespace BatInspector
       return retVal;
     }
 
-    public void addFile(AnalysisFile file)
+    public void addFile(AnalysisFile file, bool addCsv = false)
     {
       _list.Add(file);
+      if(addCsv)
+      {
+        foreach (AnalysisCall c in file.Calls)
+        {
+          _csv.addRow(c.getReportRow());
+          addReportItem(file, c);
+        }
+      }
     }
 
     public void addFile(string reportName, string wavName, int samplerate, double duration)

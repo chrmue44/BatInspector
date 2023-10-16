@@ -380,7 +380,7 @@ namespace BatInspector.Forms
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
-            _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
+            _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
         }
       }
     }
@@ -940,7 +940,7 @@ namespace BatInspector.Forms
         _model.saveSettings();
         if ((_model != null) && (_model.Prj != null) && (_model.Prj.Analysis != null) &&
           (_model.Prj.Analysis.Report != null))
-          _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
+          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
         DebugLog.log("MainWin:BTN 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1368,7 +1368,7 @@ namespace BatInspector.Forms
           {
             _model.Prj.addFiles(ofi.FileNames);
             if (_model.Prj.Analysis != null)
-              _model.Prj.Analysis.save(_model.SelectedDir, _model.Prj.Notes);
+              _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
             _model.Prj.writePrjFile();
             _spSpectrums.Children.Clear();
             DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);

@@ -456,37 +456,26 @@ namespace BatInspector.Forms
 
     private void createImageFiles()
     {
-      if ((_model.Prj != null) && (_model.Prj.Ok))
-      {
+      Stopwatch s = new Stopwatch();
+      s.Start();
+      BatExplorerProjectFileRecordsRecord[] recList = null;
+      if ((_model.Prj != null) && (_model.Prj.Ok) || _model.Query!=null)
+        recList = _model.Prj.Records;
+      else if (_model.Query!=null)
+        recList= _model.Query.Records;
+      if(recList != null)
+      { 
         _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
-        int tot = _model.Prj.Records.Length;
-        int cnt = 0;
-        Stopwatch s = new Stopwatch();
-        s.Start();
-        Parallel.ForEach(_model.Prj.Records, rec =>
-  //      foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
+        for(int i = 0; i < _model.Prj.Records.Length; i++)
         {
-          Thread.BeginCriticalRegion();
-          _model.createPngIfMissing(rec, false);
-          cnt++;
-          Thread.EndCriticalRegion();
+          _model.createPngIfMissing(_model.Prj.Records[i], false);
           if(s.ElapsedMilliseconds > 2500)
           {
-            _model.Status.Msg = cnt.ToString() + "/" + tot.ToString() + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
+            _model.Status.Msg = i.ToString() + "/" + _model.Prj.Records.Length + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
             s.Restart();
             Thread.Yield();
           }
         }
-        );
-      }
-      else if (_model.Query != null)
-      {
-        Parallel.ForEach(_model.Query.Records, rec =>
-        //foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
-        {
-          _model.createPngIfMissing(rec, true);
-        }
-        );
       }
     }
 

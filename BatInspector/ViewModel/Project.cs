@@ -460,7 +460,7 @@ namespace BatInspector
             {
               string[] names = Project.splitWav(f, info.MaxFileLenSec);
               if (info.IsProjectFolder)
-                Project.createSplitXmls(f, names);
+                Project.createSplitXmls(f, names, info.MaxFileLenSec);
             }
           }
         }
@@ -511,8 +511,6 @@ namespace BatInspector
         copyAnalysisPart(prj, dstprj);
         retVal.Add(dirName);
       }
-      // remove src project
-      Directory.Delete(prj.PrjDir, true);
       return retVal;
     }
 
@@ -661,7 +659,6 @@ namespace BatInspector
       }
       _batExplorerPrj.Records = newList.ToArray();
       writePrjFile();
-      _reloadInGui = true;
     }
 
     /// <summary>
@@ -733,13 +730,24 @@ namespace BatInspector
 
 
 
-    private static void createSplitXmls(string fName, string[] newNames)
+    private static void createSplitXmls(string fName, string[] newNames, double maxLen)
     {
       fName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+      double deltaT = 0;
+      DateTime t = new DateTime(1900,1,1);
+      BatRecord rec = ElekonInfoFile.read(fName);
       foreach (string newName in newNames)
       {
         string xmlName = newName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-        File.Copy(fName, xmlName, true);
+        if(rec != null)
+        {
+          if(t.Year < 1910)
+            t = ElekonInfoFile.parseDate(rec.DateTime);
+          t.AddMilliseconds(deltaT * 1000);
+          deltaT += maxLen;
+          rec.DateTime = ElekonInfoFile.getDateString(t);
+          ElekonInfoFile.write(xmlName, rec);
+        }
       }
     }
 

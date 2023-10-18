@@ -1015,6 +1015,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please specifiy destination folder!.
+        /// </summary>
+        public static string frmCreateDestFolderEmpty {
+            get {
+                return ResourceManager.GetString("frmCreateDestFolderEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overwrite location in source files.
         /// </summary>
         public static string FrmCreatePrjCbOverwriteLoc {

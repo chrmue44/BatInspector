@@ -1,5 +1,6 @@
-V 0.7.1.0  16.10.23
+V 0.7.1.0  18.10.23
 - bugfix: time stamp for Audiomoth T-files
+- bugfix: corrected timestamps for split files 
 - create project procedure changed:
   1. copy, 2. split wavs, 3. create prj, 4. evaluate, 5. split if too big
 - show recording positon in zoom view with 4 decimal places

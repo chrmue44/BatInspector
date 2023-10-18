@@ -1209,4 +1209,7 @@
   <data name="ToolTipCutOut" xml:space="preserve">
     <value>Cutout and delete range between cursors</value>
   </data>
+  <data name="frmCreateDestFolderEmpty" xml:space="preserve">
+    <value>Please specifiy destination folder!</value>
+  </data>
 </root>

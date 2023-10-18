@@ -146,16 +146,31 @@ namespace BatInspector.Forms
         bool ok = true;
         double lat = 0;
         double lon = 0;
-        if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
+
+        if (string.IsNullOrEmpty(_info.DstDir))
         {
-          ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
-          if (!ok)
-            MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-          else
+          MessageBox.Show(BatInspector.Properties.MyResources.frmCreateDestFolderEmpty,
+                          BatInspector.Properties.MyResources.Error,
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+          ok = false;
+        }
+        else
+        {
+          if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
           {
-            ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
+            ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
             if (!ok)
-              MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+              MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+                              BatInspector.Properties.MyResources.Error,
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+              ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
+              if (!ok)
+                MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(),
+                                BatInspector.Properties.MyResources.Error, 
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+            }
           }
         }
         if (!ok)
@@ -168,7 +183,6 @@ namespace BatInspector.Forms
         Thread thr = new Thread(createProject);
         if (!_isProjectFolder)
         {
-          this.Visibility = Visibility.Hidden;
           _info.Weather = _ctlPrjWeather.getValue();
           _info.Landscape = _ctlPrjLandscape.getValue();
           _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
@@ -176,6 +190,7 @@ namespace BatInspector.Forms
           _info.EndTime = _dtEnd.DateTime;
         }
         thr.Start();
+        this.Visibility = Visibility.Hidden;
       }
       catch (Exception ex)
       {
@@ -187,23 +202,28 @@ namespace BatInspector.Forms
 
     private void createProject()
     {
-       Project.createPrjFromWavs(_info, _model.Regions, _model.SpeciesInfos);    
-       string prjPath = Path.Combine(_info.DstDir, _info.Name);
-       DirectoryInfo dir = new DirectoryInfo(prjPath);
-       _model.initProject(dir, null);
-       if (_inspect)
-         _model.evaluate();
-        if(_model.Prj.Records.Length > _info.MaxFileCnt)
-        {
-          double prjCnt = (double)_model.Prj.Records.Length / _info.MaxFileCnt;
-          if (prjCnt > (int)prjCnt)
-            prjCnt+= 1;
-          List<string> prjs = Project.splitProject(_model.Prj, (int)prjCnt, _model.Regions);
-          if (prjs.Count > 0) 
-            _model.initProject(new DirectoryInfo(prjs[0]), null);
-        }
-       _model.Status.State = enAppState.OPEN_PRJ;
-       _model.Prj.ReloadInGui = true;
+      Project.createPrjFromWavs(_info, _model.Regions, _model.SpeciesInfos);
+      string prjPath = Path.Combine(_info.DstDir, _info.Name);
+      DirectoryInfo dir = new DirectoryInfo(prjPath);
+      _model.initProject(dir, null);
+      if (_inspect)
+      {
+        _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
+        _model.evaluate();
+      }
+      if (_model.Prj.Records.Length > _info.MaxFileCnt)
+      {
+        double prjCnt = (double)_model.Prj.Records.Length / _info.MaxFileCnt;
+        if (prjCnt > (int)prjCnt)
+          prjCnt += 1;
+        List<string> prjs = Project.splitProject(_model.Prj, (int)prjCnt, _model.Regions);
+        if (prjs.Count > 0)
+          _model.initProject(new DirectoryInfo(prjs[0]), null);
+        // remove src project
+        Directory.Delete(prjPath, true);
+      }
+      _model.Status.State = enAppState.OPEN_PRJ;
+      _model.Prj.ReloadInGui = true;
     }
 
 

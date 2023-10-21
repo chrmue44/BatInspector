@@ -1,3 +1,6 @@
+V 0.7.1.1  21.10.93
+- bugfix: import of wav files that have to be split
+
 V 0.7.1.0  20.10.23
 - bugfix: time stamp for Audiomoth T-files
 - bugfix: corrected timestamps for split files 

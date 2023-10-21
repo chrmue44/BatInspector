@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Windows;
 using System.Xml.Serialization;
 
+
 namespace BatInspector
 {
   public class PrjInfo
@@ -422,17 +423,14 @@ namespace BatInspector
         string[] files = getSelectedFiles(info, "*.wav");
         if (files.Length > 0)
         {
-          WavFile wavFile = new WavFile();
-          wavFile.readFile(files[0]);
-          uint sampleRate = wavFile.FormatChunk.Frequency;
-          int maxFileLen = (int)((double)sampleRate * 2 * info.MaxFileLenSec + 2048);
-
           // copy files to a single project at destination and create project
           string fullDir = Path.Combine(info.DstDir, info.Name);
           createPrjDirStructure(fullDir, out string wavDir);
           Utils.copyFiles(files, wavDir);
-          files = getSelectedFiles(info, "*.xml");
-          Utils.copyFiles(files, wavDir);
+          string[] xmlFiles = getSelectedFiles(info, "*.xml");
+          Utils.copyFiles(xmlFiles, wavDir);
+
+          // create project
           Project prj = new Project(regions, speciesInfo, null);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           prj.fillFromDirectory(dir, AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
@@ -440,7 +438,7 @@ namespace BatInspector
             prj.createXmlInfoFiles(info);
 
           // replace gpx locations
-          string[] xmlFiles = Directory.GetFiles(wavDir, "*.xml");
+          xmlFiles = Directory.GetFiles(wavDir, "*.xml");
           if (info.OverwriteLocation && info.LocSourceGpx)
           {
             bool ok = readGpxFile(info, out gpx gpxFile);
@@ -452,17 +450,7 @@ namespace BatInspector
           else if (info.OverwriteLocation)
             replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
 
-          DebugLog.log("split files exceeding max. length", enLogType.INFO);
-          foreach (string f in files)
-          {
-            FileInfo fileInfo = new FileInfo(f);
-            if (fileInfo.Length > maxFileLen)
-            {
-              string[] names = Project.splitWav(f, info.MaxFileLenSec);
-              if (info.IsProjectFolder)
-                Project.createSplitXmls(f, names, info.MaxFileLenSec);
-            }
-          }
+          splitFiles(prj, info);
         }
         else
           DebugLog.log("No WAV files in directory " + info.SrcDir, enLogType.ERROR);
@@ -473,6 +461,38 @@ namespace BatInspector
       }
       return;
     }
+
+    /// <summary>
+    /// split all files in prj that are longer than the specified max. length
+    /// </summary>
+    /// <param name="prj"></param>
+    /// <param name="info"></param>
+    private static void splitFiles(Project prj, PrjInfo info)
+    {
+      DebugLog.log("split files exceeding max. length", enLogType.INFO);
+
+      string prjWavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
+      string[] files = Directory.GetFiles(prjWavDir, "*" + AppParams.EXT_WAV);
+      WavFile wavFile = new WavFile();
+      wavFile.readFile(files[0]);
+      uint sampleRate = wavFile.FormatChunk.Frequency;
+      int maxFileLen = (int)((double)sampleRate * 2 * info.MaxFileLenSec + 2048);
+
+      foreach (string f in files)
+      {
+        FileInfo fileInfo = new FileInfo(f);
+        if (fileInfo.Length > maxFileLen)
+        {
+          string[] names = Project.splitWav(f, info.MaxFileLenSec);
+          Project.createSplitXmls(f, names, info.MaxFileLenSec);
+          string oldXml = f.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+          if (File.Exists(oldXml))
+            File.Delete(oldXml);
+        }
+      }
+      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
+    }
+
 
     /// <summary>
     /// split a project into multiple projects
@@ -742,8 +762,8 @@ namespace BatInspector
         if(rec != null)
         {
           if(t.Year < 1910)
-            t = ElekonInfoFile.parseDate(rec.DateTime);
-          t.AddMilliseconds(deltaT * 1000);
+            t = AnyType.getDate(rec.DateTime);
+          t =  t.AddMilliseconds(deltaT * 1000);
           deltaT += maxLen;
           rec.DateTime = ElekonInfoFile.getDateString(t);
           ElekonInfoFile.write(xmlName, rec);
@@ -809,7 +829,7 @@ namespace BatInspector
         _ok = true;
         _prjFileName = Path.GetFileName(dir.FullName);
         _batExplorerPrj.Name = _prjFileName;
-        _prjFileName = dir.FullName + "/" + _prjFileName + ".bpr";
+        _prjFileName = Path.Combine(dir.FullName , _prjFileName + ".bpr");
         _changed = true;
         Created = DateTime.Now.ToString(AppParams.GPX_DATETIME_FORMAT);
         Notes = notes;
@@ -828,7 +848,7 @@ namespace BatInspector
       foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
       {
         bool create = replaceAll;
-        string fullName = _selectedDir + "/" + _wavSubDir + "/" + record.File;
+        string fullName = Path.Combine(_selectedDir, _wavSubDir, record.File);
         if (File.Exists(fullName))
         {
           if (!replaceAll && File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))

@@ -142,7 +142,7 @@ namespace BatInspector
         date = new DateTime();
         DebugLog.log("erroneous time", enLogType.ERROR);
       }
-      return AnyType.getTimeString(date);
+      return AnyType.getTimeString(date).Replace("0d","");
     }
 
 
@@ -150,6 +150,9 @@ namespace BatInspector
     {
       DateTime retVal = new DateTime();
       string[] str = datStr.Split(' ');
+      if( str.Length == 1 )
+         str = datStr.Split('T');
+
       if (str.Length == 2)
       {
         string[] date = str[0].Split('.');

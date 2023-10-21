@@ -92,6 +92,9 @@ namespace BatInspector.Forms
         else
         {
           _isProjectFolder = false;
+          DirectoryInfo dir = new DirectoryInfo(_ctlSrcFolder.getValue());
+          _ctlPrjName.setValue(dir.Name);
+
           _cbTimeFilter.IsEnabled = true;
           files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
           if (files != null && files.Length > 0)
@@ -123,6 +126,7 @@ namespace BatInspector.Forms
       _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       setVisibilityTimeFilter();
       _cbOverwriteLoc.Visibility = _isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      _cbOverwriteLoc.IsChecked = !_isProjectFolder;
       enableLocationItems(!_isProjectFolder || (_cbOverwriteLoc.IsChecked == true));
     }
 

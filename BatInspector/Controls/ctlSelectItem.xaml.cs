@@ -23,7 +23,8 @@ namespace BatInspector.Controls
     int _index;
     Brush _brushDefault;
     dlgClickLabel _dlgClickLabel;
-    
+
+    public int SelectIndex { get { return _cb.SelectedIndex; } set { _cb.SelectedIndex = value; } }    
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
@@ -70,7 +71,7 @@ namespace BatInspector.Controls
       _cb.Items.Clear();
       foreach (string it in items)
         _cb.Items.Add(it);
-      _cb.SelectedItem = 0;
+      _cb.SelectedIndex = 0;
     }
 
     public string getValue()

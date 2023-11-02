@@ -91,6 +91,7 @@ namespace BatInspector
       testClassifier();
       testSumReport();
       //testGpx();
+      testKml();
       //testSignalForm();
       testSimCall();
       //testReportModelBatdetect2();
@@ -485,6 +486,12 @@ namespace BatInspector
     {
       string fName = "F:\\bat\\2023\\GrubeMessel\\Track_2023-08-22_GrubeMessel.gpx";
       gpx g = gpx.read(fName);
+    }
+
+    private void testKml()
+    {
+      string fName = "F:\\bat\\Lioba\\Session_20230928_195716_Kranichstein\\Session_20230928_195716.kml";
+      kml k = kml.read(fName);
     }
 
     private void calcNoiseLevel()

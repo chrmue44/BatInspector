@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -307,6 +306,7 @@ namespace BatInspector.Forms
       _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
       setStatus("");
       _spSpectrums.Children.Clear();
+      _tbReport_GotFocus(_spSpectrums, null);
       _model.initProject(dir, callbackUpdateAnalysis);
       if ((_model.Prj != null) && _model.Prj.Ok)
       {
@@ -816,6 +816,8 @@ namespace BatInspector.Forms
               _dgData.Columns[0].Visibility = Visibility.Hidden; // hide 'changed'
             _dgData.IsReadOnly = true;
           }
+          else
+            _dgData.ItemsSource= null;
         }
         DebugLog.log("TAB 'Report' got focus", enLogType.DEBUG);
       }
@@ -1117,7 +1119,7 @@ namespace BatInspector.Forms
             _workerPredict = null;
             _model.updateReport();
             updateWavControls();
-            _model.Status.State = enAppState.IDLE;
+            _model.Status.State = enAppState.WAIT_FOR_GUI;
           }
           break;
 
@@ -1552,6 +1554,14 @@ namespace BatInspector.Forms
         DebugLog.log("Main:BTN Recovery click failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
+
+    private void _btnRecorder_Click(object sender, RoutedEventArgs e)
+    {
+      FrmSetupRecorder frm = new FrmSetupRecorder(_model.Recorder);
+      frm.Owner = this;
+      frm.Show();
+    }
+
 
     #region WindowChrome
     // Can execute

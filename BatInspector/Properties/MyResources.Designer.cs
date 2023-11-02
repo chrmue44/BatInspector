@@ -493,6 +493,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Place....
+        /// </summary>
+        public static string CtlZoomBtnShowPlace {
+            get {
+                return ResourceManager.GetString("CtlZoomBtnShowPlace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dist to previous.
         /// </summary>
         public static string CtlZoomDistToPrev {
@@ -610,6 +619,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to only values in the range following range allowed:.
+        /// </summary>
+        public static string CtrlRecorderErrMsgRange {
+            get {
+                return ResourceManager.GetString("CtrlRecorderErrMsgRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Information.
         /// </summary>
         public static string CtrlZoomFileInfos {
@@ -660,6 +678,24 @@ namespace BatInspector.Properties {
         public static string CtrlZoomToolHeterodyneFreq {
             get {
                 return ResourceManager.GetString("CtrlZoomToolHeterodyneFreq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Acquisition.
+        /// </summary>
+        public static string DataAcquisition {
+            get {
+                return ResourceManager.GetString("DataAcquisition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dead time.
+        /// </summary>
+        public static string DeadTime {
+            get {
+                return ResourceManager.GetString("DeadTime", resourceCulture);
             }
         }
         
@@ -1141,11 +1177,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position from gpx file.
+        ///   Looks up a localized string similar to Position from GPX file.
         /// </summary>
         public static string frmCreatePrjPosFromGpx {
             get {
                 return ResourceManager.GetString("frmCreatePrjPosFromGpx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position from KML file.
+        /// </summary>
+        public static string frmCreatePrjPosFromKml {
+            get {
+                return ResourceManager.GetString("frmCreatePrjPosFromKml", resourceCulture);
             }
         }
         
@@ -1164,6 +1209,15 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjSelectGpxFile {
             get {
                 return ResourceManager.GetString("frmCreatePrjSelectGpxFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select KML file.
+        /// </summary>
+        public static string frmCreatePrjSelectKmlFile {
+            get {
+                return ResourceManager.GetString("frmCreatePrjSelectKmlFile", resourceCulture);
             }
         }
         
@@ -1303,6 +1357,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location of Recording for.
+        /// </summary>
+        public static string FrmLocationLocationOfRecordingFor {
+            get {
+                return ResourceManager.GetString("FrmLocationLocationOfRecordingFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bat Species Determination, part 1.
         /// </summary>
         public static string FrmMainBatDetermination1 {
@@ -1420,6 +1483,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording Control.
+        /// </summary>
+        public static string FrmRecControl {
+            get {
+                return ResourceManager.GetString("FrmRecControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min. Event Length.
+        /// </summary>
+        public static string FrmRecMinEventLength {
+            get {
+                return ResourceManager.GetString("FrmRecMinEventLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recovery of changed files in project.
         /// </summary>
         public static string FrmRecoveryChangedFiles {
@@ -1443,6 +1524,78 @@ namespace BatInspector.Properties {
         public static string FrmRecoveryTitle {
             get {
                 return ResourceManager.GetString("FrmRecoveryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read from Recorder.
+        /// </summary>
+        public static string FrmRecReadFromRecorder {
+            get {
+                return ResourceManager.GetString("FrmRecReadFromRecorder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording Mode.
+        /// </summary>
+        public static string FrmRecRecordingMode {
+            get {
+                return ResourceManager.GetString("FrmRecRecordingMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Time.
+        /// </summary>
+        public static string FrmRecStartingTime {
+            get {
+                return ResourceManager.GetString("FrmRecStartingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Time.
+        /// </summary>
+        public static string FrmRecStopTime {
+            get {
+                return ResourceManager.GetString("FrmRecStopTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Controlled.
+        /// </summary>
+        public static string FrmRecTimeControlled {
+            get {
+                return ResourceManager.GetString("FrmRecTimeControlled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger Type.
+        /// </summary>
+        public static string FrmRecTriggerType {
+            get {
+                return ResourceManager.GetString("FrmRecTriggerType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twilight Controlled.
+        /// </summary>
+        public static string FrmRecTwilight {
+            get {
+                return ResourceManager.GetString("FrmRecTwilight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send to Recorder.
+        /// </summary>
+        public static string FrmRecWriteToRecorder {
+            get {
+                return ResourceManager.GetString("FrmRecWriteToRecorder", resourceCulture);
             }
         }
         
@@ -1609,6 +1762,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
         public static string Help {
@@ -1722,6 +1884,24 @@ namespace BatInspector.Properties {
         public static string LatitudeFormatError {
             get {
                 return ResourceManager.GetString("LatitudeFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string Level {
+            get {
+                return ResourceManager.GetString("Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level + Frequency.
+        /// </summary>
+        public static string LevelFrequency {
+            get {
+                return ResourceManager.GetString("LevelFrequency", resourceCulture);
             }
         }
         
@@ -2122,6 +2302,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setup Recording Device.
+        /// </summary>
+        public static string MainToolRecorder {
+            get {
+                return ResourceManager.GetString("MainToolRecorder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recovery of deleted or edited files.
         /// </summary>
         public static string MainToolRecovery {
@@ -2379,6 +2568,24 @@ namespace BatInspector.Properties {
         public static string msgZoomNotPossible {
             get {
                 return ResourceManager.GetString("msgZoomNotPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string Off {
+            get {
+                return ResourceManager.GetString("Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string On {
+            get {
+                return ResourceManager.GetString("On", resourceCulture);
             }
         }
         

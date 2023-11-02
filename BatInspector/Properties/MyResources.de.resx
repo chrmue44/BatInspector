@@ -1210,6 +1210,75 @@
     <value>Lösche Bereich zwischen Cursoren</value>
   </data>
   <data name="frmCreateDestFolderEmpty" xml:space="preserve">
-    <value>Bitte Zielverzeichnis festlegen</value>
+    <value>Bitte Zielverzeichnis festlegen!</value>
+  </data>
+  <data name="CtlZoomBtnShowPlace" xml:space="preserve">
+    <value>Zeige Ort...</value>
+  </data>
+  <data name="FrmLocationLocationOfRecordingFor" xml:space="preserve">
+    <value>Aufnahmeort für</value>
+  </data>
+  <data name="frmCreatePrjPosFromKml" xml:space="preserve">
+    <value>Positionen aus KML-Datei</value>
+  </data>
+  <data name="frmCreatePrjSelectKmlFile" xml:space="preserve">
+    <value>KML-Datei auswählen</value>
+  </data>
+  <data name="CtrlRecorderErrMsgRange" xml:space="preserve">
+    <value>Es sind nur Werte in folgendem Bereich erlaubt:</value>
+  </data>
+  <data name="MainToolRecorder" xml:space="preserve">
+    <value>Aufnahmegerät Parametrieren</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Pegel</value>
+  </data>
+  <data name="LevelFrequency" xml:space="preserve">
+    <value>Pegel + Frequenz</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Ein</value>
+  </data>
+  <data name="FrmRecTimeControlled" xml:space="preserve">
+    <value>Zeitgesteuert</value>
+  </data>
+  <data name="FrmRecTwilight" xml:space="preserve">
+    <value>Dämmerungsgesteuert</value>
+  </data>
+  <data name="FrmRecRecordingMode" xml:space="preserve">
+    <value>Aufzeichnung</value>
+  </data>
+  <data name="FrmRecTriggerType" xml:space="preserve">
+    <value>Triggerung</value>
+  </data>
+  <data name="DeadTime" xml:space="preserve">
+    <value>Totzeit</value>
+  </data>
+  <data name="FrmRecMinEventLength" xml:space="preserve">
+    <value>min. Ereignisdauer</value>
+  </data>
+  <data name="FrmRecStartingTime" xml:space="preserve">
+    <value>Startzeit</value>
+  </data>
+  <data name="FrmRecStopTime" xml:space="preserve">
+    <value>Stoppzeit</value>
+  </data>
+  <data name="DataAcquisition" xml:space="preserve">
+    <value>Datenerfassung</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="FrmRecControl" xml:space="preserve">
+    <value>Aufnahmesteuerung</value>
+  </data>
+  <data name="FrmRecReadFromRecorder" xml:space="preserve">
+    <value>Lese vom Recorder</value>
+  </data>
+  <data name="FrmRecWriteToRecorder" xml:space="preserve">
+    <value>Parametriere Recorder</value>
   </data>
 </root>

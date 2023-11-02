@@ -9,8 +9,6 @@
 using BatInspector.Properties;
 using libParser;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -27,29 +25,30 @@ namespace BatInspector.Forms
     private PrjInfo _info;
     private bool _inspect;
     private bool _isProjectFolder = false;
+    private int _widthLbl;
 
     public FrmCreatePrj(ViewModel model)
     {
       InitializeComponent();
       _model = model;
       _info = new PrjInfo();
-      int widthLbl = 200;
-      _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, widthLbl, true);
-      _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, widthLbl, true);
+      _widthLbl = 200;
+      _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, _widthLbl, true);
+      _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlLat.setValue("49° 46.002 N");
-      _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, widthLbl, true);
+      _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlLon.setValue("8° 38.032 E");
-      _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, widthLbl, true, "", setupStartEndTime);
-      _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, widthLbl, true);
-      _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, widthLbl, true);
+      _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, _widthLbl, true, "", initDailogAfterSelectingSrc);
+      _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, _widthLbl, true);
+      _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, _widthLbl, true);
       _ctlMaxFiles.setValue(1000);
-      _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, widthLbl, true);
+      _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, _widthLbl, true);
       _ctlMaxFileLen.setValue(5.0);
-      _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, widthLbl, true);
+      _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlPrjWeather.setValue("");
-      _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING, 0, widthLbl, true);
+      _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlPrjLandscape.setValue("");
-      _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, widthLbl, false, "gpx Files (*.gpx)|*.gpx|All files(*.*)|*.*");
+      _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, _widthLbl, false, "gpx Files (*.gpx)|*.gpx|All files(*.*)|*.*");
       _ctlGpxFile.IsEnabled = false;
       _rbGpxFile.IsChecked = false;
       _rbFixedPos.IsChecked = true;
@@ -75,7 +74,7 @@ namespace BatInspector.Forms
       _lblDateEnd.Visibility = vis;
     }
 
-    private void setupStartEndTime()
+    private void initDailogAfterSelectingSrc()
     {
       if (Directory.Exists(_ctlSrcFolder.getValue()))
       {
@@ -92,6 +91,20 @@ namespace BatInspector.Forms
         else
         {
           _isProjectFolder = false;
+          string[] kmlFiles = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.kml");
+          string[] gpxFiles = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.gpx");
+          if (kmlFiles.Length > 0)
+          {
+            _ctlGpxFile.setValue(kmlFiles[0]);
+            _rbKmlFile.IsChecked = true;
+          }
+          else if (gpxFiles.Length > 0)
+          {
+            _ctlGpxFile.setValue(gpxFiles[0]);
+            _rbGpxFile.IsChecked = true;
+          }
+          btnRadioClick(null, null);
+
           DirectoryInfo dir = new DirectoryInfo(_ctlSrcFolder.getValue());
           _ctlPrjName.setValue(dir.Name);
 
@@ -131,8 +144,6 @@ namespace BatInspector.Forms
     }
 
    
-
-
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -143,8 +154,9 @@ namespace BatInspector.Forms
         _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
         _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
         _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
-        _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+        _info.GpxFile = (_rbGpxFile.IsChecked == true) || (_rbKmlFile.IsChecked == true)   ? _ctlGpxFile.getValue() : "";
         _info.LocSourceGpx = _rbGpxFile.IsChecked == true;
+        _info.LocSourceKml = _rbKmlFile.IsChecked == true;
         _inspect = _cbEvalPrj.IsChecked == true;
         _info.IsProjectFolder = _isProjectFolder;
         bool ok = true;
@@ -160,7 +172,7 @@ namespace BatInspector.Forms
         }
         else
         {
-          if ((!_info.LocSourceGpx && _info.OverwriteLocation) || !_isProjectFolder)
+          if (!_info.LocSourceGpx && !_info.LocSourceKml && _info.OverwriteLocation && !_isProjectFolder)
           {
             ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
             if (!ok)
@@ -189,7 +201,7 @@ namespace BatInspector.Forms
         {
           _info.Weather = _ctlPrjWeather.getValue();
           _info.Landscape = _ctlPrjLandscape.getValue();
-          _info.GpxFile = _rbGpxFile.IsChecked == true ? _ctlGpxFile.getValue() : "";
+          _info.GpxFile = (_rbGpxFile.IsChecked == true) || (_rbKmlFile.IsChecked == true) ? _ctlGpxFile.getValue() : "";
           _info.StartTime = _dtStart.DateTime;
           _info.EndTime = _dtEnd.DateTime;
         }
@@ -203,31 +215,9 @@ namespace BatInspector.Forms
     }
 
 
-
     private void createProject()
     {
-      Project.createPrjFromWavs(_info, _model.Regions, _model.SpeciesInfos);
-      string prjPath = Path.Combine(_info.DstDir, _info.Name);
-      DirectoryInfo dir = new DirectoryInfo(prjPath);
-      _model.initProject(dir, null);
-      if (_inspect)
-      {
-        _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
-        _model.evaluate();
-      }
-      if (_model.Prj.Records.Length > _info.MaxFileCnt)
-      {
-        double prjCnt = (double)_model.Prj.Records.Length / _info.MaxFileCnt;
-        if (prjCnt > (int)prjCnt)
-          prjCnt += 1;
-        List<string> prjs = Project.splitProject(_model.Prj, (int)prjCnt, _model.Regions);
-        if (prjs.Count > 0)
-          _model.initProject(new DirectoryInfo(prjs[0]), null);
-        // remove src project
-        Directory.Delete(prjPath, true);
-      }
-      _model.Status.State = enAppState.OPEN_PRJ;
-      _model.Prj.ReloadInGui = true;
+      _model.createProject(_info, _inspect);
     }
 
 
@@ -239,6 +229,12 @@ namespace BatInspector.Forms
 
     private void btnRadioClick(object sender, RoutedEventArgs e)
     {
+      string oldVal = _ctlGpxFile.getValue();
+      if(_rbGpxFile.IsChecked == true)
+        _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, _widthLbl, false, "GPX Files (*.gpx)|*.gpx|All files(*.*)|*.*");
+      if (_rbKmlFile.IsChecked == true)
+        _ctlGpxFile.setup(MyResources.frmCreatePrjSelectKmlFile, _widthLbl, false, "KML Files (*.kml)|*.kml|All files(*.*)|*.*");
+      _ctlGpxFile.setValue(oldVal);
       _ctlGpxFile.IsEnabled = _rbFixedPos.IsChecked == false;
       _ctlLat.IsEnabled = _rbFixedPos.IsChecked == true;
       _ctlLon.IsEnabled = _rbFixedPos.IsChecked == true;
@@ -256,10 +252,11 @@ namespace BatInspector.Forms
 
     private void enableLocationItems(bool en)
     {
-      _ctlGpxFile.IsEnabled = en & (_rbGpxFile.IsChecked == true);
+      _ctlGpxFile.IsEnabled = en & ((_rbGpxFile.IsChecked == true) | (_rbKmlFile.IsChecked == true));
       _ctlLat.IsEnabled = en & (_rbFixedPos.IsChecked == true);
       _ctlLon.IsEnabled = en & (_rbFixedPos.IsChecked == true);
       _rbGpxFile.IsEnabled = en;
+      _rbKmlFile.IsEnabled = en;
       _rbFixedPos.IsEnabled = en;
     }
 

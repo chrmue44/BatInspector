@@ -1,4 +1,12 @@
-V 0.7.1.1  21.10.93
+V0.7.2.0   31.10.23
+- button to show location in zoom view
+- import positions from KML file
+- import wav files more convinient (automatic preselection of optins in dialog)
+
+V 0.7.1.2  22.10.23
+- bugfix: handle gracefully error during creation of xml file
+
+V 0.7.1.1  21.10.23
 - bugfix: import of wav files that have to be split
 
 V 0.7.1.0  20.10.23

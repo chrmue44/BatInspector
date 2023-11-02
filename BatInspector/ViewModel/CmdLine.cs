@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using NAudio.SoundFont;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace BatInspector
 {
@@ -15,9 +18,19 @@ namespace BatInspector
 
       switch(args[0]) 
       {
-        case "-script":
+        case "--script":
           if(args.Length > 1)
             retVal = runScript(args[1]);
+          break;
+
+        case "--version":
+          Version version = Assembly.GetExecutingAssembly().GetName().Version;
+          DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
+          string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
+          Console.WriteLine(versionStr);
+          break;
+        default:
+          Console.WriteLine("unkonwn option: " + args[0]);
           break;
       }
       return retVal;

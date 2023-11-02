@@ -36,6 +36,7 @@ namespace BatInspector
     public string Landscape { get; set; } 
     public string GpxFile { get; set; }
     public bool LocSourceGpx { get; set; }
+    public bool LocSourceKml { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public bool IsProjectFolder { get; set; } 
@@ -370,6 +371,26 @@ namespace BatInspector
       return retVal;
     }
 
+    private static bool readKmlFile(PrjInfo info, out kml kmlFile)
+    {
+      bool retVal = true;
+      kmlFile = null;
+      // read gpx file if needed
+      if (info.OverwriteLocation)
+      {
+        if (info.LocSourceKml)
+        {
+          kmlFile = kml.read(info.GpxFile);
+          if (kmlFile == null)
+          {
+            DebugLog.log("kml file not readable: " + info.GpxFile, enLogType.ERROR);
+            retVal = false;
+          }
+        }
+      }
+      return retVal;
+    }
+
     private static bool createPrjDirStructure(string prjDir, out string wavDir)
     {
       bool retVal = true;
@@ -434,6 +455,13 @@ namespace BatInspector
           Project prj = new Project(regions, speciesInfo, null);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           prj.fillFromDirectory(dir, AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
+
+          // copy location files is present
+          string[] gpxFiles = Directory.GetFiles(info.SrcDir, "*.gpx");
+          Utils.copyFiles(gpxFiles, prj.PrjDir);
+          string[] kmlFiles = Directory.GetFiles(info.SrcDir, "*.kml");
+          Utils.copyFiles(kmlFiles, prj.PrjDir);
+
           if (!info.IsProjectFolder)
             prj.createXmlInfoFiles(info);
 
@@ -444,6 +472,14 @@ namespace BatInspector
             bool ok = readGpxFile(info, out gpx gpxFile);
             if (ok)
               replaceLocations(xmlFiles, wavDir, gpxFile);
+            else
+              DebugLog.log("error reading GPX file, could not generate location information", enLogType.ERROR);
+          }
+          else if (info.OverwriteLocation && info.LocSourceKml)
+          {
+            bool ok = readKmlFile(info, out kml kmlFile);
+            if (ok)
+              replaceLocations(xmlFiles, wavDir, kmlFile);
             else
               DebugLog.log("error reading GPX file, could not generate location information", enLogType.ERROR);
           }
@@ -525,6 +561,11 @@ namespace BatInspector
           xmlFiles[i] = prjFiles[i].ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         Utils.copyFiles(xmlFiles, wavDir);
 
+        string[] gpxFiles = Directory.GetFiles(prj.PrjDir, "*.gpx");
+        Utils.copyFiles(gpxFiles, dirName);
+        string[] kmlFiles = Directory.GetFiles(prj.PrjDir, "*.kml");
+        Utils.copyFiles(kmlFiles, dirName);
+
         Project dstprj = new Project(regions, prj.SpeciesInfos, null);
         dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
 
@@ -556,6 +597,24 @@ namespace BatInspector
       { 
         BatRecord f = ElekonInfoFile.read(fName);
         double[] pos = gpxFile.getPosition(ElekonInfoFile.getDateTimeFromFileName(fName));
+        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
+        string dstName = Path.GetFileName(fName);
+        dstName = Path.Combine(wavDir, dstName);
+        ElekonInfoFile.write(dstName, f);
+      }
+    }
+
+    private static void replaceLocations(string[] xmlfiles, string wavDir, kml kmlFile)
+    {
+      foreach (string fName in xmlfiles)
+      {
+        BatRecord f = ElekonInfoFile.read(fName);
+		    double[] posOld = {90,0};
+        double[] pos = kmlFile.getPosition(fName);
+	      if(pos[0] < 1e-6)
+	        pos = posOld;
+        else
+          posOld = pos;
         f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
         string dstName = Path.GetFileName(fName);
         dstName = Path.Combine(wavDir, dstName);
@@ -681,6 +740,7 @@ namespace BatInspector
       writePrjFile();
     }
 
+
     /// <summary>
     /// find a file in the project
     /// </summary>
@@ -737,6 +797,7 @@ namespace BatInspector
         _analysis?.save(ReportName, Notes);
       _reloadInGui = true;
     }
+
 
     private void addRecord(string filePath, ref List<BatExplorerProjectFileRecordsRecord> list)
     {
@@ -806,6 +867,7 @@ namespace BatInspector
       }
       return retVal;
     }
+
 
     /// <summary>
     /// create an elekon compatible project from a directory that contains wav files

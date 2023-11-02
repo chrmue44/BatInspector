@@ -34,8 +34,12 @@ namespace BatInspector.Controls
       return retVal;
     }
 
-    public void init(DateTime time)
+    public void init(DateTime time, bool dateVisible = true, string label = "", int width = 80 )
     {
+      _dp.Visibility = dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+      _lbl.Visibility = !dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+      _lbl.Content = label;
+      _lbl.Width = width;
       _dp.DisplayDate = time.Date;
       _dp.Text = _dp.DisplayDate.ToString();
       _hour.Text = time.Hour.ToString(); 

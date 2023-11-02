@@ -66,7 +66,7 @@ namespace BatInspector
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
-
+    CtrlRecorder _recorder;
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -103,6 +103,7 @@ namespace BatInspector
 
     public ModelState Status { get; set; }
     
+    public CtrlRecorder Recorder { get { return _recorder; } }
 
     /// <summary>
     /// currently opened object (prj, query or null)
@@ -156,12 +157,13 @@ namespace BatInspector
       string scriptDir = AppParams.Inst.ScriptInventoryPath;
       _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
       //_prj.Analysis.init(_prj.SpeciesInfos);
+      _recorder = new CtrlRecorder();
       UpdateUi = false;
     }
 
     public void updateReport()
     {
-      if (File.Exists(Prj.ReportName))
+      if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
         _prj.Analysis.read(Prj.ReportName);
     }
 
@@ -730,6 +732,32 @@ namespace BatInspector
     {
       bool retVal = _proc.IsRunning | _extBusy;
       return retVal;
+    }
+
+    public void createProject(PrjInfo info, bool inspect)
+    {
+      Project.createPrjFromWavs(info, Regions, SpeciesInfos);
+      string prjPath = Path.Combine(info.DstDir, info.Name);
+      DirectoryInfo dir = new DirectoryInfo(prjPath);
+      initProject(dir, null);
+      if (inspect)
+      {
+        Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
+        evaluate();
+      }
+      if (Prj.Records.Length > info.MaxFileCnt)
+      {
+        double prjCnt = (double)Prj.Records.Length / info.MaxFileCnt;
+        if (prjCnt > (int)prjCnt)
+          prjCnt += 1;
+        List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions);
+        if (prjs.Count > 0)
+          initProject(new DirectoryInfo(prjs[0]), null);
+        // remove src project
+        Directory.Delete(prjPath, true);
+      }
+      Status.State = enAppState.OPEN_PRJ;
+      Prj.ReloadInGui = true;
     }
   }
 }

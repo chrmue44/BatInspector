@@ -1,5 +1,6 @@
 ﻿using libParser;
 using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -29,12 +30,16 @@ namespace BatInspector
 	    }
     }
 
+  //  [DllImport("Kernel32.dll")]
+   // public static extern bool AttachConsole(int processId);
+
+
     protected override void OnStartup(StartupEventArgs e)
     {
       _args = e.Args;
+      AppParams.load();
       if (_args.Length == 0)
       {
-        AppParams.load();
         Installer.showSplash();
         /*
         this.Resources["colorBackGround"] = new SolidColorBrush(Color.FromArgb(0xFF, 40, 38, 43));
@@ -61,7 +66,8 @@ namespace BatInspector
       }
       else
       {
-        AppParams.load();
+
+//        AttachConsole(-1);
         DebugLog.setLogDelegate(null, null, null, AppParams.LogDataPath);
         int ret = CmdLine.main(_args);
         DebugLog.save();

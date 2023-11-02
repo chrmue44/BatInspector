@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace libParser
 {
@@ -417,6 +418,33 @@ namespace libParser
     public static string replaceExtension(string path, string oldExt, string newExt)
     {
       return path.ToLower().Replace(oldExt, newExt);
+    }
+
+    public static string GoogleMapUrl(string query, string map_type, int zoom)
+    {
+      // Start with the base map URL.
+      string url = "http://maps.google.com/maps?";
+      /*
+      // Add the query.
+     url += "q=" + HttpUtility.UrlEncode(query, Encoding.UTF8);
+
+      // Add the type.
+      //map_type = GoogleMapTypeCode(map_type);
+      if (map_type != null) url += "&t=" + map_type;
+
+      // Add the zoom level.
+      //   if (zoom > 0) url += "&z=" + zoom.ToString();
+      */
+      return url;
+    }
+
+    public static string BingMapUrl(string location, string locName, int zoom)
+    {
+      //https://learn.microsoft.com/en-us/bingmaps/articles/create-a-custom-map-url
+      string locurl = "https://bing.com/maps/default.aspx?cp=" + location.Replace(" ", "~") + "&lvl=" +
+                       zoom.ToString() + "&style=h&sp=point." +
+                       location.Replace(" ", "_") + "_" + locName.Replace("_", "-");
+      return locurl;
     }
   }
 }

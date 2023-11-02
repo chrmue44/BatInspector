@@ -18,6 +18,12 @@ using System;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Text;
+using System.Web;
+using System.Diagnostics;
+using static DSPLib.DSP.Window;
+using System.Collections;
+using BatInspector.Forms;
 
 namespace BatInspector.Controls
 {
@@ -1341,6 +1347,13 @@ namespace BatInspector.Controls
         if (fHet < _model.ZoomView.Waterfall.SamplingRate / 2)
           AppParams.Inst.FrequencyHET = f;
       }
+    }
+
+    private void _btnShowLoc_Click(object sender, RoutedEventArgs e)
+    {
+      FrmLocationView frm = new FrmLocationView();
+      frm.navigate(_model.ZoomView.FileInfo.FileName, _model.ZoomView.FileInfo.GPS.Position, 17);
+      frm.Show();
     }
   }
 }

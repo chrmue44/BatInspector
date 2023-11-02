@@ -787,7 +787,7 @@
     <value>Project Name</value>
   </data>
   <data name="frmCreatePrjPosFromGpx" xml:space="preserve">
-    <value>Position from gpx file</value>
+    <value>Position from GPX file</value>
   </data>
   <data name="frmCreatePrjFixedPos" xml:space="preserve">
     <value>fixed position</value>
@@ -1211,5 +1211,74 @@
   </data>
   <data name="frmCreateDestFolderEmpty" xml:space="preserve">
     <value>Please specifiy destination folder!</value>
+  </data>
+  <data name="CtlZoomBtnShowPlace" xml:space="preserve">
+    <value>Show Place...</value>
+  </data>
+  <data name="FrmLocationLocationOfRecordingFor" xml:space="preserve">
+    <value>Location of Recording for</value>
+  </data>
+  <data name="frmCreatePrjPosFromKml" xml:space="preserve">
+    <value>Position from KML file</value>
+  </data>
+  <data name="frmCreatePrjSelectKmlFile" xml:space="preserve">
+    <value>Select KML file</value>
+  </data>
+  <data name="CtrlRecorderErrMsgRange" xml:space="preserve">
+    <value>only values in the range following range allowed:</value>
+  </data>
+  <data name="MainToolRecorder" xml:space="preserve">
+    <value>Setup Recording Device</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="LevelFrequency" xml:space="preserve">
+    <value>Level + Frequency</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="FrmRecTimeControlled" xml:space="preserve">
+    <value>Time Controlled</value>
+  </data>
+  <data name="FrmRecTwilight" xml:space="preserve">
+    <value>Twilight Controlled</value>
+  </data>
+  <data name="FrmRecRecordingMode" xml:space="preserve">
+    <value>Recording Mode</value>
+  </data>
+  <data name="FrmRecTriggerType" xml:space="preserve">
+    <value>Trigger Type</value>
+  </data>
+  <data name="DeadTime" xml:space="preserve">
+    <value>Dead time</value>
+  </data>
+  <data name="FrmRecMinEventLength" xml:space="preserve">
+    <value>min. Event Length</value>
+  </data>
+  <data name="FrmRecStartingTime" xml:space="preserve">
+    <value>Starting Time</value>
+  </data>
+  <data name="FrmRecStopTime" xml:space="preserve">
+    <value>Stop Time</value>
+  </data>
+  <data name="DataAcquisition" xml:space="preserve">
+    <value>Data Acquisition</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="FrmRecControl" xml:space="preserve">
+    <value>Recording Control</value>
+  </data>
+  <data name="FrmRecReadFromRecorder" xml:space="preserve">
+    <value>Read from Recorder</value>
+  </data>
+  <data name="FrmRecWriteToRecorder" xml:space="preserve">
+    <value>Send to Recorder</value>
   </data>
 </root>

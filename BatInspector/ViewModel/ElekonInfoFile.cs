@@ -32,7 +32,7 @@ namespace BatInspector
         }
         catch (Exception ex) 
         {
-          DebugLog.log("error reading info file: " + ex.ToString(), enLogType.ERROR);
+          DebugLog.log("error reading info file '" + infoName +"': " + ex.ToString(), enLogType.ERROR);
           retVal = new BatRecord();
         }
       }
@@ -59,12 +59,17 @@ namespace BatInspector
       batRecord.GPS.Position = position;
       WavFile wavFile = new WavFile();
       wavFile.readFile(fileName);
-      batRecord.Samplerate = wavFile.FormatChunk.Frequency.ToString() + " Hz";
-      double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
-      batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
-      batRecord.DateTime = time.ToString(DATE_FORMAT);
-      string infoName = fileName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      ElekonInfoFile.write(infoName, batRecord);
+      if ((wavFile.FormatChunk != null) && (wavFile.AudioSamples != null))
+      {
+        batRecord.Samplerate = wavFile.FormatChunk.Frequency.ToString() + " Hz";
+        double duration = (double)wavFile.AudioSamples.Length / wavFile.FormatChunk.Frequency;
+        batRecord.Duration = duration.ToString(CultureInfo.InvariantCulture) + " Sec";
+        batRecord.DateTime = time.ToString(DATE_FORMAT);
+        string infoName = fileName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+        ElekonInfoFile.write(infoName, batRecord);
+      }
+      else
+        DebugLog.log("error creating XML file for: " + fileName, enLogType.ERROR);        
     }
 
     public static void parsePosition(string gpsPos, out double lat, out double lon)

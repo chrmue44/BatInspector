@@ -1281,4 +1281,10 @@
   <data name="FrmRecWriteToRecorder" xml:space="preserve">
     <value>Parametriere Recorder</value>
   </data>
+  <data name="frmCreatePrjPosFromTxt" xml:space="preserve">
+    <value>Position aus TXT-Datei (WA)</value>
+  </data>
+  <data name="frmCreatePrjSelectTxtFile" xml:space="preserve">
+    <value>TXT-Datei auswählen</value>
+  </data>
 </root>

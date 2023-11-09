@@ -171,12 +171,15 @@ namespace BatInspector
     public AnalysisFile find(string name)
     {
       AnalysisFile retVal = null;
-      foreach (AnalysisFile f in _list)
+      if (!string.IsNullOrEmpty(name))
       {
-        if (f.Name.ToLower().IndexOf(name.ToLower()) >= 0)
+        foreach (AnalysisFile f in _list)
         {
-          retVal = f;
-          break;
+          if (f.Name.ToLower().IndexOf(name.ToLower()) >= 0)
+          {
+            retVal = f;
+            break;
+          }
         }
       }
       return retVal;

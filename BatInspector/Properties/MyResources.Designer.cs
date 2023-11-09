@@ -1195,6 +1195,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position from TXT file (WA).
+        /// </summary>
+        public static string frmCreatePrjPosFromTxt {
+            get {
+                return ResourceManager.GetString("frmCreatePrjPosFromTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project(s) to Create.
         /// </summary>
         public static string FrmCreatePrjProjectsToCreate {
@@ -1218,6 +1227,15 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjSelectKmlFile {
             get {
                 return ResourceManager.GetString("frmCreatePrjSelectKmlFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select TXT file.
+        /// </summary>
+        public static string frmCreatePrjSelectTxtFile {
+            get {
+                return ResourceManager.GetString("frmCreatePrjSelectTxtFile", resourceCulture);
             }
         }
         

@@ -1,3 +1,6 @@
+V0.7.3.0   31.11.23
+- show recording time in zoom view in more convenient format
+
 V0.7.2.0   31.10.23
 - button to show location in zoom view
 - import positions from KML file

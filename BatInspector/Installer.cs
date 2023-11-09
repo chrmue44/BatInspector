@@ -27,7 +27,7 @@ namespace BatInspector
 
     static public void hideSplash() 
     {
-      _splashScreen.Close(TimeSpan.FromSeconds(1));
+      _splashScreen?.Close(TimeSpan.FromSeconds(1));
     }
 
     public static bool checkTools(string pythonVer, string modelVer)

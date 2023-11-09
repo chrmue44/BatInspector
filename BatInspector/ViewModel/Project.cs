@@ -37,6 +37,7 @@ namespace BatInspector
     public string GpxFile { get; set; }
     public bool LocSourceGpx { get; set; }
     public bool LocSourceKml { get; set; }
+    public bool LocSourceTxt { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public bool IsProjectFolder { get; set; } 
@@ -391,6 +392,27 @@ namespace BatInspector
       return retVal;
     }
 
+    private static bool readLoctxtFile(PrjInfo info, out LocFileTxt txtFile)
+    {
+      bool retVal = true;
+      txtFile = null;
+      // read gpx file if needed
+      if (info.OverwriteLocation)
+      {
+        if (info.LocSourceTxt)
+        {
+          txtFile = LocFileTxt.read(info.GpxFile);
+          if (txtFile == null)
+          {
+            DebugLog.log("txt location file not readable: " + info.GpxFile, enLogType.ERROR);
+            retVal = false;
+          }
+        }
+      }
+      return retVal;
+
+    }
+
     private static bool createPrjDirStructure(string prjDir, out string wavDir)
     {
       bool retVal = true;
@@ -461,6 +483,8 @@ namespace BatInspector
           Utils.copyFiles(gpxFiles, prj.PrjDir);
           string[] kmlFiles = Directory.GetFiles(info.SrcDir, "*.kml");
           Utils.copyFiles(kmlFiles, prj.PrjDir);
+          string[] txtFiles = Directory.GetFiles(info.SrcDir, "*.txt");
+          Utils.copyFiles(txtFiles, prj.PrjDir);
 
           if (!info.IsProjectFolder)
             prj.createXmlInfoFiles(info);
@@ -481,7 +505,15 @@ namespace BatInspector
             if (ok)
               replaceLocations(xmlFiles, wavDir, kmlFile);
             else
-              DebugLog.log("error reading GPX file, could not generate location information", enLogType.ERROR);
+              DebugLog.log("error reading KML file, could not generate location information", enLogType.ERROR);
+          }
+          else if (info.OverwriteLocation && info.LocSourceTxt)
+          {
+            bool ok = readLoctxtFile(info, out LocFileTxt txtFile);
+            if (ok)
+              replaceLocations(xmlFiles, wavDir, txtFile);
+            else
+              DebugLog.log("error reading TXT file, could not generate location information", enLogType.ERROR);
           }
           else if (info.OverwriteLocation)
             replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
@@ -565,6 +597,8 @@ namespace BatInspector
         Utils.copyFiles(gpxFiles, dirName);
         string[] kmlFiles = Directory.GetFiles(prj.PrjDir, "*.kml");
         Utils.copyFiles(kmlFiles, dirName);
+        string[] txtFiles = Directory.GetFiles(prj.PrjDir, "*.txt");
+        Utils.copyFiles(txtFiles, dirName);
 
         Project dstprj = new Project(regions, prj.SpeciesInfos, null);
         dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
@@ -613,6 +647,24 @@ namespace BatInspector
         double[] pos = kmlFile.getPosition(fName);
 	      if(pos[0] < 1e-6)
 	        pos = posOld;
+        else
+          posOld = pos;
+        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
+        string dstName = Path.GetFileName(fName);
+        dstName = Path.Combine(wavDir, dstName);
+        ElekonInfoFile.write(dstName, f);
+      }
+    }
+
+    private static void replaceLocations(string[] xmlfiles, string wavDir, LocFileTxt txtFile)
+    {
+      foreach (string fName in xmlfiles)
+      {
+        BatRecord f = ElekonInfoFile.read(fName);
+        double[] posOld = { 90, 0 };
+        double[] pos = txtFile.getPosition(fName);
+        if (pos[0] < 1e-6)
+          pos = posOld;
         else
           posOld = pos;
         f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
@@ -906,7 +958,7 @@ namespace BatInspector
     public void createXmlInfoFiles(PrjInfo info)
     {
       bool replaceAll = false;
-      gpx gpxFile = gpx.read(info.GpxFile);
+      //gpx gpxFile = gpx.read(info.GpxFile);
       foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
       {
         bool create = replaceAll;
@@ -930,8 +982,8 @@ namespace BatInspector
             double[] pos = new double[2];
             pos[0] = info.Latitude;
             pos[1] = info.Longitude;
-            if (gpxFile != null)
-              pos = gpxFile.getPosition(time);
+       //     if (gpxFile != null)
+       //       pos = gpxFile.getPosition(time);
             ElekonInfoFile.create(fullName, pos[0], pos[1], time);
           }
         }

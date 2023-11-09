@@ -40,7 +40,9 @@ namespace BatInspector
       AppParams.load();
       if (_args.Length == 0)
       {
+#if !DEBUG
         Installer.showSplash();
+#endif
         /*
         this.Resources["colorBackGround"] = new SolidColorBrush(Color.FromArgb(0xFF, 40, 38, 43));
         this.Resources["colorForeGroundSlider"] = new SolidColorBrush(Color.FromArgb(0xFF, 70, 108, 103));

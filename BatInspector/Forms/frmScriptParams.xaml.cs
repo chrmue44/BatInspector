@@ -31,7 +31,7 @@ namespace BatInspector.Forms
       for(int i = 0; i <  _paramText.Count; i++)
       {
         CtlSelectFile ctl = new CtlSelectFile();
-        ctl.setup(_paramText[i], 150, false, "", checkParams);
+        ctl.setup(_paramText[i], 150, false, "", true, checkParams);
         ctl.Margin = new Thickness(2,2,0,0);
         _sp.Children.Add(ctl);
         this.Height += 35;

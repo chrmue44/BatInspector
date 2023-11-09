@@ -91,7 +91,8 @@ namespace BatInspector
       testClassifier();
       testSumReport();
       //testGpx();
-      testKml();
+      //testKml();
+      testLocfileTxt();
       //testSignalForm();
       testSimCall();
       //testReportModelBatdetect2();
@@ -494,6 +495,11 @@ namespace BatInspector
       kml k = kml.read(fName);
     }
 
+    private void testLocfileTxt()
+    {
+      string fName = "F:\\bat\\todo\\Flm J 2014\\Flm JB Seeheim, Weiher, Holzstr, A.-Schweitzer 3,\\JB-_gps.txt";
+      LocFileTxt l = LocFileTxt.read(fName);
+    }
     private void calcNoiseLevel()
     {
       WavFile w = new WavFile();

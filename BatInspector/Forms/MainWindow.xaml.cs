@@ -287,14 +287,15 @@ namespace BatInspector.Forms
         _tbReport_GotFocus(null, null);
         foreach (ctlWavFile ctl in _spSpectrums.Children)
         {
-          if (ctl.Analysis.getString(Cols.NAME) == fName)
+          if (ctl.Analysis?.getString(Cols.NAME) == fName)
           {
             ctl.updateCallInformations(ctl.Analysis);
             if (ctl.Analysis == _model.ZoomView.Analysis)
               _ctlZoom.updateManSpecies();
             break;
           }
-        } }
+        } 
+      }
     }
 
     void initializeProject(DirectoryInfo dir)
@@ -419,13 +420,9 @@ namespace BatInspector.Forms
 
       foreach (ctlWavFile ctl in _spSpectrums.Children)
       {
-        if (ctl.Analysis != null)
-        {
-          string name = ctl.Analysis.Name;
-          AnalysisFile anaF = _model.Prj.Analysis.find(name);
-          if (anaF != null)
-            ctl.updateCallInformations(anaF);
-        }
+        AnalysisFile anaF = _model.Prj.Analysis.find(ctl.WavName);
+        if (anaF != null)
+          ctl.updateCallInformations(anaF);
       }
     }
 
@@ -1118,7 +1115,8 @@ namespace BatInspector.Forms
           {
             _workerPredict = null;
             _model.updateReport();
-            updateWavControls();
+            DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
+            initializeProject(dir);
             _model.Status.State = enAppState.WAIT_FOR_GUI;
           }
           break;

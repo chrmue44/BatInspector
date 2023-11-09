@@ -1371,7 +1371,7 @@ namespace libParser
       return getTimeString(date);
     }
 
-    public static string getTimeString(DateTime t)
+    public static string getTimeString(DateTime t, bool humanReadble = false)
     {
       DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
       TimeSpan diff = t - origin;
@@ -1379,7 +1379,12 @@ namespace libParser
       if (diff.TotalSeconds < 24*3600)
         retVal = "0t" + t.ToString("HH:mm:ss");
       else
+	  {
+		  if(humanReadble)
+        retVal = t.ToString("dd.MM.yyyy HH:mm:ss");
+	    else		
         retVal = "0d" + t.ToString("yy-MM-ddTHH:mm:ss");
+	  }
       return retVal;
     }
 

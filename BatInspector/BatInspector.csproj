@@ -268,6 +268,7 @@
     <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\kml.cs" />
     <Compile Include="ViewModel\kmlPart.cs" />
+    <Compile Include="ViewModel\LocFileTxt.cs" />
     <Compile Include="ViewModel\ModelBatDetect2.cs" />
     <Compile Include="ViewModel\ModelCmuTsa.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />

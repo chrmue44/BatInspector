@@ -17,13 +17,13 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmScriptParamEditor : Window
   {
-    public List<string> Parameter { get; private set; }
-    public FrmScriptParamEditor(List<string> paramTexts, string scriptName)
+    public List<ParamItem> Parameter { get; private set; }
+    public FrmScriptParamEditor(List<ParamItem> paramTexts, string scriptName)
     {
       InitializeComponent();
       this.Title = BatInspector.Properties.MyResources.FrmScriptParamEditorTitle + ": " + scriptName;
       _ctlParCnt.setup(BatInspector.Properties.MyResources.FrmScriptParamEditorNrPars, Controls.enDataType.INT, 0, 150, true, setNrParameter);
-      Parameter = new List<string>();
+      Parameter = new List<ParamItem>();
       Parameter.AddRange(paramTexts);
       fillParamControls(Parameter.Count);
       _ctlParCnt.setValue(Parameter.Count);
@@ -37,7 +37,7 @@ namespace BatInspector.Forms
         if(nr > Parameter.Count)
         {
           while (nr > Parameter.Count)
-            Parameter.Add("");
+            Parameter.Add(new ParamItem());
         }
         else if(nr < Parameter.Count)
         {
@@ -54,9 +54,11 @@ namespace BatInspector.Forms
       _sp.Children.Clear();
       for (int i = 0; i < nr; i++)
       {
-        ctlDataItem di = new ctlDataItem();
-        di.setup(BatInspector.Properties.MyResources.FrmScriptParamEditorNameParam + (i + 1).ToString(), enDataType.STRING, 0, 150, true);
-        di.setValue(Parameter[i]);
+        ctlParamEditItem di = new ctlParamEditItem();
+        di.setup(BatInspector.Properties.MyResources.FrmScriptParamEditorNameParam + " " + (i + 1).ToString(), 
+        enParamType.MICSCELLANOUS, 150);
+        di.setValue(Parameter[i].Name);
+        di.setType(Parameter[i].Type);
         _sp.Children.Add(di);
       }
     }
@@ -70,8 +72,9 @@ namespace BatInspector.Forms
       DialogResult = true;
       for(int i = 0; i <  _sp.Children.Count; i++) 
       {
-        ctlDataItem it = _sp.Children[i] as ctlDataItem;
-        Parameter[i] = it.getValue();
+        ctlParamEditItem it = _sp.Children[i] as ctlParamEditItem;
+        Parameter[i].Name = it.getValue();
+        Parameter[i].Type = it.getType();
       }
       this.Close();
     }

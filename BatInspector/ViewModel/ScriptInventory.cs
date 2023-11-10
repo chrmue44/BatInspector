@@ -16,10 +16,36 @@ using System.Runtime.Serialization.Json;
 
 namespace BatInspector
 {
+  public enum enParamType
+  {
+    FILE,
+    DIRECTORY,
+    MICSCELLANOUS
+  }
+
+  [DataContract]
+  public class ParamItem
+  {
+    [DataMember]
+    public string Name { get; set; } = "";
+    [DataMember]
+    public enParamType Type { get; set; } = enParamType.MICSCELLANOUS; 
+    public ParamItem(string name, enParamType type)
+    {
+      Name = name;
+      Type = type;
+    }
+
+    public ParamItem()
+    {
+
+    }
+  }
+
   [DataContract]
   public class ScriptItem
   {
-    public ScriptItem(int index, string name, string description, bool isTool, List<string> parameter)
+    public ScriptItem(int index, string name, string description, bool isTool, List<ParamItem> parameter)
     {
       Index = index;
       Name = name;
@@ -40,7 +66,7 @@ namespace BatInspector
     [DataMember]
     public bool IsTool { get; set; }
     [DataMember]
-    public List<string> Parameter { get; set; }
+    public List<ParamItem> Parameter { get; set; }
   }
 
 
@@ -155,15 +181,20 @@ namespace BatInspector
       string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
       Scripts = new List<ScriptItem>
       {
-        new ScriptItem(0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,new List<string>()),
-        new ScriptItem(1, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false,new List<string>()),
-        new ScriptItem(2, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateien", false,new List<string>()),
-        new ScriptItem(3, "resample.scr", "Resampling einer WAV-Datei",false,new List<string>(){"Name der WAV-Datei", "neue Sampling-Rate [Hz]"}),
-        new ScriptItem(4, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<string>()),
-        new ScriptItem(5, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<string>()),
-        new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<string>()),
-        new ScriptItem(7, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<string>()),
-        new ScriptItem(8, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<string>())
+        new ScriptItem(0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,new List<ParamItem>()),
+        new ScriptItem(1, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false,new List<ParamItem>()),
+        new ScriptItem(2, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateien", false,new List<ParamItem>()),
+        new ScriptItem(3, "resample.scr", "Resampling einer WAV-Datei",false,
+                           new List<ParamItem>(){new ParamItem("Name der WAV-Datei", enParamType.FILE),
+                                                 new ParamItem("neue Sampling-Rate [Hz]",enParamType.MICSCELLANOUS) }),
+        new ScriptItem(4, "rescale_dat.scr", "Samplingrate aller Dateien im Verzeichnis umskalieren",false,
+                           new List<ParamItem>(){new ParamItem("Verzeichnis auswählen", enParamType.DIRECTORY),
+                           new ParamItem("Skalierfaktor", enParamType.MICSCELLANOUS)}),
+        new ScriptItem(5, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
+        new ScriptItem(5, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(8, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(9, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>())
       };
     }
 

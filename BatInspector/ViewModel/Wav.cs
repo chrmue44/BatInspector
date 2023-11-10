@@ -524,7 +524,7 @@ namespace BatInspector
       }
       catch (Exception ex)
       {
-        DebugLog.log("error writing WAV file to memory stream", enLogType.ERROR);
+        DebugLog.log("error writing WAV file to memory stream: " + ex.ToString(), enLogType.ERROR);
       }
     }
 

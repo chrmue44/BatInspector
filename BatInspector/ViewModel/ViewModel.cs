@@ -545,7 +545,7 @@ namespace BatInspector
       }
       catch(Exception ex) 
       {
-        DebugLog.log("error creating PNG", enLogType.ERROR);
+        DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
       }
       return bitmapImage;
       }

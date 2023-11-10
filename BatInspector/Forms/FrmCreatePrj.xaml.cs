@@ -38,7 +38,7 @@ namespace BatInspector.Forms
       _ctlLat.setValue("49° 46.002 N");
       _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlLon.setValue("8° 38.032 E");
-      _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, _widthLbl, true, "", false, initDailogAfterSelectingSrc);
+      _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, _widthLbl, true, "", initDailogAfterSelectingSrc);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, _widthLbl, true);
       _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, _widthLbl, true);
       _ctlMaxFiles.setValue(1000);

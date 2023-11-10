@@ -29,7 +29,7 @@ namespace BatInspector.Forms
     public string Description { get { return _tbDescription.Text; } }
     public bool IsTool { get { return _cbTool.IsChecked == true; } }
 
-    public List<string> Parameter { get; private set;}
+    public List<ParamItem> Parameter { get; private set;}
 
     public ctlScriptItem()
     {
@@ -43,7 +43,7 @@ namespace BatInspector.Forms
       _dlgDelete = del;
       Parameter = script.Parameter;
       if(Parameter == null)
-        Parameter = new List<string>(); 
+        Parameter = new List<ParamItem>(); 
       _tbScriptName.Text = script.Name;
       _tbDescription.Text = script.Description;
       _cbTool.IsChecked = script.IsTool;
@@ -65,7 +65,21 @@ namespace BatInspector.Forms
 
     private void _btnRun_Click(object sender, RoutedEventArgs e)
     {
-      _model.executeScript(_tbScriptName.Text);
+      string script = _tbScriptName.Text;
+      ScriptItem item = _model.Scripter.getScript(script);
+      if (item != null)
+      {
+        if (item.Parameter.Count > 0)
+        {
+          string winTitle = BatInspector.Properties.MyResources.frmScriptParamTitle + ": " + script;
+          frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
+          frm.ShowDialog();
+          if (frm.DialogResult == true)
+            _model.executeScript(script, frm.ParameteValues);
+        }
+        else
+          _model.executeScript(script);
+      }
     }
 
     private void _btnEdit_Click(object sender, RoutedEventArgs e)

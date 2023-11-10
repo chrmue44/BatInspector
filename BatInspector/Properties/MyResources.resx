@@ -1287,4 +1287,13 @@
   <data name="frmCreatePrjSelectTxtFile" xml:space="preserve">
     <value>Select TXT file</value>
   </data>
+  <data name="FileSelector" xml:space="preserve">
+    <value>File Selector</value>
+  </data>
+  <data name="DirectorySelector" xml:space="preserve">
+    <value>Directory Selector</value>
+  </data>
+  <data name="StringNumber" xml:space="preserve">
+    <value>String/Number</value>
+  </data>
 </root>

@@ -163,6 +163,11 @@ namespace BatInspector
       AppParams.Inst.ScriptInventory.Scripts = list;
     }
 
+    public void saveScripts()
+    {
+      AppParams.Inst.ScriptInventory.save();
+    }
+
     void outputDataHandler(object sender, DataReceivedEventArgs ev)
     {
       DebugLog.log(ev.Data, enLogType.INFO);

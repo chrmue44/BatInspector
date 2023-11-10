@@ -11,11 +11,9 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="30"/>
-    </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
         <TextBlock Name ="_lbl" Grid.Column="0"  >Select Folder</TextBlock>
         <TextBox Name ="_txt" Grid.Column="1" TextChanged="_txt_TextChanged" >Tb</TextBox>
         <Button Name="_btnOpen" Grid.Column="2" Click="_btnOpen_Click" >...</Button>
-    <CheckBox Name="_cBisFolder" Grid.Column="3" Click="_isFolder_Click" VerticalAlignment="Center" Margin="5,0,0,0"/>
   </Grid>
 </UserControl>

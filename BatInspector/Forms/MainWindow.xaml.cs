@@ -1117,7 +1117,6 @@ namespace BatInspector.Forms
             _model.updateReport();
             DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
             initializeProject(dir);
-            _model.Status.State = enAppState.WAIT_FOR_GUI;
           }
           break;
 

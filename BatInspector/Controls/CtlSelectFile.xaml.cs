@@ -42,10 +42,9 @@ namespace BatInspector.Controls
       set { _txt.IsEnabled = value; _btnOpen.IsEnabled = value; }
     }*/
 
-    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "", bool cbFolderVisible = false, dlgVoid dlgAction = null)
+    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "", dlgVoid dlgAction = null)
     {
       _lbl.Text = label;
-      _cBisFolder.Visibility = cbFolderVisible ? Visibility.Visible : Visibility.Collapsed;
       _grd.ColumnDefinitions[0].Width = new GridLength(widthLbl);
       _isFolder = isFolder;
       _txt.Text = "";
@@ -100,11 +99,6 @@ namespace BatInspector.Controls
     {
       if (_dlgAction != null)
         _dlgAction();
-    }
-
-    private void _isFolder_Click(object sender, RoutedEventArgs e)
-    {
-      _isFolder = _cBisFolder.IsChecked == true;
     }
   }
 }

@@ -22,7 +22,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _model = model;
-      _ctlSelectFolder.setup(MyResources.frmCleanupSelRootFolder, 120, true, "", false, folderSelected);
+      _ctlSelectFolder.setup(MyResources.frmCleanupSelRootFolder, 120, true, "", folderSelected);
     }
 
     private void folderSelected()

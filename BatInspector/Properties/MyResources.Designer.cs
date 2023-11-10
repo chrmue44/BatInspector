@@ -709,6 +709,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory Selector.
+        /// </summary>
+        public static string DirectorySelector {
+            get {
+                return ResourceManager.GetString("DirectorySelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string Duration {
@@ -849,6 +858,15 @@ namespace BatInspector.Properties {
         public static string FactorySettings {
             get {
                 return ResourceManager.GetString("FactorySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Selector.
+        /// </summary>
+        public static string FileSelector {
+            get {
+                return ResourceManager.GetString("FileSelector", resourceCulture);
             }
         }
         
@@ -3279,6 +3297,15 @@ namespace BatInspector.Properties {
         public static string SpecDescWidthWf {
             get {
                 return ResourceManager.GetString("SpecDescWidthWf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to String/Number.
+        /// </summary>
+        public static string StringNumber {
+            get {
+                return ResourceManager.GetString("StringNumber", resourceCulture);
             }
         }
         

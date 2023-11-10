@@ -26,7 +26,6 @@ namespace BatInspector
     double[] _originalSamples = null;
     int _samplingRate;
     string _fName = "";
-    bool _fftInitDone = false;
     List<Tuple<int, int>> _overdrive;
 
     public SoundEdit(int samplingRate = 384000, int size = 384000)
@@ -188,7 +187,6 @@ namespace BatInspector
       _samples = new double[samples.Length];
       _originalSamples = new double[samples.Length];
       _size = samples.Length; 
-      _fftInitDone = false;
       for (int i = 0; i < samples.Length; i++)
       {
         _samples[i] = samples[i];
@@ -201,7 +199,6 @@ namespace BatInspector
       _samples = new double[samples.Length];
       _originalSamples = new double[samples.Length];
       _size = samples.Length;
-      _fftInitDone = false;
       for (int i = 0; i < samples.Length; i++)
       {
         _samples[i] = samples[i];
@@ -240,7 +237,6 @@ namespace BatInspector
           _fName = name;
           _samplingRate = (int)inFile.FormatChunk.Frequency;
           _size = inFile.AudioSamples.Length;
-          _fftInitDone = false;
         }
       }
       return retVal;

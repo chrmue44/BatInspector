@@ -1,0 +1,14 @@
+SET dirName =(PAR1)
+SET factor =(PAR2)
+SET NrFiles =(readDir(dirName, "*.wav") - 1)
+LOG =("reading dir " + dirName + " containing " + NrFiles + " files")
+FOR FileNr 0 NrFiles
+  SET FileName =(getFile(FileNr))
+  SET samplingRate =(getSampleRate(FileName))
+  IF =(samplingRate < 100000)
+    SET samplingRate =(samplingRate * 10)
+    =(setSampleRate(FileName, samplingRate))
+    LOG =("samplingRate changed for file '" + FileName + "' to: " + samplingRate)
+  END
+END
+

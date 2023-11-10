@@ -18,10 +18,10 @@ namespace BatInspector.Forms
   public partial class frmScriptParams : Window
   {
     List<string> _paramVals;
-    List<string> _paramText;
+    List<ParamItem> _paramText;
 
     public List<string> ParameteValues { get { return _paramVals; } }
-    public frmScriptParams(string title, List<string> paramTexts)
+    public frmScriptParams(string title, List<ParamItem> paramTexts)
     {
       InitializeComponent();
       _paramText = paramTexts;
@@ -31,12 +31,34 @@ namespace BatInspector.Forms
       for(int i = 0; i <  _paramText.Count; i++)
       {
         CtlSelectFile ctl = new CtlSelectFile();
-        ctl.setup(_paramText[i], 150, false, "", true, checkParams);
-        ctl.Margin = new Thickness(2,2,0,0);
-        _sp.Children.Add(ctl);
+        switch (_paramText[i].Type)
+        {
+          case enParamType.FILE:
+            ctl.setup(_paramText[i].Name, 150, false, "", checkParams);
+            ctl.Margin = new Thickness(2, 2, 0, 0);
+            _sp.Children.Add(ctl);
+            break;
+          case enParamType.DIRECTORY:
+            ctl.setup(_paramText[i].Name, 150, true, "", checkParams);
+            ctl.Margin = new Thickness(2, 2, 0, 0);
+            _sp.Children.Add(ctl);
+            break;
+          case enParamType.MICSCELLANOUS:
+            ctlDataItem ctld = new ctlDataItem();
+            ctld.setup(_paramText[i].Name, enDataType.STRING, 0, 150, true, checkMiscParams);
+            ctld.Margin = new Thickness(2, 2, 0, 0);
+            ctld.setValue("");
+            _sp.Children.Add(ctld);
+            break;
+        }
         this.Height += 35;
       }
       _btnOk.IsEnabled = false;
+    }
+
+    private void checkMiscParams(enDataType type, object val)
+    {
+      checkParams();
     }
 
     private void checkParams()
@@ -44,11 +66,25 @@ namespace BatInspector.Forms
       bool en = true;
       for(int i = 0; i < _sp.Children.Count; i++)
       {
-        CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
-        if (ctl.getValue().Length == 0)
+        switch (_paramText[i].Type)
         {
-          en = false;
-          break;
+          case enParamType.DIRECTORY:
+          case enParamType.FILE:
+            CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
+            if (ctl.getValue().Length == 0)
+            {
+              en = false;
+              break;
+            }
+            break;
+          case enParamType.MICSCELLANOUS:
+            ctlDataItem ctld = _sp.Children[i] as ctlDataItem;
+            if (ctld.getValue().Length == 0)
+            {
+              en = false;
+              break;
+            }
+            break;
         }
       }
       _btnOk.IsEnabled = en;
@@ -63,8 +99,18 @@ namespace BatInspector.Forms
     {
       for(int i = 0; i < _paramText.Count; i++) 
       {
-        CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
-        _paramVals.Add(ctl.getValue());
+        switch (_paramText[i].Type)
+        {
+          case enParamType.FILE:
+          case enParamType.DIRECTORY:
+            CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
+            _paramVals.Add(ctl.getValue());
+            break;
+          case enParamType.MICSCELLANOUS:
+            ctlDataItem ctld = _sp.Children[i] as ctlDataItem;
+            _paramVals.Add(ctld.getValue());
+            break;
+        }
       }
       DialogResult = true;
       this.Close();

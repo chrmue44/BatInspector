@@ -163,6 +163,97 @@
 			"Pipistrellus"
 		],
 		"InformationSource": "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats"
+	   },
+	   {
+		"Name": "Deutschland",
+		"Location": [{
+			    "Lat": 54.850456, 
+				"Lon": 9.943414
+			},
+			{
+				"Lat": 54.627120, 
+				"Lon": 13.459099
+			},
+			{
+				"Lat": 53.575474, 
+				"Lon": 14.797689
+			},
+			{
+				"Lat": 50.845796,
+				"Lon": 14.835755
+			},
+			{
+				"Lat": 50.184498, 
+				"Lon": 12.231023
+			},
+			{
+				"Lat": 48.774997, 
+				"Lon": 13.811179
+			},
+			{
+				"Lat": 47.491914,
+				"Lon": 13.011019
+			},
+			{
+				"Lat": 47.284410, 
+				"Lon": 10.217837
+			},
+			{
+				"Lat": 47.593611,
+				"Lon": 7.540160
+			},
+			{
+				"Lat": 48.968411,
+				"Lon": 8.211553
+			},
+			{
+				"Lat": 49.489325,
+				"Lon": 6.345152
+			},
+			{
+				"Lat": 51.847398,
+				"Lon": 5.990045
+			},
+			{
+				"Lat": 53.761120,
+				"Lon": 7.548357
+			}
+		],
+		"Species": [
+			"BBAR",
+			"ENIL",
+			"ESER",
+			"HSAV",
+			"MSCH",
+			"MALC",
+			"MBEC",
+			"MBRA",
+			"MDAS",
+			"MDAU",
+			"MEMA",
+			"MMYO",
+			"MMYS",
+			"MNAT",
+			"NLAS",
+			"NLEI",
+			"NNOC",
+			"PKUH",
+			"PAUR",
+			"PAUS",
+			"RFER",
+			"RHIP",
+			"PNAT",
+			"PPIP",
+			"PPYG",
+			"TTEN",
+			"VMUR",
+			"Eptesicus",
+			"Myotis",
+			"Nyctalus",
+			"Vespertilio",
+			"Pipistrellus"
+		],
+		"InformationSource": "https://de.wikipedia.org/wiki/Liste_von_Fledermausarten_in_Deutschland"
 	   }
 	]
 }

@@ -21,7 +21,7 @@ namespace BatInspector
   public class SpeciesInfos
   {
     public SpeciesInfos(string abbr, string latin, string local, bool show, double fcMin, double fcMax, double dMin, double dMax,
-                        double fMinMin, double fMinMax, double fMaxMin, double fMaxMax)
+                        double fMinMin, double fMinMax, double fMaxMin, double fMaxMax, double distMin, double distMax)
     {
       Abbreviation = abbr;
       Latin = latin;
@@ -35,6 +35,8 @@ namespace BatInspector
       FreqMinMax = fMinMax;
       FreqMaxMin = fMaxMin;
       FreqMaxMax = fMaxMax;
+      CallDistMin = distMin;
+      CallDistMax = distMax;
       ProofSpecies = "TODO";
       CharCalls = "TODO";
     }
@@ -227,23 +229,31 @@ namespace BatInspector
     public void initSpeciesInfos()
     {
       Species = new List<SpeciesInfos>();
-      Species.Add(new SpeciesInfos("BBAR", "Barbastella barbastellus", "Mopsfledermaus", true, 31, 42, 2, 5, 25, 30, 38, 48));
-      Species.Add(new SpeciesInfos("ESER", "Eptesicus Serotinus", "Breitflügelfledermaus", true, 21, 25, 10, 18, 22, 27, 35, 60));
-      Species.Add(new SpeciesInfos("MBRA", "Myotis brandtii", "Große Bartfledermaus", true, 37, 50, 4, 7, 23, 30, 65, 100));
-      Species.Add(new SpeciesInfos("MBEC", "Myotis bechsteinii", "Bechsteinfledermaus", true, 38, 50, 2.5, 6, 25, 40, 80, 100));
-      Species.Add(new SpeciesInfos("MMYS", "Myotis mystacinus", "Kleine Bartfledermaus", true, 40, 57, 3, 6, 28, 35, 65, 100));
-      Species.Add(new SpeciesInfos("MNAT", "Myotis nattereri", "Fransenfledermaus", true, 28, 53, 2, 5, 12, 25, 80, 150));
-      Species.Add(new SpeciesInfos("MMYO", "Myotis myotis", "Großes Mausohr", true, 27, 37, 5, 10, 21, 26, 50, 75));
-      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnatus", "Kleines Mausohr", true, 28, 40, 5, 10, 21, 26, 50, 80));
-      Species.Add(new SpeciesInfos("MDAU", "Myotis daubentinii", "Wasserfledermaus", true, 37, 55, 3, 7, 25, 40, 55, 95));
-      Species.Add(new SpeciesInfos("NNOC", "Nyctalus noctula", "Großer Abendsegler", true, 17, 29, 5, 28, 16, 27, 20, 40));
-      Species.Add(new SpeciesInfos("NLEI", "Nyctalus leisleri", "Kleiner Abendsegler", true, 21, 30, 5, 20, 22, 26, 25, 40));
-      Species.Add(new SpeciesInfos("PPIP", "Pipistrellus pipistrellus", "Zwergfledermaus", true, 41, 52, 3, 10, 42, 51, 44, 70));
-      Species.Add(new SpeciesInfos("PPYG", "Pipistrellus pygmaeus", "Mückenfledermaus", true, 50, 64, 3, 10, 51, 56, 60, 80));
-      Species.Add(new SpeciesInfos("PNAT", "Pipistrellus nathusii", "Rauhautfledermaus", true, 42, 49, 4, 11, 35, 41, 36, 70));
+      Species.Add(new SpeciesInfos("BBAR", "Barbastella barbastellus", "Mopsfledermaus", true, 31, 42, 2, 5, 25, 30, 38, 48, 50, 75));
+      Species.Add(new SpeciesInfos("ENIL", "Eptesicus nilsonii", "Nordfledermaus", true, 26, 31, 8, 19, 26, 29, 35, 45, 120, 220)); 
+      Species.Add(new SpeciesInfos("ESER", "Eptesicus Serotinus", "Breitflügelfledermaus", true, 21, 25, 10, 18, 22, 27, 35, 60, 130, 180));
+      Species.Add(new SpeciesInfos("MALC", "Myotis alcathoe", "Nymphenfledermaus", true, 48, 65, 2, 4, 41, 47, 100, 130, 50, 90)); 
+      Species.Add(new SpeciesInfos("MBEC", "Myotis bechsteinii", "Bechsteinfledermaus", true, 38, 50, 2.5, 6, 25, 40, 80, 100, 90, 110));
+      Species.Add(new SpeciesInfos("MBRA", "Myotis brandtii", "Große Bartfledermaus", true, 37, 50, 4, 7, 23, 30, 65, 100, 80, 110));
+      Species.Add(new SpeciesInfos("MDAS", "Myotis dasycneme", "Teichfledermaus", true, 36, 42, 5, 9, 25, 35, 65, 85, 80, 120));
+      Species.Add(new SpeciesInfos("MDAU", "Myotis daubentinii", "Wasserfledermaus", true, 37, 55, 3, 7, 25, 40, 55, 95, 65, 95));
+      Species.Add(new SpeciesInfos("MEMA", "Myotis emarginatus", "Wimperfledermaus", true, 48, 65, 1.5, 4, 30, 40, 90, 140, 40, 90));
+      Species.Add(new SpeciesInfos("MMYO", "Myotis myotis", "Großes Mausohr", true, 27, 37, 5, 10, 21, 26, 50, 75, 90, 160));
+      Species.Add(new SpeciesInfos("MMYS", "Myotis mystacinus", "Kleine Bartfledermaus", true, 40, 57, 3, 6, 28, 35, 65, 100, 70, 90));
+      Species.Add(new SpeciesInfos("MNAT", "Myotis nattereri", "Fransenfledermaus", true, 28, 53, 2, 5, 12, 25, 80, 150, 75, 110));
+      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnatus", "Kleines Mausohr", true, 28, 40, 5, 10, 21, 26, 50, 80, 90, 160));
+      Species.Add(new SpeciesInfos("MSCH", "Miniopterus schreibersii", "Langflügelfledermaus", true, 49, 55, 6, 15, 49, 55, 55, 80, 65, 140));
+      Species.Add(new SpeciesInfos("NLAS", "Nyctalus lasiopterus", "Riesenabendsegler", true, 14.5, 23, 12, 28, 14, 20, 15, 25, 160, 820));
+      Species.Add(new SpeciesInfos("NLEI", "Nyctalus leisleri", "Kleiner Abendsegler", true, 21, 30, 5, 20, 22, 26, 25, 40, 200, 400));
+      Species.Add(new SpeciesInfos("NNOC", "Nyctalus noctula", "Großer Abendsegler", true, 17, 29, 5, 28, 16, 27, 20, 40, 250, 300));
+      Species.Add(new SpeciesInfos("PKUH", "Pipistrellus kuhlii", "Weißrandfledermaus", true, 35, 42, 5, 12, 35, 42, 35, 60, 90, 130));
+      Species.Add(new SpeciesInfos("PNAT", "Pipistrellus nathusii", "Rauhautfledermaus", true, 35, 42, 4, 11, 35, 41, 36, 70, 100, 130));
+      Species.Add(new SpeciesInfos("PPIP", "Pipistrellus pipistrellus", "Zwergfledermaus", true, 41, 52, 3, 10, 42, 51, 44, 70, 75, 130));
+      Species.Add(new SpeciesInfos("PPYG", "Pipistrellus pygmaeus", "Mückenfledermaus", true, 50, 64, 3, 10, 51, 56, 60, 80, 65, 95));
+      Species.Add(new SpeciesInfos("PAUR", "Plecotus auritus", "Braunes Langohr", true, 22, 40, 2, 5, 18, 23, 45, 60, 40, 120));
+      Species.Add(new SpeciesInfos("PAUS", "Plecotus austriacus", "Graues Langohr", true, 22, 32, 2, 6, 20, 25, 40, 50, 60, 150));
+      Species.Add(new SpeciesInfos("RFER", "Rhinolophus ferrumequinum", "Große Hufeisennase", true, 77, 86, 35, 75, 50, 78, 77, 86, 80, 120));
+      Species.Add(new SpeciesInfos("RHIP", "Rhinolophus hipposideros", "Kleine Hufeisennase", true, 100, 116, 16, 75, 83, 100, 100, 116,60, 100));
     }
-
-
-
   }
 }

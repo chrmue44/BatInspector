@@ -185,10 +185,12 @@ namespace BatInspector
       return retVal;
     }
 
+
     public void addCsvReportRow(List<string> row)
     {
       _csv.addRow(row);
     }
+
 
     public void addReportItem(AnalysisFile file, AnalysisCall call)
     {
@@ -198,6 +200,8 @@ namespace BatInspector
         _report.Add(item);
       }
     }
+
+
     public bool Changed
     {
       get
@@ -361,6 +365,7 @@ namespace BatInspector
       return retVal;
     }
 
+
     public void addFile(AnalysisFile file, bool addCsv = false)
     {
       _list.Add(file);
@@ -373,6 +378,29 @@ namespace BatInspector
         }
       }
     }
+
+
+    public void updateReport()
+    {
+      foreach(ReportItem item in _report)
+      {
+        int row = item.Row;
+        item.Longitude = _csv.getCell(row, Cols.LON);
+        item.Latitude = _csv.getCell(row, Cols.LAT);
+        item.FreqMax = _csv.getCell(row, Cols.F_MAX);
+        item.FreqMin = _csv.getCell(row, Cols.F_MIN);
+        item.Duration = _csv.getCell(row, Cols.DURATION);
+        item.CallNr = _csv.getCell(row, Cols.NR);
+        item.FileName = _csv.getCell(row, Cols.NAME);
+        item.FreqMaxAmp = _csv.getCell(row, Cols.F_MAX_AMP);
+        item.Probability = _csv.getCell(row, Cols.PROBABILITY);
+        item.Remarks = _csv.getCell(row, Cols.REMARKS);
+        item.StartTime = _csv.getCell(row, Cols.START_TIME);
+        item.SpeciesAuto = _csv.getCell(row, Cols.SPECIES);
+        item.SpeciesMan = _csv.getCell(row, Cols.SPECIES_MAN);
+      }
+    }
+
 
     public void addFile(string reportName, string wavName, int samplerate, double duration)
     {
@@ -651,12 +679,14 @@ namespace BatInspector
 
     public ReportItem(AnalysisFile file, AnalysisCall call)
     {
+
       FileName = file.Name;
       int callNr = call.getInt(Cols.NR);
       CallNr = callNr.ToString();
       if (callNr < 2)
         Remarks = file.getString(Cols.REMARKS);
       callNr++;
+      Row = call.ReportRow;
       FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
       FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
       FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
@@ -666,11 +696,12 @@ namespace BatInspector
       Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
       Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
       Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
-      Snr = call.getDouble(Cols.SNR).ToString();
+    //  Snr = call.getDouble(Cols.SNR).ToString();
       SpeciesMan = call.getString(Cols.SPECIES_MAN);
     }
 
     public bool Changed { get { return _changed; } }
+    public int Row { get; set; }
     public string FileName { get; set; }
     public string CallNr { get; set; }
     public string StartTime { get; set; }
@@ -682,7 +713,7 @@ namespace BatInspector
     public string SpeciesAuto { get; set; }
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
-    public string Snr { get; set; }
+  //  public string Snr { get; set; }
 
     public string Latitude {get;set;}
     public string Longitude { get;set;}
@@ -719,12 +750,14 @@ namespace BatInspector
     private double _firstToSecond;
     private DlgUpdateFile _dlgUpdate;
 
-   public double FirstToSecond { get { return _firstToSecond; } }
+    public double FirstToSecond { get { return _firstToSecond; } }
     
-   /// <summary>
-   /// distance to previous call [ms]
-   /// </summary>
-   public double DistToPrev { get; set; }
+    /// <summary>
+    /// distance to previous call [ms]
+    /// </summary>
+    public double DistToPrev { get; set; }
+
+    public int ReportRow { get { return _row; } }
 
     public AnalysisCall(Csv csv, int row, DlgUpdateFile delegateUpdate)
     {

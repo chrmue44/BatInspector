@@ -38,11 +38,12 @@ namespace BatInspector.Controls
       _decimals = decimals;
       _dlgValChange = dlgValChange;
       _tb.Focusable = edit;
-      _grd.ColumnDefinitions[0].Width = new System.Windows.GridLength(widthLbl);
+      _tb.IsEnabled = edit;
+      _lbl.Opacity = edit ? 1 : 0.5;
       _lbl.Width = widthLbl;
     }
 
-    public new bool IsEnabled { get { return _tb.IsEnabled; } set { _tb.IsEnabled = value; _lbl.Opacity = value ? 1 : 0.5; } }
+    public new bool IsEnabled { get { return _tb.IsEnabled; } set { _tb.IsEnabled = value; _tb.Focusable = true; _lbl.Opacity = value ? 1 : 0.5; } }
     
     public void setValue(uint val)
     {

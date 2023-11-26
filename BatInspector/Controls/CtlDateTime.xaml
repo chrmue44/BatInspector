@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="25" d:DesignWidth="190">
     <StackPanel Orientation="Horizontal" Height="25">
-    <Label Name="_lbl" Content="aa" Margin="0,0,10,0"/>
+    <TextBlock Name="_lbl" Text="lbl1" Margin="0,0,5,0" TextAlignment="Right" HorizontalAlignment="Right" Background="{DynamicResource colorBackGround}"/>
     <DatePicker Name="_dp" Width="120"></DatePicker>
     <TextBox Name="_hour" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1" Width="25" Margin="10,0,0,0">00</TextBox>
     <Label>:</Label>

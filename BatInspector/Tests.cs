@@ -73,6 +73,7 @@ namespace BatInspector
         new FormulaData(26, "strListCnt(\"abc;def;ghi\")","3",""),
         new FormulaData(27, "strListItem(\"abc;def;ghi\",1)","def",""),
         new FormulaData(28, "strListItem(\"abc;def;ghi\",3)","ARG2_OUT_OF_RANGE","ARG2_OUT_OF_RANGE"),
+        new FormulaData(29, "replace(\"PAUR(56%)\",\"(\",\"](\")", "PAUR](56%)",""),
 
         };
 
@@ -226,8 +227,6 @@ namespace BatInspector
       {
         string form = f.Formula;
         Expression exp = new Expression(null);
-        if (f.Id == 22)
-          retVal = 0;
         string res = exp.parseToString(form);
         if((f.Result != res) || ((f.Error != res) && (exp.Errors > 0)))
         {

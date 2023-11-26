@@ -6,292 +6,105 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using System.CodeDom;
-using System.Windows.Media;
 
 namespace BatInspector
 {
-  public enum enTrigFilter
-  {
-    HIGHPASS = 0,
-    BANDPASS = 1,
-    LOWPASS = 2,
-  }
-
-  public enum enTrigType
-  {
-    LEVEL = 0,
-    FREQ = 1,
-    LEVEL_FREQ = 2,
-  }
-
-  public enum enGain
-  {
-    LOW = 0,
-    HIGH = 1,
-  }
-
-  public enum enSampleRate
-  {
-    SR_19K = 0,
-    SR_32K = 1,
-    SR_38K = 2,
-    SR_44K = 3,
-    SR_48K = 4,
-    SR_192K = 5,
-    SR_384K = 6,
-    SR_480K = 7,
-  }
-
-  public enum enRecMode
-  {
-    OFF = 0,
-    ON = 1,
-    TIME = 2,
-    TWILIGHT = 3,
-  }
 
   public class Trigger
   {
-    const double TRIG_MIN = -24.0;
-    const double TRIG_MAX = -1;
-    const double FREQ_MIN = 5;
-    const double FREQ_MAX = 70;
-    const double LENGTH_MIN = 0.5;
-    const double LENGTH_MAX = 5;
+    
+    NumType _level = new NumType("Prh");
+    NumType _freq = new NumType("Prf");
+    NumType _length = new NumType("Prt");
+    EnumType _filter = new EnumType("Pry");
+    EnumType _type = new EnumType("Prr");
 
-    double _level = -10;
-    double _freq = 20;
-    double _length = 1;
-    enTrigFilter _filter = enTrigFilter.HIGHPASS;
-    enTrigType _type = enTrigType.LEVEL_FREQ;
+    public NumType Level { get { return _level; } }
+    public NumType Frequency { get { return _freq; } }
+    public NumType EventLength { get { return _length; } }
+    public EnumType Type { get { return _type; } }
+    public EnumType Filter { get { return _filter; }  }
 
-    public double Level { get { return _level; } }
-    public double Frequency { get { return _freq; } }
-    public double Length { get { return _length; } }
-
-    public enTrigType Type { get { return _type; } set { _type = value; } }
-    public enTrigFilter Filter { get { return _filter; } set { _filter = value; } }
-
-    public bool setLevel(double level, out string errMsg)
+    public void init()
     {
-      errMsg = string.Empty;
-      if ((level >= TRIG_MIN) && (level <= TRIG_MAX))
-      {
-        _level = level;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + TRIG_MIN.ToString() + " ... " + TRIG_MAX.ToString();
-      return false;
+      _level.init();
+      _freq.init();
+      _length.init();
+      _filter.init();
+      _type.init();
     }
-
-    public bool setFrequency(double freq, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((freq >= FREQ_MIN) && (freq <= FREQ_MAX))
-      {
-        _freq = freq;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + FREQ_MIN.ToString() + " ... " + FREQ_MAX.ToString(); ;
-      return false;
-    }
-
-    public bool setLength(double length, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((length>= LENGTH_MIN) && (length <= LENGTH_MAX))
-      {
-        _length = length;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + LENGTH_MIN.ToString() + " ... " + LENGTH_MAX.ToString(); ;
-      return false;
-    }
-
   }
 
   public class Acquisition
   {
-    const double PRE_TRIG_MIN = 0.0;
-    const double PRE_TRIG_MAX = 70.0;
 
-    enSampleRate _sampleRate = enSampleRate.SR_384K;
-    enGain _gain = enGain.HIGH;
-    double _preTrig = 70;
+    EnumType _sampleRate = new EnumType("Prs");
+    EnumType _gain = new EnumType("Prg");
+    NumType _preTrig = new NumType("Prp");
     
-
-    public enSampleRate SampleRate { get { return _sampleRate; } set { _sampleRate = value; } } 
-    public enGain Gain { get { return _gain; } set { _gain = value; } }
-    public double PreTrigger {  get { return _preTrig; } }
-    public Acquisition() { }
-    public bool setPreTrigger(double length, out string errMsg)
+    public Acquisition()
     {
-      errMsg = string.Empty;
-      if ((length >= PRE_TRIG_MIN) && (length <= PRE_TRIG_MAX))
-      {
-        _preTrig = length;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + PRE_TRIG_MIN.ToString() + " ... " + PRE_TRIG_MAX.ToString(); ;
-      return false;
+    }
+
+    public EnumType SampleRate { get { return _sampleRate; } } 
+    public EnumType Gain { get { return _gain; } }
+    public NumType PreTrigger {  get { return _preTrig; } }
+
+    public void init()
+    {
+      _sampleRate.init();
+      _gain.init();
+      _preTrig.init();
     }
   }
 
   public class ControlRec
   {
-    const int H_MIN = 0;
-    const int H_MAX = 23;
-    const int MIN_MIN = 0;
-    const int MIN_MAX = 59;
-    const double RECTIME_MIN = 1;
-    const double RECTIME_MAX = 120;
-    const double DEADTIME_MIN = 0;
-    const double DEADTIME_MAX = 5;
+    EnumType _recMode = new EnumType("Pao");
+    NumType _startH = new NumType("Pah");
+    NumType _startMin = new NumType("Pam");
+    NumType _stopH = new NumType("Pai");
+    NumType _stopMin = new NumType("Pan");
+    NumType _recTime = new NumType("Prt");
+    NumType _deadTime = new NumType("Prd");
 
-    enRecMode _recMode = enRecMode.OFF;
-    public enRecMode Mode { get { return _recMode; } set { _recMode = value; } }
 
-    int _startH = 19;
-    int _startMin = 0;
-    int _stopH = 6;
-    int _stopMin = 0;
-    double _recTime = 3.0;
-    double _deadTime = 1.0;
+    public EnumType Mode { get { return _recMode; } }
+    public NumType StartH { get { return _startH; } }
+    public NumType StartMin { get { return _startMin; } }
+    public NumType StopH { get { return _stopH; } }
+    public NumType StopMin { get { return _stopMin; } }
 
-    public int StartH { get { return _startH; } }
-    public int StartMin { get { return _startMin; } }
-    public int StopH { get { return _stopH; } }
-    public int StopMin { get { return _stopMin; } }
-
-    public double RecTime { get { return _recTime; } }  
-    public double DeadTime { get { return _deadTime; } }
+    public NumType RecTime { get { return _recTime; } }  
+    public NumType DeadTime { get { return _deadTime; } }
 
     public ControlRec() { }
 
-    public bool setStartH(int h, out string errMsg)
+    public void init()
     {
-      errMsg = string.Empty;
-      if ((h >= H_MIN) && (h <= H_MAX))
-      {
-        _startH = h;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + H_MIN.ToString() + " ... " + H_MAX.ToString(); ;
-      return false;
+      _recMode.init();
+      _startH.init();
+      _startMin.init();
+      _stopH.init();
+      _stopMin.init();
+      _recTime.init();
+      _deadTime.init();
     }
-
-    public bool setStopH(int h, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((h >= H_MIN) && (h <= H_MAX))
-      {
-        _stopH = h;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + H_MIN.ToString() + " ... " + H_MAX.ToString(); ;
-      return false;
-    }
-
-    public bool setStartMin(int m, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((m >= MIN_MIN) && (m <= MIN_MAX))
-      {
-        _startMin = m;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + MIN_MIN.ToString() + " ... " + MIN_MAX.ToString(); ;
-      return false;
-    }
-
-    public bool setStopMin(int m, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((m >= MIN_MIN) && (m <= MIN_MAX))
-      {
-        _stopMin = m;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + MIN_MIN.ToString() + " ... " + MIN_MAX.ToString(); ;
-      return false;
-    }
-
-    public bool setRecTime(int t, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((t >= RECTIME_MIN) && (t <= RECTIME_MAX))
-      {
-        _recTime = t;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + RECTIME_MIN.ToString() + " ... " + RECTIME_MAX.ToString(); ;
-      return false;
-    }
-
-    public bool setDeadTime(int t, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((t >= DEADTIME_MIN) && (t <= DEADTIME_MAX))
-      {
-        _deadTime = t;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + RECTIME_MIN.ToString() + " ... " + RECTIME_MAX.ToString(); ;
-      return false;
-    }
-
-
   }
 
   public class GeneralRec
   {
-    const double LAT_MIN = -90;
-    const double LAT_MAX = 90;
-    const double LON_MIN = -180;
-    const double LON_MAX = 180;
-    double _lat = 49;
-    double _lon = 8;
+    NumType _lat = new NumType("Pla");
+    NumType _lon = new NumType("Plo");
 
-    public double Latitude { get { return _lat; } } 
-    public double Longitude { get { return _lon;} }
+    public NumType Latitude { get { return _lat; } } 
+    public NumType Longitude { get { return _lon;} }
 
-    public bool setLatitude(double lat, out string errMsg)
+    public void init()
     {
-      errMsg = string.Empty;
-      if ((lat >= LAT_MIN) && (lat <= LAT_MAX))
-      {
-        _lat = lat;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + LAT_MIN.ToString() + " ... " + LAT_MAX.ToString(); ;
-      return false;
+      _lat.init();
+      _lon.init();
     }
-
-    public bool setLongitude(double lon, out string errMsg)
-    {
-      errMsg = string.Empty;
-      if ((lon >= LAT_MIN) && (lon <= LAT_MAX))
-      {
-        _lon = lon;
-        return true;
-      }
-      else
-        errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + " " + LON_MIN.ToString() + " ... " + LON_MAX.ToString(); ;
-      return false;
-    }
-
   }
 
   public class CtrlRecorder
@@ -300,18 +113,41 @@ namespace BatInspector
     Acquisition _acq;
     ControlRec _ctrl;
     GeneralRec _gen;
+    BatSpy _device;
 
     public CtrlRecorder()
     {
+      _device = new BatSpy();
       _trigger = new Trigger();
       _acq = new Acquisition();
       _ctrl = new ControlRec();
       _gen = new GeneralRec();
     }
 
+    public bool connect()
+    {
+      bool ok = BatSpy.connect();
+      if (ok)
+        init();
+      return ok;
+    }
+
+    public void disConnect()
+    {
+      BatSpy.disConncet();
+    }
+
     public Trigger Trigger { get { return _trigger; } }
     public Acquisition Acquisition { get { return _acq;} }
     public ControlRec Control { get { return _ctrl; } }
     public GeneralRec General { get { return _gen; } }
+
+    public void init()
+    {
+      _trigger.init();
+      _acq.init();  
+      _ctrl.init();
+      _gen.init();
+    }
   }
 }

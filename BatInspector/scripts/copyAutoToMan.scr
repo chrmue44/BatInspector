@@ -8,17 +8,20 @@ FOR FileNr 0 NrFiles
   IF =(getFileInfo(FileNr, "SELECT"))
     SET NrCalls =(getCallCount(FileNr) - 1)
     FOR i 0 NrCalls
-	  SET OverDr =(checkOverdrive(FileNr, i))
-	  IF =(OverDr)
-   	    SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
-	    IF =(toupper(specMan) == "TODO")
+      SET OverDr =(checkOverdrive(FileNr, i))
+      IF =(OverDr)
+        SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+        SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
+	IF =(toupper(specMan) == "TODO")
+          SET ovrAuto =("??OVR[" + replace(specAuto,"(","](")
+          =(setCallInfo(FileNr, i, "SPEC_AUTO", ovrAuto))
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
-  	      SET fileName =(getFileInfo(FileNr, "NAME"))
-		  SET Count =(Count + 1)
+  	  SET fileName =(getFileInfo(FileNr, "NAME"))
+          SET Count =(Count + 1)
           LOG =("file:" + fileName + ", overdriven call:" + (i + 1) + " set to '?'")		  
-		END
-	  END
 	END
+      END
+    END
   END
 END
 LOG =("detected " + Count + " overdriven calls")

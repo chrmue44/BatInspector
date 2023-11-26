@@ -116,6 +116,9 @@ namespace libParser
       MathHelpTab.Add(new HelpTabItem("toupper", "returns upper char string of argument if the variable type is STRING otherwise \"\"",
                       new List<string> { "1: a string" }, new List<string> { "1: string converted to upper case" }));
       addMethod(new FuncTabItem("toupper", toupper));
+      MathHelpTab.Add(new HelpTabItem("replace", "replace substring in string",
+                      new List<string> { "1: a string", "2:subst to replace", "3:new string" }, new List<string> { "1: string converted to upper case" }));
+      addMethod(new FuncTabItem("replace", replace));
     }
 
     // Ueberschrift fuer Hilfe zur Methodenliste
@@ -656,6 +659,28 @@ namespace libParser
         argv[0].changeType(AnyType.tType.RT_STR);
         string str = argv[0].getString();
         string resultStr = str.ToUpper();
+        result.assign(resultStr);
+      }
+      else
+      {
+        err = tParseError.NR_OF_ARGUMENTS;
+      }
+      return err;
+    }
+
+    static tParseError replace(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count == 3)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string str = argv[0].getString();
+        argv[1].changeType(AnyType.tType.RT_STR);
+        string oldStr = argv[1].getString();
+        argv[2].changeType(AnyType.tType.RT_STR);
+        string newStr = argv[2].getString();
+        string resultStr = str.Replace(oldStr, newStr);
         result.assign(resultStr);
       }
       else

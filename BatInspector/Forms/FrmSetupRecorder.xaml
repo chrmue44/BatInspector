@@ -8,13 +8,20 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Icon="../images/simplescreenrecorder_94921.png"
-        Title="Setup Recorder" Height="400" MinHeight="370" Width="900" MinWidth="900">
+        Title="Setup Recorder" Height="470" MinHeight="370" Width="900" MinWidth="900">
   <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="35"/>
+    </Grid.RowDefinitions>
+    <TabControl Grid.Row="0">
+      <TabItem Header="Parameter">
+        <Grid>
           <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-      <RowDefinition Height="35" />
-    </Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+          </Grid.RowDefinitions>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
@@ -24,6 +31,7 @@
               <local:ctlSelectItem x:Name="_ctlGain"/>
               <local:ctlSelectItem x:Name="_ctlSampleRate"/>
               <local:ctlDataItem x:Name="_ctlPreTrigger" />
+              <local:ctlDataItem x:Name="_ctlRecordingTime" />
             </StackPanel>
           </GroupBox>
           <GroupBox Header="Trigger" Template="{DynamicResource GroupBoxCmu}" Grid.Row="0" Grid.Column="2" Margin="0,5,5,5">
@@ -32,32 +40,81 @@
               <local:ctlDataItem x:Name="_ctlTrigLevel"/>
               <local:ctlDataItem x:Name="_ctlTrigFreq" />
               <local:ctlDataItem x:Name="_ctlTrigLength" />
-      </StackPanel>
+            </StackPanel>
           </GroupBox>
           <GroupBox Header="{x:Static res:MyResources.FrmRecControl}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="0"  Margin="5,0,5,5" Grid.Row="1">
             <StackPanel Margin="5">
               <local:ctlSelectItem x:Name="_ctlRecMode"/>
               <local:CtlDateTime x:Name="_ctlRecStart"/>
               <local:CtlDateTime x:Name="_ctlRecStop"/>
-              <local:ctlDataItem x:Name="_ctlRecTime" />
               <local:ctlDataItem x:Name="_ctlDeadTime" />
             </StackPanel>
           </GroupBox>
           <GroupBox Header="{x:Static res:MyResources.General}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="1"  Margin="0,0,5,5" Grid.Row="1">
 
-            <StackPanel Margin="5">
+            <StackPanel Margin="5" >
               <local:ctlDataItem x:Name="_ctlLat"/>
               <local:ctlDataItem x:Name="_ctlLon"/>
             </StackPanel>
           </GroupBox>
-    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1">
+          <Button x:Name="_btnRead" Width="140"  Content="{x:Static res:MyResources.FrmRecReadFromRecorder}" Click="_btnRead_Click" Margin="5,5,0,5"/>
+          <Button x:Name="_btnWrite" Width="140"  Content="{x:Static res:MyResources.FrmRecWriteToRecorder}" Click="_btnWrite_Click" Margin="5,5,7,5"/>
+          </StackPanel>
+        </Grid>
+
+      </TabItem>
+      <TabItem Header="Status">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <StackPanel Grid.Column="0">
+            <GroupBox Header="{x:Static res:MyResources.Device}" Template="{DynamicResource GroupBoxCmu}">
+            
+              <StackPanel>
+                <local:ctlDataItem x:Name="_ctlBatVoltage" />
+                <local:ctlDataItem x:Name="_ctlHumidity" />
+                <local:ctlDataItem x:Name="_ctlTemperature" />
+              </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{x:Static res:MyResources.Recording}" Template="{DynamicResource GroupBoxCmu}">
+            <StackPanel>
+              <local:ctlDataItem x:Name="_ctlRecCount"/>
+              <local:ctlDataItem x:Name="_ctlRecState"/>
+              <local:ctlDataItem x:Name="_ctlDiskFree"/>
+            </StackPanel>
+          </GroupBox>
+            <GroupBox Header="{x:Static res:MyResources.FrmCreatePrjLLocation}" Template="{DynamicResource GroupBoxCmu}">
+              <StackPanel>
+                <local:ctlDataItem x:Name="_ctlLocation" />
+                <local:ctlDataItem x:Name="_ctlHeight" />
+                <local:ctlDataItem x:Name="_ctlNrSatellites" />
+              </StackPanel>
+            </GroupBox>
+          </StackPanel>
+          <StackPanel Grid.Column="1">
+            <GroupBox Header="{x:Static res:MyResources.frmRecCPULoad}" Template="{DynamicResource GroupBoxCmu}">
+              <StackPanel>
+              <local:ctlDataItem x:Name="_ctlMainLoop"/>
+                <local:ctlDataItem x:Name="_ctlAudioLoadAvg"/>
+                <local:ctlDataItem x:Name="_ctlAudioLoadMax"/>
+                <local:ctlDataItem x:Name="_ctlAudioBlocks"/>
+              </StackPanel>
+            </GroupBox>
+          </StackPanel>
+        </Grid>
+      </TabItem>
+    </TabControl>
+    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
       <Label Content="Status" FontWeight="Bold" VerticalAlignment="Center"/>
-      <TextBlock Text="not connected" VerticalAlignment="Center" Margin="10,0,0,0"/>
+      <TextBlock Name="_tbStatus" Text="{x:Static res:MyResources.FrmRecNotConnected}" VerticalAlignment="Center" Margin="10,0,0,0"/>
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="5">
-      <Button x:Name="_btnRead" Width="140"  Content="{x:Static res:MyResources.FrmRecReadFromRecorder}" Click="_btnRead_Click"></Button>
-      <Button x:Name="_btnWrite" Width="140"  Content="{x:Static res:MyResources.FrmRecWriteToRecorder}" Click="_btnWrite_Click" Margin="5,0,0,0"/>
-      <Button x:Name="_btnCancel" Width="140"  Content="{x:Static res:MyResources.BtnCancel}" Click="_btnCancel_Click" Margin="5,0,0,0"/>
+    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="5">
+      <Button x:Name="_btnConnect" Width="140" Content="{x:Static res:MyResources.Connect}" Margin="5,0,0,0" Click="_btnConnect_Click"/>
+      <Button x:Name="_btnCancel" Width="140"  Content="{x:Static res:MyResources.BtnCancel}" Click="_btnCancel_Click" Margin="5,0,5,0"/>
     </StackPanel>
+
   </Grid>
 </Window>

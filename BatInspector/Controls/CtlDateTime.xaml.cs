@@ -38,7 +38,7 @@ namespace BatInspector.Controls
     {
       _dp.Visibility = dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
       _lbl.Visibility = !dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-      _lbl.Content = label;
+      _lbl.Text = label;
       _lbl.Width = width;
       _dp.DisplayDate = time.Date;
       _dp.Text = _dp.DisplayDate.ToString();

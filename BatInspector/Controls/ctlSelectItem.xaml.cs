@@ -29,7 +29,7 @@ namespace BatInspector.Controls
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
     public void setup(string label, int index, int widthLbl = 80, int widthTb = 80,
-                      dlgSelItemChanged dlgValChange = null, dlgClickLabel dlgClick = null, string tooltip = "")
+                      dlgSelItemChanged dlgValChange = null, dlgClickLabel dlgClick = null, string tooltip = "", bool edit = true)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
@@ -39,7 +39,14 @@ namespace BatInspector.Controls
       _index = index;
       _lbl.Width = widthLbl;
       _cb.Width = widthTb;
+      _cb.IsEnabled = edit;
       _brushDefault = _lbl.Background;
+    }
+
+    public new bool IsEnabled
+    {
+      get { return _cb.IsEnabled; }
+      set{ _cb.IsEnabled = value; }
     }
 
     public void setAlert(bool on)

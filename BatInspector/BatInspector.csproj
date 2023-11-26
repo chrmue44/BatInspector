@@ -257,6 +257,7 @@
     <Compile Include="ViewModel\BatInfo.cs" />
     <Compile Include="ViewModel\BatRecord.cs" />
     <Compile Include="ViewModel\BatSpeciesRegions.cs" />
+    <Compile Include="ViewModel\BatSpy.cs" />
     <Compile Include="ViewModel\BioAcoustics.cs" />
     <Compile Include="ViewModel\BitmapFast.cs" />
     <Compile Include="ViewModel\ClassifierBarataud.cs" />

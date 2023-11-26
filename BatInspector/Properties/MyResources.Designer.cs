@@ -232,6 +232,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        public static string Connect {
+            get {
+                return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Left Side.
         /// </summary>
         public static string ctlExpressionEditorLeftSide {
@@ -691,7 +700,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dead time.
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string DeadTime {
             get {
@@ -705,6 +714,15 @@ namespace BatInspector.Properties {
         public static string DeltaT {
             get {
                 return ResourceManager.GetString("DeltaT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device.
+        /// </summary>
+        public static string Device {
+            get {
+                return ResourceManager.GetString("Device", resourceCulture);
             }
         }
         
@@ -1519,6 +1537,42 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio processing avg. [%].
+        /// </summary>
+        public static string FrmRecAudioLoadAvg {
+            get {
+                return ResourceManager.GetString("FrmRecAudioLoadAvg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio load max. [%].
+        /// </summary>
+        public static string frmRecAudioLoadMax {
+            get {
+                return ResourceManager.GetString("frmRecAudioLoadMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battery voltage [V].
+        /// </summary>
+        public static string FrmRecBatteryVoltageV {
+            get {
+                return ResourceManager.GetString("FrmRecBatteryVoltageV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to connected.
+        /// </summary>
+        public static string FrmRecConnected {
+            get {
+                return ResourceManager.GetString("FrmRecConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording Control.
         /// </summary>
         public static string FrmRecControl {
@@ -1528,11 +1582,92 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CPU Load.
+        /// </summary>
+        public static string frmRecCPULoad {
+            get {
+                return ResourceManager.GetString("frmRecCPULoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free disk space [MB].
+        /// </summary>
+        public static string frmRecFreeDiskSpaceMB {
+            get {
+                return ResourceManager.GetString("frmRecFreeDiskSpaceMB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Humidity [%].
+        /// </summary>
+        public static string FrmRecHumidity {
+            get {
+                return ResourceManager.GetString("FrmRecHumidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string frmRecLevel {
+            get {
+                return ResourceManager.GetString("frmRecLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main loop.
+        /// </summary>
+        public static string frmRecMainLoop {
+            get {
+                return ResourceManager.GetString("frmRecMainLoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to min. Event Length.
         /// </summary>
         public static string FrmRecMinEventLength {
             get {
                 return ResourceManager.GetString("FrmRecMinEventLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to not connected.
+        /// </summary>
+        public static string FrmRecNotConnected {
+            get {
+                return ResourceManager.GetString("FrmRecNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nr of satellites.
+        /// </summary>
+        public static string frmRecNrOfSatellites {
+            get {
+                return ResourceManager.GetString("frmRecNrOfSatellites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nr of used audio blocks.
+        /// </summary>
+        public static string frmRecNrOfUsedAudioblocks {
+            get {
+                return ResourceManager.GetString("frmRecNrOfUsedAudioblocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nr recordings.
+        /// </summary>
+        public static string frmRecNrRecordings {
+            get {
+                return ResourceManager.GetString("frmRecNrRecordings", resourceCulture);
             }
         }
         
@@ -1582,6 +1717,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording time [s].
+        /// </summary>
+        public static string frmRecRecordingTime {
+            get {
+                return ResourceManager.GetString("frmRecRecordingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting Time.
         /// </summary>
         public static string FrmRecStartingTime {
@@ -1600,11 +1744,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time Controlled.
+        ///   Looks up a localized string similar to Temperature [°C].
         /// </summary>
-        public static string FrmRecTimeControlled {
+        public static string FrmRecTemperature {
             get {
-                return ResourceManager.GetString("FrmRecTimeControlled", resourceCulture);
+                return ResourceManager.GetString("FrmRecTemperature", resourceCulture);
             }
         }
         
@@ -1614,15 +1758,6 @@ namespace BatInspector.Properties {
         public static string FrmRecTriggerType {
             get {
                 return ResourceManager.GetString("FrmRecTriggerType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Twilight Controlled.
-        /// </summary>
-        public static string FrmRecTwilight {
-            get {
-                return ResourceManager.GetString("FrmRecTwilight", resourceCulture);
             }
         }
         
@@ -1807,6 +1942,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string Height {
+            get {
+                return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
         public static string Help {
@@ -1920,24 +2064,6 @@ namespace BatInspector.Properties {
         public static string LatitudeFormatError {
             get {
                 return ResourceManager.GetString("LatitudeFormatError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Level.
-        /// </summary>
-        public static string Level {
-            get {
-                return ResourceManager.GetString("Level", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Level + Frequency.
-        /// </summary>
-        public static string LevelFrequency {
-            get {
-                return ResourceManager.GetString("LevelFrequency", resourceCulture);
             }
         }
         
@@ -2653,7 +2779,16 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sampling Rate.
+        ///   Looks up a localized string similar to Recording.
+        /// </summary>
+        public static string Recording {
+            get {
+                return ResourceManager.GetString("Recording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sampling Rate [kHz].
         /// </summary>
         public static string SamplingRate {
             get {
@@ -3297,6 +3432,15 @@ namespace BatInspector.Properties {
         public static string SpecDescWidthWf {
             get {
                 return ResourceManager.GetString("SpecDescWidthWf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         

@@ -214,7 +214,7 @@
     <value>Call</value>
   </data>
   <data name="SamplingRate" xml:space="preserve">
-    <value>Sampling Rate</value>
+    <value>Sampling Rate [kHz]</value>
   </data>
   <data name="CtlWavRemarks" xml:space="preserve">
     <value>Remarks</value>
@@ -1230,23 +1230,11 @@
   <data name="MainToolRecorder" xml:space="preserve">
     <value>Setup Recording Device</value>
   </data>
-  <data name="Level" xml:space="preserve">
-    <value>Level</value>
-  </data>
-  <data name="LevelFrequency" xml:space="preserve">
-    <value>Level + Frequency</value>
-  </data>
   <data name="Off" xml:space="preserve">
     <value>Off</value>
   </data>
   <data name="On" xml:space="preserve">
     <value>On</value>
-  </data>
-  <data name="FrmRecTimeControlled" xml:space="preserve">
-    <value>Time Controlled</value>
-  </data>
-  <data name="FrmRecTwilight" xml:space="preserve">
-    <value>Twilight Controlled</value>
   </data>
   <data name="FrmRecRecordingMode" xml:space="preserve">
     <value>Recording Mode</value>
@@ -1255,7 +1243,7 @@
     <value>Trigger Type</value>
   </data>
   <data name="DeadTime" xml:space="preserve">
-    <value>Dead time</value>
+    <value></value>
   </data>
   <data name="FrmRecMinEventLength" xml:space="preserve">
     <value>min. Event Length</value>
@@ -1295,5 +1283,65 @@
   </data>
   <data name="StringNumber" xml:space="preserve">
     <value>String/Number</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="FrmRecBatteryVoltageV" xml:space="preserve">
+    <value>Battery voltage [V]</value>
+  </data>
+  <data name="FrmRecHumidity" xml:space="preserve">
+    <value>Humidity [%]</value>
+  </data>
+  <data name="FrmRecTemperature" xml:space="preserve">
+    <value>Temperature [°C]</value>
+  </data>
+  <data name="frmRecNrOfUsedAudioblocks" xml:space="preserve">
+    <value>Nr of used audio blocks</value>
+  </data>
+  <data name="FrmRecAudioLoadAvg" xml:space="preserve">
+    <value>Audio processing avg. [%]</value>
+  </data>
+  <data name="frmRecAudioLoadMax" xml:space="preserve">
+    <value>Audio load max. [%]</value>
+  </data>
+  <data name="frmRecFreeDiskSpaceMB" xml:space="preserve">
+    <value>Free disk space [MB]</value>
+  </data>
+  <data name="frmRecNrOfSatellites" xml:space="preserve">
+    <value>Nr of satellites</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="frmRecMainLoop" xml:space="preserve">
+    <value>Main loop</value>
+  </data>
+  <data name="frmRecNrRecordings" xml:space="preserve">
+    <value>Nr recordings</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Device" xml:space="preserve">
+    <value>Device</value>
+  </data>
+  <data name="Recording" xml:space="preserve">
+    <value>Recording</value>
+  </data>
+  <data name="frmRecCPULoad" xml:space="preserve">
+    <value>CPU Load</value>
+  </data>
+  <data name="frmRecRecordingTime" xml:space="preserve">
+    <value>Recording time [s]</value>
+  </data>
+  <data name="FrmRecNotConnected" xml:space="preserve">
+    <value>not connected</value>
+  </data>
+  <data name="FrmRecConnected" xml:space="preserve">
+    <value>connected</value>
+  </data>
+  <data name="frmRecLevel" xml:space="preserve">
+    <value>Level</value>
   </data>
 </root>

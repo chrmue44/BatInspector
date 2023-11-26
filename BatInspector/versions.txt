@@ -1,4 +1,8 @@
-V0.7.3.0   31.11.23
+V0.7.4.0   10.11.23
+- bat species infos for all species in Germany added
+- new script function replace()
+
+V0.7.3.0   10.11.23
 - show recording time in zoom view in more convenient format
 - read locations for recordings from txt file as provided by older WA devices
 - enhanced parameter query (depending on parameter type): scripts.json 

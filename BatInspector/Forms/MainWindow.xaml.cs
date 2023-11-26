@@ -307,8 +307,8 @@ namespace BatInspector.Forms
       _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
       setStatus("");
       _spSpectrums.Children.Clear();
-      _tbReport_GotFocus(_spSpectrums, null);
       _model.initProject(dir, callbackUpdateAnalysis);
+      _tbReport_GotFocus(_spSpectrums, null);
       if ((_model.Prj != null) && _model.Prj.Ok)
       {
         _ctlPrjInfo.setup(_model.Prj);
@@ -1089,6 +1089,7 @@ namespace BatInspector.Forms
       {
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
           _model.Prj.Analysis.updateSpeciesCount();
+        _tbReport_GotFocus(null, null);
         updateWavControls();
         _model.UpdateUi = false;
       }

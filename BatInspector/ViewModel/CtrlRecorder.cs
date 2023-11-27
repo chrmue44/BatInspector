@@ -94,17 +94,44 @@ namespace BatInspector
 
   public class GeneralRec
   {
+    EnumType _language = new EnumType("Pn");
     NumType _lat = new NumType("Pla");
     NumType _lon = new NumType("Plo");
 
     public NumType Latitude { get { return _lat; } } 
     public NumType Longitude { get { return _lon;} }
 
+    public EnumType Language { get { return _language; } }
     public void init()
     {
+      _language.init();
       _lat.init();
       _lon.init();
     }
+  }
+
+  public class RecStatus
+  {
+    NumType _battVoltage = new NumType("sv");
+    NumType _audioBlocks = new NumType("sa");
+    NumType _cpuAvg = new NumType("sg");
+    NumType _cpuMax = new NumType("sx");
+    NumType _mainLoop = new NumType("sl");
+
+    public NumType BattVoltage { get { return _battVoltage; } }
+    public NumType AudioBlocks { get { return _audioBlocks; } }
+    public NumType CpuLoadAvg { get { return _cpuAvg; } }
+    public NumType CpuLoadMax { get { return _cpuMax; } }
+    public NumType MainLoop { get { return _mainLoop; } }
+    public void init()
+    {
+      _battVoltage.init();
+      _audioBlocks.init();
+      _cpuMax.init();
+      _cpuAvg.init();
+      _mainLoop.init();
+    }
+
   }
 
   public class CtrlRecorder
@@ -114,7 +141,8 @@ namespace BatInspector
     ControlRec _ctrl;
     GeneralRec _gen;
     BatSpy _device;
-
+    RecStatus _status;
+    bool _connected = false;
     public CtrlRecorder()
     {
       _device = new BatSpy();
@@ -122,32 +150,47 @@ namespace BatInspector
       _acq = new Acquisition();
       _ctrl = new ControlRec();
       _gen = new GeneralRec();
+      _status = new RecStatus();
     }
 
     public bool connect()
     {
-      bool ok = BatSpy.connect();
-      if (ok)
+      _connected = BatSpy.connect();
+      if (_connected)
         init();
-      return ok;
+      return _connected;
     }
 
     public void disConnect()
     {
       BatSpy.disConncet();
+      _connected = false;
     }
 
+    public bool savePars()
+    {
+      return BatSpy.save();
+    }
+
+    public bool loadPars()
+    {
+      return BatSpy.load();
+    }
+
+    public bool IsConnected { get { return _connected; } }
     public Trigger Trigger { get { return _trigger; } }
     public Acquisition Acquisition { get { return _acq;} }
     public ControlRec Control { get { return _ctrl; } }
     public GeneralRec General { get { return _gen; } }
 
+    public RecStatus Status { get { return _status; } }
     public void init()
     {
       _trigger.init();
       _acq.init();  
       _ctrl.init();
       _gen.init();
+      _status.init(); 
     }
   }
 }

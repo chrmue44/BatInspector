@@ -7,6 +7,7 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -446,5 +447,32 @@ namespace libParser
                        location.Replace(" ", "_") + "_" + locName.Replace("_", "-");
       return locurl;
     }
+
+    public static string LatitudeToString(double lat) 
+    {
+      double n = Math.Truncate(Math.Abs(lat));
+      string retVal = n.ToString() + "° ";
+      double m = (Math.Abs(lat) - n) * 60;
+      retVal += m.ToString("0.####", CultureInfo.InvariantCulture);
+      if (lat >= 0)
+        retVal += " N";
+      else
+        retVal += " S";
+      return retVal;
+    }
+
+    public static string LongitudeToString(double lon)
+    {
+      double e = Math.Truncate(Math.Abs(lon));
+      string retVal = e.ToString() + "° ";
+      double m = (Math.Abs(lon) - e) * 60;
+      retVal += m.ToString("0.####", CultureInfo.InvariantCulture);
+      if (lon >= 0)
+        retVal += " E";
+      else
+        retVal += " W";
+      return retVal;
+    }
+
   }
 }

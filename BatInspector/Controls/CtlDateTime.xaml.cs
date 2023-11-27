@@ -67,5 +67,10 @@ namespace BatInspector.Controls
       int.TryParse(_min.Text, out int minute);
       return limit(minute, 0, 59);
     }
+
+    internal void init(DateTime dateTime, bool v, string frmRecStartingTime, int wl, object setRecStart)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

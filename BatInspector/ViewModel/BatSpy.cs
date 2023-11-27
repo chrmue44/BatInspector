@@ -1,5 +1,6 @@
 ﻿using libParser;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
 using System.Text;
@@ -60,7 +61,27 @@ namespace BatInspector
     string _cmd;
     string[] _items;
     bool _initialized = false;
-    public int Value { get; set; }
+
+    public int Value
+    {
+      get
+      {
+        int val;
+        bool ok = BatSpy.getEnumIndex(_cmd, out val);
+        return val;
+      }
+      set
+      {
+        if ((value >= 0) && (value < _items.Length))
+          BatSpy.setEnumIndex(value, _cmd);
+        else
+        {
+          string errMsg = BatInspector.Properties.MyResources.CtrlRecorderErrMsgRange + "0 ... " + _items.Length.ToString();
+          DebugLog.log(errMsg, enLogType.ERROR);
+        }
+      }
+    }
+
     public string[] Items { get { return _items; } }
 
     public void init()
@@ -69,6 +90,9 @@ namespace BatInspector
     }
   }
 
+  /// <summary>
+  /// class for singleton objext to communicate with a BatSpy device connected to the USB port
+  /// </summary>
   public class BatSpy
   {
     public const char NEWLINE_CHAR =  '\x04';
@@ -131,6 +155,18 @@ namespace BatInspector
         _inst._isConnected = false;
       }
     }
+
+
+    static public bool save()
+    {
+      return _inst.writeCommand("S");
+    }
+
+    static public bool load()
+    {
+      return _inst.writeCommand("L");
+    }
+
     private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
     {
       _receiveError = true;
@@ -139,25 +175,28 @@ namespace BatInspector
     private bool writeCommand(string cmd)
     {
       string res = execCommand(cmd);
-      return (res == "0\n");
+      return (res == "0");
     }
 
     private string execCommand(string cmd)
     {
       string retVal = "";
       string str = cmd + "\n";
-      byte[] buf = new byte[1024];
+      byte[] buf = new byte[4096];
       _answerReceived = false;
-      _receiveError = false;  
+      _receiveError = false;
+      _port.ReadExisting();
       _port.Write(str);
       DebugLog.log("BatSpy CMD: " + cmd, enLogType.DEBUG);
       _port.ReadTimeout = 1000;
-      while (!_answerReceived && !_receiveError)
+      Stopwatch w = new Stopwatch();
+      w.Start();
+      while (!_answerReceived && !_receiveError && (w.ElapsedMilliseconds < _port.ReadTimeout))
         Thread.Yield();
       if (_answerReceived && !_receiveError)
       {
         int iBuf = 0;
-        while (_port.BytesToRead > 0)
+        while ((_port.BytesToRead > 0) && (iBuf < buf.Length))
         {
           buf[iBuf] = (byte)_port.ReadByte();
           if (buf[iBuf] == NEWLINE_CHAR)
@@ -166,9 +205,12 @@ namespace BatInspector
         }
         retVal = Encoding.Default.GetString(buf);
         int pos = retVal.IndexOf(NEWLINE_CHAR);
-        retVal = retVal.Substring(0, pos);
-      }      
-      DebugLog.log("BatSpy ANS: " + retVal, enLogType.DEBUG);
+        if (pos >= 0)
+          retVal = retVal.Substring(0, pos);
+        DebugLog.log("BatSpy ANS: " + retVal, enLogType.DEBUG);
+      }
+      else
+        DebugLog.log("BatSpy command " + cmd + " timed out", enLogType.ERROR);
       return retVal;
     }
 
@@ -218,12 +260,34 @@ namespace BatInspector
       return ok;
     }
 
+    static public bool getEnumIndex(string cmd, out int val)
+    {
+      string str = cmd.ToLower();
+      string res = _inst.execCommand(str);
+      bool ok = int.TryParse(res, NumberStyles.Any, CultureInfo.InvariantCulture, out val);
+      if (!ok)
+      {
+        DebugLog.log("error reading enumeration index from BatSpy, cmd: " + cmd, enLogType.ERROR);
+        val = 0;
+      }
+      return ok;
+    }
+
     static public void setDoubleValue(double val, string cmd)
     {
       string str = cmd + val.ToString("0.####", CultureInfo.InvariantCulture);
       bool ok = _inst.writeCommand(str);
       if (!ok)
         DebugLog.log("error writing value, cmd: " + str, enLogType.ERROR);
+    }
+
+    static public void setEnumIndex(int val, string cmd)
+    {
+      string str = cmd + val.ToString();
+      bool ok = _inst.writeCommand(str);
+      if (!ok)
+        DebugLog.log("error writing value, cmd: " + str, enLogType.ERROR);
+
     }
 
     static public void getDoubleRange(string cmd, out double min, out double max, out int decimals)

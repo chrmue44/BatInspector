@@ -1699,7 +1699,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Read from Recorder.
+        ///   Looks up a localized string similar to Read from Permanent Memory.
         /// </summary>
         public static string FrmRecReadFromRecorder {
             get {
@@ -1726,20 +1726,38 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting Time.
+        ///   Looks up a localized string similar to Starting Time, Hour.
         /// </summary>
-        public static string FrmRecStartingTime {
+        public static string frmRecStartingTimeH {
             get {
-                return ResourceManager.GetString("FrmRecStartingTime", resourceCulture);
+                return ResourceManager.GetString("frmRecStartingTimeH", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop Time.
+        ///   Looks up a localized string similar to Starting Time, Minute.
         /// </summary>
-        public static string FrmRecStopTime {
+        public static string frmRecStartingTimeMin {
             get {
-                return ResourceManager.GetString("FrmRecStopTime", resourceCulture);
+                return ResourceManager.GetString("frmRecStartingTimeMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Time, Hour.
+        /// </summary>
+        public static string frmRecStopTimeH {
+            get {
+                return ResourceManager.GetString("frmRecStopTimeH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Time, Minute.
+        /// </summary>
+        public static string frmRecStopTimeMin {
+            get {
+                return ResourceManager.GetString("frmRecStopTimeMin", resourceCulture);
             }
         }
         
@@ -1762,7 +1780,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send to Recorder.
+        ///   Looks up a localized string similar to Write to Permanent Memory.
         /// </summary>
         public static string FrmRecWriteToRecorder {
             get {
@@ -2046,6 +2064,15 @@ namespace BatInspector.Properties {
         public static string InstallerPyTxt7 {
             get {
                 return ResourceManager.GetString("InstallerPyTxt7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         

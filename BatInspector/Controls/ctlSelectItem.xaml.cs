@@ -98,32 +98,34 @@ namespace BatInspector.Controls
 
 
 
-    private void _cb_LostFocus(object sender, RoutedEventArgs e)
-    {
-      if (_cb.SelectedIndex >= 0)
-      {
-        _valString = _cb.Items[_cb.SelectedIndex].ToString();
-        if (_dlgValChange != null)
-          _dlgValChange(_index, _valString);
-      }
-
-    }
 
     private void _cb_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
     {
+/*
       if ( IsVisible && (_cb.SelectedIndex >= 0))
       {
         _valString = _cb.Items[_cb.SelectedIndex].ToString();
         if (_dlgValChange != null)
           _dlgValChange(_index, _valString);
       }
-
+      */
     }
 
     private void _lbl_MouseDown(object sender, MouseButtonEventArgs e)
     {
       if (_dlgClickLabel != null)
         _dlgClickLabel(_index);
+    }
+
+    private void _cb_DropDownClosed(object sender, System.EventArgs e)
+    {
+      if (IsVisible && (_cb.SelectedIndex >= 0))
+      {
+        _valString = _cb.Items[_cb.SelectedIndex].ToString();
+        if (_dlgValChange != null)
+          _dlgValChange(_index, _valString);
+      }
+
     }
   }
 

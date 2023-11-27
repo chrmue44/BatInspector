@@ -1248,11 +1248,11 @@
   <data name="FrmRecMinEventLength" xml:space="preserve">
     <value>min. Ereignisdauer</value>
   </data>
-  <data name="FrmRecStartingTime" xml:space="preserve">
-    <value>Startzeit</value>
+  <data name="frmRecStartingTimeH" xml:space="preserve">
+    <value>Startzeit, Stunde</value>
   </data>
-  <data name="FrmRecStopTime" xml:space="preserve">
-    <value>Stoppzeit</value>
+  <data name="frmRecStopTimeH" xml:space="preserve">
+    <value>Stoppzeit, Stunde</value>
   </data>
   <data name="DataAcquisition" xml:space="preserve">
     <value>Datenerfassung</value>
@@ -1264,10 +1264,10 @@
     <value>Aufnahmesteuerung</value>
   </data>
   <data name="FrmRecReadFromRecorder" xml:space="preserve">
-    <value>Lese vom Recorder</value>
+    <value>Lese von Permanentspeicher</value>
   </data>
   <data name="FrmRecWriteToRecorder" xml:space="preserve">
-    <value>Parametriere Recorder</value>
+    <value>Schreibe in Permanentspeicher</value>
   </data>
   <data name="frmCreatePrjPosFromTxt" xml:space="preserve">
     <value>Position aus TXT-Datei (WA)</value>
@@ -1343,5 +1343,14 @@
   </data>
   <data name="frmRecLevel" xml:space="preserve">
     <value>Pegel</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="frmRecStartingTimeMin" xml:space="preserve">
+    <value>Startzeit, Minute</value>
+  </data>
+  <data name="frmRecStopTimeMin" xml:space="preserve">
+    <value>Stoppzeit, Minute</value>
   </data>
 </root>

@@ -26,7 +26,7 @@ namespace BatInspector.Controls
     uint _valUInt;
     string _valString;
     dlgValueChanged _dlgValChange = null;
-    
+    bool _textChanged = false;
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
@@ -39,7 +39,7 @@ namespace BatInspector.Controls
       _dlgValChange = dlgValChange;
       _tb.Focusable = edit;
       _tb.IsEnabled = edit;
-      _lbl.Opacity = edit ? 1 : 0.5;
+     // _lbl.Opacity = edit ? 1 : 0.5;
       _lbl.Width = widthLbl;
     }
 
@@ -130,27 +130,36 @@ namespace BatInspector.Controls
 
     private void _tb_TextChanged(object sender, TextChangedEventArgs e)
     {
-      switch(_type)
+      _textChanged = true;
+    }
+
+    private void _tb_LostFocus(object sender, System.Windows.RoutedEventArgs e)
+    {
+      if (_textChanged)
       {
-        case enDataType.INT:
-          int.TryParse(_tb.Text, out _valInt);
-          _dlgValChange?.Invoke(enDataType.INT, _valInt);
-          break;
+        _textChanged = false;
+        switch (_type)
+        {
+          case enDataType.INT:
+            int.TryParse(_tb.Text, out _valInt);
+            _dlgValChange?.Invoke(enDataType.INT, _valInt);
+            break;
 
-        case enDataType.UINT:
-          int.TryParse(_tb.Text, out _valInt);
-          _dlgValChange?.Invoke(enDataType.UINT, _valInt);
-          break;
+          case enDataType.UINT:
+            int.TryParse(_tb.Text, out _valInt);
+            _dlgValChange?.Invoke(enDataType.UINT, _valInt);
+            break;
 
-        case enDataType.DOUBLE:
-          double.TryParse(_tb.Text, NumberStyles.Any,  CultureInfo.InvariantCulture, out _valDouble);
-          _dlgValChange?.Invoke(enDataType.DOUBLE, _valDouble);
-          break;
+          case enDataType.DOUBLE:
+            double.TryParse(_tb.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _valDouble);
+            _dlgValChange?.Invoke(enDataType.DOUBLE, _valDouble);
+            break;
 
-        case enDataType.STRING:
-          _valString = _tb.Text;
-          _dlgValChange?.Invoke(enDataType.STRING, _valString);
-          break;
+          case enDataType.STRING:
+            _valString = _tb.Text;
+            _dlgValChange?.Invoke(enDataType.STRING, _valString);
+            break;
+        }
       }
     }
   }

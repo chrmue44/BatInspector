@@ -6,8 +6,10 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using System;
 using System.Windows;
 using BatInspector.Controls;
+using libParser;
 
 namespace BatInspector.Forms
 {
@@ -17,15 +19,25 @@ namespace BatInspector.Forms
   public partial class FrmSetupRecorder : Window
   {
     CtrlRecorder _rec;
+    System.Windows.Threading.DispatcherTimer _timer;
+
     public FrmSetupRecorder(CtrlRecorder recorder)
     {
       InitializeComponent();
       _rec = recorder;
-      int wl = 130;
-      int wt = 150;
       _tbStatus.Foreground = System.Windows.Media.Brushes.Red;
-      initParameterTab(wl, wt);
-      initStatusTab(wl, wt);
+      initParameterTab(130, 150);
+      initStatusTab(180, 150);
+      _timer = new System.Windows.Threading.DispatcherTimer();
+      _timer.Tick += new EventHandler(timer_Tick);
+      _timer.Interval = new TimeSpan(0, 0, 0, 0, 600);
+      _timer.Start();
+    }
+
+    private void timer_Tick(object sender, EventArgs e)
+    {
+      if(_rec.IsConnected)
+        updateStatusControls();
     }
 
     private void initParameterControls()
@@ -37,13 +49,20 @@ namespace BatInspector.Forms
       _ctlGain.SelectIndex = (int)_rec.Acquisition.Gain.Value;
       _ctlPreTrigger.setValue(_rec.Acquisition.PreTrigger.Value);
       _ctlPreTrigger.IsEnabled = true;
-      _ctlRecStart.Hour = (int)_rec.Control.StartH.Value;
-      _ctlRecStart.Minute =(int)_rec.Control.StartMin.Value;
-      _ctlRecStop.Hour = (int)_rec.Control.StopH.Value;
-      _ctlRecStop.Minute = (int)_rec.Control.StopMin.Value;
+      _ctlRecStartH.setValue((int)_rec.Control.StartH.Value);
+      _ctlRecStartH.IsEnabled = true;
+      _ctlRecStartMin.setValue((int)_rec.Control.StartMin.Value);
+      _ctlRecStartMin.IsEnabled = true;
+      _ctlRecStopH.setValue((int)_rec.Control.StopH.Value);
+      _ctlRecStopH.IsEnabled = true;
+      _ctlRecStopMin.setValue((int)_rec.Control.StopMin.Value);
+      _ctlRecStopMin.IsEnabled = true;
       _ctlSampleRate.setItems(_rec.Acquisition.SampleRate.Items);
       _ctlSampleRate.SelectIndex = (int)_rec.Acquisition.SampleRate.Value;
       _ctlSampleRate.IsEnabled = true;
+      _ctlTrigFiltType.setItems(_rec.Trigger.Filter.Items);
+      _ctlTrigFiltType.SelectIndex = _rec.Trigger.Filter.Value;
+      _ctlTrigFiltType.IsEnabled = true;
       _ctlTrigFreq.setValue(_rec.Trigger.Frequency.Value);
       _ctlTrigFreq.IsEnabled = true;
       _ctlTrigLength.setValue(_rec.Trigger.EventLength.Value);
@@ -58,28 +77,140 @@ namespace BatInspector.Forms
       _ctlTrigType.setItems(_rec.Trigger.Type.Items); 
       _ctlTrigType.SelectIndex = (int)_rec.Trigger.Type.Value;
       _ctlTrigType.IsEnabled = true;
-      _ctlLat.setValue(_rec.General.Latitude.Value.ToString());
+      _ctlLanguage.setItems(_rec.General.Language.Items);
+      _ctlLanguage.IsEnabled = true;
+      _ctlLanguage.SelectIndex = _rec.General.Language.Value;
+      _ctlLat.setValue(Utils.LatitudeToString( _rec.General.Latitude.Value));
       _ctlLat.IsEnabled = true;
-      _ctlLon.setValue(_rec.General.Longitude.Value.ToString());
+      _ctlLon.setValue(Utils.LongitudeToString(_rec.General.Longitude.Value));
       _ctlLon.IsEnabled = true;
     }
 
     private void initParameterTab(int wl, int wt)
     {
-      _ctlDeadTime.setup(BatInspector.Properties.MyResources.DeadTime, enDataType.DOUBLE, 2, wl, false);
-      _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, 1, wl, wt, null, null, "", false);
-      _ctlPreTrigger.setup("Pre Trigger" + " [ms]", enDataType.DOUBLE, 2, wl, false);
-      _ctlRecStart.init(new System.DateTime(), false, BatInspector.Properties.MyResources.FrmRecStartingTime, wl);
-      _ctlRecStop.init(new System.DateTime(), false, BatInspector.Properties.MyResources.FrmRecStopTime, wl);
-      _ctlSampleRate.setup(BatInspector.Properties.MyResources.SamplingRate, 2, wl, wt);
-      _ctlTrigFreq.setup(BatInspector.Properties.MyResources.Frequency + " [Hz]", enDataType.DOUBLE, 1, wl, false);
-      _ctlTrigLength.setup(BatInspector.Properties.MyResources.FrmRecMinEventLength + " [ms]", enDataType.DOUBLE, 1, wl, false);
-      _ctlTrigLevel.setup(BatInspector.Properties.MyResources.frmRecLevel + " [dB]", enDataType.DOUBLE, 1, wl, false);
-      _ctlRecordingTime.setup(BatInspector.Properties.MyResources.frmRecRecordingTime, enDataType.DOUBLE, 1, wl, false);
-      _ctlRecMode.setup(BatInspector.Properties.MyResources.FrmRecRecordingMode, 3, wl, wt, null, null, "", false);
-      _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, null, null, "", false);
-      _ctlLat.setup(BatInspector.Properties.MyResources.Latitude, enDataType.STRING, 5, wl, false);
-      _ctlLon.setup(BatInspector.Properties.MyResources.Longitude, enDataType.STRING, 5, wl, false);
+      _ctlDeadTime.setup(BatInspector.Properties.MyResources.DeadTime, enDataType.DOUBLE, 2, wl, false, setDeadTime);
+      _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, 1, wl, wt, setGain, null, "", false);
+      _ctlPreTrigger.setup("Pre Trigger" + " [ms]", enDataType.DOUBLE, 2, wl, false, setPreTrigger);
+      _ctlRecStartH.setup(BatInspector.Properties.MyResources.frmRecStartingTimeH, enDataType.INT, 0, wl, false, setStartH);
+      _ctlRecStartMin.setup(BatInspector.Properties.MyResources.frmRecStartingTimeMin, enDataType.INT, 0, wl, false, setStartMin);
+      _ctlRecStopH.setup(BatInspector.Properties.MyResources.frmRecStopTimeH, enDataType.INT, 0, wl, false, setStopH);
+      _ctlRecStopMin.setup(BatInspector.Properties.MyResources.frmRecStopTimeMin, enDataType.INT, 0, wl, false, setStopMin);
+      _ctlSampleRate.setup(BatInspector.Properties.MyResources.SamplingRate, 2, wl, wt, setSampleRate);
+      _ctlTrigFreq.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setTrigFrequency);
+      _ctlTrigFiltType.setup("Filter Type", 0, wl, wt, setFilterType, null, "", false);
+      _ctlTrigLength.setup(BatInspector.Properties.MyResources.FrmRecMinEventLength + " [ms]", enDataType.DOUBLE, 1, wl, false, setTrigLength);
+      _ctlTrigLevel.setup(BatInspector.Properties.MyResources.frmRecLevel + " [dB]", enDataType.DOUBLE, 1, wl, false, setTrigLevel);
+      _ctlRecordingTime.setup(BatInspector.Properties.MyResources.frmRecRecordingTime, enDataType.DOUBLE, 1, wl, false, setRecTime);
+      _ctlRecMode.setup(BatInspector.Properties.MyResources.FrmRecRecordingMode, 3, wl, wt, setRecMode, null, "", false);
+      _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigType, null, "", false);
+      _ctlLanguage.setup(BatInspector.Properties.MyResources.Language, 0, wl, wt, setLanguage, null, "", false);
+      _ctlLat.setup(BatInspector.Properties.MyResources.Latitude, enDataType.STRING, 5, wl, false, setLat);
+      _ctlLon.setup(BatInspector.Properties.MyResources.Longitude, enDataType.STRING, 5, wl, false, setLon);
+    }
+
+    private void setStopMin(enDataType type, object val)
+    {
+      _rec.Control.StopMin.Value = _ctlRecStopMin.getIntValue();
+    }
+
+    private void setStopH(enDataType type, object val)
+    {
+      _rec.Control.StopH.Value = _ctlRecStopH.getIntValue();
+    }
+
+    private void setStartMin(enDataType type, object val)
+    {
+      _rec.Control.StartMin.Value = _ctlRecStartMin.getIntValue();
+    }
+
+    private void setStartH(enDataType type, object val)
+    {
+      _rec.Control.StartH.Value = _ctlRecStartH.getIntValue();
+    }
+
+    private void setLanguage(int index, string val)
+    {
+      _rec.General.Language.Value = _ctlLanguage.getSelectedIndex();
+    }
+
+    private void setFilterType(int index, string val)
+    {
+      _rec.Trigger.Filter.Value = _ctlTrigFiltType.getSelectedIndex();
+    }
+
+    private void setLon(enDataType type, object val)
+    {
+      double lon;
+      bool ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
+      if (ok)
+        _rec.General.Longitude.Value = lon;
+      else
+        MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLat.getValue(),
+                  BatInspector.Properties.MyResources.Error,
+                  MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    private void setLat(enDataType type, object val)
+    {
+      double lat;
+      bool ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
+      if (ok)
+        _rec.General.Latitude.Value = lat;
+      else
+        MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+                  BatInspector.Properties.MyResources.Error,
+                  MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    private void setTrigType(int index, string val)
+    {
+      _rec.Trigger.Type.Value = _ctlTrigType.getSelectedIndex();
+    }
+
+    private void setRecMode(int index, string val)
+    {
+      _rec.Control.Mode.Value = _ctlRecMode.getSelectedIndex();
+    }
+
+    private void setRecTime(enDataType type, object val)
+    {
+      _rec.Control.RecTime.Value = _ctlRecordingTime.getDoubleValue();
+    }
+
+    private void setTrigLevel(enDataType type, object val)
+    {
+      _rec.Trigger.Level.Value = _ctlTrigLevel.getDoubleValue();
+    }
+
+    private void setTrigLength(enDataType type, object val)
+    {
+      _rec.Trigger.EventLength.Value = _ctlTrigLength.getDoubleValue();
+    }
+
+    private void setTrigFrequency(enDataType type, object val)
+    {
+      _rec.Trigger.Frequency.Value = _ctlTrigFreq.getDoubleValue();
+    }
+
+    private void setSampleRate(int index, string val)
+    {
+      _rec.Acquisition.SampleRate.Value = _ctlSampleRate.getSelectedIndex();
+    }
+
+    private void setPreTrigger(enDataType type, object val)
+    {
+      _rec.Acquisition.PreTrigger.Value = _ctlPreTrigger.getDoubleValue();
+    }
+
+    private void setDeadTime(enDataType type, object val)
+    {
+      _rec.Control.DeadTime.Value = _ctlDeadTime.getDoubleValue();
+    }
+
+    private void setGain(int index, string val)
+    {
+      _rec.Acquisition.Gain.Value = _ctlGain.getSelectedIndex();
+;
     }
 
     private void initStatusTab(int wl, int wt)
@@ -111,31 +242,34 @@ namespace BatInspector.Forms
       _ctlRecState.setup(BatInspector.Properties.MyResources.Status, enDataType.STRING, 0, wl, false);
     }
 
+
     private void updateStatusControls()
     {
-      _ctlBatVoltage.setValue(0);
-      _ctlHumidity.setValue(0);
-      _ctlTemperature.setValue(0);
-      _ctlAudioBlocks.setValue(0);
-      _ctlAudioLoadAvg.setValue(0);
-      _ctlAudioLoadMax.setValue(0);
-      _ctlDiskFree.setValue(0);
+      _ctlBatVoltage.setValue(_rec.Status.BattVoltage.Value);
+      _ctlAudioBlocks.setValue((int)_rec.Status.AudioBlocks.Value);
+      _ctlAudioLoadAvg.setValue(_rec.Status.CpuLoadAvg.Value);
+      _ctlAudioLoadMax.setValue(_rec.Status.CpuLoadMax.Value);
+      _ctlMainLoop.setValue((int)_rec.Status.MainLoop.Value);
+
+      _ctlHumidity.setValue(0.0);
+      _ctlTemperature.setValue(0.0);
+      _ctlDiskFree.setValue(0.0);
       _ctlLocation.setValue("");
       _ctlNrSatellites.setValue(0);
-      _ctlHeight.setValue(0);
-      _ctlMainLoop.setValue(0);
+      _ctlHeight.setValue(0.0);
       _ctlRecCount.setValue(0);
       _ctlRecState.setValue("");
     }
 
     private void _btnRead_Click(object sender, RoutedEventArgs e)
     {
-
+      _rec.loadPars();
+      initParameterControls();
     }
 
     private void _btnWrite_Click(object sender, RoutedEventArgs e)
     {
-
+      _rec.savePars();
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)

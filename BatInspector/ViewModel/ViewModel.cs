@@ -132,7 +132,7 @@ namespace BatInspector
       _mainWin = mainWin;
       _speciesInfos = BatInfo.load().Species;
       _version = version;
-      _colorTable = new ColorTable(this);
+      _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();
       Status = new ModelState();
       _zoom = new ZoomView(_colorTable, _proc, Status);
@@ -157,7 +157,7 @@ namespace BatInspector
       string scriptDir = AppParams.Inst.ScriptInventoryPath;
       _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
       //_prj.Analysis.init(_prj.SpeciesInfos);
-      _recorder = new CtrlRecorder();
+      _recorder = new CtrlRecorder(_colorTable);
       UpdateUi = false;
     }
 

@@ -1353,4 +1353,19 @@
   <data name="frmRecStopTimeMin" xml:space="preserve">
     <value>Stoppzeit, Minute</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Uhrzeit</value>
+  </data>
+  <data name="FrmRecSetTime" xml:space="preserve">
+    <value>Uhrzeit setzen</value>
+  </data>
+  <data name="FrmRecUpdateFFT" xml:space="preserve">
+    <value>FFT aktualisieren (verlangsamt die Aktualisierungsrate)</value>
+  </data>
+  <data name="FrmRecModePosition" xml:space="preserve">
+    <value>Betriebsart Position</value>
+  </data>
 </root>

@@ -15,11 +15,10 @@ namespace BatInspector
   public class ColorTable
   {
     Color[] _colorTable;
-    ViewModel _model;
 
-    public ColorTable(ViewModel model)
+
+    public ColorTable()
     {
-      _model = model;
     }
 
     public void createColorLookupTable()

@@ -7,6 +7,10 @@
  ********************************************************************************/
 
 
+using System;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
 namespace BatInspector
 {
 
@@ -95,6 +99,7 @@ namespace BatInspector
   public class GeneralRec
   {
     EnumType _language = new EnumType("Pn");
+    EnumType _posMode = new EnumType("Pp");
     NumType _lat = new NumType("Pla");
     NumType _lon = new NumType("Plo");
 
@@ -102,11 +107,14 @@ namespace BatInspector
     public NumType Longitude { get { return _lon;} }
 
     public EnumType Language { get { return _language; } }
+
+    public EnumType PositionMode{ get { return _posMode; } }
     public void init()
     {
       _language.init();
       _lat.init();
       _lon.init();
+      _posMode.init();
     }
   }
 
@@ -116,22 +124,86 @@ namespace BatInspector
     NumType _audioBlocks = new NumType("sa");
     NumType _cpuAvg = new NumType("sg");
     NumType _cpuMax = new NumType("sx");
-    NumType _mainLoop = new NumType("sl");
+    NumType _mainLoop = new NumType("sm");
+    NumType _diskSpace = new NumType("sf");
+    NumType _recCount = new NumType("sr");
+    StringType _date = new StringType("Sd");
+    StringType _time = new StringType("St");
+    NumType _nrSatellites = new NumType("ss");
+    EnumType _recStatus = new EnumType("se");
+    StringType _location = new StringType("sl");
+    NumType _height = new NumType("sh");
+    EnumType _gps = new EnumType("sp");
+    ColorTable _colorTable;
+
+    public RecStatus(ColorTable colTable)
+    {
+      _colorTable = colTable;
+    }
 
     public NumType BattVoltage { get { return _battVoltage; } }
     public NumType AudioBlocks { get { return _audioBlocks; } }
     public NumType CpuLoadAvg { get { return _cpuAvg; } }
     public NumType CpuLoadMax { get { return _cpuMax; } }
     public NumType MainLoop { get { return _mainLoop; } }
-    public void init()
+    public NumType DiskSpace { get { return _diskSpace;} }
+    public NumType RecCount { get { return _recCount; } }
+    public StringType Date { get { return _date; } }
+    public StringType Time { get { return _time; } }  
+    public NumType NrSatellites { get { return _nrSatellites; } }
+    public EnumType RecordingStatus { get { return _recStatus; } }
+    public StringType Location { get { return _location; } }
+    public NumType Height { get { return _height; } }
+
+    public EnumType Gps { get{ return _gps; } }
+    public BitmapImage getLiveFft()
     {
-      _battVoltage.init();
-      _audioBlocks.init();
-      _cpuMax.init();
-      _cpuAvg.init();
-      _mainLoop.init();
+      
+      
+      int height = 128;
+      int width = 256;
+      byte[] fft = new byte[height * width];
+      byte[] buf = BatSpy.getLiveFft(0);
+      Array.Copy(buf, fft, buf.Length);
+      buf = BatSpy.getLiveFft(1);
+      Array.Copy(buf, 0, fft, buf.Length, buf.Length);
+      BitmapFast bmp = new BitmapFast(width, height);
+      for(int w = 0; w < width; w++)
+      {
+        for(int h = 0; h< height; h++) 
+        {
+          double val = fft[w * height+ h];
+          System.Drawing.Color col = _colorTable.getColor(val, 0, 255);
+          bmp.setPixel(w, height - 1 - h, col);
+        }
+      }
+      BitmapImage img = ViewModel.Convert(bmp.Bmp);
+      return img;
     }
 
+    public void init()
+    {
+      //     _battVoltage.init();
+      //     _audioBlocks.init();
+      //     _cpuMax.init();
+      //     _cpuAvg.init();
+      //     _mainLoop.init();
+      //     _diskSpace.init();
+      //      _date.init();
+      //      _time.init();
+      //      _nrSatellites.init();
+      _recStatus.init();
+      _gps.init();
+    }
+
+    public void setTime()
+    {
+      DateTime t = DateTime.Now;
+      string tStr = t.ToString("HH:mm:ss");
+      _time.Value = tStr;
+      string dStr = t.ToString("dd.MM.yyyy");
+      _date.Value = dStr;
+    }
   }
 
   public class CtrlRecorder
@@ -143,19 +215,19 @@ namespace BatInspector
     BatSpy _device;
     RecStatus _status;
     bool _connected = false;
-    public CtrlRecorder()
+    public CtrlRecorder(ColorTable colTable)
     {
       _device = new BatSpy();
       _trigger = new Trigger();
       _acq = new Acquisition();
       _ctrl = new ControlRec();
       _gen = new GeneralRec();
-      _status = new RecStatus();
+      _status = new RecStatus(colTable);
     }
 
-    public bool connect()
+    public bool connect(out string version)
     {
-      _connected = BatSpy.connect();
+      _connected = BatSpy.connect(out version);
       if (_connected)
         init();
       return _connected;
@@ -182,7 +254,6 @@ namespace BatInspector
     public Acquisition Acquisition { get { return _acq;} }
     public ControlRec Control { get { return _ctrl; } }
     public GeneralRec General { get { return _gen; } }
-
     public RecStatus Status { get { return _status; } }
     public void init()
     {

@@ -700,7 +700,16 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deadtime.
         /// </summary>
         public static string DeadTime {
             get {
@@ -1636,6 +1645,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OpMode Position.
+        /// </summary>
+        public static string FrmRecModePosition {
+            get {
+                return ResourceManager.GetString("FrmRecModePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to not connected.
         /// </summary>
         public static string FrmRecNotConnected {
@@ -1726,6 +1744,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set Time.
+        /// </summary>
+        public static string FrmRecSetTime {
+            get {
+                return ResourceManager.GetString("FrmRecSetTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting Time, Hour.
         /// </summary>
         public static string frmRecStartingTimeH {
@@ -1776,6 +1803,15 @@ namespace BatInspector.Properties {
         public static string FrmRecTriggerType {
             get {
                 return ResourceManager.GetString("FrmRecTriggerType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update FFT (slows down update rate).
+        /// </summary>
+        public static string FrmRecUpdateFFT {
+            get {
+                return ResourceManager.GetString("FrmRecUpdateFFT", resourceCulture);
             }
         }
         
@@ -1960,7 +1996,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height.
+        ///   Looks up a localized string similar to Altitude.
         /// </summary>
         public static string Height {
             get {
@@ -3477,6 +3513,15 @@ namespace BatInspector.Properties {
         public static string StringNumber {
             get {
                 return ResourceManager.GetString("StringNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         

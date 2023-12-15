@@ -7,14 +7,16 @@
         xmlns:res="clr-namespace:BatInspector.Properties"        
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Icon="../images/simplescreenrecorder_94921.png"
-        Title="Setup Recorder" Height="550" MinHeight="550" Width="900" MinWidth="900">
+        Icon="../images/kopf64.png"
+        Title="Recorder" Height="550" MinHeight="550" Width="900" MinWidth="900">
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="40"/>
       <RowDefinition/>
       <RowDefinition Height="55"/>
     </Grid.RowDefinitions>
-    <TabControl Grid.Row="0" BorderThickness="2">
+    <local:ctlDataItem x:Name="_ctlSwVersion" Margin="5"/>
+    <TabControl Grid.Row="1" BorderThickness="2">
       <TabItem Header="Parameter">
         <Grid>
           <Grid.RowDefinitions>
@@ -56,8 +58,9 @@
           <GroupBox Header="{x:Static res:MyResources.General}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="1"  Margin="0,0,5,5" Grid.Row="1">
 
             <StackPanel Margin="5" >
-                            <local:ctlSelectItem x:Name="_ctlLanguage" />
-                            <local:ctlDataItem x:Name="_ctlLat"/>
+              <local:ctlSelectItem x:Name="_ctlLanguage" />
+              <local:ctlSelectItem x:Name="_ctlPosMode" />
+              <local:ctlDataItem x:Name="_ctlLat"/>
               <local:ctlDataItem x:Name="_ctlLon"/>
             </StackPanel>
           </GroupBox>
@@ -68,7 +71,7 @@
         </Grid>
 
       </TabItem>
-      <TabItem Header="Status">
+      <TabItem Header="Status" Height="24" VerticalAlignment="Top">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -81,17 +84,21 @@
                 <local:ctlDataItem x:Name="_ctlBatVoltage" />
                 <local:ctlDataItem x:Name="_ctlHumidity" />
                 <local:ctlDataItem x:Name="_ctlTemperature" />
-              </StackPanel>
+                <local:ctlDataItem x:Name="_ctlDate" />
+                <local:ctlDataItem x:Name="_ctlTime" />
+                                <Button Name="_btnSetTime" Click="_btnSetTime_Click" Height="22" Width="220" Content="{x:Static res:MyResources.FrmRecSetTime}" HorizontalAlignment="Right"/>
+                            </StackPanel>
             </GroupBox>
             <GroupBox Header="{x:Static res:MyResources.Recording}" Template="{DynamicResource GroupBoxCmu}">
             <StackPanel>
               <local:ctlDataItem x:Name="_ctlRecCount"/>
-              <local:ctlDataItem x:Name="_ctlRecState"/>
+              <local:ctlSelectItem x:Name="_ctlRecState"/>
               <local:ctlDataItem x:Name="_ctlDiskFree"/>
             </StackPanel>
           </GroupBox>
             <GroupBox Header="{x:Static res:MyResources.FrmCreatePrjLLocation}" Template="{DynamicResource GroupBoxCmu}">
               <StackPanel>
+                <local:ctlSelectItem x:Name="_ctlGpsStatus" />
                 <local:ctlDataItem x:Name="_ctlLocation" />
                 <local:ctlDataItem x:Name="_ctlHeight" />
                 <local:ctlDataItem x:Name="_ctlNrSatellites" />
@@ -107,15 +114,21 @@
                 <local:ctlDataItem x:Name="_ctlAudioBlocks"/>
               </StackPanel>
             </GroupBox>
+                        <GroupBox Header="Live FFT" Template="{DynamicResource GroupBoxCmu}">
+                            <StackPanel Margin="5,0,0,0">
+                                <CheckBox Name="_cbUpdateFft"  Content="{x:Static res:MyResources.FrmRecUpdateFFT}" Margin="0,10,0,5" />
+                                <Image Name="_img" Width="256" Height="128" HorizontalAlignment="Left"  Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </GroupBox>
           </StackPanel>
         </Grid>
       </TabItem>
     </TabControl>
-    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="5,20,0,0">
+    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Margin="5,20,0,0">
       <Label Content="Status" FontWeight="Bold" VerticalAlignment="Center"/>
       <TextBlock Name="_tbStatus" Text="{x:Static res:MyResources.FrmRecNotConnected}" VerticalAlignment="Center" Margin="10,0,0,0"/>
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="5,25,5,5">
+    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="5,25,5,5">
       <Button x:Name="_btnConnect" Width="180" Content="{x:Static res:MyResources.Connect}" Margin="5,0,0,0" Click="_btnConnect_Click"/>
       <Button x:Name="_btnCancel" Width="180"  Content="{x:Static res:MyResources.BtnCancel}" Click="_btnCancel_Click" Margin="5,0,5,0"/>
     </StackPanel>

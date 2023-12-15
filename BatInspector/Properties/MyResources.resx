@@ -1243,7 +1243,7 @@
     <value>Trigger Type</value>
   </data>
   <data name="DeadTime" xml:space="preserve">
-    <value></value>
+    <value>Deadtime</value>
   </data>
   <data name="FrmRecMinEventLength" xml:space="preserve">
     <value>min. Event Length</value>
@@ -1312,7 +1312,7 @@
     <value>Nr of satellites</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Height</value>
+    <value>Altitude</value>
   </data>
   <data name="frmRecMainLoop" xml:space="preserve">
     <value>Main loop</value>
@@ -1352,5 +1352,20 @@
   </data>
   <data name="frmRecStopTimeMin" xml:space="preserve">
     <value>Stop Time, Minute</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="FrmRecSetTime" xml:space="preserve">
+    <value>Set Time</value>
+  </data>
+  <data name="FrmRecUpdateFFT" xml:space="preserve">
+    <value>update FFT (slows down update rate)</value>
+  </data>
+  <data name="FrmRecModePosition" xml:space="preserve">
+    <value>OpMode Position</value>
   </data>
 </root>

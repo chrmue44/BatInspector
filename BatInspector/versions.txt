@@ -1,4 +1,5 @@
-V0.7.4.0   10.11.23
+V0.8.x.x
+- setup and status dialog for BatSpy recording device
 - bat species infos for all species in Germany added
 - new script function replace()
 

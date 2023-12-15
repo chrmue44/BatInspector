@@ -2,13 +2,39 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
 
 namespace BatInspector
 {
+  public class StringType
+  {
+    public StringType(string cmd)
+    {
+      _cmd = cmd;
+    }
 
+    string _cmd;
+
+    public string Value
+    {
+      get
+      {
+        string val;
+        bool ok = BatSpy.getStringValue(_cmd, out val);
+        return val;
+      }
+      set
+      {
+        BatSpy.setStringValue(value, _cmd);
+      }
+    }
+    public void init()
+    {
+    }
+  }
 
   public class NumType
   {
@@ -105,9 +131,10 @@ namespace BatInspector
     bool _receiveError = false;
     bool _isConnected = false;
 
-    static public bool connect()
+    static public bool connect(out string version)
     {
       string[] ports = SerialPort.GetPortNames();
+      version = "?";
       if (!_inst._isConnected)
       {
         SerialPort p = null;
@@ -116,18 +143,20 @@ namespace BatInspector
           try
           {
             p= new SerialPort(port, 9600, Parity.None, 8, StopBits.One);
+            p.ReadBufferSize = 32768;
             p.Open();
+            p.ReadTimeout = 300;
             p.NewLine = NEWLINE_STR;
             p.DataReceived += _inst._port_DataReceived;
             p.ErrorReceived += _inst._port_ErrorReceived;
             string s = p.ReadExisting();
             p.Write("v\n");
-            p.ReadTimeout = 300;
             s = p.ReadLine();
             if (s.IndexOf(DEV_IDENT) == 0)
             {
               _inst._port = p;
               _inst._isConnected = true;
+              version = s;
               break;
             }
             else
@@ -159,7 +188,7 @@ namespace BatInspector
 
     static public bool save()
     {
-      return _inst.writeCommand("S");
+      return _inst.writeCommand("A");
     }
 
     static public bool load()
@@ -170,6 +199,38 @@ namespace BatInspector
     private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
     {
       _receiveError = true;
+    }
+
+    static public byte[] getLiveFft(int part)
+    {
+      byte[] buf = new byte[64 * 256];
+      int iBuf = 0;
+      int recLength = 0x4000;  //buf.Length
+
+      _inst._port.Write("f" + part.ToString() +"\n");
+      DebugLog.log("BatSpy CMD: f" + part.ToString(), enLogType.DEBUG);
+      _inst._port.ReadTimeout = 10000;
+      Stopwatch w = new Stopwatch();
+      w.Start();
+
+      while (!_inst._answerReceived && !_inst._receiveError && 
+             (w.ElapsedMilliseconds < _inst._port.ReadTimeout))
+        Thread.Yield();
+      if (_inst._answerReceived && !_inst._receiveError)
+      {
+        while ((iBuf < recLength) && (w.ElapsedMilliseconds < _inst._port.ReadTimeout))
+        {
+          while ((_inst._port.BytesToRead == 0) && (w.ElapsedMilliseconds < _inst._port.ReadTimeout)) { }
+          while ((_inst._port.BytesToRead > 0) && (iBuf < recLength))
+          {
+            buf[iBuf] = (byte)_inst._port.ReadByte();
+            iBuf++;
+          }
+        }
+      }
+      if (iBuf < recLength)
+        DebugLog.log("incomplete live FFT, part " + part.ToString(), enLogType.ERROR);
+      return buf;
     }
 
     private bool writeCommand(string cmd)
@@ -260,6 +321,16 @@ namespace BatInspector
       return ok;
     }
 
+    static public bool getStringValue(string cmd, out string val)
+    {
+      string str = cmd.ToLower();
+      string res = _inst.execCommand(str);
+
+      bool ok = (res != "?");
+      val = res;
+      return ok;
+    }
+
     static public bool getEnumIndex(string cmd, out int val)
     {
       string str = cmd.ToLower();
@@ -276,6 +347,14 @@ namespace BatInspector
     static public void setDoubleValue(double val, string cmd)
     {
       string str = cmd + val.ToString("0.####", CultureInfo.InvariantCulture);
+      bool ok = _inst.writeCommand(str);
+      if (!ok)
+        DebugLog.log("error writing value, cmd: " + str, enLogType.ERROR);
+    }
+
+    static public void setStringValue(string val, string cmd)
+    {
+      string str = cmd + val;
       bool ok = _inst.writeCommand(str);
       if (!ok)
         DebugLog.log("error writing value, cmd: " + str, enLogType.ERROR);

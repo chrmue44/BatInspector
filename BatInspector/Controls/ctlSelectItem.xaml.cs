@@ -75,9 +75,12 @@ namespace BatInspector.Controls
 
     public void setItems(string[] items)
     {
-      _cb.Items.Clear();
-      foreach (string it in items)
-        _cb.Items.Add(it);
+      if (items != null)
+      {
+        _cb.Items.Clear();
+        foreach (string it in items)
+          _cb.Items.Add(it);
+      }
       _cb.SelectedIndex = 0;
     }
 

@@ -10,6 +10,7 @@ using System;
 using System.Windows;
 using BatInspector.Controls;
 using libParser;
+using NAudio.MediaFoundation;
 
 namespace BatInspector.Forms
 {
@@ -26,6 +27,8 @@ namespace BatInspector.Forms
       InitializeComponent();
       _rec = recorder;
       _tbStatus.Foreground = System.Windows.Media.Brushes.Red;
+      _ctlSwVersion.setup("Software Version", enDataType.STRING, 0, 143);
+      _ctlSwVersion.setValue("");
       initParameterTab(130, 150);
       initStatusTab(180, 150);
       _timer = new System.Windows.Threading.DispatcherTimer();
@@ -80,6 +83,9 @@ namespace BatInspector.Forms
       _ctlLanguage.setItems(_rec.General.Language.Items);
       _ctlLanguage.IsEnabled = true;
       _ctlLanguage.SelectIndex = _rec.General.Language.Value;
+      _ctlPosMode.setItems(_rec.General.PositionMode.Items);
+      _ctlPosMode.IsEnabled = true;
+      _ctlPosMode.SelectIndex = _rec.General.PositionMode.Value;
       _ctlLat.setValue(Utils.LatitudeToString( _rec.General.Latitude.Value));
       _ctlLat.IsEnabled = true;
       _ctlLon.setValue(Utils.LongitudeToString(_rec.General.Longitude.Value));
@@ -104,6 +110,7 @@ namespace BatInspector.Forms
       _ctlRecMode.setup(BatInspector.Properties.MyResources.FrmRecRecordingMode, 3, wl, wt, setRecMode, null, "", false);
       _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigType, null, "", false);
       _ctlLanguage.setup(BatInspector.Properties.MyResources.Language, 0, wl, wt, setLanguage, null, "", false);
+      _ctlPosMode.setup(BatInspector.Properties.MyResources.FrmRecModePosition, 0, wl, wt, setPositionMode, null, "", false);
       _ctlLat.setup(BatInspector.Properties.MyResources.Latitude, enDataType.STRING, 5, wl, false, setLat);
       _ctlLon.setup(BatInspector.Properties.MyResources.Longitude, enDataType.STRING, 5, wl, false, setLon);
     }
@@ -131,6 +138,11 @@ namespace BatInspector.Forms
     private void setLanguage(int index, string val)
     {
       _rec.General.Language.Value = _ctlLanguage.getSelectedIndex();
+    }
+
+    private void setPositionMode(int index, string val)
+    {
+      _rec.General.PositionMode.Value = _ctlPosMode.getSelectedIndex();
     }
 
     private void setFilterType(int index, string val)
@@ -231,6 +243,8 @@ namespace BatInspector.Forms
       _ctlDiskFree.setValue(0.0);
       _ctlLocation.setup(BatInspector.Properties.MyResources.FrmCreatePrjLLocation, enDataType.STRING, 0, wl, false);
       _ctlLocation.setValue("");
+      _ctlGpsStatus.setup("GPS Status", 0, wl, wt, null, null, "", false);
+      _ctlGpsStatus.setValue("");
       _ctlNrSatellites.setup(BatInspector.Properties.MyResources.frmRecNrOfSatellites, enDataType.INT, 0, wl, false);
       _ctlNrSatellites.setValue(0);
       _ctlHeight.setup(BatInspector.Properties.MyResources.Height, enDataType.DOUBLE, 1, wl, false);
@@ -239,9 +253,18 @@ namespace BatInspector.Forms
       _ctlMainLoop.setValue(0);
       _ctlRecCount.setup(BatInspector.Properties.MyResources.frmRecNrRecordings, enDataType.INT, 0, wl, false);
       _ctlRecCount.setValue(0);
-      _ctlRecState.setup(BatInspector.Properties.MyResources.Status, enDataType.STRING, 0, wl, false);
+      _ctlRecState.setup(BatInspector.Properties.MyResources.Status, 0,wl, wt,null, null,"", false);
+      _ctlDate.setup(BatInspector.Properties.MyResources.Date, enDataType.STRING, 0, wl, false);
+      _ctlDate.setValue("");
+      _ctlTime.setup(BatInspector.Properties.MyResources.Time, enDataType.STRING, 0, wl, false);
+      _ctlTime.setValue("");
     }
 
+    void initStatusControls()
+    {
+      _ctlRecState.setItems(_rec.Status.RecordingStatus.Items);
+      _ctlGpsStatus.setItems(_rec.Status.Gps.Items);
+    }
 
     private void updateStatusControls()
     {
@@ -250,15 +273,21 @@ namespace BatInspector.Forms
       _ctlAudioLoadAvg.setValue(_rec.Status.CpuLoadAvg.Value);
       _ctlAudioLoadMax.setValue(_rec.Status.CpuLoadMax.Value);
       _ctlMainLoop.setValue((int)_rec.Status.MainLoop.Value);
+      _ctlDiskFree.setValue(_rec.Status.DiskSpace.Value);
+      _ctlRecCount.setValue((int)_rec.Status.RecCount.Value);
+      _ctlDate.setValue(_rec.Status.Date.Value);
+      _ctlTime.setValue(_rec.Status.Time.Value);
+      _ctlNrSatellites.setValue((int)_rec.Status.NrSatellites.Value);
+      _ctlRecState.SelectIndex = _rec.Status.RecordingStatus.Value;
+      _ctlLocation.setValue(_rec.Status.Location.Value);
+      _ctlGpsStatus.SelectIndex = _rec.Status.Gps.Value;
+      _ctlHeight.setValue(_rec.Status.Height.Value);
 
       _ctlHumidity.setValue(0.0);
       _ctlTemperature.setValue(0.0);
-      _ctlDiskFree.setValue(0.0);
-      _ctlLocation.setValue("");
-      _ctlNrSatellites.setValue(0);
-      _ctlHeight.setValue(0.0);
-      _ctlRecCount.setValue(0);
-      _ctlRecState.setValue("");
+
+      if(_cbUpdateFft.IsChecked == true)
+        _img.Source = _rec.Status.getLiveFft();
     }
 
     private void _btnRead_Click(object sender, RoutedEventArgs e)
@@ -270,6 +299,7 @@ namespace BatInspector.Forms
     private void _btnWrite_Click(object sender, RoutedEventArgs e)
     {
       _rec.savePars();
+      DebugLog.log("Parameters written to EEPROM", enLogType.INFO);
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
@@ -280,13 +310,21 @@ namespace BatInspector.Forms
 
     private void _btnConnect_Click(object sender, RoutedEventArgs e)
     {
-      bool res = _rec.connect();
+      bool res = _rec.connect(out string version);
       if (res)
       {
+        _ctlSwVersion.setValue(version);
         _tbStatus.Text = BatInspector.Properties.MyResources.FrmRecConnected;
         _tbStatus.Foreground = System.Windows.Media.Brushes.Green;
         initParameterControls();
+        initStatusControls();
       }
+    }
+
+    private void _btnSetTime_Click(object sender, RoutedEventArgs e)
+    {
+      _rec.Status.setTime();
+      DebugLog.log("Current time sent to device", enLogType.INFO);
     }
   }
 }

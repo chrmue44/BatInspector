@@ -103,7 +103,7 @@ namespace BatInspector.Forms
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
       _timer.Start();
-      _ctlLog.setViewModel(_model);
+      _ctlLog.setup(_model.executeCmd, false);
       populateToolsMenu();
 #if DEBUG
       Tests tests = new Tests(_model);

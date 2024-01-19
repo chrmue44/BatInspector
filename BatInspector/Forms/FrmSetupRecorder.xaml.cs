@@ -8,9 +8,11 @@
 
 using System;
 using System.Windows;
+using System.Windows.Interop;
 using BatInspector.Controls;
 using libParser;
-using NAudio.MediaFoundation;
+using libScripter;
+using System.Windows.Media;
 
 namespace BatInspector.Forms
 {
@@ -21,26 +23,33 @@ namespace BatInspector.Forms
   {
     CtrlRecorder _rec;
     System.Windows.Threading.DispatcherTimer _timer;
+    int _tickCnt = 0;
 
     public FrmSetupRecorder(CtrlRecorder recorder)
     {
       InitializeComponent();
       _rec = recorder;
       _tbStatus.Foreground = System.Windows.Media.Brushes.Red;
-      _ctlSwVersion.setup("Software Version", enDataType.STRING, 0, 143);
+      _ctlSwVersion.setup(BatInspector.Properties.MyResources.FrmRecSoftwareVersion, enDataType.STRING, 0, 130);
       _ctlSwVersion.setValue("");
+      _ctlSerial.setup(BatInspector.Properties.MyResources.FrmRecSerialNr, enDataType.STRING, 0, 130);
+      _ctlSerial.setValue("");
       initParameterTab(130, 150);
       initStatusTab(180, 150);
+      initSystemTab(130, 150);
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
-      _timer.Interval = new TimeSpan(0, 0, 0, 0, 600);
+      _timer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
       _timer.Start();
+      _cLog.CheckBoxesVisible = false;
+      _cLog.setup(execCmd, true);
     }
 
     private void timer_Tick(object sender, EventArgs e)
     {
       if(_rec.IsConnected)
         updateStatusControls();
+      _tickCnt++;
     }
 
     private void initParameterControls()
@@ -90,6 +99,16 @@ namespace BatInspector.Forms
       _ctlLat.IsEnabled = true;
       _ctlLon.setValue(Utils.LongitudeToString(_rec.General.Longitude.Value));
       _ctlLon.IsEnabled = true;
+    }
+
+    private void initSystemTab(int wl, int wt)
+    {
+      _ctlPassWd.setup("Password", enDataType.STRING, 0, wl);
+      _ctlPassWd.setValue("");
+      _ctlSetSerial.setup("Set Serial Number", enDataType.STRING, 0, wl);
+      _ctlSetSerial.setValue("");
+      _ctlSetVoltFact.setup("Set Voltage", enDataType.DOUBLE, 3, wl);
+      _ctlSetVoltFact.setValue(0.0);
     }
 
     private void initParameterTab(int wl, int wt)
@@ -229,6 +248,8 @@ namespace BatInspector.Forms
     {
       _ctlBatVoltage.setup(BatInspector.Properties.MyResources.FrmRecBatteryVoltageV, enDataType.DOUBLE, 2, wl, false);
       _ctlBatVoltage.setValue(0.0);
+      _ctlBatCapacity.setup(BatInspector.Properties.MyResources.FrmRecBatteryCapacity, enDataType.DOUBLE, 0, wl, false);
+      _ctlBatCapacity.setValue(0.0);
       _ctlHumidity.setup(BatInspector.Properties.MyResources.FrmRecHumidity, enDataType.DOUBLE, 1, wl, false);
       _ctlHumidity.setValue(0.0);
       _ctlTemperature.setup(BatInspector.Properties.MyResources.FrmRecTemperature, enDataType.DOUBLE, 1, wl, false);
@@ -260,6 +281,14 @@ namespace BatInspector.Forms
       _ctlTime.setValue("");
     }
 
+    void initSystemControls(string serial)
+    {
+      _ctlPassWd.IsEnabled = true;
+      _ctlSetVoltFact.IsEnabled = true;
+      _ctlSetSerial.IsEnabled = true;
+      _ctlSetSerial.setValue(serial);
+    }
+
     void initStatusControls()
     {
       _ctlRecState.setItems(_rec.Status.RecordingStatus.Items);
@@ -268,23 +297,26 @@ namespace BatInspector.Forms
 
     private void updateStatusControls()
     {
-      _ctlBatVoltage.setValue(_rec.Status.BattVoltage.Value);
-      _ctlAudioBlocks.setValue((int)_rec.Status.AudioBlocks.Value);
-      _ctlAudioLoadAvg.setValue(_rec.Status.CpuLoadAvg.Value);
-      _ctlAudioLoadMax.setValue(_rec.Status.CpuLoadMax.Value);
+      if ((_tickCnt % 10) == 0)
+      {
+        _ctlBatVoltage.setValue(_rec.Status.BattVoltage.Value);
+        _ctlBatCapacity.setValue(_rec.Status.ChargeLevel.Value);
+        _ctlAudioBlocks.setValue((int)_rec.Status.AudioBlocks.Value);
+        _ctlAudioLoadAvg.setValue(_rec.Status.CpuLoadAvg.Value);
+        _ctlAudioLoadMax.setValue(_rec.Status.CpuLoadMax.Value);
+        _ctlDiskFree.setValue(_rec.Status.DiskSpace.Value);
+        _ctlDate.setValue(_rec.Status.Date.Value);
+        _ctlLocation.setValue(_rec.Status.Location.Value);
+        _ctlHeight.setValue(_rec.Status.Height.Value);
+        _ctlHumidity.setValue(_rec.Status.Humidity.Value);
+        _ctlTemperature.setValue(_rec.Status.Temperature.Value);
+        _ctlNrSatellites.setValue((int)_rec.Status.NrSatellites.Value);
+      }
       _ctlMainLoop.setValue((int)_rec.Status.MainLoop.Value);
-      _ctlDiskFree.setValue(_rec.Status.DiskSpace.Value);
       _ctlRecCount.setValue((int)_rec.Status.RecCount.Value);
-      _ctlDate.setValue(_rec.Status.Date.Value);
       _ctlTime.setValue(_rec.Status.Time.Value);
-      _ctlNrSatellites.setValue((int)_rec.Status.NrSatellites.Value);
       _ctlRecState.SelectIndex = _rec.Status.RecordingStatus.Value;
-      _ctlLocation.setValue(_rec.Status.Location.Value);
       _ctlGpsStatus.SelectIndex = _rec.Status.Gps.Value;
-      _ctlHeight.setValue(_rec.Status.Height.Value);
-
-      _ctlHumidity.setValue(0.0);
-      _ctlTemperature.setValue(0.0);
 
       if(_cbUpdateFft.IsChecked == true)
         _img.Source = _rec.Status.getLiveFft();
@@ -310,14 +342,16 @@ namespace BatInspector.Forms
 
     private void _btnConnect_Click(object sender, RoutedEventArgs e)
     {
-      bool res = _rec.connect(out string version);
+      bool res = _rec.connect(out string version, out string serialNr);
       if (res)
       {
         _ctlSwVersion.setValue(version);
+        _ctlSerial.setValue(serialNr);
         _tbStatus.Text = BatInspector.Properties.MyResources.FrmRecConnected;
         _tbStatus.Foreground = System.Windows.Media.Brushes.Green;
         initParameterControls();
         initStatusControls();
+        initSystemControls(serialNr);
       }
     }
 
@@ -325,6 +359,46 @@ namespace BatInspector.Forms
     {
       _rec.Status.setTime();
       DebugLog.log("Current time sent to device", enLogType.INFO);
+    }
+
+    private void _btnFwUpdate_Click(object sender, RoutedEventArgs e)
+    {
+      System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
+      string filter = "firmware files(*.hex)|*.hex";
+      dlg.Filter = filter;
+      System.Windows.Forms.DialogResult res = dlg.ShowDialog();
+      if(res == System.Windows.Forms.DialogResult.OK)
+      {
+        ProcessRunner proc = new ProcessRunner();
+        string exe = "teensy_loader_cli.exe";
+        string args = "--mcu=TEENSY40 -w " + dlg.FileName;
+        proc.launchCommandLineApp(exe, null, "", true, args, true, true);
+      }
+    }
+
+    private void execCmd(string cmd)
+    {
+      if (BatSpy.IsConnected)
+      {
+        string result = BatSpy.ExecuteCommand(cmd);
+        _cLog.addTextLine(cmd, Brushes.Blue);
+        _cLog.addTextLine(result.Replace("\n", " ").Replace("\r",""), Brushes.Black);
+      }
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
+
+    private void btnSet_Clicked(object sender, RoutedEventArgs e)
+    {
+      string passWd = _ctlPassWd.getValue();
+      string newSerial = _ctlSetSerial.getValue();
+      double voltage = _ctlSetVoltFact.getDoubleValue();
+      bool ok = BatSpy.setSystemSettings(passWd, newSerial, voltage);
+      if (!ok)
+        DebugLog.log("unable to set system parameters", enLogType.ERROR);
     }
   }
 }

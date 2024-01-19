@@ -120,7 +120,10 @@ namespace BatInspector
 
   public class RecStatus
   {
+    NumType _temp = new NumType("sb");
+    NumType _humid = new NumType("sc");
     NumType _battVoltage = new NumType("sv");
+    NumType _chargeLevel = new NumType("sl");
     NumType _audioBlocks = new NumType("sa");
     NumType _cpuAvg = new NumType("sg");
     NumType _cpuMax = new NumType("sx");
@@ -141,7 +144,10 @@ namespace BatInspector
       _colorTable = colTable;
     }
 
+    public NumType Temperature { get { return _temp; } }
+    public NumType Humidity { get { return _humid; } }
     public NumType BattVoltage { get { return _battVoltage; } }
+    public NumType ChargeLevel { get { return _chargeLevel; } }
     public NumType AudioBlocks { get { return _audioBlocks; } }
     public NumType CpuLoadAvg { get { return _cpuAvg; } }
     public NumType CpuLoadMax { get { return _cpuMax; } }
@@ -192,6 +198,8 @@ namespace BatInspector
       //      _date.init();
       //      _time.init();
       //      _nrSatellites.init();
+      //      _temp.init();
+      //      _humid.init();
       _recStatus.init();
       _gps.init();
     }
@@ -212,12 +220,10 @@ namespace BatInspector
     Acquisition _acq;
     ControlRec _ctrl;
     GeneralRec _gen;
-    BatSpy _device;
     RecStatus _status;
     bool _connected = false;
     public CtrlRecorder(ColorTable colTable)
     {
-      _device = new BatSpy();
       _trigger = new Trigger();
       _acq = new Acquisition();
       _ctrl = new ControlRec();
@@ -225,9 +231,9 @@ namespace BatInspector
       _status = new RecStatus(colTable);
     }
 
-    public bool connect(out string version)
+    public bool connect(out string version, out string serialNr)
     {
-      _connected = BatSpy.connect(out version);
+      _connected = BatSpy.connect(out version, out serialNr);
       if (_connected)
         init();
       return _connected;

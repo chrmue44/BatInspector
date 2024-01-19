@@ -131,10 +131,13 @@ namespace BatInspector
     bool _receiveError = false;
     bool _isConnected = false;
 
-    static public bool connect(out string version)
+    static public bool IsConnected { get{ return _inst._isConnected; } }
+
+    static public bool connect(out string version, out string serialNr)
     {
       string[] ports = SerialPort.GetPortNames();
       version = "?";
+      serialNr = "?";
       if (!_inst._isConnected)
       {
         SerialPort p = null;
@@ -157,6 +160,9 @@ namespace BatInspector
               _inst._port = p;
               _inst._isConnected = true;
               version = s;
+              p.Write("z\n");
+              s = p.ReadLine();
+              serialNr = s;
               break;
             }
             else
@@ -194,6 +200,32 @@ namespace BatInspector
     static public bool load()
     {
       return _inst.writeCommand("L");
+    }
+
+    static public string ExecuteCommand(string cmd)
+    {
+      return _inst.execCommand(cmd);
+    }
+
+    static public bool setSystemSettings(string passWd, string serial, double voltage)
+    {
+      bool retVal = false;
+      if (_inst._isConnected)
+      {
+        string res = _inst.execCommand("Y" + passWd);
+        if (res == "0")
+        {
+          res = _inst.execCommand("Z" + serial);
+          if (res == "0")
+          {
+            res = _inst.execCommand("Pf" + voltage.ToString("#.###", CultureInfo.InvariantCulture));
+            if (res == "0")
+              retVal = true;
+            _inst.execCommand("Y ");  //lock system
+          }
+        }
+      }
+      return retVal;
     }
 
     private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
@@ -242,36 +274,43 @@ namespace BatInspector
     private string execCommand(string cmd)
     {
       string retVal = "";
-      string str = cmd + "\n";
-      byte[] buf = new byte[4096];
-      _answerReceived = false;
-      _receiveError = false;
-      _port.ReadExisting();
-      _port.Write(str);
-      DebugLog.log("BatSpy CMD: " + cmd, enLogType.DEBUG);
-      _port.ReadTimeout = 1000;
-      Stopwatch w = new Stopwatch();
-      w.Start();
-      while (!_answerReceived && !_receiveError && (w.ElapsedMilliseconds < _port.ReadTimeout))
-        Thread.Yield();
-      if (_answerReceived && !_receiveError)
+      try
       {
-        int iBuf = 0;
-        while ((_port.BytesToRead > 0) && (iBuf < buf.Length))
+        string str = cmd + "\n";
+        byte[] buf = new byte[4096];
+        _answerReceived = false;
+        _receiveError = false;
+        _port.ReadExisting();
+        _port.Write(str);
+        DebugLog.log("BatSpy CMD: " + cmd, enLogType.DEBUG);
+        _port.ReadTimeout = 1000;
+        Stopwatch w = new Stopwatch();
+        w.Start();
+        while (!_answerReceived && !_receiveError && (w.ElapsedMilliseconds < _port.ReadTimeout))
+          Thread.Yield();
+        if (_answerReceived && !_receiveError)
         {
-          buf[iBuf] = (byte)_port.ReadByte();
-          if (buf[iBuf] == NEWLINE_CHAR)
-            break;
-          iBuf++;
+          int iBuf = 0;
+          while ((_port.BytesToRead > 0) && (iBuf < buf.Length))
+          {
+            buf[iBuf] = (byte)_port.ReadByte();
+            if (buf[iBuf] == NEWLINE_CHAR)
+              break;
+            iBuf++;
+          }
+          retVal = Encoding.Default.GetString(buf);
+          int pos = retVal.IndexOf(NEWLINE_CHAR);
+          if (pos >= 0)
+            retVal = retVal.Substring(0, pos);
+          DebugLog.log("BatSpy ANS: " + retVal, enLogType.DEBUG);
         }
-        retVal = Encoding.Default.GetString(buf);
-        int pos = retVal.IndexOf(NEWLINE_CHAR);
-        if (pos >= 0)
-          retVal = retVal.Substring(0, pos);
-        DebugLog.log("BatSpy ANS: " + retVal, enLogType.DEBUG);
+        else
+          DebugLog.log("BatSpy command " + cmd + " timed out", enLogType.ERROR);
       }
-      else
-        DebugLog.log("BatSpy command " + cmd + " timed out", enLogType.ERROR);
+      catch(Exception ex)
+      {
+        DebugLog.log("connection lost: " + ex.ToString(), enLogType.ERROR);
+      }
       return retVal;
     }
 

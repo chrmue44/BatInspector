@@ -69,7 +69,7 @@ namespace BatInspector.Forms
       _ctlExpStart.setValue(_strUndef);
 
       int width = 130;
-      int widthTb = 60;
+    //  int widthTb = 60;
       _ctlLat.setup("Latitude", enDataType.DOUBLE, 6, width,  true);
       _ctlLon.setup("Longitude", enDataType.DOUBLE, 6, width , true);
       _ctlFstart.setup("Start Frequency [kHz]", enDataType.DOUBLE, 1, width,  true);

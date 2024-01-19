@@ -745,6 +745,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string Disconnect {
+            get {
+                return ResourceManager.GetString("Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string Duration {
@@ -1564,6 +1573,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Charge Level [%].
+        /// </summary>
+        public static string FrmRecBatteryCapacity {
+            get {
+                return ResourceManager.GetString("FrmRecBatteryCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Battery voltage [V].
         /// </summary>
         public static string FrmRecBatteryVoltageV {
@@ -1605,6 +1623,15 @@ namespace BatInspector.Properties {
         public static string frmRecFreeDiskSpaceMB {
             get {
                 return ResourceManager.GetString("frmRecFreeDiskSpaceMB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware Update....
+        /// </summary>
+        public static string FrmRecFwUpdate {
+            get {
+                return ResourceManager.GetString("FrmRecFwUpdate", resourceCulture);
             }
         }
         
@@ -1744,11 +1771,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Serial Number.
+        /// </summary>
+        public static string FrmRecSerialNr {
+            get {
+                return ResourceManager.GetString("FrmRecSerialNr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set Time.
         /// </summary>
         public static string FrmRecSetTime {
             get {
                 return ResourceManager.GetString("FrmRecSetTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software Version.
+        /// </summary>
+        public static string FrmRecSoftwareVersion {
+            get {
+                return ResourceManager.GetString("FrmRecSoftwareVersion", resourceCulture);
             }
         }
         

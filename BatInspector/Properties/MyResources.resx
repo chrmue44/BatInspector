@@ -1368,4 +1368,19 @@
   <data name="FrmRecModePosition" xml:space="preserve">
     <value>OpMode Position</value>
   </data>
+  <data name="FrmRecFwUpdate" xml:space="preserve">
+    <value>Firmware Update...</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="FrmRecBatteryCapacity" xml:space="preserve">
+    <value>Charge Level [%]</value>
+  </data>
+  <data name="FrmRecSerialNr" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+  <data name="FrmRecSoftwareVersion" xml:space="preserve">
+    <value>Software Version</value>
+  </data>
 </root>

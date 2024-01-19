@@ -5,11 +5,15 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using BatInspector.Controls;
 using libParser;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
+public delegate void dlgCmd(string cmd);
+public delegate void dlgAddTextLine(string text, Brush color);
 
 namespace BatInspector.Controls
 {
@@ -19,7 +23,9 @@ namespace BatInspector.Controls
   public partial class CtlLog : UserControl
   {
 
-    ViewModel _model = null;
+    dlgCmd _dlgCmd = null;
+    bool _clearAfterReturn = false;
+
     public CtlLog()
     {
       InitializeComponent();
@@ -28,9 +34,25 @@ namespace BatInspector.Controls
       _cbWarn.IsChecked = true;
     }
 
-    public void setViewModel(ViewModel model)
+    public bool CheckBoxesVisible
     {
-      _model = model;
+      get 
+      {
+        return _cbErr.Visibility == Visibility.Visible;
+      }
+      set 
+      {
+        _cbDebug.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        _cbErr.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        _cbInfo.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        _cbWarn.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+      }
+    }
+
+    public void setup(dlgCmd dlg, bool clearAfterReturn)
+    {
+      _clearAfterReturn = clearAfterReturn;
+      _dlgCmd = dlg;
     }
 
     public void log(stLogEntry entry)
@@ -52,6 +74,21 @@ namespace BatInspector.Controls
         _spEntries.Children.Add(text);
         _scrViewer.ScrollToBottom();
       }
+    }
+
+    public void addTextLine(string text, Brush color)
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.BeginInvoke(new dlgAddTextLine(addTextLine), text, color);
+        return;
+      }
+      TextBlock tb = new TextBlock();
+      tb.Text = text;
+      tb.Foreground = color;
+      tb.Visibility = Visibility.Visible;
+      _spEntries.Children.Add(tb);
+      _scrViewer.ScrollToBottom();
     }
 
     public bool checkMaxLogSize()
@@ -86,8 +123,10 @@ namespace BatInspector.Controls
       if (e.Key == Key.Return)
       {
         string cmd = _tbCmd.Text;
-        if (_model != null)
-          _model.executeCmd(cmd);
+        if (_dlgCmd != null)
+          _dlgCmd(cmd);
+        if (_clearAfterReturn)
+          _tbCmd.Text = "";
       }
     }
   }

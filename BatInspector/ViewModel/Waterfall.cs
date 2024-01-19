@@ -20,7 +20,7 @@ namespace BatInspector
 {
   public class Waterfall
   {
-    const bool FFT_W3 = true;  // FFT_W3:(no multithreading) 143 ms, DSPLib (with multithreading): 50ms
+   // const bool FFT_W3 = true;  // FFT_W3:(no multithreading) 143 ms, DSPLib (with multithreading): 50ms
     const int XT_TO_FT_RATIO = 5;
     string _wavName;
     SoundEdit _audio;
@@ -187,8 +187,8 @@ namespace BatInspector
       Array.Copy(_audio.Samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
       double wScaleFactor = 1.0;
-      if (FFT_W3)
-      {
+ //     if (FFT_W3)
+ //     {
         enWIN_TYPE win = enWIN_TYPE.HANN;
         switch(window)
         {
@@ -198,7 +198,7 @@ namespace BatInspector
         }
         int handle = BioAcoustics.getFft((uint)length, win);
         lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal); 
-      }
+ /*     }
       else
       {
         // Apply window to the Input Data & calculate Scale Factor
@@ -215,7 +215,7 @@ namespace BatInspector
 
         // Convert the complex spectrum to note: Magnitude Format
         lmSpectrum = DSPLib.DSP.ConvertComplex.ToMagnitude(cSpectrum);
-      }
+      } */
       for (int i = 0; i < lmSpectrum.Length; i++)
       {
         if (logarithmic)

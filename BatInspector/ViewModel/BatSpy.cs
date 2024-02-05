@@ -1,11 +1,21 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2023-09-01                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+
+using libParser;
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Text;
 using System.Threading;
+using lunOptics.libTeensySharp;
+using libTeensySharp;
 
 namespace BatInspector
 {
@@ -431,6 +441,19 @@ namespace BatInspector
       }
       if (!ok)
         DebugLog.log("error reading range, cmd: " + cmd + ", result: " + res, enLogType.ERROR);
+    }
+
+    static public void uploadFirmware(string file)
+    {
+      TeensyWatcher watcher = new TeensyWatcher();
+      ITeensy teensy = watcher.ConnectedTeensies.FirstOrDefault();
+      if (teensy != null)
+      {
+        var result = teensy.UploadAsync(file, reboot: true);
+        string res = result.ToString();
+      }
+      watcher.Dispose();
+
     }
   }
 }

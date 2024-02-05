@@ -99,6 +99,7 @@ namespace BatInspector
   public class GeneralRec
   {
     EnumType _language = new EnumType("Pn");
+    NumType _backLightTime = new NumType("Pb");
     EnumType _posMode = new EnumType("Pp");
     NumType _lat = new NumType("Pla");
     NumType _lon = new NumType("Plo");
@@ -108,10 +109,13 @@ namespace BatInspector
 
     public EnumType Language { get { return _language; } }
 
+    public NumType BackLightTime { get { return _backLightTime; } }
+
     public EnumType PositionMode{ get { return _posMode; } }
     public void init()
     {
       _language.init();
+      _backLightTime.init();
       _lat.init();
       _lon.init();
       _posMode.init();
@@ -123,7 +127,7 @@ namespace BatInspector
     NumType _temp = new NumType("sb");
     NumType _humid = new NumType("sc");
     NumType _battVoltage = new NumType("sv");
-    NumType _chargeLevel = new NumType("sl");
+    NumType _chargeLevel = new NumType("si");
     NumType _audioBlocks = new NumType("sa");
     NumType _cpuAvg = new NumType("sg");
     NumType _cpuMax = new NumType("sx");

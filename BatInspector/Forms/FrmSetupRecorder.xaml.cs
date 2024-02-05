@@ -34,7 +34,7 @@ namespace BatInspector.Forms
       _ctlSwVersion.setValue("");
       _ctlSerial.setup(BatInspector.Properties.MyResources.FrmRecSerialNr, enDataType.STRING, 0, 130);
       _ctlSerial.setValue("");
-      initParameterTab(130, 150);
+      initParameterTab(150, 140);
       initStatusTab(180, 150);
       initSystemTab(130, 150);
       _timer = new System.Windows.Threading.DispatcherTimer();
@@ -92,6 +92,8 @@ namespace BatInspector.Forms
       _ctlLanguage.setItems(_rec.General.Language.Items);
       _ctlLanguage.IsEnabled = true;
       _ctlLanguage.SelectIndex = _rec.General.Language.Value;
+      _ctlBackLight.setValue((int)_rec.General.BackLightTime.Value);
+      _ctlBackLight.IsEnabled = true;
       _ctlPosMode.setItems(_rec.General.PositionMode.Items);
       _ctlPosMode.IsEnabled = true;
       _ctlPosMode.SelectIndex = _rec.General.PositionMode.Value;
@@ -129,6 +131,7 @@ namespace BatInspector.Forms
       _ctlRecMode.setup(BatInspector.Properties.MyResources.FrmRecRecordingMode, 3, wl, wt, setRecMode, null, "", false);
       _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigType, null, "", false);
       _ctlLanguage.setup(BatInspector.Properties.MyResources.Language, 0, wl, wt, setLanguage, null, "", false);
+      _ctlBackLight.setup(BatInspector.Properties.MyResources.FrmRecBacklightTime, enDataType.INT, 0, wl, true, setBacklightTime);
       _ctlPosMode.setup(BatInspector.Properties.MyResources.FrmRecModePosition, 0, wl, wt, setPositionMode, null, "", false);
       _ctlLat.setup(BatInspector.Properties.MyResources.Latitude, enDataType.STRING, 5, wl, false, setLat);
       _ctlLon.setup(BatInspector.Properties.MyResources.Longitude, enDataType.STRING, 5, wl, false, setLon);
@@ -157,6 +160,11 @@ namespace BatInspector.Forms
     private void setLanguage(int index, string val)
     {
       _rec.General.Language.Value = _ctlLanguage.getSelectedIndex();
+    }
+
+    private void setBacklightTime(enDataType type, object val)
+    {
+      _rec.General.BackLightTime.Value = _ctlBackLight.getIntValue();
     }
 
     private void setPositionMode(int index, string val)
@@ -369,10 +377,7 @@ namespace BatInspector.Forms
       System.Windows.Forms.DialogResult res = dlg.ShowDialog();
       if(res == System.Windows.Forms.DialogResult.OK)
       {
-        ProcessRunner proc = new ProcessRunner();
-        string exe = "teensy_loader_cli.exe";
-        string args = "--mcu=TEENSY40 -w " + dlg.FileName;
-        proc.launchCommandLineApp(exe, null, "", true, args, true, true);
+        BatSpy.uploadFirmware(dlg.FileName);
       }
     }
 

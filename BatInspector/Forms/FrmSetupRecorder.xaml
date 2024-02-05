@@ -66,6 +66,7 @@
 
             <StackPanel Margin="5" >
               <local:ctlSelectItem x:Name="_ctlLanguage" />
+              <local:ctlDataItem x:Name="_ctlBackLight" />
               <local:ctlSelectItem x:Name="_ctlPosMode" />
               <local:ctlDataItem x:Name="_ctlLat"/>
               <local:ctlDataItem x:Name="_ctlLon"/>

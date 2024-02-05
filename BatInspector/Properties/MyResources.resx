@@ -1383,4 +1383,7 @@
   <data name="FrmRecSoftwareVersion" xml:space="preserve">
     <value>Software Version</value>
   </data>
+  <data name="FrmRecBacklightTime" xml:space="preserve">
+    <value>Backlight Time [s]</value>
+  </data>
 </root>

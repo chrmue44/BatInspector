@@ -1573,6 +1573,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backlight Time [s].
+        /// </summary>
+        public static string FrmRecBacklightTime {
+            get {
+                return ResourceManager.GetString("FrmRecBacklightTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Charge Level [%].
         /// </summary>
         public static string FrmRecBatteryCapacity {

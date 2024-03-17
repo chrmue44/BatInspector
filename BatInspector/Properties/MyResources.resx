@@ -1386,4 +1386,7 @@
   <data name="FrmRecBacklightTime" xml:space="preserve">
     <value>Backlight Time [s]</value>
   </data>
+  <data name="frmRecFilterType" xml:space="preserve">
+    <value>Filter Type</value>
+  </data>
 </root>

@@ -83,6 +83,10 @@ namespace BatInspector.Forms
       _ctlTrigLevel.IsEnabled = true;
       _ctlRecordingTime.setValue(_rec.Control.RecTime.Value);
       _ctlRecordingTime.IsEnabled = true;
+      _ctlRecFilterFreq.setValue(_rec.Acquisition.RecordingFilter.Value);
+      _ctlRecFilterFreq.IsEnabled = true;
+      _ctlRecFilterType.SelectIndex = _rec.Acquisition.RecFiltType.Value;
+      _ctlRecFilterType.IsEnabled = true;
       _ctlRecMode.setItems(_rec.Control.Mode.Items);
       _ctlRecMode.SelectIndex = (int)_rec.Control.Mode.Value;
       _ctlRecMode.IsEnabled = true;
@@ -124,10 +128,12 @@ namespace BatInspector.Forms
       _ctlRecStopMin.setup(BatInspector.Properties.MyResources.frmRecStopTimeMin, enDataType.INT, 0, wl, false, setStopMin);
       _ctlSampleRate.setup(BatInspector.Properties.MyResources.SamplingRate, 2, wl, wt, setSampleRate);
       _ctlTrigFreq.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setTrigFrequency);
-      _ctlTrigFiltType.setup("Filter Type", 0, wl, wt, setFilterType, null, "", false);
+      _ctlTrigFiltType.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setFilterType, null, "", false);
       _ctlTrigLength.setup(BatInspector.Properties.MyResources.FrmRecMinEventLength + " [ms]", enDataType.DOUBLE, 1, wl, false, setTrigLength);
       _ctlTrigLevel.setup(BatInspector.Properties.MyResources.frmRecLevel + " [dB]", enDataType.DOUBLE, 1, wl, false, setTrigLevel);
       _ctlRecordingTime.setup(BatInspector.Properties.MyResources.frmRecRecordingTime, enDataType.DOUBLE, 1, wl, false, setRecTime);
+      _ctlRecFilterType.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setRecFilterType, null, "", false);
+      _ctlRecFilterFreq.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setRecFrequency);
       _ctlRecMode.setup(BatInspector.Properties.MyResources.FrmRecRecordingMode, 3, wl, wt, setRecMode, null, "", false);
       _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigType, null, "", false);
       _ctlLanguage.setup(BatInspector.Properties.MyResources.Language, 0, wl, wt, setLanguage, null, "", false);
@@ -175,6 +181,11 @@ namespace BatInspector.Forms
     private void setFilterType(int index, string val)
     {
       _rec.Trigger.Filter.Value = _ctlTrigFiltType.getSelectedIndex();
+    }
+
+    private void setRecFilterType(int index, string val)
+    {
+      _rec.Acquisition.RecFiltType.Value = _ctlRecFilterType.getSelectedIndex();
     }
 
     private void setLon(enDataType type, object val)
@@ -229,6 +240,11 @@ namespace BatInspector.Forms
     private void setTrigFrequency(enDataType type, object val)
     {
       _rec.Trigger.Frequency.Value = _ctlTrigFreq.getDoubleValue();
+    }
+
+    private void setRecFrequency(enDataType type, object val)
+    {
+      _rec.Acquisition.RecordingFilter.Value = _ctlRecFilterFreq.getDoubleValue();
     }
 
     private void setSampleRate(int index, string val)

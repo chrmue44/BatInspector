@@ -1474,15 +1474,18 @@ namespace BatInspector.Forms
     private void populateToolsMenu()
     {
       _mnuToolsItems.Items.Clear();
-      foreach (ScriptItem s in AppParams.Inst.ScriptInventory.Scripts)
+      if ((AppParams.Inst.ScriptInventory != null) && (AppParams.Inst.ScriptInventory.Scripts != null))
       {
-        if (!s.IsTool)
+        foreach (ScriptItem s in AppParams.Inst.ScriptInventory.Scripts)
         {
-          MenuItem m = new MenuItem();
-          m.Header = s.Description;
-          m.Tag = s.Name;
-          m.Click += _mnTool1_Click;
-          _mnuToolsItems.Items.Add(m);
+          if (!s.IsTool)
+          {
+            MenuItem m = new MenuItem();
+            m.Header = s.Description;
+            m.Tag = s.Name;
+            m.Click += _mnTool1_Click;
+            _mnuToolsItems.Items.Add(m);
+          }
         }
       }
     }

@@ -184,7 +184,14 @@ namespace libScripter
         _busy = false;
         return;
       }
-      ParseLines();
+      try
+      {
+        ParseLines();
+      }
+      catch(Exception ex) 
+      {
+        DebugLog.log("Error executing script '" + _scriptName + ", line:" + _actLineNr.ToString() + "; " + ex.ToString(), enLogType.ERROR);
+      }
       if (_updateProgress != null)
         _updateProgress(100);
       DebugLog.log("execution of script " + _scriptName + " completed", enLogType.INFO);

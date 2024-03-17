@@ -1627,6 +1627,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter Type.
+        /// </summary>
+        public static string frmRecFilterType {
+            get {
+                return ResourceManager.GetString("frmRecFilterType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free disk space [MB].
         /// </summary>
         public static string frmRecFreeDiskSpaceMB {

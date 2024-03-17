@@ -1047,7 +1047,7 @@ namespace BatInspector
         int index = (int)argv[0].getInt64();
         if (_inst._files != null)
         {
-          if (index < _inst._files.Count)
+          if ((index >= 0) && (index < _inst._files.Count))
           {
             result.assign(_inst._files[index]);
           }

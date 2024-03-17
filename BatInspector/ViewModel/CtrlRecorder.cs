@@ -45,7 +45,9 @@ namespace BatInspector
     EnumType _sampleRate = new EnumType("Prs");
     EnumType _gain = new EnumType("Prg");
     NumType _preTrig = new NumType("Prp");
-    
+    NumType _recFilter = new NumType("Pru");
+    EnumType _recFiltType = new EnumType("Prv");
+
     public Acquisition()
     {
     }
@@ -54,11 +56,15 @@ namespace BatInspector
     public EnumType Gain { get { return _gain; } }
     public NumType PreTrigger {  get { return _preTrig; } }
 
+    public NumType RecordingFilter { get { return _recFilter; } }
+    public EnumType RecFiltType { get { return _recFiltType; } }
+
     public void init()
     {
       _sampleRate.init();
       _gain.init();
       _preTrig.init();
+      _recFilter.init();
     }
   }
 

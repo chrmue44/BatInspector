@@ -536,7 +536,7 @@ namespace BatInspector
       for (int i = 0;  i < Files.Count; i++)
       {
         string fName = Files[i].Name;
-        if (fName.IndexOf(fileName) >= 0)
+        if (fName.ToLower().IndexOf(fileName.ToLower()) >= 0)
         {
           retVal = i;
           break;

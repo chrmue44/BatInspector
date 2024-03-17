@@ -2,6 +2,10 @@ V0.8.x.x
 - setup and status dialog for BatSpy recording device
 - bat species infos for all species in Germany added
 - new script function replace()
+- improved tooltip behaviour in zoom view
+- bugfix: getFileIndex() was not case independent
+- bugfix:no more crash in case of exception in script execution (try catch)
+
 
 V0.7.3.0   10.11.23
 - show recording time in zoom view in more convenient format

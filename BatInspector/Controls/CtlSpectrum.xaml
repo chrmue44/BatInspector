@@ -8,7 +8,6 @@
              d:DesignHeight="200" d:DesignWidth="300" SizeChanged="UserControl_SizeChanged">
    <Grid>
         <Canvas Name ="_cvSpec" Grid.Row="0" ToolTipService.InitialShowDelay="5" 
-ToolTipService.ShowDuration="8000" 
 ToolTipService.BetweenShowDelay="5" MouseMove="_cvSpec_MouseMove"
 ToolTip="This is a tool tip." />
     <Line Name="_cursor1"  Visibility="Hidden" Stroke="Red" StrokeThickness="2" />

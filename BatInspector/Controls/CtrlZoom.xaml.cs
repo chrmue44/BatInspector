@@ -965,14 +965,25 @@ namespace BatInspector.Controls
                    (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
         double t = _model.ZoomView.RulerDataT.Min +
         p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-        _imgFt.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" +
+
+        if (!_ftToolTip.IsOpen)
+          _ftToolTip.IsOpen = true;
+
+        _tbf.Text = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" +
         t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+        _ftToolTip.HorizontalOffset = p.X +20;
+        _ftToolTip.VerticalOffset = p.Y + 20;
         DebugLog.log("ZoomBtn: image Ft mouse move", enLogType.DEBUG);
       }
       catch (Exception ex)
       {
         DebugLog.log("ZoomBtn: image Ft mouse move failed: " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+    private void _imgFt_MouseLeave(object sender, MouseEventArgs e)
+    {
+      _ftToolTip.IsOpen = false;
     }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
@@ -1201,7 +1212,11 @@ namespace BatInspector.Controls
         Point pos = e.GetPosition(_imgXt);
         double t = _model.ZoomView.RulerDataT.Min +
         pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
-        _imgXt.ToolTip = t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
+        if (!_xtToolTip.IsOpen)
+          _xtToolTip.IsOpen = true;
+        _xtToolTip.HorizontalOffset = pos.X + 20;
+        _xtToolTip.VerticalOffset = pos.Y + 5;
+        _tbx.Text = t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
         DebugLog.log("Zoom: image Xt 'mouse move'", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1210,6 +1225,10 @@ namespace BatInspector.Controls
       }
     }
 
+    private void _imgXt_MouseLeave(object sender, MouseEventArgs e)
+    {
+      _xtToolTip.IsOpen = false;
+    }
     private void _btnSaveAs_Click(object sender, RoutedEventArgs e)
     {
       try

@@ -25,7 +25,7 @@ using System.Xml.Serialization;
     string pointName = Path.GetFileNameWithoutExtension(fName);
     for (int i = 0; i < this.Doc.Placemark.Length; i++)
     {
-      if (!string.IsNullOrEmpty(Doc.Placemark[i].name) && (Doc.Placemark[i].name == pointName))
+      if (!string.IsNullOrEmpty(Doc.Placemark[i].name) && (Doc.Placemark[i].name.ToLower() == pointName.ToLower()))
       {
         string[] coords = Doc.Placemark[i].Point.coordinates.Split(',');
         if (coords.Length == 3)

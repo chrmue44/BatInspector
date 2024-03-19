@@ -6,6 +6,8 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using libParser;
+using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
@@ -60,7 +62,15 @@ namespace BatInspector.Forms
 
     private void evaluateInBackground()
     {
-      _model.Query.evaluate(_model);
+      try
+      {
+        _model.Query.evaluate(_model);
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("error evaluating query: " + ex.ToString(), enLogType.ERROR);
+        DebugLog.save();
+      }
     }
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {

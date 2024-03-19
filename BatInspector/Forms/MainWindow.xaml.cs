@@ -453,26 +453,34 @@ namespace BatInspector.Forms
 
     private void createImageFiles()
     {
-      Stopwatch s = new Stopwatch();
-      s.Start();
-      BatExplorerProjectFileRecordsRecord[] recList = null;
-      if ((_model.Prj != null) && (_model.Prj.Ok) || _model.Query!=null)
-        recList = _model.Prj.Records;
-      else if (_model.Query!=null)
-        recList= _model.Query.Records;
-      if(recList != null)
-      { 
-        _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
-        for(int i = 0; i < _model.Prj.Records.Length; i++)
+      try
+      {
+        Stopwatch s = new Stopwatch();
+        s.Start();
+        BatExplorerProjectFileRecordsRecord[] recList = null;
+        if ((_model.Prj != null) && (_model.Prj.Ok) || _model.Query != null)
+          recList = _model.Prj.Records;
+        else if (_model.Query != null)
+          recList = _model.Query.Records;
+        if (recList != null)
         {
-          _model.createPngIfMissing(_model.Prj.Records[i], false);
-          if(s.ElapsedMilliseconds > 2500)
+          _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
+          for (int i = 0; i < _model.Prj.Records.Length; i++)
           {
-            _model.Status.Msg = i.ToString() + "/" + _model.Prj.Records.Length + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
-            s.Restart();
-            Thread.Yield();
+            _model.createPngIfMissing(_model.Prj.Records[i], false);
+            if (s.ElapsedMilliseconds > 2500)
+            {
+              _model.Status.Msg = i.ToString() + "/" + _model.Prj.Records.Length + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
+              s.Restart();
+              Thread.Yield();
+            }
           }
         }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("error creating image files: " + ex.ToString(), enLogType.ERROR);
+        DebugLog.save();
       }
     }
 
@@ -722,8 +730,16 @@ namespace BatInspector.Forms
 
     private void workerPrediction()
     {
-      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification, true);
-      _model.evaluate();
+      try
+      {
+        showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification, true);
+        _model.evaluate();
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("error predicting species: " + ex.ToString(), enLogType.ERROR);
+        DebugLog.save();
+      }
     }
 
 

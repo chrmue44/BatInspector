@@ -228,7 +228,15 @@ namespace BatInspector.Forms
 
     private void createProject()
     {
-      _model.createProject(_info, _inspect);
+      try
+      {
+        _model.createProject(_info, _inspect);
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("error creating project: " + ex.ToString(), enLogType.ERROR);
+        DebugLog.save();
+      }
     }
 
 

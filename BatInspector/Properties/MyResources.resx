@@ -1389,4 +1389,7 @@
   <data name="frmRecFilterType" xml:space="preserve">
     <value>Filter Type</value>
   </data>
+  <data name="SerDescBatInfo" xml:space="preserve">
+    <value>Path for bat information files.  This location is kept untouched during installation of newer versions</value>
+  </data>
 </root>

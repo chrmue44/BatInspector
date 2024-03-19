@@ -171,6 +171,7 @@ namespace BatInspector
     public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
     public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports
     public const string GPX_DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:ssZ"; // date format for reports
+    public const string GPX_DATETIME_FORMAT_MS = "yyyy-MM-ddTHH:mm:ss.fffZ"; // date format with ms for reports
     public const string PRJ_REPORT = "report.csv";        // report name for project report
     public const string PRJ_SUMMARY = "summary.csv";      // report name for project summar
     public const string DIR_WAVS = "Records";             // directory for WAV files
@@ -183,7 +184,8 @@ namespace BatInspector
     public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
     public const string EXT_QUERY = ".qry";               // file extension for query files
     public const string CSV_SEPARATOR = ";";              // CSV separator
-    public const string DIR_SCRIPT = "scripts";          // sub directory containig scripts
+    public const string DIR_SCRIPT = "scripts";           // sub directory containig scripts
+    public const string DIR_BAT_INFO = "batInfo";         // sub directory for user editable bat info files
     public const string BAT_INFO1_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE_DE = "/doc/BatInspector_DE.pdf"; // software manual
@@ -509,6 +511,12 @@ namespace BatInspector
     [LocalizedDescription("SerDescScriptInventory")]
     public string ScriptInventoryPath { get; set; }
 
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SerDescBatInfo")]
+    public string BatInfoPath { get; set; }
+
+
     [Browsable(false)]
     public ScriptInventory ScriptInventory { get { return _scriptInventory; } }
     public AppParams()
@@ -677,6 +685,12 @@ namespace BatInspector
         retVal.ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
                                          PROG_DAT_DIR, AppParams.DIR_SCRIPT);
       }
+      if (string.IsNullOrEmpty(retVal.BatInfoPath))
+      {
+        retVal.BatInfoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+                                         PROG_DAT_DIR, AppParams.DIR_BAT_INFO);
+      }
+
       retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath);
 
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);

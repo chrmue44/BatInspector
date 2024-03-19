@@ -1389,4 +1389,7 @@
   <data name="frmRecFilterType" xml:space="preserve">
     <value>Filtertyp</value>
   </data>
+  <data name="SerDescBatInfo" xml:space="preserve">
+    <value>Pfad zur Ablage von Fledermaus-Infodateien. Dieses Verzeichnis bleibt bei der Installation neuer Versionen unangetastet</value>
+  </data>
 </root>

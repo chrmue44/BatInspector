@@ -2932,6 +2932,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path for bat information files.  This location is kept untouched during installation of newer versions.
+        /// </summary>
+        public static string SerDescBatInfo {
+            get {
+                return ResourceManager.GetString("SerDescBatInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide call related information in overview.
         /// </summary>
         public static string SerDescHideCallInfo {

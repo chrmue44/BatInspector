@@ -63,7 +63,7 @@ namespace BatInspector
   [DataContract]
   public class BatSpeciesRegions
   {
-    const string _fName = "dat\\BatSpeciesRegions.json";
+    const string _fName = "BatSpeciesRegions.json";
     [DataMember]
     List<ParRegion> Regions { get; set; }
 
@@ -72,11 +72,11 @@ namespace BatInspector
       init();
     }
 
-    public static BatSpeciesRegions load()
+    public static BatSpeciesRegions loadFrom(string fDir)
     {
       BatSpeciesRegions retVal = null;
       FileStream file = null;
-      string fPath = Path.Combine(AppParams.AppDataPath,  _fName);
+      string fPath = Path.Combine(fDir,  _fName);
       try
       {
         DebugLog.log("try loading BatSpeciesRegions: " + fPath, enLogType.DEBUG);
@@ -93,7 +93,9 @@ namespace BatInspector
           DebugLog.log("BatSpeciesRegions does not exist, create new file: " + fPath, enLogType.DEBUG);
           retVal = new BatSpeciesRegions();
           retVal.init();
-          retVal.save();
+          if(!Directory.Exists(fDir))
+            Directory.CreateDirectory(fDir);
+          retVal.save(fDir);
         }
       }
       catch (Exception e)
@@ -112,11 +114,99 @@ namespace BatInspector
     public void init()
     {
       Regions = new List<ParRegion>();
+      ParRegion r = new ParRegion()
+      {
+        Name = "Darmstadt-Dieburg",
+        Species = new List<string>() { "MMYO", "MBEC", "MNAT", "MMYS", "MBRA", "MALC", "MDAU", "NNOC", "NLEI",
+                    "ESER", "ENIL", "VMUR", "PPIP", "PPYG", "PNAT", "BBAR", "PAUR", "PAUS",
+                    "Eptesicus", "Nyctalus", "Myotis", "Vespertilio", "Pipistrellus" },
+        InformationSource = "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm",
+        Location = new List<ParLocation>(){ new ParLocation(49.963175,8.563220),
+                                            new ParLocation(49.727209,8.539645),
+                                            new ParLocation(49.728493,8.788927),
+                                            new ParLocation(49.839054,9.030958),
+                                            new ParLocation(49.995876,9.010885)}
+
+
+      }; Regions.Add(r);
+
+      r = new ParRegion()
+      {
+        Name = "Deutschland",
+        Species = new List<string>() { "BBAR", "ENIL", "ESER", "HSAV", "MSCH", "MALC", "MBEC", "MBRA",
+          "MDAS", "MDAU", "MEMA", "MMYO", "MMYS", "MNAT", "NLAS", "NLEI",
+          "NNOC", "PKUH", "PAUR", "PAUS", "RFER", "RHIP", "PNAT", "PPIP",
+          "PPYG", "TTEN", "VMUR", "Eptesicus", "Myotis", "Nyctalus",
+          "Vespertilio", "Pipistrellus" },
+        InformationSource = "https://de.wikipedia.org/wiki/Liste_von_Fledermausarten_in_Deutschland",
+        Location = new List<ParLocation>() { new ParLocation(54.850456, 9.943414),
+                                             new ParLocation(54.627120, 13.459099),
+                                             new ParLocation(53.575474, 14.797689),
+                                             new ParLocation(50.845796, 14.835755),
+                                             new ParLocation(50.184498, 12.231023),
+                                             new ParLocation(48.774997, 13.811179),
+                                             new ParLocation(47.491914, 13.011019),
+                                             new ParLocation(47.284410, 10.217837),
+                                             new ParLocation(47.593611,  7.540160),
+                                             new ParLocation(48.968411,  8.211553),
+                                             new ParLocation(49.489325,  6.345152),
+                                             new ParLocation(51.847398,  5.990045),
+                                             new ParLocation(53.761120,  7.548357) }
+      }; Regions.Add(r);
+
+      r = new ParRegion()
+      {
+        Name = "Norway",
+        Species = new List<string>() { "ENIL", "MBRA", "MDAU", "MMYS", "MNAT", "NNOC", "PNAT", "PPYG", "PAUR",
+          "VMUR", "Eptesicus", "Myotis", "Nyctalus", "Vespertilio", "Pipistrellus" },
+        InformationSource = "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway",
+        Location = new List<ParLocation>() { new ParLocation(58.03315047073381, 7.27678231645965),
+                                             new ParLocation(59.64141461545502, 4.988287311243992),
+                                             new ParLocation(62.10627175787673, 4.434672775646467),
+                                             new ParLocation(71.72799336070543, 25.381615291901824),
+                                             new ParLocation(69.79114374529098, 32.16566376889443),
+                                             new ParLocation(68.50180138485125, 24.717826186995556),
+                                             new ParLocation(68.08832864271665, 18.357576864552833),
+                                             new ParLocation(64.1026052585473, 13.845134278292283),
+                                             new ParLocation(58.88181859511196, 11.65020431757494) }
+
+      }; Regions.Add(r);
+
+      r = new ParRegion()
+      {
+        Name = "Wales",
+        Species = new List<string>() { "BBAR", "ESER", "MALC", "MBRA", "MDAU", "MNAT", "MMYS", "NLEI",
+          "NNOC", "PAUR", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
+          "Eptesicus", "Myotis", "Nyctalus", "Pipistrellus" },
+        InformationSource = "",
+        Location = new List<ParLocation>() { new ParLocation(51.35333, -2.62814),
+                                             new ParLocation(53.47805, -2.81731),
+                                             new ParLocation(53.53009, -4.86630),
+                                             new ParLocation(51.35333, -5.88538) }
+      }; Regions.Add(r);
+
+      r = new ParRegion()
+      {
+        Name = "United Kingdom",
+        Species = new List<string>() { "BBAR", "ESER", "MALC", "MBEC", "MBRA", "MDAU", "MMYS", "MNAT", "NLEI",
+          "NNOC", "PAUR", "PAUS", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
+          "Eptesicus", "Myotis", "Nyctalus", "Vespertilio", "Pipistrellus" },
+        InformationSource = "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats",
+        Location = new List<ParLocation>() { new ParLocation(51.033539, 1.113506),
+          new ParLocation(52.873203, 1.533058),
+          new ParLocation(59.262795, -2.593458),
+          new ParLocation(57.512548, -6.764195),
+          new ParLocation(53.319476, -4.496293),
+          new ParLocation(50.016064, -5.487250),
+          new ParLocation(50.733974, 0.240915)
+        }
+      }; Regions.Add(r);
     }
 
-    public void save()
+    public void save(string fDir)
     {
-      string fPath = Path.Combine(AppParams.AppDataPath, _fName); try
+      string fPath = Path.Combine(fDir, _fName);
+      try
       {
         StreamWriter file = new StreamWriter(fPath);
         MemoryStream stream = new MemoryStream();
@@ -143,6 +233,7 @@ namespace BatInspector
         if (inside(l, r.Location))
         {
           retVal = r; 
+          break;
         }
       }
       return retVal;
@@ -186,6 +277,26 @@ namespace BatInspector
       lon1 = lon1 / 180 * Math.PI;
       lon2 = lon2 / 180 * Math.PI;
       double retVal = 6371 * Math.Acos(Math.Sin(lat1) * Math.Sin(lat2) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(lon2 - lon1));
+      return retVal;
+    }
+
+    public bool occursAtLocation(string speciesAbrv, double lat, double lon)
+    {
+      bool retVal = false;
+      ParRegion r = findRegion(lat, lon);
+      if(r == null) 
+        retVal = true;  // if region not specified always return true
+      else
+      {
+        foreach(string spec in r.Species) 
+        {
+          if(spec.ToLower() ==  speciesAbrv.ToLower())
+          {
+            retVal = true; 
+            break;
+          }
+        }
+      }
       return retVal;
     }
   }

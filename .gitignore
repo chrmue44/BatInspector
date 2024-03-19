@@ -11,6 +11,8 @@
 /libScripter/obj/Debug
 /libScripter/bin/Release
 /libScripter/obj/Release
+/libTeensySharp/obj/Debug
+/libTeensySharp/obj/Release
 /mod*
 /py/__pycache__
 /libBioAcoustics/x64

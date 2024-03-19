@@ -630,7 +630,10 @@ namespace BatInspector
       foreach(string fName in xmlfiles)
       { 
         BatRecord f = ElekonInfoFile.read(fName);
-        double[] pos = gpxFile.getPosition(ElekonInfoFile.getDateTimeFromFileName(fName));
+        DateTime t = ElekonInfoFile.getDateTimeFromFileName(fName);
+        double[] pos = gpxFile.getPosition(t);
+        if ((pos == null) || (pos.Length > 1) || ((pos[0] == 0.0) && (pos[1] == 0.0)))
+          DebugLog.log("no position found for " + fName + ", timestamp: " + t.ToString(), enLogType.ERROR);
         f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
         string dstName = Path.GetFileName(fName);
         dstName = Path.Combine(wavDir, dstName);

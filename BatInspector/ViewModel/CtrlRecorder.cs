@@ -65,6 +65,7 @@ namespace BatInspector
       _gain.init();
       _preTrig.init();
       _recFilter.init();
+      _recFiltType.init();
     }
   }
 

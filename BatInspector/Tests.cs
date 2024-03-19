@@ -107,6 +107,7 @@ namespace BatInspector
       //calcNoiseLevel();
       testRulerTicks();
       testRemoveSection();
+      testCheckSpecAtLocation();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -347,7 +348,7 @@ namespace BatInspector
 
     private void testReportModelBatdetect2()
     {
-      List <SpeciesInfos> species = BatInfo.load().Species;
+      List <SpeciesInfos> species = BatInfo.loadFrom("F:/BatInspector/dat").Species;
       ModelBatDetect2 model = new ModelBatDetect2(1, null);
       string WavDir = "G:\\bat\\2022\\20220326\\Records";
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
@@ -560,6 +561,42 @@ namespace BatInspector
         }
       
     }
+
+    struct stSpecLoc
+    {
+      public string Species;
+      public double Lat;
+      public double Lon;
+      public bool Occurs;
+
+      public stSpecLoc(string species, double lat, double lon, bool occurs)
+      {
+        Species = species; 
+        Lat = lat; 
+        Lon = lon; 
+        Occurs = occurs;
+      }
+    }
+
+    private void testCheckSpecAtLocation()
+    {
+      List<stSpecLoc> tests = new List<stSpecLoc>();
+      tests.Add(new stSpecLoc("BBAR", 49.849, 8.66, true));  //DA-DI
+      tests.Add(new stSpecLoc("RFER", 49.849, 8.66, false)); // DA-DI
+      tests.Add(new stSpecLoc("RFER", 49.483, 9.640, true));  // Germany
+      tests.Add(new stSpecLoc("RFER", 61.523, 8.718, false));  // Norway
+      tests.Add(new stSpecLoc("ENIL", 61.523, 8.718, true));  // Norway
+      tests.Add(new stSpecLoc("MDAU", 51.71, -1.348, true));    //GB
+      tests.Add(new stSpecLoc("MMYO", 51.71, -1.348, false));    //GB
+
+
+      foreach (stSpecLoc s in tests)
+      {
+        assert("occorsAtLocation() fails", s.Occurs == _model.Regions.occursAtLocation(s.Species, s.Lat, s.Lon));
+      }
+
+    }
+
 
 
     private void assert(string a, string exp)

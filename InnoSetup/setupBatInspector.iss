@@ -2,16 +2,17 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0730"
-#define MyAppVersion "0.7.3.0"
+#define MyInstallerName "SetupBatInspector_0800"
+#define MyAppVersion "0.8.0.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
 #define MyAppDataFolder "{commonappdata}\BatInspector"
 #define SourceFolder "F:\prj\BatInspector"
 #define PythonInstaller "python-3.10.10-amd64.exe"
-#define PythonInstFolder "python310"
-#define ReqPythonVersion "Python 3.10"
+#define PythonInstFolder "python311"
+#define ReqPythonVersion "Python 3.11"
+#define BatDetectVersion "1.0.8"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -57,7 +58,6 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.txt"; DestDir: "{app}"; Flag
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
-source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\dat"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2";
@@ -74,7 +74,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} {#ReqPythonVersion}"; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} {#ReqPythonVersion} {BatDetectVersion}"; Flags:runasoriginaluser
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]

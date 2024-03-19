@@ -3,9 +3,8 @@ TODO
 - progress bar for long running tasks
 - species comparison
 - remove overdriven calls from report
-- tooltip time for t and f longer
-- bat local names to user data
-- regions to user data
+- test new auto to man script
+
 
 21.08.23 V 0.5.0
 - installer for the software

@@ -85,6 +85,7 @@ namespace BatInspector.Forms
       _ctlRecordingTime.IsEnabled = true;
       _ctlRecFilterFreq.setValue(_rec.Acquisition.RecordingFilter.Value);
       _ctlRecFilterFreq.IsEnabled = true;
+      _ctlRecFilterType.setItems(_rec.Acquisition.RecFiltType.Items);
       _ctlRecFilterType.SelectIndex = _rec.Acquisition.RecFiltType.Value;
       _ctlRecFilterType.IsEnabled = true;
       _ctlRecMode.setItems(_rec.Control.Mode.Items);

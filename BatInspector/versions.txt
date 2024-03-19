@@ -5,6 +5,12 @@ V0.8.x.x
 - improved tooltip behaviour in zoom view
 - bugfix: getFileIndex() was not case independent
 - bugfix:no more crash in case of exception in script execution (try catch)
+- more logging in concurrent threads (try catch)
+- batInfo.json and BatRegions.json moved to c:/user/public/documents/BatInspector/batInfo
+- new script function occursAtLocation()
+- new options LATITUDE, LONGITUDE for script function getFileInfo()
+- bugfix: GPX import with milliseconds in timestamp
+- bugfix: KML import now case insensitive for file names
 
 
 V0.7.3.0   10.11.23

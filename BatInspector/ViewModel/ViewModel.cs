@@ -127,10 +127,10 @@ namespace BatInspector
     {
       if (!AppParams.IsInitialized)
         AppParams.load();
-      _batSpecRegions = BatSpeciesRegions.load();
+      _batSpecRegions = BatSpeciesRegions.loadFrom(AppParams.Inst.BatInfoPath);
       _proc = new ProcessRunner();
       _mainWin = mainWin;
-      _speciesInfos = BatInfo.load().Species;
+      _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
       _version = version;
       _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();

@@ -98,6 +98,10 @@ namespace BatInspector
       addMethod(new FuncTabItem("getFileIndex", getFileIndex));
       _scriptHelpTab.Add(new HelpTabItem("getFileIndex", "get file index in opended project",
                       new List<string> { "1: file name"}, new List<string> { "1: index (-1: not found)" }));
+      addMethod(new FuncTabItem("occursAtLocation", occursAtLocation));
+      _scriptHelpTab.Add(new HelpTabItem("occursAtLocation", "check wether speicies occurs at spcified loction",
+                      new List<string> {"1: species abbrviation, 2: latitude, 3: longitude"},
+                      new List<string> { "1: boolean if occurs or not"}));
       addMethod(new FuncTabItem("createPrjFromFiles", createPrjFromFiles));
       _scriptHelpTab.Add(new HelpTabItem("createPrjFromFiles", "create a project from a list of WAV files",
                       new List<string> { "1: project name","2:source folder containing WAVs","3:destination folder","4: max files per project (int)", 
@@ -258,7 +262,9 @@ namespace BatInspector
       SAMPLE_RATE,
       DURATION,
       SELECT,
-      NAME
+      NAME,
+      LATITUDE,
+      LONGITUDE
     }
 
     enum enPrjInfo
@@ -405,6 +411,13 @@ namespace BatInspector
                 case enFileInfo.SELECT:
                  result.assignBool(_inst._model.Prj.Analysis.Files[idxF].Selected);
                   break;
+                case enFileInfo.LATITUDE:
+                  result.assign(_inst._model.Prj.Analysis.Files[idxF].getDouble(Cols.LAT));
+                  break;
+                case enFileInfo.LONGITUDE:
+                  result.assign(_inst._model.Prj.Analysis.Files[idxF].getDouble(Cols.LON));
+                  break;
+
                 default:
                   result.assign("ERROR: supported data type: " + argv[1].getString());
                   break;
@@ -1062,6 +1075,35 @@ namespace BatInspector
       return err;
     }
 
+    static tParseError occursAtLocation(List<AnyType> argv, out AnyType result)
+    {
+      result = new AnyType();
+      tParseError err = tParseError.SUCCESS;
+      if (argv.Count >= 2)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string spec = argv[0].getString();
+        argv[1].changeType(AnyType.tType.RT_FLOAT);
+        double lat = argv[1].getFloat();
+        if ((lat >= -90) && (lat <= 90))
+        {
+          argv[2].changeType(AnyType.tType.RT_FLOAT);
+          double lon = argv[2].getFloat();
+          if ((lon >= -180) && (lon <= 180))
+          {
+            bool occurs = _inst._model.Regions.occursAtLocation(spec, lat, lon);
+            result.assignBool(occurs);
+          }
+          else
+            err = tParseError.ARG3_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.ARG2_OUT_OF_RANGE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
 
     static tParseError checkOverdrive(List<AnyType> argv, out AnyType result)
     {

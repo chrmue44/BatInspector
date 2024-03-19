@@ -66,7 +66,32 @@ FOR FileNr 0 NrFiles
 END
 LOG =("replace SpeciesMan in " + Count + " files")
 
-#step 3: handle the rest
+#step 3: handle auto detected species that don't occur in recording region
+SET NrFiles =(getPrjFileCount() - 1)
+SET Count 0
+FOR FileNr 0 NrFiles
+  IF =(getFileInfo(FileNr, "SELECT"))
+    SET NrCalls =(getCallCount(FileNr) - 1)
+	SET Count =(Count + 1)
+	SET lat =(getFileInfo(FileNr, "LATITUDE"))
+	SET lon =(getFileInfo(FileNr, "LONGITUDE"))
+    FOR i 0 NrCalls
+      SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+      IF =(toupper(specMan) == "TODO")
+	    SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
+	    IF =(!occursAtLocation(specAuto, lat, lon))
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+		  SET newAuto =("??REG[" + replace(specAuto,"(","](")
+          =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
+          LOG =(specAuto +" not expected in region") 
+	    END
+	  END
+    END
+  END
+END
+LOG =("replace SpeciesMan in " + Count + " files")
+
+#step 4: handle the rest
 #take over all unambiguously automatically recognized species
 SET NrFiles =(getPrjFileCount() - 1)
 SET Count 0

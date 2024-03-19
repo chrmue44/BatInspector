@@ -5,6 +5,8 @@ SET VENV=_venv
 SET PYTHON_DIR=%1
 SET PY_INST=%2
 SET REQ_VERSION=%3
+SET BD2_VERSION=%4
+
 FOR /F "tokens=*" %%a in ('python -V') do SET VERSION=%%a
 
 echo.%VERSION%|findstr /C:"%REQ_VERSION%" >nul 2>&1
@@ -28,6 +30,6 @@ cd %OUT_DIR%
 cd %MODEL_DIR%
 %PYTHON% -m venv %VENV%
 call %VENV%/Scripts/activate
-pip install batdetect2==1.0.6
+pip install batdetect2==%BD2_VERSION%
 pip install noisereduce==3.0.0
 

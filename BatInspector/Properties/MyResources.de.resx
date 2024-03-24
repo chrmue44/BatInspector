@@ -1392,4 +1392,7 @@
   <data name="SerDescBatInfo" xml:space="preserve">
     <value>Pfad zur Ablage von Fledermaus-Infodateien. Dieses Verzeichnis bleibt bei der Installation neuer Versionen unangetastet</value>
   </data>
+  <data name="frmCleanupAnnotations" xml:space="preserve">
+    <value>KI Analyse-Dateien</value>
+  </data>
 </root>

@@ -378,15 +378,21 @@ namespace libScripter
         {
           _actName = "(";
           int countBrace = 1;
+          bool insideString = false;
           while (_actPos < _actLine.Length - 1)
           {
             _actPos++;
             c = _actLine[_actPos];
             _actName += c;
-            if (c == '(')
-              countBrace++;
-            else if (c == ')')
-              countBrace--;
+            if (c == '"')
+              insideString = !insideString;
+            if (!insideString)
+            {
+              if (c == '(')
+                countBrace++;
+              else if (c == ')')
+                countBrace--;
+            }
             if (countBrace == 0)
             {
               ReplaceVariables();

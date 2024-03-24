@@ -31,11 +31,13 @@ namespace BatInspector.Forms
       int wavSpace;
       int pngSpace;
       int origSpace;
+      int annSpace;
       string wavUnit = "kB";
       string pngUnit = "kB";
       string logUnit = "kB";
       string origUnit = "kB";
-      _model.checkMem(_ctlSelectFolder.getValue(), out wavSpace, out logSpace, out pngSpace, out origSpace);
+      string annUnit = "kB";
+      _model.checkMem(_ctlSelectFolder.getValue(), out wavSpace, out logSpace, out pngSpace, out origSpace, out annSpace);
       if( wavSpace > 2048)
       {
         wavSpace /= 1024;
@@ -51,10 +53,16 @@ namespace BatInspector.Forms
         origSpace /= 1024;
         origUnit = "MB";
       }
+      if (annSpace > 2048)
+      {
+        annSpace /= 1024;
+        annUnit = "MB";
+      }
       _cbDelWav.Content = MyResources.frmCleanupDeletedFiles + "  (" + wavSpace.ToString() + " " + wavUnit + ")";
       _cbDelPNG.Content = MyResources.frmCleanupPngFiles + "  (" + pngSpace.ToString() + " " + pngUnit + ")";
       _cbDelLog.Content = MyResources.frmCleanupLogFiles + "  (" + logSpace.ToString() + " " + logUnit + ")";
       _cbOriginal.Content = MyResources.frmCleanupOrigFiles + "  (" + origSpace.ToString() + " " + origUnit + ")";
+      _cbDelAnn.Content = MyResources.frmCleanupAnnotations + "  (" + annSpace.ToString() + " " + annUnit + ")";
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -71,7 +79,7 @@ namespace BatInspector.Forms
     {
       _model.cleanup(_ctlSelectFolder.getValue(), _cbDelWav.IsChecked == true,
                      _cbDelLog.IsChecked == true, _cbDelPNG.IsChecked == true,
-                     _cbOriginal.IsChecked == true);
+                     _cbOriginal.IsChecked == true, _cbDelAnn.IsChecked == true);
       this.Visibility = Visibility.Hidden;
     }
   }

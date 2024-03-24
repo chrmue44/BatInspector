@@ -236,6 +236,7 @@ namespace BatInspector.Forms
       {
         DebugLog.log("error creating project: " + ex.ToString(), enLogType.ERROR);
         DebugLog.save();
+        _model.Status.State = enAppState.IDLE;
       }
     }
 

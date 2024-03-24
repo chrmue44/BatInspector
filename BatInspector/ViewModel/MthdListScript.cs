@@ -1001,7 +1001,7 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if (argv.Count == 5)
+      if (argv.Count == 6)
       {
         argv[0].changeType(AnyType.tType.RT_STR);
         argv[1].changeType(AnyType.tType.RT_BOOL);
@@ -1013,7 +1013,8 @@ namespace BatInspector
         bool logs = argv[2].getBool();
         bool pngs = argv[3].getBool();
         bool origs = argv[4].getBool();
-        _inst._model.cleanup(root, delWavs, logs, pngs, origs);
+        bool annotations = argv[5].getBool();
+        _inst._model.cleanup(root, delWavs, logs, pngs, origs, annotations);
       }
       else
         err = tParseError.NR_OF_ARGUMENTS;

@@ -29,6 +29,7 @@ namespace BatInspector.Forms
       _model = model;
       _temp = _model.Scripter.getScripts();
       InitializeComponent();
+      Title += "   [ " + AppParams.Inst.ScriptInventoryPath + " ]";
       populateTree();
       _updateMenu = updateMenu;
     }

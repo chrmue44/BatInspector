@@ -13,7 +13,7 @@ FOR FileNr 0 NrFiles
         SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
         SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
 	IF =(toupper(specMan) == "TODO")
-          SET ovrAuto =("??OVR[" + replace(specAuto,"(","](")
+          SET ovrAuto =("??OVR[" + replace(specAuto,"(","]("))
           =(setCallInfo(FileNr, i, "SPEC_AUTO", ovrAuto))
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
   	  SET fileName =(getFileInfo(FileNr, "NAME"))
@@ -79,12 +79,14 @@ FOR FileNr 0 NrFiles
       SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
       IF =(toupper(specMan) == "TODO")
 	    SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
-	    IF =(!occursAtLocation(specAuto, lat, lon))
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
-		  SET newAuto =("??REG[" + replace(specAuto,"(","](")
-          =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
-          LOG =(specAuto +" not expected in region") 
-	    END
+	    IF =(substr(specAuto, 0, 1) != "?")
+		  IF =(!occursAtLocation(specAuto, lat, lon))
+            =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+	  	    SET newAuto =("??REG[" + replace(specAuto,"(","]("))
+            =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
+            LOG =(specAuto +" not expected in region") 
+	      END
+		END
 	  END
     END
   END

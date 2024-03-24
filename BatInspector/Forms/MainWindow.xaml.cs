@@ -23,6 +23,7 @@ using BatInspector.Controls;
 using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
+using System.Linq;
 
 namespace BatInspector.Forms
 {
@@ -162,7 +163,7 @@ namespace BatInspector.Forms
             if (Project.containsProject(expandedDir) == "")
             {
               DebugLog.log("start evaluation TODO", enLogType.DEBUG);
-              foreach (DirectoryInfo subDir in expandedDir.GetDirectories())
+              foreach (DirectoryInfo subDir in expandedDir.GetDirectories().OrderBy(f => f.Name))
               {
                 TreeViewItem childItem = CreateTreeItem(subDir);
                 item.Items.Add(childItem);
@@ -1124,7 +1125,20 @@ namespace BatInspector.Forms
       switch (_model.Status.State)
       {
         case enAppState.IDLE:
+          if (!_btnCreatePrj.IsEnabled)
+          {
+            _btnCreatePrj.IsEnabled = true;
+            _btnCreatePrj.Opacity = 1.0;
+          }
           hideMsg();
+          break;
+
+        case enAppState.IMPORT_PRJ:
+          if (_btnCreatePrj.IsEnabled)
+          {
+            _btnCreatePrj.IsEnabled = false;
+            _btnCreatePrj.Opacity = 0.25;
+          }
           break;
 
         case enAppState.AI_ANALYZE:
@@ -1138,6 +1152,8 @@ namespace BatInspector.Forms
           break;
 
         case enAppState.OPEN_PRJ:
+          if (_btnCreatePrj.IsEnabled)
+            _btnCreatePrj.IsEnabled = false;
           if ((_workerStartup != null) && (!_workerStartup.IsAlive))
           {
             _workerStartup = null;

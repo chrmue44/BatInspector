@@ -70,96 +70,117 @@ namespace BatInspector.Controls
 
     private void _cbLeft_DropDownClosed(object sender, EventArgs e)
     {
-      int iLeft = _cbLeft.SelectedIndex;
-      if((string)_cbLeft.SelectedItem == MyResources.ExpGenNested)
+      try
       {
-        frmExpression frm = new frmExpression(_gen, false, false);
-        bool? res = frm.ShowDialog();
-        if(res == true)
+        int iLeft = _cbLeft.SelectedIndex;
+        if ((string)_cbLeft.SelectedItem == MyResources.ExpGenNested)
         {
-          _left[iLeft].Text = frm.FilterExpression;
-          _left[iLeft].DataType = AnyType.tType.RT_BOOL;
-          _left[iLeft].Type = enExpType.EXPRESSION;
-          _cbLeft.Items[iLeft] = frm.FilterExpression;
-          _cbLeft.SelectedIndex = iLeft;
+          frmExpression frm = new frmExpression(_gen, false, false);
+          bool? res = frm.ShowDialog();
+          if (res == true)
+          {
+            _left[iLeft].Text = frm.FilterExpression;
+            _left[iLeft].DataType = AnyType.tType.RT_BOOL;
+            _left[iLeft].Type = enExpType.EXPRESSION;
+            _cbLeft.Items[iLeft] = frm.FilterExpression;
+            _cbLeft.SelectedIndex = iLeft;
+          }
         }
-      }
-      _op = _gen.getAvailableOptions(enField.OPERATOR, _left[iLeft].DataType);
-      _cbRight.Items.Clear();
-      _lblHelpLeft.Content = _left[iLeft].HelpText;
-      _right = _gen.getAvailableOptions(enField.RIGHT, _left[iLeft].DataType);
-      foreach (ExpressionItem item in _right)
-        _cbRight.Items.Add(item.Text);
+        _op = _gen.getAvailableOptions(enField.OPERATOR, _left[iLeft].DataType);
+        _cbRight.Items.Clear();
+        _lblHelpLeft.Content = _left[iLeft].HelpText;
+        _right = _gen.getAvailableOptions(enField.RIGHT, _left[iLeft].DataType);
+        foreach (ExpressionItem item in _right)
+          _cbRight.Items.Add(item.Text);
 
-      _cbOperator.Items.Clear();
-      foreach (ExpressionItem item in _op)
-        _cbOperator.Items.Add(item.Text + " [" + item.HelpText + "]");
-      if (AnyType.isNum(_left[iLeft].DataType))
-      {
-        _lblTodo.Visibility = Visibility.Visible;
-        _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodoNr;
-        _tbFreeTxt.Visibility = Visibility.Visible;
-        _cbRight.SelectedIndex = 0;
-      }
-      if (AnyType.isStr(_left[iLeft].DataType))
-      {
-        _lblTodo.Visibility = Visibility.Hidden;
-        _tbFreeTxt.Visibility = Visibility.Hidden;
-      }
+        _cbOperator.Items.Clear();
+        foreach (ExpressionItem item in _op)
+          _cbOperator.Items.Add(item.Text + " [" + item.HelpText + "]");
+        if (AnyType.isNum(_left[iLeft].DataType))
+        {
+          _lblTodo.Visibility = Visibility.Visible;
+          _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodoNr;
+          _tbFreeTxt.Visibility = Visibility.Visible;
+          _cbRight.SelectedIndex = 0;
+        }
+        if (AnyType.isStr(_left[iLeft].DataType))
+        {
+          _lblTodo.Visibility = Visibility.Hidden;
+          _tbFreeTxt.Visibility = Visibility.Hidden;
+        }
 
-      _cbOperator.IsEnabled = true;
-      _cbRight.IsEnabled = true;
+        _cbOperator.IsEnabled = true;
+        _cbRight.IsEnabled = true;
+      }
+      catch(Exception ex) 
+      {
+        DebugLog.log("error closing dropdown Expressioneditor: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _cbOperator_DropDownClosed(object sender, EventArgs e)
     {
-      if((_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS) ||
-      (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
+      try
       {
-        _cbRight.Items.Clear();
-        _cbRight.Items.Add(BatInspector.Properties.MyResources.ExpGenUserString);
-        _cbRight.SelectedIndex = 0;
-        _lblTodo.Visibility = Visibility.Visible;
-        _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodString;
-        _tbFreeTxt.Visibility = Visibility.Visible;
-        _tbFreeTxt.Text = "";
+        if ((_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS) ||
+        (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
+        {
+          _cbRight.Items.Clear();
+          _cbRight.Items.Add(BatInspector.Properties.MyResources.ExpGenUserString);
+          _cbRight.SelectedIndex = 0;
+          _lblTodo.Visibility = Visibility.Visible;
+          _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodString;
+          _tbFreeTxt.Visibility = Visibility.Visible;
+          _tbFreeTxt.Text = "";
+        }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("error closing operator dropsown expression editor: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
     private void _cbRight_DropDownClosed(object sender, EventArgs e)
     {
-      int iRight = _cbRight.SelectedIndex;
-      if ((string)_cbRight.SelectedItem == MyResources.ExpGenNested)
+      try
       {
-        frmExpression frm = new frmExpression(_gen, false, false);
-        bool? res = frm.ShowDialog();
-        if (res == true)
+        int iRight = _cbRight.SelectedIndex;
+        if ((string)_cbRight.SelectedItem == MyResources.ExpGenNested)
         {
-          _right[iRight].Text = frm.FilterExpression;
-          _right[iRight].DataType = AnyType.tType.RT_BOOL;
-          _right[iRight].Type = enExpType.EXPRESSION;
-          _cbRight.Items[iRight] = frm.FilterExpression;
-          _cbRight.SelectedIndex = iRight;
-        }
-      }
-      else
-      {
-        if ((_cbRight.SelectedIndex == 0) && (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_STR))
-        {
-          _lblTodo.Visibility = Visibility.Visible;
-          _lblTodo.Content = "Bitte String eingeben";
-          _tbFreeTxt.Visibility = Visibility.Visible;
+          frmExpression frm = new frmExpression(_gen, false, false);
+          bool? res = frm.ShowDialog();
+          if (res == true)
+          {
+            _right[iRight].Text = frm.FilterExpression;
+            _right[iRight].DataType = AnyType.tType.RT_BOOL;
+            _right[iRight].Type = enExpType.EXPRESSION;
+            _cbRight.Items[iRight] = frm.FilterExpression;
+            _cbRight.SelectedIndex = iRight;
+          }
         }
         else
         {
-          _lblTodo.Visibility = Visibility.Hidden;
-          _tbFreeTxt.Visibility = Visibility.Hidden;
+          if ((_cbRight.SelectedIndex == 0) && (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_STR))
+          {
+            _lblTodo.Visibility = Visibility.Visible;
+            _lblTodo.Content = "Bitte String eingeben";
+            _tbFreeTxt.Visibility = Visibility.Visible;
+          }
+          else
+          {
+            _lblTodo.Visibility = Visibility.Hidden;
+            _tbFreeTxt.Visibility = Visibility.Hidden;
+          }
         }
+        if ((_cbLeft.SelectedIndex >= 0) && (_cbRight.SelectedIndex >= 0) && (_cbOperator.SelectedIndex >= 0))
+          generateFormula();
+        _cbAppend.IsEnabled = true;
+        enableOk(true);
       }
-      if ((_cbLeft.SelectedIndex >= 0) && (_cbRight.SelectedIndex >= 0) && (_cbOperator.SelectedIndex >= 0))
-        generateFormula();
-      _cbAppend.IsEnabled = true;
-      enableOk(true);
+      catch(Exception ex) 
+      {
+        DebugLog.log("error closing dropdown right exception editor: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void generateFormula()

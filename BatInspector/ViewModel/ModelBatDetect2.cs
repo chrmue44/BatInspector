@@ -60,7 +60,7 @@ namespace BatInspector
           bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
           if (ok)
           {
-            cleanup(prj.PrjDir);
+    //        cleanup(prj.PrjDir);
             prj.Analysis.read(prj.ReportName);
             prj.removeFilesNotInReport();
           }

@@ -16,6 +16,7 @@
             <CheckBox Name="_cbDelLog" Content="{x:Static res:MyResources.frmCleanupLogFiles}" />
             <CheckBox Name="_cbOriginal" Content="{x:Static res:MyResources.frmCleanupOrigFiles}" />
             <CheckBox Name="_cbDelPNG" Content="{x:Static res:MyResources.frmCleanupPngFiles}" />
+            <CheckBox Name="_cbDelAnn" Content="{x:Static res:MyResources.frmCleanupAnnotations}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,20,0">
                 <Button Name="_btnCancel" Content="Cancel" Width="120" Height="25" Margin="0,0,10,0" Click="_btnCancel_Click"></Button>
                 <Button Name="_btnOk" Content="OK" Width="120" Click="_btnOk_Click"></Button>

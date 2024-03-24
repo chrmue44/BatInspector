@@ -9,7 +9,7 @@
 #define MyAppExeName "BatInspector.exe"
 #define MyAppDataFolder "{commonappdata}\BatInspector"
 #define SourceFolder "F:\prj\BatInspector"
-#define PythonInstaller "python-3.10.10-amd64.exe"
+#define PythonInstaller "python-3.11.0-amd64.exe"
 #define PythonInstFolder "python311"
 #define ReqPythonVersion "Python 3.11"
 #define BatDetectVersion "1.0.8"
@@ -74,7 +74,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} {#ReqPythonVersion} {BatDetectVersion}"; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" {#BatDetectVersion}"; Flags:runasoriginaluser
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]
@@ -90,6 +90,7 @@ Type: filesandordirs; Name: "{app}";
 [CustomMessages]
 de.CreateStartIcon =Verknüpfung im Startmenü erstellen
 de.MsgInstModell = "Installation des KI-Modells. Dieser Vorgang dauert einige Minuten, bitte Geduld!..."
+en.CreateStartIcon = "create entry in start menu"
 en.MsgInstModell = "Installing AI model. This will take several minutes, be patient!..."
 
 [UninstallRun]

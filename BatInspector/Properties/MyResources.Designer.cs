@@ -1051,6 +1051,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AI annotation files.
+        /// </summary>
+        public static string frmCleanupAnnotations {
+            get {
+                return ResourceManager.GetString("frmCleanupAnnotations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to deleted files.
         /// </summary>
         public static string frmCleanupDeletedFiles {

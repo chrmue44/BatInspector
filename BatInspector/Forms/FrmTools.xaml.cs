@@ -59,7 +59,7 @@ namespace BatInspector.Forms
           _model.Scripter.VarList.set("VAR_FILE_NAME", _fileName);
           string scriptName = Path.Combine(AppParams.Inst.ScriptInventoryPath, 
                                            AppParams.Inst.ScriptInventory.Scripts[index].Name);
-          _model.executeScript(scriptName, false);
+          _model.Scripter.runScript(scriptName, false);
           this.DialogResult = true;
         }
       }

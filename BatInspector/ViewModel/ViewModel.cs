@@ -57,7 +57,6 @@ namespace BatInspector
     bool _extBusy = false;
     ScriptRunner _scripter = null;
     WavFile _wav;
-    string _scriptName = "";
     ClassifierBarataud _clsBarataud;
     List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
@@ -346,28 +345,6 @@ namespace BatInspector
       _scripter.execCmd(cmd);
     }
 
-    public int executeScript(string path, List<string> pars)
-    {
-      Scripter.VarList.init();
-      for (int i = 0; i < pars.Count; i++)
-      {
-        string varName = "PAR" + (i + 1).ToString();
-        Scripter.VarList.set(varName, pars[i]);
-      }
-      return executeScript(path, false);
-    }
-
-
-    public int executeScript(string path, bool  initVars = true, bool backGround = true)
-    {
-      if (!System.IO.Path.IsPathRooted(path))
-        _scriptName = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, path);
-      else
-        _scriptName = path;
-      int retVal = _scripter.RunScript(_scriptName, backGround, initVars);
-      return retVal;
-    }
-
     public void cancelScript()
     {
       _scripter.cancelExecution();
@@ -377,11 +354,12 @@ namespace BatInspector
     public void editScript(string path)
     {
       string exe = AppParams.Inst.ExeEditor;
+      string scriptName;
       if (!System.IO.Path.IsPathRooted(path))
-        _scriptName = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, path);
+        scriptName = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, path);
       else
-        _scriptName = path;
-      string args = _scriptName;
+        scriptName = path;
+      string args = scriptName;
       _proc.launchCommandLineApp(exe, null, null, false, args, true, false);
     }
 

@@ -162,7 +162,7 @@ namespace BatInspector
     private void testCsvFuncs(string wrkDir)
     {
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
-      scr.RunScript("test_csv.scr", false);
+      scr.runScript(Path.Combine(wrkDir, "test_csv.scr"), false);
       assert(scr.getVariable("c23"), "23");
       assert(scr.getVariable("c123"), "123");
       assert(scr.getVariable("c43"), "43");
@@ -175,19 +175,19 @@ namespace BatInspector
       ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
       scr.SetVariable("Limit", "9");
       scr.SetVariable("b", "0");
-      scr.RunScript("test_while.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir,"test_while.scr"), false, false);
       assert(scr.getVariable("sum"), "9");
       scr.SetVariable("Limit", "23");
       scr.SetVariable("b", "0");
-      scr.RunScript("test_while.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_while.scr"), false, false);
       assert(scr.getVariable("sum"), "23");
       scr.SetVariable("Limit", "9");
       scr.SetVariable("b", "1");
-      scr.RunScript("test_while.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_while.scr"), false, false);
       assert(scr.getVariable("sum"), "5");
       scr.SetVariable("Limit", "23");
       scr.SetVariable("b", "1");
-      scr.RunScript("test_while.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_while.scr"), false, false);
       assert(scr.getVariable("sum"), "5");
     }
 
@@ -197,25 +197,25 @@ namespace BatInspector
 
       scr.SetVariable("A", "55");
       scr.SetVariable("B", "34");
-      scr.RunScript("test_if.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_if.scr"), false, false);
       assert(scr.getVariable("Result"), "\"AlowBhigh\"");
       assert(scr.getVariable("Res2"), "\"AlowBhigh\"");
 
       scr.SetVariable("A", "55");
       scr.SetVariable("B", "32");
-      scr.RunScript("test_if.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_if.scr"), false, false);
       assert(scr.getVariable("Result"), "\"AlowBlow\"");
       assert(scr.getVariable("Res2"), "\"AlowBlow\"");
 
       scr.SetVariable("A", "101");
       scr.SetVariable("B", "34");
-      scr.RunScript("test_if.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_if.scr"), false, false);
       assert(scr.getVariable("Result"), "\"AhighBhigh\"");
       assert(scr.getVariable("Res2"), "\"AhighBhigh\"");
 
       scr.SetVariable("A", "101");
       scr.SetVariable("B", "33");
-      scr.RunScript("test_if.scr", false, false);
+      scr.runScript(Path.Combine(wrkDir, "test_if.scr"), false, false);
       assert(scr.getVariable("Result"), "\"AhighBlow\"");
       assert(scr.getVariable("Res2"), "\"AhighBhigh\"");
     }

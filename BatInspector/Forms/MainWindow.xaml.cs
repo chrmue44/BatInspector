@@ -1210,7 +1210,7 @@ namespace BatInspector.Forms
       try
       {
         if ((AppParams.Inst.ScriptCopyAutoToMan != null) && (AppParams.Inst.ScriptCopyAutoToMan != ""))
-          _model.executeScript(AppParams.Inst.ScriptCopyAutoToMan);
+          _model.Scripter.runScript(AppParams.Inst.ScriptCopyAutoToMan);
         else
           MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         DebugLog.log("MainWin:BTN 'Copy Species' clicked", enLogType.DEBUG);
@@ -1539,10 +1539,10 @@ namespace BatInspector.Forms
             frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
             frm.ShowDialog();
             if (frm.DialogResult == true)
-              _model.executeScript(script, frm.ParameteValues);
+              _model.Scripter.runScript(script, frm.ParameterValues);
           }
           else
-            _model.executeScript(script);
+            _model.Scripter.runScript(script);
         }
       }
       catch(Exception ex)

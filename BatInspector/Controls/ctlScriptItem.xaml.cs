@@ -75,10 +75,10 @@ namespace BatInspector.Forms
           frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
           frm.ShowDialog();
           if (frm.DialogResult == true)
-            _model.executeScript(script, frm.ParameteValues);
+            _model.Scripter.runScript(script, frm.ParameterValues);
         }
         else
-          _model.executeScript(script);
+          _model.Scripter.runScript(script);
       }
     }
 

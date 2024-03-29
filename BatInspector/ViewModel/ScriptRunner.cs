@@ -57,12 +57,27 @@ namespace BatInspector
       string res = _parser.VarTable.GetValue(Parser.ERROR_LEVEL);
       DebugLog.log("ConsoleCmd:" + cmd + ": " + res, enLogType.INFO);
     }
-    public int RunScript(string fileName, bool background = true, bool initVars = true)
+
+    public int runScript(string fileName, List<string> pars, bool background = true)
+    {
+      VarList.init();
+      for (int i = 0; i < pars.Count; i++)
+      {
+        string varName = "PAR" + (i + 1).ToString();
+        VarList.set(varName, pars[i]);
+      }
+      return runScript(fileName, background, false);
+    }
+
+
+    public int runScript(string fileName, bool background = true, bool initVars = true)
     {
       int retVal = 0;
       string ext = Path.GetExtension(fileName);
       if (ext.ToLower() == ".scr")
       {
+        if (!System.IO.Path.IsPathRooted(fileName))
+          fileName = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, fileName);
         if (initVars)
           _parser.VarTable.VarList.init();
         SetVariable(AppParams.VAR_WRK_DIR, _wrkDir);

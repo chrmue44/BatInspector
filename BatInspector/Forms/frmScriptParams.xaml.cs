@@ -20,7 +20,7 @@ namespace BatInspector.Forms
     List<string> _paramVals;
     List<ParamItem> _paramText;
 
-    public List<string> ParameteValues { get { return _paramVals; } }
+    public List<string> ParameterValues { get { return _paramVals; } }
     public frmScriptParams(string title, List<ParamItem> paramTexts)
     {
       InitializeComponent();

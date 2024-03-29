@@ -41,7 +41,7 @@ namespace BatInspector
     {
       int retVal = 0;
       string fullPath = Path.Combine(AppParams.AppDataPath, AppParams.DIR_SCRIPT, script);
-      _model.executeScript(fullPath, true, false);
+      _model.Scripter.runScript(fullPath, true, false);
       return retVal;
     }
   }

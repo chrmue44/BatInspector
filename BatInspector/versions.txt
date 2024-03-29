@@ -1,3 +1,6 @@
+V0.8.1.0
+- new script functions: importPrj, getDirCount, getFileCount, getDir, getFile
+
 V0.8.0.0   24.03.24
 - setup and status dialog for BatSpy recording device
 - bat species infos for all species in Germany added

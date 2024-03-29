@@ -19,7 +19,7 @@ namespace BatInspector
     
     NumType _level = new NumType("Prh");
     NumType _freq = new NumType("Prf");
-    NumType _length = new NumType("Prt");
+    NumType _length = new NumType("Prm");
     EnumType _filter = new EnumType("Pry");
     EnumType _type = new EnumType("Prr");
 

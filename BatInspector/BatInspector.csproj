@@ -123,6 +123,9 @@
     <Compile Include="Controls\CtlColorMap.xaml.cs">
       <DependentUpon>CtlColorMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlDebugLine.xaml.cs">
+      <DependentUpon>ctlDebugLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlParamEditItem.xaml.cs">
       <DependentUpon>ctlParamEditItem.xaml</DependentUpon>
     </Compile>
@@ -307,6 +310,10 @@
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
     <Page Include="Controls\CtlColorMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlDebugLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -522,6 +529,8 @@
     <Resource Include="images\volume.png" />
     <Resource Include="images\scissors.png" />
     <Resource Include="images\simplescreenrecorder_94921.png" />
+    <Resource Include="images\shoes.png" />
+    <Resource Include="images\Button-Blank-Red.48.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

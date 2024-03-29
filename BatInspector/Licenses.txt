@@ -50,6 +50,9 @@ bug_48.png:
 https://www.iconsdb.com/green-icons/bug-icon.html
 License: Creative Commons Attribution-NoDerivs 3.0. 
 
+Button-Blank-Red-icon.png
+https://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Blank-Red-icon.png
+
 cancel_77947.png:
 https://icon-icons.com/icon/cancel/77947#48
 License: https://creativecommons.org/licenses/by/4.0/
@@ -121,6 +124,9 @@ Flaticon License
 report.png
 https://www.flaticon.com/free-icons/report Report icons created by Good Ware  Flaticon
 
+shoes.png
+https://www.flaticon.com/free-icons/footsteps" Footsteps icons created by Picons - Flaticon
+
 scissors.png
 https://www.flaticon.com/free-icons/scissors Scissors icons created by Freepik - Flaticon
 
@@ -129,6 +135,7 @@ https://www.flaticon.com/free-icons/script Script icons created by uicon.mee - F
 
 simplescreenrecorder_94921.png
 https://icon-icons.com/de/download/94921/PNG/64/
+
 stop.png
 https://www.flaticon.com/free-icons/stop Stop icons created by DinosoftLabs - Flaticon
 

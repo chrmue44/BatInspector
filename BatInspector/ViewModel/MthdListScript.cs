@@ -24,6 +24,7 @@ namespace BatInspector
     ViewModel _model;
     string _wrkDir;
     List<string> _files = null;
+    List<string> _subDirs = null;
     SoundEdit _audio = null;
     int _lastFileIdx = -1;
 
@@ -104,10 +105,15 @@ namespace BatInspector
                       new List<string> { "1: boolean if occurs or not"}));
       addMethod(new FuncTabItem("createPrjFromFiles", createPrjFromFiles));
       _scriptHelpTab.Add(new HelpTabItem("createPrjFromFiles", "create a project from a list of WAV files",
-                      new List<string> { "1: project name","2:source folder containing WAVs","3:destination folder","4: max files per project (int)", 
-                                         "5: max length of WAV file [s] (float)", "6: latitude (float)", "7: longitude (float)", 
+                      new List<string> { "1: project name","2:source folder containing project","3:destination folder","4: max files per project (int)",
+                                         "5: max length of WAV file [s] (float)" , "6: latitude (float)", "7: longitude (float)",
                                          "8: information about landscape", "9: information about weather"}, 
                       new List<string> { "1: list of opened projects" }));
+      addMethod(new FuncTabItem("importPrj", importPrj));
+      _scriptHelpTab.Add(new HelpTabItem("importPrj", "import an Elekon or BatSpy project",
+                      new List<string> { "1:source folder containing project","2:destination folder","3: max files per project (int)",
+                                         "4: max length of WAV file [s] (float)" },
+                      new List<string> { "1: 0" }));
       addMethod(new FuncTabItem("openPrj", openPrj));
       _scriptHelpTab.Add(new HelpTabItem("openPrj", "open a project",
                       new List<string> { "1: project dir", "2: project name" }, new List<string> { "1: result" }));
@@ -126,9 +132,15 @@ namespace BatInspector
       addMethod(new FuncTabItem("getPrjInfo", getPrjInfo));
       _scriptHelpTab.Add(new HelpTabItem("getPrjInfo", "get project info",
                       new List<string> { "1: type of info"}, new List<string> { "1: result" }));
-      addMethod(new FuncTabItem("readDir", readDir));
-      _scriptHelpTab.Add(new HelpTabItem("readDir", "read directory info",
+      addMethod(new FuncTabItem("countDirs", countDirs));
+      _scriptHelpTab.Add(new HelpTabItem("countDirs", "count sub directories in a directory",
+                      new List<string> { "1: path", "2: filter" }, new List<string> { "1: nr of sub directories" }));
+      addMethod(new FuncTabItem("countFiles", countFiles));
+      _scriptHelpTab.Add(new HelpTabItem("countFiles", "count files in a directory",
                       new List<string> { "1: path", "2: filter" }, new List<string> { "1: nr of files" }));
+      addMethod(new FuncTabItem("getDir", getDir));
+      _scriptHelpTab.Add(new HelpTabItem("getDir", "get file from previously read dir info",
+                      new List<string> { "1: index" }, new List<string> { "1: full directory name" }));
       addMethod(new FuncTabItem("getFile", getFile));
       _scriptHelpTab.Add(new HelpTabItem("getFile", "get file from previously read dir info",
                       new List<string> { "1: index" }, new List<string> { "1: full file name" }));
@@ -198,13 +210,53 @@ namespace BatInspector
       return err;
     }
 
+    static tParseError importPrj(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 4)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        argv[2].changeType(AnyType.tType.RT_INT64);
+        argv[3].changeType(AnyType.tType.RT_FLOAT);
+        PrjInfo info = new PrjInfo
+        {
+          Name = Path.GetFileNameWithoutExtension(argv[0].getString()),
+          SrcDir = argv[0].getString(),
+          DstDir = argv[1].getString(),
+          MaxFileCnt = (int)argv[2].getInt64(),
+          MaxFileLenSec = (int)argv[3].getFloat(),
+          Latitude = 0.0,
+          Longitude = 0.0,
+          GpxFile = "",
+          Landscape = "",
+          Weather = "",
+          IsProjectFolder = true,
+          LocSourceGpx = false,
+          LocSourceKml = false,
+          LocSourceTxt = false,
+          OverwriteLocation = false,
+        };
+        if (File.Exists(Path.Combine(info.SrcDir, info.Name + ".bpr")))
+          Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);
+        else
+          err = tParseError.RESSOURCE;
+        result.assign(0); 
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
     static tParseError inspectPrj(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
       result = new AnyType();
       if(_inst._model.Prj.Name != "")
       {
-        _inst._model.evaluate(); 
+        _inst._model.evaluate();
+        _inst._model.Prj.writePrjFile();
       }
       return err;
     }
@@ -1021,7 +1073,7 @@ namespace BatInspector
       return err;
     }
 
-    static tParseError readDir(List<AnyType> argv, out AnyType result)
+    static tParseError countFiles(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
       result = new AnyType();
@@ -1051,6 +1103,37 @@ namespace BatInspector
       return err;
     }
 
+    static tParseError countDirs(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 2)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        string root = argv[0].getString();
+        string filter = argv[1].getString();
+        try
+        {
+          DirectoryInfo dir = new DirectoryInfo(root);
+          DirectoryInfo[] subDirs = dir.GetDirectories(filter);
+          _inst._subDirs = new List<string>();
+          foreach (DirectoryInfo f in subDirs)
+            _inst._subDirs.Add(f.FullName);
+          result.assign(_inst._subDirs.Count);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("Script function 'countDirs': " + ex.ToString(), enLogType.ERROR);
+          err = tParseError.RESSOURCE;
+        }
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
+
     static tParseError getFile(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
@@ -1062,9 +1145,30 @@ namespace BatInspector
         if (_inst._files != null)
         {
           if ((index >= 0) && (index < _inst._files.Count))
-          {
             result.assign(_inst._files[index]);
-          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.RESSOURCE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
+    static tParseError getDir(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_INT64);
+        int index = (int)argv[0].getInt64();
+        if (_inst._subDirs != null)
+        {
+          if ((index >= 0) && (index < _inst._subDirs.Count))
+            result.assign(_inst._subDirs[index]);
           else
             err = tParseError.ARG1_OUT_OF_RANGE;
         }

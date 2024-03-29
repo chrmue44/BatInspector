@@ -1265,6 +1265,7 @@ namespace BatInspector.Forms
       {
         if (_frmDebug == null)
           _frmDebug = new frmDebug(_model);
+        _frmDebug.setup("C:\\Users\\Public\\Documents\\BatInspector\\scripts\\copyAutoToMan.scr");  //@@@
         _frmDebug.Show();
         _frmDebug.Visibility = Visibility.Visible;
         _frmDebug.Topmost = true;

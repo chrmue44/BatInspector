@@ -53,6 +53,9 @@ License: Creative Commons Attribution-NoDerivs 3.0.
 Button-Blank-Red-icon.png
 https://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Blank-Red-icon.png
 
+Button-Blank-blue-icon.png
+https://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Blank-Blue-icon.png
+
 cancel_77947.png:
 https://icon-icons.com/icon/cancel/77947#48
 License: https://creativecommons.org/licenses/by/4.0/

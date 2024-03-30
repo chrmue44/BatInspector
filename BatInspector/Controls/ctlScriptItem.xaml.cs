@@ -22,6 +22,7 @@ namespace BatInspector.Forms
   {
     int _index;
     dlgDelete _dlgDelete;
+    dlgDelete _dlgDebug;
     ViewModel _model;
 
     public int Index { get { return _index; } }
@@ -36,11 +37,12 @@ namespace BatInspector.Forms
       InitializeComponent();
     }
 
-    public void setup(ScriptItem script, dlgDelete del, ViewModel model)
+    public void setup(ScriptItem script, dlgDelete del, ViewModel model, dlgDelete debug)
     {
       _model = model;
       _index = script.Index;
       _dlgDelete = del;
+      _dlgDebug = debug;
       Parameter = script.Parameter;
       if(Parameter == null)
         Parameter = new List<ParamItem>(); 
@@ -111,6 +113,11 @@ namespace BatInspector.Forms
       {
         DebugLog.log("error ScriptItem BTN Pars: " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+    private void _btnDebug_Click(object sender, RoutedEventArgs e)
+    {
+      _dlgDebug(_index);
     }
   }
 }

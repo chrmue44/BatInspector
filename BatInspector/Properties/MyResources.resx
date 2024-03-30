@@ -856,7 +856,7 @@
     <value>Tools for current File</value>
   </data>
   <data name="titleFrmSettings" xml:space="preserve">
-    <value>Parameter</value>
+    <value>Parameters</value>
   </data>
   <data name="MainBtnAddFile" xml:space="preserve">
     <value>Add File(s)</value>
@@ -1394,5 +1394,11 @@
   </data>
   <data name="frmCleanupAnnotations" xml:space="preserve">
     <value>AI annotation files</value>
+  </data>
+  <data name="frmDebugVariables" xml:space="preserve">
+    <value>Variables</value>
+  </data>
+  <data name="frmDebugClose" xml:space="preserve">
+    <value>Close</value>
   </data>
 </root>

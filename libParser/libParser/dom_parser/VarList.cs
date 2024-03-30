@@ -107,11 +107,12 @@ namespace libParser
       m_Table.Clear();
     }
 
-    public void addConstant(string name, double value)
+    public void addConstant(string name, double value, AnyType.tType type = AnyType.tType.RT_FLOAT)
     {
       VarName var = insert(name, true, m_pMethods);
       AnyType val = new AnyType();
       val.assign(value);
+      val.changeType(type);
       var.setValue(0,val);
     }
 

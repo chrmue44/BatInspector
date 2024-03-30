@@ -16,14 +16,16 @@
       <ColumnDefinition Width="40" />
       <ColumnDefinition Width="40" />
       <ColumnDefinition Width="40" />
-     </Grid.ColumnDefinitions>
+      <ColumnDefinition Width="40" />
+        </Grid.ColumnDefinitions>
     <TextBlock Name="_lblIdx" Grid.Column="0" Margin="0,2,2,0">00</TextBlock>
     <TextBox Name="_tbDescription" Grid.Column="1"  Margin="0,2,2,0"></TextBox>
     <TextBox Name="_tbScriptName" Grid.Column="2"  Margin="0,2,2,0"></TextBox>
         <Button Name ="_btnPars" Grid.Column="3" Content="Par(0)" Click="_btnPars_Click" Margin="0,2,2,0"/>
         <CheckBox Name= "_cbTool" Grid.Column="4" Click="_cbTool_Click" Margin="2,5,2,0"></CheckBox>
         <Button Name ="_btnRun" Grid.Column="5" Click="_btnRun_Click" Content="Run" Margin="0,2,2,0"/>
-        <Button Name ="_btnEdit" Grid.Column="6" Click="_btnEdit_Click" Content="Edit" Margin="0,2,2,0"/>
-        <Button Name ="_btnDel" Grid.Column="7" Click="_btnDel_Click" Content="Del" Margin="0,2,2,0"/>
+        <Button Name ="_btnDebug" Grid.Column="6" Click="_btnDebug_Click" Content="Dbg" Margin="0,2,2,0"/>
+        <Button Name ="_btnEdit" Grid.Column="7" Click="_btnEdit_Click" Content="Edit" Margin="0,2,2,0"/>
+        <Button Name ="_btnDel" Grid.Column="8" Click="_btnDel_Click" Content="Del" Margin="0,2,2,0"/>
     </Grid>
 </UserControl>

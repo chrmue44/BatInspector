@@ -178,6 +178,9 @@
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmBreakCondition.xaml.cs">
+      <DependentUpon>frmBreakCondition.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmCleanup.xaml.cs">
       <DependentUpon>frmCleanup.xaml</DependentUpon>
     </Compile>
@@ -393,6 +396,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\frmBreakCondition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\frmCleanup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -531,6 +538,7 @@
     <Resource Include="images\simplescreenrecorder_94921.png" />
     <Resource Include="images\shoes.png" />
     <Resource Include="images\Button-Blank-Red.48.png" />
+    <Resource Include="images\Button-Blank-Blue.48.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

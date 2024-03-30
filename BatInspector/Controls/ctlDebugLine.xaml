@@ -13,9 +13,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0" Name="_tbNr" Text="222" TextAlignment="Right"  BorderThickness="0" FontFamily="Courier New"/>
-        <Button Grid.Column="1"  x:Name="_btnBreakPt" Click="_btnBreakPt_Click" Background="Wheat" BorderThickness="0">
+        <Button Grid.Column="1"  x:Name="_btnBreakPt" Click="_btnBreakPt_Click" PreviewMouseRightButtonUp="_btnBreakPt_PreviewMouseRightButtonUp" Background="Wheat" BorderThickness="0">
         <Image  Name="_imgBreak" Source="..\images\Button-Blank-Red.48.png" />
         </Button>
-        <TextBox x:Name="_tbLine" Grid.Column="2" BorderThickness="0" Margin="10,0,0,0" FontFamily="Courier New"/>
+        <TextBox x:Name="_tbLine" Grid.Column="2" BorderThickness="0" Margin="10,0,0,0" IsReadOnly="True" FontFamily="Courier New"/>
     </Grid>
 </UserControl>

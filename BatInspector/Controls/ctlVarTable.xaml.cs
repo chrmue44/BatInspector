@@ -24,6 +24,7 @@ namespace BatInspector.Controls
     public void setup(VarList varList)
     { 
       _varList = varList;
+      _spVars.Children.Clear();
       foreach(VarListItem var in _varList.getVarList(false))
       {
         ctlDataItem it = new ctlDataItem();

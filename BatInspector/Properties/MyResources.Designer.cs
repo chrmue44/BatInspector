@@ -1330,6 +1330,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string frmDebugClose {
+            get {
+                return ResourceManager.GetString("frmDebugClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variables.
+        /// </summary>
+        public static string frmDebugVariables {
+            get {
+                return ResourceManager.GetString("frmDebugVariables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to apply to all calls of recording.
         /// </summary>
         public static string frmExpressionApplyAllCalls {
@@ -3616,7 +3634,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter.
+        ///   Looks up a localized string similar to Parameters.
         /// </summary>
         public static string titleFrmSettings {
             get {

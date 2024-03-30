@@ -7,14 +7,19 @@
  ********************************************************************************/
 
 using BatInspector.Controls;
+using DSPLib;
 using libParser;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Emit;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Interop;
 
 namespace BatInspector.Forms
 {
+  public delegate void dlgSetBreakCondition(int lineNr, string condition);
   /// <summary>
   /// Interaction logic for frmDebug.xaml
   /// </summary>
@@ -22,7 +27,9 @@ namespace BatInspector.Forms
   {
  
     ViewModel _model;
-    int _activeLine = -1;
+    string _script;
+    List<ParamItem> _params;
+
     public frmDebug(ViewModel model)
     {
       InitializeComponent();
@@ -30,40 +37,93 @@ namespace BatInspector.Forms
       _ctlVarTable.setup(_model.Scripter.VarList);
     }
 
-    public void setup(string script)
+    public void setup(string script, List<ParamItem> pars)
     {
       try
       {
+        Title = "Script Debugger: " + script;
+        _script = script;
         string[] lines = File.ReadAllLines(script);
         _spScript.Children.Clear();
         for(int i= 0; i<lines.Length; i++)
         {
           ctlDebugLine line = new ctlDebugLine();
-          line.setup(i + 1, lines[i]);
+          line.setup(i, lines[i], setBreakCondition);
           _spScript.Children.Add(line);
         }
+        _model.Scripter.initScriptForDbg(script);
+        highlightActLine(true);
+        _params = pars;
+        initScriptParams();
+        _ctlVarTable.setup(_model.Scripter.VarList);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log("error reading script: " + script + " " + ex.ToString(), enLogType.ERROR);
       }
     }
 
-    public void activate(int i)
+    private void initScriptParams() 
     {
-      if ((_activeLine >= 0) && (_activeLine < _spScript.Children.Count))
+      if ((_params != null) && (_params.Count > 0))
       {
-        ctlDebugLine ctl = _spScript.Children[_activeLine] as ctlDebugLine;
-        ctl.activate(false);
-      }
-      if ((i >= 0) && (i < _spScript.Children.Count))
-      {
-        _activeLine = i;
-        ctlDebugLine ctl = _spScript.Children[_activeLine] as ctlDebugLine;
-        ctl.activate(true);
+        _spPars.Children.Clear();
+        for (int i = 0; i < _params.Count; i++)
+        {
+          CtlSelectFile ctl = new CtlSelectFile();
+          switch (_params[i].Type)
+          {
+            case enParamType.FILE:
+              ctl.setup(_params[i].Name, 150, false, "", setParams);
+              ctl.Margin = new Thickness(2, 2, 0, 0);
+              _spPars.Children.Add(ctl);
+              break;
+            case enParamType.DIRECTORY:
+              ctl.setup(_params[i].Name, 150, true, "", setParams);
+              ctl.Margin = new Thickness(2, 2, 0, 0);
+              _spPars.Children.Add(ctl);
+              break;
+            case enParamType.MICSCELLANOUS:
+              ctlDataItem ctld = new ctlDataItem();
+              ctld.setup(_params[i].Name, enDataType.STRING, 0, 150, true, setParams);
+              ctld.Margin = new Thickness(2, 2, 0, 0);
+              ctld.setValue("");
+              _spPars.Children.Add(ctld);
+              break;
+          }
+        }
       }
     }
-    
+
+    private void setParams()
+    {
+      if ((_params != null) && (_params.Count > 0))
+      {
+        for (int i = 0; i < _params.Count; i++)
+        {
+          switch (_params[i].Type)
+          {
+            case enParamType.FILE:
+            case enParamType.DIRECTORY:
+              CtlSelectFile ctl = _spPars.Children[i] as CtlSelectFile;
+              _model.Scripter.VarList.set(_params[i].VarName, ctl.getValue());
+              break;
+            case enParamType.MICSCELLANOUS:
+              ctlDataItem ctld = _spPars.Children[i] as ctlDataItem;
+              _model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
+              break;
+          }
+        }
+      }
+      _ctlVarTable.setup(_model.Scripter.VarList);
+    }
+
+
+    private void setParams(enDataType type, object val)
+    {
+      setParams();
+    }
+
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
@@ -76,20 +136,35 @@ namespace BatInspector.Forms
 
     private void _btnStart_Click(object sender, RoutedEventArgs e)
     {
-
-        }
+      highlightActLine(false);
+      setBusy(true);
+      _model.Scripter.continueDebugging();
+      highlightActLine(true);
+      setBusy(false);
+      _ctlVarTable.setup(_model.Scripter.VarList);
+    }
 
     private void _btnStep_Click(object sender, RoutedEventArgs e)
     {
-      ctlDebugLine ctl = null;
-      if ((_activeLine >= 0) && (_activeLine < _spScript.Children.Count))
+      highlightActLine(false);
+     _model.Scripter.debugOneStep();
+      highlightActLine(true);
+      _ctlVarTable.setup(_model.Scripter.VarList);
+    }
+
+    void highlightActLine(bool on)
+    {
+      int lineNr = _model.Scripter.CurrentLineNr;
+      if ((lineNr >= 0) && (lineNr < _spScript.Children.Count))
       {
-        ctl = _spScript.Children[_activeLine] as ctlDebugLine;
-        ctl.activate(false);
+        ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine;
+        ctl.activate(on);
       }
-      _activeLine++;
-       ctl = _spScript.Children[_activeLine] as ctlDebugLine;
-      ctl.activate(true);
+    }
+
+  private void setBreakCondition(int lineNr, string condition)
+    {
+      _model.Scripter.setBreakCondition(lineNr, condition);
     }
 
     private void _btnPause_Click(object sender, RoutedEventArgs e)
@@ -99,8 +174,12 @@ namespace BatInspector.Forms
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
-
-        }
+      highlightActLine(false);
+      _model.Scripter.restartScript();
+      highlightActLine(true);
+      setParams();
+      _ctlVarTable.setup(_model.Scripter.VarList);
+    }
 
     private void _grdSplitterV_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
     {
@@ -115,6 +194,20 @@ namespace BatInspector.Forms
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void setBusy(bool busy)
+    {
+      if(busy) 
+      {
+        _btnStart.IsEnabled = false;
+        _btnStart.Opacity = 0.2;
+      }
+      else
+      {
+        _btnStart.IsEnabled = true;
+        _btnStart.Opacity = 1.0;
+      }
     }
   }
 }

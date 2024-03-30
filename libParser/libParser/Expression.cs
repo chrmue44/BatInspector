@@ -33,6 +33,8 @@ namespace libParser
 
       _varList.addConstant("PI", Math.PI);
       _varList.addConstant("e", Math.E);
+      _varList.addConstant("TRUE", 1, AnyType.tType.RT_BOOL);
+      _varList.addConstant("FALSE", 0, AnyType.tType.RT_BOOL);
       _parser = new CondParser(_varList, _methods);
     }
 

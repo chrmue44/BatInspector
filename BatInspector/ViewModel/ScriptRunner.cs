@@ -29,6 +29,7 @@ namespace BatInspector
 
     public VarList VarList { get { return _parser.VarTable.VarList; } }
     public List<ScriptItem> Scripts { get { return AppParams.Inst.ScriptInventory.Scripts; } }
+    public int CurrentLineNr { get { return _parser.CurrentLineNr; } }
     public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
     {
       _proc = proc;
@@ -69,20 +70,40 @@ namespace BatInspector
       return runScript(fileName, background, false);
     }
 
+    public int initScriptForDbg(string fileName)
+    {
+      int retVal = 0;
+      fileName = checkScriptName(fileName);
+      if (fileName != null)
+      {
+        initScriptVars(true);
+        _parser.restartForDbg(fileName);
+      }
+      else
+        retVal = 1;
+      return retVal;
+    }
+
+    public int debugOneStep()
+    {
+      _parser.step();
+      return _parser.CurrentLineNr;
+    }
+
+    public void continueDebugging()
+    {
+      if (_parser.CurrentLineNr > 0)
+        _parser.step();
+      _parser.continueParsing();
+    }
 
     public int runScript(string fileName, bool background = true, bool initVars = true)
     {
       int retVal = 0;
-      string ext = Path.GetExtension(fileName);
-      if (ext.ToLower() == ".scr")
+      fileName = checkScriptName(fileName);
+      if (fileName != null)
       {
-        if (!System.IO.Path.IsPathRooted(fileName))
-          fileName = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, fileName);
-        if (initVars)
-          _parser.VarTable.VarList.init();
-        SetVariable(AppParams.VAR_WRK_DIR, _wrkDir);
-        SetVariable(AppParams.VAR_DATA_PATH, AppParams.AppDataPath);
-
+        initScriptVars(initVars);
         if (background)
           _parser.StartParsing(fileName);
         else
@@ -96,11 +117,15 @@ namespace BatInspector
         }
       }
       else
-      {
-        DebugLog.log("unknown script extension: " + ext, enLogType.ERROR);
         retVal = 1;
-      }
       return retVal;
+    }
+
+    public void restartScript()
+    {
+
+      initScriptVars(true);
+      _parser.restartScript();
     }
 
     public void cancelExecution()
@@ -121,6 +146,11 @@ namespace BatInspector
       }
       else
         _parser.VarTable.VarList.set(name, value);
+    }
+
+    public void setBreakCondition(int lineNr, string condition)
+    {
+      _parser.setBreakCondition(lineNr, condition);
     }
 
     public string getVariable(string name)
@@ -186,6 +216,30 @@ namespace BatInspector
     void outputDataHandler(object sender, DataReceivedEventArgs ev)
     {
       DebugLog.log(ev.Data, enLogType.INFO);
+    }
+
+    private string checkScriptName(string fileName)
+    {
+      string retVal = null;
+      string ext = Path.GetExtension(fileName);
+      if (ext.ToLower() == ".scr")
+      {
+        if (!System.IO.Path.IsPathRooted(fileName))
+          retVal = System.IO.Path.Combine(AppParams.Inst.ScriptInventoryPath, fileName);
+        else
+          retVal = fileName;
+      }
+      else
+        DebugLog.log("unknown script extension: " + ext, enLogType.ERROR);
+      return retVal;
+    }
+
+    private void initScriptVars(bool initVars)
+    {
+      if (initVars)
+        _parser.VarTable.VarList.init();
+      SetVariable(AppParams.VAR_WRK_DIR, _wrkDir);
+      SetVariable(AppParams.VAR_DATA_PATH, AppParams.AppDataPath);
     }
   }
 }

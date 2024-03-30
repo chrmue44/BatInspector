@@ -1236,7 +1236,7 @@ namespace BatInspector.Forms
       try
       {
         if (_frmScript == null)
-          _frmScript = new FrmScript(_model, populateToolsMenu);
+          _frmScript = new FrmScript(_model, populateToolsMenu, debugScript);
         _frmScript.Show();
         DebugLog.log("MainWin:BTN 'Script' clicked", enLogType.DEBUG);
       }
@@ -1259,16 +1259,47 @@ namespace BatInspector.Forms
       }
     }
 
+    private void debugScript(string script)
+    {
+      try
+      {
+        if (_frmDebug == null)
+          _frmDebug = new frmDebug(_model);
+        ScriptItem s = AppParams.Inst.ScriptInventory.getScriptInfo(script);
+        List<ParamItem> pars = null;
+        if (s != null)
+        {
+          if (s.IsTool)
+          {
+            pars = new List<ParamItem>();
+            pars.Add(new ParamItem("VAR_FILE_NAME", enParamType.FILE, "VAR_FILE_NAME"));
+          }
+          else
+            pars = s.Parameter;
+        }
+        _frmDebug.Visibility = Visibility.Visible;  
+        _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
+  //      _frmDebug.Topmost = true;
+        DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
+
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("MainWin:debugScript() failed: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+  
+
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
       try
       {
         if (_frmDebug == null)
           _frmDebug = new frmDebug(_model);
-        _frmDebug.setup("C:\\Users\\Public\\Documents\\BatInspector\\scripts\\copyAutoToMan.scr");  //@@@
+   //     _frmDebug.setup("C:\\Users\\Public\\Documents\\BatInspector\\scripts\\copyAutoToMan.scr");  //@@@
         _frmDebug.Show();
         _frmDebug.Visibility = Visibility.Visible;
-        _frmDebug.Topmost = true;
+       // _frmDebug.Topmost = true;
         DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)

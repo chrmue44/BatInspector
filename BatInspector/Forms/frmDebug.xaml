@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ctrl="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Script Debugger" Height="640" Width="1024" Loaded="Window_Loaded"
@@ -20,40 +21,52 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <GroupBox Grid.Column="0" Header="Script" >
-                <ScrollViewer  Name="_scrlViewer" VerticalScrollBarVisibility="Auto"  ScrollChanged="_scrlViewer_ScrollChanged" >
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="5*" />
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Header="{x:Static res:MyResources.titleFrmSettings}">
+                    <StackPanel x:Name="_spPars"/>
+                </GroupBox>
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="3" VerticalAlignment="Stretch"/>
 
-                    <StackPanel x:Name="_spScript">
+                <GroupBox Grid.Row="2" Header="Script" >
+                    <ScrollViewer  Name="_scrlViewer" VerticalScrollBarVisibility="Auto"  ScrollChanged="_scrlViewer_ScrollChanged" >
 
-                    </StackPanel>
-                </ScrollViewer>
-            </GroupBox>
-            <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
-            <GroupBox  Grid.Column="2" Header="Variables">
+                        <StackPanel x:Name="_spScript">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </GroupBox>
+            </Grid>
+            <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="3" HorizontalAlignment="Stretch" Margin="0,0"  BorderThickness="0"/>
+            <GroupBox  Grid.Column="2" Header="{x:Static res:MyResources.frmDebugVariables}">
                 <ctrl:ctlVarTable x:Name="_ctlVarTable" Margin="10"/>
             </GroupBox>
         </Grid>
         <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
             <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
-                <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnSave_Click">
+                <!-- <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnSave_Click">
                     <Image Source="../images/icons8-save-48.png"></Image>
                 </Button>
-                <Separator/>
+                <Separator/> -->
                 <Button x:Name="_btnStart"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStart_Click">
                     <Image Source="../images/play-button.png"></Image>
                 </Button>
                 <Button x:Name="_btnStep"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStep_Click">
                     <Image Source="../images/Shoes.png"></Image>
                 </Button>
-                <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnPause_Click">
+                <!-- <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnPause_Click">
                     <Image Source="../images/pause.png"></Image>
-                </Button>
+                </Button> -->
                 <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStop_Click">
                     <Image Source="../images/stop.png"></Image>
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <Button x:Name="_btnClose" Grid.Row="2" Height="25" Margin ="0,5,5,0" Content="Close" Width="100" Click="_btnClose_Click" HorizontalAlignment="Right"/>
+        <Button x:Name="_btnClose" Grid.Row="2" Height="25" Margin ="0,5,5,0" Content="{x:Static res:MyResources.frmDebugClose}" Width="100" Click="_btnClose_Click" HorizontalAlignment="Right"/>
     </Grid>
 </Window>
 

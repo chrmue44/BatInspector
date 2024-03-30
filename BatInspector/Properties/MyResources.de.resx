@@ -1395,4 +1395,10 @@
   <data name="frmCleanupAnnotations" xml:space="preserve">
     <value>KI Analyse-Dateien</value>
   </data>
+  <data name="frmDebugVariables" xml:space="preserve">
+    <value>Variablen</value>
+  </data>
+  <data name="frmDebugClose" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
 </root>

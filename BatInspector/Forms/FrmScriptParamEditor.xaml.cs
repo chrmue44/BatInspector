@@ -59,6 +59,7 @@ namespace BatInspector.Forms
         enParamType.MICSCELLANOUS, 150);
         di.setValue(Parameter[i].Name);
         di.setType(Parameter[i].Type);
+        Parameter[i].VarName = "PAR" + (i+1).ToString();
         _sp.Children.Add(di);
       }
     }

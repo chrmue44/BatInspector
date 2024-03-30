@@ -7,6 +7,7 @@
  ********************************************************************************/
 
 using libParser;
+using NAudio.CoreAudioApi.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,12 +29,14 @@ namespace BatInspector
   {
     [DataMember]
     public string Name { get; set; } = "";
+    public string VarName { get; set; } = "";
     [DataMember]
     public enParamType Type { get; set; } = enParamType.MICSCELLANOUS; 
-    public ParamItem(string name, enParamType type)
+    public ParamItem(string description, enParamType type, string varName)
     {
-      Name = name;
+      Name = description;
       Type = type;
+      VarName = varName;
     }
 
     public ParamItem()
@@ -134,6 +137,7 @@ namespace BatInspector
 
         if (copyScripts)
           retVal.CopyScriptsFromInstaller();
+        retVal.createParamNames();
       }
       catch (Exception e)
       {
@@ -176,6 +180,21 @@ namespace BatInspector
       saveAs(Path.Combine(_scriptPath, FName));
     }
 
+    public ScriptItem getScriptInfo(string script)
+    {
+      ScriptItem retVal = null;
+      script = Path.GetFileName(script);
+      foreach(ScriptItem s in Scripts)
+      {
+        if(s.Name == script)
+        {
+          retVal = s;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     private void initScripts()
     {
       string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -185,17 +204,28 @@ namespace BatInspector
         new ScriptItem(1, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false,new List<ParamItem>()),
         new ScriptItem(2, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateien", false,new List<ParamItem>()),
         new ScriptItem(3, "resample.scr", "Resampling einer WAV-Datei",false,
-                           new List<ParamItem>(){new ParamItem("Name der WAV-Datei", enParamType.FILE),
-                                                 new ParamItem("neue Sampling-Rate [Hz]",enParamType.MICSCELLANOUS) }),
+                           new List<ParamItem>(){new ParamItem("Name der WAV-Datei", enParamType.FILE, "PAR1"),
+                                                 new ParamItem("neue Sampling-Rate [Hz]",enParamType.MICSCELLANOUS,"PAR2") }),
         new ScriptItem(4, "rescale_dat.scr", "Samplingrate aller Dateien im Verzeichnis umskalieren",false,
-                           new List<ParamItem>(){new ParamItem("Verzeichnis auswählen", enParamType.DIRECTORY),
-                           new ParamItem("Skalierfaktor", enParamType.MICSCELLANOUS)}),
+                           new List<ParamItem>(){new ParamItem("Verzeichnis auswählen", enParamType.DIRECTORY,"PAR1"),
+                           new ParamItem("Skalierfaktor", enParamType.MICSCELLANOUS,"PAR2")}),
         new ScriptItem(5, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
         new ScriptItem(5, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
         new ScriptItem(6, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
         new ScriptItem(8, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
         new ScriptItem(9, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>())
       };
+    }
+
+    private void createParamNames()
+    {
+      foreach(ScriptItem s in Scripts)
+      {
+        for(int i = 0; i< s.Parameter.Count; i++)
+        {
+          s.Parameter[i].VarName = "PAR" + (i + 1).ToString();
+        }
+      }
     }
 
     private void CopyScriptsFromInstaller()

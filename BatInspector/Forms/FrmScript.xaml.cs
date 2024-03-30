@@ -14,6 +14,7 @@ using System.Windows.Interop;
 namespace BatInspector.Forms
 {
   public delegate void dlgUpdateMenu();
+  public delegate void dlgDebugScript(string script);
 
   /// <summary>
   /// Interaktionslogik für FrmFilter.xaml
@@ -23,8 +24,9 @@ namespace BatInspector.Forms
     ViewModel _model;
     List<ScriptItem> _temp;
     dlgUpdateMenu _updateMenu;
+    dlgDebugScript _debugScript;
 
-    public FrmScript(ViewModel model, dlgUpdateMenu updateMenu)
+    public FrmScript(ViewModel model, dlgUpdateMenu updateMenu, dlgDebugScript debug)
     {
       _model = model;
       _temp = _model.Scripter.getScripts();
@@ -32,6 +34,7 @@ namespace BatInspector.Forms
       Title += "   [ " + AppParams.Inst.ScriptInventoryPath + " ]";
       populateTree();
       _updateMenu = updateMenu;
+      _debugScript = debug;
     }
 
 
@@ -41,7 +44,7 @@ namespace BatInspector.Forms
       foreach (ScriptItem sItem in _temp)
       {
         ctlScriptItem sIt = new ctlScriptItem();
-        sIt.setup(sItem, deleteScript, _model);
+        sIt.setup(sItem, deleteScript, _model, debugScript);
         _sp.Children.Add(sIt);
       }
     }
@@ -51,7 +54,7 @@ namespace BatInspector.Forms
       ScriptItem s = new ScriptItem(_temp.Count, "SCRIPT_NAME", "DESCRIPTION", false, new List<ParamItem>());
       _temp.Add(s);
       ctlScriptItem it = new ctlScriptItem();
-      it.setup(s, deleteScript, _model);
+      it.setup(s, deleteScript, _model, debugScript);
       populateTree();
     }
 
@@ -65,6 +68,11 @@ namespace BatInspector.Forms
       for (int i = 0; i < _temp.Count; i++)
         _temp[i].Index = i;
       populateTree();
+    }
+
+    private void debugScript(int index)
+    {
+      _debugScript(_temp[index].Name);
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)

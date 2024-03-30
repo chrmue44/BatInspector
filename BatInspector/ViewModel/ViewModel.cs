@@ -362,7 +362,7 @@ namespace BatInspector
       string args = scriptName;
       _proc.launchCommandLineApp(exe, null, null, false, args, true, false);
     }
-
+ 
     public void deleteFiles(List<string> files)
     {
       DebugLog.log("start deleting files", enLogType.INFO);

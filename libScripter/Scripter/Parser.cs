@@ -28,6 +28,12 @@ namespace libScripter
 
   public delegate void delegateUpdateProgress(int perCent);
 
+  public enum enParserState
+  {
+    STOP,
+    RUN,
+  }
+
   public struct stLabelItem
   {
     public string Name;
@@ -53,6 +59,7 @@ namespace libScripter
     Variables _vars;
     string _lastErr = "";
     string[] _lines;
+    string[] _breakPoints;
     int _actLineNr = 0;
     List<stLabelItem> _labels;
     public const string ERROR_LEVEL = "ERROR_LEVEL";
@@ -64,6 +71,10 @@ namespace libScripter
     ProcessRunner _proc;
     BaseCommands[] _commands;
     string _wrkDir;
+    enParserState _state = enParserState.STOP;
+    bool _executed;
+    bool _debug;
+
     //    string _codeSection;
     CodeBlock _currBlock;
     List<CodeBlock> _blockStack;
@@ -90,6 +101,7 @@ namespace libScripter
       else
         _vars = vars;
       _methods = new List<MethodList>();
+      _debug = false;
       _features = new ReadOnlyCollection<OptItem>(new[]
         {
         new OptItem("SET", "<varName> <Value> set variable", 2, fctSetVar),
@@ -114,6 +126,7 @@ namespace libScripter
     public string CurrentLine { get { return _actLine; } }
     public static int ParsedLines { get; set; }
 
+    public enParserState State { get { return _state; } }
 
     public void StartParsing(string name)
     {
@@ -156,7 +169,7 @@ namespace libScripter
     public int ParseScript(string wrkDir, string name)
     {
       DebugLog.log("start SCRIPT: " + name, enLogType.INFO);
-      _scriptName = wrkDir + "\\" + name;
+      _scriptName = Path.Combine(wrkDir , name);
       ParseScript();
       int retVal;
       int.TryParse(_parser.LastError.Substring(0, 1), out retVal);
@@ -173,17 +186,7 @@ namespace libScripter
       DebugLog.log("start SCRIPT: " + _scriptName, enLogType.INFO);
       _busy = true;
       _lastErr = "0";
-      try
-      {
-        _lines = File.ReadAllLines(_scriptName);
-      }
-      catch (Exception ex)
-      {
-        _lastErr = "1 error reading file " + _scriptName + ": " + ex.ToString();
-        DebugLog.log(_lastErr, enLogType.ERROR);
-        _busy = false;
-        return;
-      }
+      loadScript();
       try
       {
         ParseLines();
@@ -210,14 +213,60 @@ namespace libScripter
       _methods.Add(mthd);
     }
 
-    private void ParseLines()
+    public void restartForDbg(string fileName)
     {
-      _vars.VarList.set(ERROR_LEVEL, "0");
-      _currBlock = null;
-      _blockStack.Clear();
-      findLabels();
-      _actLineNr = 0;
-      while ((_actLineNr < _lines.Length) && _busy)
+      _debug = true;
+      _scriptName = fileName;
+      loadScript();
+      _breakPoints = new string[_lines.Length];
+      restartScript();
+    }
+
+
+
+    public void setBreakCondition(int lineNr, string condition)
+    {
+      if((_breakPoints != null) && (lineNr >= 0) && (lineNr < _breakPoints.Length))
+      {
+        _breakPoints[lineNr] = condition;
+      }
+    }
+
+
+    public void step()
+    {
+      bool exec = false;
+      _busy = true;
+      while(!exec && _busy)
+        exec = interpretOneLine();
+      _busy = false;
+    }
+
+
+    private void loadScript()
+    {
+      try
+      {
+        _lines = File.ReadAllLines(_scriptName);
+      }
+      catch (Exception ex)
+      {
+        _lastErr = "1 error reading file " + _scriptName + ": " + ex.ToString();
+        DebugLog.log(_lastErr, enLogType.ERROR);
+        _busy = false;
+        return;
+      }
+    }
+
+  /// <summary>
+  /// interprets one line of code
+  /// </summary>
+  /// <returns>true if line was executed</returns>
+
+    private bool interpretOneLine()
+    {
+      _executed = false;
+      if ((_actLineNr >= 0) && (_actLineNr < _lines.Length))
       {
         string result = "0";
         if ((_currBlock == null) ||
@@ -231,6 +280,43 @@ namespace libScripter
           result = mangeBlockLevel(_lines[_actLineNr]);
         _vars.VarList.set(ERROR_LEVEL, result);
         _actLineNr++;
+      }
+      else
+        _busy = false;
+      return _executed;
+    }
+
+    public void restartScript()
+    {
+      _vars.VarList.set(ERROR_LEVEL, "0");
+      _currBlock = null;
+      _blockStack.Clear();
+      findLabels();
+      _actLineNr = 0;
+    }
+
+    private void ParseLines()
+    {
+      restartScript();
+      continueParsing();
+    }
+
+    public void continueParsing()
+    {
+      _busy = true;
+      while ((_actLineNr < _lines.Length) && _busy)
+      {
+        if (_debug && !string.IsNullOrEmpty(_breakPoints[_actLineNr]))
+        {
+          Expression formula = new Expression(_vars.VarList);
+          foreach (MethodList m in _methods)
+            formula.addMethodList(m);
+          AnyType res = formula.parse(_breakPoints[_actLineNr]);
+          if (res.getBool() == true)
+            break;
+        }
+
+        interpretOneLine();
         if (_updateProgress != null)
           _updateProgress(_actLineNr * 100 / _lines.Length);
       }
@@ -570,6 +656,7 @@ namespace libScripter
         retVal = "1";
       if (retVal != "0")
         DebugLog.log(_actLine + ": " + retVal, enLogType.ERROR);
+      _executed = true;
       return retVal;
     }
 

@@ -198,17 +198,25 @@ namespace BatInspector
           _prj.Analysis.init(_prj.SpeciesInfos);
         if (_prj.Ok && _prj.Analysis.Report != null)
           checkProject();
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
+        initScripter();
       }
       else if (Project.containsWavs(dir))
       {
         _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName;
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
+        initScripter();
       }
       else
         _prj = null;
+    }
+
+    void initScripter()
+    {
+      if (_scripter == null)
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
+      else
+        _scripter.setWorkDir(_selectedDir);
     }
 
     void updateProgress(int percent)

@@ -438,6 +438,11 @@ namespace BatInspector
     /// <param name="speciesInfo"></param>
     public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
     {
+      if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
+      {
+        DebugLog.log("error creating project, maxFiles or maxFileLen == 0", enLogType.ERROR);
+        return;
+      }
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);

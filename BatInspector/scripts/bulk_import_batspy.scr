@@ -1,0 +1,16 @@
+SET srcDir =(PAR1)
+SET dstDir =(PAR2)
+SET maxFiles =(PAR3)
+SET maxFileLen =(PAR4)
+
+SET dirCount =(countDirs(srcDir,"*") - 1)
+LOG =("found " + (dirCount + 1) + " projects")
+
+FOR i 0 dirCount
+  SET prjDir =(getDir(i))
+  SET dstPrj =(dstDir + "/" + getDir(i, 1))
+  LOG =("importing " + prjDir + " ...")
+  =(importPrj(prjDir, dstDir, maxFiles, maxFileLen))
+  =(openPrj(dstPrj))
+  =(inspectPrj())
+END

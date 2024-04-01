@@ -1,4 +1,4 @@
-﻿BatInspector © 2023 by Christian Müller is licensed under CC BY-NC 4.0
+﻿BatInspector © 2022 .. 2024 by Christian Müller is licensed under CC BY-NC 4.0
 
 The components taken from other sources are listed below
 

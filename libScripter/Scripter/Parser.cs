@@ -266,7 +266,7 @@ namespace libScripter
     private bool interpretOneLine()
     {
       _executed = false;
-      if ((_actLineNr >= 0) && (_actLineNr < _lines.Length))
+      if ((_actLineNr >= 0) && (_lines!= null) && (_actLineNr < _lines.Length))
       {
         string result = "0";
         if ((_currBlock == null) ||
@@ -600,6 +600,7 @@ namespace libScripter
         foreach (MethodList m in _methods)
           formula.addMethodList(m);
         retVal = formula.parseToString(_actName);
+        _executed = true;
         if (formula.Errors > 0)
           DebugLog.log("Error parsing formula: '" + _actName + "', result:" + retVal, enLogType.ERROR);
         if (GetToken() != enToken.EOL)

@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using libParser;
 using libScripter;
+using NAudio.MediaFoundation;
 
 namespace BatInspector
 {
@@ -46,6 +47,14 @@ namespace BatInspector
       _parser.addMethodList(_mthdListScript);
       _model = model;
     }
+
+    public void setWorkDir(string wrkDir)
+    {
+      OsCommands os = new OsCommands(_updProgress);
+      os.WorkDir = wrkDir;
+      _wrkDir = wrkDir;
+    }
+
 
     public bool IsBusy { get { return _parser.Busy; } }
 

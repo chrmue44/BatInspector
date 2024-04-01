@@ -140,10 +140,10 @@ namespace BatInspector
                       new List<string> { "1: path", "2: filter" }, new List<string> { "1: nr of files" }));
       addMethod(new FuncTabItem("getDir", getDir));
       _scriptHelpTab.Add(new HelpTabItem("getDir", "get file from previously read dir info",
-                      new List<string> { "1: index" }, new List<string> { "1: full directory name" }));
+                      new List<string> { "1: index", "2: 0=full path, 1:name without path" }, new List<string> { "1: full directory name" }));
       addMethod(new FuncTabItem("getFile", getFile));
       _scriptHelpTab.Add(new HelpTabItem("getFile", "get file from previously read dir info",
-                      new List<string> { "1: index" }, new List<string> { "1: full file name" }));
+                      new List<string> { "1: index", "2: 0=full path, 1:name without path" }, new List<string> { "1: full file name" }));
       addMethod(new FuncTabItem("checkOverdrive", checkOverdrive));
       _scriptHelpTab.Add(new HelpTabItem("checkOverdrive", "check if a given call is overdriven",
                       new List<string> { "1: file index", "2:call index" }, new List<string> { "1: TRUE if call is overdriven" }));
@@ -1142,10 +1142,21 @@ namespace BatInspector
       {
         argv[0].changeType(AnyType.tType.RT_INT64);
         int index = (int)argv[0].getInt64();
+        bool fullPath = true;
+        if (argv.Count >= 2)
+        {
+          argv[1].changeType(AnyType.tType.RT_BOOL);
+          fullPath = !argv[1].getBool();
+        }
         if (_inst._files != null)
         {
           if ((index >= 0) && (index < _inst._files.Count))
-            result.assign(_inst._files[index]);
+          {
+            if(fullPath)
+              result.assign(_inst._files[index]);
+            else
+              result.assign(Path.GetFileName(_inst._files[index]));
+          }
           else
             err = tParseError.ARG1_OUT_OF_RANGE;
         }
@@ -1164,11 +1175,22 @@ namespace BatInspector
       if (argv.Count >= 1)
       {
         argv[0].changeType(AnyType.tType.RT_INT64);
+        bool fullPath = true;
+        if (argv.Count >= 2)
+        {
+          argv[1].changeType(AnyType.tType.RT_BOOL);
+          fullPath = !argv[1].getBool();
+        }
         int index = (int)argv[0].getInt64();
         if (_inst._subDirs != null)
         {
           if ((index >= 0) && (index < _inst._subDirs.Count))
-            result.assign(_inst._subDirs[index]);
+          {
+            if (fullPath)
+              result.assign(_inst._subDirs[index]);
+            else
+              result.assign(Path.GetFileName(_inst._subDirs[index]));
+          }
           else
             err = tParseError.ARG1_OUT_OF_RANGE;
         }

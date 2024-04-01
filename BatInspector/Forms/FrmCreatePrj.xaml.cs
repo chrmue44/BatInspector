@@ -230,7 +230,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        _model.createProject(_info, _inspect);
+        _model.createProject(_info, _inspect, false);
       }
       catch(Exception ex)
       {

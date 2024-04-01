@@ -472,18 +472,22 @@ namespace BatInspector
         if (files.Length > 0)
         {
           // copy files to a single project at destination and create project
+          DebugLog.log("copy wav files...", enLogType.INFO);
           string fullDir = Path.Combine(info.DstDir, info.Name);
           createPrjDirStructure(fullDir, out string wavDir);
           Utils.copyFiles(files, wavDir);
           string[] xmlFiles = getSelectedFiles(info, "*.xml");
+          DebugLog.log("copy xml files...", enLogType.INFO);
           Utils.copyFiles(xmlFiles, wavDir);
 
           // create project
           Project prj = new Project(regions, speciesInfo, null);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
+          DebugLog.log("creating project...", enLogType.INFO);
           prj.fillFromDirectory(dir, AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
 
           // copy location files is present
+          DebugLog.log("copy location files...", enLogType.INFO);
           string[] gpxFiles = Directory.GetFiles(info.SrcDir, "*.gpx");
           Utils.copyFiles(gpxFiles, prj.PrjDir);
           string[] kmlFiles = Directory.GetFiles(info.SrcDir, "*.kml");
@@ -632,7 +636,8 @@ namespace BatInspector
 
     private static void replaceLocations(string[] xmlfiles, string wavDir, gpx gpxFile)
     {
-      foreach(string fName in xmlfiles)
+      DebugLog.log("replace locations from gpx file...", enLogType.INFO);
+      foreach (string fName in xmlfiles)
       { 
         BatRecord f = ElekonInfoFile.read(fName);
         DateTime t = ElekonInfoFile.getDateTimeFromFileName(fName);
@@ -648,6 +653,7 @@ namespace BatInspector
 
     private static void replaceLocations(string[] xmlfiles, string wavDir, kml kmlFile)
     {
+      DebugLog.log("replace locations from kml file...", enLogType.INFO);
       foreach (string fName in xmlfiles)
       {
         BatRecord f = ElekonInfoFile.read(fName);
@@ -666,6 +672,7 @@ namespace BatInspector
 
     private static void replaceLocations(string[] xmlfiles, string wavDir, LocFileTxt txtFile)
     {
+      DebugLog.log("replace locations from txt file...", enLogType.INFO);
       foreach (string fName in xmlfiles)
       {
         BatRecord f = ElekonInfoFile.read(fName);
@@ -684,6 +691,7 @@ namespace BatInspector
 
     private static void replaceLocations(string[] xmlfiles, string wavDir, double lat, double lon)
     {
+      DebugLog.log("replace locations with fix location...", enLogType.INFO);
       foreach (string fName in xmlfiles)
       {
         BatRecord f = ElekonInfoFile.read(fName);
@@ -966,6 +974,8 @@ namespace BatInspector
     public void createXmlInfoFiles(PrjInfo info)
     {
       bool replaceAll = false;
+      DebugLog.log("creating xml infofcreate files...", enLogType.INFO);
+
       //gpx gpxFile = gpx.read(info.GpxFile);
       foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
       {

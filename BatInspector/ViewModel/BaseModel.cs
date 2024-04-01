@@ -20,6 +20,7 @@ namespace BatInspector
     enModel _type;
     protected bool _isBusy = false;
     protected ViewModel _model;
+    protected bool _cli = false;
 
     protected ProcessRunner _proc = new ProcessRunner();
     protected BaseModel(int index, enModel type, ViewModel model)
@@ -36,7 +37,7 @@ namespace BatInspector
     public bool IsBusy { get { return _isBusy; } }
 
     public abstract void train();
-    public abstract int classify(Project prj);
+    public abstract int classify(Project prj, bool cli = false);
 
     public static BaseModel Create(int index, enModel type, ViewModel model)
     {

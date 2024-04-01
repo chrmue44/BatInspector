@@ -20,6 +20,8 @@ using System.Windows.Interop;
 namespace BatInspector.Forms
 {
   public delegate void dlgSetBreakCondition(int lineNr, string condition);
+  public delegate void dlgUpdateDbg();
+
   /// <summary>
   /// Interaction logic for frmDebug.xaml
   /// </summary>
@@ -131,6 +133,7 @@ namespace BatInspector.Forms
 
     private void _btnClose_Click(object sender, RoutedEventArgs e)
     {
+      _model.Scripter.breakDebugging();
       this.Visibility = Visibility.Hidden;
     }
 
@@ -138,18 +141,27 @@ namespace BatInspector.Forms
     {
       highlightActLine(false);
       setBusy(true);
-      _model.Scripter.continueDebugging();
+      _model.Scripter.continueDebugging(updateDebugView);
+    }
+
+    private void updateDebugView()
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.BeginInvoke(new dlgUpdateDbg(updateDebugView));
+        return;
+      }
       highlightActLine(true);
       setBusy(false);
       _ctlVarTable.setup(_model.Scripter.VarList);
     }
 
+
     private void _btnStep_Click(object sender, RoutedEventArgs e)
     {
+      setBusy(true);
       highlightActLine(false);
-     _model.Scripter.debugOneStep();
-      highlightActLine(true);
-      _ctlVarTable.setup(_model.Scripter.VarList);
+     _model.Scripter.debugOneStep(updateDebugView);
     }
 
     void highlightActLine(bool on)
@@ -169,8 +181,8 @@ namespace BatInspector.Forms
 
     private void _btnPause_Click(object sender, RoutedEventArgs e)
     {
-
-        }
+      _model.Scripter.breakDebugging();
+    }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
@@ -202,11 +214,15 @@ namespace BatInspector.Forms
       {
         _btnStart.IsEnabled = false;
         _btnStart.Opacity = 0.2;
+        _btnStep.IsEnabled = false;
+        _btnStep.Opacity = 0.2;
       }
       else
       {
         _btnStart.IsEnabled = true;
         _btnStart.Opacity = 1.0;
+        _btnStep.IsEnabled = true;
+        _btnStep.Opacity = 1.0;
       }
     }
   }

@@ -424,7 +424,7 @@ namespace BatInspector
     /// <summary>
     /// evaluation of bat species
     /// </summary>
-    public int evaluate()
+    public int evaluate(bool cli)
     {
       int retVal = 2;
       if(Prj != null)
@@ -433,7 +433,7 @@ namespace BatInspector
         {
           if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
           {
-            retVal = _models[i].classify(Prj);
+            retVal = _models[i].classify(Prj, cli);
           }
         }
         _prj.writePrjFile();
@@ -738,7 +738,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public void createProject(PrjInfo info, bool inspect)
+    public void createProject(PrjInfo info, bool inspect, bool cli)
     {
       Project.createPrjFromWavs(info, Regions, SpeciesInfos);
       string prjPath = Path.Combine(info.DstDir, info.Name);
@@ -747,7 +747,7 @@ namespace BatInspector
       if (inspect)
       {
         Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
-        evaluate();
+        evaluate(cli);
       }
       if (Prj.Records.Length > info.MaxFileCnt)
       {

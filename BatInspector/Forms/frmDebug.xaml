@@ -58,9 +58,9 @@
                 <Button x:Name="_btnStep"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStep_Click">
                     <Image Source="../images/Shoes.png"></Image>
                 </Button>
-                <!-- <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnPause_Click">
+                <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnPause_Click">
                     <Image Source="../images/pause.png"></Image>
-                </Button> -->
+                </Button>
                 <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStop_Click">
                     <Image Source="../images/stop.png"></Image>
                 </Button>

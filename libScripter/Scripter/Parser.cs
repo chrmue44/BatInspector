@@ -13,6 +13,7 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using libParser;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 
 namespace libScripter
 {
@@ -27,6 +28,7 @@ namespace libScripter
   }
 
   public delegate void delegateUpdateProgress(int perCent);
+  public delegate void dlgFinishExecution();
 
   public enum enParserState
   {
@@ -74,6 +76,7 @@ namespace libScripter
     enParserState _state = enParserState.STOP;
     bool _executed;
     bool _debug;
+    dlgFinishExecution _dlgFinish;
 
     //    string _codeSection;
     CodeBlock _currBlock;
@@ -102,6 +105,7 @@ namespace libScripter
         _vars = vars;
       _methods = new List<MethodList>();
       _debug = false;
+      _dlgFinish = null;
       _features = new ReadOnlyCollection<OptItem>(new[]
         {
         new OptItem("SET", "<varName> <Value> set variable", 2, fctSetVar),
@@ -233,13 +237,22 @@ namespace libScripter
     }
 
 
-    public void step()
+    public void step(dlgFinishExecution dlgFinish)
     {
+      _dlgFinish = dlgFinish;
+      _oThread = new Thread(new ThreadStart(this.execStep));
+      _oThread.Start();
+    }
+
+    public void execStep()
+    { 
       bool exec = false;
       _busy = true;
       while(!exec && _busy)
         exec = interpretOneLine();
       _busy = false;
+      if (_dlgFinish != null)
+        _dlgFinish();
     }
 
 
@@ -298,11 +311,36 @@ namespace libScripter
     private void ParseLines()
     {
       restartScript();
-      continueParsing();
+      _dlgFinish = null;
+      execContinueParsing();
     }
 
-    public void continueParsing()
+    public void continueDebugging(dlgFinishExecution dlgFinish)
     {
+      _dlgFinish = dlgFinish;
+      _oThread = new Thread(new ThreadStart(this.execContinueDebugging));
+      _oThread.Start();
+    }
+
+    public void breakDebugging()
+    {
+      _busy = false;
+    }
+
+    private void execContinueDebugging()
+    {
+      _busy = true;
+      if (_actLineNr > 0)
+      {
+        bool exec = false;
+        while (!exec && _busy)
+          exec = interpretOneLine();
+      }
+      execContinueParsing();
+    }
+
+    public void execContinueParsing()
+    { 
       _busy = true;
       while ((_actLineNr < _lines.Length) && _busy)
       {
@@ -321,6 +359,8 @@ namespace libScripter
           _updateProgress(_actLineNr * 100 / _lines.Length);
       }
       _busy = false;
+      if(_dlgFinish != null)
+        _dlgFinish();
     }
 
     public string getTextBlock(int startLine, int endLine)

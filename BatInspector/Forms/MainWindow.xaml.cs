@@ -734,7 +734,7 @@ namespace BatInspector.Forms
       try
       {
         showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification, true);
-        _model.evaluate();
+        _model.evaluate(false);
       }
       catch(Exception ex)
       {

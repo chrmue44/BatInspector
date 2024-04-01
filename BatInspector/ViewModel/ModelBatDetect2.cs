@@ -37,10 +37,11 @@ namespace BatInspector
     {
     }
 
-    public override int classify(Project prj)
+    public override int classify(Project prj, bool cli = false)
     {
       _isBusy = true;
       _prj = prj;
+      _cli = cli;
       int retVal = 0;
       try
       {
@@ -284,7 +285,10 @@ namespace BatInspector
           {
             val++;
             string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
-            _model.Status.Msg = msg;
+            if (_cli)
+              DebugLog.log(msg, enLogType.INFO);
+            else
+              _model.Status.Msg = msg;
           }
         }
       }

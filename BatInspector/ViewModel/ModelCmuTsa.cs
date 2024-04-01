@@ -33,7 +33,7 @@ namespace BatInspector
     }
 
 
-    public override int classify(Project prj)
+    public override int classify(Project prj, bool cli = false)
     {
       int retVal = 0;
 

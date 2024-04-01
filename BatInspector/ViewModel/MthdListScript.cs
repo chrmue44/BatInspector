@@ -255,7 +255,7 @@ namespace BatInspector
       result = new AnyType();
       if(_inst._model.Prj.Name != "")
       {
-        _inst._model.evaluate();
+        _inst._model.evaluate(true);
         _inst._model.Prj.writePrjFile();
       }
       return err;

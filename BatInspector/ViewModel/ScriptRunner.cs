@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using NAudio.MediaFoundation;
@@ -93,19 +94,20 @@ namespace BatInspector
       return retVal;
     }
 
-    public int debugOneStep()
+    public void debugOneStep(dlgFinishExecution dlgFinish)
     {
-      _parser.step();
-      return _parser.CurrentLineNr;
+      _parser.step(dlgFinish);
     }
 
-    public void continueDebugging()
+    public void continueDebugging(dlgFinishExecution update)
     {
-      if (_parser.CurrentLineNr > 0)
-        _parser.step();
-      _parser.continueParsing();
+      _parser.continueDebugging(update);
     }
 
+    public void breakDebugging()
+    {
+      _parser.breakDebugging();
+    }
     public int runScript(string fileName, bool background = true, bool initVars = true)
     {
       int retVal = 0;

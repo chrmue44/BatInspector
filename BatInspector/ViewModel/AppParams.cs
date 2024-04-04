@@ -403,7 +403,7 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatModel")]
-    [Browsable(false)]
+    [Browsable(true)]
     public string ModelRootPath { get; set; } = "";
 
     [DataMember]

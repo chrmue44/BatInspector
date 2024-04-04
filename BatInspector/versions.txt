@@ -1,6 +1,7 @@
 V0.8.1.0
 - new script functions: importPrj, getDirCount, getFileCount, getDir, getFile
 - simple script debugger
+- firmware update BatSpy
 
 V0.8.0.0   24.03.24
 - setup and status dialog for BatSpy recording device

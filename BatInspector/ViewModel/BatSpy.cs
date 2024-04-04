@@ -11,11 +11,10 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using lunOptics.libTeensySharp;
-using libTeensySharp;
+using libScripter;
+using System.IO;
 
 namespace BatInspector
 {
@@ -443,17 +442,18 @@ namespace BatInspector
         DebugLog.log("error reading range, cmd: " + cmd + ", result: " + res, enLogType.ERROR);
     }
 
+
     static public void uploadFirmware(string file)
     {
-      TeensyWatcher watcher = new TeensyWatcher();
-      ITeensy teensy = watcher.ConnectedTeensies.FirstOrDefault();
-      if (teensy != null)
-      {
-        var result = teensy.UploadAsync(file, reboot: true);
-        string res = result.ToString();
-      }
-      watcher.Dispose();
-
+      _inst._port.BaudRate = 134;
+      Thread.Sleep(2000);
+      ProcessRunner proc = new ProcessRunner();
+      string exe = Path.Combine(AppParams.Inst.AppRootPath, "teensy_loader_cli.exe");
+      string args = "--mcu=TEENSY40 -v " + file;
+      // first attempt fails always
+      proc.launchCommandLineApp(exe, null, AppParams.Inst.AppRootPath, true, args, false);
+      // 2nd time it works... (don't know why)
+      proc.launchCommandLineApp(exe, null, AppParams.Inst.AppRootPath, false, args, false);
     }
   }
 }

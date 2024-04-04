@@ -421,6 +421,21 @@ namespace BatInspector
       }
     }
 
+    public void stopEvaluation()
+    {
+      if (Prj != null)
+      {
+        for (int i = 0; i < AppParams.Inst.Models.Count; i++)
+        {
+          if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
+          {
+            _models[i].stopClassification();
+            DebugLog.log("evaluation of species stopped", enLogType.INFO);
+          }
+        }
+      }
+    }
+
     /// <summary>
     /// evaluation of bat species
     /// </summary>

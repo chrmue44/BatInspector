@@ -693,14 +693,6 @@
       <Project>{d3341f96-d18d-44af-9a16-1aea7296e1d4}</Project>
       <Name>libScripter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\libTeensySharp\libTeensySharp.csproj">
-      <Project>{f74fdda5-ee1f-48c9-8a9b-4b2e5c961eeb}</Project>
-      <Name>libTeensySharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\libUsbTree\src\LibUsbTree.csproj">
-      <Project>{81ec5984-62a2-4270-8565-35886a11b11d}</Project>
-      <Name>LibUsbTree</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\icons8-save-48.png" />

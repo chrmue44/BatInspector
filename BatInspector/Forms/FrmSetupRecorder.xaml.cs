@@ -24,6 +24,7 @@ namespace BatInspector.Forms
     CtrlRecorder _rec;
     System.Windows.Threading.DispatcherTimer _timer;
     int _tickCnt = 0;
+    bool _firmwareUpdate = false;
 
     public FrmSetupRecorder(CtrlRecorder recorder)
     {
@@ -43,11 +44,21 @@ namespace BatInspector.Forms
       _timer.Start();
       _cLog.CheckBoxesVisible = false;
       _cLog.setup(execCmd, true);
+      enableButtons(false);
+    }
+
+    private void enableButtons(bool on)
+    {
+      _btnFwUpdate.IsEnabled = on;
+      _btnRead.IsEnabled = on;
+      _btnWrite.IsEnabled = on;
+      _btnSetTime.IsEnabled = on;
+      _btnSet.IsEnabled = on;
     }
 
     private void timer_Tick(object sender, EventArgs e)
     {
-      if(_rec.IsConnected)
+      if(_rec.IsConnected && !_firmwareUpdate)
         updateStatusControls();
       _tickCnt++;
     }
@@ -106,6 +117,7 @@ namespace BatInspector.Forms
       _ctlLat.IsEnabled = true;
       _ctlLon.setValue(Utils.LongitudeToString(_rec.General.Longitude.Value));
       _ctlLon.IsEnabled = true;
+      enableButtons(true);
     }
 
     private void initSystemTab(int wl, int wt)
@@ -394,7 +406,10 @@ namespace BatInspector.Forms
       System.Windows.Forms.DialogResult res = dlg.ShowDialog();
       if(res == System.Windows.Forms.DialogResult.OK)
       {
+        _firmwareUpdate = true;
         BatSpy.uploadFirmware(dlg.FileName);
+        _rec.disConnect();
+        this.Close();
       }
     }
 

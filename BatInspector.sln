@@ -6,8 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatInspector", "BatInspector\BatInspector.csproj", "{D50438F3-3143-42B1-A568-BF3198B4579D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693} = {6CB409BD-1D5C-4114-8963-F92DE90B3693}
-		{81EC5984-62A2-4270-8565-35886A11B11D} = {81EC5984-62A2-4270-8565-35886A11B11D}
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB} = {F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libParser", "libParser\libParser\libParser.csproj", "{25D172AA-10D8-401E-A50B-8B7BECDE4D3B}"
@@ -15,10 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libScripter", "libScripter\libScripter.csproj", "{D3341F96-D18D-44AF-9A16-1AEA7296E1D4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libBioAcoustics", "libBioAcoustics\libBioAcoustics.vcxproj", "{6CB409BD-1D5C-4114-8963-F92DE90B3693}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibUsbTree", "libUsbTree\src\LibUsbTree.csproj", "{81EC5984-62A2-4270-8565-35886A11B11D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libTeensySharp", "libTeensySharp\libTeensySharp.csproj", "{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,30 +72,6 @@ Global
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693}.Release|x64.Build.0 = Release|x64
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693}.Release|x86.ActiveCfg = Release|Win32
 		{6CB409BD-1D5C-4114-8963-F92DE90B3693}.Release|x86.Build.0 = Release|Win32
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Debug|x64.Build.0 = Debug|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Debug|x86.Build.0 = Debug|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Release|x64.ActiveCfg = Release|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Release|x64.Build.0 = Release|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Release|x86.ActiveCfg = Release|Any CPU
-		{81EC5984-62A2-4270-8565-35886A11B11D}.Release|x86.Build.0 = Release|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Debug|x64.Build.0 = Debug|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Debug|x86.Build.0 = Debug|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Release|x64.ActiveCfg = Release|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Release|x64.Build.0 = Release|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Release|x86.ActiveCfg = Release|Any CPU
-		{F74FDDA5-EE1F-48C9-8A9B-4B2E5C961EEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

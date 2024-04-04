@@ -51,6 +51,7 @@ Name: "starticon"; Description: "{cm:CreateStartIcon}"; GroupDescription: "{cm:A
 [Files]
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\datapath.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\teensy_loader_cli.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.xml"; DestDir: "{app}"; Flags: ignoreversion

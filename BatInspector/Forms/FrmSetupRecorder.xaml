@@ -141,7 +141,7 @@
                     <local:ctlDataItem x:Name="_ctlPassWd"/>
                     <local:ctlDataItem x:Name="_ctlSetSerial" />
                     <local:ctlDataItem x:Name="_ctlSetVoltFact" />
-                    <Button Height="25" Width="150" Content="Set" Click="btnSet_Clicked" HorizontalAlignment="Right" Margin="0,10"/>
+                    <Button Name="_btnSet" Height="25" Width="150" Content="Set" Click="btnSet_Clicked" HorizontalAlignment="Right" Margin="0,10"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Terminal">

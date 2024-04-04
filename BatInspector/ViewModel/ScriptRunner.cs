@@ -107,6 +107,7 @@ namespace BatInspector
     public void breakDebugging()
     {
       _parser.breakDebugging();
+      _model.stopEvaluation();
     }
     public int runScript(string fileName, bool background = true, bool initVars = true)
     {

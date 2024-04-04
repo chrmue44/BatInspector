@@ -325,6 +325,8 @@ namespace libScripter
     public void breakDebugging()
     {
       _busy = false;
+      if (_proc.IsRunning)
+        _proc.Stop();
     }
 
     private void execContinueDebugging()

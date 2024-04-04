@@ -52,6 +52,15 @@ namespace BatInspector
       }    
     }
 
+    public void stopClassification()
+    {
+      if (_proc.IsRunning && _isBusy)
+      {
+        _proc.Stop();
+        _isBusy = false;
+      }
+    }
+
     protected void createDir(string rootDir, string subDir, bool delete)
     {
       string dir = rootDir + "/" + subDir;

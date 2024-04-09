@@ -2284,6 +2284,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to export sel..
+        /// </summary>
+        public static string MainBtnExportSel {
+            get {
+                return ResourceManager.GetString("MainBtnExportSel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide/Show Info.
         /// </summary>
         public static string MainBtnHideShowInfo {
@@ -2541,6 +2550,15 @@ namespace BatInspector.Properties {
         public static string MainToolEvalBatCalls {
             get {
                 return ResourceManager.GetString("MainToolEvalBatCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export all selected files to directory.
+        /// </summary>
+        public static string MainToolExportSel {
+            get {
+                return ResourceManager.GetString("MainToolExportSel", resourceCulture);
             }
         }
         

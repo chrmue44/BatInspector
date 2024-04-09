@@ -175,6 +175,37 @@ namespace BatInspector
     }
 
 
+    public void exportFiles(string outputDir, bool withXml = true, bool withPng = true)
+    {
+      int countWav = 0;
+      if(Directory.Exists(outputDir)) 
+      {
+        foreach(AnalysisFile f in _analysis.Files) 
+        {
+          if(f.Selected)
+          {
+            string srcWavName = Path.Combine(_destDir, f.Name);
+            string srcXmlName = srcWavName.ToLower().Replace("wav", "xml");
+            string srcPngName = srcWavName.ToLower().Replace("wav", "png");
+            string dstWavName = Path.Combine(outputDir, Path.GetFileName(f.Name));
+            string dstXmlName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(f.Name)) + ".xml";
+            string dstPngName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(f.Name)) + ".png";
+            if (File.Exists(srcWavName))
+            {
+              File.Copy(srcWavName, dstWavName);
+              countWav++;
+            }
+            if (withXml && File.Exists(srcXmlName))
+              File.Copy(srcXmlName, dstXmlName);
+            if (withPng && File.Exists(srcPngName))
+              File.Copy(srcPngName, dstPngName);
+          }
+        }
+      }
+      DebugLog.log(countWav.ToString() + " files exported from Query " + _name, enLogType.INFO);
+    }
+
+
     private void writeQueryFile() 
     {
       if (_queryFile != null)

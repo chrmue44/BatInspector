@@ -216,12 +216,18 @@ namespace BatInspector.Forms
     {
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
+      _spSpectrums.Children.Clear();
       if ((dir != null) && (Project.containsProject(dir) != ""))
+      {
+        initFileButton(false);
         initializeProject(dir);
-
+      }
       FileInfo file = item.Tag as FileInfo;
       if ((file != null) && Query.isQuery(file))
+      {
+        initFileButton(true);
         initializeQuery(file);
+      }
     }
 
     public void setStatus(string status)
@@ -260,8 +266,6 @@ namespace BatInspector.Forms
       _frmQuery.initFieldsFromQuery();
 
       _switchTabToPrj = true;
-      if (_model.Query == null)              //remove all spectrograms if project was closed
-        _spSpectrums.Children.Clear();
       _lblProject.Text = "QUERY: " + file.FullName;
       if (_model.Query != null)
       {
@@ -307,7 +311,7 @@ namespace BatInspector.Forms
       checkSavePrj();
       _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
       setStatus("");
-      _spSpectrums.Children.Clear();
+  //    _spSpectrums.Children.Clear();
       _model.initProject(dir, callbackUpdateAnalysis);
       _tbReport_GotFocus(_spSpectrums, null);
       if ((_model.Prj != null) && _model.Prj.Ok)
@@ -459,19 +463,23 @@ namespace BatInspector.Forms
         Stopwatch s = new Stopwatch();
         s.Start();
         BatExplorerProjectFileRecordsRecord[] recList = null;
-        if ((_model.Prj != null) && (_model.Prj.Ok) || _model.Query != null)
+        bool fromQuery = false;
+        if ((_model.Prj != null) && (_model.Prj.Ok))
           recList = _model.Prj.Records;
         else if (_model.Query != null)
+        {
           recList = _model.Query.Records;
+          fromQuery = true;
+        }
         if (recList != null)
         {
           _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
-          for (int i = 0; i < _model.Prj.Records.Length; i++)
+          for (int i = 0; i < recList.Length; i++)
           {
-            _model.createPngIfMissing(_model.Prj.Records[i], false);
+            _model.createPngIfMissing(recList[i], fromQuery);
             if (s.ElapsedMilliseconds > 2500)
             {
-              _model.Status.Msg = i.ToString() + "/" + _model.Prj.Records.Length + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
+              _model.Status.Msg = i.ToString() + "/" + recList.Length + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
               s.Restart();
               Thread.Yield();
             }
@@ -596,9 +604,7 @@ namespace BatInspector.Forms
         foreach (UIElement it in _spSpectrums.Children)
         {
           ctlWavFile ctl = it as ctlWavFile;
-          ctl._cbSel.IsChecked = true;
-          if (ctl.Analysis != null)
-            ctl.Analysis.Selected = true;
+          setCheckboxInWavCtl(ctl, true);
         }
         DebugLog.log("select all files", enLogType.DEBUG);
       }
@@ -615,9 +621,7 @@ namespace BatInspector.Forms
         foreach (UIElement it in _spSpectrums.Children)
         {
           ctlWavFile ctl = it as ctlWavFile;
-          ctl._cbSel.IsChecked = false;
-          if (ctl.Analysis != null)
-            ctl.Analysis.Selected = false;
+          setCheckboxInWavCtl(ctl, false);
         }
         DebugLog.log("deselect all files", enLogType.DEBUG);
       }
@@ -908,6 +912,20 @@ namespace BatInspector.Forms
       }
     }
 
+    private void setCheckboxInWavCtl(ctlWavFile ctl, bool check)
+    {
+      ctl._cbSel.IsChecked = check;
+      if (ctl.Analysis == null)
+      {
+        if ((_model.Prj != null) && (ctl.Index < _model.Prj.Records.Length))
+          initCtlWav(ctl, _model.Prj.Records[ctl.Index], false);
+        if ((_model.Query != null) && (ctl.Index < _model.Query.Records.Length))
+          initCtlWav(ctl, _model.Query.Records[ctl.Index], true);
+      }
+      if (ctl.Analysis != null)
+        ctl.Analysis.Selected = check;
+    }
+
     private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -919,7 +937,7 @@ namespace BatInspector.Forms
           foreach (ctlWavFile c in _spSpectrums.Children)
           {
             bool res = _model.Filter.apply(filter, c.Analysis);
-            c._cbSel.IsChecked = res;
+            setCheckboxInWavCtl(c, res);
           }
           _btnHideUnSelected_Click(sender, e);
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
@@ -1410,7 +1428,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        if (_model.Prj.Ok)
+        if ((_model.Prj != null) && _model.Prj.Ok)
         {
           System.Windows.Forms.OpenFileDialog ofi = new System.Windows.Forms.OpenFileDialog();
           ofi.Filter = "*.wav|*.wav";
@@ -1428,6 +1446,13 @@ namespace BatInspector.Forms
             initializeProject(dir);
           }
         }
+        else if (_model.Query != null)
+        {
+          System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
+          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
+          if (res == System.Windows.Forms.DialogResult.OK)
+            _model.Query.exportFiles(ofo.SelectedPath);
+        }
         else
           MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
         DebugLog.log("MainWin:BTN 'Add file' clicked", enLogType.DEBUG);
@@ -1435,6 +1460,20 @@ namespace BatInspector.Forms
       catch (Exception ex)
       {
         DebugLog.log("MainWin:BTN 'Add file' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+    private void initFileButton(bool isQuery)
+    {
+      if(isQuery)
+      {
+        _btnaddFile.Content = MyResources.MainBtnExportSel;
+        _btnaddFile.ToolTip = MyResources.MainToolExportSel;
+      }
+      else
+      {
+        _btnaddFile.Content = MyResources.MainBtnAddFile;
+        _btnaddFile.ToolTip = MyResources.MainToolAddFile;
       }
     }
 

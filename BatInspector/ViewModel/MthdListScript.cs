@@ -144,6 +144,9 @@ namespace BatInspector
       addMethod(new FuncTabItem("getFile", getFile));
       _scriptHelpTab.Add(new HelpTabItem("getFile", "get file from previously read dir info",
                       new List<string> { "1: index", "2: 0=full path, 1:name without path" }, new List<string> { "1: full file name" }));
+      addMethod(new FuncTabItem("mkDir", mkDir));
+      _scriptHelpTab.Add(new HelpTabItem("mkDir", "create directory",
+                      new List<string> { "1: path" }, new List<string> { "1: error code" }));
       addMethod(new FuncTabItem("checkOverdrive", checkOverdrive));
       _scriptHelpTab.Add(new HelpTabItem("checkOverdrive", "check if a given call is overdriven",
                       new List<string> { "1: file index", "2:call index" }, new List<string> { "1: TRUE if call is overdriven" }));
@@ -294,6 +297,31 @@ namespace BatInspector
         err = tParseError.NR_OF_ARGUMENTS;
       return err;
     }
+
+    static tParseError mkDir(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        string path = argv[0].getString();
+        try
+        {
+          if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+        }
+        catch
+        {
+          err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      result.assignInt64((Int64)err);
+      return err;
+    }
+
 
     static tParseError getPrjFileCount(List<AnyType> argv, out AnyType result)
     {

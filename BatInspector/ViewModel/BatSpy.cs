@@ -452,8 +452,9 @@ namespace BatInspector
       string args = "--mcu=TEENSY40 -v " + file;
       // first attempt fails always
       proc.launchCommandLineApp(exe, null, AppParams.Inst.AppRootPath, true, args, false);
+      Thread.Sleep(2000);
       // 2nd time it works... (don't know why)
-      proc.launchCommandLineApp(exe, null, AppParams.Inst.AppRootPath, false, args, false);
+      proc.launchCommandLineApp(exe, null, AppParams.Inst.AppRootPath, true, args, false);
     }
   }
 }

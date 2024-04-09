@@ -111,7 +111,7 @@ namespace BatInspector
     {
       get
       {
-        if (_prj != null)
+        if ((_prj != null) && (_prj.Ok))
           return _prj;
         else if (_query != null)
           return _query;

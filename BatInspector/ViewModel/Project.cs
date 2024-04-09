@@ -112,7 +112,7 @@ namespace BatInspector
     private string _selectedDir;
     private BatExplorerProjectFile _batExplorerPrj;
     private bool _reloadInGui;
-
+    
     public bool Ok { get { return _ok; } }
 
     public BatExplorerProjectFileRecordsRecord[] Records

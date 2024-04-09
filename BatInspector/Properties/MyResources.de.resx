@@ -1401,4 +1401,10 @@
   <data name="frmDebugClose" xml:space="preserve">
     <value>Schließen</value>
   </data>
+  <data name="MainBtnExportSel" xml:space="preserve">
+    <value>Exportiere sel.</value>
+  </data>
+  <data name="MainToolExportSel" xml:space="preserve">
+    <value>Exportiere alle ausgewählten Dateien in ein Verzeichnis</value>
+  </data>
 </root>

@@ -14,3 +14,4 @@ FOR i 0 dirCount
   =(openPrj(dstPrj))
   =(inspectPrj())
 END
+LOG =("bulk import completed")

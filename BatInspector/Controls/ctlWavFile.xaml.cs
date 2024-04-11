@@ -6,7 +6,6 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Controls;
 using BatInspector.Forms;
 using libParser;
 using System;
@@ -15,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BatInspector.Properties;
 using System.IO;
+
 
 namespace BatInspector.Controls
 {
@@ -26,8 +26,6 @@ namespace BatInspector.Controls
     AnalysisFile _analysis;
     string _wavFilePath;
     string _wavName;
-    int _index;
-    dlgSetFocus _dlgFocus;
     ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
@@ -36,7 +34,6 @@ namespace BatInspector.Controls
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
     public AnalysisFile Analysis { get { return _analysis; } }
-    public int Index { get { return _index; } set { _index = value; } }
     public string WavName { get { return _wavName; } }
 
     public bool InfoVisible
@@ -61,23 +58,15 @@ namespace BatInspector.Controls
       }
     }
 
-    public ctlWavFile(int index, dlgSetFocus setFocus, ViewModel model, MainWindow parent, bool showButtons)
+
+    public ctlWavFile(AnalysisFile analysis, string fileName,  ViewModel model, MainWindow parent, bool showButtons)
     {
-      _index = index;
-      _dlgFocus = setFocus;
       _model = model;
       _parent = parent;
       InitializeComponent();
       _ctlRemarks.setup(MyResources.CtlWavRemarks, enDataType.STRING, 0, 80, true, _tbRemarks_TextChanged);
-      if ((_model.Prj != null) && (_model.Prj.Analysis.Files.Count > index))
-      {
-        _analysis = _model.Prj.Analysis.Files[index];
-        string fName = _analysis.Name;
-        int pos = fName.LastIndexOf('/');
-        _wavName = fName.Substring(pos + 1);
-        if (fName.IndexOf(_wavName) < 0)
-          DebugLog.log("WAV name mismatch to Report for " + _wavName, enLogType.ERROR);
-      }
+      _analysis = analysis;
+      _wavName = fileName;
       _btnCopy.Visibility = showButtons ? Visibility.Visible : Visibility.Collapsed;
       _btnCopy.IsEnabled = showButtons;
       _btnTools.Visibility = showButtons ? Visibility.Visible : Visibility.Collapsed;
@@ -189,7 +178,6 @@ namespace BatInspector.Controls
     private void ctlGotFocus(object sender, RoutedEventArgs e)
     {
       _cbSel.BorderThickness = new Thickness(3, 3, 3, 3);
-      _dlgFocus(_index);
     }
 
     public void _btnCopy_Click(object sender, RoutedEventArgs e)

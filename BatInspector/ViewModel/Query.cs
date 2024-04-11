@@ -115,6 +115,26 @@ namespace BatInspector
       return Path.Combine(_destDir, path);
     }
 
+    /// <summary>
+    /// find a file in the project
+    /// </summary>
+    /// <param name="fileName">name of the file (full path or just file name)</param>
+    /// <returns>record containing the file information</returns>
+    public BatExplorerProjectFileRecordsRecord find(string fileName)
+    {
+      BatExplorerProjectFileRecordsRecord retVal = null;
+      foreach (BatExplorerProjectFileRecordsRecord r in Records)
+      {
+        if (fileName.ToLower().Contains(r.File.ToLower()))
+        {
+          retVal = r;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+
     private bool crawl(DirectoryInfo dir)
     {
       DirectoryInfo[] dirs = dir.GetDirectories();
@@ -178,9 +198,10 @@ namespace BatInspector
     public void exportFiles(string outputDir, bool withXml = true, bool withPng = true)
     {
       int countWav = 0;
-      if(Directory.Exists(outputDir)) 
+      if (Directory.Exists(outputDir)) 
       {
-        foreach(AnalysisFile f in _analysis.Files) 
+        DebugLog.log("start files export from Query " + _name, enLogType.INFO);
+        foreach (AnalysisFile f in _analysis.Files) 
         {
           if(f.Selected)
           {
@@ -192,17 +213,19 @@ namespace BatInspector
             string dstPngName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(f.Name)) + ".png";
             if (File.Exists(srcWavName))
             {
-              File.Copy(srcWavName, dstWavName);
+              File.Copy(srcWavName, dstWavName, true);
               countWav++;
             }
             if (withXml && File.Exists(srcXmlName))
-              File.Copy(srcXmlName, dstXmlName);
+              File.Copy(srcXmlName, dstXmlName, true);
             if (withPng && File.Exists(srcPngName))
-              File.Copy(srcPngName, dstPngName);
+              File.Copy(srcPngName, dstPngName, true);
           }
         }
+        DebugLog.log(countWav.ToString() + " files exported from Query " + _name, enLogType.INFO);
       }
-      DebugLog.log(countWav.ToString() + " files exported from Query " + _name, enLogType.INFO);
+      else
+        DebugLog.log("could not find target directory " + outputDir, enLogType.ERROR);
     }
 
 

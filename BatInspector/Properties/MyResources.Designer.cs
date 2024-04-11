@@ -2977,6 +2977,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select directory to store exported files.
+        /// </summary>
+        public static string SelectExportDirectory {
+            get {
+                return ResourceManager.GetString("SelectExportDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path for bat information files.  This location is kept untouched during installation of newer versions.
         /// </summary>
         public static string SerDescBatInfo {

@@ -817,12 +817,15 @@ namespace BatInspector
     public BatExplorerProjectFileRecordsRecord find(string fileName)
     {
       BatExplorerProjectFileRecordsRecord retVal = null;
-      foreach (BatExplorerProjectFileRecordsRecord r in _batExplorerPrj.Records)
+      if (fileName != null)
       {
-        if (fileName.ToLower().Contains(r.File.ToLower()))
+        foreach (BatExplorerProjectFileRecordsRecord r in _batExplorerPrj.Records)
         {
-          retVal = r;
-          break;
+          if (fileName.ToLower().Contains(r.File.ToLower()))
+          {
+            retVal = r;
+            break;
+          }
         }
       }
       return retVal;

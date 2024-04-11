@@ -9,7 +9,7 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400" MinWidth="1200" MinHeight="640"
-        Icon="../images/kopf64.png"  KeyUp="Window_KeyUp" KeyDown="Window_KeyDown" Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
+        Icon="../images/kopf64.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged"
         >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="34" />

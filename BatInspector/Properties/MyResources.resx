@@ -1407,4 +1407,7 @@
   <data name="MainToolExportSel" xml:space="preserve">
     <value>Export all selected files to directory</value>
   </data>
+  <data name="SelectExportDirectory" xml:space="preserve">
+    <value>Select directory to store exported files</value>
+  </data>
 </root>

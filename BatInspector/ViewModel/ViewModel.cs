@@ -169,9 +169,9 @@ namespace BatInspector
 
     public void initQuery(FileInfo file)
     {
-      _prj = null;
       if (Query.isQuery(file))
       {
+        _prj = null;
         _query = Query.readQueryFile(file.FullName, this);
         _selectedDir = Path.GetDirectoryName(file.FullName);
       }
@@ -183,6 +183,7 @@ namespace BatInspector
     {
       if (Project.containsProject(dir) != "")
       {
+        _query = null;
         _selectedDir = dir.FullName;
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);

@@ -37,7 +37,6 @@ namespace BatInspector.Forms
   {
     const int MAX_IMG_HEIGHT = 256;
     const int MAX_IMG_WIDTH = 512;
-    int _cbFocus = -1;
 
     ViewModel _model;
     FrmFilter _frmFilter = null;
@@ -521,8 +520,8 @@ namespace BatInspector.Forms
 
       ctl.setFileInformations(wavName, wavFilePath, analysis, species);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
-      if (!_fastOpen)
-        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
+//      if (!_fastOpen)
+//        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
     }
 
     void createFftImages()
@@ -532,19 +531,21 @@ namespace BatInspector.Forms
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
         _spSpectrums.Children.Clear();
-        _cbFocus = -1;
 
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
-          ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this, true);
+          AnalysisFile analysis = null;
+          if (_model.Prj.Analysis != null)
+            analysis = _model.Prj.Analysis.find(rec.File);
+          index++;
+          ctlWavFile ctl = new ctlWavFile(analysis,rec.File, _model, this, true);
           DockPanel.SetDock(ctl, Dock.Bottom);
           _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
           {
-            _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
           }));
 
-          if (!_fastOpen || (ctl.Index < 5))
+          if (!_fastOpen || (index < 5))
           {
             initCtlWav(ctl, rec, false);
           }
@@ -555,19 +556,21 @@ namespace BatInspector.Forms
       else if (_model.Query != null)
       {
         _spSpectrums.Children.Clear();
-        _cbFocus = -1;
 
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Query.Records)
         {
-          ctlWavFile ctl = new ctlWavFile(index++, setFocus, _model, this, false);
+          AnalysisFile analysis = null;
+          if (_model.Query.Analysis != null)
+            analysis = _model.Query.Analysis.find(rec.File);
+          index++;
+          ctlWavFile ctl = new ctlWavFile(analysis, rec.File, _model, this, false);
           DockPanel.SetDock(ctl, Dock.Bottom);
           _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
           {
-            _cbFocus = 0;
             _spSpectrums.Children.Add(ctl);
           }));
 
-          if (!_fastOpen || (ctl.Index < 5))
+          if (!_fastOpen || (index < 5))
           {
             initCtlWav(ctl, rec, true);
           }
@@ -632,16 +635,6 @@ namespace BatInspector.Forms
     }
 
 
-    private void reIndexSpectrumControls()
-    {
-      int index = 0;
-      foreach (UIElement it in _spSpectrums.Children)
-      {
-        ctlWavFile ctl = it as ctlWavFile;
-        ctl.Index = index++;
-      }
-    }
-
     private void _btnDelSelected_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -666,7 +659,6 @@ namespace BatInspector.Forms
           foreach (UIElement it in list)
             _spSpectrums.Children.Remove(it);
 
-          reIndexSpectrumControls();
           showStatus();
           DebugLog.log("MainWin:BTN 'dletete all files' clicked", enLogType.DEBUG);
         }
@@ -706,14 +698,6 @@ namespace BatInspector.Forms
         DebugLog.log("MainWin:BTN 'show all' failed: " + ex.ToString(), enLogType.ERROR);
       }
 
-    }
-
-    public void setFocus(int index)
-    {
-      if ((index >= 0) && (index < _spSpectrums.Children.Count))
-      {
-        _cbFocus = index;
-      }
     }
 
     void showMsg(string title, string msg, bool topmost = false)
@@ -794,27 +778,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-      try
-      {
-        _model.KeyPressed = System.Windows.Input.Key.None;
-        _model.LastKey = e.Key;
-        if (e.Key == System.Windows.Input.Key.Return)
-        {
-          if ((_cbFocus >= 0) && (_cbFocus < _spSpectrums.Children.Count))
-          {
-            ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_cbFocus];
-            ctl.toggleCheckBox();
-          }
-        }
-        DebugLog.log("MainWin:BTN 'Window Up' clicked ", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Window up: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
+
 
     private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
@@ -915,13 +879,6 @@ namespace BatInspector.Forms
     private void setCheckboxInWavCtl(ctlWavFile ctl, bool check)
     {
       ctl._cbSel.IsChecked = check;
-      if (ctl.Analysis == null)
-      {
-        if ((_model.Prj != null) && (ctl.Index < _model.Prj.Records.Length))
-          initCtlWav(ctl, _model.Prj.Records[ctl.Index], false);
-        if ((_model.Query != null) && (ctl.Index < _model.Query.Records.Length))
-          initCtlWav(ctl, _model.Query.Records[ctl.Index], true);
-      }
       if (ctl.Analysis != null)
         ctl.Analysis.Selected = check;
     }
@@ -1308,24 +1265,6 @@ namespace BatInspector.Forms
     }
   
 
-    private void _btnDebug_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        if (_frmDebug == null)
-          _frmDebug = new frmDebug(_model);
-   //     _frmDebug.setup("C:\\Users\\Public\\Documents\\BatInspector\\scripts\\copyAutoToMan.scr");  //@@@
-        _frmDebug.Show();
-        _frmDebug.Visibility = Visibility.Visible;
-       // _frmDebug.Topmost = true;
-        DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Debug' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
     private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
     {
       //https://stackoverflow.com/questions/1517743/in-wpf-how-can-i-determine-whether-a-control-is-visible-to-the-user
@@ -1351,10 +1290,16 @@ namespace BatInspector.Forms
       {
         if (IsUserVisible(c, this) && !c.WavInit)
         {
-          if ((_model.Prj != null) && (c.Index < _model.Prj.Records.Length))
-            initCtlWav(c, _model.Prj.Records[c.Index], false);
-          if ((_model.Query != null) && (c.Index < _model.Query.Records.Length))
-            initCtlWav(c, _model.Query.Records[c.Index], true);
+          if ((_model.Prj != null) && _model.Prj.Ok)
+          {
+            BatExplorerProjectFileRecordsRecord rec = _model.Prj.find(c.WavName);
+            initCtlWav(c, rec, false);
+          }
+          else if (_model.Query != null)
+          {
+            BatExplorerProjectFileRecordsRecord rec = _model.Query.find(c.WavName);
+            initCtlWav(c, rec, true);
+          }
           c.UpdateLayout();
         }
       }
@@ -1449,6 +1394,7 @@ namespace BatInspector.Forms
         else if (_model.Query != null)
         {
           System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
+          ofo.Description = MyResources.SelectExportDirectory;
           System.Windows.Forms.DialogResult res = ofo.ShowDialog();
           if (res == System.Windows.Forms.DialogResult.OK)
             _model.Query.exportFiles(ofo.SelectedPath);
@@ -1722,6 +1668,5 @@ namespace BatInspector.Forms
     BAT
   }
 
-  public delegate void dlgSetFocus(int index);
   public delegate void dlgcloseChildWindow(enWinType w);
 }

@@ -6,7 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-//#define FFT_W3
+#define FFT_W3
 
 using DSPLib;
 using System;
@@ -59,9 +59,18 @@ namespace BatInspector
       Array.Copy(_samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
 #if (FFT_W3)
-        for (uint i = length; i < _fftSize; i++)
-          inputSignal[i] = 0;
-        lmSpectrum = BioAcoustics.calculateFft((int)_fftSize, enWIN_TYPE.BLACKMAN_HARRIS_7, inputSignal);
+      enWIN_TYPE win = enWIN_TYPE.HANN;
+      switch (window)
+      {
+        case DSP.Window.Type.None:
+          win = enWIN_TYPE.NONE;
+          break;
+      }
+      for (uint i = length; i < _fftSize; i++)
+        inputSignal[i] = 0;
+      int handle = BioAcoustics.getFft((uint)length, win);
+      lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal);
+
 #else
       // Apply window to the Input Data & calculate Scale Factor
       double[] wCoefs = DSP.Window.Coefficients(window, (uint)inputSignal.Length);

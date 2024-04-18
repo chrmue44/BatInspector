@@ -177,8 +177,9 @@ namespace BatInspector
 
     static tParseError createPrjFromFiles(List<AnyType> argv, out AnyType result)
     {
-      tParseError err = 0;
+      tParseError err = tParseError.SUCCESS;
       result = new AnyType();
+      PrjInfo info = null;
       if (argv.Count >= 9)
       {
         argv[0].changeType(AnyType.tType.RT_STR);
@@ -190,7 +191,7 @@ namespace BatInspector
         argv[6].changeType(AnyType.tType.RT_FLOAT);
         argv[7].changeType(AnyType.tType.RT_STR);
         argv[8].changeType(AnyType.tType.RT_STR);
-        PrjInfo info = new PrjInfo
+        info = new PrjInfo
         {
           Name = argv[0].getString(),
           SrcDir = argv[1].getString(),
@@ -202,14 +203,78 @@ namespace BatInspector
           GpxFile = "",
           Landscape = argv[7].getString(),
           Weather = argv[8].getString(),
+          StartTime = new DateTime(1, 1, 1),
+          EndTime = new DateTime(2099, 12, 31),
+          OverwriteLocation = true,
         };
-        //string[] res = Project.createPrj(info, _inst._model.Regions, _inst._model.SpeciesInfos);
-        //string resStr = string.Join(";", res);
-        Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);
-        //result.assign(resStr); 
+      }
+      else if(argv.Count == 8)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        argv[2].changeType(AnyType.tType.RT_STR);
+        argv[3].changeType(AnyType.tType.RT_INT64);
+        argv[4].changeType(AnyType.tType.RT_FLOAT);
+        argv[5].changeType(AnyType.tType.RT_FLOAT);
+        argv[6].changeType(AnyType.tType.RT_FLOAT);
+        argv[7].changeType(AnyType.tType.RT_BOOL);
+        info = new PrjInfo
+        {
+          Name = argv[0].getString(),
+          SrcDir = argv[1].getString(),
+          DstDir = argv[2].getString(),
+          MaxFileCnt = (int)argv[3].getInt64(),
+          MaxFileLenSec = (int)argv[4].getFloat(),
+          Latitude = argv[5].getFloat(),
+          Longitude = argv[6].getFloat(),
+          GpxFile = "",
+          Landscape = "",
+          Weather = "",
+          RemoveSource = argv[7].getBool(),
+          StartTime = new DateTime(1, 1, 1),
+          EndTime = new DateTime(2099, 12, 31),
+          OverwriteLocation = true,
+        };
+      }
+      else if (argv.Count == 7)
+      {
+        argv[0].changeType(AnyType.tType.RT_STR);
+        argv[1].changeType(AnyType.tType.RT_STR);
+        argv[2].changeType(AnyType.tType.RT_STR);
+        argv[3].changeType(AnyType.tType.RT_INT64);
+        argv[4].changeType(AnyType.tType.RT_FLOAT);
+        argv[5].changeType(AnyType.tType.RT_STR);
+        argv[6].changeType(AnyType.tType.RT_BOOL);
+        string locFile = argv[5].getString();
+        info = new PrjInfo
+        {
+          Name = argv[0].getString(),
+          SrcDir = argv[1].getString(),
+          DstDir = argv[2].getString(),
+          MaxFileCnt = (int)argv[3].getInt64(),
+          MaxFileLenSec = (int)argv[4].getFloat(),
+          Latitude = 0,
+          Longitude = 0,
+          GpxFile = locFile,
+          Landscape = "",
+          Weather = "",
+          RemoveSource = argv[6].getBool(),
+          StartTime = new DateTime(1, 1, 1),
+          EndTime = new DateTime(2099, 12, 31),
+          OverwriteLocation = true,
+        };
+        if (locFile.IndexOf(AppParams.EXT_GPX) >= 0)
+          info.LocSourceGpx = true;
+        else if(locFile.IndexOf(AppParams.EXT_KML) >= 0)
+          info.LocSourceKml = true;
+        else if (locFile.IndexOf(AppParams.EXT_TXT) >= 0)
+          info.LocSourceTxt = true;
       }
       else
         err = tParseError.NR_OF_ARGUMENTS;
+      if (err == tParseError.SUCCESS)
+        Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);
+      result.assignInt64((long)err);
       return err;
     }
 
@@ -240,6 +305,7 @@ namespace BatInspector
           LocSourceKml = false,
           LocSourceTxt = false,
           OverwriteLocation = false,
+          RemoveSource = false
         };
         if (File.Exists(Path.Combine(info.SrcDir, info.Name + ".bpr")))
           Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);

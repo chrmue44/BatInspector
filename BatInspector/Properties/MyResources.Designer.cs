@@ -79,6 +79,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yes/No.
+        /// </summary>
+        public static string Boolean {
+            get {
+                return ResourceManager.GetString("Boolean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
         public static string BtnApply {
@@ -1128,6 +1137,15 @@ namespace BatInspector.Properties {
         public static string FrmCreatePrjCbOverwriteLoc {
             get {
                 return ResourceManager.GetString("FrmCreatePrjCbOverwriteLoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete source files after import.
+        /// </summary>
+        public static string FrmCreatePrjDelSrc {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjDelSrc", resourceCulture);
             }
         }
         

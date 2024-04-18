@@ -41,8 +41,8 @@ namespace BatInspector
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public bool IsProjectFolder { get; set; } 
-
     public bool OverwriteLocation { get; set; }
+    public bool RemoveSource { get; set; }
 
   }
 
@@ -475,10 +475,10 @@ namespace BatInspector
           DebugLog.log("copy wav files...", enLogType.INFO);
           string fullDir = Path.Combine(info.DstDir, info.Name);
           createPrjDirStructure(fullDir, out string wavDir);
-          Utils.copyFiles(files, wavDir);
+          Utils.copyFiles(files, wavDir, info.RemoveSource);
           string[] xmlFiles = getSelectedFiles(info, "*.xml");
           DebugLog.log("copy xml files...", enLogType.INFO);
-          Utils.copyFiles(xmlFiles, wavDir);
+          Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
 
           // create project
           Project prj = new Project(regions, speciesInfo, null);
@@ -489,11 +489,11 @@ namespace BatInspector
           // copy location files is present
           DebugLog.log("copy location files...", enLogType.INFO);
           string[] gpxFiles = Directory.GetFiles(info.SrcDir, "*.gpx");
-          Utils.copyFiles(gpxFiles, prj.PrjDir);
+          Utils.copyFiles(gpxFiles, prj.PrjDir, info.RemoveSource);
           string[] kmlFiles = Directory.GetFiles(info.SrcDir, "*.kml");
-          Utils.copyFiles(kmlFiles, prj.PrjDir);
+          Utils.copyFiles(kmlFiles, prj.PrjDir, info.RemoveSource);
           string[] txtFiles = Directory.GetFiles(info.SrcDir, "*.txt");
-          Utils.copyFiles(txtFiles, prj.PrjDir);
+          Utils.copyFiles(txtFiles, prj.PrjDir, info.RemoveSource);
 
           if (!info.IsProjectFolder)
             prj.createXmlInfoFiles(info);
@@ -595,12 +595,12 @@ namespace BatInspector
 
         string[] prjFiles = new string[fileCnt];
         Array.Copy(files, iFirst, prjFiles, 0, fileCnt);
-        Utils.copyFiles(prjFiles, wavDir);
+        Utils.copyFiles(prjFiles, wavDir, true);
 
         string[] xmlFiles = new string[prjFiles.Length];
         for (int i = 0; i < xmlFiles.Length; i++)
           xmlFiles[i] = prjFiles[i].ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-        Utils.copyFiles(xmlFiles, wavDir);
+        Utils.copyFiles(xmlFiles, wavDir, true);
 
         string[] gpxFiles = Directory.GetFiles(prj.PrjDir, "*.gpx");
         Utils.copyFiles(gpxFiles, dirName);

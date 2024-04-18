@@ -1410,4 +1410,10 @@
   <data name="SelectExportDirectory" xml:space="preserve">
     <value>Verzeichnis zum Speichern der exportierten Dateien auswählen</value>
   </data>
+  <data name="FrmCreatePrjDelSrc" xml:space="preserve">
+    <value>Quelldateien nach Import löschen</value>
+  </data>
+  <data name="Boolean" xml:space="preserve">
+    <value>Ja/Nein</value>
+  </data>
 </root>

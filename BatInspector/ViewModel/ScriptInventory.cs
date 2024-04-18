@@ -7,7 +7,6 @@
  ********************************************************************************/
 
 using libParser;
-using NAudio.CoreAudioApi.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +20,8 @@ namespace BatInspector
   {
     FILE,
     DIRECTORY,
-    MICSCELLANOUS
+    MICSCELLANOUS,
+    BOOL
   }
 
   [DataContract]

@@ -6,6 +6,9 @@ V0.8.1.0
 - export function for wav files in query
 - line height same for auto and manual spec
 - bugfix: applying of filter failed in projects with unsorted report files (e.g. undelete files)
+- new option "remove source files" in import dialog
+- extended options for script function createPrjFromFiles()
+- new parameter type BOOL for scripts
 
 V0.8.0.0   24.03.24
 - setup and status dialog for BatSpy recording device

@@ -13,7 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection.Emit;
+//using System.Web.UI.WebControls;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Interop;
 
@@ -92,9 +94,20 @@ namespace BatInspector.Forms
               ctld.setValue("");
               _spPars.Children.Add(ctld);
               break;
+            case enParamType.BOOL:
+              CheckBox chk = new CheckBox();
+              chk.Content = _params[i].Name;
+              chk.Click += setParamsChk;
+              _spPars.Children.Add(chk);
+              break;
           }
         }
       }
+    }
+
+    void setParamsChk(object sender, RoutedEventArgs e)
+    {
+      setParams();
     }
 
     private void setParams()
@@ -113,6 +126,13 @@ namespace BatInspector.Forms
             case enParamType.MICSCELLANOUS:
               ctlDataItem ctld = _spPars.Children[i] as ctlDataItem;
               _model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
+              break;
+            case enParamType.BOOL:
+              CheckBox chk = _spPars.Children[i] as CheckBox;
+              String boolVal = "0";
+              if ((chk != null) && (chk.IsChecked == true))
+                boolVal = "1";
+              _model.Scripter.VarList.set(_params[i].VarName, boolVal);
               break;
           }
         }

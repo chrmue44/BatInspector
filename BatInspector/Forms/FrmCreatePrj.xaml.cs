@@ -162,6 +162,7 @@ namespace BatInspector.Forms
         _info.MaxFileCnt = _ctlMaxFiles.getIntValue();
         _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
         _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
+        _info.RemoveSource = _cbDelSrc.IsChecked == true;
         _info.GpxFile = (_rbGpxFile.IsChecked == true) || (_rbKmlFile.IsChecked == true)  || 
                         (_rbTxtFile.IsChecked == true) ? _ctlGpxFile.getValue() : "";
         _info.LocSourceGpx = _rbGpxFile.IsChecked == true;

@@ -9,6 +9,7 @@
 using BatInspector.Controls;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BatInspector.Forms
 {
@@ -50,6 +51,11 @@ namespace BatInspector.Forms
             ctld.setValue("");
             _sp.Children.Add(ctld);
             break;
+          case enParamType.BOOL:
+            CheckBox chk = new CheckBox();
+            chk.Content = _paramText[i].Name;
+            _sp.Children.Add(chk);
+            break;
         }
         this.Height += 35;
       }
@@ -85,6 +91,8 @@ namespace BatInspector.Forms
               break;
             }
             break;
+          case enParamType.BOOL:
+            break;        
         }
       }
       _btnOk.IsEnabled = en;
@@ -109,6 +117,13 @@ namespace BatInspector.Forms
           case enParamType.MICSCELLANOUS:
             ctlDataItem ctld = _sp.Children[i] as ctlDataItem;
             _paramVals.Add(ctld.getValue());
+            break;
+          case enParamType.BOOL: 
+            CheckBox chk = _sp.Children[i] as CheckBox;
+            string boolVal = "0";
+            if((chk != null) && (chk.IsChecked == true))
+              boolVal = "1";
+            _paramVals.Add(boolVal);
             break;
         }
       }

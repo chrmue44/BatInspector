@@ -183,6 +183,10 @@ namespace BatInspector
     public const string EXT_INFO = ".xml";                // file extension for info files in Elekon projects
     public const string EXT_PRJ = ".bpr";                 // file extension for Elekon project file
     public const string EXT_QUERY = ".qry";               // file extension for query files
+    public const string EXT_GPX = ".gpx";                 // file extension for GPX files
+    public const string EXT_KML = ".kml";                 // file extension for GPX files
+    public const string EXT_TXT = ".txt";                 // file extension for TXT files
+
     public const string CSV_SEPARATOR = ";";              // CSV separator
     public const string DIR_SCRIPT = "scripts";           // sub directory containig scripts
     public const string DIR_BAT_INFO = "batInfo";         // sub directory for user editable bat info files

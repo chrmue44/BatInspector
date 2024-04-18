@@ -498,7 +498,6 @@
     </Compile>
     <Compile Include="ViewModel\BatInspectFmt.cs" />
     <Compile Include="ViewModel\DSPLib.cs" />
-    <Compile Include="ViewModel\Fft.cs" />
     <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

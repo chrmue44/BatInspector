@@ -35,6 +35,7 @@ namespace BatInspector.Controls
       _cbType.Items.Add(BatInspector.Properties.MyResources.FileSelector);
       _cbType.Items.Add(BatInspector.Properties.MyResources.DirectorySelector);
       _cbType.Items.Add(BatInspector.Properties.MyResources.StringNumber);
+      _cbType.Items.Add(BatInspector.Properties.MyResources.Boolean);
       _cbType.SelectedIndex = 2;
     }
 
@@ -59,6 +60,9 @@ namespace BatInspector.Controls
         case enParamType.MICSCELLANOUS:
           _cbType.SelectedIndex = 2;
           break;
+        case enParamType.BOOL:
+          _cbType.SelectedIndex = 3;
+          break;
 
       }
     }
@@ -81,6 +85,9 @@ namespace BatInspector.Controls
         default:
         case 2:
           _type = enParamType.MICSCELLANOUS;
+          break;
+        case 3:
+          _type = enParamType.BOOL;
           break;
       }
       return _type;

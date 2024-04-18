@@ -111,9 +111,14 @@ namespace libParser
         string dest = Path.Combine(dstFolder, name);
         if (File.Exists(file))
         {
-          File.Copy(file, dest, overWrite);
-          if (removeSrc)
-            File.Delete(file);
+          if (!removeSrc)
+            File.Copy(file, dest, overWrite);
+          else
+          {
+            if (overWrite && (file != dest))
+              File.Delete(dest);
+            File.Move(file, dest);
+          }
         }
         else
           DebugLog.log("unable to copy file (not found): " + file, enLogType.ERROR);

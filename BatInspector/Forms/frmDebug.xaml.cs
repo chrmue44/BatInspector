@@ -172,6 +172,7 @@ namespace BatInspector.Forms
         return;
       }
       highlightActLine(true);
+      scrollToCurrentLine();
       setBusy(false);
       _ctlVarTable.setup(_model.Scripter.VarList);
     }
@@ -192,6 +193,18 @@ namespace BatInspector.Forms
         ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine;
         ctl.activate(on);
       }
+    }
+
+    private void scrollToCurrentLine()
+    {
+      int lineNr = 0;
+      if (_model.Scripter.CurrentLineNr < _spScript.Children.Count)
+        lineNr = _model.Scripter.CurrentLineNr;
+      else
+        lineNr = _spScript.Children.Count - 1;
+      ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine; 
+      double verticalOffset = _model.Scripter.CurrentLineNr * ctl.ActualHeight - _spScript.ActualHeight/2;
+      _scrlViewer.ScrollToVerticalOffset(verticalOffset);
     }
 
   private void setBreakCondition(int lineNr, string condition)

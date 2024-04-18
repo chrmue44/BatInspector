@@ -600,6 +600,8 @@ namespace BatInspector
           foreach (FileInfo file in files)
             File.Delete(file.FullName);
           string dirRecords = Path.Combine(dir.FullName, AppParams.DIR_WAVS);
+          if (!Directory.Exists(dirRecords))
+            dirRecords = dir.FullName;
           DirectoryInfo dirWavs = new DirectoryInfo(dirRecords);
           files = dirWavs.GetFiles("*.png");
           foreach (FileInfo file in files)
@@ -647,6 +649,9 @@ namespace BatInspector
         foreach (FileInfo file in files)
           pngSpace += (int)(file.Length / 1024);
         string dirRecords = Path.Combine(dir.FullName, AppParams.DIR_WAVS);
+        if (!Directory.Exists(dirRecords))
+          dirRecords = dir.FullName;
+
         DirectoryInfo dirWavs = new DirectoryInfo(dirRecords);
         files = dirWavs.GetFiles("*.png");
         foreach (FileInfo file in files)

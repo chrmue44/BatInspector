@@ -44,6 +44,8 @@ namespace BatInspector
     public bool OverwriteLocation { get; set; }
     public bool RemoveSource { get; set; }
 
+    public string WavSubDir { get; set; } = AppParams.DIR_WAVS;
+
   }
 
 
@@ -413,11 +415,14 @@ namespace BatInspector
 
     }
 
-    private static bool createPrjDirStructure(string prjDir, out string wavDir)
+    private static bool createPrjDirStructure(string prjDir, out string wavDir, string wavSubDir)
     {
       bool retVal = true;
       DebugLog.log("creating project " + prjDir, enLogType.INFO);
-      wavDir = prjDir + "/" + AppParams.DIR_WAVS;
+      if (string.IsNullOrEmpty(wavSubDir))
+        wavDir = prjDir;
+      else
+        wavDir =Path.Combine(prjDir,wavSubDir);
       if (Directory.Exists(prjDir))
       {
         DebugLog.log("directory '" + prjDir + "' already exists, project creation aborted!", enLogType.ERROR);
@@ -450,12 +455,9 @@ namespace BatInspector
         // in case of project folder get infos from project
         if (info.IsProjectFolder)
         {
-          string wavDir = Path.Combine(info.SrcDir, AppParams.DIR_WAVS);
-          string wavSubDir = "";
-          if (Directory.Exists(wavDir))
-            wavSubDir = AppParams.DIR_WAVS;
+          string wavDir = Path.Combine(info.SrcDir, info.WavSubDir);
 
-          Project prjSrc = new Project(regions, speciesInfo, null, wavSubDir);
+          Project prjSrc = new Project(regions, speciesInfo, null, info.WavSubDir);
           string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
           prjSrc.readPrjFile(fName);
           string[] notes = prjSrc.Notes.Split('\n');
@@ -474,7 +476,7 @@ namespace BatInspector
           // copy files to a single project at destination and create project
           DebugLog.log("copy wav files...", enLogType.INFO);
           string fullDir = Path.Combine(info.DstDir, info.Name);
-          createPrjDirStructure(fullDir, out string wavDir);
+          createPrjDirStructure(fullDir, out string wavDir, info.WavSubDir);
           Utils.copyFiles(files, wavDir, info.RemoveSource);
           string[] xmlFiles = getSelectedFiles(info, "*.xml");
           DebugLog.log("copy xml files...", enLogType.INFO);
@@ -484,7 +486,7 @@ namespace BatInspector
           Project prj = new Project(regions, speciesInfo, null);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           DebugLog.log("creating project...", enLogType.INFO);
-          prj.fillFromDirectory(dir, AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
+          prj.fillFromDirectory(dir, info.WavSubDir, info.Landscape + "\n" + info.Weather);
 
           // copy location files is present
           DebugLog.log("copy location files...", enLogType.INFO);
@@ -567,7 +569,7 @@ namespace BatInspector
             File.Delete(oldXml);
         }
       }
-      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), AppParams.DIR_WAVS, info.Landscape + "\n" + info.Weather);
+      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), prj.WavSubDir, info.Landscape + "\n" + info.Weather);
     }
 
 
@@ -588,7 +590,7 @@ namespace BatInspector
         if((p + 1) == prjCnt) 
           fileCnt = files.Length - iFirst;
         string dirName = prj.PrjDir + "_" + p.ToString("D2");
-        bool ok = createPrjDirStructure(dirName, out string wavDir);
+        bool ok = createPrjDirStructure(dirName, out string wavDir, prj.WavSubDir);
         if (!ok)
           return retVal;
         DebugLog.log("Creating project " + dirName, enLogType.INFO);
@@ -717,8 +719,7 @@ namespace BatInspector
           _batExplorerPrj.Created = "";
         if (_batExplorerPrj.Notes == null)
           _batExplorerPrj.Notes = "";
-        if (/*(_batExplorerPrj.Type != null) && (_batExplorerPrj.Type.IndexOf("Elekon") >= 0) || */
-            Directory.Exists(_selectedDir + "/" + AppParams.DIR_WAVS))
+        if (Directory.Exists(Path.Combine(_selectedDir, AppParams.DIR_WAVS)))
           _wavSubDir = AppParams.DIR_WAVS;
         else
           _wavSubDir = "";

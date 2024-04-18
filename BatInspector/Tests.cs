@@ -342,6 +342,7 @@ namespace BatInspector
         Longitude = 8.123,
         StartTime = new DateTime(2022,7,12),
         EndTime = new DateTime(2022,7,14),
+        WavSubDir = AppParams.DIR_WAVS,
       };
       Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos);
     }

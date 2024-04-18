@@ -187,54 +187,29 @@ namespace BatInspector
       Array.Copy(_audio.Samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
       double wScaleFactor = 1.0;
- //     if (FFT_W3)
- //     {
-        enWIN_TYPE win = enWIN_TYPE.HANN;
-        switch(window)
-        {
-          case DSP.Window.Type.None:
-            win = enWIN_TYPE.NONE;
-            break;
-        }
-        int handle = BioAcoustics.getFft((uint)length, win);
-        lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal); 
- /*     }
-      else
+      enWIN_TYPE win = enWIN_TYPE.HANN;
+      switch(window)
       {
-        // Apply window to the Input Data & calculate Scale Factor
-        double[] wCoefs = DSP.Window.Coefficients(window, (uint)length);
-        double[] wInputData = DSP.Math.Multiply(inputSignal, wCoefs);
-        wScaleFactor = DSP.Window.ScaleFactor.Signal(wCoefs);
+        case DSP.Window.Type.None:
+          win = enWIN_TYPE.NONE;
+          break;
+      }
+      int handle = BioAcoustics.getFft((uint)length, win);
+      lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal); 
 
-        // Instantiate & Initialize a new DFT
-        FFT fft = new FFT();
-        fft.Initialize((uint)length, (uint)zeroPadding); // NOTE: Zero Padding
-
-        // Call the DFT and get the scaled spectrum back
-        Complex[] cSpectrum = fft.Execute(wInputData);
-
-        // Convert the complex spectrum to note: Magnitude Format
-        lmSpectrum = DSPLib.DSP.ConvertComplex.ToMagnitude(cSpectrum);
-      } */
       for (int i = 0; i < lmSpectrum.Length; i++)
       {
         if (logarithmic)
         {
           lmSpectrum[i] = Math.Log(lmSpectrum[i]) * wScaleFactor;
           if (lmSpectrum[i] > _maxAmplitude)
-          {
             _maxAmplitude = lmSpectrum[i];
-            _minAmplitude = _maxAmplitude - AppParams.Inst.GradientRange;
-          }
         }
         else
         {
           lmSpectrum[i] *= 100;
           if (lmSpectrum[i] > _maxAmplitude)
-          {
             _maxAmplitude = lmSpectrum[i];
-            _minAmplitude = 0;
-          }
         }
       }
       calcMinAmplitude();

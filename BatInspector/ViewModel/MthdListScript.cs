@@ -189,35 +189,8 @@ namespace BatInspector
         argv[4].changeType(AnyType.tType.RT_FLOAT);
         argv[5].changeType(AnyType.tType.RT_FLOAT);
         argv[6].changeType(AnyType.tType.RT_FLOAT);
-        argv[7].changeType(AnyType.tType.RT_STR);
-        argv[8].changeType(AnyType.tType.RT_STR);
-        info = new PrjInfo
-        {
-          Name = argv[0].getString(),
-          SrcDir = argv[1].getString(),
-          DstDir = argv[2].getString(),
-          MaxFileCnt = (int)argv[3].getInt64(),
-          MaxFileLenSec = (int)argv[4].getFloat(),
-          Latitude = argv[5].getFloat(),
-          Longitude = argv[6].getFloat(),
-          GpxFile = "",
-          Landscape = argv[7].getString(),
-          Weather = argv[8].getString(),
-          StartTime = new DateTime(1, 1, 1),
-          EndTime = new DateTime(2099, 12, 31),
-          OverwriteLocation = true,
-        };
-      }
-      else if(argv.Count == 8)
-      {
-        argv[0].changeType(AnyType.tType.RT_STR);
-        argv[1].changeType(AnyType.tType.RT_STR);
-        argv[2].changeType(AnyType.tType.RT_STR);
-        argv[3].changeType(AnyType.tType.RT_INT64);
-        argv[4].changeType(AnyType.tType.RT_FLOAT);
-        argv[5].changeType(AnyType.tType.RT_FLOAT);
-        argv[6].changeType(AnyType.tType.RT_FLOAT);
         argv[7].changeType(AnyType.tType.RT_BOOL);
+        argv[8].changeType(AnyType.tType.RT_BOOL);
         info = new PrjInfo
         {
           Name = argv[0].getString(),
@@ -230,13 +203,14 @@ namespace BatInspector
           GpxFile = "",
           Landscape = "",
           Weather = "",
-          RemoveSource = argv[7].getBool(),
           StartTime = new DateTime(1, 1, 1),
           EndTime = new DateTime(2099, 12, 31),
           OverwriteLocation = true,
+          WavSubDir = argv[8].getBool() ? AppParams.DIR_WAVS : "",
+          
         };
       }
-      else if (argv.Count == 7)
+      else if (argv.Count == 8)
       {
         argv[0].changeType(AnyType.tType.RT_STR);
         argv[1].changeType(AnyType.tType.RT_STR);
@@ -245,6 +219,7 @@ namespace BatInspector
         argv[4].changeType(AnyType.tType.RT_FLOAT);
         argv[5].changeType(AnyType.tType.RT_STR);
         argv[6].changeType(AnyType.tType.RT_BOOL);
+        argv[7].changeType(AnyType.tType.RT_BOOL);
         string locFile = argv[5].getString();
         info = new PrjInfo
         {
@@ -262,6 +237,7 @@ namespace BatInspector
           StartTime = new DateTime(1, 1, 1),
           EndTime = new DateTime(2099, 12, 31),
           OverwriteLocation = true,
+          WavSubDir = argv[7].getBool() ? AppParams.DIR_WAVS : "",
         };
         if (locFile.IndexOf(AppParams.EXT_GPX) >= 0)
           info.LocSourceGpx = true;

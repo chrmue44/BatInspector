@@ -1416,4 +1416,7 @@
   <data name="Boolean" xml:space="preserve">
     <value>Ja/Nein</value>
   </data>
+  <data name="Statistic" xml:space="preserve">
+    <value>Statistik</value>
+  </data>
 </root>

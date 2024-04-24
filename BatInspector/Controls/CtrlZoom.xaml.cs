@@ -18,11 +18,6 @@ using System;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
-using System.Text;
-using System.Web;
-using System.Diagnostics;
-using static DSPLib.DSP.Window;
-using System.Collections;
 using BatInspector.Forms;
 
 namespace BatInspector.Controls
@@ -228,11 +223,11 @@ namespace BatInspector.Controls
       _ctlTimeMin.setup("tMin[s]", enDataType.DOUBLE, 3, 50);
       _ctlTimeMax.setup("tMax[s]", enDataType.DOUBLE, 3, 50);
 
+      _oldCallIdx = -1;
       _cbMode.Items.Clear();
       _cbMode.Items.Add(BatInspector.Properties.MyResources.CtlWavCall);
       _cbMode.Items.Add("Cursor");
       _cbMode.SelectedIndex = 0;
-      _oldCallIdx = -1;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
     }
 
@@ -473,83 +468,33 @@ namespace BatInspector.Controls
     void initRulerA()
     {
       _rulerA.Children.Clear();
-      createLine(_rulerA, _rulerA.ActualWidth - 3, _imgXt.Margin.Top,
+      GraphHelper.createLine(_rulerA, _rulerA.ActualWidth - 3, _imgXt.Margin.Top,
                           _rulerA.ActualWidth - 3, _imgXt.ActualHeight + _imgXt.Margin.Top, Brushes.Black);
       int steps = 4;
       RulerData rData = _model.ZoomView.RulerDataA;
       for (int i = 0; i <= steps; i++)
       {
         double y = _imgXt.Margin.Top + _imgXt.ActualHeight * i / steps;
-        createLine(_rulerA, _rulerA.ActualWidth - 3, y,
+        GraphHelper.createLine(_rulerA, _rulerA.ActualWidth - 3, y,
                             _rulerA.ActualWidth - 10, y, Brushes.Black);
       }
       double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1 / 2;
-      createText(_rulerA, _rulerA.ActualWidth - 40, y0 - 5, "0.0", Colors.Black);
-      createText(_rulerA, _rulerA.ActualWidth - 40, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
+      GraphHelper.createText(_rulerA, _rulerA.ActualWidth - 40, y0 - 5, "0.0", Colors.Black);
+      GraphHelper.createText(_rulerA, _rulerA.ActualWidth - 40, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
     }
     void initRulerF()
     {
       _rulerF.Children.Clear();
-      int nrTicks = 9;
-      double[] fTicks = ZoomView.createTicks(nrTicks, _model.ZoomView.RulerDataF);
-      nrTicks = fTicks.Length;
-      createLine(_rulerF, _rulerF.ActualWidth - 3, _imgFt.Margin.Top,
-                          _rulerF.ActualWidth - 3, _imgFt.ActualHeight + _imgFt.Margin.Top, Brushes.Black);
-      RulerData rData = _model.ZoomView.RulerDataF;
-      double span = _model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min;
-      double min = _model.ZoomView.RulerDataF.Min;
-      for (int i = 0; i < nrTicks; i++)
-      {
-        double y = _imgFt.ActualHeight - (_imgFt.Margin.Top + (fTicks[i] - min) / span * _imgFt.ActualHeight);
-        createLine(_rulerF, _rulerF.ActualWidth - 3, y,
-                            _rulerF.ActualWidth - nrTicks, y, Brushes.Black);
-        string str = fTicks[i].ToString("0.#", CultureInfo.InvariantCulture);
-        createText(_rulerF, _rulerF.ActualWidth - 37, y - 9, str, Colors.Black);
-      }
+      GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max, 9);
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
-      int nrTicks = 9;
-      double[] tTicks = ZoomView.createTicks(nrTicks, _model.ZoomView.RulerDataT);
-      nrTicks = tTicks.Length;
-      createLine(_rulerT, 0, 3, _rulerT.ActualWidth, 3, Brushes.Black);
-      RulerData rData = _model.ZoomView.RulerDataT;
-      double span = _model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min;
-      double min = _model.ZoomView.RulerDataT.Min;
-      for (int i = 0; i < nrTicks; i++)
-      {
-        double x = _rulerT.ActualWidth * (tTicks[i] - min) / span;
-        createLine(_rulerT, x, 3, x, 10, Brushes.Black);
-        string str = tTicks[i].ToString("0.###", CultureInfo.InvariantCulture);
-        createText(_rulerT, x - 20, 15, str, Colors.Black);
-      }
+      GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, 9, "0.###");
     }
 
 
-    public static void createLine(Canvas ca, double x1, double y1, double x2, double y2, Brush brush, int thickness = 1)
-    {
-      Line li = new Line();
-      li.X1 = x1;
-      li.X2 = x2;
-      li.Y1 = y1;
-      li.Y2 = y2;
-      li.Stroke = brush;
-      li.StrokeThickness = thickness;
-      ca.Children.Add(li);
-    }
-
-    public static void createText(Canvas can, double x, double y, string text, Color color)
-    {
-      TextBlock textBlock = new TextBlock();
-      textBlock.Text = text;
-      textBlock.Foreground = new SolidColorBrush(color);
-      textBlock.TextAlignment = TextAlignment.Right;
-      Canvas.SetLeft(textBlock, x);
-      Canvas.SetTop(textBlock, y);
-      can.Children.Add(textBlock);
-    }
 
     public void tick(double ms)
     {
@@ -1115,6 +1060,7 @@ namespace BatInspector.Controls
     {
       int retVal = 0;
       ZoomView z = _model.ZoomView;
+      
       double tStart = _model.ZoomView.Analysis.getStartTime(_oldCallIdx);
       double tEnd = _model.ZoomView.Analysis.getEndTime(_oldCallIdx);
       double fMin = _model.ZoomView.RulerDataF.Min;
@@ -1281,7 +1227,16 @@ namespace BatInspector.Controls
       {
         if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
         {
-          ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+          if ((_model.Prj != null) && (_model.Prj.Ok))
+            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+          else if (_model.Query != null)
+            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName);
+          else
+          {
+            DebugLog.log("saving orignal filenot possible", enLogType.INFO);
+            return;
+          }
+
           double fMin = _model.ZoomView.Cursor1.Freq * 1000;
           double fMax = _model.ZoomView.Cursor2.Freq * 1000;
           _model.ZoomView.applyBandpass(fMin, fMax);
@@ -1310,7 +1265,15 @@ namespace BatInspector.Controls
       {
         if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
         {
-          ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+          if((_model.Prj != null) && _model.Prj.Ok)
+            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+          else if(_model.Query != null)
+            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName);
+          else
+          {
+            DebugLog.log("cut out not possible", enLogType.ERROR);
+            return;
+          }
           double tMin = _model.ZoomView.Cursor1.Time;
           double tMax = _model.ZoomView.Cursor2.Time;
           _model.ZoomView.removeSection(tMin, tMax);

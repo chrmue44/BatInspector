@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Controls;
 using libParser;
 using libScripter;
 using System;
@@ -309,78 +310,7 @@ namespace BatInspector
       _wf.Audio.undo();
     }
 
-    private static double nextStepDown(double step)
-    {
-      if (step >= 50)
-        return 50;
-      else if (step >= 20)
-        return 20;
-      else if (step >= 10)
-        return 10;
-      else if (step >= 5)
-        return 5;
-      else if (step >= 2)
-        return 2;
-      else if (step >= 1)
-        return 1;
-      else if (step >= 0.5)
-        return 0.5;
-      else if (step >= 0.2)
-        return 0.2;
-      else if (step >= 0.1)
-        return 0.1;
-      else if (step >= 0.05)
-        return 0.05;
-      else if (step >= 0.02)
-        return 0.02;
-      else if (step >= 0.01)
-        return 0.01;
-      else if (step >= 0.005)
-        return 0.005;
-      else if (step >= 0.002)
-        return 0.002;
-      else if (step >= 0.001)
-        return 0.001;
-      else if (step >= 0.0005)
-        return 0.0005;
-      else
-        return 0.0002;
-    }
-
-    private static double nextStepUp(double val, double step)
-    {
-      double retVal = val + step;
-      retVal -= retVal % step;
-      return retVal;
-    }
-
-    public static double[] createTicks(int n, RulerData ruler)
-    {
-      double[] retVal = new double[n];
-
-      double w = ruler.Max - ruler.Min;
-      double step = nextStepDown(w/n);
-      double min = nextStepUp(ruler.Min, step);
-      while (n > 2)
-      {
-        if (step * n > 3 * w / 4)
-        {
-          retVal = new double[n];
-          for (int i = 0; i < n; i++)
-          {
-            retVal[i] = i * step + min;
-          }
-          break;
-        }
-        else
-        {
-          n--;
-          step = nextStepDown(w / n);
-          min = nextStepUp(ruler.Min, step);
-        }
-      }
-      return retVal;
-    }
+   
 
     public static string getDestPathForOriginal(string wavName, string wavSubDir)
     {
@@ -397,6 +327,22 @@ namespace BatInspector
     {
       string dstPath = getDestPathForOriginal(wavName, wavSubDir);
       if(!Directory.Exists(dstPath)) 
+        Directory.CreateDirectory(dstPath);
+      string dstFile = Path.Combine(dstPath, Path.GetFileName(wavName));
+      if (!File.Exists(dstFile))
+        File.Copy(wavName, dstFile);
+    }
+
+
+    public static void saveWavBackup(string wavName)
+    {
+      string dstPath = "";
+      string srcPath = Path.GetDirectoryName(wavName);
+      if (srcPath.IndexOf(AppParams.DIR_WAVS) >= 0)
+        dstPath = srcPath.Replace(AppParams.DIR_WAVS, AppParams.DIR_ORIG);
+      else
+        dstPath = Path.Combine(srcPath, AppParams.DIR_ORIG);
+      if (!Directory.Exists(dstPath))
         Directory.CreateDirectory(dstPath);
       string dstFile = Path.Combine(dstPath, Path.GetFileName(wavName));
       if (!File.Exists(dstFile))

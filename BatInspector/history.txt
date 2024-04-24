@@ -2,9 +2,6 @@ TODO
 - GUI themes 
 - progress bar for long running tasks
 - species comparison
-- remove overdriven calls from report
-- script debugger
-- bulk import of multiple projects
 
 
 

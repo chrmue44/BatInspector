@@ -5,6 +5,7 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -78,7 +79,7 @@ namespace BatInspector.Forms
       for (double i = 0; i < w;i++)
       {
         System.Windows.Media.Color color = _model.ColorTable.getSwmColor(i, 0, w);
-        CtrlZoom.createLine(_cvImg, i, 0, i, h, new SolidColorBrush(color));
+        GraphHelper.createLine(_cvImg, i, 0, i, h, new SolidColorBrush(color));
       }
     }
 

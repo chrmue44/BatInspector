@@ -123,9 +123,12 @@ void FFT::hann (size_t fft_sz)
   {
     m_window[i] = 0.5 * (1 - std::cos(2*m_z*i));
   }
-  m_window[0] = m_window[1];
-  m_window[fft_sz - 1] = m_window[fft_sz - 2];
-}
+  if (fft_sz >= 2)
+  {
+    m_window[0] = m_window[1];
+    m_window[fft_sz - 1] = m_window[fft_sz - 2];
+  }
+ }
 
 void FFT::none(size_t fft_sz)
 {

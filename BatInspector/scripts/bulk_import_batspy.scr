@@ -1,7 +1,7 @@
 SET srcDir =(PAR1)
 SET dstDir =(PAR2)
-SET maxFiles =(PAR3)
-SET maxFileLen =(PAR4)
+SET maxFiles 1000
+SET maxFileLen 500
 
 SET dirCount =(countDirs(srcDir,"*") - 1)
 LOG =("found " + (dirCount + 1) + " projects")

@@ -211,14 +211,16 @@ namespace BatInspector
                            new ParamItem("Skalierfaktor", enParamType.MICSCELLANOUS,"PAR2")}),
         new ScriptItem(5, "bulk_import_batspy.scr", "mehrere BatSpy-Projekte importieren und auswerten", false, new List<ParamItem>()
                                                                                         {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
+                                                                                         new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2") }),
+        new ScriptItem(6, "bulk_import_wav.scr", "mehrere Verz. mit WAV Dateien importieren und auswerten", false, new List<ParamItem>()
+                                                                                        {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
                                                                                          new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
-                                                                                         new ParamItem("max. Anzahl Dateien/Projekt", enParamType.MICSCELLANOUS,"PAR3"),
-                                                                                         new ParamItem("maximale Dateilänge [s]", enParamType.MICSCELLANOUS,"PAR4") }),
-        new ScriptItem(6, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
-        new ScriptItem(7, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(8, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(9, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(10, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>())
+                                                                                         new ParamItem("Quelldateien löschen", enParamType.BOOL,"PAR3") }),
+        new ScriptItem(7, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
+        new ScriptItem(8, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(9, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(10, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(11, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>())
       };
     }
 

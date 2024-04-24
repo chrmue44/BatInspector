@@ -61,7 +61,6 @@ namespace BatInspector
     List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
     BatSpeciesRegions _batSpecRegions;
-    //ScatterDiagram _scatterDiagram;
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     Query _query;
@@ -119,8 +118,6 @@ namespace BatInspector
           return null;
       }
     }
-
-    //  public ScatterDiagram ScatterDiagram { get { return _scatterDiagram; } set { _scatterDiagram = value; } }
 
     public ViewModel(Forms.MainWindow mainWin, string version, DlgUpdateFile dlgUpdate)
     {

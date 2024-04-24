@@ -79,7 +79,9 @@ namespace BatInspector.Forms
       _model.Status.State = enAppState.IDLE;
       setLanguage();
       InitializeComponent();
+      InitializeComponent();
       _ctlScatter.setup(_model);
+      _ctlStatistic.setup(_model);
       StateChanged += MainWindowStateChangeRaised;
       _ctlLog._cbErr.IsChecked = AppParams.Inst.LogShowError;
       _ctlLog._cbWarn.IsChecked = AppParams.Inst.LogShowWarning;
@@ -219,12 +221,14 @@ namespace BatInspector.Forms
       if ((dir != null) && (Project.containsProject(dir) != ""))
       {
         initFileButton(false);
+        _tbSum.Visibility = Visibility.Visible;
         initializeProject(dir);
       }
       FileInfo file = item.Tag as FileInfo;
       if ((file != null) && Query.isQuery(file))
       {
         initFileButton(true);
+        _tbSum.Visibility = Visibility.Collapsed;
         initializeQuery(file);
       }
     }
@@ -238,6 +242,7 @@ namespace BatInspector.Forms
     {
       Filter.populateFilterComboBox(_cbFilter, _model);
       _ctlScatter.populateComboBoxes();
+      _ctlStatistic.populateComboBoxes();
     }
 
 
@@ -317,6 +322,7 @@ namespace BatInspector.Forms
       {
         _ctlPrjInfo.setup(_model.Prj);
         _ctlScatter.initPrj();
+        _ctlStatistic.initPrj();
         _switchTabToPrj = true;
         if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
           populateFiles();

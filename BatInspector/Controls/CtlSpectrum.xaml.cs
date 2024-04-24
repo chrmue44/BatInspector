@@ -79,9 +79,9 @@ namespace BatInspector.Controls
           int x1 = w;
           int x2 = w - (int)(w * (spectrum[y-1] / (max - min)));
           if (mode == 0)
-            CtrlZoom.createLine(_cvSpec, x1, y, x2, y, Brushes.Blue);
+            GraphHelper.createLine(_cvSpec, x1, y, x2, y, Brushes.Blue);
           else
-            CtrlZoom.createLine(_cvSpec, x1, y, x2, y, Brushes.Cyan);
+            GraphHelper.createLine(_cvSpec, x1, y, x2, y, Brushes.Cyan);
 
         }
       }

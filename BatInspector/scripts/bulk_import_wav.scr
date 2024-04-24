@@ -1,0 +1,29 @@
+SET srcDir =(PAR1)
+SET dstDir =(PAR2)
+SET removeSrc =(PAR3)
+SET maxFiles 1000
+SET maxFileLen 5
+
+SET dirCount =(countDirs(srcDir,"*") - 1)
+SET withSubDir 0
+LOG =("found " + (dirCount + 1) + " directories")
+
+FOR i 0 dirCount
+  SET prjDir =(getDir(i))
+  SET prjName =(getDir(i, 1))
+  SET dstPrj =(dstDir + "/" + prjName)
+  SET fileCount =(countFiles(prjDir,"*.gpx"))
+  IF =(fileCount == 0)
+    SET fileCount =(countFiles(prjDir,"*.kml"))
+  END    
+  IF =(fileCount > 0)
+    SET locFile =(getFile(0))
+    LOG =("importing " + prjDir + " ...")
+    =(createPrjFromFiles(prjName, prjDir, dstDir, maxFiles, maxFileLen, locFile, removeSrc, withSubDir))
+    =(openPrj(dstPrj))
+    =(inspectPrj())
+  ELSE
+    LOG =("no location file found in directory " + prjDir)
+  END
+END
+LOG =("bulk import completed")

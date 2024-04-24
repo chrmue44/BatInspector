@@ -954,7 +954,9 @@ namespace BatInspector
     public double getStartTime(int idx)
     {
       double retVal = 0;
-      if ((idx >= 0) && (idx < _calls.Count))
+      if (idx < 0)
+        idx = 0;
+      if (idx < _calls.Count)
       {
         string startTime = _calls[idx].getString(Cols.START_TIME);
         int pos = startTime.LastIndexOf(':');

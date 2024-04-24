@@ -298,7 +298,10 @@
                             <TabItem Name="_tbScatter" Header="{x:Static res:MyResources.frmMainScatterDiagram}" Margin="0,0,0,0"  >
                                 <controls:CtlScatter x:Name="_ctlScatter" />
                             </TabItem>
-                        </TabControl>
+              <TabItem Name="_tbStatistic" Header="{x:Static res:MyResources.Statistic}" Margin="0,0,0,0"  >
+                <controls:ctlStatistic x:Name="_ctlStatistic" />
+              </TabItem>
+            </TabControl>
                     </Grid>
                     <GridSplitter Name="_grdSplitterH" Grid.Row="2" Grid.Column="1" Height="7" HorizontalAlignment="Stretch" Margin="0" BorderThickness="0" DragCompleted="_grdSplitterH_DragCompleted"/>
                     <controls:CtlLog x:Name="_ctlLog" Grid.Row="3" Margin="10,0,10,5"/>

@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Controls;
 using libParser;
 using libScripter;
 using System;
@@ -85,6 +86,7 @@ namespace BatInspector
       // testBioAcoustics();
       //testFft();
       //testDenoising();
+      testNextStepDown();
       testIf(wrkDir);
       testWhile(wrkDir);
       testParser();
@@ -474,15 +476,32 @@ namespace BatInspector
     {
       RulerData ruler = new RulerData();
       ruler.setRange(0, 191);
-      double[] ticks = ZoomView.createTicks(9, ruler);
+      double[] ticks = GraphHelper.createTicks(9, ruler.Min, ruler.Max);
       ruler.setRange(20, 170);
-      double[] ticks1 = ZoomView.createTicks(9, ruler);
+      double[] ticks1 = GraphHelper.createTicks(9, ruler.Min, ruler.Max);
       ruler.setRange(47, 67);
-      double[] ticks2 = ZoomView.createTicks(9, ruler);
+      double[] ticks2 = GraphHelper.createTicks(9, ruler.Min, ruler.Max);
       ruler.setRange(67, 126);
-      double[] ticks3 = ZoomView.createTicks(9, ruler);
+      double[] ticks3 = GraphHelper.createTicks(9, ruler.Min, ruler.Max);
     }
 
+    private void testNextStepDown()
+    {
+      double v = GraphHelper.nextStepDown(67);
+      assert("Step 67 -> 50", v == 50);
+      v = GraphHelper.nextStepDown(17);
+      assert("Step 17 -> 10", v == 10);
+      v = GraphHelper.nextStepDown(47);
+      assert("Step 47 -> 20", v == 20);
+      v = GraphHelper.nextStepDown(6700);
+      assert("Step 6700 -> 5000", v == 5000);
+      v = GraphHelper.nextStepDown(0.006);
+      assert("Step 0.006 -> 0.005", v == 0.005);
+      v = GraphHelper.nextStepDown(6);
+      assert("Step 6 -> 5", v == 5);
+      v = GraphHelper.nextStepDown(0.3);
+      assert("Step 0.3 -> 0.2", v == 0.2);
+    }
 
     private void testGpx()
     {

@@ -138,7 +138,7 @@ namespace BatInspector
     private bool crawl(DirectoryInfo dir)
     {
       DirectoryInfo[] dirs = dir.GetDirectories();
-      bool ok = false;
+      bool ok = true;
       foreach (DirectoryInfo d in dirs)
       {
         if (Project.containsProject(d) != "")

@@ -1,3 +1,10 @@
+TODO
+- filtered statistics for Fmin, Fmax, FmaxAmpl, duration, ...
+- choose between different AI models
+- information about chosen model in project file
+- training of model
+- improve handling of script inventory during software update: copy scripts that are not present or older
+
 V0.8.1.0
 - new script functions: importPrj, getDirCount, getFileCount, getDir, getFile, mkDir
 - simple script debugger
@@ -9,6 +16,8 @@ V0.8.1.0
 - new option "remove source files" in import dialog
 - extended options for script function createPrjFromFiles()
 - new parameter type BOOL for scripts
+- editing files is now possible in queries
+- scripts for bulk import
 
 V0.8.0.0   24.03.24
 - setup and status dialog for BatSpy recording device
@@ -28,7 +37,6 @@ V0.8.0.0   24.03.24
 - bugfix:no more crash in case of exception in script execution (try catch)
 - new version BatDetect2: 1.0.8, python 3.11.0
 - directories in project browser ordered by name
-
 
 V0.7.3.0   10.11.23
 - show recording time in zoom view in more convenient format

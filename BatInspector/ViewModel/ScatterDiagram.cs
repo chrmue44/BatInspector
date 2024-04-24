@@ -21,10 +21,10 @@ namespace BatInspector
     FreqMaxAmp,
     FreqMin,
     FreqMax,
-    FreqKnee,
+ //   FreqKnee,
     Duration,
     DistToPrev,
-    Fc
+ //   Fc
   }
 
   public struct stAxisItem
@@ -63,8 +63,8 @@ namespace BatInspector
       _axisItems.Add(new stAxisItem(enScatterAxis.FreqMaxAmp, "Hz"));
       _axisItems.Add(new stAxisItem(enScatterAxis.FreqMin, "Hz"));
       _axisItems.Add(new stAxisItem(enScatterAxis.FreqMax, "Hz"));
-      _axisItems.Add(new stAxisItem(enScatterAxis.FreqKnee, "Hz"));
-      _axisItems.Add(new stAxisItem(enScatterAxis.Fc, "Hz"));
+//      _axisItems.Add(new stAxisItem(enScatterAxis.FreqKnee, "Hz"));
+//      _axisItems.Add(new stAxisItem(enScatterAxis.Fc, "Hz"));
       _axisItems.Add(new stAxisItem(enScatterAxis.Duration, "ms"));
       _axisItems.Add(new stAxisItem(enScatterAxis.DistToPrev, "ms"));
 /*      _axisItems.Add(new stAxisItem("bandwidth", fMax, "kHz"));
@@ -165,18 +165,18 @@ namespace BatInspector
         case enScatterAxis.FreqMax:
           retVal = call.getDouble(Cols.F_MAX);
           break;
-        case enScatterAxis.FreqKnee:
-          retVal = call.getDouble(Cols.F_KNEE);
-          break;
+     //   case enScatterAxis.FreqKnee:
+     //     retVal = call.getDouble(Cols.F_KNEE);
+     //     break;
         case enScatterAxis.Duration:
           retVal = call.getDouble(Cols.DURATION);
           break;
         case enScatterAxis.DistToPrev:
           retVal = call.DistToPrev;
           break;
-        case enScatterAxis.Fc:
-          retVal = call.getDouble(Cols.FC);
-          break;
+//        case enScatterAxis.Fc:
+//          retVal = call.getDouble(Cols.FC);
+//          break;
         default:
           retVal = 0;
           break;

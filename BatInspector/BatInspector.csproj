@@ -126,6 +126,9 @@
     <Compile Include="Controls\ctlDebugLine.xaml.cs">
       <DependentUpon>ctlDebugLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlHistogram.xaml.cs">
+      <DependentUpon>ctlHistogram.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlParamEditItem.xaml.cs">
       <DependentUpon>ctlParamEditItem.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,9 @@
     </Compile>
     <Compile Include="Controls\ctlExpressionEditor.xaml.cs">
       <DependentUpon>ctlExpressionEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctlStatistic.xaml.cs">
+      <DependentUpon>ctlStatistic.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CtlScatter.xaml.cs">
       <DependentUpon>CtlScatter.xaml</DependentUpon>
@@ -175,6 +181,7 @@
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FolderPicker.cs" />
+    <Compile Include="Controls\GraphHelper.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
@@ -275,6 +282,7 @@
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\gpx.cs" />
     <Compile Include="ViewModel\gpxPart.cs" />
+    <Compile Include="ViewModel\Histogram.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\kml.cs" />
     <Compile Include="ViewModel\kmlPart.cs" />
@@ -290,6 +298,7 @@
     <Compile Include="ViewModel\SimCall.cs" />
     <Compile Include="ViewModel\SoundEdit.cs" />
     <Compile Include="ViewModel\Spectrum.cs" />
+    <Compile Include="ViewModel\Statistic.cs" />
     <Compile Include="ViewModel\SumReport.cs" />
     <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
@@ -320,6 +329,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ctlHistogram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ctlParamEditItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -335,6 +348,10 @@
     <Page Include="Controls\ctlExpressionEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlStatistic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CtlScatter.xaml">
       <SubType>Designer</SubType>

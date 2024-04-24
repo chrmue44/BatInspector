@@ -3643,6 +3643,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string Statistic {
+            get {
+                return ResourceManager.GetString("Statistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {

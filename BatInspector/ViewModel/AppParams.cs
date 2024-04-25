@@ -203,7 +203,8 @@ namespace BatInspector
     const string _dataPath = "dataPath.txt";
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;
     public const string PythonBin = "\"C:/Program Files/Python310/python.exe\"";
-    public const int MAX_LOG_COUNT = 600;
+    public const int MAX_LOG_COUNT = 600;     // max. numbe rof log entries before creating a new log file
+    public const int STATISTIC_CLASSES = 40;  // number of classes in statistic histograms
 
     static AppParams _inst = null;
 

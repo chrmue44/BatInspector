@@ -9,14 +9,10 @@
              xmlns:res="clr-namespace:BatInspector.Properties" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" SizeChanged="UserControl_SizeChanged">
-  <Control.DataContext>
-    <!--    <controls:DropDownCmds /> -->
-        <viewmodel:Statistic x:Name="_statistic"/>
-  </Control.DataContext>
 
   <Grid >
       <Grid.RowDefinitions>
-        <RowDefinition Height="30"/>
+        <RowDefinition Height="35"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
       <StackPanel Grid.Row="0">
@@ -33,11 +29,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
       <local:ctlHistogram x:Name="_stat1" Grid.Row="0" Grid.Column="0"/>
       <local:ctlHistogram x:Name="_stat2" Grid.Row="0" Grid.Column="1"/>
       <local:ctlHistogram x:Name="_stat3" Grid.Row="1" Grid.Column="0"/>
       <local:ctlHistogram x:Name="_stat4" Grid.Row="1" Grid.Column="1"/>
+      <local:ctlHistogram x:Name="_stat5" Grid.Row="0" Grid.Column="2"/>
     </Grid>
   </Grid>
 </UserControl>

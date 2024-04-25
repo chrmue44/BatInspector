@@ -93,6 +93,7 @@ namespace BatInspector
       testCsvFuncs(wrkDir);
       testClassifier();
       testSumReport();
+      testHistogram();
       //testGpx();
       //testKml();
       testLocfileTxt();
@@ -170,6 +171,21 @@ namespace BatInspector
       assert(scr.getVariable("c43"), "43");
       assert(scr.getVariable("c55"), "55");
       assert(scr.getVariable("c62"), "62");
+    }
+
+    private void testHistogram()
+    {
+      Histogram h = new Histogram(10);
+      h.init(0, 10);
+      h.add(5);
+      h.add(6);
+      h.add(7);
+      h.add(5);
+      h.add(6);
+      h.add(7);
+      assert("mean", h.Mean == 6);
+      assert("count", h.Count == 6);
+      assert("stddev", Math.Abs(h.StdDev - 0.894) < 0.001);
     }
 
     private void testWhile(string wrkDir)

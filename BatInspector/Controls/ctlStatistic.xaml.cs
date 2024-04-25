@@ -8,9 +8,7 @@
 using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using OxyPlot;
+
 using System;
 using System.Windows.Controls;
 
@@ -32,6 +30,11 @@ namespace BatInspector.Controls
     public void setup(ViewModel model)
     {
       _model = model;
+      _stat1.initHistogram(_model.Statistic.Fmin, BatInspector.Properties.MyResources.ctlStatMinFreq);
+      _stat2.initHistogram(_model.Statistic.Fmax, BatInspector.Properties.MyResources.ctlStatMaxFreq);
+      _stat3.initHistogram(_model.Statistic.FmaxAmp, BatInspector.Properties.MyResources.ctlStatFreqMaxAmp);
+      _stat4.initHistogram(_model.Statistic.Duration, BatInspector.Properties.MyResources.ctlStatDuration);
+      _stat5.initHistogram(_model.Statistic.CallDist, BatInspector.Properties.MyResources.ctlStatCallInterval);
     }
 
     public void populateComboBoxes()
@@ -39,32 +42,6 @@ namespace BatInspector.Controls
       Filter.populateFilterComboBox(_cbFilterStatistic, _model);
     }
 
-    public void initPrj()
-    {
-      Histogram h = new Histogram(20);
-      h.init(0, 1000);
-      _stat1.initHistogram(h, "Fmin [Hz]");
-      h.add(100);
-      h.add(105);
-      h.add(110);
-      h.add(115);
-      h.add(200);
-      h.add(200);
-      h.add(200);
-      h.add(500);
-      h.add(110);
-      h.add(115);
-      h.add(1000);
-
-      _stat1.createHistogram();
-  /*   _cbXaxis.Items.Clear();
-      _cbYaxis.Items.Clear();
-      foreach (stAxisItem it in _scattDiagram.AxisItems)
-      {
-        _cbXaxis.Items.Add(it.Name);
-        _cbYaxis.Items.Add(it.Name);
-      } */
-    }
 
     public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ViewModel model, ComboBox cbFilter)
     {
@@ -120,22 +97,24 @@ namespace BatInspector.Controls
 
     private void createPlot()
     {
-      FilterItem filter = (_cbFilterStatistic.SelectedIndex == 1) ?
-                  filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilterScatter.Text);
-
-      foreach (AnalysisFile f in _model.Prj.Analysis.Files)
+      try
       {
-        foreach (AnalysisCall c in f.Calls)
+        FilterItem filterExp = (_cbFilterStatistic.SelectedIndex == 1) ?
+                    filterExp = _model.Filter.TempFilter : filterExp = _model.Filter.getFilter(_cbFilterStatistic.Text);
+        if (_model.CurrentlyOpen != null)
         {
-          bool res = (filter == null) || _model.Filter.apply(filter, c);
-          if (res)
-          {
-            _stat1
-          }
+          _model.Statistic.calcStatistic(filterExp, _model.CurrentlyOpen.Analysis, _model.Filter);
+          _stat1.createHistogram();
+          _stat2.createHistogram();
+          _stat3.createHistogram();
+          _stat4.createHistogram();
+          _stat5.createHistogram();
         }
       }
-
-      _stat1.createHistogram();
+      catch(Exception ex) 
+      {
+        DebugLog.log("ctlStatistic: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _cbFilter_DropDownOpened(object sender, EventArgs e)
@@ -146,7 +125,7 @@ namespace BatInspector.Controls
 
     private void _cbFilter_DropDownClosed(object sender, EventArgs e)
     {
-      DebugLog.log("CtlScatter: Filter dropdown closed", enLogType.DEBUG);
+      DebugLog.log("CtlStatistic: Filter dropdown closed", enLogType.DEBUG);
       bool apply;
       bool resetFilter;
 

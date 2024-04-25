@@ -7,6 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <GroupBox Name="_grp" Header="Title" Margin="5">
-        <Canvas Name ="_cnv" Margin="15" Grid.RowSpan="2"  ></Canvas>
+    <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <local:ctlDataItem x:Name="_ctlMean"/>
+                <local:ctlDataItem x:Name="_ctlStdDev" Margin="10,0,0,0"/>
+                <local:ctlDataItem x:Name="_ctlCnt" Margin="10,0,0,0"/>
+            </StackPanel>
+      <Canvas Name ="_cnv" Margin="15" Grid.RowSpan="2" MouseMove="_cnv_MouseMove" MouseLeave="_cnv_MouseLeave"></Canvas>
+      <Popup Name="_ftToolTip" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=_cnv}" Margin="10">
+        <TextBlock Name="_tbf" Margin="10"  Background="LightGray" Foreground="Black">Look At Me</TextBlock>
+      </Popup>
+    </StackPanel>
+
   </GroupBox>
 </UserControl>

@@ -322,7 +322,6 @@ namespace BatInspector.Forms
       {
         _ctlPrjInfo.setup(_model.Prj);
         _ctlScatter.initPrj();
-        _ctlStatistic.initPrj();
         _switchTabToPrj = true;
         if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
           populateFiles();

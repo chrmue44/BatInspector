@@ -13,7 +13,7 @@ namespace BatInspector
     
     public List<int> Classes { get { return _list; } }
 
-    public double Mean { get { return _sum / _cnt; } }
+    public double Mean { get { return _cnt > 0 ? _sum / _cnt : 0; } }
     public double Min { get { return _min; } }
     public double Max { get { return _max; } }
 
@@ -22,7 +22,7 @@ namespace BatInspector
         if (_cnt < 2)
           return 0;
         else
-          return Math.Sqrt((_sumSquare - _cnt * _sum * _sum) / (_cnt - 1));
+          return Math.Sqrt((_sumSquare - _sum * _sum/_cnt) / (_cnt - 1));
       } }
 
     public int MaxCount 
@@ -52,10 +52,30 @@ namespace BatInspector
       _list[idx]++;        
     }
 
+    public double getClassMin(int i)
+    {
+      if(i < 0)
+        i= 0;
+      if(i > (_cntClasses - 1))
+        i = _cntClasses - 1;
+      return (_max - _min) * i / _cntClasses + _min;
+    }
+
+    public double getClassMax(int i)
+    {
+      if (i < 0)
+        i = 0;
+      if (i > (_cntClasses - 1))
+        i = _cntClasses - 1;
+      return (_max - _min) * (i + 1) / _cntClasses + _min;
+    }
+
     public void init(double min, double max)
     {
       _min = min;
       _max = max;
+      _sum = 0;
+      _sumSquare = 0;
       if (_max == _min)
         _max = _min + 1.0;
       _list.Clear();

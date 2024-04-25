@@ -65,6 +65,7 @@ namespace BatInspector
     List<BaseModel> _models;
     Query _query;
     CtrlRecorder _recorder;
+    Statistic _statistic;
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -100,6 +101,8 @@ namespace BatInspector
     public Query Query { get { return _query; } set { _query = value; } }
 
     public ModelState Status { get; set; }
+
+    public Statistic Statistic { get { return _statistic; } }
     
     public CtrlRecorder Recorder { get { return _recorder; } }
 
@@ -154,6 +157,7 @@ namespace BatInspector
       _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
       //_prj.Analysis.init(_prj.SpeciesInfos);
       _recorder = new CtrlRecorder(_colorTable);
+      _statistic = new Statistic(AppParams.STATISTIC_CLASSES);
       UpdateUi = false;
     }
 

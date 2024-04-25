@@ -22,16 +22,16 @@ namespace BatInspector.Controls
       ca.Children.Add(li);
     }
 
-    public static void createFill(Canvas ca, double x1, double y1, double x2, double y2, Brush brush)
+    public static void createBox(Canvas ca, double x1, double y1, double x2, double y2, int stroke, Brush brushBorder, Brush brushFill)
     {
       if ((x2 > x1) && (y2 > y1))
       {
         Rectangle r = new Rectangle();
         r.Width = x2 - x1;
         r.Height = y2 - y1;
-        r.Stroke = brush;
-        r.StrokeThickness = 1;
-        r.Fill = brush;
+        r.Stroke = brushBorder;
+        r.StrokeThickness = stroke;
+        r.Fill = brushFill;
         Canvas.SetLeft(r, x1);
         Canvas.SetTop(r, y1);
         ca.Children.Add(r);
@@ -62,6 +62,8 @@ namespace BatInspector.Controls
     /// <param name="nrTicks">nr of ticks</param>
     public static void createRulerY(Canvas can, double x, double y, double height, double min, double max, int nrTicks = 9, string nrFmt = "0.#")
     {
+      if (max == min)
+        max += 1;
       double[] fTicks = GraphHelper.createTicks(nrTicks, min, max);
       nrTicks = fTicks.Length;
       GraphHelper.createLine(can, x , y, x , y + height, Brushes.Black);

@@ -1419,4 +1419,34 @@
   <data name="Statistic" xml:space="preserve">
     <value>Statistics</value>
   </data>
+  <data name="ctlStatMinFreq" xml:space="preserve">
+    <value>min. Frequency [kHz]</value>
+  </data>
+  <data name="ctlStatMaxFreq" xml:space="preserve">
+    <value>max. Frequency [kHz]</value>
+  </data>
+  <data name="ctlStatFreqMaxAmp" xml:space="preserve">
+    <value>Frequency for max. Intensity [kHz]</value>
+  </data>
+  <data name="ctlStatDuration" xml:space="preserve">
+    <value>Call Duration [ms]</value>
+  </data>
+  <data name="ctlStatCallInterval" xml:space="preserve">
+    <value>Call Interval [ms]</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="StdDev" xml:space="preserve">
+    <value>StdDev</value>
+  </data>
+  <data name="Mean" xml:space="preserve">
+    <value>Mean v.</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Count</value>
+  </data>
 </root>

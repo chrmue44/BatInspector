@@ -178,6 +178,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string Class {
+            get {
+                return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blue.
         /// </summary>
         public static string ColorMapBlue {
@@ -246,6 +255,15 @@ namespace BatInspector.Properties {
         public static string Connect {
             get {
                 return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count.
+        /// </summary>
+        public static string Count {
+            get {
+                return ResourceManager.GetString("Count", resourceCulture);
             }
         }
         
@@ -363,6 +381,51 @@ namespace BatInspector.Properties {
         public static string CtlSpecProofSpecies {
             get {
                 return ResourceManager.GetString("CtlSpecProofSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call Interval [ms].
+        /// </summary>
+        public static string ctlStatCallInterval {
+            get {
+                return ResourceManager.GetString("ctlStatCallInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call Duration [ms].
+        /// </summary>
+        public static string ctlStatDuration {
+            get {
+                return ResourceManager.GetString("ctlStatDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frequency for max. Intensity [kHz].
+        /// </summary>
+        public static string ctlStatFreqMaxAmp {
+            get {
+                return ResourceManager.GetString("ctlStatFreqMaxAmp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to max. Frequency [kHz].
+        /// </summary>
+        public static string ctlStatMaxFreq {
+            get {
+                return ResourceManager.GetString("ctlStatMaxFreq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min. Frequency [kHz].
+        /// </summary>
+        public static string ctlStatMinFreq {
+            get {
+                return ResourceManager.GetString("ctlStatMinFreq", resourceCulture);
             }
         }
         
@@ -2833,6 +2896,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mean v..
+        /// </summary>
+        public static string Mean {
+            get {
+                return ResourceManager.GetString("Mean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fmin.
         /// </summary>
         public static string MinFrequency {
@@ -2955,6 +3027,15 @@ namespace BatInspector.Properties {
         public static string PointInTime {
             get {
                 return ResourceManager.GetString("PointInTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
         
@@ -3657,6 +3738,15 @@ namespace BatInspector.Properties {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StdDev.
+        /// </summary>
+        public static string StdDev {
+            get {
+                return ResourceManager.GetString("StdDev", resourceCulture);
             }
         }
         

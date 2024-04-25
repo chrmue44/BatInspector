@@ -10,7 +10,9 @@ using libParser;
 using libScripter;
 using System;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace BatInspector
 {
@@ -64,6 +66,8 @@ namespace BatInspector
   public class BioAcoustics
   {
 
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static void analyzeFiles(string reportName, string path)
     {
       string[] files = Directory.GetFiles(path, "*.wav");
@@ -91,6 +95,8 @@ namespace BatInspector
       csv.saveAs(reportName);
     }
 
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     static void addToReport(Csv csv, string fName, int samplingRate, double duration, ThresholdDetectItem[] items)
     {
       for (int i = 0; i < items.Length; i++)
@@ -136,6 +142,8 @@ namespace BatInspector
       }
     }
 
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static ThresholdDetectItem[] analyzeCalls(string wavFile, out int sampleRate, out double duration)
     {
       WavFile wav = new WavFile();
@@ -188,48 +196,83 @@ namespace BatInspector
     }
 
     //https://learn.microsoft.com/de-de/dotnet/framework/interop/marshalling-different-types-of-arrays
-
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static double[] calculateFft(int size, enWIN_TYPE window, int[] samples)
     {
-      int handle = getFft((uint)size, window);
       double[] retVal = new double[size / 2];
-      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal));
-      calcFftInt(handle, samples, ref buffer);
-      Marshal.Copy(buffer, retVal, 0, size);
-      Marshal.FreeCoTaskMem(buffer);
+      try
+      {
+        int handle = getFft((uint)size, window);
+        IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal));
+        calcFftInt(handle, samples, ref buffer);
+        Marshal.Copy(buffer, retVal, 0, size);
+        Marshal.FreeCoTaskMem(buffer);
+      }
+      catch(Exception ex) 
+      {
+        DebugLog.log("calculateFft: " + ex.ToString(), enLogType.ERROR); 
+      }
       return retVal;
     }
 
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static double[] calculateFft(int handle, double[] samples)
     {
       int size = getFftSize(handle);
       double[] retVal = new double[size / 2];
-      IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size / 2 + 100);
-      calcFftDouble(handle,samples, ref buffer);
-      Marshal.Copy(buffer, retVal, 0, size / 2);
-      Marshal.FreeCoTaskMem(buffer);
+      try
+      { 
+        IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size / 2 + 100);
+        calcFftDouble(handle,samples, ref buffer);
+        Marshal.Copy(buffer, retVal, 0, size / 2);
+        Marshal.FreeCoTaskMem(buffer);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("calculateFft: " + ex.ToString(), enLogType.ERROR);
+      }
       return retVal;
     }
 
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static double[] calculateFftComplexOut(int handle, double[] samples)
     {
       int size = getFftSize(handle);
       double[] retVal = new double[size];
+      try
+      { 
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size + 100);
       calcFftComplexOut(handle, samples, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size);
       Marshal.FreeCoTaskMem(buffer);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("calculateFftComplexOut: " + ex.ToString(), enLogType.ERROR);
+      }
       return retVal;
     }
 
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static double[] calculateFftReversed(int handle, double[] spec)
     {
       int size = getFftSize(handle);
       double[] retVal = new double[size];
+      try
+      { 
       IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size + 100);
       calcFftInverseComplex(handle, spec, ref buffer);
       Marshal.Copy(buffer, retVal, 0, size);
       Marshal.FreeCoTaskMem(buffer);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("calculateFftComplexOut: " + ex.ToString(), enLogType.ERROR);
+      }
       return retVal;
     }
 
@@ -240,24 +283,33 @@ namespace BatInspector
     /// <param name="fMin">min frequency of passband [Hz]</param>
     /// <param name="fMax">max frequency of passband [Hz]</param>
     /// <param name="samplingRate">sampling rate [Hz]</param>
+    [HandleProcessCorruptedStateExceptions]
+    [SecurityCritical]
     public static void applyBandpassFilterComplex(ref double[] spectrum, double fMin, double fMax, uint samplingRate)
     {
-      int sk = spectrum.Length;
-      int iFmin = (int)(fMin / samplingRate * spectrum.Length);
-      int iFmax = (int)(fMax / samplingRate * spectrum.Length);
-      for (int i = 0; i < spectrum.Length / 2; i++)
+      try
       {
-        --sk;
-        if (i < iFmin)
+        int sk = spectrum.Length;
+        int iFmin = (int)(fMin / samplingRate * spectrum.Length);
+        int iFmax = (int)(fMax / samplingRate * spectrum.Length);
+        for (int i = 0; i < spectrum.Length / 2; i++)
         {
-          spectrum[i] = 0;
-          spectrum[sk] = 0;
+          --sk;
+          if (i < iFmin)
+          {
+            spectrum[i] = 0;
+            spectrum[sk] = 0;
+          }
+          else if (i > iFmax)
+          {
+            spectrum[i] = 0;
+            spectrum[sk] = 0;
+          }
         }
-        else if (i > iFmax)
-        {
-          spectrum[i] = 0;
-          spectrum[sk] = 0;
-        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("applyBandpassFilterComplex: " + ex.ToString(), enLogType.ERROR);
       }
     }
 

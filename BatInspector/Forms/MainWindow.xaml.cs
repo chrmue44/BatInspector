@@ -29,6 +29,8 @@ namespace BatInspector.Forms
 {
 
   delegate void dlgProgress(string pngName);
+  delegate void dlgInitPrj(DirectoryInfo dir);
+  delegate void dlgInitQuery(FileInfo file);
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -61,6 +63,7 @@ namespace BatInspector.Forms
     Thread _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
+    Stopwatch _sw = new Stopwatch();
 
     public MainWindow()
     {
@@ -78,7 +81,6 @@ namespace BatInspector.Forms
       _model = new ViewModel(this, versionStr, callbackUpdateAnalysis);
       _model.Status.State = enAppState.IDLE;
       setLanguage();
-      InitializeComponent();
       InitializeComponent();
       _ctlScatter.setup(_model);
       _ctlStatistic.setup(_model);
@@ -215,21 +217,36 @@ namespace BatInspector.Forms
 
     public void TreeViewItem_Selected(object sender, RoutedEventArgs e)
     {
+      BackgroundWorker worker = new BackgroundWorker();
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
+      _sw.Restart();
       _spSpectrums.Children.Clear();
       if ((dir != null) && (Project.containsProject(dir) != ""))
       {
         initFileButton(false);
         _tbSum.Visibility = Visibility.Visible;
-        initializeProject(dir);
+        worker.DoWork += delegate (object s, DoWorkEventArgs args)
+        {
+          DirectoryInfo d = (DirectoryInfo)args.Argument;
+          initializeProject(d);
+        };
+        worker.RunWorkerAsync(dir);
       }
-      FileInfo file = item.Tag as FileInfo;
-      if ((file != null) && Query.isQuery(file))
+      else
       {
-        initFileButton(true);
-        _tbSum.Visibility = Visibility.Collapsed;
-        initializeQuery(file);
+        FileInfo file = item.Tag as FileInfo;
+        if ((file != null) && Query.isQuery(file))
+        {
+          initFileButton(true);
+          _tbSum.Visibility = Visibility.Collapsed;
+          worker.DoWork += delegate (object s, DoWorkEventArgs args)
+          {
+            FileInfo f = (FileInfo)args.Argument;
+            initializeQuery(f);
+          };
+          worker.RunWorkerAsync(file);
+        }
       }
     }
 
@@ -261,27 +278,33 @@ namespace BatInspector.Forms
 
     void initializeQuery(FileInfo file)
     {
-      DebugLog.log("start to open query", enLogType.DEBUG);
-      _scrlViewer.ScrollToVerticalOffset(0);
-      checkSavePrj();
-      _model.initQuery(file);
-      if (_frmQuery == null)
-        _frmQuery = new FrmQuery(_model);
-      _frmQuery.initFieldsFromQuery();
-
-      _switchTabToPrj = true;
-      _lblProject.Text = "QUERY: " + file.FullName;
-      if (_model.Query != null)
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
-          populateFiles();
-        else
+        Dispatcher.BeginInvoke(new dlgInitQuery(initializeQuery), file);
+      }
+      else
+      {
+        DebugLog.log("start to open query", enLogType.DEBUG);
+        _scrlViewer.ScrollToVerticalOffset(0);
+        checkSavePrj();
+        _model.initQuery(file);
+        if (_frmQuery == null)
+          _frmQuery = new FrmQuery(_model);
+        _frmQuery.initFieldsFromQuery();
+
+        _switchTabToPrj = true;
+        _lblProject.Text = "QUERY: " + file.FullName;
+        if (_model.Query != null)
         {
-          DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
-          hideMsg();
+          if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
+            populateFiles();
+          else
+          {
+            DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
+            hideMsg();
+          }
         }
       }
-
     }
 
     /// <summary>
@@ -309,24 +332,30 @@ namespace BatInspector.Forms
 
     void initializeProject(DirectoryInfo dir)
     {
-      showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading, true);
-      DebugLog.log("start to open project", enLogType.DEBUG);
-      _scrlViewer.ScrollToVerticalOffset(0);
-      checkSavePrj();
-      _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
-      setStatus("");
-  //    _spSpectrums.Children.Clear();
-      _model.initProject(dir, callbackUpdateAnalysis);
-      _tbReport_GotFocus(_spSpectrums, null);
-      if ((_model.Prj != null) && _model.Prj.Ok)
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        _ctlPrjInfo.setup(_model.Prj);
-        _ctlScatter.initPrj();
-        _switchTabToPrj = true;
-        if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
-          populateFiles();
-        else
-          DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
+        Dispatcher.BeginInvoke(new dlgInitPrj(initializeProject), dir);
+      }
+      else
+      {
+        showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading, true);
+        DebugLog.log("start to open project", enLogType.DEBUG);
+        _scrlViewer.ScrollToVerticalOffset(0);
+        checkSavePrj();
+        _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
+        setStatus("");
+        _model.initProject(dir, callbackUpdateAnalysis);
+        _tbReport_GotFocus(_spSpectrums, null);
+        if ((_model.Prj != null) && _model.Prj.Ok)
+        {
+          _ctlPrjInfo.setup(_model.Prj);
+          _ctlScatter.initPrj();
+          _switchTabToPrj = true;
+          if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
+            populateFiles();
+          else
+            DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
+        }
       }
     }
 
@@ -1666,6 +1695,11 @@ namespace BatInspector.Forms
       }
     }
     #endregion
+
+    private void _tbStatistic_GotFocus(object sender, RoutedEventArgs e)
+    {
+      _ctlStatistic.createPlot();
+    }
   }
   public enum enWinType
   {

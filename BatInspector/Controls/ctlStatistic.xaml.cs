@@ -95,7 +95,7 @@ namespace BatInspector.Controls
       createPlot();
     }*/
 
-    private void createPlot()
+    public void createPlot()
     {
       try
       {

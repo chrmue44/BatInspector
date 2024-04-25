@@ -49,7 +49,9 @@ namespace BatInspector
             _fmax.add(c.getDouble(Cols.F_MAX)/1000);
             _fmaxAmp.add(c.getDouble(Cols.F_MAX_AMP)/1000);
             _duration.add(c.getDouble(Cols.DURATION));
-            _callDist.add(c.getDouble(Cols.CALL_INTERVALL));
+            double callInterval = c.getDouble(Cols.CALL_INTERVALL);
+            if (callInterval > 0)      // <= 0 means: no call interval detected
+            _callDist.add(callInterval);
           }
         }
       }

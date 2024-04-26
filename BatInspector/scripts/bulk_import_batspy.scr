@@ -4,14 +4,15 @@ SET maxFiles 1000
 SET maxFileLen 500
 
 SET dirCount =(countDirs(srcDir,"*") - 1)
-LOG =("found " + (dirCount + 1) + " projects")
+LOG =("found " + (dirCount + 1) + " sub directories"
 
 FOR i 0 dirCount
   SET prjDir =(getDir(i))
   SET dstPrj =(dstDir + "/" + getDir(i, 1))
   LOG =("importing " + prjDir + " ...")
-  =(importPrj(prjDir, dstDir, maxFiles, maxFileLen))
-  =(openPrj(dstPrj))
-  =(inspectPrj())
+  IF =(importPrj(prjDir, dstDir, maxFiles, maxFileLen) == 0)
+    =(openPrj(dstPrj))
+    =(inspectPrj())
+  END
 END
 LOG =("bulk import completed")

@@ -137,5 +137,23 @@ namespace BatInspector.Controls
     {
       createPlot();
     }
+
+
+    private void _btnExport_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+      System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
+      dlg.Filter = "CSV files (*.csv)|*.csv";
+      System.Windows.Forms.DialogResult res = dlg.ShowDialog();
+      if (res == System.Windows.Forms.DialogResult.OK)
+      {
+        string fileName = dlg.FileName;
+        string prjName = "";
+        if (_model.Prj != null)
+          prjName = _model.Prj.Name;
+        else if(_model.Query != null)
+          prjName = _model.Query.Name;
+        _model.Statistic.exportToCsv(fileName, prjName);
+      }
+    }
   }
 }

@@ -19,7 +19,8 @@
         <StackPanel Orientation="Horizontal">
           <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right" Margin="0,7,0,0"/>
         <ComboBox Name="_cbFilterStatistic" Margin="5,10,0,0"  DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"/>
-        </StackPanel>
+                <Button Width="120" Content="Export..." Name="_btnExport" Click="_btnExport_Click"  Margin="100,0,0,0" Height="22"/>
+            </StackPanel>
       </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

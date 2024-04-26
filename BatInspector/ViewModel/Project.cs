@@ -425,7 +425,7 @@ namespace BatInspector
         wavDir =Path.Combine(prjDir,wavSubDir);
       if (Directory.Exists(prjDir))
       {
-        DebugLog.log("directory '" + prjDir + "' already exists, project creation aborted!", enLogType.ERROR);
+        DebugLog.log("directory '" + prjDir + "' already exists, project creation of folder structure aborted!", enLogType.WARNING);
         retVal = false;
       }
       else
@@ -644,7 +644,7 @@ namespace BatInspector
         BatRecord f = ElekonInfoFile.read(fName);
         DateTime t = ElekonInfoFile.getDateTimeFromFileName(fName);
         double[] pos = gpxFile.getPosition(t);
-        if ((pos == null) || (pos.Length > 1) || ((pos[0] == 0.0) && (pos[1] == 0.0)))
+        if ((pos == null) || (pos.Length < 2) || ((pos[0] == 0.0) && (pos[1] == 0.0)))
           DebugLog.log("no position found for " + fName + ", timestamp: " + t.ToString(), enLogType.ERROR);
         f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
         string dstName = Path.GetFileName(fName);

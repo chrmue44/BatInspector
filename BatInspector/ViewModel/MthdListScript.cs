@@ -169,8 +169,10 @@ namespace BatInspector
         catch 
         {
           DebugLog.log("openPrj: Error opening project: " + argv[0], enLogType.ERROR);
+          err = tParseError.RESSOURCE;
         }
       }
+      result.assign((Int64)err);
       return err;
     }
 
@@ -287,10 +289,10 @@ namespace BatInspector
           Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);
         else
           err = tParseError.RESSOURCE;
-        result.assign(0); 
       }
       else
         err = tParseError.NR_OF_ARGUMENTS;
+      result.assignInt64((Int64)err);
       return err;
     }
 
@@ -300,9 +302,13 @@ namespace BatInspector
       result = new AnyType();
       if(_inst._model.Prj.Name != "")
       {
-        _inst._model.evaluate(true);
-        _inst._model.Prj.writePrjFile();
+        int e = _inst._model.evaluate(true);
+        if (e == 0)
+          _inst._model.Prj.writePrjFile();
+        else
+          err = tParseError.RESSOURCE;
       }
+      result.assign((Int64)err);
       return err;
     }
 

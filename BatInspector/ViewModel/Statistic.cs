@@ -1,4 +1,7 @@
 ﻿
+using libScripter;
+using System.Collections.Generic;
+using System.Windows.Documents;
 using static System.Windows.Forms.AxHost;
 
 namespace BatInspector
@@ -10,6 +13,7 @@ namespace BatInspector
     Histogram _fmaxAmp;
     Histogram _duration;
     Histogram _callDist;
+    string _fileExpression = "";
     public Histogram Fmin { get { return _fmin; } }
     public Histogram Fmax { get { return _fmax; } }
     public Histogram Duration { get { return _duration; } }
@@ -37,6 +41,11 @@ namespace BatInspector
       _fmaxAmp.init(_fmaxAmp.Min, _fmaxAmp.Max);
       _duration.init(_duration.Min, _duration.Max);
       _callDist.init(_callDist.Min, _callDist.Max);
+      if(filterExp  != null) 
+        _fileExpression = filterExp.Expression;
+      else
+        _fileExpression = "";
+
 
       foreach (AnalysisFile f in analysis.Files)
       {
@@ -55,6 +64,53 @@ namespace BatInspector
           }
         }
       }
+    }
+
+
+    public void exportToCsv(string filename, string prjName) 
+    {
+      Csv csv = new Csv();
+      int row = 1;
+
+      csv.addRow();
+      csv.setCell(row, 1, "Project");
+      csv.setCell(row++, 2, prjName);
+      csv.addRow();
+      csv.setCell(row, 1, "Filter");
+      csv.setCell(row++, 2, _fileExpression);
+
+      csv.addRow();
+      csv.setCell(row, 7, "Classes");
+      row++;
+
+      List<string> h = new List<string>() { "Parameter","Count","Min","Max","Mean","StdDev"};
+      for(int i = 0; i < _fmin.Classes.Count;  i++) 
+        h.Add((i+1).ToString());
+      row++;
+      csv.addRow(h);
+
+      addHistogramToCsv(csv, row++, _fmin, "Fmin");
+      addHistogramToCsv(csv, row++, _fmax, "Fmax");
+      addHistogramToCsv(csv, row++, _fmaxAmp, "FmaxAmp");
+      addHistogramToCsv(csv, row++, _duration, "Duration");
+      addHistogramToCsv(csv, row++, _callDist, "CallInterval");
+
+      csv.saveAs(filename);
+    }
+
+
+    public void addHistogramToCsv(Csv csv, int row, Histogram h, string name)
+    {
+      csv.addRow();
+      int col = 1;
+      csv.setCell(row, col++, name);
+      csv.setCell(row, col++, h.Count);
+      csv.setCell(row, col++, h.Min);
+      csv.setCell(row, col++, h.Max);
+      csv.setCell(row, col++, h.Mean);
+      csv.setCell(row, col++, h.StdDev);
+      for(int i = 0; i < h.Classes.Count; i++)
+        csv.setCell(row, col++, h.Classes[i]);
     }
   }
 }

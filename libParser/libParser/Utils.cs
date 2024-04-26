@@ -112,7 +112,10 @@ namespace libParser
         if (File.Exists(file))
         {
           if (!removeSrc)
-            File.Copy(file, dest, overWrite);
+            if (File.Exists(dest) & !overWrite)
+              DebugLog.log("File already exists (not overwritten): " + dest, enLogType.WARNING);
+            else
+              File.Copy(file, dest, overWrite);
           else
           {
             if (overWrite && (file != dest))

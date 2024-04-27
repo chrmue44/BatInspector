@@ -430,6 +430,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording Time [h].
+        /// </summary>
+        public static string ctlStatRecTime {
+            get {
+                return ResourceManager.GetString("ctlStatRecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination Directory.
         /// </summary>
         public static string CtlSumReportDstDirectory {

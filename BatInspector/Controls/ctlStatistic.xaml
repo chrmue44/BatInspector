@@ -22,7 +22,7 @@
                 <Button Width="120" Content="Export..." Name="_btnExport" Click="_btnExport_Click"  Margin="100,0,0,0" Height="22"/>
             </StackPanel>
       </StackPanel>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,4,0,-4">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -35,8 +35,9 @@
       <local:ctlHistogram x:Name="_stat1" Grid.Row="0" Grid.Column="0"/>
       <local:ctlHistogram x:Name="_stat2" Grid.Row="0" Grid.Column="1"/>
       <local:ctlHistogram x:Name="_stat3" Grid.Row="1" Grid.Column="0"/>
-      <local:ctlHistogram x:Name="_stat4" Grid.Row="1" Grid.Column="1"/>
+      <local:ctlHistogram x:Name="_stat4" Grid.Row="1" Grid.Column="1" Margin="0,2,0,-2"/>
       <local:ctlHistogram x:Name="_stat5" Grid.Row="0" Grid.Column="2"/>
-    </Grid>
+      <local:ctlHistogram x:Name="_stat6" Grid.Row="1" Grid.Column="2"/>
+        </Grid>
   </Grid>
 </UserControl>

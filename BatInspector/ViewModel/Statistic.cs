@@ -8,17 +8,23 @@ namespace BatInspector
 { 
   public class Statistic
   {
+    const int CLASSES_PER_HOUR = 4;
+    public const int HOURS_PER_NIGHT = 11;
+    const int TIME_CLASSES = CLASSES_PER_HOUR * HOURS_PER_NIGHT;
     Histogram _fmin;
     Histogram _fmax;
     Histogram _fmaxAmp;
     Histogram _duration;
     Histogram _callDist;
+    Histogram _recTime;
+
     string _fileExpression = "";
     public Histogram Fmin { get { return _fmin; } }
     public Histogram Fmax { get { return _fmax; } }
     public Histogram Duration { get { return _duration; } }
     public Histogram CallDist { get { return _callDist;} }
     public Histogram FmaxAmp { get { return _fmaxAmp; } }
+    public Histogram RecTime { get{ return _recTime; } }
 
     public Statistic(int classes)
     {
@@ -32,6 +38,8 @@ namespace BatInspector
       _callDist.init(0, 500);
       _fmaxAmp = new Histogram(classes);
       _fmaxAmp.init(0, 120);
+      _recTime = new Histogram(TIME_CLASSES);
+      _recTime.init(0, TIME_CLASSES - 1);
     }
 
     public void calcStatistic(FilterItem filterExp, Analysis analysis, Filter filter)
@@ -41,6 +49,7 @@ namespace BatInspector
       _fmaxAmp.init(_fmaxAmp.Min, _fmaxAmp.Max);
       _duration.init(_duration.Min, _duration.Max);
       _callDist.init(_callDist.Min, _callDist.Max);
+      _recTime.init(_recTime.Min, _recTime.Max); 
       if(filterExp  != null) 
         _fileExpression = filterExp.Expression;
       else
@@ -49,6 +58,8 @@ namespace BatInspector
 
       foreach (AnalysisFile f in analysis.Files)
       {
+        int hClass = getHourClass(f);
+          
         foreach (AnalysisCall c in f.Calls)
         {
           bool res = (filterExp == null) || filter.apply(filterExp, c);
@@ -60,12 +71,31 @@ namespace BatInspector
             _duration.add(c.getDouble(Cols.DURATION));
             double callInterval = c.getDouble(Cols.CALL_INTERVALL);
             if (callInterval > 0)      // <= 0 means: no call interval detected
-            _callDist.add(callInterval);
+              _callDist.add(callInterval);
+            _recTime.add(hClass);
           }
         }
       }
     }
 
+    /// <summary>
+    /// calculate the histogram class number from recording time. 
+    /// Assumption is that 20:00 is the start of the frst class
+    /// </summary>
+    /// <param name="f">parameters of a recording file</param>
+    /// <returns></returns>
+    int getHourClass(AnalysisFile f) 
+    {
+      int h = f.RecTime.Hour;
+      int m = f.RecTime.Minute;
+      int hClass;
+      if (h >= 20)
+        hClass = (h - 20) * CLASSES_PER_HOUR;
+      else
+        hClass = (h + 4) * CLASSES_PER_HOUR;
+      hClass += m * CLASSES_PER_HOUR / 60;
+      return hClass;
+    }
 
     public void exportToCsv(string filename, string prjName) 
     {

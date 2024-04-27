@@ -1449,4 +1449,7 @@
   <data name="Count" xml:space="preserve">
     <value>Count</value>
   </data>
+  <data name="ctlStatRecTime" xml:space="preserve">
+    <value>Recording Time [h]</value>
+  </data>
 </root>

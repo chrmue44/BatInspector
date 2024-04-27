@@ -17,20 +17,22 @@ namespace BatInspector.Controls
     int _borderBar = 1;
     double _rx_x = 33;  //x position x axis
     double _wb = 5;     // width of histogram bar
+    double[] _ticksX = null;
 
     public ctlHistogram()
     {
       InitializeComponent();
       int lblW = 50;
       _ctlStdDev.setup(BatInspector.Properties.MyResources.StdDev, enDataType.DOUBLE, 2, lblW);
-      _ctlMean.setup(BatInspector.Properties.MyResources.Mean, enDataType.DOUBLE, 2, lblW);
+      _ctlMean.setup(BatInspector.Properties.MyResources.Mean, enDataType.DOUBLE, 2,   lblW);
       _ctlCnt.setup(BatInspector.Properties.MyResources.Count, enDataType.INT,2,lblW);
     }
 
-    public void initHistogram(Histogram histogram, string title)
+    public void initHistogram(Histogram histogram, string title, double[] ticks = null)
     {
       _grp.Header = title;
       _histogram = histogram;
+      _ticksX = ticks;
     }
 
     public void createHistogram()
@@ -47,8 +49,12 @@ namespace BatInspector.Controls
         double w_histo = this.ActualWidth - ry_x - borderX;
         _wb = w_histo / _histogram.Classes.Count;
         _cnv.Children.Clear();
-        GraphHelper.createRulerY(_cnv, ry_x, ry_y, h_histo, 0, _histogram.MaxCount);
-        GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.Min, _histogram.Max);
+         GraphHelper.createRulerY(_cnv, ry_x, ry_y, h_histo, 0, _histogram.MaxCount);
+        if(_ticksX == null)
+          GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.Min, _histogram.Max);
+        else
+          GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.Min, _histogram.Max, _ticksX);
+
         for (int i = 0; i < _histogram.Classes.Count; i++)
         {
           double hh = h_histo * _histogram.Classes[i] / _histogram.MaxCount;

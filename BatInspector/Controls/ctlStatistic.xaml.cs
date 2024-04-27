@@ -35,6 +35,8 @@ namespace BatInspector.Controls
       _stat3.initHistogram(_model.Statistic.FmaxAmp, BatInspector.Properties.MyResources.ctlStatFreqMaxAmp);
       _stat4.initHistogram(_model.Statistic.Duration, BatInspector.Properties.MyResources.ctlStatDuration);
       _stat5.initHistogram(_model.Statistic.CallDist, BatInspector.Properties.MyResources.ctlStatCallInterval);
+      double[] ticksY = { 20,21,22,23,0,1,2,3,4,5,6};
+      _stat6.initHistogram(_model.Statistic.RecTime, BatInspector.Properties.MyResources.ctlStatRecTime, ticksY);
     }
 
     public void populateComboBoxes()
@@ -109,6 +111,7 @@ namespace BatInspector.Controls
           _stat3.createHistogram();
           _stat4.createHistogram();
           _stat5.createHistogram();
+          _stat6.createHistogram();
         }
       }
       catch(Exception ex) 

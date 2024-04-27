@@ -5,6 +5,7 @@ using System.Windows.Shapes;
 using System.Windows;
 using System.Globalization;
 using System;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace BatInspector.Controls
 {
@@ -102,7 +103,20 @@ namespace BatInspector.Controls
         double xp = x + width * (tTicks[i] - min1) / span;
         GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
         string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-        GraphHelper.createText(can, xp - 20,y + 15, str, Colors.Black);
+        GraphHelper.createText(can, xp - 10,y + 15, str, Colors.Black);
+      }
+    }
+    public static void createRulerX(Canvas can, double x, double y, double width, double min, double max, double[] tTicks, string nrFmt = "0.#")
+    {
+      GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
+      double span = max - min;
+      double min1 = min;
+      for (int i = 0; i < tTicks.Length; i++)
+      {
+        double xp = x + width * i / tTicks.Length;
+        GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
+        string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
+        GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
       }
     }
 

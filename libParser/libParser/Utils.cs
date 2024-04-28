@@ -103,7 +103,7 @@ namespace libParser
       }
     }
 
-    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false, bool overWrite = false)
+    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false)
     {
       foreach (string file in files)
       {
@@ -111,11 +111,26 @@ namespace libParser
         string dest = Path.Combine(dstFolder, name);
         if (File.Exists(file))
         {
-          if (!removeSrc)
-            if (File.Exists(dest) & !overWrite)
+          bool copy = false;
+          bool overWrite = false;
+          if (File.Exists(dest))
+          {
+            DateTime srcTime = File.GetLastWriteTime(file);
+            DateTime dstTime = File.GetLastWriteTime(dest);
+            if (srcTime > dstTime)
+              overWrite = overWriteIfNewer;
+            if (!overWriteIfNewer)
               DebugLog.log("File already exists (not overwritten): " + dest, enLogType.WARNING);
-            else
-              File.Copy(file, dest, overWrite);
+          }
+          else
+            copy = true;
+          if (!removeSrc)
+          {
+            if(copy)
+              File.Copy(file, dest);
+            if(overWrite)
+              File.Copy(file, dest,overWrite);
+          }
           else
           {
             if (overWrite && (file != dest))

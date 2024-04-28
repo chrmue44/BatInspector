@@ -2,9 +2,10 @@ TODO
 - choose between different AI models
 - information about chosen model in project file
 - training of model
-- improve handling of script inventory during software update: copy scripts that are not present or older
 
 V0.8.1.0
+- improved handling of script inventory during software update: 
+  copy scripts that are not present or older, update inventory
 - filtered statistics for Fmin, Fmax, FmaxAmpl, duration, ...
 - new script functions: importPrj, getDirCount, getFileCount, getDir, getFile, mkDir
 - simple script debugger

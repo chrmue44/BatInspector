@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Packaging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
@@ -98,9 +99,10 @@ namespace BatInspector
       try
       {
         DebugLog.log("try to load:" + fileName, enLogType.DEBUG);
-        
+        bool inventoryExists = false;
         if (File.Exists(fileName))
         {
+          inventoryExists = true;
           file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
           DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ScriptInventory));
           retVal = (ScriptInventory)ser.ReadObject(file);
@@ -109,6 +111,8 @@ namespace BatInspector
           else if (retVal.Scripts == null)
             retVal.initScripts();
           DebugLog.log("successfully loaded", enLogType.DEBUG);
+          file.Close();
+          file = null;
         }
         else
         {
@@ -126,7 +130,7 @@ namespace BatInspector
           if (str != INST_FLAG)
           {
             File.WriteAllText(instFile, INST_FLAG);
-            copyScripts = true;
+            copyScripts = true;              
           }
         }
         else
@@ -136,7 +140,11 @@ namespace BatInspector
         }
 
         if (copyScripts)
+        {
           retVal.CopyScriptsFromInstaller();
+          if (inventoryExists)
+            retVal.updateInventory(fileName);
+        }
         retVal.createParamNames();
       }
       catch (Exception e)
@@ -156,6 +164,7 @@ namespace BatInspector
     {
       try
       {
+        reIndex();
         StreamWriter file = new StreamWriter(fName);
         MemoryStream stream = new MemoryStream();
         DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ScriptInventory));
@@ -197,7 +206,6 @@ namespace BatInspector
 
     private void initScripts()
     {
-      string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
       Scripts = new List<ScriptItem>
       {
         new ScriptItem(0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,new List<ParamItem>()),
@@ -246,6 +254,46 @@ namespace BatInspector
         
       Utils.copyFiles(fileNames, _scriptPath, false, true);
         DebugLog.log("initialized script folder", enLogType.INFO);
+
+    }
+
+    private void reIndex()
+    {
+      List<ScriptItem> list = new List<ScriptItem>();
+      foreach(ScriptItem s in Scripts)
+      {
+        if (!s.IsTool)
+          list.Add(s);
+      }
+      foreach (ScriptItem s in Scripts)
+      {
+        if (s.IsTool)
+          list.Add(s);
+      }
+      Scripts = list;
+      for (int i = 0; i < Scripts.Count; i++)
+        Scripts[i].Index = i;
+    }
+
+    private void updateInventory(string fName)
+    {
+      ScriptInventory srcInventory = new ScriptInventory();
+      srcInventory.initScripts();
+      bool save = false;
+      foreach (ScriptItem s in srcInventory.Scripts)
+      {
+
+        ScriptItem i = getScriptInfo(s.Name);
+        if (i == null)
+        {
+          Scripts.Add(s);
+          save = true;
+        }
+      }
+      if (save)
+      {
+        saveAs(fName);
+      }
     }
   }
 }

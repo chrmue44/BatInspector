@@ -44,7 +44,7 @@ namespace BatInspector
       _sumSquare += val * val;
       _sum += val;
       _cnt++;
-      int idx = (int)(val/(_max - _min) * _cntClasses);
+      int idx = (int)((val - _min)/(_max - _min) * _cntClasses);
       if (idx < 0)
         idx = 0;
       if(idx > (_cntClasses - 1))

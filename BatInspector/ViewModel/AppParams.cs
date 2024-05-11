@@ -521,6 +521,8 @@ namespace BatInspector
     [LocalizedDescription("SerDescBatInfo")]
     public string BatInfoPath { get; set; }
 
+    [DataMember]
+    public LocFileSettings LocFileSettings { get; set; }
 
     [Browsable(false)]
     public ScriptInventory ScriptInventory { get { return _scriptInventory; } }
@@ -696,8 +698,14 @@ namespace BatInspector
                                          PROG_DAT_DIR, AppParams.DIR_BAT_INFO);
       }
 
-      retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath);
+      retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath, out bool firstLoadAfterInstall);
 
+      if (firstLoadAfterInstall)
+      {
+        string srcPath = Path.Combine(AppDataPath, "setup");
+        string dstPath = AppParams.Inst.BatInfoPath;
+        BatInfo.copyInfoFileAfterSetup(srcPath, dstPath);
+      }
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
     //  retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
       //retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);

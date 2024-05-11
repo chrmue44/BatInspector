@@ -5,6 +5,7 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using libParser;
 using System;
 using System.IO;
 using System.Windows;
@@ -28,6 +29,7 @@ namespace BatInspector.Forms
       _closWin = closeWin;
       _parent = parent;
       InitializeComponent();
+      this.Title = Path.Combine(AppParams.Inst.BatInfoPath,"batinfo.json");
       _ctlSelSpecies1.setup("select species:", 0, 150, 200, species1Changed);
       _ctlSelSpecies1._cb.Items.Clear();
       _ctlSelSpecies2.setup("select species:", 0, 150, 200, species2Changed);
@@ -61,13 +63,19 @@ namespace BatInspector.Forms
           if (spec.WavExample != null)
           {
             string wavName = Path.GetFileName(spec.WavExample);
-
-            string fullName = Path.Combine(AppParams.AppDataPath,spec.WavExample);
-            WavFile w = new WavFile();
-            w.readFile(fullName);
-            double duration = (double)w.AudioSamples.Length / w.FormatChunk.Frequency;
-            AnalysisFile ana = new AnalysisFile(fullName, (int)w.FormatChunk.Frequency, duration);
-            _parent.setZoom(wavName, ana, Path.GetDirectoryName(fullName),  null);
+            try
+            {
+              string fullName = Path.Combine(AppParams.AppDataPath, spec.WavExample);
+              WavFile w = new WavFile();
+              w.readFile(fullName);
+              double duration = (double)w.AudioSamples.Length / w.FormatChunk.Frequency;
+              AnalysisFile ana = new AnalysisFile(fullName, (int)w.FormatChunk.Frequency, duration);
+              _parent.setZoom(wavName, ana, Path.GetDirectoryName(fullName), null);
+            }
+            catch(Exception ex) 
+            {
+              DebugLog.log("unable to open " + wavName + " " + ex.ToString(), enLogType.ERROR);
+            }
           }
         }
       }
@@ -103,6 +111,7 @@ namespace BatInspector.Forms
           _ctlSpecData1._ctlFmax.setMaxValue(si.FreqMaxMax);
           _ctlSpecData1._tbProof.Text = si.ProofSpecies;
           _ctlSpecData1._tbHabitat.Text = si.Habitat;
+          _ctlSpecData1._tbConfusion.Text = si.ConfusionSpec;
           _ctlSpecData1._tbDistintCalls.Text = si.CharCalls;
           break;
         }
@@ -128,6 +137,7 @@ namespace BatInspector.Forms
           _ctlSpecData2._ctCallDist.setMaxValue(si.CallDistMax);
           _ctlSpecData2._tbProof.Text = si.ProofSpecies;
           _ctlSpecData2._tbHabitat.Text = si.Habitat;
+          _ctlSpecData2._tbConfusion.Text = si.ConfusionSpec;
           _ctlSpecData2._tbDistintCalls.Text = si.CharCalls;
           break;
         }
@@ -152,6 +162,7 @@ namespace BatInspector.Forms
           si.CallDistMax = _ctlSpecData1._ctCallDist.MaxDouble;
           si.ProofSpecies = _ctlSpecData1._tbProof.Text;
           si.Habitat = _ctlSpecData1._tbHabitat.Text;
+          si.ConfusionSpec = _ctlSpecData1._tbConfusion.Text;
           si.CharCalls = _ctlSpecData1._tbDistintCalls.Text;
         }else  if (si.Latin == _ctlSelSpecies2._cb.Text)
         {
@@ -167,10 +178,13 @@ namespace BatInspector.Forms
           si.CallDistMax = _ctlSpecData2._ctCallDist.MaxDouble;
           si.ProofSpecies = _ctlSpecData2._tbProof.Text;
           si.Habitat = _ctlSpecData2._tbHabitat.Text;
+          si.ConfusionSpec = _ctlSpecData2._tbConfusion.Text;
           si.CharCalls = _ctlSpecData2._tbDistintCalls.Text;
         }
       }
-      AppParams.Inst.save();
+      BatInfo bi = new BatInfo();
+      bi.Species = _model.SpeciesInfos;
+      bi.save(AppParams.Inst.BatInfoPath);
     }
 
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

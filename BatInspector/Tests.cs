@@ -94,8 +94,8 @@ namespace BatInspector
       testClassifier();
       testSumReport();
       testHistogram();
-      //testGpx();
-      //testKml();
+      testGpx();
+      testKml();
       testLocfileTxt();
       //testSignalForm();
       testSimCall();
@@ -246,6 +246,8 @@ namespace BatInspector
       {
         string form = f.Formula;
         Expression exp = new Expression(null);
+        MthdListScript mthdListScript = new MthdListScript(_model, "");
+        exp.addMethodList(mthdListScript);
         string res = exp.parseToString(form);
         if((f.Result != res) || ((f.Error != res) && (exp.Errors > 0)))
         {
@@ -350,8 +352,8 @@ namespace BatInspector
       PrjInfo prj = new PrjInfo
       {
         Name = "Test",
-        SrcDir = "G:\\bat\\src",
-        DstDir = "G:\\bat\\test",
+        SrcDir = "F:\\bat\\src",
+        DstDir = "F:\\bat\\test",
         MaxFileLenSec = 5,
         MaxFileCnt = 30,
         Weather = "12°C, bedeckt",
@@ -521,21 +523,80 @@ namespace BatInspector
 
     private void testGpx()
     {
-      string fName = "F:\\bat\\2023\\GrubeMessel\\Track_2023-08-22_GrubeMessel.gpx";
+      string fName = "F:\\prj\\BatInspector\\TestData\\20230822\\Track_2023-08-22_GrubeMessel.gpx";
       gpx g = gpx.read(fName);
+
+      DateTime t = DateTime.Parse("2023/08/22 18:29:37");
+      double[] pos = g.getPosition(t);
+      assert("GPX lat", Math.Abs(pos[0] - 49.9187) < 0.0001);
+      assert("GPX lon", Math.Abs(pos[1] - 8.7558) < 0.0001);
+
+      t = DateTime.Parse("2023/08/22 18:43:19");
+      pos = g.getPosition(t);
+      assert("GPX lat", Math.Abs(pos[0] - 49.9185) < 0.0001);
+      assert("GPX lon", Math.Abs(pos[1] - 8.7583) < 0.0001);
     }
 
     private void testKml()
     {
-      string fName = "F:\\bat\\Lioba\\Session_20230928_195716_Kranichstein\\Session_20230928_195716.kml";
+      string fName = "F:\\prj\\BatInspector\\TestData\\20230928\\Session_20230928_195716.kml";
       kml k = kml.read(fName);
+
+      double[] pos = k.getPosition("20230928_195928.wav");
+      assert("GPX lat", Math.Abs(pos[0] - 49.8973) < 0.0001);
+      assert("GPX lon", Math.Abs(pos[1] - 8.6742) < 0.0001);
+
+      pos = k.getPosition("20230928_200232.wav");
+      assert("GPX lat", Math.Abs(pos[0] - 49.8974) < 0.0001);
+      assert("GPX lon", Math.Abs(pos[1] - 8.6759) < 0.0001);
     }
 
     private void testLocfileTxt()
     {
-      string fName = "F:\\bat\\todo\\Flm J 2014\\Flm JB Seeheim, Weiher, Holzstr, A.-Schweitzer 3,\\JB-_gps.txt";
-      LocFileTxt l = LocFileTxt.read(fName);
+
+      if (AppParams.Inst.LocFileSettings == null)
+        AppParams.Inst.LocFileSettings = new LocFileSettings();
+    
+      // test search for file name  
+      LocFileSettings lo = new LocFileSettings(AppParams.Inst.LocFileSettings);
+      AppParams.Inst.LocFileSettings.ColFilename = 0;
+      AppParams.Inst.LocFileSettings.Mode = enLocFileMode.FILE_NAME;
+      AppParams.Inst.LocFileSettings.ColNS = 1;
+      AppParams.Inst.LocFileSettings.ColLatitude = 1;
+      AppParams.Inst.LocFileSettings.ColWE = 2;
+      AppParams.Inst.LocFileSettings.ColLongititude = 2;
+      AppParams.Inst.LocFileSettings.ColTime = 0;
+      AppParams.Inst.LocFileSettings.Delimiter = '\t';
+
+      string fName = "F:\\prj\\BatInspector\\TestData\\20140908\\JB-_gps.txt";
+      LocFileTxt l = LocFileTxt.read(fName, AppParams.Inst.LocFileSettings);
+      double[] pos = l.getPosition("JB-___20140908_222847.wav", DateTime.Now);
+      assert("check latitude TXT, FileMode",Math.Abs(pos[0] - 49.76643) < 0.00001);
+      assert("check longitude TXT, FileMode", Math.Abs(pos[1] - 8.63371) < 0.00001);
+
+      // test search for date time
+      Expression exp = new Expression(null);
+      MthdListScript mthdListScript = new MthdListScript(_model, "");
+      exp.addMethodList(mthdListScript);
+      exp.parse("setTxtLocfilePars(0,2,4,1,3,5,0,1,\",\")");
+      fName = "F:\\prj\\BatInspector\\TestData\\Peter\\PTG01_Summary.txt";
+      l = LocFileTxt.read(fName, AppParams.Inst.LocFileSettings);
+      
+      DateTime tTest = DateTime.Parse("2024/04/22 01:18:30");
+      pos = l.getPosition("", tTest);
+      AppParams.Inst.LocFileSettings = lo;
+      assert("check latitude TXT, TimeMode", Math.Abs(pos[0] - 51.605) < 0.00001);
+      assert("check longitude TXT, TimeMode", Math.Abs(pos[1] + 3.005) < 0.00001);
+      
+      tTest = DateTime.Parse("2024/04/22 01:30:00");
+      pos = l.getPosition("", tTest);
+      assert("check latitude TXT, TimeMode", Math.Abs(pos[0] - 49.000) < 0.00001);
+      assert("check longitude TXT, TimeMode", Math.Abs(pos[1] - 8.1000) < 0.00001);
+
+      AppParams.Inst.LocFileSettings = lo;
+
     }
+
     private void calcNoiseLevel()
     {
       WavFile w = new WavFile();

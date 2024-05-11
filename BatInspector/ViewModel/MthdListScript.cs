@@ -150,8 +150,46 @@ namespace BatInspector
       addMethod(new FuncTabItem("checkOverdrive", checkOverdrive));
       _scriptHelpTab.Add(new HelpTabItem("checkOverdrive", "check if a given call is overdriven",
                       new List<string> { "1: file index", "2:call index" }, new List<string> { "1: TRUE if call is overdriven" }));
+      addMethod(new FuncTabItem("setTxtLocfilePars", setTxtLocfilePars));
+      _scriptHelpTab.Add(new HelpTabItem("setTxtLocfilePars", "set parameters for location import from txt files",
+                      new List<string> { "1: ColFilename", "2: ColLatitude","3: ColLongititude", "4: Mode (0=FileName, 1=TimeStamp)",
+                                         "5: ColNS", "6: ColWE","7: ColDate", "8: ColTime", "9: Delimiter"},
+                                         new List<string> { "1: error code" }));
 
 
+    }
+
+    static tParseError setTxtLocfilePars(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if (argv.Count >= 9)
+      {
+        argv[0].changeType(AnyType.tType.RT_INT64);
+        int colFile = (int)argv[0].getInt64();
+        argv[1].changeType(AnyType.tType.RT_INT64);
+        int colLat = (int)argv[1].getInt64();
+        argv[2].changeType(AnyType.tType.RT_INT64);
+        int colLon = (int)argv[2].getInt64();
+        argv[3].changeType(AnyType.tType.RT_INT64);
+        enLocFileMode mode = (enLocFileMode)argv[3].getInt64();
+        argv[4].changeType(AnyType.tType.RT_INT64);
+        int colNS = (int)argv[4].getInt64();
+        argv[5].changeType(AnyType.tType.RT_INT64);
+        int colWE = (int)argv[5].getInt64();
+        argv[6].changeType(AnyType.tType.RT_INT64);
+        int colDate = (int)argv[6].getInt64();
+        argv[7].changeType(AnyType.tType.RT_INT64);
+        int colTime = (int)argv[7].getInt64();
+        argv[8].changeType(AnyType.tType.RT_STR);
+        char delim = argv[8].getString()[0];
+        LocFileSettings loc = new LocFileSettings(mode, colFile, colNS, colLat, colWE, colLon, colTime, colDate, delim);
+        AppParams.Inst.LocFileSettings = loc;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      result.assignInt64((long)err);
+      return err;
     }
 
     static tParseError openPrj(List<AnyType> argv, out AnyType result)
@@ -163,19 +201,20 @@ namespace BatInspector
         argv[0].changeType(AnyType.tType.RT_STR);
         try
         {
-           DirectoryInfo dir = new DirectoryInfo(argv[0].getString());
-           _inst._model.initProject(dir, null);
+          DirectoryInfo dir = new DirectoryInfo(argv[0].getString());
+          _inst._model.initProject(dir, null);
         }
-        catch 
+        catch
         {
           DebugLog.log("openPrj: Error opening project: " + argv[0], enLogType.ERROR);
           err = tParseError.RESSOURCE;
         }
       }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
       result.assign((Int64)err);
       return err;
     }
-
 
     static tParseError createPrjFromFiles(List<AnyType> argv, out AnyType result)
     {

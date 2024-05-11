@@ -1,0 +1,2164 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+   <Document>
+      <Style id="SessionStyle">
+         <LineStyle>
+            <color>#FF829828</color>
+            <width>4.0</width>
+         </LineStyle>
+      </Style>
+      <Style id="MarkerStyleANTPAL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_ANTPAL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCORRAF">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CORRAF.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCORTOW">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CORTOW.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTFUS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTFUS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEUDMAC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EUDMAC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEUMFLO">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EUMFLO.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEUMPER">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EUMPER.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEUMUND">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EUMUND.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleIDIPHY">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_IDIPHY.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASNOC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASNOC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASBLO">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASBLO.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASBOR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASBOR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASCIN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASCIN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASEGA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASEGA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASINS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASINS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASINT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASINT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASSEM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASSEM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLASXAN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LASXAN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMACCAL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MACCAL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMOLMOL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MOLMOL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMORMEG">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MORMEG.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOAUR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOAUR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOAUS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOAUS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOCAL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOCAL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOCIL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOCIL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOEVO">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOEVO.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOGRI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOGRI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOLEI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOLEI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOLUC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOLUC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOOCC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOOCC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOSEP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOSEP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOSOD">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOSOD.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOTHY">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOTHY.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOVEL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOVEL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOVOL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOVOL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOYUM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOYUM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCHUM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCHUM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCFEM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCFEM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCMAC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCMAC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePARHES">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PARHES.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePERSUB">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PERSUB.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleTADBRA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_TADBRA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleBARBAR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_BARBAR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTISA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTISA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTNIL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTNIL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTSER">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTSER.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleHYPSAV">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_HYPSAV.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMINSCH">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MINSCH.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOALC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOALC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOBEC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOBEC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOBRA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOBRA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOCAP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOCAP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYODAS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYODAS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYODAU">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYODAU.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOEMA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOEMA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOESC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOESC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOMYO">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOMYO.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOMYS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOMYS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYONAT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYONAT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCLAS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCLAS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCLEI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCLEI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCNOC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCNOC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPKUH">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPKUH.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPNAT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPNAT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPPIP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPPIP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPPYG">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPPYG.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePLEAUR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PLEAUR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePLEAUS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PLEAUS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIEUR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIEUR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIFER">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIFER.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIHIP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIHIP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleTADTEN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_TADTEN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleVESMUR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_VESMUR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleBALIO">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_BALIO.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleBALPLI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_BALPLI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleBAUDUB">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_BAUDUB.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCENCEN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CENCEN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCENMAX">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CENMAX.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCYNMEX">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CYNMEX.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleDICALB">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_DICALB.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTBRA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTBRA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTFUR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTFUR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEUMGLA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EUMGLA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMOLTEM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MOLTEM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMOLRUF">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MOLRUF.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMOLSIN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MOLSIN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMORBLA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MORBLA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOELE">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOELE.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOKEA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOKEA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYONIG">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYONIG.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYORIP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYORIP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNOCLEP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NOCLEP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCLAT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCLAT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePERKAP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PERKAP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePERMAC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PERMAC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePROCEN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PROCEN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEDAV">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEDAV.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEGYM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEGYM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEMAC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEMAC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEMES">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEMES.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEPAR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEPAR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEPER">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEPER.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePTEQUA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PTEQUA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHOAEN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHOAEN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHOIO">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHOIO.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHYNAS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHYNAS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSACBIL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SACBIL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSACCAN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SACCAN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSACLEP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SACLEP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCHAANS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CHAANS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCHABIV">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CHABIV.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCHAPUM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CHAPUM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCHAVAR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CHAVAR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleCLEPER">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_CLEPER.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPOANG">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPOANG.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleEPTHOT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_EPTHOT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleHIPCAF">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_HIPCAF.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleHIPCOM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_HIPCOM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleHIPVIT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_HIPVIT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleHYPANC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_HYPANC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleKERLAN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_KERLAN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLAEBOT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LAEBOT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleLAEWIN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_LAEWIN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMINFRA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MINFRA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMINNAT">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MINNAT.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMOPCON">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MOPCON.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMOPMID">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MOPMID.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOBOC">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOBOC.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOLES">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOLES.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOSEA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOSEA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOTRI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOTRI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYOWEL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYOWEL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleMYSTUB">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_MYSTUB.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNEOAFR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NEOAFR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNEOCAP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NEOCAP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNEONAN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NEONAN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNEOSOM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NEOSOM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNEOZUL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NEOZUL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCHIS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCHIS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCTHE">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCTHE.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNYCSCH">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NYCSCH.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleOTOMAR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_OTOMAR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPHES">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPHES.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPRUS">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPRUS.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStylePIPRUE">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_PIPRUE.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIBLA">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIBLA.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHICAP">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHICAP.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHICLI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHICLI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIDAR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIDAR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIDEN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIDEN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIFUM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIFUM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHIHIL">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHIHIL.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHILAN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHILAN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHISIM">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHISIM.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHISMI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHISMI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleRHISWI">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_RHISWI.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSAUPET">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SAUPET.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSCOALB">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SCOALB.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSCONIG">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SCONIG.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSCODIN">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SCODIN.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleSCOVIR">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_SCOVIR.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleTADAEG">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_TADAEG.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleTAPMAU">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_TAPMAU.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleTRIPER">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_TRIPER.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyleNo_ID">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker_NoID.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Style id="MarkerStyle">
+         <IconStyle>
+            <hotSpot x="0.5" xunits="fraction" y="0.0" yunits="fraction"/>
+            <Icon>
+               <href>http://www.wildlifeacoustics.com/echo-meter-touch/gps/marker.png</href>
+            </Icon>
+         </IconStyle>
+         <LabelStyle>
+            <scale>0.0</scale>
+         </LabelStyle>
+      </Style>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 19:59<br/>Latitude:49.8972895<br/>Longitude:8.6740257]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_195911</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6740257,49.8972895,186.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 19:59<br/>Latitude:49.8972785<br/>Longitude:8.6741867]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_195919</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6741867,49.8972785,185.98967163799796 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 19:59<br/>Latitude:49.897318<br/>Longitude:8.6742959]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_195928</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6742959,49.897318,210.8492019718817 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 19:59<br/>Latitude:49.8973386<br/>Longitude:8.6743729]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_195943</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6743729,49.8973386,211.65708375910384 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 19:59<br/>Latitude:49.8973326<br/>Longitude:8.6743977]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_195958</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6743977,49.8973326,203.31606332410755 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:00<br/>Latitude:49.8973428<br/>Longitude:8.674498]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200013</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.674498,49.8973428,200.9400916648763 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:00<br/>Latitude:49.8973553<br/>Longitude:8.6746058]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200028</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6746058,49.8973553,200.85745975716827 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:00<br/>Latitude:49.8973703<br/>Longitude:8.6751288]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200044</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6751288,49.8973703,200.17559622823788 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:00<br/>Latitude:49.8973179<br/>Longitude:8.6754815]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200059</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6754815,49.8973179,283.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:01<br/>Latitude:49.8973357<br/>Longitude:8.6753297]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200114</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6753297,49.8973357,200.9958684366203 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:01<br/>Latitude:49.8973309<br/>Longitude:8.675243]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200129</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.675243,49.8973309,197.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:01<br/>Latitude:49.8973309<br/>Longitude:8.675243]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200137</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.675243,49.8973309,197.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:01<br/>Latitude:49.8973495<br/>Longitude:8.6753389]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200145</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6753389,49.8973495,228.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:01<br/>Latitude:49.8973495<br/>Longitude:8.6753389]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200151</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6753389,49.8973495,228.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:01<br/>Latitude:49.8973495<br/>Longitude:8.6753389]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200158</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6753389,49.8973495,228.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:02<br/>Latitude:49.8973495<br/>Longitude:8.6753389]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200213</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6753389,49.8973495,228.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:02<br/>Latitude:49.8973844<br/>Longitude:8.6761464]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200217</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6761464,49.8973844,202.33461988902127 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:02<br/>Latitude:49.8974086<br/>Longitude:8.6759885]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200232</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6759885,49.8974086,217.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:02<br/>Latitude:49.8973379<br/>Longitude:8.6762832]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200247</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6762832,49.8973379,202.0 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <description><![CDATA[Sep 28, 2023 at 20:03<br/>Latitude:49.8973255<br/>Longitude:8.6764597]]></description>
+         <ExtendedData>
+            <Data name="Bat Type">
+               <value></value>
+            </Data>
+            <Data name="Recorder">
+               <value>Echo Meter Touch 2 Standard Android</value>
+            </Data>
+         </ExtendedData>
+         <name>20230928_200303</name>
+         <styleUrl>#MarkerStyle</styleUrl>
+         <Point>
+            <coordinates>8.6764597,49.8973255,201.90074201063345 </coordinates>
+         </Point>
+      </Placemark>
+      <Placemark>
+         <styleUrl>#SessionStyle</styleUrl>
+         <LineString>
+            <coordinates>8.6740257,49.8972895,186.0 8.6741284,49.8972836,185.98967163799796 8.6742101,49.897278,185.98967163799796 8.6742349,49.8972884,208.0 8.6742514,49.8973078,211.0 8.6742814,49.8973165,210.8492019718817 8.674316,49.8973214,210.97934294536594 8.6743479,49.8973314,211.0 8.6743518,49.8973396,215.97314583881737 8.6743492,49.8973401,216.04337997904432 8.6743691,49.8973438,213.07436917674275 8.6743728,49.8973405,211.9132367449834 8.6743698,49.8973349,211.65708375910384 8.6743643,49.8973304,211.65708375910384 8.6743622,49.897331,207.96075145712246 8.674358,49.8973279,203.11361464728776 8.6743635,49.8973314,203.43174378362602 8.6743838,49.8973331,203.4296779713953 8.6744035,49.8973381,203.4648030951978 8.6744201,49.8973511,203.3408531042098 8.6744582,49.8973562,203.2685497821069 8.6744766,49.8973563,203.17972487361075 8.6744856,49.8973445,203.19625312124853 8.6744892,49.897342,203.05164511648474 8.6745033,49.8973441,200.9400916648763 8.6745194,49.8973514,200.97934184486482 8.6745357,49.8973481,200.99173670361617 8.6745586,49.8973492,200.72731548420998 8.6745815,49.8973536,200.7169884963758 8.6745962,49.8973553,200.87811797187382 8.6746058,49.8973553,200.85745975716827 </coordinates>
+            <extrude>1</extrude>
+            <tessellate>1</tessellate>
+         </LineString>
+      </Placemark>
+   </Document>
+</kml>

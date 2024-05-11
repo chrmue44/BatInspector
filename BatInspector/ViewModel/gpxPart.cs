@@ -38,8 +38,8 @@ public partial class gpx
           double.TryParse(trk.trkseg[i].lon, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon1);
           double.TryParse(trk.trkseg[i + 1].lat, NumberStyles.Any, CultureInfo.InvariantCulture, out double lat2);
           double.TryParse(trk.trkseg[i + 1].lon, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon2);
-          retVal[0] = f * lat1 + (1 - f) * lat2;
-          retVal[1] = f * lon1 + (1 - f) * lon2;
+          retVal[0] = (1 - f) * lat1 + f * lat2;
+          retVal[1] = (1 - f) * lon1 + f * lon2;
           break;
         }
       }

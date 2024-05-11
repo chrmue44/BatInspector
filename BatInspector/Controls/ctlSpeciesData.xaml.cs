@@ -20,13 +20,15 @@ namespace BatInspector.Controls
     dlgShowZoom _dlg;
     public ctlSpeciesData()
     {
+      int wLbl = 120;
+      int wDat = 40;
       InitializeComponent();
-      _ctlLocalName.setup("Local Name:", enDataType.STRING, 0, 120);
-      _ctDuration.setup(MyResources.Duration + " [ms]:", enDataType.DOUBLE, 1, 120);
-      _ctCallDist.setup(MyResources.CallDistance + " [ms]", enDataType.DOUBLE, 1, 120);
-      _ctFreqC.setup(MyResources.CharFrequency + "[kHz]", enDataType.DOUBLE, 1, 120);
-      _ctlFmin.setup(MyResources.MinFrequency + "[kHz]", enDataType.DOUBLE, 1, 120);
-      _ctlFmax.setup(MyResources.MaxFrequency + "[kHz]", enDataType.DOUBLE, 1, 120);
+      _ctlLocalName.setup("Local Name:", enDataType.STRING, 0, wLbl);
+      _ctDuration.setup(MyResources.Duration + " [ms]:", enDataType.DOUBLE, 1, wLbl, wDat);
+      _ctCallDist.setup(MyResources.CallDistance + " [ms]", enDataType.DOUBLE, 1, wLbl, wDat);
+      _ctFreqC.setup(MyResources.CharFrequency + "[kHz]", enDataType.DOUBLE, 1, wLbl, wDat);
+      _ctlFmin.setup(MyResources.MinFrequency + "[kHz]", enDataType.DOUBLE, 1, wLbl, wDat);
+      _ctlFmax.setup(MyResources.MaxFrequency + "[kHz]", enDataType.DOUBLE, 1, wLbl, wDat);
       _ctlSelPic.setup(MyResources.SelectCallType, 0, 150, 150, callTypeChanged);
     }
 

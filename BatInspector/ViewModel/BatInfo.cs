@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Windows;
 
 namespace BatInspector
 {
@@ -139,6 +140,10 @@ namespace BatInspector
     public string Habitat { get; set; }
 
     [DataMember]
+    [Description("Species of confusion")]
+    public string ConfusionSpec { get; set; } = "";
+
+    [DataMember]
     [LocalizedDescription("SpecDescWav")]
     public string WavExample { get; set; }
 
@@ -186,6 +191,31 @@ namespace BatInspector
       catch (Exception e)
       {
         DebugLog.log("failed to write config file for BatInspector" + fPath + ": " + e.ToString(), enLogType.ERROR);
+      }
+    }
+
+    public static void copyInfoFileAfterSetup(string srcDir, string dstDir)
+    {
+      string srcFileName = Path.Combine(srcDir, _fName);
+      string dstFileName = Path.Combine(dstDir, _fName);
+      try
+      {
+        if (File.Exists(dstFileName))
+        {
+          if (File.GetLastWriteTime(dstFileName) < File.GetLastWriteTime(srcFileName))
+          {
+            MessageBoxResult res = MessageBox.Show("Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatInfo.json' verfügbar. Soll die vorhandene überschrieben werden?",
+               BatInspector.Properties.MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (res == MessageBoxResult.Yes)
+              File.Copy(srcFileName, dstFileName, true);
+          }
+        }
+        else
+          File.Copy(srcFileName, dstFileName, true);
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("unable to copy " + srcFileName, enLogType.ERROR);
       }
     }
 

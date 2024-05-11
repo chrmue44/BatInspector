@@ -376,6 +376,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Characteristic Calls.
+        /// </summary>
+        public static string ctlSpeciesDataCharCalls {
+            get {
+                return ResourceManager.GetString("ctlSpeciesDataCharCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confusion Species.
+        /// </summary>
+        public static string ctlSpeciesDataConfusion {
+            get {
+                return ResourceManager.GetString("ctlSpeciesDataConfusion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Example Recording.
+        /// </summary>
+        public static string ctlSpeciesDataShowExample {
+            get {
+                return ResourceManager.GetString("ctlSpeciesDataShowExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Proof of Species.
         /// </summary>
         public static string CtlSpecProofSpecies {
@@ -3036,6 +3063,15 @@ namespace BatInspector.Properties {
         public static string PointInTime {
             get {
                 return ResourceManager.GetString("PointInTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace all existing info files in this project?.
+        /// </summary>
+        public static string ProjectmsgReplaceInfo {
+            get {
+                return ResourceManager.GetString("ProjectmsgReplaceInfo", resourceCulture);
             }
         }
         

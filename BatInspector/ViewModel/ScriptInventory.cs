@@ -90,12 +90,13 @@ namespace BatInspector
     public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
 
 
-    public static ScriptInventory loadFrom(string fPath)
+    public static ScriptInventory loadFrom(string fPath, out bool firstLoadAfterInstall)
     {
       _scriptPath = fPath;
       string fileName = Path.Combine(fPath, FName);
       ScriptInventory retVal = null;
       FileStream file = null;
+      firstLoadAfterInstall = false;
       try
       {
         DebugLog.log("try to load:" + fileName, enLogType.DEBUG);
@@ -129,6 +130,7 @@ namespace BatInspector
           string str = File.ReadAllText(instFile);
           if (str != INST_FLAG)
           {
+            firstLoadAfterInstall = true;
             File.WriteAllText(instFile, INST_FLAG);
             copyScripts = true;              
           }

@@ -43,10 +43,10 @@ namespace BatInspector.Controls
       _tbMax.Width = widthTb;
       _lbl.Width = widthLbl;
       _lbl.Height = height;
-      _tbMin.Height = Height;
+      _tbMin.Height = height;
       _tbMax.Height = height;
-      _lblmin.Height = Height;
-      _lblmax.Height = Height;
+      _lblmin.Height = height;
+      _lblmax.Height = height;
     }
 
     public void setMinValue(int val)

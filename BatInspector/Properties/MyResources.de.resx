@@ -1452,4 +1452,16 @@
   <data name="ctlStatRecTime" xml:space="preserve">
     <value>Aufnahmezeitpunkt [h]</value>
   </data>
+  <data name="ctlSpeciesDataCharCalls" xml:space="preserve">
+    <value>Charakteristische Rufe</value>
+  </data>
+  <data name="ctlSpeciesDataShowExample" xml:space="preserve">
+    <value>Zeige Beispielaufnahme</value>
+  </data>
+  <data name="ctlSpeciesDataConfusion" xml:space="preserve">
+    <value>Verwechslungsarten</value>
+  </data>
+  <data name="ProjectmsgReplaceInfo" xml:space="preserve">
+    <value>Alle in diesem Projekt vorhandenen Info-Dateien ersetzen?</value>
+  </data>
 </root>

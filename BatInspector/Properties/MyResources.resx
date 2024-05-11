@@ -1452,4 +1452,16 @@
   <data name="ctlStatRecTime" xml:space="preserve">
     <value>Recording Time [h]</value>
   </data>
+  <data name="ctlSpeciesDataCharCalls" xml:space="preserve">
+    <value>Characteristic Calls</value>
+  </data>
+  <data name="ctlSpeciesDataShowExample" xml:space="preserve">
+    <value>Show Example Recording</value>
+  </data>
+  <data name="ctlSpeciesDataConfusion" xml:space="preserve">
+    <value>Confusion Species</value>
+  </data>
+  <data name="ProjectmsgReplaceInfo" xml:space="preserve">
+    <value>Replace all existing info files in this project?</value>
+  </data>
 </root>

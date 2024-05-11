@@ -3,7 +3,13 @@ TODO
 - information about chosen model in project file
 - training of model
 
-V0.8.1.0
+V0.8.1.1
+- bugfix: saving batInfo.json is now working
+- added more information to JSON file
+- more flexible location import from TXT files
+- new script function setTxtLocfilePars()
+
+V0.8.1.0   28.04.24
 - improved handling of script inventory during software update: 
   copy scripts that are not present or older, update inventory
 - filtered statistics for Fmin, Fmax, FmaxAmpl, duration, ...

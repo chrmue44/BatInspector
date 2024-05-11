@@ -18,17 +18,22 @@
                 <local:ctlDataItemMinMax x:Name="_ctlFmax" />
                 <local:ctlDataItemMinMax x:Name="_ctDuration" />
         <local:ctlDataItemMinMax x:Name="_ctCallDist" />
-                <Button x:Name="_btnExample" Content="Show Example" Margin="0,10" Height="25" Click="_btnExample_Click"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="_btnExample" Content="{x:Static res:MyResources.ctlSpeciesDataShowExample}" Margin="0,10" Height="25" Click="_btnExample_Click"/>
+                    <local:ctlSelectItem x:Name="_ctlSelPic" Margin="10"/>
+                </StackPanel>
                 <GroupBox Header="{x:Static res:MyResources.CtlSpecProofSpecies}" Height="120">
           <TextBox Margin="5" Name="_tbProof" TextWrapping="Wrap" AcceptsReturn="True"> </TextBox>
         </GroupBox>
-                <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Distinctive Calls" Height="120">
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlSpeciesDataCharCalls}" Height="120">
           <TextBox Margin="5" Name="_tbDistintCalls" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
         </GroupBox>
-                <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Habitat" Height="120" >
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlSpeciesDataConfusion}" Height="80" >
+            <TextBox Margin="5" Name="_tbConfusion" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+        </GroupBox>
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Habitat" Height="100" >
           <TextBox Margin="5" Name="_tbHabitat" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
         </GroupBox>
-        <local:ctlSelectItem x:Name="_ctlSelPic" Margin="10"/>
         <Image Name="_img" Height="256"></Image>
       </StackPanel>
     </GroupBox>

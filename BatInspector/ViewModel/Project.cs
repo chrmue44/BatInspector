@@ -394,7 +394,7 @@ namespace BatInspector
       return retVal;
     }
 
-    private static bool readLoctxtFile(PrjInfo info, out LocFileTxt txtFile)
+    private static bool readLoctxtFile(PrjInfo info, LocFileSettings pars, out LocFileTxt txtFile)
     {
       bool retVal = true;
       txtFile = null;
@@ -403,7 +403,7 @@ namespace BatInspector
       {
         if (info.LocSourceTxt)
         {
-          txtFile = LocFileTxt.read(info.GpxFile);
+          txtFile = LocFileTxt.read(info.GpxFile, pars);
           if (txtFile == null)
           {
             DebugLog.log("txt location file not readable: " + info.GpxFile, enLogType.ERROR);
@@ -520,7 +520,7 @@ namespace BatInspector
           }
           else if (info.OverwriteLocation && info.LocSourceTxt)
           {
-            bool ok = readLoctxtFile(info, out LocFileTxt txtFile);
+            bool ok = readLoctxtFile(info, AppParams.Inst.LocFileSettings, out LocFileTxt txtFile);
             if (ok)
               replaceLocations(xmlFiles, wavDir, txtFile);
             else
@@ -679,7 +679,8 @@ namespace BatInspector
       {
         BatRecord f = ElekonInfoFile.read(fName);
         double[] posOld = { 90, 0 };
-        double[] pos = txtFile.getPosition(fName);
+        DateTime t = AnyType.getDate(f.DateTime);
+        double[] pos = txtFile.getPosition(fName, t);
         if (pos[0] < 1e-6)
           pos = posOld;
         else
@@ -989,7 +990,9 @@ namespace BatInspector
         {
           if (!replaceAll && File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))
           {
-            MessageBoxResult res = MessageBox.Show("Replace all existing info files in this project?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.ProjectmsgReplaceInfo, 
+                                                   BatInspector.Properties.MyResources.msgQuestion, 
+                                                   MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res == MessageBoxResult.Yes)
             {
               replaceAll = true;

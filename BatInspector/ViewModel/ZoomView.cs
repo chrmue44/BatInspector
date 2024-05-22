@@ -276,6 +276,10 @@ namespace BatInspector
 
     public void reduceNoise()
     {
+ /*     _wf.Audio.FftForward();
+      _wf.Audio.reduceNoise(-15);
+      _wf.Audio.FftBackward();
+*/
       try
       {
         _modelState.State = enAppState.TOOL_RUNNING;

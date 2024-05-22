@@ -40,6 +40,10 @@ public partial class BatRecord
 
   private string peakValueField;
 
+  private string temperatureField;
+
+  private string humidityField;
+  
   private BatRecordTrigger triggerField;
 
   private BatRecordGPS gPSField;
@@ -145,6 +149,34 @@ public partial class BatRecord
     set
     {
       this.peakValueField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Temparature
+  {
+    get
+    {
+      return this.temperatureField;
+    }
+    set
+    {
+      this.temperatureField = value;
+    }
+  }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Humidity
+  {
+    get
+    {
+      return this.humidityField;
+    }
+    set
+    {
+      this.humidityField = value;
     }
   }
 

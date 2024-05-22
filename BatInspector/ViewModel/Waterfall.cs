@@ -128,7 +128,6 @@ namespace BatInspector
         DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);
     }
 
-
     public void play(int stretch, double tStart, double tEnd, double playPosition)
     {
       if (_wav == null)
@@ -195,22 +194,31 @@ namespace BatInspector
           break;
       }
       int handle = BioAcoustics.getFft((uint)length, win);
-      lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal); 
+      lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal);
 
+      double s = 0;
+    /*  for (int i = 0; i < lmSpectrum.Length; i++)
+        s += lmSpectrum[i];
+      s /= lmSpectrum.Length; //does not work really well*/
       for (int i = 0; i < lmSpectrum.Length; i++)
       {
-        if (logarithmic)
+        if (lmSpectrum[i] > s)
         {
-          lmSpectrum[i] = Math.Log(lmSpectrum[i]) * wScaleFactor;
-          if (lmSpectrum[i] > _maxAmplitude)
-            _maxAmplitude = lmSpectrum[i];
+          if (logarithmic)
+          {
+            lmSpectrum[i] = Math.Log(lmSpectrum[i]) * wScaleFactor;
+            if (lmSpectrum[i] > _maxAmplitude)
+              _maxAmplitude = lmSpectrum[i];
+          }
+          else
+          {
+            lmSpectrum[i] *= 100;
+            if (lmSpectrum[i] > _maxAmplitude)
+              _maxAmplitude = lmSpectrum[i];
+          }
         }
         else
-        {
-          lmSpectrum[i] *= 100;
-          if (lmSpectrum[i] > _maxAmplitude)
-            _maxAmplitude = lmSpectrum[i];
-        }
+          lmSpectrum[i] = logarithmic ? -100 : 0;
       }
       calcMinAmplitude();
       // Properly scale the spectrum for the added window

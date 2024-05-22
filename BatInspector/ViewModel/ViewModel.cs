@@ -195,6 +195,11 @@ namespace BatInspector
         {
           _prj.Analysis.read(_prj.ReportName);
           _prj.Analysis.openSummary(_prj.SummaryName, _prj.Notes);
+          if (_prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
+          {
+            _prj.Analysis.filloutTemperature(Path.Combine(_selectedDir, _prj.WavSubDir));
+            _prj.Analysis.save(_prj.ReportName, _prj.Notes);
+          }
         }
         else
           _prj.Analysis.init(_prj.SpeciesInfos);

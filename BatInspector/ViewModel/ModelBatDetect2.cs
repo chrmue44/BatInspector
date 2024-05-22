@@ -129,6 +129,8 @@ namespace BatInspector
               string recTime = "?";
               double lat = 0.0;
               double lon = 0.0;
+              double temperature = -20;
+              double humidity = -1;
               BatRecord info = ElekonInfoFile.read(infoName);
               if (info != null)
               {
@@ -136,6 +138,8 @@ namespace BatInspector
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
                 ElekonInfoFile.parsePosition(info, out lat, out lon);
+                double.TryParse(info.Temparature, out temperature);
+                double.TryParse(info.Humidity, out humidity);
               }
 
               // read annontation for one wav file
@@ -159,6 +163,8 @@ namespace BatInspector
                 report.setCell(repRow, Cols.NAME, wavName);
                 report.setCell(repRow, Cols.LAT, lat);
                 report.setCell(repRow, Cols.LON, lon);
+                report.setCell(repRow, Cols.TEMPERATURE, temperature);
+                report.setCell(repRow, Cols.HUMIDITY, humidity);
                 int id = csvAnn.getCellAsInt(row, "id");
                 report.setCell(repRow, Cols.NR, id + 1);
                 double startTime = csvAnn.getCellAsDouble(row, "start_time");
@@ -252,6 +258,8 @@ namespace BatInspector
         Cols.REC_TIME,
         Cols.LAT,
         Cols.LON,
+        Cols.TEMPERATURE,
+        Cols.HUMIDITY,
         Cols.NR,
         colSpecies,
         Cols.SPECIES_MAN,

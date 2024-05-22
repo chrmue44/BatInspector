@@ -324,17 +324,14 @@ namespace BatInspector
       double limit = Math.Pow(10, limitDb / 20);
 
       limit = limit * limit;
-      for (int i = 2; i < _spectrum.Length; i+=2)
+      for (int i = 1; i < _spectrum.Length/2; i++)
       {
-        double p = _spectrum[i] * _spectrum[i] + _spectrum[i+1] + _spectrum[i+1];
+        int ib = _spectrum.Length - i - 1;
+        double p = _spectrum[i] * _spectrum[i] + _spectrum[ib] + _spectrum[ib];
         if (p < limit)
         {
           _spectrum[i] = 0;
-          _spectrum[i + 1] = 0;
-        }
-        else
-        {
-          _spectrum[i] = _spectrum[i];
+          _spectrum[ib] = 0;
         }
       }
     }
@@ -367,14 +364,16 @@ namespace BatInspector
     {
       p = 0;
       f = 0;
-      for(int i = 2; i < _spectrum.Length; i+=2)
+      int ib = _spectrum.Length - 2;
+      for (int i = 1; i < _spectrum.Length/2; i++)
       {
-        double p1 = _spectrum[i]*_spectrum[i] + _spectrum[i+1] * _spectrum[i+1];
+        double p1 = _spectrum[i]*_spectrum[i] + _spectrum[ib] * _spectrum[ib];
         if(p1 > p)
         {
           p = p1;
           f = i;
         }
+        ib--;
       }
       p = Math.Sqrt(p);
       f = _samplingRate / 2 * f / _spectrum.Length;

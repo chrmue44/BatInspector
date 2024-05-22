@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media.Animation;
 using BatInspector.Forms;
 using libParser;
 using libScripter;
@@ -61,6 +62,12 @@ namespace BatInspector
     public const string CALL_INTERVALL = "callInterval";
     public const string LAT = "lat";
     public const string LON = "lon";
+    public const string TEMPERATURE = "temperature";  //report.csv
+    public const string HUMIDITY = "humidity";        //report.csv
+    public const string TEMP_MIN = "temp_min";        //summary.csv
+    public const string TEMP_MAX = "temp_max";        //summary.csv
+    public const string HUMID_MIN = "humid_min";      //report.csv
+    public const string HUMID_MAX = "humid_max";      //report.csv
 
     public const string COUNT = "Count";
     public const string DATE = "Date";
@@ -77,14 +84,24 @@ namespace BatInspector
     public string Species { get; set; }
     public int Count { get; set; }
 
+    public double TempMin { get; set; }
+    public double TempMax { get; set; }
+    public double HumidityMin { get; set; }
+    public double HumidityMax { get; set; }
+
+
     public int[] CountTime { get; set; }
 
     public SumItem(string species, int count)
     {
       Species = species;
       Count = count;
-      CountTime = new int[12];
-      for(int i = 0; i < 12; i++)
+      CountTime = new int[13];
+      TempMin = 100;
+      TempMax = -100;
+      HumidityMax = 0;
+      HumidityMin = 100;
+      for(int i = 0; i < 13; i++)
         CountTime[i] = 0;
     }
 
@@ -109,6 +126,10 @@ namespace BatInspector
 
     public string Species { get { return _item.Species; } }
     public int Count {  get { return _item.Count; } }
+    public double TempMin {  get { return _item.TempMin; } }
+    public double TempMax { get { return _item.TempMax; } }
+    public double HumidityMin { get { return _item.HumidityMin; } }
+    public double HumidityMax { get { return _item.HumidityMax; } }
     public int _18h { get { return _item.CountTime[0]; } }
     public int _19h { get { return _item.CountTime[1]; } }
     public int _20h { get { return _item.CountTime[2]; } }
@@ -121,6 +142,7 @@ namespace BatInspector
     public int _03h { get { return _item.CountTime[9]; } }
     public int _04h { get { return _item.CountTime[10]; } }
     public int _05h { get { return _item.CountTime[11]; } }
+    public int _06h { get { return _item.CountTime[12]; } }
   }
 
   public delegate void DlgUpdateFile(string fName);
@@ -265,6 +287,13 @@ namespace BatInspector
           }
           if (_csv.getColNr(Cols.REC_TIME) < 1)
             filloutRecTime();
+          if (_csv.getColNr(Cols.TEMPERATURE) < 1)
+          {
+            int colnr = _csv.getColNr(Cols.LON) + 1;
+            _csv.insertCol(colnr, "", Cols.TEMPERATURE);
+            _csv.insertCol(colnr + 1, "", Cols.HUMIDITY);
+            _csv.save();
+          }
         }
 
         _list.Clear();
@@ -305,10 +334,34 @@ namespace BatInspector
           _report.Add(rItem);
           callNr++;
         }
+
         resetChanged();
       }
     }
 
+    public void filloutTemperature(string wavDir)
+    {
+      foreach(AnalysisFile f in _list)
+      {
+        string infoFile = Path.Combine(wavDir, f.Name.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
+        BatRecord info = ElekonInfoFile.read(infoFile);
+        info.Temparature = info.Temparature.Replace("°C", "");
+        info.Humidity = info.Humidity.Replace("%","");
+        double temperature = -20;
+        double humidity = -1;
+        if (info != null)
+        {
+          double.TryParse(info.Temparature, NumberStyles.Any, CultureInfo.InvariantCulture, out temperature);
+          double.TryParse(info.Humidity, NumberStyles.Any, CultureInfo.InvariantCulture, out humidity);
+          foreach (AnalysisCall c in f.Calls)
+          {
+            c.setString(Cols.TEMPERATURE, temperature.ToString("0.#", CultureInfo.InvariantCulture));
+            c.setString(Cols.HUMIDITY, humidity.ToString("0.#", CultureInfo.InvariantCulture));
+          }
+        }
+      }
+      
+    }
 
     public void save(string path, string notes)
     {
@@ -500,7 +553,11 @@ namespace BatInspector
           SumItem it = new SumItem(species, count);
           int startCol = sum.getColNr(Cols.T18H);
           int idx = 0;
-          for(int c = startCol; c < startCol + 12; c++)
+          it.TempMin = sum.getCellAsDouble(row, Cols.TEMP_MIN, true);
+          it.TempMax = sum.getCellAsDouble(row, Cols.TEMP_MAX, true);
+          it.HumidityMin = sum.getCellAsDouble(row, Cols.HUMID_MIN, true);
+          it.HumidityMax = sum.getCellAsDouble(row, Cols.HUMID_MAX, true);
+          for(int c = startCol; c < startCol + 13; c++)
           {
             it.CountTime[idx] = sum.getCellAsInt(row, c);
             idx++;
@@ -576,10 +633,19 @@ namespace BatInspector
             if (it != null)
             {
               it.Count++;
+              double t = c.getDouble(Cols.TEMPERATURE);
+              if (it.TempMin > t)
+                it.TempMin = t;
+              if(it.TempMax < t)
+                it.TempMax = t;
             }
             else
             {
               it = new SumItem(c.getString(Cols.SPECIES_MAN), 1);
+              it.TempMin = c.getDouble(Cols.TEMPERATURE);
+              it.TempMax = it.TempMin;
+              it.HumidityMin = c.getDouble(Cols.HUMIDITY);
+              it.HumidityMax = it.HumidityMin;
               _summary.Add(it);
             }
             int h = f.RecTime.TimeOfDay.Hours;
@@ -592,7 +658,7 @@ namespace BatInspector
         // create csv file
         Csv sum = new Csv();
         sum.addRow();
-        string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.SPECIES_MAN, Cols.COUNT, Cols.T18H, "19:00", "20:00", "21:00", "22:00", "23:00", "0:00", "1:00", "2:00", "3:00", "4:00", "5:00" };
+        string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX, Cols.SPECIES_MAN, Cols.COUNT, Cols.T18H, "19:00", "20:00", "21:00", "22:00", "23:00", "0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00" };
         sum.initColNames(header, true);
         sum.addRow();
         int row = 2;
@@ -612,6 +678,10 @@ namespace BatInspector
           {
             sum.setCell(row, Cols.SPECIES_MAN, it.Species);
             sum.setCell(row, "Count", it.Count);
+            sum.setCell(row, Cols.TEMP_MIN, it.TempMin);
+            sum.setCell(row, Cols.TEMP_MAX, it.TempMax);
+            sum.setCell(row, Cols.HUMID_MIN, it.HumidityMin);
+            sum.setCell(row, Cols.HUMID_MAX, it.HumidityMax);
             sum.addRow();
             for (int c = 0; c < it.CountTime.Length; c++)
               sum.setCell(row, c + startTimeCol, it.CountTime[c]);
@@ -696,7 +766,9 @@ namespace BatInspector
       Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
       Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
       Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
-    //  Snr = call.getDouble(Cols.SNR).ToString();
+      Temperature = call.getDouble(Cols.TEMPERATURE).ToString("0.#", CultureInfo.InvariantCulture);
+      Humidity= call.getDouble(Cols.HUMIDITY).ToString("0.#", CultureInfo.InvariantCulture);
+      //  Snr = call.getDouble(Cols.SNR).ToString();
       SpeciesMan = call.getString(Cols.SPECIES_MAN);
     }
 
@@ -717,6 +789,8 @@ namespace BatInspector
 
     public string Latitude {get;set;}
     public string Longitude { get;set;}
+    public string Temperature { get;set;}
+    public string Humidity { get;set;}
     public string Remarks
     {
       get { return _remarks; }
@@ -776,9 +850,9 @@ namespace BatInspector
       return _csv.getRow( _row );
     }
 
-    public double getDouble(string key)
+    public double getDouble(string key, bool disableErrorMsg = false)
     {
-      return _csv.getCellAsDouble(_row, key);
+      return _csv.getCellAsDouble(_row, key, disableErrorMsg);
     }
 
     public int getInt(string key)

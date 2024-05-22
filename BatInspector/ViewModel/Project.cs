@@ -533,6 +533,9 @@ namespace BatInspector
         }
         else
           DebugLog.log("No WAV files in directory " + info.SrcDir, enLogType.ERROR);
+        // remove src project
+        if(info.RemoveSource)
+          Directory.Delete(info.SrcDir, true);
       }
       catch (Exception e)
       {
@@ -780,22 +783,13 @@ namespace BatInspector
           try
           {
             if (File.Exists(name))
-            {
-              File.Copy(name, destDir + "/" + Path.GetFileName(name));
-              File.Delete(name);
-            }
+              File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
             name = name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
             if (File.Exists(name))
-            {
-              File.Copy(name, destDir + "/" + Path.GetFileName(name));
-              File.Delete(name);
-            }
+              File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
             name = name.Replace(AppParams.EXT_INFO, AppParams.EXT_IMG);
             if (File.Exists(name))
-            {
-              File.Copy(name, destDir + "/" + Path.GetFileName(name));
-              File.Delete(name);
-            }
+              File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
             _changed = true;
           }
           catch (Exception ex)

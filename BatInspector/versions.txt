@@ -3,7 +3,13 @@ TODO
 - information about chosen model in project file
 - training of model
 
-V0.8.1.1
+V0.8.1.2
+- bugfix: removeSource now also removes empty directories
+- added temperature and humidity to report
+- bugfix: sum report now gets saved in target dir (not root dir)
+- "deleting" of files in a project now faster (move instead of copy/delete)
+
+V0.8.1.1   11.05.24
 - bugfix: saving batInfo.json is now working
 - added more information to JSON file
 - more flexible location import from TXT files

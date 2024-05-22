@@ -32,8 +32,8 @@ namespace BatInspector.Forms
           DateTime start = (DateTime)_ctlReport._dtStart.SelectedDate;
           DateTime end = (DateTime)_ctlReport._dtEnd.SelectedDate;
           enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
-          _model.SumReport.createReport(start, end, period, _ctlReport._tbRootDir.Text,
-                                        _ctlReport._tbReportName.Text, _model.SpeciesInfos);
+          _model.SumReport.createReport(start, end, period, _ctlReport._tbRootDir.Text, 
+                                        _ctlReport._tbDstDir.Text, _ctlReport._tbReportName.Text, _model.SpeciesInfos);
         }
         else
           MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);

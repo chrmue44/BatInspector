@@ -35,11 +35,19 @@ namespace BatInspector
     public double Longitude { get; set; }
     public string Landscape { get; set; }
     public string Weather { get; set; }
+    public double TempMin { get; set; }
+    public double TempMax { get; set; }
+    public double HumidityMin { get; set; }
+    public double HumidityMax { get; set; }
     public List<SumItem> SpecList { get; set; }
 
     public SumReportItem(List<SpeciesInfos> species)
     {
       SpecList = new List<SumItem>();
+      TempMin = 100;
+      TempMax = -100;
+      HumidityMin = 100;
+      HumidityMax = 0;
       foreach(SpeciesInfos spec in species) 
       {
         SumItem it = new SumItem(spec.Abbreviation, 0);
@@ -73,12 +81,12 @@ namespace BatInspector
     /// <param name="end">end time</param>
     /// <param name="period">granularity of time</param>
     /// <param name="rootDir">root dir to start search for projects</param>
-    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir, string reportName,
+    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
                              List<SpeciesInfos> species)
     {
       initDirTree(rootDir);
       _rep = new Csv(true);
-      string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.LANDSCAPE, Cols.WEATHER };
+      string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.LANDSCAPE, Cols.WEATHER, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX };
       _rep.initColNames(header, true);
       _totalSum.Clear();
       foreach (SpeciesInfos sp in species)
@@ -120,9 +128,9 @@ namespace BatInspector
           _rep.setCell(_rep.RowCnt, it.Species, it.Count);
       }
 
-      if (Directory.Exists(rootDir))
+      if (Directory.Exists(dstDir))
       {
-        string fileName = rootDir + "/" + reportName;
+        string fileName = Path.Combine(dstDir ,reportName);
         _rep.saveAs(fileName);
       }
       else
@@ -227,6 +235,10 @@ namespace BatInspector
       _rep.setCell(row, Cols.LON, item.Longitude);
       _rep.setCell(row, Cols.LANDSCAPE, item.Landscape);
       _rep.setCell(row, Cols.WEATHER, item.Weather);
+      _rep.setCell(row, Cols.TEMP_MIN, item.TempMin);
+      _rep.setCell(row, Cols.TEMP_MAX, item.TempMax);
+      _rep.setCell(row, Cols.HUMID_MIN, item.HumidityMin);
+      _rep.setCell(row, Cols.HUMID_MAX, item.HumidityMax);
 //      int startColTime = _rep.findInRow(1, Cols.T18H);
       foreach(SumItem sc in item.SpecList)
       {
@@ -281,7 +293,15 @@ namespace BatInspector
               list.Add(item);
             }
             item.Count += count;
-            for(int i = 0; i < item.CountTime.Length; i++)
+            if (retVal.TempMin > summary.getCellAsDouble(row, Cols.TEMP_MIN))
+              retVal.TempMin = summary.getCellAsDouble(row, Cols.TEMP_MIN);
+            if (retVal.TempMax < summary.getCellAsDouble(row, Cols.TEMP_MAX))
+              retVal.TempMax = summary.getCellAsDouble(row, Cols.TEMP_MAX);
+            if (retVal.HumidityMin > summary.getCellAsDouble(row, Cols.HUMID_MIN))
+              retVal.HumidityMin = summary.getCellAsDouble(row, Cols.HUMID_MIN);
+            if (retVal.HumidityMax < summary.getCellAsDouble(row, Cols.HUMID_MAX))
+              retVal.HumidityMax = summary.getCellAsDouble(row, Cols.HUMID_MAX);
+            for (int i = 0; i < item.CountTime.Length; i++)
             {
               int cnt = summary.getCellAsInt(row, startColTime + i);
               item.CountTime[i] += cnt; 

@@ -1257,6 +1257,7 @@ namespace BatInspector.Controls
     {
         DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
         _model.ZoomView.reduceNoise();
+      createZoomImg();
     }
 
     private void _btnCutOut_Click(object sender, RoutedEventArgs e)

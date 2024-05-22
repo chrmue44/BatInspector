@@ -208,6 +208,10 @@ namespace BatInspector
         rec.Trigger.Frequency = "";
       if (rec.Trigger.Level == null)
         rec.Trigger.Level = "";
+      if (rec.Temparature == null)
+        rec.Temparature = "";
+      if (rec.Humidity == null)
+        rec.Humidity = "";
     }
   }
 }

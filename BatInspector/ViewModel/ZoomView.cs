@@ -11,6 +11,7 @@ using libParser;
 using libScripter;
 using System;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 
 namespace BatInspector
@@ -351,6 +352,60 @@ namespace BatInspector
       string dstFile = Path.Combine(dstPath, Path.GetFileName(wavName));
       if (!File.Exists(dstFile))
         File.Copy(wavName, dstFile);
+    }
+
+    public int export(string dstDir, bool incPng, bool incXml, uint timeStretch, string prefix)
+    {
+      int retVal = 0;
+      try
+      {
+        if (Directory.Exists(dstDir))
+        {
+          string srcFile = _wf.WavName;
+          string dstFile;
+          if (string.IsNullOrEmpty(prefix))
+            dstFile = Path.Combine(dstDir, Path.GetFileName(srcFile));
+          else
+            dstFile = Path.Combine(dstDir, prefix + "_" + Path.GetFileName(srcFile));
+
+          File.Copy(srcFile, dstFile);
+          if (timeStretch != 1)
+          {
+            WavFile wav = new WavFile();
+            wav.readFile(dstFile);
+            wav.FormatChunk.Frequency = wav.FormatChunk.Frequency / timeStretch;
+            wav.saveFile();
+          }
+          if (incPng)
+          {
+            srcFile = _wf.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+            if (string.IsNullOrEmpty(prefix))
+              dstFile = Path.Combine(dstDir, Path.GetFileName(srcFile));
+            else
+              dstFile = Path.Combine(dstDir, prefix + "_" + Path.GetFileName(srcFile));
+            File.Copy(srcFile, dstFile);
+          }
+          if (incXml)
+          {
+            srcFile = _wf.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+            if (string.IsNullOrEmpty(prefix))
+              dstFile = Path.Combine(dstDir, Path.GetFileName(srcFile));
+            else
+              dstFile = Path.Combine(dstDir, prefix + "_" + Path.GetFileName(srcFile));
+            File.Copy(srcFile, dstFile);
+          }
+        }
+        else
+        {
+          DebugLog.log("unable to export file(s)to directory '" + dstDir + "'", enLogType.ERROR);
+          retVal = 1;
+        }
+      }
+      catch (Exception ex) 
+      {
+        DebugLog.log("unable to export file(s)to directory '" + dstDir + "' " +ex.ToString(), enLogType.ERROR);
+      }
+      return retVal;
     }
   }
 }

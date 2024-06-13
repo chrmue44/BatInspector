@@ -110,6 +110,8 @@ namespace BatInspector.Forms
       _ctlLanguage.SelectIndex = _rec.General.Language.Value;
       _ctlBackLight.setValue((int)_rec.General.BackLightTime.Value);
       _ctlBackLight.IsEnabled = true;
+      _ctlBrightness.setValue((int)_rec.General.Brightness.Value);
+      _ctlBrightness.IsEnabled = true;
       _ctlPosMode.setItems(_rec.General.PositionMode.Items);
       _ctlPosMode.IsEnabled = true;
       _ctlPosMode.SelectIndex = _rec.General.PositionMode.Value;
@@ -151,6 +153,7 @@ namespace BatInspector.Forms
       _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigType, null, "", false);
       _ctlLanguage.setup(BatInspector.Properties.MyResources.Language, 0, wl, wt, setLanguage, null, "", false);
       _ctlBackLight.setup(BatInspector.Properties.MyResources.FrmRecBacklightTime, enDataType.INT, 0, wl, true, setBacklightTime);
+      _ctlBrightness.setup(BatInspector.Properties.MyResources.FrmSetupRecorderBrightness, enDataType.INT, 0, wl, true, setBrightness);
       _ctlPosMode.setup(BatInspector.Properties.MyResources.FrmRecModePosition, 0, wl, wt, setPositionMode, null, "", false);
       _ctlLat.setup(BatInspector.Properties.MyResources.Latitude, enDataType.STRING, 5, wl, false, setLat);
       _ctlLon.setup(BatInspector.Properties.MyResources.Longitude, enDataType.STRING, 5, wl, false, setLon);
@@ -184,6 +187,10 @@ namespace BatInspector.Forms
     private void setBacklightTime(enDataType type, object val)
     {
       _rec.General.BackLightTime.Value = _ctlBackLight.getIntValue();
+    }
+    private void setBrightness(enDataType type, object val)
+    {
+      _rec.General.Brightness.Value = _ctlBrightness.getIntValue();
     }
 
     private void setPositionMode(int index, string val)

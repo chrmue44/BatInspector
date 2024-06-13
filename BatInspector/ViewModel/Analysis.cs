@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media.Animation;
 using BatInspector.Forms;
@@ -78,18 +79,24 @@ namespace BatInspector
     public const string T18H = "18:00";
   }
 
-
+  [DataContract]
   public class SumItem
   {
+    [DataMember]
     public string Species { get; set; }
+    [DataMember]
     public int Count { get; set; }
 
+    [DataMember]
     public double TempMin { get; set; }
+    [DataMember]
     public double TempMax { get; set; }
+    [DataMember]
     public double HumidityMin { get; set; }
+    [DataMember]
     public double HumidityMax { get; set; }
 
-
+    [DataMember]
     public int[] CountTime { get; set; }
 
     public SumItem(string species, int count)
@@ -105,14 +112,21 @@ namespace BatInspector
         CountTime[i] = 0;
     }
 
-    public static SumItem find(string species, List<SumItem> list)
+    public static SumItem find(string species, List<SumItem> list, bool addIfMissing = false)
     {
       foreach(SumItem item in list) 
       {
         if(item.Species == species) 
           return item;
       }
-      return null;
+      if (addIfMissing)
+      {
+        SumItem s = new SumItem(species, 0);
+        list.Add(s);
+        return s;
+      }
+      else
+        return null;
     }
   }
 

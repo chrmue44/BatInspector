@@ -12,7 +12,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Name ="_lbl" Grid.Column="0"  >Select Folder</TextBlock>
+        <TextBlock Name ="_lbl" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,5,0" >Select Folder</TextBlock>
         <TextBox Name ="_txt" Grid.Column="1" TextChanged="_txt_TextChanged" >Tb</TextBox>
         <Button Name="_btnOpen" Grid.Column="2" Click="_btnOpen_Click" >...</Button>
   </Grid>

@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:res="clr-namespace:BatInspector.Properties"
-             mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="1100">
+             mc:Ignorable="d"
+             d:DesignHeight="651" d:DesignWidth="1204">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -108,7 +108,10 @@
                 <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
                     <Image Source="../images/icons8-save-as-48.png"></Image>
                 </Button>
-            </ToolBar>
+        <Button x:Name="_btnExport"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnExport_Click" ToolTip="{x:Static res:MyResources.ToolTipExport}">
+          <Image Source="../images/icons8-save-48-exp.png"></Image>
+        </Button>
+      </ToolBar>
         </ToolBarTray>
         <Grid Name ="_gridXt" Grid.Row="1">
             <Grid.RowDefinitions>

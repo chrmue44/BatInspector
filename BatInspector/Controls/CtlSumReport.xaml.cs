@@ -5,6 +5,8 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using BatInspector.Properties;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,33 +23,23 @@ namespace BatInspector.Controls
     {
       InitializeComponent();
       _cbPeriod.SelectedIndex = 0;
-      _tbReportName.Text = "sum_report.csv";
-    }
+      _ctlCsvReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, 150, true);
+      _ctlCsvReportName.setValue("sum_report.csv");
+      _ctlWebReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, 150, true);
+      _ctlWebReportName.setValue("sum_report.md");
+      _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true);
+      _ctlDestDir.setup(MyResources.CtlSumReportDstDirectory, 150, true);
+
+      }
 
     public void setup( Window parent)
     {
       _parent = parent;
+      _dtEnd.SelectedDate = DateTime.Now;
+      _dtStart.SelectedDate = new DateTime(DateTime.Now.Year, 1, 1);
     }
 
-    private void btnSetDir_Click(object sender, RoutedEventArgs e)
-    {
-      FolderPicker dlg = new FolderPicker();
-      if(dlg.ShowDialog() == true)
-      {
-        _tbRootDir.Text = dlg.ResultPath;
-      }
-      bringParentToFront();
-    }
 
-    private void btnSetDestDir_Click(object sender, RoutedEventArgs e)
-    {
-      FolderPicker dlg = new FolderPicker();
-      if (dlg.ShowDialog() == true)
-      {
-        _tbDstDir.Text = dlg.ResultPath;
-      }
-      bringParentToFront();
-    }
     private void bringParentToFront()
     {
       if (_parent != null)

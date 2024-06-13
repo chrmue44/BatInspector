@@ -1441,7 +1441,7 @@
     <value>Quantity</value>
   </data>
   <data name="StdDev" xml:space="preserve">
-    <value>StdDev</value>
+    <value>StdDev.</value>
   </data>
   <data name="Mean" xml:space="preserve">
     <value>Mean v.</value>
@@ -1463,5 +1463,29 @@
   </data>
   <data name="ProjectmsgReplaceInfo" xml:space="preserve">
     <value>Replace all existing info files in this project?</value>
+  </data>
+  <data name="FrmSetupRecorderBrightness" xml:space="preserve">
+    <value>Display Brightness</value>
+  </data>
+  <data name="ToolTipExport" xml:space="preserve">
+    <value>Export current file to another location</value>
+  </data>
+  <data name="frmExpIncludePNG" xml:space="preserve">
+    <value>include PNG file (image)</value>
+  </data>
+  <data name="frmExpIncludeXML" xml:space="preserve">
+    <value>include XML file (information)</value>
+  </data>
+  <data name="frmExpWAVTimeStretched" xml:space="preserve">
+    <value>save WAV file 10x time stretched</value>
+  </data>
+  <data name="frmExpSelectDst" xml:space="preserve">
+    <value>select destination folder</value>
+  </data>
+  <data name="frmExportPrefix" xml:space="preserve">
+    <value>Prefix File Name</value>
+  </data>
+  <data name="msgPleaseOpenProjectFirst" xml:space="preserve">
+    <value>Please open project first!</value>
   </data>
 </root>

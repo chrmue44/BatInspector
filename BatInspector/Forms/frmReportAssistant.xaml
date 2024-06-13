@@ -1,0 +1,70 @@
+﻿<Window x:Class="BatInspector.Forms.frmReportAssistant"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="Report Assistant" Height="800" Width="800">
+    <Grid>
+        <ScrollViewer>
+        <StackPanel Margin="0,0,0,10">
+                <GroupBox Header="Input">
+                    <StackPanel Margin="5">
+                        <local:CtlSelectFile x:Name="_ctlFormData"/>
+                        <local:CtlSelectFile x:Name="_ctlTemplate"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Output">
+        <StackPanel Margin="5">
+                    <local:ctlDataItem x:Name="_ctlPageTitle"/>
+                    <local:ctlDataItem x:Name="_ctlLocationName"/>
+                </StackPanel>
+        </GroupBox>
+            <GroupBox x:Name="_grpHeader" Header="Header">
+                    <StackPanel Margin="5">
+                        <local:ctlDataItem x:Name="_ctlAuthor" />
+                        <local:ctlDataItem x:Name="_ctlLocDescription"/>
+                        <local:ctlDataItem x:Name="_ctlTimeSpan"/>
+                        <local:ctlDataItem x:Name="_ctlWeather"/>
+                        <Grid x:Name="_grComment">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Name="_lblComment" Grid.Column="0" TextAlignment="Right" Margin="0,0,5,0"   Background="{DynamicResource colorBackGround}" Foreground="{DynamicResource colorForeGroundLabel}" >lbl1</TextBlock>
+                            <TextBox Name= "_tbComment" Grid.Column="1" VerticalAlignment="Top" VerticalContentAlignment="Top"  BorderThickness="1"  Height="60" AcceptsReturn="True" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
+
+                        </Grid>
+                    </StackPanel>
+              
+        </GroupBox>
+                <GroupBox Header="Miscellanous">
+                    <local:CtlSelectFile x:Name="_ctlSelectWavFolder" />
+                </GroupBox>
+                <GroupBox Header="Found Species">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Species" Grid.Column="0"/>
+                            <Label Content="Remarks" Grid.Column="1"/>
+                            <Label Content="Confusion Species" Grid.Column="2"/>
+                            
+                        </Grid>
+                        <StackPanel x:Name="_spFoundSpecies" Margin="5"/>
+                    </StackPanel>
+                </GroupBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <Button x:Name="_btnOK" Content="{x:Static res:MyResources.BtnOK}" Width="120" Height="25" Click="_btnOK_Click"/>
+                <Button x:Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Width="120" Height="25" Margin="10,0,0,0" Click="_btnCancel_Click"/>
+            </StackPanel>
+        </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

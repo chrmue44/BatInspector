@@ -1465,6 +1465,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to include PNG file (image).
+        /// </summary>
+        public static string frmExpIncludePNG {
+            get {
+                return ResourceManager.GetString("frmExpIncludePNG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to include XML file (information).
+        /// </summary>
+        public static string frmExpIncludeXML {
+            get {
+                return ResourceManager.GetString("frmExpIncludeXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prefix File Name.
+        /// </summary>
+        public static string frmExportPrefix {
+            get {
+                return ResourceManager.GetString("frmExportPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to apply to all calls of recording.
         /// </summary>
         public static string frmExpressionApplyAllCalls {
@@ -1497,6 +1524,24 @@ namespace BatInspector.Properties {
         public static string frmExpressionTitle {
             get {
                 return ResourceManager.GetString("frmExpressionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select destination folder.
+        /// </summary>
+        public static string frmExpSelectDst {
+            get {
+                return ResourceManager.GetString("frmExpSelectDst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to save WAV file 10x time stretched.
+        /// </summary>
+        public static string frmExpWAVTimeStretched {
+            get {
+                return ResourceManager.GetString("frmExpWAVTimeStretched", resourceCulture);
             }
         }
         
@@ -2100,6 +2145,15 @@ namespace BatInspector.Properties {
         public static string FrmScriptTtipAdd {
             get {
                 return ResourceManager.GetString("FrmScriptTtipAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display Brightness.
+        /// </summary>
+        public static string FrmSetupRecorderBrightness {
+            get {
+                return ResourceManager.GetString("FrmSetupRecorderBrightness", resourceCulture);
             }
         }
         
@@ -2995,6 +3049,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please open project first!.
+        /// </summary>
+        public static string msgPleaseOpenProjectFirst {
+            get {
+                return ResourceManager.GetString("msgPleaseOpenProjectFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Question.
         /// </summary>
         public static string msgQuestion {
@@ -3787,7 +3850,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StdDev.
+        ///   Looks up a localized string similar to StdDev..
         /// </summary>
         public static string StdDev {
             get {
@@ -3873,6 +3936,15 @@ namespace BatInspector.Properties {
         public static string ToolTipDenoise {
             get {
                 return ResourceManager.GetString("ToolTipDenoise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export current file to another location.
+        /// </summary>
+        public static string ToolTipExport {
+            get {
+                return ResourceManager.GetString("ToolTipExport", resourceCulture);
             }
         }
         

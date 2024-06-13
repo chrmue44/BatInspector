@@ -130,6 +130,8 @@ namespace BatInspector
       _proc = new ProcessRunner();
       _mainWin = mainWin;
       _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
+      _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+      _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
       _version = version;
       _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();
@@ -674,7 +676,7 @@ namespace BatInspector
       if (!dir.Exists)
         return false;
       DirectoryInfo[] dirs = dir.GetDirectories();
-      bool ok = false;
+      bool ok = true;
       if (Project.containsProject(dir) != "")
         ok = tidyUpProject(dir, delWavs, pngs, delOrig, delAnn);
       else

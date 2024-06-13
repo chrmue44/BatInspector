@@ -34,6 +34,7 @@ namespace BatInspector.Controls
     int _oldCallIdx = -1;
     Image[] _playImgs;
     ctlWavFile _ctlWav = null;
+    frmExport _frmExp = null;
 
     public CtrlZoom()
     {
@@ -167,7 +168,8 @@ namespace BatInspector.Controls
       lblWidth = 110;
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, lblWidth);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 85, ctlSpecManChanged);
-      _ctlSpecMan.setItems(species.ToArray());
+      if(species != null)
+        _ctlSpecMan.setItems(species.ToArray());
       _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
       _gbMean.Visibility = Visibility.Collapsed;
       _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 40, 40, calcMeanValues);
@@ -1202,8 +1204,10 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, 
-                                               _model.Prj.WavSubDir);
+        string wavSubDir = "";
+        if (_model.Prj != null)
+          wavSubDir = _model.Prj.WavSubDir;
+        _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, wavSubDir);
         string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
         if (_ctlWav != null)
         {
@@ -1338,6 +1342,13 @@ namespace BatInspector.Controls
       FrmLocationView frm = new FrmLocationView();
       frm.navigate(_model.ZoomView.FileInfo.FileName, _model.ZoomView.FileInfo.GPS.Position, 17);
       frm.Show();
+    }
+
+    private void _btnExport_Click(object sender, RoutedEventArgs e)
+    {
+      if(_frmExp == null)
+        _frmExp = new frmExport(_model);
+      _frmExp.Show();
     }
   }
 }

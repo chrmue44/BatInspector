@@ -2,12 +2,19 @@ TODO
 - choose between different AI models
 - information about chosen model in project file
 - training of model
+- tidy up in separate thread (blocks GUI while removing files)
 
-V0.8.1.2
+V0.8.2.0   05.06.24
+- show WAV file in ZoomView when opening WAV-File with WAV tool
+- bugfix: tidy up stopped at first directory not containing a project
+
+V0.8.1.2   27.05.24
 - bugfix: removeSource now also removes empty directories
-- added temperature and humidity to report
+- added temperature and humidity to report and sum report
 - bugfix: sum report now gets saved in target dir (not root dir)
 - "deleting" of files in a project now faster (move instead of copy/delete)
+- new parameter display brightness for BatSpy control
+- new button in zoomview to export current wav file (+png, +xml, time stretched)
 
 V0.8.1.1   11.05.24
 - bugfix: saving batInfo.json is now working

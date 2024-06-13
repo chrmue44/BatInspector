@@ -395,7 +395,10 @@ namespace BatInspector.Forms
       }
       else
       {
-        _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav);
+        if (_model.CurrentlyOpen != null)
+          _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav);
+        else
+          _ctlZoom.setup(analysis, wavFilePath, _model, null, null);
         _tbZoom.Header = "Zoom: " + name;
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -453,7 +456,7 @@ namespace BatInspector.Forms
           spec.Add(si.Abbreviation);
       }
       spec.Add("todo");
-      spec.Add("?");
+      //spec.Add("?");
       spec.Add("---");
 
       foreach (ctlWavFile ctl in _spSpectrums.Children)
@@ -770,17 +773,24 @@ namespace BatInspector.Forms
     {
       try
       {
-        MessageBoxResult res = MessageBoxResult.Yes;
-        DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
-        if (_model.CurrentlyOpen?.Analysis.Report != null)
-          res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
-          BatInspector.Properties.MyResources.msgQuestion, 
-          MessageBoxButton.YesNo, MessageBoxImage.Question);
-        if (res == MessageBoxResult.Yes)
+        if ((_model.Prj != null) && (_model.Prj.Ok))
         {
-          _model.Status.State = enAppState.AI_ANALYZE;
-          _workerPredict = new Thread(new ThreadStart(workerPrediction));
-          _workerPredict.Start();
+          MessageBoxResult res = MessageBoxResult.Yes;
+          DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
+          if (_model.CurrentlyOpen?.Analysis.Report != null)
+            res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
+            BatInspector.Properties.MyResources.msgQuestion,
+            MessageBoxButton.YesNo, MessageBoxImage.Question);
+          if (res == MessageBoxResult.Yes)
+          {
+            _model.Status.State = enAppState.AI_ANALYZE;
+            _workerPredict = new Thread(new ThreadStart(workerPrediction));
+            _workerPredict.Start();
+          }
+        }
+        else
+        {
+          MessageBox.Show(BatInspector.Properties.MyResources.msgPleaseOpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
       }
       catch (Exception ex)
@@ -1054,7 +1064,7 @@ namespace BatInspector.Forms
       try
       {
         if (_frmWavFile == null)
-          _frmWavFile = new frmWavFile(_model);
+          _frmWavFile = new frmWavFile(_model, this);
         _frmWavFile.Show();
         _frmWavFile.Visibility = Visibility.Visible;
         _frmWavFile.Topmost = true;

@@ -180,6 +180,9 @@
     <Compile Include="Controls\ctlVarTable.xaml.cs">
       <DependentUpon>ctlVarTable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlWebRepSpecies.xaml.cs">
+      <DependentUpon>ctlWebRepSpecies.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CtrlZoom.xaml.cs">
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
     </Compile>
@@ -206,6 +209,9 @@
     <Compile Include="Forms\frmDebug.xaml.cs">
       <DependentUpon>frmDebug.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmExport.xaml.cs">
+      <DependentUpon>frmExport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmInstall.xaml.cs">
       <DependentUpon>frmInstall.xaml</DependentUpon>
     </Compile>
@@ -217,6 +223,9 @@
     </Compile>
     <Compile Include="Forms\FrmRecovery.xaml.cs">
       <DependentUpon>FrmRecovery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmReportAssistant.xaml.cs">
+      <DependentUpon>frmReportAssistant.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmScriptParamEditor.xaml.cs">
       <DependentUpon>FrmScriptParamEditor.xaml</DependentUpon>
@@ -280,6 +289,7 @@
     <Compile Include="ViewModel\CmdLine.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\CtrlRecorder.cs" />
+    <Compile Include="ViewModel\DocReport.cs" />
     <Compile Include="ViewModel\ElekonInfoFile.cs" />
     <Compile Include="ViewModel\ExpressionGenerator.cs" />
     <Compile Include="ViewModel\Filter.cs" />
@@ -408,6 +418,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ctlWebRepSpecies.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CtrlZoom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -440,6 +454,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\frmExport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\frmInstall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -453,6 +471,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmRecovery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmReportAssistant.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -559,6 +581,7 @@
     <Resource Include="images\Button-Blank-Red.48.png" />
     <Resource Include="images\Button-Blank-Blue.48.png" />
     <Resource Include="kopf64.ico" />
+    <Resource Include="images\icons8-save-48-exp.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

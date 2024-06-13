@@ -1,0 +1,23 @@
+﻿<Window x:Class="BatInspector.Forms.frmExport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static res:MyResources.ToolTipExport}" Height="205" Width="543" Loaded="Window_Loaded">
+  <Grid>
+    <StackPanel Margin="10">
+      <local:CtlSelectFile x:Name="_ctlDest"/>
+            <local:ctlDataItem x:Name="_ctlPrefix"/>
+            <CheckBox Name="_cbIncPng" Content="{x:Static res:MyResources.frmExpIncludePNG}" Margin="0,10,0,0" />
+      <CheckBox Name="_cbIncXML" Content="{x:Static res:MyResources.frmExpIncludeXML}" />
+      <CheckBox Name="_cbTimeStretch" Content="{x:Static res:MyResources.frmExpWAVTimeStretched}" />
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="35">
+        <Button x:Name="_btnOk" Content="{x:Static res:MyResources.BtnOK}" Width="100" Margin="0,10,0,0" Click="_btnOk_Click"/>
+        <Button x:Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Width="100"  Margin="10,10,0,0" Click="_btnCancel_Click"/>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</Window>

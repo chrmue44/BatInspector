@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0810"
-#define MyAppVersion "0.8.1.0"
+#define MyInstallerName "SetupBatInspector_0812"
+#define MyAppVersion "0.8.1.2"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"

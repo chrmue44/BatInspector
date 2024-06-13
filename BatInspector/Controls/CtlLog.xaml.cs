@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-public delegate void dlgCmd(string cmd);
+public delegate void DlgCmd(string cmd);
 public delegate void dlgAddTextLine(string text, Brush color);
 
 namespace BatInspector.Controls
@@ -23,7 +23,7 @@ namespace BatInspector.Controls
   public partial class CtlLog : UserControl
   {
 
-    dlgCmd _dlgCmd = null;
+    DlgCmd _dlgCmd = null;
     bool _clearAfterReturn = false;
 
     public CtlLog()
@@ -49,7 +49,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public void setup(dlgCmd dlg, bool clearAfterReturn)
+    public void setup(DlgCmd dlg, bool clearAfterReturn)
     {
       _clearAfterReturn = clearAfterReturn;
       _dlgCmd = dlg;

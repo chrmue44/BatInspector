@@ -1464,4 +1464,28 @@
   <data name="ProjectmsgReplaceInfo" xml:space="preserve">
     <value>Alle in diesem Projekt vorhandenen Info-Dateien ersetzen?</value>
   </data>
+  <data name="FrmSetupRecorderBrightness" xml:space="preserve">
+    <value>Anzeigehelligkeit</value>
+  </data>
+  <data name="ToolTipExport" xml:space="preserve">
+    <value>Exportiere aktuelle Datei</value>
+  </data>
+  <data name="frmExpIncludePNG" xml:space="preserve">
+    <value>inklusive PNG-Datei (Bild)</value>
+  </data>
+  <data name="frmExpIncludeXML" xml:space="preserve">
+    <value>inklusive XML-Datei (Information)</value>
+  </data>
+  <data name="frmExpWAVTimeStretched" xml:space="preserve">
+    <value>WAV-Datei 10x zeitgedehnt speichern</value>
+  </data>
+  <data name="frmExpSelectDst" xml:space="preserve">
+    <value>Zielordner auswählen</value>
+  </data>
+  <data name="frmExportPrefix" xml:space="preserve">
+    <value>Prefix Dateiname</value>
+  </data>
+  <data name="msgPleaseOpenProjectFirst" xml:space="preserve">
+    <value>Bitte zuerst Projekt öffnen!</value>
+  </data>
 </root>

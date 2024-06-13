@@ -92,14 +92,14 @@ namespace BatInspector
         {
           foreach (string sp in reg.Species)
             _speciesList.Add(sp);
+          _speciesList.Add("?");
+          _speciesList.Add("Social");
         }
         else
         {
           foreach (SpeciesInfos sp in _speciesInfo)
             _speciesList.Add(sp.Abbreviation);
         }
-        _speciesList.Add("Social");
-        _speciesList.Add("?");
         _speciesList.Add("todo");
       }
     }

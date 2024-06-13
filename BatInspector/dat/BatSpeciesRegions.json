@@ -45,7 +45,8 @@
 			"Nyctalus",
 			"Myotis",
 			"Vespertilio",
-			"Pipistrellus"
+			"Pipistrellus",
+			"Plecotus"
 		],
 		"InformationSource": "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm"
 	},
@@ -103,7 +104,9 @@
 			"Myotis",
 			"Nyctalus",
 			"Vespertilio",
-			"Pipistrellus"
+			"Pipistrellus",
+			"Plecotus"
+
 		],
 		"InformationSource": "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway"
 	   },
@@ -160,7 +163,8 @@
 			"Myotis",
 			"Nyctalus",
 			"Vespertilio",
-			"Pipistrellus"
+			"Pipistrellus",
+			"Plecotus"
 		],
 		"InformationSource": "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats"
 	   },
@@ -251,7 +255,9 @@
 			"Myotis",
 			"Nyctalus",
 			"Vespertilio",
-			"Pipistrellus"
+			"Pipistrellus",
+			"Plecotus"
+
 		],
 		"InformationSource": "https://de.wikipedia.org/wiki/Liste_von_Fledermausarten_in_Deutschland"
 	   }

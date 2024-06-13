@@ -45,6 +45,7 @@ namespace BatInspector
 
     public static SpeciesInfos findAbbreviation(string abbreviation, List<SpeciesInfos> list)
     {
+      
       SpeciesInfos retVal = null;
       foreach (SpeciesInfos s in list)
       {
@@ -53,6 +54,17 @@ namespace BatInspector
           retVal = s;
           break;
         }
+      }
+      if(retVal == null)
+      {
+        if(abbreviation == "Myotis")
+          retVal = new SpeciesInfos("Myotis", "Myotis", "Myotis", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        else if (abbreviation == "Plecotus")
+          retVal = new SpeciesInfos("Plecotus", "Plecotus", "Plecotus", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        else if (abbreviation == "Pipistrellus")
+          retVal = new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        else if (abbreviation == "Nyctalus")
+          retVal = new SpeciesInfos("Nyctalus", "Nyctalus", "Nyctalus", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
       }
       return retVal;
     }

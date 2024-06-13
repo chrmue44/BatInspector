@@ -6,7 +6,10 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Interop;
 
 namespace BatInspector.Forms
@@ -17,6 +20,7 @@ namespace BatInspector.Forms
   public partial class frmCreateReport : Window
   {
     ViewModel _model;
+    string _formDataName;
     public frmCreateReport(ViewModel model)
     {
       InitializeComponent();
@@ -24,30 +28,56 @@ namespace BatInspector.Forms
       _ctlReport.setup(this);
     }
 
+    private void setFormDataName(string s)
+    {
+      _formDataName = s;
+    }
+
     private void _btnCreate_Click(object sender, RoutedEventArgs e)
     {
 
-        if ((_ctlReport._dtStart.SelectedDate != null) && (_ctlReport._dtEnd.SelectedDate != null))
+      if ((_ctlReport._dtStart.SelectedDate != null) && (_ctlReport._dtEnd.SelectedDate != null))
+      {
+
+        DateTime start = (DateTime)_ctlReport._dtStart.SelectedDate;
+        DateTime end = (DateTime)_ctlReport._dtEnd.SelectedDate;
+        enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
+        if (_ctlReport._cbCsvFile.IsChecked == true)
         {
-          DateTime start = (DateTime)_ctlReport._dtStart.SelectedDate;
-          DateTime end = (DateTime)_ctlReport._dtEnd.SelectedDate;
-          enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
-          _model.SumReport.createReport(start, end, period, _ctlReport._tbRootDir.Text, 
-                                        _ctlReport._tbDstDir.Text, _ctlReport._tbReportName.Text, _model.SpeciesInfos);
+          _model.SumReport.createCsvReport(start, end, period, _ctlReport._ctlRootDir.getValue(),
+                                      _ctlReport._ctlDestDir.getValue(),
+                                      _ctlReport._ctlCsvReportName.getValue(), _model.SpeciesInfos);
         }
-        else
-          MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-      this.Visibility = Visibility.Hidden;
-    }
+        if (_ctlReport._cbWebPage.IsChecked == true)
+        {
+          SumReportJson rep = _model.SumReport.createWebReport(start, end, period,
+                                      _ctlReport._ctlRootDir.getValue(),
+                                      _ctlReport._ctlDestDir.getValue(),
+                                      _ctlReport._ctlWebReportName.getValue(), _model.SpeciesInfos);
+          rep.save(Path.Combine(_ctlReport._ctlDestDir.getValue(), "sumReport.json"));
+          frmReportAssistant frm = new frmReportAssistant(rep, setFormDataName);
+          frm.WindowStartupLocation = WindowStartupLocation.Manual;
+          frm.Left = 100;
+          frm.Top = 10;
+          bool? ok = frm.ShowDialog();
+          if (ok == true)
+            _model.SumReport.createWebPage(rep, _formDataName, _model.SpeciesInfos,
+                      Path.Combine(_ctlReport._ctlDestDir.getValue(), _ctlReport._ctlWebReportName.getValue()));
+        }
+      }
+      else
+        MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        this.Visibility = Visibility.Hidden;
+      }
 
-    private void _btnCancel_Click(object sender, RoutedEventArgs e)
-    {
-      this.Visibility = Visibility.Hidden;
-    }
+      private void _btnCancel_Click(object sender, RoutedEventArgs e)
+      {
+        this.Visibility = Visibility.Hidden;
+      }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
-    {
-      winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+      private void Window_Loaded(object sender, RoutedEventArgs e)
+      {
+        winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+      }
     }
   }
-}

@@ -214,10 +214,10 @@ namespace libScripter
       return retVal;
     }
 
-    public string getCell(int row, string colName)
+    public string getCell(int row, string colName, bool disableErrorMsg = false)
     {
-      int col = getColNr(colName);
-      return getCell(row, col);
+      int col = getColNr(colName, disableErrorMsg);
+      return getCell(row, col, disableErrorMsg);
     }
 
     /// <summary>
@@ -225,12 +225,13 @@ namespace libScripter
     /// </summary>
     /// <param name="row">row nr 1..n</param>
     /// <param name="col">col nr 1..n</param>
+    /// <param name="disableErrorMsg">true disables error message</param>
     /// <returns>int value </returns>    
-    public string getCell(int row, int col)
+    public string getCell(int row, int col, bool disableErrorMsg = false)
     {
       string retVal = "";
       row--;
-      if((row >= 0) && (row < _cells.Count))
+      if ((row >= 0) && (row < _cells.Count))
       {
         col--;
         if ((col >= 0) && (col < _colCnt))
@@ -240,17 +241,23 @@ namespace libScripter
           retVal = _cells[row][col];
         }
         else
-          log("getCell(): column " + col.ToString() + " does not exist", enLogType.ERROR);
+        {
+          if (!disableErrorMsg)
+            log("getCell(): column " + col.ToString() + " does not exist", enLogType.ERROR);
+        }
       }
       else
-        log("getCell():row " + row.ToString() + " does not exist", enLogType.ERROR);
+      {
+        if (!disableErrorMsg)
+          log("getCell():row " + row.ToString() + " does not exist", enLogType.ERROR);
+      }
       return retVal;
     }
 
-    public double getCellAsDouble(int row, string colName)
+    public double getCellAsDouble(int row, string colName, bool disableErrorMsg = false)
     {
-      int col = getColNr(colName);
-      return getCellAsDouble(row, col);
+      int col = getColNr(colName, disableErrorMsg);
+      return getCellAsDouble(row, col, disableErrorMsg);
     }
 
     /// <summary>
@@ -259,9 +266,9 @@ namespace libScripter
     /// <param name="row">row nr 1..n</param>
     /// <param name="col">col nr 1..n</param>
     /// <returns>int value (or 0 if value isn't a double)</returns>
-    public double getCellAsDouble(int row, int col)
+    public double getCellAsDouble(int row, int col, bool disableErrorMsg = false)
     {
-      string str = getCell(row, col);
+      string str = getCell(row, col, disableErrorMsg);
       double retVal = 0;
       if (str != "")
       {
@@ -528,7 +535,7 @@ namespace libScripter
         log("remove col: invalic col nr: " + col.ToString(), enLogType.ERROR);
     }
 
-    public int getColNr(string colName)
+    public int getColNr(string colName, bool disableErrorMsg = false)
     {
       int retVal = -1;
       bool ok;
@@ -536,7 +543,7 @@ namespace libScripter
         ok = _cols.TryGetValue(colName, out retVal);
       else
         ok = int.TryParse(colName, out retVal);
-      if(retVal < 1)
+      if((retVal < 1) && !disableErrorMsg)
         log("col name '" + colName + "' not found!", enLogType.ERROR);
       return retVal;
     }

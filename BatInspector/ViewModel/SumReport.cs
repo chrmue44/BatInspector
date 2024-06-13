@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace BatInspector
 {
@@ -24,21 +27,34 @@ namespace BatInspector
   public class ReportListItem
   {
     public string FileName { get; set; }
+
     public DateTime Date { get; set; }
   }
 
+  [DataContract]
   public class SumReportItem
   {
+    [DataMember]
     public DateTime Date { get; set; }
+    [DataMember]
     public int Days { get; set; }
+    [DataMember]
     public double Latitude { get; set; }
+    [DataMember]
     public double Longitude { get; set; }
+    [DataMember]
     public string Landscape { get; set; }
+    [DataMember]
     public string Weather { get; set; }
+    [DataMember]
     public double TempMin { get; set; }
+    [DataMember]
     public double TempMax { get; set; }
+    [DataMember]
     public double HumidityMin { get; set; }
+    [DataMember]
     public double HumidityMax { get; set; }
+    [DataMember]
     public List<SumItem> SpecList { get; set; }
 
     public SumReportItem(List<SpeciesInfos> species)
@@ -48,11 +64,262 @@ namespace BatInspector
       TempMax = -100;
       HumidityMin = 100;
       HumidityMax = 0;
-      foreach(SpeciesInfos spec in species) 
+      foreach (SpeciesInfos spec in species)
       {
         SumItem it = new SumItem(spec.Abbreviation, 0);
         SpecList.Add(it);
       }
+    }
+  }
+
+
+  [DataContract]
+  public class SumReportJson
+  {
+    [DataMember]
+    public List<string> Species { get; set; }
+
+    [DataMember]
+    public List<SumReportItem> Days { get; set; }
+
+    public SumReportJson()
+    {
+      Species = new List<string>();
+      Days = new List<SumReportItem>();
+    }
+
+    public string getPerCentStr(string spec, int decimals)
+    {
+      double sumTotal = 0.0;
+      double sumSpec = 0.0;
+      foreach (SumReportItem it in Days)
+      {
+        foreach (SumItem s in it.SpecList)
+        {
+          if ((s.Species != "?") && (s.Species.ToLower() != "social"))
+          {
+            sumTotal += s.Count;
+            if (s.Species.ToLower() == spec.ToLower())
+              sumSpec += s.Count;
+          }
+        }
+      }
+      double perCent = sumSpec / sumTotal * 100;
+      string formatStr = "0.";
+      for (int i = 0; i < decimals; i++)
+        formatStr += "#";
+      string str = perCent.ToString(formatStr, CultureInfo.InvariantCulture);
+      return str;
+    }
+
+    public string getSumStr(string spec)
+    {
+      int sumSpec = 0;
+      foreach (SumReportItem it in Days)
+      {
+        foreach (SumItem s in it.SpecList)
+        {
+          if (s.Species.ToLower() == spec.ToLower())
+            sumSpec += s.Count;
+        }
+      }
+      return sumSpec.ToString();
+    }
+
+    public void save(string name)
+    {
+      try
+      {
+        StreamWriter file = new StreamWriter(name);
+        MemoryStream stream = new MemoryStream();
+        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(SumReportJson));
+        ser.WriteObject(stream, this);
+        StreamReader sr = new StreamReader(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        string str = sr.ReadToEnd();
+        file.Write(JsonHelper.FormatJson(str));
+        file.Close();
+        DebugLog.log("summary report (json) saved to '" + name + "'", enLogType.INFO);
+      }
+      catch (Exception e)
+      {
+        DebugLog.log("failed to write summary report file:" + name + ": " + e.ToString(), enLogType.ERROR);
+      }
+
+    }
+  }
+
+  [DataContract]
+  public class SpeciesWebInfo
+  {
+    [DataMember]
+    public string Name { get; set; }
+    [DataMember]
+    public string Comment { get; set; }
+    [DataMember]
+    public string Confusion { get; set; }
+
+    [DataMember]
+    public bool Show { get; set; }
+    public SpeciesWebInfo(string name, string comment, string confusion)
+    {
+      Name = name;
+      Comment = comment;
+      Confusion = confusion;
+      Show = false;
+    }
+  }
+
+  [DataContract]
+  public class WebReportDataJson
+  {
+    [DataMember]
+    public string PageName { get; set; }
+    [DataMember]
+    public string LocationName { get; set; }
+    [DataMember]
+    public string Author { get; set; }
+
+    [DataMember]
+    public string Weather { get; set; }
+
+    [DataMember]
+    public string TimeSpan { get; set; }
+
+    [DataMember]
+    public string LocationDescription { get; set; }
+
+    [DataMember]
+    public string Template { get; set; }
+
+    [DataMember]
+    public string WavFolder { get; set; }
+
+    [DataMember]
+    public string Comment { get; set; }
+
+    [DataMember]
+    List<SpeciesWebInfo> Species { get; set; }
+
+    public WebReportDataJson()
+    {
+      init();
+    }
+
+    private void init()
+    {
+      PageName = "name of web page";
+      LocationName = "location name of recording";
+      Author = "insert name";
+      Weather = "describe weather conditions";
+      TimeSpan = "Timespan of recordings";
+      LocationDescription = "brief description of recording location";
+      Template = "name of used template file";
+      Comment = "insert comment about the recording";
+      WavFolder = "";
+      Species = new List<SpeciesWebInfo>();
+      Species.Add(new SpeciesWebInfo("BBAR", "", "Typ A: charakteristisch\r\nTyp B: MDAU (sozial)"));
+      Species.Add(new SpeciesWebInfo("ENIL", "", ""));
+      Species.Add(new SpeciesWebInfo("ESER", "", "qcf: VMUR, NLEI\r\nfm-qcf: VMUR, NLEI, NNOC, ENIL\r\nfm: VMUR, NLEI, NNOC, ENIL"));
+      Species.Add(new SpeciesWebInfo("MALC", "", ""));
+      Species.Add(new SpeciesWebInfo("MBEC", "", ""));
+      Species.Add(new SpeciesWebInfo("MBRA", "", ""));
+      Species.Add(new SpeciesWebInfo("MDAS", "", ""));
+      Species.Add(new SpeciesWebInfo("MDAU", "", "kurze Rufe ( < 3,5 ms) : MDAS, MMYS, MMYO\r\nmittellange Rufe (3,5 - 6 ms): MDAS, MBART, MBEC, MMYO"));
+      Species.Add(new SpeciesWebInfo("MEMA", "", "kurz(1.8 - 3.5 ms): MBART, MBEC\r\nmittellang (3.5 - 6 ms): MALC, MBART, MBEC "));
+      Species.Add(new SpeciesWebInfo("MDAS", "", ""));
+      Species.Add(new SpeciesWebInfo("MMYO", "", "kurze Rufe (2,5 - 3,5 ms): MDAU\r\nmittellange Rufe ^(3,5 - 6): MDAU, MDAS, MNAT"));
+      Species.Add(new SpeciesWebInfo("MMYS", "", "MDAU, MDAS, MALC, MBEC, MEMA"));
+      Species.Add(new SpeciesWebInfo("MNAT", "", "kurze Rufe (<3,5ms): keine\r\nmittellang: (3,5 -  6ms); MMYO\r\nlang: MBEC, MMYO"));
+      Species.Add(new SpeciesWebInfo("MOXY", "", ""));
+      Species.Add(new SpeciesWebInfo("MSCH", "", ""));
+      Species.Add(new SpeciesWebInfo("NLAS", "", ""));
+      Species.Add(new SpeciesWebInfo("NLEI", "", "qcf: VMUR, NNOC\r\nfm-qcf: VMUR, NNOC, ESER (nicht bestimmbar)\r\nfm:  VMUR, NNOC, ESER, ENIL (nicht bestimmbar)"));
+      Species.Add(new SpeciesWebInfo("NNOC", "", "qcf: VMUR, NLEI\r\nfm-qcf: VMUR, NLEI, ESER (teils bestimmbar)\r\nfm:  VMUR, NLEI, ESER, ENIL (nicht bestimmbar)"));
+      Species.Add(new SpeciesWebInfo("PKUH", "", "PKUH (Ortungsrufe identisch), PPIP, HSAV"));
+      Species.Add(new SpeciesWebInfo("PNAT", "", ""));
+      Species.Add(new SpeciesWebInfo("PPIP", "", "PNAT, PKUH, PPYG"));
+      Species.Add(new SpeciesWebInfo("PKUH", "", ""));
+      Species.Add(new SpeciesWebInfo("PPYG", "", "PPIP"));
+      Species.Add(new SpeciesWebInfo("PAUR", "", "BBAR, Nahordnung Nyctaloid"));
+      Species.Add(new SpeciesWebInfo("PAUS", "", "BBAR, Nahordnung Nyctaloid"));
+      Species.Add(new SpeciesWebInfo("PPYG", "", "PPIP"));
+      Species.Add(new SpeciesWebInfo("RFER", "", ""));
+      Species.Add(new SpeciesWebInfo("RHIP", "", ""));
+      Species.Add(new SpeciesWebInfo("VMUR", "", ""));
+      Species.Add(new SpeciesWebInfo("Nyctalus", "", ""));
+      Species.Add(new SpeciesWebInfo("Myotis", "", ""));
+      Species.Add(new SpeciesWebInfo("Pippistrellus", "", ""));
+      Species.Add(new SpeciesWebInfo("Plecutus", "", ""));
+    }
+
+    public SpeciesWebInfo findSpecies(string spec)
+    {
+      SpeciesWebInfo retVal = null;
+      foreach (SpeciesWebInfo s in Species)
+      {
+        if (spec == s.Name)
+        {
+          retVal = s;
+          break;
+        }
+      }
+      return retVal;
+    }
+    public void save(string name)
+    {
+      try
+      {
+        StreamWriter file = new StreamWriter(name);
+        MemoryStream stream = new MemoryStream();
+        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
+        ser.WriteObject(stream, this);
+        StreamReader sr = new StreamReader(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        string str = sr.ReadToEnd();
+        file.Write(JsonHelper.FormatJson(str));
+        file.Close();
+        DebugLog.log("Web report entries saved to '" + name + "'", enLogType.INFO);
+      }
+      catch (Exception e)
+      {
+        DebugLog.log("failed to write web report data file:" + name + ": " + e.ToString(), enLogType.ERROR);
+      }
+    }
+    public static WebReportDataJson load(string name)
+    {
+      WebReportDataJson retVal = null;
+      FileStream file = null;
+      try
+      {
+        DebugLog.log("try to load:" + name, enLogType.DEBUG);
+        if (File.Exists(name))
+        {
+          file = new FileStream(name, FileMode.Open, FileAccess.Read);
+          DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
+          retVal = (WebReportDataJson)ser.ReadObject(file);
+          if (retVal == null)
+            DebugLog.log("web report entry file not well formed!", enLogType.ERROR);
+        }
+        else
+        {
+          DebugLog.log("load failed", enLogType.DEBUG);
+          retVal = new WebReportDataJson();
+          retVal.init();
+          retVal.save(name);
+        }
+      }
+      catch (Exception e)
+      {
+        DebugLog.log("failed to read config file : " + name + ": " + e.ToString(), enLogType.ERROR);
+        retVal = null;
+      }
+      finally
+      {
+        if (file != null)
+          file.Close();
+      }
+      return retVal;
     }
   }
 
@@ -66,7 +333,7 @@ namespace BatInspector
     private DirectoryInfo _dirInfo;
     private List<ReportListItem> _reports;
     private List<SumItem> _totalSum;
-    
+
     public SumReport()
     {
       _rep = new Csv(true);
@@ -75,13 +342,13 @@ namespace BatInspector
     }
 
     /// <summary>
-    /// main function to create a summarized report
+    /// main function to create a summarized report in csv format
     /// </summary>
     /// <param name="start">start time</param>
     /// <param name="end">end time</param>
     /// <param name="period">granularity of time</param>
     /// <param name="rootDir">root dir to start search for projects</param>
-    public void createReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
+    public void createCsvReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
                              List<SpeciesInfos> species)
     {
       initDirTree(rootDir);
@@ -96,31 +363,26 @@ namespace BatInspector
       DateTime date = start;
       while (date < end)
       {
-        int days = calcDays(date, end, period);        
+        int days = calcDays(date, end, period);
         item = getSums(date, days, species);
-        
+
         int nrCalls = 0;
         foreach (SumItem it in item.SpecList)
         {
-          SumItem t = SumItem.find(it.Species, _totalSum);
-          if(t == null)
-          {
-            t = new SumItem(it.Species, 0);
-            _totalSum.Add(t);            
-          }
+          SumItem t = SumItem.find(it.Species, _totalSum, true);
           t.Count += it.Count;
           nrCalls += it.Count;
         }
-        if(nrCalls > 0)
-          addEntry(item);
-        
+        if (nrCalls > 0)
+          addEntryToCsvReport(item);
+
         date = incrementDate(date, period);
       }
 
       _rep.addRow();
       _rep.addRow();
       _rep.setCell(_rep.RowCnt, Cols.DATE, "Sum Total");
-      foreach(SumItem it in _totalSum)
+      foreach (SumItem it in _totalSum)
       {
         if (it.Count <= 0)
           _rep.removeCol(it.Species);
@@ -130,11 +392,37 @@ namespace BatInspector
 
       if (Directory.Exists(dstDir))
       {
-        string fileName = Path.Combine(dstDir ,reportName);
+        string fileName = Path.Combine(dstDir, reportName);
         _rep.saveAs(fileName);
       }
       else
         DebugLog.log("unable to save sum report, directory does not exist: " + rootDir, enLogType.ERROR);
+    }
+
+    public SumReportJson createWebReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
+                         List<SpeciesInfos> species)
+    {
+      SumReportJson retVal = new SumReportJson();
+      initDirTree(rootDir);
+
+      DateTime date = start;
+      while (date < end)
+      {
+        int days = calcDays(date, end, period);
+        SumReportItem item = getSums(date, days, species);
+
+        int nrCalls = 0;
+        foreach (SumItem it in item.SpecList)
+        {
+          nrCalls += it.Count;
+        }
+        if (nrCalls > 0)
+          retVal.Days.Add(item);
+
+        date = incrementDate(date, period);
+      }
+      retVal.Species = getSpeciesInReport(retVal.Days);
+      return retVal;
     }
 
     public int calcDays(DateTime date, DateTime end, enPeriod period)
@@ -142,11 +430,11 @@ namespace BatInspector
       int days = 0;
       bool exit = false;
       int oldMonth = date.Month;
-      while((date < end) && !exit)
+      while ((date < end) && !exit)
       {
         days++;
         date = date.AddDays(1);
-        switch(period)
+        switch (period)
         {
           case enPeriod.DAILY:
             if (days >= 1)
@@ -192,10 +480,11 @@ namespace BatInspector
     {
       _rootDir = rootDir;
       _dirInfo = new DirectoryInfo(rootDir);
+      _reports.Clear();
       foreach (DirectoryInfo subDir in _dirInfo.GetDirectories())
       {
         string prjFile = Project.containsReport(subDir, AppParams.PRJ_SUMMARY);
-        if ( prjFile != "")
+        if (prjFile != "")
         {
           Csv csv = new Csv();
           csv.read(prjFile, AppParams.CSV_SEPARATOR, true);
@@ -219,12 +508,12 @@ namespace BatInspector
       }
     }
 
-    
+
     /// <summary>
     /// add entry to sum report
     /// </summary>
     /// <param name="item">report item</param>
-    private void addEntry(SumReportItem item)
+    private void addEntryToCsvReport(SumReportItem item)
     {
       string dateStr = item.Date.ToString(AppParams.REPORT_DATE_FORMAT);
       _rep.addRow();
@@ -239,8 +528,8 @@ namespace BatInspector
       _rep.setCell(row, Cols.TEMP_MAX, item.TempMax);
       _rep.setCell(row, Cols.HUMID_MIN, item.HumidityMin);
       _rep.setCell(row, Cols.HUMID_MAX, item.HumidityMax);
-//      int startColTime = _rep.findInRow(1, Cols.T18H);
-      foreach(SumItem sc in item.SpecList)
+      //      int startColTime = _rep.findInRow(1, Cols.T18H);
+      foreach (SumItem sc in item.SpecList)
       {
         if (sc.Species != "")
         {
@@ -248,7 +537,7 @@ namespace BatInspector
             _rep.insertCol(_rep.ColCnt + 1, "0", sc.Species);
           _rep.setCell(row, sc.Species, sc.Count);
         }
-      }    
+      }
     }
 
     /// <summary>
@@ -272,7 +561,7 @@ namespace BatInspector
 
       foreach (ReportListItem rep in _reports)
       {
-        if((rep.Date >= date) && (rep.Date < end))
+        if ((rep.Date >= date) && (rep.Date < end))
         {
           sumCnt++;
           Csv summary = new Csv();
@@ -285,13 +574,8 @@ namespace BatInspector
             latitude += summary.getCellAsDouble(row, Cols.LAT);
             longitude += summary.getCellAsDouble(row, Cols.LON);
             string spec = summary.getCell(row, Cols.SPECIES_MAN);
-            int count = summary.getCellAsInt(row, Cols.COUNT);  
-            SumItem item = SumItem.find(spec, list);
-            if (item == null)
-            { 
-              item = new SumItem(spec, 0);
-              list.Add(item);
-            }
+            int count = summary.getCellAsInt(row, Cols.COUNT);
+            SumItem item = SumItem.find(spec, list, true);
             item.Count += count;
             if (retVal.TempMin > summary.getCellAsDouble(row, Cols.TEMP_MIN))
               retVal.TempMin = summary.getCellAsDouble(row, Cols.TEMP_MIN);
@@ -304,7 +588,7 @@ namespace BatInspector
             for (int i = 0; i < item.CountTime.Length; i++)
             {
               int cnt = summary.getCellAsInt(row, startColTime + i);
-              item.CountTime[i] += cnt; 
+              item.CountTime[i] += cnt;
             }
           }
         }
@@ -316,6 +600,264 @@ namespace BatInspector
       retVal.Longitude = longitude;
       retVal.SpecList = list;
       return retVal;
+    }
+
+    static int findInList(string s, List<string> list)
+    {
+      int retVal = -1;
+      for (int i = 0; i < list.Count; i++)
+      {
+        if (list[i] == s)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public static List<string> getSpeciesInReport(List<SumReportItem> list)
+    {
+      List<string> retVal = new List<string>();
+      foreach (SumReportItem item in list)
+      {
+        foreach (SumItem spec in item.SpecList)
+        {
+          if ((findInList(spec.Species, retVal) < 0) && (spec.Count > 0))
+            retVal.Add(spec.Species);
+        }
+      }
+      retVal.Sort();
+      return retVal;
+    }
+
+
+    public void createWebPage(SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string outputName)
+    {
+      WebReportDataJson formData = WebReportDataJson.load(formDataName);
+      if (formData != null)
+      {
+        try
+        {
+          TextFile output = new TextFile();
+          output.read(formData.Template);
+
+          // head
+          output.Replace("%YEAR%", rep.Days[0].Date.Year.ToString());
+          output.Replace("%PAGE_NAME%", formData.PageName);
+          output.Replace("%AUTHOR%", formData.Author);
+          output.Replace("%LOCATION_DESCRIPTION%", formData.LocationDescription);
+          output.Replace("%LOCATION_NAME%", formData.LocationName);
+          output.Replace("%WEATHER%", formData.Weather);
+          output.Replace("%REMARKS%", formData.Comment);
+          if (string.IsNullOrEmpty(formData.TimeSpan))
+          {
+            DateTime start = new DateTime(2100, 1, 1);
+            DateTime end = new DateTime(1900, 1, 1);
+            foreach (SumReportItem it in rep.Days)
+            {
+              if (it.Date < start)
+                start = it.Date;
+              if (it.Date > end)
+                end = it.Date;
+            }
+            string str = start.ToString("dd.MM.yyyy") + " - " + end.ToString("dd.MM.yyyy") +
+                         ", " + rep.Days.Count.ToString() + " Nächte";
+            output.Replace("%TIME_SPAN%", str);
+          }
+          else
+            output.Replace("%TIME_SPAN%", formData.TimeSpan);
+
+
+          // list of detected species
+          int i = output.findLine("%SPEC_ABR%");
+          if (i >= 0)
+          {
+            string templateLine = output.getLine(i);
+            output.removeLine(i);
+            int lineNr = i;
+            foreach (string spec in rep.Species)
+            {
+              if ((spec != "?") && (spec.ToLower() != "social"))
+              {
+                string line = templateLine;
+                line = line.Replace("%SPEC_ABR%", spec);
+                line = line.Replace("%SPEC_LAT%", SpeciesInfos.findAbbreviation(spec, speciesInfo).Latin);
+                line = line.Replace("%SPEC_LOC%", SpeciesInfos.findAbbreviation(spec, speciesInfo).Local);
+                line = line.Replace("%PERCENT%", rep.getPerCentStr(spec, 1));
+                line = line.Replace("%COMMENT%", formData.findSpecies(spec).Comment);
+                line = line.Replace("%CONFUSION%", formData.findSpecies(spec).Confusion);
+                output.insert(lineNr, line);
+                lineNr++;
+              }
+            }
+          }
+
+          // list of document recordings
+          i = output.findLine("%WAV_SPEC_ABR%");
+          if (i >= 0)
+          {
+            string templateLine = output.getLine(i);
+            output.removeLine(i);
+            int lineNr = i;
+            for (int j = 1; j < rep.Species.Count; j++)
+            {
+              string line = templateLine;
+              string pngFile = findFile(rep.Species[j], formData.WavFolder, AppParams.EXT_IMG);
+              string wavFile = findFile(rep.Species[j], formData.WavFolder, AppParams.EXT_WAV);
+              if ((pngFile.Length > 1) && (wavFile.Length > 1))
+              {
+                line = line.Replace("%WAV_SPEC_ABR%", rep.Species[j]); //SpeciesInfos.findAbbreviation(spec, speciesInfo).Local
+                line = line.Replace("%PNG_NAME%", pngFile); //SpeciesInfos.findAbbreviation(spec, speciesInfo).Local
+                line = line.Replace("%WAV_NAME%", wavFile);
+                output.insert(lineNr, line);
+                lineNr++;
+              }
+            }
+          }
+
+          // header for list of recording days
+          i = output.findLine("%REP_SPEC%");
+          if (i >= 0)
+          {
+            string line = output.getLine(i);
+            rep.Species.Sort();
+            line = line.Replace("%REP_SPEC%", rep.Species[0]);
+            for (int j = 1; j < rep.Species.Count; j++)
+              line += "**" + rep.Species[j] + "** |";
+            output.setLine(i, line);
+          }
+
+          // list of recording days
+          i = output.findLine("%REP_DATE%");
+          if (i >= 0)
+          {
+            string templateLine = output.getLine(i);
+            output.removeLine(i);
+            int lineNr = i;
+            foreach (SumReportItem it in rep.Days)
+            {
+              string line = templateLine;
+              line = line.Replace("%REP_DATE%", it.Date.ToString("dd.MM.yyyy"));
+              line = line.Replace("%REP_LAT%", it.Latitude.ToString("#.#####"));
+              line = line.Replace("%REP_LON%", it.Longitude.ToString("#.#####"));
+              line = line.Replace("%REP_TMIN%", it.TempMin.ToString("#.#"));
+              line = line.Replace("%REP_TMAX%", it.TempMax.ToString("#.#"));
+              line = line.Replace("%REP_CNT%", SumItem.find(rep.Species[0], it.SpecList).Count.ToString());
+              for (int j = 1; j < rep.Species.Count; j++)
+                line += " " + SumItem.find(rep.Species[j], it.SpecList).Count.ToString() + " |";
+
+              output.insert(lineNr, line);
+              lineNr++;
+            }
+          }
+
+          // sums of all species
+          i = output.findLine("%REP_SUM%");
+          if (i >= 0)
+          {
+            string line = output.getLine(i);
+            line = line.Replace("%REP_SUM%", rep.getSumStr(rep.Species[0]));
+            for (int j = 1; j < rep.Species.Count; j++)
+              line += " " + rep.getSumStr(rep.Species[j]) + " |";
+            output.setLine(i, line);
+          }
+
+
+          output.saveAs(outputName);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("failed to create web report: " + ex.ToString(), enLogType.ERROR);
+        }
+      }
+      else
+        DebugLog.log("could not load file '" + formDataName + "'", enLogType.ERROR);
+    }
+
+    private string findFile(string part, string folder, string extension)
+    {
+      string retVal = "";
+      DirectoryInfo d = new DirectoryInfo(folder);
+      FileInfo[] files = d.GetFiles("*" + extension);
+      foreach (FileInfo file in files) 
+      {
+        if (Path.GetFileName(file.Name).ToLower().IndexOf(part.ToLower()) >= 0)
+        {
+          retVal = file.Name;
+          break;
+        }
+      }
+      return retVal;
+    }
+  }
+
+  public class TextFile
+  {
+    List<string> _lines;
+    string _name = "";
+
+    public void read(string name)
+    {
+      _name = name;
+      _lines = File.ReadAllLines(name).ToList<string>();
+    }
+
+    public void save()
+    {
+      File.WriteAllLines(_name, _lines.ToArray());
+    }
+
+    public void saveAs(string name)
+    {
+      File.WriteAllLines(name, _lines.ToArray());
+    }
+
+    public string getLine(int i)
+    {
+      string retVal = "";
+      if ((i >= 0) && (i < _lines.Count))
+        retVal = _lines[i];
+      return retVal;
+    }
+
+    public void setLine(int i, string str)
+    {
+      if ((i >= 0) && (i < _lines.Count))
+        _lines[i] = str;
+    }
+
+    public int findLine(string str)
+    {
+      int retVal = -1;
+      for (int i = 0; i < _lines.Count; i++)
+      {
+        if (_lines[i].IndexOf(str) >= 0)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public void insert(int i, string line)
+    {
+      _lines.Insert(i, line);
+    }
+
+    public void removeLine(int i)
+    {
+      if ((i >= 0) && (i < _lines.Count))
+        _lines.RemoveAt(i);
+    }
+
+    public void Replace(string oldStr, string newStr)
+    {
+      for (int i = 0; i < _lines.Count; i++)
+      {
+        _lines[i] = _lines[i].Replace(oldStr, newStr);
+      }
     }
   }
 }

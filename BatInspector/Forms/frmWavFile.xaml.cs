@@ -11,6 +11,8 @@ using System.Windows;
 using BatInspector.Controls;
 using Microsoft.Win32;
 using System.Windows.Interop;
+using libParser;
+using System.IO;
 
 namespace BatInspector.Forms
 {
@@ -20,10 +22,13 @@ namespace BatInspector.Forms
   public partial class frmWavFile : Window
   {
     ViewModel _model;
-    public frmWavFile(ViewModel model)
+    MainWindow _parent;
+
+    public frmWavFile(ViewModel model, MainWindow parent)
     {
       InitializeComponent();
       _model = model;
+      _parent = parent;
       int wLbl = 110;
       _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, wLbl);
 
@@ -67,6 +72,10 @@ namespace BatInspector.Forms
         _ctlBitsPerSample.setValue((uint)_model.WavFile.FormatChunk.BitsPerSample);
 
         _ctlSamples.setValue(_model.WavFile.AudioSamples.Length);
+
+        double duration = (double)_model.WavFile.AudioSamples.Length / _model.WavFile.FormatChunk.Frequency;
+        AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)_model.WavFile.FormatChunk.Frequency, duration);
+        _parent.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null);
       }
     }
 

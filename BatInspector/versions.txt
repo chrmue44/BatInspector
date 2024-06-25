@@ -2,11 +2,13 @@ TODO
 - choose between different AI models
 - information about chosen model in project file
 - training of model
-- tidy up in separate thread (blocks GUI while removing files)
+- bugfix: multi cut away in zoom view
 
 V0.8.2.0   05.06.24
+- new console command 'SplitProject'
 - show WAV file in ZoomView when opening WAV-File with WAV tool
 - bugfix: tidy up stopped at first directory not containing a project
+- tidy up in separate thread (not blocking GUI while removing files anymore)
 
 V0.8.1.2   27.05.24
 - bugfix: removeSource now also removes empty directories

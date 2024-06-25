@@ -2077,6 +2077,123 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string frmReportAssistant_Author {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description Recording Location.
+        /// </summary>
+        public static string frmReportAssistant_DescrLoc {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_DescrLoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Form Data.
+        /// </summary>
+        public static string frmReportAssistant_FormData {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_FormData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Header.
+        /// </summary>
+        public static string frmReportAssistant_Header {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input Files.
+        /// </summary>
+        public static string frmReportAssistant_Input {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location Name.
+        /// </summary>
+        public static string frmReportAssistant_LocationName {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_LocationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miscellanous.
+        /// </summary>
+        public static string frmReportAssistant_Miscellanous {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Miscellanous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output Files.
+        /// </summary>
+        public static string frmReportAssistant_Output {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Title.
+        /// </summary>
+        public static string frmReportAssistant_PageTitle {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select WAV folder.
+        /// </summary>
+        public static string frmReportAssistant_SelectWAVFolder {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_SelectWAVFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template file.
+        /// </summary>
+        public static string frmReportAssistant_TemplateFile {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_TemplateFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time span.
+        /// </summary>
+        public static string frmReportAssistant_TimeSpan {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_TimeSpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weather.
+        /// </summary>
+        public static string frmReportAssistant_Weather {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Weather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Script Description.
         /// </summary>
         public static string FrmScriptDescription {

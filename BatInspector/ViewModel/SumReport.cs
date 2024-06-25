@@ -249,8 +249,8 @@ namespace BatInspector
       Species.Add(new SpeciesWebInfo("VMUR", "", ""));
       Species.Add(new SpeciesWebInfo("Nyctalus", "", ""));
       Species.Add(new SpeciesWebInfo("Myotis", "", ""));
-      Species.Add(new SpeciesWebInfo("Pippistrellus", "", ""));
-      Species.Add(new SpeciesWebInfo("Plecutus", "", ""));
+      Species.Add(new SpeciesWebInfo("Pipistrellus", "", ""));
+      Species.Add(new SpeciesWebInfo("Plecotus", "", ""));
     }
 
     public SpeciesWebInfo findSpecies(string spec)
@@ -681,14 +681,22 @@ namespace BatInspector
               if ((spec != "?") && (spec.ToLower() != "social"))
               {
                 string line = templateLine;
-                line = line.Replace("%SPEC_ABR%", spec);
-                line = line.Replace("%SPEC_LAT%", SpeciesInfos.findAbbreviation(spec, speciesInfo).Latin);
-                line = line.Replace("%SPEC_LOC%", SpeciesInfos.findAbbreviation(spec, speciesInfo).Local);
-                line = line.Replace("%PERCENT%", rep.getPerCentStr(spec, 1));
-                line = line.Replace("%COMMENT%", formData.findSpecies(spec).Comment);
-                line = line.Replace("%CONFUSION%", formData.findSpecies(spec).Confusion);
-                output.insert(lineNr, line);
-                lineNr++;
+                SpeciesInfos info = SpeciesInfos.findAbbreviation(spec, speciesInfo);
+                if (info != null)
+                {
+                  line = line.Replace("%SPEC_ABR%", spec);
+                  line = line.Replace("%SPEC_LAT%", info.Latin);
+                  line = line.Replace("%SPEC_LOC%", info.Local);
+                  line = line.Replace("%PERCENT%", rep.getPerCentStr(spec, 1));
+                  SpeciesWebInfo webInfo = formData.findSpecies(spec);
+                  if (webInfo != null)
+                  {
+                    line = line.Replace("%COMMENT%", webInfo.Comment);
+                    line = line.Replace("%CONFUSION%", formData.findSpecies(spec).Confusion);
+                  }
+                  output.insert(lineNr, line);
+                  lineNr++;
+                }
               }
             }
           }
@@ -707,7 +715,7 @@ namespace BatInspector
               string wavFile = findFile(rep.Species[j], formData.WavFolder, AppParams.EXT_WAV);
               if ((pngFile.Length > 1) && (wavFile.Length > 1))
               {
-                line = line.Replace("%WAV_SPEC_ABR%", rep.Species[j]); //SpeciesInfos.findAbbreviation(spec, speciesInfo).Local
+                line = line.Replace("%WAV_SPEC_ABR%", SpeciesInfos.findAbbreviation(rep.Species[j], speciesInfo).Local);
                 line = line.Replace("%PNG_NAME%", pngFile); //SpeciesInfos.findAbbreviation(spec, speciesInfo).Local
                 line = line.Replace("%WAV_NAME%", wavFile);
                 output.insert(lineNr, line);
@@ -743,10 +751,20 @@ namespace BatInspector
               line = line.Replace("%REP_LON%", it.Longitude.ToString("#.#####"));
               line = line.Replace("%REP_TMIN%", it.TempMin.ToString("#.#"));
               line = line.Replace("%REP_TMAX%", it.TempMax.ToString("#.#"));
-              line = line.Replace("%REP_CNT%", SumItem.find(rep.Species[0], it.SpecList).Count.ToString());
+              SumItem sumIt = null;
+              while ((sumIt == null) && (rep.Species.Count > 0))
+              {
+                sumIt = SumItem.find(rep.Species[0], it.SpecList);
+                if(sumIt == null)
+                  rep.Species.RemoveAt(0);
+              }
+              line = line.Replace("%REP_CNT%", sumIt.Count.ToString());
               for (int j = 1; j < rep.Species.Count; j++)
-                line += " " + SumItem.find(rep.Species[j], it.SpecList).Count.ToString() + " |";
-
+              {
+                sumIt = SumItem.find(rep.Species[j], it.SpecList);
+                if (sumIt != null)
+                  line += " " + sumIt.Count.ToString() + " |";
+              }
               output.insert(lineNr, line);
               lineNr++;
             }

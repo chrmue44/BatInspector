@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -66,6 +67,7 @@ namespace BatInspector
     Query _query;
     CtrlRecorder _recorder;
     Statistic _statistic;
+    string _tempCmd;
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -357,9 +359,20 @@ namespace BatInspector
       return bImg;
     }
 
+    /// <summary>
+    /// execute command in separate thread
+    /// </summary>
+    /// <param name="cmd"></param>
     public void executeCmd(string cmd)
     {
-      _scripter.execCmd(cmd);
+      _tempCmd = cmd;
+      Thread thr = new Thread(threadExecCmd);
+      thr.Start();
+    }
+
+    public void threadExecCmd()
+    {
+      _scripter.execCmd(_tempCmd);
     }
 
     public void cancelScript()

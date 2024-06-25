@@ -6,6 +6,8 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using BatInspector.Properties;
+using libParser;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -17,6 +19,12 @@ namespace BatInspector.Forms
   public partial class frmCleanup : Window
   {
     ViewModel _model;
+    string _delFolder;
+    bool _delWavs;
+    bool _delLogs;
+    bool _delPngs;
+    bool _delOrigs;
+    bool _delAnn;
 
     public frmCleanup(ViewModel model)
     {
@@ -77,10 +85,21 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
-      _model.cleanup(_ctlSelectFolder.getValue(), _cbDelWav.IsChecked == true,
-                     _cbDelLog.IsChecked == true, _cbDelPNG.IsChecked == true,
-                     _cbOriginal.IsChecked == true, _cbDelAnn.IsChecked == true);
+      _delFolder = _ctlSelectFolder.getValue();
+      _delWavs = _cbDelWav.IsChecked == true;
+      _delLogs = _cbDelLog.IsChecked == true;
+      _delPngs = _cbDelPNG.IsChecked == true;
+      _delOrigs = _cbOriginal.IsChecked == true;
+      _delAnn = _cbDelAnn.IsChecked == true;
+      Thread thr = new Thread(threadCleanup);
+      thr.Start();
       this.Visibility = Visibility.Hidden;
+    }
+
+    private void threadCleanup()
+    {
+      _model.cleanup(_delFolder, _delWavs, _delLogs, _delPngs, _delOrigs, _delAnn);
+      DebugLog.log("finished tidying up", enLogType.INFO);
     }
   }
 }

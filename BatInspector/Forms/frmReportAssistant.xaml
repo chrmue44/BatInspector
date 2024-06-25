@@ -10,19 +10,19 @@
     <Grid>
         <ScrollViewer>
         <StackPanel Margin="0,0,0,10">
-                <GroupBox Header="Input">
+                <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Input}">
                     <StackPanel Margin="5">
                         <local:CtlSelectFile x:Name="_ctlFormData"/>
                         <local:CtlSelectFile x:Name="_ctlTemplate"/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="Output">
+                <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Output}">
         <StackPanel Margin="5">
                     <local:ctlDataItem x:Name="_ctlPageTitle"/>
                     <local:ctlDataItem x:Name="_ctlLocationName"/>
                 </StackPanel>
         </GroupBox>
-            <GroupBox x:Name="_grpHeader" Header="Header">
+            <GroupBox x:Name="_grpHeader" Header="{x:Static res:MyResources.frmReportAssistant_Header}">
                     <StackPanel Margin="5">
                         <local:ctlDataItem x:Name="_ctlAuthor" />
                         <local:ctlDataItem x:Name="_ctlLocDescription"/>
@@ -40,7 +40,7 @@
                     </StackPanel>
               
         </GroupBox>
-                <GroupBox Header="Miscellanous">
+                <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Miscellanous}">
                     <local:CtlSelectFile x:Name="_ctlSelectWavFolder" />
                 </GroupBox>
                 <GroupBox Header="Found Species">

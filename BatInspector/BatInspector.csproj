@@ -289,7 +289,6 @@
     <Compile Include="ViewModel\CmdLine.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\CtrlRecorder.cs" />
-    <Compile Include="ViewModel\DocReport.cs" />
     <Compile Include="ViewModel\ElekonInfoFile.cs" />
     <Compile Include="ViewModel\ExpressionGenerator.cs" />
     <Compile Include="ViewModel\Filter.cs" />

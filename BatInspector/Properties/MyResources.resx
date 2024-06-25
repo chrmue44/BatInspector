@@ -1488,4 +1488,43 @@
   <data name="msgPleaseOpenProjectFirst" xml:space="preserve">
     <value>Please open project first!</value>
   </data>
+  <data name="frmReportAssistant_Input" xml:space="preserve">
+    <value>Input Files</value>
+  </data>
+  <data name="frmReportAssistant_Output" xml:space="preserve">
+    <value>Output Files</value>
+  </data>
+  <data name="frmReportAssistant_Header" xml:space="preserve">
+    <value>Page Header</value>
+  </data>
+  <data name="frmReportAssistant_Miscellanous" xml:space="preserve">
+    <value>Miscellanous</value>
+  </data>
+  <data name="frmReportAssistant_FormData" xml:space="preserve">
+    <value>Form Data</value>
+  </data>
+  <data name="frmReportAssistant_TemplateFile" xml:space="preserve">
+    <value>Template file</value>
+  </data>
+  <data name="frmReportAssistant_Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="frmReportAssistant_DescrLoc" xml:space="preserve">
+    <value>Description Recording Location</value>
+  </data>
+  <data name="frmReportAssistant_LocationName" xml:space="preserve">
+    <value>Location Name</value>
+  </data>
+  <data name="frmReportAssistant_PageTitle" xml:space="preserve">
+    <value>Page Title</value>
+  </data>
+  <data name="frmReportAssistant_Weather" xml:space="preserve">
+    <value>Weather</value>
+  </data>
+  <data name="frmReportAssistant_TimeSpan" xml:space="preserve">
+    <value>Time span</value>
+  </data>
+  <data name="frmReportAssistant_SelectWAVFolder" xml:space="preserve">
+    <value>select WAV folder</value>
+  </data>
 </root>

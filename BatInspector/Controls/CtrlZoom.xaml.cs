@@ -251,15 +251,17 @@ namespace BatInspector.Controls
       _ctlDuration.Visibility = vis;
     }
 
-    public void update()
+    public void update(bool initRuler = true)
     {
       if (_model != null)
       {
-        _model.ZoomView.RulerDataA.setRange(-1, 1);
-        _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
-        _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-        _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-
+        if (initRuler)
+        {
+          _model.ZoomView.RulerDataA.setRange(-1, 1);
+          _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
+          _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+          _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+        }
         initRulerF();
         initRulerT();
         initRulerA();
@@ -1284,7 +1286,7 @@ namespace BatInspector.Controls
           _model.ZoomView.removeSection(tMin, tMax);
           hideCursors();
           createZoomImg();
-          update();
+          update(false);
         }
         else
           MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);

@@ -268,6 +268,9 @@ namespace BatInspector
     public void removeSection(double tMin, double tMax)
     {
       _wf.Audio.removeSection(tMin, tMax);
+      _rulerDataT.limits(0, _wf.Duration);
+      if((tMin >= _rulerDataT.Min) && (tMax <= _rulerDataT.Max))
+        _rulerDataT.setRange(_rulerDataT.Min, _rulerDataT.Max - tMax + tMin);
     }
 
     public void normalize()

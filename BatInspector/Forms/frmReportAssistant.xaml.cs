@@ -16,19 +16,19 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _dlgSetFormDataName = dlgSetFormDataName;
-      int wl = 120;
+      int wl = 150;
       _rep = rep;
-      _ctlFormData.setup("Form Data", wl + 5, false, "json files(*.json)|*.json|All files(*.*) |*.*", setFormData);
-      _ctlTemplate.setup("Template file", wl + 5, false,"markdown files(*.md)|*.md|All files(*.*)|*.*");
-      _ctlAuthor.setup("Author", Controls.enDataType.STRING, 0, wl, true);
-      _ctlLocDescription.setup("Description Location", Controls.enDataType.STRING, 0, wl, true);
-      _lblComment.Text = "Remarks";
+      _ctlFormData.setup(BatInspector.Properties.MyResources.frmReportAssistant_FormData, wl + 5, false, "json files(*.json)|*.json|All files(*.*) |*.*", setFormData);
+      _ctlTemplate.setup(BatInspector.Properties.MyResources.frmReportAssistant_TemplateFile, wl + 5, false,"markdown files(*.md)|*.md|All files(*.*)|*.*");
+      _ctlAuthor.setup(BatInspector.Properties.MyResources.frmReportAssistant_Author, Controls.enDataType.STRING, 0, wl, true);
+      _ctlLocDescription.setup(BatInspector.Properties.MyResources.frmReportAssistant_DescrLoc, Controls.enDataType.STRING, 0, wl, true);
+      _lblComment.Text = BatInspector.Properties.MyResources.CtlWavRemarks;
       _grComment.ColumnDefinitions[0].Width = new GridLength(wl + 5);
-      _ctlLocationName.setup("Location Name", Controls.enDataType.STRING, 0, wl, true);
-      _ctlPageTitle.setup("Page Title", Controls.enDataType.STRING, 0, wl, true);
-      _ctlWeather.setup("Weather", Controls.enDataType.STRING, 0, wl, true);
-      _ctlTimeSpan.setup("Time span", Controls.enDataType.STRING, 0, wl, true);
-      _ctlSelectWavFolder.setup("select WAV folder", wl + 10, true);
+      _ctlLocationName.setup(BatInspector.Properties.MyResources.frmReportAssistant_LocationName, Controls.enDataType.STRING, 0, wl, true);
+      _ctlPageTitle.setup(BatInspector.Properties.MyResources.frmReportAssistant_PageTitle, Controls.enDataType.STRING, 0, wl, true);
+      _ctlWeather.setup(BatInspector.Properties.MyResources.frmReportAssistant_Weather, Controls.enDataType.STRING, 0, wl, true);
+      _ctlTimeSpan.setup(BatInspector.Properties.MyResources.frmReportAssistant_TimeSpan, Controls.enDataType.STRING, 0, wl, true);
+      _ctlSelectWavFolder.setup(BatInspector.Properties.MyResources.frmReportAssistant_SelectWAVFolder, wl + 10, true);
       foreach(string spec in _rep.Species)
       {
         if((spec != "?") && (spec.ToLower() != "social"))
@@ -46,7 +46,8 @@ namespace BatInspector.Forms
       {
         ctlWebRepSpecies ctl = _spFoundSpecies.Children[idx] as ctlWebRepSpecies;
         SpeciesWebInfo info = _formData.findSpecies(ctl.Species);
-        info.Show = false;
+        if(info != null)
+          info.Show = false;
         _spFoundSpecies.Children.RemoveAt(idx);
       }
     }

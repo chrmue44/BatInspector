@@ -325,7 +325,9 @@ namespace BatInspector
           RemoveSource = false
         };
         if (File.Exists(Path.Combine(info.SrcDir, info.Name + ".bpr")))
-          Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos);
+        {
+          _inst._model.createProject(info, true, true);
+        }
         else
           err = tParseError.RESSOURCE;
       }

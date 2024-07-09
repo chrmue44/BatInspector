@@ -564,18 +564,16 @@ namespace BatInspector.Forms
     void createFftImages()
     {
       int index = 0;
-
       if ((_model.Prj != null) && (_model.Prj.Ok))
       {
         _spSpectrums.Children.Clear();
-
         foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
         {
           AnalysisFile analysis = null;
           if (_model.Prj.Analysis != null)
             analysis = _model.Prj.Analysis.find(rec.File);
           index++;
-          ctlWavFile ctl = new ctlWavFile(analysis,rec.File, _model, this, true);
+          ctlWavFile ctl = new ctlWavFile(analysis, rec.File, _model, this, true);
           DockPanel.SetDock(ctl, Dock.Bottom);
           _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
           {

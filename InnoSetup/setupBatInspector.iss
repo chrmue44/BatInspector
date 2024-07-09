@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0812"
-#define MyAppVersion "0.8.1.2"
+#define MyInstallerName "SetupBatInspector_0820"
+#define MyAppVersion "0.8.2.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -59,6 +59,7 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.txt"; DestDir: "{app}"; Flag
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
+source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\batInfo.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full

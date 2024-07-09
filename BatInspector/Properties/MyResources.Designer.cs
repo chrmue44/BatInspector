@@ -2194,6 +2194,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Found Species.
+        /// </summary>
+        public static string frmReportAssistantFoundSpecies {
+            get {
+                return ResourceManager.GetString("frmReportAssistantFoundSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Location Landscape.
+        /// </summary>
+        public static string frmReportAssistantImgLandscape {
+            get {
+                return ResourceManager.GetString("frmReportAssistantImgLandscape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Location Portrait.
+        /// </summary>
+        public static string frmReportAssistantImgPortrait {
+            get {
+                return ResourceManager.GetString("frmReportAssistantImgPortrait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Script Description.
         /// </summary>
         public static string FrmScriptDescription {
@@ -2266,7 +2293,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display Brightness.
+        ///   Looks up a localized string similar to Display Mode.
         /// </summary>
         public static string FrmSetupRecorderBrightness {
             get {

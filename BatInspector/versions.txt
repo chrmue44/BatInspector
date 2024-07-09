@@ -2,13 +2,16 @@ TODO
 - choose between different AI models
 - information about chosen model in project file
 - training of model
-- bugfix: multi cut away in zoom view
 
-V0.8.2.0   05.06.24
+
+V0.8.2.0   09.07.24
+- new command to set display mode in Recorder Setup
+- removed [SecurityCritical] Attribute in BioAcoustics.cs
 - new console command 'SplitProject'
 - show WAV file in ZoomView when opening WAV-File with WAV tool
-- bugfix: tidy up stopped at first directory not containing a project
 - tidy up in separate thread (not blocking GUI while removing files anymore)
+- bugfix: tidy up stopped at first directory not containing a project
+- bugfix: cutting tool in zoom view works now works multiple times in a row
 
 V0.8.1.2   27.05.24
 - bugfix: removeSource now also removes empty directories

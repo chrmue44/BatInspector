@@ -1465,7 +1465,7 @@
     <value>Replace all existing info files in this project?</value>
   </data>
   <data name="FrmSetupRecorderBrightness" xml:space="preserve">
-    <value>Display Brightness</value>
+    <value>Display Mode</value>
   </data>
   <data name="ToolTipExport" xml:space="preserve">
     <value>Export current file to another location</value>
@@ -1526,5 +1526,14 @@
   </data>
   <data name="frmReportAssistant_SelectWAVFolder" xml:space="preserve">
     <value>select WAV folder</value>
+  </data>
+  <data name="frmReportAssistantImgPortrait" xml:space="preserve">
+    <value>Image Location Portrait</value>
+  </data>
+  <data name="frmReportAssistantImgLandscape" xml:space="preserve">
+    <value>Image Location Landscape</value>
+  </data>
+  <data name="frmReportAssistantFoundSpecies" xml:space="preserve">
+    <value>Found Species</value>
   </data>
 </root>

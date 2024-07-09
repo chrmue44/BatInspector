@@ -106,7 +106,7 @@ namespace BatInspector
   {
     EnumType _language = new EnumType("Pn");
     NumType _backLightTime = new NumType("Pb");
-    NumType _brightness = new NumType("Pc");
+    EnumType _displayMode = new EnumType("Pd");
     EnumType _posMode = new EnumType("Pp");
     NumType _lat = new NumType("Pla");
     NumType _lon = new NumType("Plo");
@@ -118,14 +118,14 @@ namespace BatInspector
 
     public NumType BackLightTime { get { return _backLightTime; } }
 
-    public NumType Brightness {  get { return _brightness; } }
+    public EnumType DisplayMode {  get { return _displayMode; } }
 
     public EnumType PositionMode{ get { return _posMode; } }
     public void init()
     {
       _language.init();
       _backLightTime.init();
-      _brightness.init();
+      _displayMode.init();
       _lat.init();
       _lon.init();
       _posMode.init();

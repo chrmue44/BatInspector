@@ -67,7 +67,7 @@ namespace BatInspector
   {
 
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     public static void analyzeFiles(string reportName, string path)
     {
       string[] files = Directory.GetFiles(path, "*.wav");
@@ -96,7 +96,7 @@ namespace BatInspector
     }
 
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     static void addToReport(Csv csv, string fName, int samplingRate, double duration, ThresholdDetectItem[] items)
     {
       for (int i = 0; i < items.Length; i++)
@@ -143,7 +143,7 @@ namespace BatInspector
     }
 
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     public static ThresholdDetectItem[] analyzeCalls(string wavFile, out int sampleRate, out double duration)
     {
       WavFile wav = new WavFile();
@@ -197,7 +197,7 @@ namespace BatInspector
 
     //https://learn.microsoft.com/de-de/dotnet/framework/interop/marshalling-different-types-of-arrays
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     public static double[] calculateFft(int size, enWIN_TYPE window, int[] samples)
     {
       double[] retVal = new double[size / 2];
@@ -217,7 +217,7 @@ namespace BatInspector
     }
 
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     public static double[] calculateFft(int handle, double[] samples)
     {
       int size = getFftSize(handle);
@@ -237,7 +237,7 @@ namespace BatInspector
     }
 
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+//    [SecurityCritical]
     public static double[] calculateFftComplexOut(int handle, double[] samples)
     {
       int size = getFftSize(handle);
@@ -257,7 +257,7 @@ namespace BatInspector
     }
 
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     public static double[] calculateFftReversed(int handle, double[] spec)
     {
       int size = getFftSize(handle);
@@ -284,7 +284,7 @@ namespace BatInspector
     /// <param name="fMax">max frequency of passband [Hz]</param>
     /// <param name="samplingRate">sampling rate [Hz]</param>
     [HandleProcessCorruptedStateExceptions]
-    [SecurityCritical]
+   // [SecurityCritical]
     public static void applyBandpassFilterComplex(ref double[] spectrum, double fMin, double fMax, uint samplingRate)
     {
       try

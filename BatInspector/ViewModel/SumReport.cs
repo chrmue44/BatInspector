@@ -199,6 +199,12 @@ namespace BatInspector
     public string Comment { get; set; }
 
     [DataMember]
+    public string ImgLandscape { get; set; }
+
+    [DataMember]
+    public string ImgPortrait { get; set; }
+
+    [DataMember]
     List<SpeciesWebInfo> Species { get; set; }
 
     public WebReportDataJson()
@@ -650,6 +656,8 @@ namespace BatInspector
           output.Replace("%LOCATION_NAME%", formData.LocationName);
           output.Replace("%WEATHER%", formData.Weather);
           output.Replace("%REMARKS%", formData.Comment);
+          output.Replace("%IMG_PORTRAIT%", formData.ImgPortrait);
+          output.Replace("%IMG_LANDSCAPE%", formData.ImgLandscape);
           if (string.IsNullOrEmpty(formData.TimeSpan))
           {
             DateTime start = new DateTime(2100, 1, 1);
@@ -749,8 +757,8 @@ namespace BatInspector
               line = line.Replace("%REP_DATE%", it.Date.ToString("dd.MM.yyyy"));
               line = line.Replace("%REP_LAT%", it.Latitude.ToString("#.#####"));
               line = line.Replace("%REP_LON%", it.Longitude.ToString("#.#####"));
-              line = line.Replace("%REP_TMIN%", it.TempMin.ToString("#.#"));
-              line = line.Replace("%REP_TMAX%", it.TempMax.ToString("#.#"));
+              line = line.Replace("%REP_TEMP%", it.TempMin.ToString("#.#") + " ... " + it.TempMax.ToString("#.#"));
+              line = line.Replace("%REP_HUMID%", it.HumidityMin.ToString("#.#") + " ... " + it.HumidityMax.ToString("#.#"));
               SumItem sumIt = null;
               while ((sumIt == null) && (rep.Species.Count > 0))
               {

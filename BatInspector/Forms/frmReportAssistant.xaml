@@ -41,9 +41,13 @@
               
         </GroupBox>
                 <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Miscellanous}">
+                    <StackPanel>
                     <local:CtlSelectFile x:Name="_ctlSelectWavFolder" />
+                    <local:CtlSelectFile x:Name="_ctlImgPortrait" />
+                    <local:CtlSelectFile x:Name="_ctlImgLandscape" />
+                    </StackPanel>
                 </GroupBox>
-                <GroupBox Header="Found Species">
+                <GroupBox Header="{x:Static res:MyResources.frmReportAssistantFoundSpecies}">
                     <StackPanel>
                         <Grid Margin="0,0,0,3">
                             <Grid.ColumnDefinitions>
@@ -52,9 +56,9 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="Species" Grid.Column="0"/>
-                            <Label Content="Remarks" Grid.Column="1"/>
-                            <Label Content="Confusion Species" Grid.Column="2"/>
+                            <Label Content="{x:Static res:MyResources.CtlZoomSpecInfo}" Grid.Column="0"/>
+                            <Label Content="{x:Static res:MyResources.CtlWavRemarks}" Grid.Column="1"/>
+                            <Label Content="{x:Static res:MyResources.ctlSpeciesDataConfusion}" Grid.Column="2"/>
                             
                         </Grid>
                         <StackPanel x:Name="_spFoundSpecies" Margin="5"/>

@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0820"
-#define MyAppVersion "0.8.2.0"
+#define MyInstallerName "SetupBatInspector_0830"
+#define MyAppVersion "0.8.3.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -77,7 +77,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" {#BatDetectVersion}"; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" {#BatDetectVersion} ""{#MyAppDataFolder}\setup"""; Flags:runasoriginaluser
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]
@@ -97,5 +97,5 @@ en.CreateStartIcon = "create entry in start menu"
 en.MsgInstModell = "Installing AI model. This will take several minutes, be patient!..."
 
 [UninstallRun]
-Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"""; RunOnceId: "DelService"
+Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" ""{#MyAppDataFolder}\setup"""; RunOnceId: "DelService"
 

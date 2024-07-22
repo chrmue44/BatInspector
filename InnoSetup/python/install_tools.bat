@@ -6,6 +6,7 @@ SET PYTHON_DIR=%1
 SET PY_INST=%2
 SET REQ_VERSION=%3
 SET BD2_VERSION=%4
+SET SETUP_DIR=%5
 
 @echo params %PYTHON_DIR% %PY_INST% %REQ_VERSION% %BD2_VERSION%
 
@@ -32,7 +33,12 @@ cd %OUT_DIR%
 cd %MODEL_DIR%
 %PYTHON% -m venv %VENV%
 call %VENV%/Scripts/activate
-@echo pip install batdetect2==%BD2_VERSION%
-pip install batdetect2==%BD2_VERSION%
-@echo pip install noisereduce==3.0.0
-pip install noisereduce==3.0.0
+@echo pip install -r %SETUP_DIR%/requirements.txt
+pip install -r %SETUP_DIR%/requirements.txt
+
+rem @echo pip install numpy==1.26.4
+rem pip install numpy==1.26.4
+rem @echo pip install batdetect2==%BD2_VERSION%
+rem pip install batdetect2==%BD2_VERSION%
+rem @echo pip install noisereduce==3.0.0
+rem pip install noisereduce==3.0.0

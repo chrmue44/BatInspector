@@ -279,6 +279,7 @@
     <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\BaseModel.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
+    <Compile Include="ViewModel\Bd2AnnFile.cs" />
     <Compile Include="ViewModel\BatInfo.cs" />
     <Compile Include="ViewModel\BatRecord.cs" />
     <Compile Include="ViewModel\BatSpeciesRegions.cs" />

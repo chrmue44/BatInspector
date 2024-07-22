@@ -3,6 +3,8 @@ TODO
 - information about chosen model in project file
 - training of model
 
+V0.8.3.0   21.07.24
+-bugfix: installing batdetect2 failed due to new numpy version
 
 V0.8.2.0   09.07.24
 - new command to set display mode in Recorder Setup

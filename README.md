@@ -27,5 +27,5 @@ A windows desktop software to analyze bat calls
 ## Status
 - under development
 
-## Open issues
-- English help file
+## Installation
+Download latest Version from [here](https://chrmue.de/bat/bidl.html)

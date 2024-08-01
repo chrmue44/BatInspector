@@ -181,10 +181,10 @@
     <value>Filter: </value>
   </data>
   <data name="ColorMapColorPt" xml:space="preserve">
-    <value>Farbe Pkt</value>
+    <value>Farbe Punkt</value>
   </data>
   <data name="ColorMapValuePt" xml:space="preserve">
-    <value>Wert Pkt</value>
+    <value>Wert Punkt</value>
   </data>
   <data name="ColorMapBlue" xml:space="preserve">
     <value>Blau</value>

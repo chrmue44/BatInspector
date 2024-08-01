@@ -196,7 +196,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Color Pt.
+        ///   Looks up a localized string similar to Color Point.
         /// </summary>
         public static string ColorMapColorPt {
             get {
@@ -241,7 +241,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value Pt.
+        ///   Looks up a localized string similar to Value Point.
         /// </summary>
         public static string ColorMapValuePt {
             get {

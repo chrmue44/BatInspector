@@ -528,6 +528,29 @@ namespace BatInspector
       }
     }
 
+    public static void splitWav(string name, double splitLength, bool removeOriginal)
+    {
+      WavFile wav = new WavFile();
+      wav.readFile(name);
+      int sampleRate = (int)wav.FormatChunk.Frequency;
+      double len = (double)wav.AudioSamples.Length / sampleRate;
+      char ext = 'a';
+      for(int i = 0; i <= len / splitLength; i++)
+      {
+        int idxStart = (int)(splitLength * i * sampleRate);
+        int idxEnd = (int)(splitLength * (i + 1) * sampleRate) - 1;
+        if (idxEnd > wav.AudioSamples.Length)
+          idxEnd = wav.AudioSamples.Length - 1;
+        WavFile splitWav = new WavFile();
+        splitWav.createFile(sampleRate, idxStart, idxEnd, wav.AudioSamples);
+        string fName = Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name) + "_" + ext + AppParams.EXT_WAV);
+        splitWav.saveFileAs(fName);
+        ext++;
+      }
+      if (removeOriginal && File.Exists(name))
+        File.Delete(name);
+    }
+
     public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
     {
       _header = new WaveHeader();

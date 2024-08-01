@@ -2,6 +2,15 @@ TODO
 - choose between different AI models
 - information about chosen model in project file
 - training of model
+- new flag <modified> in XML-file
+- simplification of script to copy auto to man species
+- simplification of report form (default pathes)
+- sum report across directory levels (include sub directories)
+
+V0.8.4.0
+-bugfix: color gradient is now editable again
+-new commands SplitWavFile, SplitJsonAnnotation, CreatePrjFile
+
 
 V0.8.3.0   21.07.24
 -bugfix: installing batdetect2 failed due to new numpy version

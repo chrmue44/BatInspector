@@ -11,6 +11,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 
 namespace BatInspector
@@ -25,8 +26,11 @@ namespace BatInspector
       {
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
         new OptItem("AdjustProject","remove all entries from project file not corresponding to report", 0, fctAdjustProject),
-        new OptItem("SplitProject", "split project",0, fctSplitProject)
-      }); ; ; 
+        new OptItem("SplitProject", "split project",0, fctSplitProject),
+        new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
+        new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
+        new OptItem("CreatePrjFile", "create project file in directory <dirName>",1, fctCreatePrjFile)
+      });
 
       _options = new Options(_features, false);
     }
@@ -46,10 +50,10 @@ namespace BatInspector
       return 0;
     }
 
-    int fctSplitProject(List <string> pars, out string ErrText) 
+    int fctSplitProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      if((_model.Prj != null) && (_model.Prj.Ok))
+      if ((_model.Prj != null) && (_model.Prj.Ok))
       {
         DebugLog.log("starting to split project..", enLogType.INFO);
         int maxFilesPerProject = 600;
@@ -59,9 +63,56 @@ namespace BatInspector
         string prjPath = _model.Prj.PrjDir;
         Project.splitProject(_model.Prj, (int)prjCount, _model.Regions);
         DebugLog.log("start deleting " + prjPath, enLogType.INFO);
-        Directory.Delete(prjPath, true );
+        Directory.Delete(prjPath, true);
       }
       return 0;
+    }
+
+    int fctSplitWavFile(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string fileName = pars[0];
+      double splitLength;
+      bool ok = double.TryParse(pars[1], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out splitLength);
+      bool removeOriginal = (pars[2] == "1");
+      if (ok)
+        WavFile.splitWav(fileName, splitLength, removeOriginal);
+      else
+      {
+        retVal = 1;
+        ErrText = "unable to read 2nd parameter as double";
+      }
+      return retVal;
+    }
+
+    int fctSplitJsonAnn(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string fileName = pars[0];
+      double splitLength;
+      bool ok = double.TryParse(pars[1], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out splitLength);
+      bool removeOriginal = (pars[2] == "1");
+      if (ok)
+        Bd2AnnFile.splitAnnotation(fileName, splitLength,removeOriginal);
+      else
+      {
+        retVal = 1;
+        ErrText = "unable to read 2nd parameter as double";
+      }
+      return retVal;
+    }
+
+    int fctCreatePrjFile(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string fileName = pars[0];
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      DirectoryInfo dir = new DirectoryInfo(fileName);
+      prj.fillFromDirectory(dir, AppParams.DIR_WAVS);
+      return retVal;
     }
   }
 }

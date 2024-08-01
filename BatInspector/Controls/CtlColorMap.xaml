@@ -6,25 +6,34 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="900">
+             d:DesignHeight="90" d:DesignWidth="900">
     <Grid>
     <GroupBox Name ="_grp" Margin="5,5,5,5">
-      <StackPanel Margin="0,0,0,0">
-      <StackPanel Orientation="Horizontal" Margin="10">
-          <local:ctlDataItem  x:Name="_ctlCol1" Margin="0,0,20,0"/>
-        <local:ctlDataItem  x:Name="_ctlCol2" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlCol3" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlCol4" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlCol5" Margin="0,0,20,0"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10">
-          <local:ctlDataItem  x:Name="_ctlVal1" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlVal2" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlVal3" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlVal4" Margin="0,0,20,0"/>
-          <local:ctlDataItem  x:Name="_ctlVal5" Margin="0,0,20,0"/>
-        </StackPanel>
-      </StackPanel>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <local:ctlDataItem Grid.Row="0" Grid.Column="0" x:Name="_ctlCol1" Margin="0,0,20,0"/>
+        <local:ctlDataItem  Grid.Row="0" Grid.Column="1" x:Name="_ctlCol2" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="0" Grid.Column="2" x:Name="_ctlCol3" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="0" Grid.Column="3" x:Name="_ctlCol4" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="0" Grid.Column="4" x:Name="_ctlCol5" Margin="0,0,20,0"/>
+
+        <local:ctlDataItem  Grid.Row="1" Grid.Column="0" x:Name="_ctlVal1" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="1" Grid.Column="1" x:Name="_ctlVal2" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="1" Grid.Column="2" x:Name="_ctlVal3" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="1" Grid.Column="3" x:Name="_ctlVal4" Margin="0,0,20,0"/>
+        <local:ctlDataItem Grid.Row="1" Grid.Column="4" x:Name="_ctlVal5" Margin="0,0,20,0"/>
+      </Grid>
     </GroupBox>
   </Grid>
 </UserControl>

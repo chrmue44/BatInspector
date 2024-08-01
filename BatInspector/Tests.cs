@@ -9,6 +9,7 @@
 using BatInspector.Controls;
 using libParser;
 using libScripter;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -111,6 +112,8 @@ namespace BatInspector
       testRulerTicks();
       testRemoveSection();
       testCheckSpecAtLocation();
+      //testSplitWavs();
+      //adjustJsonIds(); not a test, a one time function
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -639,6 +642,19 @@ namespace BatInspector
       }
     }
 
+    private void adjustJsonIds()
+    {
+      string dirName = "F:\\bat\\trainingBd2\\ann";
+      DirectoryInfo dir = new DirectoryInfo(dirName);
+      FileInfo[] files = dir.GetFiles();
+      foreach(FileInfo file in files)
+      {
+        Bd2AnnFile f = Bd2AnnFile.loadFrom(file.FullName);
+        f.id = file.Name.Replace(".json","");
+        f.save();
+      }
+    }
+
     private void adjustTimesInReport(string prjName)
     {
       DirectoryInfo subDir = new DirectoryInfo(prjName);
@@ -694,6 +710,16 @@ namespace BatInspector
 
     }
 
+
+    private void testSplitWavs()
+    {
+      string path = "F:/prj/BatInspector/TestData/wavTest";
+      string wavName = path + "/Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms.wav";
+      string jsonName = path + "/Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms.wav.json";
+      double splitLengh = 0.7;
+      WavFile.splitWav(wavName, splitLengh, true);
+      Bd2AnnFile.splitAnnotation(jsonName, splitLengh, true);
+    }
 
 
     private void assert(string a, string exp)

@@ -482,13 +482,11 @@ namespace BatInspector
       return date;
     }
 
-    void initDirTree(string rootDir)
+    void crawlDirTree(DirectoryInfo dir)
     {
-      _rootDir = rootDir;
-      _dirInfo = new DirectoryInfo(rootDir);
-      _reports.Clear();
-      foreach (DirectoryInfo subDir in _dirInfo.GetDirectories())
+      foreach (DirectoryInfo subDir in dir.GetDirectories())
       {
+        crawlDirTree(subDir);
         string prjFile = Project.containsReport(subDir, AppParams.PRJ_SUMMARY);
         if (prjFile != "")
         {
@@ -512,6 +510,14 @@ namespace BatInspector
           _reports.Add(rec);
         }
       }
+    }
+
+    void initDirTree(string rootDir)
+    {
+      _rootDir = rootDir;
+      _dirInfo = new DirectoryInfo(rootDir);
+      _reports.Clear();
+      crawlDirTree(_dirInfo);
     }
 
 

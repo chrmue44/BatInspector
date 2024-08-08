@@ -146,7 +146,7 @@ namespace BatInspector
 
     public void initWaterfallDiagram(string wavName)
     {
-      _wf = new Waterfall(wavName, _colorTable);
+      _wf = new Waterfall(wavName, _colorTable, AppParams.FFT_WIDTH);
       string infoName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
       _fileInfo = ElekonInfoFile.read(infoName);
     }

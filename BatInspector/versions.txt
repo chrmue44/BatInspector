@@ -5,11 +5,14 @@ TODO
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
 - simplification of report form (default pathes)
+- width of fft depending on zoom range (256 ... 1024)
 
 V0.8.4.0
--bugfix: color gradient is now editable again
--new commands SplitWavFile, SplitJsonAnnotation, CreatePrjFile
--sum report now works in nested directory structures as well
+- bugfix: color gradient is now editable again
+- new commands SplitWavFile, SplitJsonAnnotation, CreatePrjFile
+- sum report now works in nested directory structures as well
+- fft width is now set dynamically during zoom in/out (crisper images with high zoom factor)
+- show max f and t values on x/y axis in waterfall zoom view
 
 
 V0.8.3.0   21.07.24

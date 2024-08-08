@@ -747,7 +747,7 @@ namespace BatInspector.Controls
       if (((tEndCall - tStartCall) > 0) && ((tEndCall - tStartCall) < 0.2))
         _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
-      double dt = (double)AppParams.Inst.FftWidth / samplingRate;
+      double dt = (double)AppParams.FFT_WIDTH / samplingRate;
       _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
@@ -1213,10 +1213,10 @@ namespace BatInspector.Controls
         string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
         if (_ctlWav != null)
         {
-          // delete ixisting PNG to force creation of a new one
+          // delete existing PNG to force creation of a new one
           if (File.Exists(pngName))
             File.Delete(pngName);
-          _ctlWav._img.Source = _model.getFtImage(_model.ZoomView.Waterfall.WavName);
+          _ctlWav._img.Source = _model.getFtImage(_model.ZoomView.Waterfall.WavName, AppParams.FFT_WIDTH);
         }
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }

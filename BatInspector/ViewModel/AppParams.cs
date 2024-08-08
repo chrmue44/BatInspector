@@ -205,6 +205,7 @@ namespace BatInspector
     public const string PythonBin = "\"C:/Program Files/Python310/python.exe\"";
     public const int MAX_LOG_COUNT = 600;     // max. numbe rof log entries before creating a new log file
     public const int STATISTIC_CLASSES = 40;  // number of classes in statistic histograms
+    public const int FFT_WIDTH = 1024;
 
     static AppParams _inst = null;
 
@@ -269,20 +270,20 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     public enCulture Culture { get; set; } = enCulture.de_DE;
 
-    [DataMember]
+  /*  [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SpecDescWidthWf")]
-    public uint WaterfallHeight { get; set; } = 256;
+    public uint WaterfallHeight { get; set; } = 256;  */
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescHeightWf")]
     public uint WaterfallWidth { get; set; } = 512;
 
-    [DataMember]
+  /*  [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescWidthFFT")]
-    public uint FftWidth { get; set; } = 256;
+    public uint FftWidth { get; set; } = 256; */
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
@@ -539,9 +540,9 @@ namespace BatInspector
                                          PROG_DAT_DIR, AppParams.DIR_SCRIPT);
 
       ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
-      WaterfallHeight = 256;
+//      WaterfallHeight = 256;
       WaterfallWidth = 512;
-      FftWidth = 256;
+//      FftWidth = 256;
       FftWindow = DSPLib.DSP.Window.Type.Hann;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;

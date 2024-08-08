@@ -76,6 +76,9 @@ namespace BatInspector.Controls
         string str = fTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
         GraphHelper.createText(can, x - 32, yp - 9, str, Colors.Black);
       }
+      double ymax = y;
+      GraphHelper.createLine(can, x - 5, ymax, x, ymax, Brushes.Black);
+      GraphHelper.createText(can, x - 32, ymax - 9, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
     }
 
 
@@ -105,7 +108,11 @@ namespace BatInspector.Controls
         string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
         GraphHelper.createText(can, xp - 10,y + 15, str, Colors.Black);
       }
+      double xmax = x + width;
+      GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, Brushes.Black);
+      GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
     }
+
     public static void createRulerX(Canvas can, double x, double y, double width, double min, double max, double[] tTicks, string nrFmt = "0.#")
     {
       GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
@@ -118,6 +125,9 @@ namespace BatInspector.Controls
         string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
         GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
       }
+      double xmax = x + width;
+      GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, Brushes.Black);
+      GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
     }
 
 

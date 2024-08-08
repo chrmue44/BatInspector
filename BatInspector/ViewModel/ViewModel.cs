@@ -292,14 +292,14 @@ namespace BatInspector
       string pngName = fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       if (!File.Exists(pngName))
       {
-        createPng(fullName, pngName);
+        createPng(fullName, pngName,AppParams.FFT_WIDTH);
       }
     }
 
 
-    public void createPng(string wavName, string pngName)
+    public void createPng(string wavName, string pngName, int fftWidth)
     {
-      Waterfall wf = new Waterfall(wavName, _colorTable);
+      Waterfall wf = new Waterfall(wavName, _colorTable, fftWidth);
       if (wf.Ok)
       {
         wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
@@ -314,7 +314,7 @@ namespace BatInspector
         DebugLog.log("could not create PNG for " + wavName, enLogType.WARNING);
     }
 
-    public BitmapImage getFtImage(string wavName)
+    public BitmapImage getFtImage(string wavName, int fftWidth)
     {
       BitmapImage bImg = null;
       string pngName = "";
@@ -326,7 +326,7 @@ namespace BatInspector
           bmp = new Bitmap(pngName);
         else
         {
-          Waterfall wf = new Waterfall(wavName, _colorTable);
+          Waterfall wf = new Waterfall(wavName, _colorTable, fftWidth);
           if (wf.Ok)
           {
             wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
@@ -349,7 +349,7 @@ namespace BatInspector
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec,  bool fromQuery)
     {
       string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
-      BitmapImage bImg = getFtImage(wavName);
+      BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH);
       if ((bImg == null) && (_prj != null))
       {
         _prj.removeFile(rec.File);
@@ -507,28 +507,29 @@ namespace BatInspector
       }
       return retVal;
     }
-/*
-    //http://www.shujaat.net/2010/08/wpf-images-from-project-resource.html
-    //has suspicious memory problems
-    static public BitmapImage ConvertOld(Bitmap value)
-    {
-      MemoryStream ms = new MemoryStream();
-      value.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-      BitmapImage image = new BitmapImage();
-      image.BeginInit();
-      ms.Seek(0, SeekOrigin.Begin);
-      image.StreamSource = ms;
-      image.EndInit();
+    /*
+        //http://www.shujaat.net/2010/08/wpf-images-from-project-resource.html
+        //has suspicious memory problems
+        static public BitmapImage ConvertOld(Bitmap value)
+        {
+          MemoryStream ms = new MemoryStream();
+          value.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+          BitmapImage image = new BitmapImage();
+          image.BeginInit();
+          ms.Seek(0, SeekOrigin.Begin);
+          image.StreamSource = ms;
+          image.EndInit();
 
-      return image;
-    }
+          return image;
+        }
+    */
 
-
+    /*
     [System.Runtime.InteropServices.DllImport("gdi32.dll")]
     public static extern bool DeleteObject(IntPtr hObject);
 
     //https://stackoverflow.com/questions/6484357/converting-bitmapimage-to-bitmap-and-vice-versa
-    static public BitmapImage Convert2(Bitmap bitmap)
+    static public BitmapImage Convert(Bitmap bitmap)
     {
       IntPtr hBitmap = bitmap.GetHbitmap();
       BitmapImage retval;
@@ -546,8 +547,9 @@ namespace BatInspector
         DeleteObject(hBitmap);
       }
       return retval;
-    }
-    */
+    }*/
+
+
 
     public static BitmapImage Convert(Bitmap bitmap)
     {
@@ -571,7 +573,7 @@ namespace BatInspector
         DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
       }
       return bitmapImage;
-      }
+    } 
 
     private void initFilter()
     {

@@ -114,9 +114,10 @@ namespace BatInspector
       testCheckSpecAtLocation();
       //testSplitWavs();
       //adjustJsonIds(); not a test, a one time function
+      //adjustJsonAnnotationCallsAtBorder(); not a test, a one time function
       if (_errors == 0)
       {
-        DebugLog.clear();
+    //    DebugLog.clear();
         DebugLog.log("Tests passed", enLogType.INFO);
       }
       else
@@ -653,6 +654,42 @@ namespace BatInspector
         f.id = file.Name.Replace(".json","");
         f.save();
       }
+    }
+
+    private void adjustJsonAnnotationCallsAtBorder()
+    {
+      string dirName = "F:\\bat\\trainingBd2\\ann";
+      DirectoryInfo dir = new DirectoryInfo(dirName);
+      FileInfo[] files = dir.GetFiles();
+      int count = 0;
+      int countEcho = 0;
+      int countSocial = 0;
+      foreach (FileInfo file in files)
+      {
+        Bd2AnnFile f = Bd2AnnFile.loadFrom(file.FullName);
+        foreach (Bd2Annatation a in f.Annatations)
+        {
+          if(a.Event == "Echolocation")
+            countEcho++;
+          if(a.Event == "Social")
+            countSocial++;
+          if ((a.start_time < 0.0001) && (a.Event == "Echolocation") && (a.Class.ToLower() == "unknown"))
+          {
+            count++;
+            a.Class = "Bat";
+            DebugLog.log("file " + f.id + "1st call: " + a.Event + ", " + a.Class, enLogType.INFO);
+          }
+          if (((f.duration - a.end_time) < 0.0001) && (a.Event == "Echolocation") && (a.Class.ToLower() == "unknown"))
+          {
+            count++;
+            a.Class = "Bat";
+            DebugLog.log("file " + f.id + "last call: " + a.Event + ", " + a.Class, enLogType.INFO);
+          }
+        }
+      //  f.save();
+      }
+      DebugLog.log("echolocation: "+ countEcho.ToString() + "social: " + countSocial.ToString() + " edge cases:" + count.ToString(), enLogType.INFO);
+      
     }
 
     private void adjustTimesInReport(string prjName)

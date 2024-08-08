@@ -66,13 +66,13 @@ namespace BatInspector
     {  
       get { return (_wav != null) ? _wav.PlayPosition : 0.0; } 
     }
-    public Waterfall(string wavName,  ColorTable colorTable)
+    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth)
     {
       _wavName = wavName;
       _colorTable = colorTable;
       _spec = new List<double[]>();
       _maxAmplitude = _minAmplitude;
-      _audio = new SoundEdit(384000, (int)AppParams.Inst.FftWidth);
+      _audio = new SoundEdit(384000, fftWidth);
       if (File.Exists(_wavName))
       {
         _ok = _audio.readWav(wavName) == 0;
@@ -95,7 +95,13 @@ namespace BatInspector
       {
         Stopwatch sw = Stopwatch.StartNew();
         _spec.Clear();
-        uint fftSize = AppParams.Inst.FftWidth;
+        //uint fftSize = AppParams.Inst.FftWidth;
+        uint fftSize = 1024;
+        double dt = EndTime - startTime;
+        if (dt < 0.03)
+          fftSize = 256;
+        else if (dt < 0.06)
+          fftSize = 512;
         int idxStart = (int)(startTime * _audio.SamplingRate);
         if (idxStart > _audio.Samples.Length)
           idxStart = (int)_audio.Samples.Length;
@@ -117,7 +123,7 @@ namespace BatInspector
           int idx = idxStart + i * step;
           if (idx >= 0)
           {
-            double[] sp = generateFft(idx, (int)fftSize, AppParams.Inst.FftWindow);
+            double[] sp = generateFft(idx, (int)fftSize, AppParams.FFT_WIDTH, AppParams.Inst.FftWindow);
             _spec[i] = sp;
           }
         }
@@ -169,7 +175,7 @@ namespace BatInspector
     //  http://web-tech.ga-usa.com/2012/05/creating-a-custom-hot-to-cold-temperature-color-gradient-for-use-with-rrdtool/index.html
  
 
-    public double[] generateFft(int idx, int length, DSP.Window.Type window = DSP.Window.Type.Hanning)
+    public double[] generateFft(int idx, int length, int fftWidth, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
       bool logarithmic = AppParams.Inst.WaterfallLogarithmic;
       int zeroPadding = 0; // NOTE: Zero Padding
@@ -181,7 +187,7 @@ namespace BatInspector
         DebugLog.log("unable to generate FFT with length " + length.ToString(), enLogType.ERROR);
         return new double[1];
       }
-      zeroPadding = (int)AppParams.Inst.FftWidth - length;
+      zeroPadding = fftWidth - length;
       double[] inputSignal = new double[length];
       Array.Copy(_audio.Samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
@@ -231,12 +237,22 @@ namespace BatInspector
     public Bitmap generateFtPicture(double fMin, double fMax)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
-      int heightFt = (int)AppParams.Inst.WaterfallHeight;
+      int heightFt = AppParams.FFT_WIDTH;
       BitmapFast bmp = new BitmapFast(width, heightFt);
 
       if (_ok)
       {
-        int fftSize = (int)AppParams.Inst.FftWidth;
+        int fftSize = 256; // (int)AppParams.Inst.FftWidth;
+        foreach (double[] s in _spec)
+        {
+          if(s != null)
+          {
+            fftSize = s.Length;
+            break;
+          }
+        }
+
+        
         for (int x = 0; x < width; x++)
         {
           int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
@@ -264,7 +280,7 @@ namespace BatInspector
     public Bitmap generateXtPicture(double aMin, double aMax, double tMin, double tMax)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
-      int heightXt = (int)AppParams.Inst.WaterfallHeight / XT_TO_FT_RATIO;
+      int heightXt = AppParams.FFT_WIDTH / XT_TO_FT_RATIO;
       bool ovrdrive = _audio.findOverdrive(tMin, tMax);
       BitmapFast bmp = new BitmapFast(width, heightXt);
       for (int x = 0; x < width; x++)
@@ -303,7 +319,7 @@ namespace BatInspector
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int samplesPerPixel = (idxMax - idxMin) / width;
-      int heightXt = (int)AppParams.Inst.WaterfallHeight / XT_TO_FT_RATIO;
+      int heightXt = AppParams.FFT_WIDTH / XT_TO_FT_RATIO;
       int ovrDriveCnt = 0;
 
       for (int x =0; x < width; x++) 
@@ -343,7 +359,7 @@ namespace BatInspector
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int samplesPerPixel = (idxMax - idxMin) / width;
-      int heightXt = (int)AppParams.Inst.WaterfallHeight / XT_TO_FT_RATIO;
+      int heightXt = AppParams.FFT_WIDTH/ XT_TO_FT_RATIO;
 
       for (int x = 0; x < width; x++)
       {

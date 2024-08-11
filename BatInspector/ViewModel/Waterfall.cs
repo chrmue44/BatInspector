@@ -237,9 +237,7 @@ namespace BatInspector
     public Bitmap generateFtPicture(double fMin, double fMax)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
-      int heightFt = AppParams.FFT_WIDTH;
-      BitmapFast bmp = new BitmapFast(width, heightFt);
-
+      BitmapFast bmp = null;
       if (_ok)
       {
         int fftSize = 256; // (int)AppParams.Inst.FftWidth;
@@ -252,23 +250,25 @@ namespace BatInspector
           }
         }
 
-        
+        bmp = new BitmapFast(width, fftSize);
+
+
         for (int x = 0; x < width; x++)
         {
           int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
-          for (int y = 0; y < heightFt; y++)
+          for (int y = 0; y < fftSize; y++)
           {
             if (_spec.Count > 0)
             {
-              double f = (fMax - fMin) * y / heightFt + fMin;
-              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftSize / 2);
+              double f = (fMax - fMin) * y / fftSize + fMin;
+              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftSize);
               if (_spec[idxSpec] != null)
               {
                 if (idxFreq >= _spec[idxSpec].Length)
                   idxFreq = _spec[idxSpec].Length - 1;
                 double val = _spec[idxSpec][idxFreq];
                 System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
-                bmp.setPixel(x, heightFt - 1 - y, col);
+                bmp.setPixel(x, fftSize - 1 - y, col);
               }
             }
           }

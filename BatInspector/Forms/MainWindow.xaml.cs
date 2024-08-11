@@ -1330,7 +1330,7 @@ namespace BatInspector.Forms
 
       foreach (ctlWavFile c in _spSpectrums.Children)
       {
-        if (IsUserVisible(c, this) && !c.WavInit)
+        if (IsUserVisible(c, this) && !c.WavInit && !_model.Scripter.IsBusy)
         {
           if ((_model.Prj != null) && _model.Prj.Ok)
           {

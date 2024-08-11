@@ -123,6 +123,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ctlActivityDiagram.xaml.cs">
+      <DependentUpon>ctlActivityDiagram.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CtlColorMap.xaml.cs">
       <DependentUpon>CtlColorMap.xaml</DependentUpon>
     </Compile>
@@ -295,6 +298,7 @@
     <Compile Include="ViewModel\Filter.cs" />
     <Compile Include="ViewModel\gpx.cs" />
     <Compile Include="ViewModel\gpxPart.cs" />
+    <Compile Include="ViewModel\HeatMap.cs" />
     <Compile Include="ViewModel\Histogram.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
     <Compile Include="ViewModel\kml.cs" />
@@ -334,6 +338,10 @@
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
+    <Page Include="Controls\ctlActivityDiagram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CtlColorMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

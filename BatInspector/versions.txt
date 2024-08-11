@@ -9,6 +9,7 @@ TODO
 
 V0.8.4.0
 - bugfix: color gradient is now editable again
+- bugfix: App doesn't freeze anymore whon scrolling project view while a script is running
 - new commands SplitWavFile, SplitJsonAnnotation, CreatePrjFile
 - sum report now works in nested directory structures as well
 - fft width is now set dynamically during zoom in/out (crisper images with high zoom factor)

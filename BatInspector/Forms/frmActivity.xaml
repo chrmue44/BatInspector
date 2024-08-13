@@ -1,0 +1,21 @@
+﻿<Window x:Class="BatInspector.Forms.frmActivity"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="Activity Diagram" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <local:ctlActivityDiagram x:Name="_ctlActivity" Grid.Row="0"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+            <Button  Height="25" Width="120" Content="Create Diagram" Name="_btnCreate" Margin="0,0,10,0" Click="_btnCreate_Click"/>
+            <Button  Height="25" Width="120" Content="{x:Static res:MyResources.BtnOK}" Name="_btnOk"  Margin="0,0,10,0" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

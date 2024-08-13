@@ -194,6 +194,9 @@
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmActivity.xaml.cs">
+      <DependentUpon>frmActivity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmBreakCondition.xaml.cs">
       <DependentUpon>frmBreakCondition.xaml</DependentUpon>
     </Compile>
@@ -435,6 +438,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

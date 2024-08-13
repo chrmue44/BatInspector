@@ -152,7 +152,10 @@
             <Line Name="_cursorY2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
             <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
             <StackPanel Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2">
-                <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtlZoomSpecInfo}" Margin="5" Padding="2" >
+                <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5" Padding="2" >
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.CtlZoomSpecInfo}" FontWeight="Bold" />
+                    </GroupBox.Header>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name ="_btnPrev2" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click" Content="&lt;-"/>
@@ -181,14 +184,19 @@
             <Canvas Name ="_rulerT" Grid.Row="3" Grid.Column="2" ></Canvas>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" >
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="Spectrum" MinWidth="120">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}"  MinWidth="120">
+                <GroupBox.Header>
+                    <TextBlock Text="Spectrum" FontWeight="Bold" />
+                </GroupBox.Header>
                 <StackPanel Orientation="Vertical"  Margin="5,5,5,5">
                     <local:ctlDataItem x:Name="_ctlTimeMin"/>
                     <local:ctlDataItem x:Name="_ctlTimeMax"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CallInformation}"  >
-
+            <GroupBox Template="{DynamicResource GroupBoxCmu}"   >
+                <GroupBox.Header>
+                    <TextBlock Text="{x:Static res:MyResources.CallInformation}" FontWeight="Bold" />
+                </GroupBox.Header>
                 <StackPanel Orientation="Vertical" Grid.Column="1" x:Name ="_spCallInfo">
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name ="_btnPrev" Margin="0,0,5,0" Width="30" HorizontalAlignment="Left" Click="_btnPrev_Click" Content="&lt;-"/>
@@ -203,7 +211,10 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Name="_gbMean" Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtrlZoomMeanValues}">
+            <GroupBox Name="_gbMean" Template="{DynamicResource GroupBoxCmu}" >
+                <GroupBox.Header>
+                    <TextBlock Text="{x:Static res:MyResources.CtrlZoomMeanValues}" FontWeight="Bold" />
+                </GroupBox.Header>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <local:ctlSelectItem x:Name="_ctlMeanCallMin" HorizontalAlignment="Left" Margin="10,0,0,0"/>
@@ -216,7 +227,10 @@
                     <local:ctlDataItem x:Name="_ctlMeanDist"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.CtlZoomRecInfo}" MinWidth="180">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="180">
+                <GroupBox.Header>
+                    <TextBlock Text="{x:Static res:MyResources.CtlZoomRecInfo}" FontWeight="Bold" />
+                </GroupBox.Header>
                 <StackPanel>
                     <local:ctlDataItem x:Name="_ctlDateTime" />
                     <local:ctlDataItem x:Name="_ctlGpsPos" />
@@ -227,7 +241,10 @@
                     <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpData" Header="{x:Static res:MyResources.CtrlZoomFileInfos}" Margin="5" Padding="2" MinWidth="200">
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpData" Margin="5" Padding="2" MinWidth="200">
+                <GroupBox.Header>
+                    <TextBlock Text="{x:Static res:MyResources.CtrlZoomFileInfos}" FontWeight="Bold" />
+                </GroupBox.Header>
                 <StackPanel>
                     <TextBlock x:Name="_tbWavName" Margin="0,5,0,10"/>
                     <local:ctlDataItem x:Name="_sampleRate" />

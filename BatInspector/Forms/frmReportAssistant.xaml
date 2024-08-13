@@ -10,19 +10,28 @@
     <Grid>
         <ScrollViewer>
         <StackPanel Margin="0,0,0,10">
-                <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Input}">
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.frmReportAssistant_Input}" FontWeight="Bold" />
+                    </GroupBox.Header>
                     <StackPanel Margin="5">
                         <local:CtlSelectFile x:Name="_ctlFormData"/>
                         <local:CtlSelectFile x:Name="_ctlTemplate"/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Output}">
-        <StackPanel Margin="5">
+                <GroupBox>
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.frmReportAssistant_Output}" FontWeight="Bold" />
+                    </GroupBox.Header>
+                    <StackPanel Margin="5">
                     <local:ctlDataItem x:Name="_ctlPageTitle"/>
                     <local:ctlDataItem x:Name="_ctlLocationName"/>
                 </StackPanel>
         </GroupBox>
-            <GroupBox x:Name="_grpHeader" Header="{x:Static res:MyResources.frmReportAssistant_Header}">
+            <GroupBox x:Name="_grpHeader" >
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.frmReportAssistant_Header}" FontWeight="Bold" />
+                    </GroupBox.Header>
                     <StackPanel Margin="5">
                         <local:ctlDataItem x:Name="_ctlAuthor" />
                         <local:ctlDataItem x:Name="_ctlLocDescription"/>
@@ -40,14 +49,20 @@
                     </StackPanel>
               
         </GroupBox>
-                <GroupBox Header="{x:Static res:MyResources.frmReportAssistant_Miscellanous}">
+                <GroupBox >
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.frmReportAssistant_Miscellanous}" FontWeight="Bold" />
+                    </GroupBox.Header>
                     <StackPanel>
                     <local:CtlSelectFile x:Name="_ctlSelectWavFolder" />
                     <local:CtlSelectFile x:Name="_ctlImgPortrait" />
                     <local:CtlSelectFile x:Name="_ctlImgLandscape" />
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="{x:Static res:MyResources.frmReportAssistantFoundSpecies}">
+                <GroupBox >
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.frmReportAssistantFoundSpecies}" FontWeight="Bold" />
+                    </GroupBox.Header>
                     <StackPanel>
                         <Grid Margin="0,0,0,3">
                             <Grid.ColumnDefinitions>

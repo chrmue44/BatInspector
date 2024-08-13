@@ -30,7 +30,7 @@ namespace BatInspector.Controls
 
     public void initHistogram(Histogram histogram, string title, double[] ticks = null)
     {
-      _grp.Header = title;
+      _hdrTextBlock.Text = title;
       _histogram = histogram;
       _ticksX = ticks;
     }

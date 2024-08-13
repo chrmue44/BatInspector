@@ -565,6 +565,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open WAV file with external program.
+        /// </summary>
+        public static string ctlWavFileFileNameToolTip {
+            get {
+                return ResourceManager.GetString("ctlWavFileFileNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Man. Classification.
         /// </summary>
         public static string CtlWavManualDetection {
@@ -840,6 +849,15 @@ namespace BatInspector.Properties {
         public static string Device {
             get {
                 return ResourceManager.GetString("Device", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diagram Title.
+        /// </summary>
+        public static string DiagramTitle {
+            get {
+                return ResourceManager.GetString("DiagramTitle", resourceCulture);
             }
         }
         
@@ -3454,6 +3472,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path to text editor for editing script files.
+        /// </summary>
+        public static string SetDecExeEditor {
+            get {
+                return ResourceManager.GetString("SetDecExeEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings for bat species.
         /// </summary>
         public static string SetDescBatSpecies {
@@ -3684,6 +3711,15 @@ namespace BatInspector.Properties {
         public static string SetDescShowOnlyFiltered {
             get {
                 return ResourceManager.GetString("SetDescShowOnlyFiltered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to inspection tool for WAV files.
+        /// </summary>
+        public static string SetDescWavTool {
+            get {
+                return ResourceManager.GetString("SetDescWavTool", resourceCulture);
             }
         }
         

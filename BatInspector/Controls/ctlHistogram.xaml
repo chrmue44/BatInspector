@@ -6,8 +6,11 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <GroupBox Name="_grp" Header="Title" Margin="5">
-    <StackPanel>
+    <GroupBox Name="_grp" Margin="5">
+        <GroupBox.Header>
+            <TextBlock Name="_hdrTextBlock" Text="Title" FontWeight="Bold" />
+        </GroupBox.Header>
+        <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <local:ctlDataItem x:Name="_ctlMean"/>
                 <local:ctlDataItem x:Name="_ctlStdDev" Margin="10,0,0,0"/>

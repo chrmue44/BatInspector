@@ -34,7 +34,7 @@ namespace BatInspector.Controls
     int _oldCallIdx = -1;
     Image[] _playImgs;
     ctlWavFile _ctlWav = null;
-    frmExport _frmExp = null;
+    dlgVoid _openExportForm= null;
 
     public CtrlZoom()
     {
@@ -121,12 +121,13 @@ namespace BatInspector.Controls
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, 
-                       List<string> species, ctlWavFile ctlWav)
+                       List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow)
     {
       int lblWidth = 100;
       InitializeComponent();
       _model = model;
       _ctlWav = ctlWav;
+      _openExportForm = openExpWindow;
       _imgFt.Source = (ctlWav != null) ? ctlWav._img.Source : null;
       _model.ZoomView.Analysis = analysis;
       _model.ZoomView.Cursor1.set(0, 0, false);
@@ -1348,9 +1349,8 @@ namespace BatInspector.Controls
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)
     {
-      if(_frmExp == null)
-        _frmExp = new frmExport(_model);
-      _frmExp.Show();
+      if(_openExportForm != null)
+        _openExportForm(); 
     }
   }
 }

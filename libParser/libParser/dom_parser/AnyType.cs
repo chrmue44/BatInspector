@@ -1353,7 +1353,7 @@ namespace libParser
       {
       }
       if(!ok)
-        DebugLog.log("error parsing date: " + str, enLogType.ERROR);
+        DebugLog.log($"error parsing date: '{str}'", enLogType.ERROR);
 
       return date;
     }

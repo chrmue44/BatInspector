@@ -11,7 +11,7 @@
         <local:CtlSelectFile x:Name="_ctlRootDir" Margin="5"/>
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Label Content="Filter" HorizontalContentAlignment="Right" Width="150"/>
-            <ComboBox Name="_cbFilter" Width="150"></ComboBox>
+            <ComboBox Name="_cbFilter" Width="150" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened" ></ComboBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Name="_spTimeSpan" Margin="5,0,5,5">
             <Label Content="{x:Static res:MyResources.CtlSumReportTimespan}" HorizontalContentAlignment="Right" Width="150"/>
@@ -31,12 +31,16 @@
         </StackPanel>
         <local:CtlSelectFile x:Name="_ctlDestDir" Margin="5"/>
         <StackPanel Orientation="Horizontal" Margin="5,30,5,5" >
-            <CheckBox Content="create CSV file" x:Name="_cbCsvFile" Width="150" />
+            <CheckBox Content="create CSV file" x:Name="_cbCsvFile" Width="180" />
             <local:ctlDataItem x:Name="_ctlCsvReportName" Width="355" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-            <CheckBox Content="Create Web Page" Name="_cbWebPage" Width="150"/>
-        <local:ctlDataItem x:Name="_ctlWebReportName" Width="355"/>
-    </StackPanel>
+            <CheckBox Content="Create Web Page" Name="_cbWebPage" Width="180"/>
+            <local:ctlDataItem x:Name="_ctlWebReportName" Width="355"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
+            <CheckBox Content="Create Activity Diagram" Name="_cbActivityDiagram" Width="180"/>
+            <local:ctlDataItem x:Name="_ctlActivityDiagName" Width="355"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>

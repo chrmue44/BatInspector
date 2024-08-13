@@ -35,9 +35,9 @@ namespace BatInspector.Forms
       ContentRendered += FrmZoom_ContentRendered;
     }
 
-    public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav)
+    public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav, dlgVoid openExpWindow)
     {
-      _ctl.setup(analysis, wavFilePath, _model, _model.Prj.Species, ctlWav);
+      _ctl.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav, openExpWindow);
       this.Title = name;
     }
 

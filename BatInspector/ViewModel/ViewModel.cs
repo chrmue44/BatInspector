@@ -141,7 +141,7 @@ namespace BatInspector
       _zoom = new ZoomView(_colorTable, _proc, Status);
       _wav = new WavFile();
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
-      _sumReport = new SumReport();
+      _sumReport = new SumReport(this);
       _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
       _models = new List<BaseModel>();
       _query = null;

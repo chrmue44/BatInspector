@@ -7,16 +7,23 @@
  ********************************************************************************/
 using libParser;
 using libScripter;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Threading;
+using System.Windows;
+
 
 namespace BatInspector
 {
+
+  public delegate void dlgShowHeatMap(List<List<int>> hm);
   public enum enPeriod
   {
     DAILY = 0,
@@ -339,9 +346,18 @@ namespace BatInspector
     private DirectoryInfo _dirInfo;
     private List<ReportListItem> _reports;
     private List<SumItem> _totalSum;
+    private ViewModel _model;
 
-    public SumReport()
+    private DateTime _start;
+    private DateTime _end;
+    private enPeriod _period;
+    private string _dstDir;
+    private string _expression;
+    private dlgShowHeatMap _showHeatMap = null;
+
+    public SumReport(ViewModel model)
     {
+      _model = model;
       _rep = new Csv(true);
       _reports = new List<ReportListItem>();
       _totalSum = new List<SumItem>();
@@ -357,7 +373,7 @@ namespace BatInspector
     public void createCsvReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
                              List<SpeciesInfos> species)
     {
-      initDirTree(rootDir);
+      initDirTree(rootDir, AppParams.PRJ_SUMMARY);
       _rep = new Csv(true);
       string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.LANDSCAPE, Cols.WEATHER, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX };
       _rep.initColNames(header, true);
@@ -402,14 +418,58 @@ namespace BatInspector
         _rep.saveAs(fileName);
       }
       else
+
         DebugLog.log("unable to save sum report, directory does not exist: " + rootDir, enLogType.ERROR);
     }
+
+    void createHeatMapSync()
+    {
+      initDirTree(_rootDir, AppParams.PRJ_SUMMARY);
+
+      DateTime date = _start;
+      int minsPerPoint = 5;
+      int ticksPerHour = 60 / minsPerPoint;
+      bool addLine = false;
+      List<List<int>> retVal = new List<List<int>>();
+
+      while (date < _end)
+      {
+        List<int> heatMapLine = new List<int>(24 * ticksPerHour);
+        heatMapLine.AddRange(Enumerable.Repeat(0, 24 * ticksPerHour));
+        int days = calcDays(date, _end, _period);
+        bool cont = createHeatMapLine(date, days, ticksPerHour, _expression, heatMapLine, out bool addedLine);
+        // after first line was found continue to add lines, even without having data
+        if (addedLine)
+          addLine = true;
+        date = incrementDate(date, _period);
+        if (addLine)
+          retVal.Add(heatMapLine);
+      }
+      if(_showHeatMap != null)
+        _showHeatMap(retVal);
+    }
+
+    public void createHeatMapAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string expression, dlgShowHeatMap dlgShowHeatMap)
+    {
+      _start = start;
+      _end = end;
+      _period = period;
+      _rootDir = rootDir;
+      _dstDir = dstDir;
+      _expression = expression;
+      _showHeatMap = dlgShowHeatMap;
+
+      Thread t = new Thread(createHeatMapSync);
+      t.Start();
+
+    }
+
 
     public SumReportJson createWebReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
                          List<SpeciesInfos> species)
     {
       SumReportJson retVal = new SumReportJson();
-      initDirTree(rootDir);
+      initDirTree(rootDir, AppParams.PRJ_SUMMARY);
 
       DateTime date = start;
       while (date < end)
@@ -482,12 +542,13 @@ namespace BatInspector
       return date;
     }
 
-    void crawlDirTree(DirectoryInfo dir)
+
+    void crawlDirTree(DirectoryInfo dir, string reportName)
     {
       foreach (DirectoryInfo subDir in dir.GetDirectories())
       {
-        crawlDirTree(subDir);
-        string prjFile = Project.containsReport(subDir, AppParams.PRJ_SUMMARY);
+        crawlDirTree(subDir, reportName);
+        string prjFile = Project.containsReport(subDir, reportName);
         if (prjFile != "")
         {
           Csv csv = new Csv();
@@ -512,12 +573,74 @@ namespace BatInspector
       }
     }
 
-    void initDirTree(string rootDir)
+
+    private bool createHeatMapLine(DateTime start, int days, int ticksPerHour, string expression, List<int> heatMapLine, out bool addedLine)
+    {
+      bool retVal = true;
+      addedLine = false;
+      DateTime end = start.AddDays(days);
+      foreach (ReportListItem rep in _reports)
+      {
+        if ((rep.Date >= start) && (rep.Date < end))
+        {
+
+          Analysis analysis = new Analysis(_model.SpeciesInfos, null);
+          
+          string reportName = Path.Combine(Path.GetDirectoryName(rep.FileName), AppParams.PRJ_REPORT);
+          analysis.read(reportName);
+
+          FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
+
+          if (analysis.Files.Count == 0)
+          {
+            MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            retVal = res == MessageBoxResult.Yes;
+          }
+          else
+          {
+            int totalCalls = 0;
+            foreach (AnalysisFile file in analysis.Files)
+            {
+              foreach (AnalysisCall call in file.Calls)
+              {
+                bool match = _model.Filter.apply(filter, call,
+                              file.getString(Cols.REMARKS),
+                              AnyType.getTimeString(file.RecTime), out retVal);
+                if (!retVal)
+                {
+                  DebugLog.log("error parsing query expression: " + expression, enLogType.ERROR);
+                  break;
+                }
+                if (match)
+                {
+                  int idx = file.RecTime.Hour * ticksPerHour + file.RecTime.Minute * ticksPerHour / 60;
+                  if (idx < heatMapLine.Count)
+                  {
+                    heatMapLine[idx]++;
+                    totalCalls++;
+                  }
+                  else
+                    DebugLog.log("SumReport::createHeatMapLine, index error", enLogType.ERROR);
+                }
+              }
+              if (!retVal)
+                break;
+            }
+            addedLine = true;
+            DebugLog.log($"evaluating report {reportName}  nr of calls: {totalCalls}", enLogType.INFO);
+          }
+        }
+      }
+      return retVal;
+    }
+
+
+    void initDirTree(string rootDir, string reportName)
     {
       _rootDir = rootDir;
       _dirInfo = new DirectoryInfo(rootDir);
       _reports.Clear();
-      crawlDirTree(_dirInfo);
+      crawlDirTree(_dirInfo, reportName);
     }
 
 
@@ -551,6 +674,7 @@ namespace BatInspector
         }
       }
     }
+
 
     /// <summary>
     /// calculate sums for all species in the specified period

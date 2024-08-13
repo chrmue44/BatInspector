@@ -17,17 +17,24 @@
     <SolidColorBrush x:Key="colorBackGroundCombo" Color="#FFF7F9FE" />
     <SolidColorBrush x:Key="colorForeGroundSlider" Color="#FFC7C9CE" />
 
-    <Style TargetType="GroupBox">
+        <!--
+        <Style  TargetType="GroupBox">
       <Setter Property="Background" Value="#FFF7F9FE"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="HeaderTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="{DynamicResource colorForeGroundLabel}" FontWeight="Bold"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
+      <Setter Property="Foreground" Value="Black"/>
+      <Setter Property="HeaderTemplate">
+         <Setter.Value>
+             <DataTemplate>
+                 <TextBlock Text="{Binding}" Foreground="{DynamicResource colorForeGroundLabel}" FontWeight="Bold"/>
+              </DataTemplate>
+         </Setter.Value>
+      </Setter>
+      </Style>  -->
+
+        <Style  TargetType="GroupBox">
+            <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
+      <Setter Property="Foreground" Value="{DynamicResource colorForeGroundLabel}"/>
         </Style>
+
         <Style TargetType="Grid">
       <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
     </Style>
@@ -79,7 +86,7 @@
         <Border BorderBrush="{DynamicResource colorBackGroundGrpFrame}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1">
                 <Border.OpacityMask>
                     <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
-                        <Binding ElementName="Header" Path="ActualWidth"/>
+                        <Binding ElementName="Header" Path="ActualWidth" />
                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=Self}"/>
                         <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}"/>
                     </MultiBinding>
@@ -89,7 +96,7 @@
                 </Border>
             </Border>
         <Border x:Name="Header" Grid.Column="1" Padding="5,0,5,0" Grid.RowSpan="2" Grid.Row="0" Background="{DynamicResource colorBackGround}">
-                <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    <ContentPresenter ContentSource="Header" Opacity ="1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </Border>
             <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
         </Grid>

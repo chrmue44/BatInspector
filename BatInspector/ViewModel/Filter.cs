@@ -115,6 +115,12 @@ namespace BatInspector
 
     public bool apply(FilterItem filter, AnalysisCall call, string remarks, string time, out bool ok)
     {
+      if (string.IsNullOrEmpty(filter.Expression))
+      {
+        ok = true;
+        return true;
+      }
+
       bool retVal = false;
       _expression.setVariable(VAR_REMARKS, remarks);
       _expression.setVariable(VAR_TIME, time);

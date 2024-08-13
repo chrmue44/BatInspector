@@ -252,8 +252,13 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [LocalizedDescription("SetDescWidthFFT")]
+    [LocalizedDescription("SetDescExeEditor")]
     public string ExeEditor { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescWavTool")]
+    public string WavTool { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatPrjExplorer")]

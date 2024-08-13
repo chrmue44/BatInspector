@@ -5,6 +5,9 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using BatInspector.Controls;
+using BatInspector.Properties;
+using libParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +28,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _model = model;
-      _ctlReport.setup(this);
+      _ctlReport.setup(this, model);
     }
 
     private void setFormDataName(string s)
@@ -64,11 +67,21 @@ namespace BatInspector.Forms
             _model.SumReport.createWebPage(rep, _formDataName, _model.SpeciesInfos,
                       Path.Combine(_ctlReport._ctlDestDir.getValue(), _ctlReport._ctlWebReportName.getValue()));
         }
+        if(_ctlReport._cbActivityDiagram.IsChecked == true)
+        {
+        /*
+          frmActivity frm = new frmActivity();
+          _model.SumReport.createHeatMapAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
+          _ctlReport._ctlDestDir.getValue(), _ctlReport.FilterExpression, frm.createPlot);
+          frm.Show();
+    */
+        }
       }
       else
         MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         this.Visibility = Visibility.Hidden;
       }
+
 
       private void _btnCancel_Click(object sender, RoutedEventArgs e)
       {
@@ -79,5 +92,6 @@ namespace BatInspector.Forms
       {
         winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
       }
-    }
+
   }
+}

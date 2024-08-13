@@ -1536,4 +1536,16 @@
   <data name="frmReportAssistantFoundSpecies" xml:space="preserve">
     <value>Gefundene Arten</value>
   </data>
+  <data name="DiagramTitle" xml:space="preserve">
+    <value>Diagrammtitel</value>
+  </data>
+  <data name="ctlWavFileFileNameToolTip" xml:space="preserve">
+    <value>Öffne WAV-Datei mit externem Programm</value>
+  </data>
+  <data name="SetDecExeEditor" xml:space="preserve">
+    <value>Pfad zu Texteditor, um Scriptdateien zu editieren</value>
+  </data>
+  <data name="SetDescWavTool" xml:space="preserve">
+    <value>Pfad zu einem Programm zur Betrachten von WAV-Dateien</value>
+  </data>
 </root>

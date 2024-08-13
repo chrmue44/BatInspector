@@ -46,6 +46,7 @@ namespace BatInspector
     PlotModel _plotModel;
 
     public PlotModel PlotModel { get { return _plotModel; }  set { _plotModel = value; } }
+    
     public List<stAxisItem> AxisItems { get { return _axisItems; } }
 
     public ScatterDiagram()

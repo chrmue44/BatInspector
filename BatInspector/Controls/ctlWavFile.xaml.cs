@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BatInspector.Properties;
 using System.IO;
-
+using libScripter;
 
 namespace BatInspector.Controls
 {
@@ -97,7 +97,8 @@ namespace BatInspector.Controls
     {
       _wavFilePath = wavFilePath;
       _wavName = Name;
-      _grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
+      _btnWavFile.Content = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
+      //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
       _isSetupCall = true;
       int wLbl = 48;
@@ -240,6 +241,24 @@ namespace BatInspector.Controls
     {
       if(_analysis != null)
         _analysis.Selected = _cbSel.IsChecked == true;
+    }
+
+    private void _btnWavFile_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        string exe = AppParams.Inst.WavTool;
+        if (!string.IsNullOrEmpty(exe))
+        {
+          ProcessRunner p = new ProcessRunner();
+          string fName = Path.Combine(WavFilePath, _wavName);
+          p.launchCommandLineApp(exe, null, "", true, fName);
+        }
+      }
+      catch(Exception ex) 
+      {
+        DebugLog.log("error launching WAV tool: " + ex.ToString(), enLogType.ERROR);
+      }
     }
   }
 }

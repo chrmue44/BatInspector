@@ -53,6 +53,7 @@ namespace BatInspector.Forms
     FrmQuery _frmQuery = null;
     frmCleanup _frmCleanup = null;
     FrmMessage _frmMsg = new FrmMessage();
+    frmExport _frmExp = null;
     int _imgHeight = MAX_IMG_HEIGHT;
     FrmZoom _frmZoom = null;
     CtrlZoom _ctlZoom = null;
@@ -200,6 +201,14 @@ namespace BatInspector.Forms
         {
         }
       }
+    }
+
+    public void openExportWindow()
+    {
+      if (_frmExp == null)
+        _frmExp = new frmExport(_model);
+      _frmExp.Show();
+
     }
 
     private void setLanguage()
@@ -389,16 +398,16 @@ namespace BatInspector.Forms
       {
         if (_frmZoom == null)
           _frmZoom = new FrmZoom(_model, closeWindow);
-        _frmZoom.setup(name, analysis, wavFilePath, ctlWav);
+        _frmZoom.setup(name, analysis, wavFilePath, ctlWav, openExportWindow);
         setZoomPosition();
         _frmZoom.Show();
       }
       else
       {
         if (_model.CurrentlyOpen != null)
-          _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav);
+          _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav, openExportWindow);
         else
-          _ctlZoom.setup(analysis, wavFilePath, _model, null, null);
+          _ctlZoom.setup(analysis, wavFilePath, _model, null, null, openExportWindow);
         _tbZoom.Header = "Zoom: " + name;
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -898,6 +907,8 @@ namespace BatInspector.Forms
         _frmCleanup.Close();
       if(_frmMsg != null)
         _frmMsg.Close();
+      if (_frmExp != null)
+        _frmExp.Close();
       DebugLog.save();
     }
 

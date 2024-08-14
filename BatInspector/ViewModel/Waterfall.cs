@@ -15,6 +15,7 @@ using libParser;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using NAudio.Wave;
+using BatInspector.Controls;
 
 namespace BatInspector
 {
@@ -93,15 +94,9 @@ namespace BatInspector
     {
       if (_ok)
       {
+        int fftSize = calculateBestFftSize(startTime, EndTime);
         Stopwatch sw = Stopwatch.StartNew();
         _spec.Clear();
-        //uint fftSize = AppParams.Inst.FftWidth;
-        uint fftSize = 1024;
-        double dt = EndTime - startTime;
-        if (dt < 0.03)
-          fftSize = 256;
-        else if (dt < 0.06)
-          fftSize = 512;
         int idxStart = (int)(startTime * _audio.SamplingRate);
         if (idxStart > _audio.Samples.Length)
           idxStart = (int)_audio.Samples.Length;
@@ -112,18 +107,19 @@ namespace BatInspector
         if (step == 0)
           step = 1;
         if (step > fftSize)
-          step = (int)fftSize;
+          step = fftSize;
 
         int max = (int)(idxEnd - idxStart) / (int)step;
         for (int i = 0; i < max; i++)
           _spec.Add(null);
 
         Parallel.For(0, max, i =>
+   //     for(int i = 0; i < max; i++)
         {
           int idx = idxStart + i * step;
           if (idx >= 0)
           {
-            double[] sp = generateFft(idx, (int)fftSize, AppParams.FFT_WIDTH, AppParams.Inst.FftWindow);
+            double[] sp = generateFft(idx, fftSize, AppParams.FFT_WIDTH, AppParams.Inst.FftWindow);
             _spec[i] = sp;
           }
         }
@@ -234,41 +230,31 @@ namespace BatInspector
     }
 
 
-    public Bitmap generateFtPicture(double fMin, double fMax)
+    public Bitmap generateFtPicture(double tMin, double tMax, double fMin, double fMax)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       BitmapFast bmp = null;
+      int fftBinCnt = calculateBestFftSize(tMin, tMax) / 2;
       if (_ok)
       {
-        int fftSize = 256; // (int)AppParams.Inst.FftWidth;
-        foreach (double[] s in _spec)
-        {
-          if(s != null)
-          {
-            fftSize = s.Length;
-            break;
-          }
-        }
-
-        bmp = new BitmapFast(width, fftSize);
-
+        bmp = new BitmapFast(width, fftBinCnt);
 
         for (int x = 0; x < width; x++)
         {
           int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
-          for (int y = 0; y < fftSize; y++)
+          for (int y = 0; y < fftBinCnt; y++)
           {
             if (_spec.Count > 0)
             {
-              double f = (fMax - fMin) * y / fftSize + fMin;
-              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftSize);
+              double f = (fMax - fMin) * y / fftBinCnt + fMin;
+              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftBinCnt);
               if (_spec[idxSpec] != null)
               {
                 if (idxFreq >= _spec[idxSpec].Length)
                   idxFreq = _spec[idxSpec].Length - 1;
                 double val = _spec[idxSpec][idxFreq];
                 System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
-                bmp.setPixel(x, fftSize - 1 - y, col);
+                bmp.setPixel(x, fftBinCnt - 1 - y, col);
               }
             }
           }
@@ -281,6 +267,7 @@ namespace BatInspector
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int heightXt = AppParams.FFT_WIDTH / XT_TO_FT_RATIO;
+      int fftSize = calculateBestFftSize(tMin, tMax);
       bool ovrdrive = _audio.findOverdrive(tMin, tMax);
       BitmapFast bmp = new BitmapFast(width, heightXt);
       for (int x = 0; x < width; x++)
@@ -291,8 +278,9 @@ namespace BatInspector
       {
         double samplesPerPixelf = this._audio.Samples.Length * (tMax - tMin) / this.Duration / width;
         int samplesPerPixel = (int)samplesPerPixelf;
-        int idxMin = (int)(tMin / this.Duration * this._audio.Samples.Length);
-        int idxMax = (int)(tMax / this.Duration * this._audio.Samples.Length);
+        int idxMin = (int)(tMin / this.Duration * this._audio.Samples.Length) + fftSize/2;
+        int idxMax = (int)(tMax / this.Duration * this._audio.Samples.Length) + fftSize/2;
+        if(idxMax >= _audio.Samples.Length) idxMax = _audio.Samples.Length - 1;
         if (samplesPerPixelf > 1.0)
         {
           //          m_isMinMax = true;
@@ -308,6 +296,18 @@ namespace BatInspector
       return bmp.Bmp;
     }
 
+    int calculateBestFftSize(double tMin, double tMax)
+    {
+      int fftSize = 1024;
+      double dt = tMax - tMin;
+//      if (dt < 0.07)
+//        fftSize = 256;
+//      else 
+      if (dt < 0.15)
+        fftSize = 512; 
+      return fftSize;
+    }
+
     void drawLine(int x, int ymin, int ymax, BitmapFast bmp, Color color) 
     {
       for (int y = ymin; y <= ymax; y++)
@@ -315,7 +315,7 @@ namespace BatInspector
     }
 
 
-  void plotAsBand(double aMin, double aMax,  int idxMin, int idxMax, BitmapFast bmp) 
+    void plotAsBand(double aMin, double aMax,  int idxMin, int idxMax, BitmapFast bmp) 
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       int samplesPerPixel = (idxMax - idxMin) / width;

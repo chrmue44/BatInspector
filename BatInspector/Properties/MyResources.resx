@@ -1548,4 +1548,13 @@
   <data name="SetDescWavTool" xml:space="preserve">
     <value>Path to inspection tool for WAV files</value>
   </data>
+  <data name="ctlZoomShowGrid" xml:space="preserve">
+    <value>Show Grid</value>
+  </data>
+  <data name="SetDescGridColor" xml:space="preserve">
+    <value>Grid color for the grid display in Zoom View</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Bandwidth</value>
+  </data>
 </root>

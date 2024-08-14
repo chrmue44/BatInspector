@@ -1548,4 +1548,13 @@
   <data name="SetDescWavTool" xml:space="preserve">
     <value>Pfad zu einem Programm zur Betrachten von WAV-Dateien</value>
   </data>
+  <data name="ctlZoomShowGrid" xml:space="preserve">
+    <value>Gitternetz anzeigen</value>
+  </data>
+  <data name="SetDescGridColor" xml:space="preserve">
+    <value>Farbe des Gitternetzes in der Zoom-Ansicht</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Bandbreite</value>
+  </data>
 </root>

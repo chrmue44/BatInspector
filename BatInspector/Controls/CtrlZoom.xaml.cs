@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using BatInspector.Forms;
 
+
 namespace BatInspector.Controls
 {
   /// <summary>
@@ -138,10 +139,12 @@ namespace BatInspector.Controls
       _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, lblWidth);
 
-      lblWidth = 110;
+   
+      lblWidth = 115;
       _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, lblWidth);
       _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, lblWidth);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, lblWidth);
+      _deltaF.setup(MyResources.Bandwidth + " kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _wavFilePath = wavFilePath;
       
       string fName = System.IO.Path.GetFileName(analysis.Name);
@@ -232,6 +235,7 @@ namespace BatInspector.Controls
       _cbMode.Items.Add("Cursor");
       _cbMode.SelectedIndex = 0;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
+      _cbGrid.IsChecked = true;
     }
 
     void setVisabilityCallData(bool on)
@@ -402,11 +406,16 @@ namespace BatInspector.Controls
         _grpCursor2.Visibility = Visibility.Hidden;
       if (z.Cursor1.Visible && z.Cursor2.Visible)
       {
-        _deltaT.setValue((z.Cursor2.Time - z.Cursor1.Time) * 1000);
+        _deltaT.setValue(Math.Abs(z.Cursor2.Time - z.Cursor1.Time) * 1000);
+        _deltaF.setValue(Math.Abs(z.Cursor2.Freq - z.Cursor1.Freq));
         _deltaT.Visibility = Visibility.Visible;
+        _deltaF.Visibility = Visibility.Visible;
       }
       else
+      {
         _deltaT.Visibility = Visibility.Hidden;
+        _deltaF.Visibility = Visibility.Hidden;
+      }
     }
 
 
@@ -456,6 +465,7 @@ namespace BatInspector.Controls
       initRulerA();
       drawCursor(1);
       drawCursor(2);
+      drawGrid();
     }
 
     private void hideCursors()
@@ -465,6 +475,7 @@ namespace BatInspector.Controls
       _grpCursor1.Visibility = Visibility.Hidden;
       _grpCursor2.Visibility = Visibility.Hidden;
       _deltaT.Visibility = Visibility.Hidden;
+      _deltaF.Visibility = Visibility.Hidden;
       drawCursor(1);
       drawCursor(2);
     }
@@ -490,13 +501,13 @@ namespace BatInspector.Controls
     void initRulerF()
     {
       _rulerF.Children.Clear();
-      GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max, 9);
+      GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max, AppParams.NR_OF_TICKS);
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
-      GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, 9, "0.###");
+      GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, AppParams.NR_OF_TICKS, "0.###");
     }
 
 
@@ -734,6 +745,65 @@ namespace BatInspector.Controls
       initRulerA();
     }
 
+
+    private void drawGrid()
+    {
+      if (_cbGrid.IsChecked == true)
+      {
+        System.Drawing.Color c = AppParams.Inst.GridColor;
+        System.Windows.Media.Color gridColor = System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+        SolidColorBrush gridBrush = new SolidColorBrush(gridColor);
+        double[] ticksX = GraphHelper.createTicks(AppParams.NR_OF_TICKS, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+        double[] ticksY = GraphHelper.createTicks(AppParams.NR_OF_TICKS, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max);
+        for (int i = 0; i < ticksX.Length; i++)
+        {
+          if (i < 9)
+          {
+            string nameX = $"_grid_x{(i + 1).ToString()}";
+            Line lx = (Line)_gridXt.FindName(nameX);
+            lx.Visibility = Visibility.Visible;
+            lx.Stroke = gridBrush;
+
+            int x = (int)(_imgFt.Margin.Left + (ticksX[i] - _model.ZoomView.RulerDataT.Min) /
+                        (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) * _imgFt.ActualWidth);
+            lx.X1 = x;
+            lx.Y1 = _imgFt.Margin.Top;
+            lx.X2 = x;
+            lx.Y2 = _imgFt.ActualHeight + _imgFt.Margin.Top;
+          }
+        }
+        for (int i = 0; i < ticksY.Length; i++)
+        {
+          if (i < 9)
+          {
+            string nameY = $"_grid_y{(i+1).ToString()}";
+            Line ly = (Line)_gridXt.FindName(nameY);
+            ly.Visibility = Visibility.Visible;
+            ly.Stroke = gridBrush;
+
+            int y = (int)(_imgFt.Margin.Top + (1.0 - (ticksY[i] - _model.ZoomView.RulerDataF.Min) /
+                            (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min)) * _imgFt.ActualHeight);
+            ly.X1 = _imgFt.Margin.Left;
+            ly.Y1 = y;
+            ly.X2 = _imgFt.ActualWidth + _imgFt.Margin.Left;
+            ly.Y2 = y;
+          }
+        }
+      }
+      else
+      {
+        for (int i = 1; i < 10; i++)
+        {
+          string nameX = $"_grid_x{i.ToString()}";
+          string nameY = $"_grid_y{i.ToString()}";
+          Line lx = (Line)_gridXt.FindName(nameX);
+          Line ly = (Line)_gridXt.FindName(nameY);
+          lx.Visibility = Visibility.Hidden;
+          ly.Visibility = Visibility.Hidden;
+        }
+      }
+    }
+
     private void createZoomImg()
     {
       updateRuler();
@@ -748,20 +818,24 @@ namespace BatInspector.Controls
       if (((tEndCall - tStartCall) > 0) && ((tEndCall - tStartCall) < 0.2))
         _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
-      double dt = (double)AppParams.FFT_WIDTH / samplingRate;
-      _model.ZoomView.Waterfall.generateFtDiagram(tStart - dt, tEnd - dt, AppParams.Inst.WaterfallWidth);
+      _model.ZoomView.Waterfall.generateFtDiagram(tStart, tEnd, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
 
     private void updateImage()
     {
-      System.Drawing.Bitmap bmpFt = _model.ZoomView.Waterfall.generateFtPicture(_model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max);
+      System.Drawing.Bitmap bmpFt = _model.ZoomView.Waterfall.generateFtPicture(_model.ZoomView.RulerDataT.Min, 
+                                                                                _model.ZoomView.RulerDataT.Max,
+                                                                                _model.ZoomView.RulerDataF.Min,
+                                                                                _model.ZoomView.RulerDataF.Max);
       if (bmpFt != null)
       {
         BitmapImage bImg = ViewModel.Convert(bmpFt);
         _imgFt.Source = bImg;
       }
       updateXtImage();
+      drawGrid();
+      
     }
 
     private void updateXtImage()
@@ -1351,6 +1425,11 @@ namespace BatInspector.Controls
     {
       if(_openExportForm != null)
         _openExportForm(); 
+    }
+
+    private void _cbGrid_Click(object sender, RoutedEventArgs e)
+    {
+      drawGrid();
     }
   }
 }

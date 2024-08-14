@@ -129,8 +129,7 @@
                 <ColumnDefinition Width="160"/>
             </Grid.ColumnDefinitions>
             <local:CtlSpectrum x:Name ="_ctlSpectrum" Grid.Row="2" Grid.Column="0" Margin="5,0,0,0"/>
-            <Image Name="_imgXt" Grid.Row="0" Grid.Column="2" Margin="0,10,0,20" Stretch="Fill"  
- MouseMove="_imgXt_MouseMove" MouseLeave="_imgXt_MouseLeave" Grid.RowSpan="2" >
+            <Image Name="_imgXt" Grid.Row="0" Grid.Column="2" Margin="0,10,0,20" Stretch="Fill" MouseMove="_imgXt_MouseMove" MouseLeave="_imgXt_MouseLeave" Grid.RowSpan="2" >
             </Image>
             <Popup Name="_xtToolTip" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=_imgXt}">
                 <TextBlock Name="_tbx" Margin="5"  Background="White" Foreground="Black">Look At Me</TextBlock>
@@ -146,13 +145,32 @@
                 <TextBlock Name="_tbf" Margin="5"  Background="LightGray" Foreground="Black">Look At Me</TextBlock>
             </Popup>
             <ComboBox  Grid.Row="3" Grid.Column="0" x:Name="_cbMode" Height ="20" Margin ="5,15,0,15" SelectionChanged="_cbModeChanged" />
-            <Line Name="_cursorX1" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
-            <Line Name="_cursorY1" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Red" StrokeThickness="2" />
-            <Line Name="_cursorX2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
-            <Line Name="_cursorY2" Grid.Row="2" Grid.Column="2" Visibility="Hidden" Stroke="Magenta" StrokeThickness="2" />
-            <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
+            <Line Name="_cursorX1" Visibility="Hidden" Stroke="Red" Grid.Row="2" Grid.Column="2" StrokeThickness="2" />
+            <Line Name="_cursorY1" Visibility="Hidden" Stroke="Red" Grid.Row="2" Grid.Column="2" StrokeThickness="2" />
+            <Line Name="_cursorX2" Visibility="Hidden" Stroke="Magenta" Grid.Row="2" Grid.Column="2" StrokeThickness="2" />
+            <Line Name="_cursorY2" Visibility="Hidden" Stroke="Magenta" Grid.Row="2" Grid.Column="2" StrokeThickness="2" />
+            <Line Name="_grid_y1"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y2"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y3"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_y4"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_y5"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_y6"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_y7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_y8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_y9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+      <Line Name="_grid_x1"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x2"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x3"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x4"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x5"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x6"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Line Name="_grid_x9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+      <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
             <StackPanel Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2">
-                <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5" Padding="2" >
+        <CheckBox Name="_cbGrid" Content="{x:Static res:MyResources.ctlZoomShowGrid}"  Margin="5,0,5,0" Click="_cbGrid_Click"/>
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5" Padding="2" >
                     <GroupBox.Header>
                         <TextBlock Text="{x:Static res:MyResources.CtlZoomSpecInfo}" FontWeight="Bold" />
                     </GroupBox.Header>
@@ -178,7 +196,8 @@
                         <local:ctlDataItem x:Name="_time2" />
                         <local:ctlDataItem x:Name="_freq2" />
                         <local:ctlDataItem x:Name="_deltaT" />
-                    </StackPanel>
+                        <local:ctlDataItem x:Name="_deltaF"/>
+          </StackPanel>
                 </GroupBox>
             </StackPanel>
             <Canvas Name ="_rulerT" Grid.Row="3" Grid.Column="2" ></Canvas>

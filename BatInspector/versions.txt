@@ -6,8 +6,12 @@ TODO
 - simplification of script to copy auto to man species
 - simplification of report form (default pathes)
 
+V0.8.5.0
+- bugfix: offset error between ft and xt diagram at high zoom rates
+- enable/disable a grid in the zoom view, color is configurable in app settings
+- show bandwidth in zoom view when both cursors are active
 
-V0.8.4.0
+V0.8.4.0   13.08.24
 - bugfix: color gradient is now editable again
 - bugfix: App doesn't freeze anymore when scrolling project view while a script is running
 - bugfix: crash when prog start, open query, go to zoomview
@@ -18,7 +22,6 @@ V0.8.4.0
 - show max f and t values on x/y axis in waterfall zoom view
 - The file name(s) in the Project view are now buttons that start an external WAV tool, 
   if it is specified in the application settings
-
 
 V0.8.3.0   21.07.24
 -bugfix: installing batdetect2 failed due to new numpy version

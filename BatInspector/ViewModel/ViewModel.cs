@@ -303,7 +303,7 @@ namespace BatInspector
       if (wf.Ok)
       {
         wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-        using (Bitmap bmp = wf.generateFtPicture(0, wf.SamplingRate / 2000))
+        using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000))
         {
           if (File.Exists(pngName))
             File.Delete(pngName);
@@ -330,7 +330,7 @@ namespace BatInspector
           if (wf.Ok)
           {
             wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-            bmp = wf.generateFtPicture(0, wf.SamplingRate / 2000);
+            bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000);
             bmp.Save(pngName);
           }
           else

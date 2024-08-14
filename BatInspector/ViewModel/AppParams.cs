@@ -206,6 +206,7 @@ namespace BatInspector
     public const int MAX_LOG_COUNT = 600;     // max. numbe rof log entries before creating a new log file
     public const int STATISTIC_CLASSES = 40;  // number of classes in statistic histograms
     public const int FFT_WIDTH = 1024;
+    public const int NR_OF_TICKS = 9;    // number of ticks in zoom view
 
     static AppParams _inst = null;
 
@@ -283,7 +284,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescHeightWf")]
-    public uint WaterfallWidth { get; set; } = 512;
+    public uint WaterfallWidth { get; set; } = 1024;
 
   /*  [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -314,6 +315,11 @@ namespace BatInspector
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescLengthZoomMs")]
     public double ZoomOneCall { get; set; } = 100.0;
+
+    [DataMember]
+    [LocalizedCategory("SetCatZoom")]
+    [LocalizedDescription("SetDescGridColor")]
+    public Color GridColor { get; set; } = Color.Yellow;
 
     [DataMember]
     [LocalizedCategory("SetCatMainWindow")]
@@ -545,9 +551,7 @@ namespace BatInspector
                                          PROG_DAT_DIR, AppParams.DIR_SCRIPT);
 
       ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
-//      WaterfallHeight = 256;
-      WaterfallWidth = 512;
-//      FftWidth = 256;
+      WaterfallWidth = 1024;
       FftWindow = DSPLib.DSP.Window.Type.Hann;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
@@ -653,6 +657,7 @@ namespace BatInspector
     {
       saveAs(FileName);
     }
+
 
     public static void loadFrom(string fPath)
     {

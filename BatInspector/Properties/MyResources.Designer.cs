@@ -79,6 +79,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bandwidth.
+        /// </summary>
+        public static string Bandwidth {
+            get {
+                return ResourceManager.GetString("Bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes/No.
         /// </summary>
         public static string Boolean {
@@ -678,6 +687,15 @@ namespace BatInspector.Properties {
         public static string CtlZoomRecTime {
             get {
                 return ResourceManager.GetString("CtlZoomRecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Grid.
+        /// </summary>
+        public static string ctlZoomShowGrid {
+            get {
+                return ResourceManager.GetString("ctlZoomShowGrid", resourceCulture);
             }
         }
         
@@ -3549,6 +3567,15 @@ namespace BatInspector.Properties {
         public static string SetDescFrequencyHET {
             get {
                 return ResourceManager.GetString("SetDescFrequencyHET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grid color for the grid display in Zoom View.
+        /// </summary>
+        public static string SetDescGridColor {
+            get {
+                return ResourceManager.GetString("SetDescGridColor", resourceCulture);
             }
         }
         

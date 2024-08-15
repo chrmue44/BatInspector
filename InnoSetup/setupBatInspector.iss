@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0840"
-#define MyAppVersion "0.8.4.0"
+#define MyInstallerName "SetupBatInspector_0850"
+#define MyAppVersion "0.8.5.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -27,6 +27,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={commonpf64}\{#MyAppName}
 DisableProgramGroupPage=yes
+DisableWelcomePage=no
 DisableDirPage=no
 LicenseFile=F:\prj\{#MyAppName}\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
@@ -41,8 +42,8 @@ SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 
 [Languages]
-Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "de"; MessagesFile: "compiler:Languages\German.isl"
+Name: "en"; MessagesFile: "English.isl"
+Name: "de"; MessagesFile: "German.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; 
@@ -91,10 +92,10 @@ Type: filesandordirs; Name: "{#MyAppDataFolder}";
 Type: filesandordirs; Name: "{app}";
 
 [CustomMessages]
-de.CreateStartIcon =Verknüpfung im Startmenü erstellen
-de.MsgInstModell = "Installation des KI-Modells. Dieser Vorgang dauert einige Minuten, bitte Geduld!..."
-en.CreateStartIcon = "create entry in start menu"
-en.MsgInstModell = "Installing AI model. This will take several minutes, be patient!..."
+de.CreateStartIcon="Verknüpfung im Startmenü erstellen"
+de.MsgInstModell="Installation des KI-Modells. Dieser Vorgang dauert einige Minuten, bitte Geduld!..."
+en.CreateStartIcon="create entry in start menu"
+en.MsgInstModell="Installing AI model. This will take several minutes, be patient!..."
 
 [UninstallRun]
 Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" ""{#MyAppDataFolder}\setup"""; RunOnceId: "DelService"

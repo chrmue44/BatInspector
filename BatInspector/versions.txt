@@ -10,6 +10,7 @@ V0.8.5.0
 - bugfix: offset error between ft and xt diagram at high zoom rates
 - enable/disable a grid in the zoom view, color is configurable in app settings
 - show bandwidth in zoom view when both cursors are active
+- welcome page in installer (uninstall first, check internet connection)
 
 V0.8.4.0   13.08.24
 - bugfix: color gradient is now editable again

@@ -7,11 +7,12 @@
  ********************************************************************************/
 using BatInspector.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
+
 
 namespace BatInspector.Forms
 {
@@ -37,7 +38,8 @@ namespace BatInspector.Forms
 
     public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav, dlgVoid openExpWindow)
     {
-      _ctl.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav, openExpWindow);
+      List<string> species = _model.CurrentlyOpen == null ? null : _model.CurrentlyOpen.Species;
+        _ctl.setup(analysis, wavFilePath, _model, species, ctlWav, openExpWindow);
       this.Title = name;
     }
 

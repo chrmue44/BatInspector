@@ -29,7 +29,6 @@ namespace BatInspector.Controls
     ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
-    bool _isSetupCall = false;
 
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
@@ -100,7 +99,6 @@ namespace BatInspector.Controls
       _btnWavFile.Content = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
-      _isSetupCall = true;
       int wLbl = 48;
       if (_analysis != null)
       {
@@ -204,9 +202,9 @@ namespace BatInspector.Controls
 
     private void _tbRemarks_TextChanged(enDataType type, object val)
     {
-      if (_isSetupCall)
-        _isSetupCall = false;
-      else
+ //     if (_isSetupCall)
+ //       _isSetupCall = false;
+   //   else
       {
         if ((type == enDataType.STRING) && (_analysis != null))
           _analysis.setString(Cols.REMARKS, _ctlRemarks.getValue());

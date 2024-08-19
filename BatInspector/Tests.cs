@@ -117,7 +117,7 @@ namespace BatInspector
       //adjustJsonAnnotationCallsAtBorder(); not a test, a one time function
       if (_errors == 0)
       {
-    //    DebugLog.clear();
+        DebugLog.clear();
         DebugLog.log("Tests passed", enLogType.INFO);
       }
       else

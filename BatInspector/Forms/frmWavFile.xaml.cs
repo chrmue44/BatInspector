@@ -51,31 +51,40 @@ namespace BatInspector.Forms
 
     private void _btnOpen_Click(object sender, RoutedEventArgs e)
     {
-      OpenFileDialog openFileDialog = new OpenFileDialog();
-      openFileDialog.Filter = "WAV files (*.wav)|*.wav|All files (*.*)|*.*";
-      if (openFileDialog.ShowDialog() == true)
+      string wavFile = "";
+      try
       {
-        _model.WavFile.readFile(openFileDialog.FileName);
-        _ctlFileName.setValue(openFileDialog.FileName);
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "WAV files (*.wav)|*.wav|All files (*.*)|*.*";
+        if (openFileDialog.ShowDialog() == true)
+        {
+          wavFile = openFileDialog.FileName;
+          _model.WavFile.readFile(wavFile);
+          _ctlFileName.setValue(openFileDialog.FileName);
 
-        _ctlFileType.setValue(_model.WavFile.WavHeader.FileTypeId);
-        _ctlFileLength.setValue(_model.WavFile.WavHeader.FileLength);
-        _ctlMediaTypeId.setValue(_model.WavFile.WavHeader.MediaTypeId);
+          _ctlFileType.setValue(_model.WavFile.WavHeader.FileTypeId);
+          _ctlFileLength.setValue(_model.WavFile.WavHeader.FileLength);
+          _ctlMediaTypeId.setValue(_model.WavFile.WavHeader.MediaTypeId);
 
-        _ctlChunkId.setValue(_model.WavFile.FormatChunk.ChunkId);
-        _ctlChunkSize.setValue(_model.WavFile.FormatChunk.ChunkSize);
-        _ctlFormatTag.setValue((uint)_model.WavFile.FormatChunk.FormatTag);
-        _ctlChannels.setValue((uint)_model.WavFile.FormatChunk.Channels);
-        _ctlSamplingRate.setValue(_model.WavFile.FormatChunk.Frequency);
-        _ctlAvgBytesPerSec.setValue(_model.WavFile.FormatChunk.AverageBytesPerSec);
-        _ctlBlockAlign.setValue((uint)_model.WavFile.FormatChunk.BlockAlign);
-        _ctlBitsPerSample.setValue((uint)_model.WavFile.FormatChunk.BitsPerSample);
+          _ctlChunkId.setValue(_model.WavFile.FormatChunk.ChunkId);
+          _ctlChunkSize.setValue(_model.WavFile.FormatChunk.ChunkSize);
+          _ctlFormatTag.setValue((uint)_model.WavFile.FormatChunk.FormatTag);
+          _ctlChannels.setValue((uint)_model.WavFile.FormatChunk.Channels);
+          _ctlSamplingRate.setValue(_model.WavFile.FormatChunk.Frequency);
+          _ctlAvgBytesPerSec.setValue(_model.WavFile.FormatChunk.AverageBytesPerSec);
+          _ctlBlockAlign.setValue((uint)_model.WavFile.FormatChunk.BlockAlign);
+          _ctlBitsPerSample.setValue((uint)_model.WavFile.FormatChunk.BitsPerSample);
 
-        _ctlSamples.setValue(_model.WavFile.AudioSamples.Length);
+          _ctlSamples.setValue(_model.WavFile.AudioSamples.Length);
 
-        double duration = (double)_model.WavFile.AudioSamples.Length / _model.WavFile.FormatChunk.Frequency;
-        AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)_model.WavFile.FormatChunk.Frequency, duration);
-        _parent.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null);
+          double duration = (double)_model.WavFile.AudioSamples.Length / _model.WavFile.FormatChunk.Frequency;
+          AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)_model.WavFile.FormatChunk.Frequency, duration);
+          _parent.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null);
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"error opening WAV file {wavFile}", enLogType.ERROR);
       }
     }
 

@@ -128,10 +128,7 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
-    private void _tb_TextChanged(object sender, TextChangedEventArgs e)
-    {
-      _textChanged = true;
-    }
+
 
     private void _tb_LostFocus(object sender, System.Windows.RoutedEventArgs e)
     {
@@ -161,6 +158,17 @@ namespace BatInspector.Controls
             break;
         }
       }
+    }
+
+    private void _tb_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+      if (e.Key == System.Windows.Input.Key.Return)
+        _tb_LostFocus(sender, null);
+    }
+
+    private void _tb_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      _textChanged = true;
     }
   }
 

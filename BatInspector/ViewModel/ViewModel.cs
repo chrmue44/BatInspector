@@ -132,8 +132,8 @@ namespace BatInspector
       _proc = new ProcessRunner();
       _mainWin = mainWin;
       _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
-      _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-      _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+   //   _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));     // why here???
+   //   _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
       _version = version;
       _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();
@@ -155,6 +155,9 @@ namespace BatInspector
       List<string> species = new List<string>();
       foreach (SpeciesInfos info in _speciesInfos)
         species.Add(info.Abbreviation);
+      species.Add("?");
+      species.Add("Social");
+
       _filter = new Filter(species);
       initFilter();
       string scriptDir = AppParams.Inst.ScriptInventoryPath;

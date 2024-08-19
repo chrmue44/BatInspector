@@ -19,6 +19,7 @@ using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 using BatInspector.Forms;
+using System.Xml.Linq;
 
 
 namespace BatInspector.Controls
@@ -502,12 +503,14 @@ namespace BatInspector.Controls
     {
       _rulerF.Children.Clear();
       GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max, AppParams.NR_OF_TICKS);
+      GraphHelper.createText(_rulerF, 10, _rulerF.ActualHeight - 25, "[kHz]", Colors.Black);
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
       GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, AppParams.NR_OF_TICKS, "0.###");
+      GraphHelper.createText(_rulerT, 15, 5, "[sec]", Colors.Black);
     }
 
 
@@ -755,12 +758,12 @@ namespace BatInspector.Controls
         SolidColorBrush gridBrush = new SolidColorBrush(gridColor);
         double[] ticksX = GraphHelper.createTicks(AppParams.NR_OF_TICKS, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
         double[] ticksY = GraphHelper.createTicks(AppParams.NR_OF_TICKS, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max);
-        for (int i = 0; i < ticksX.Length; i++)
+        for (int i = 0; i < AppParams.NR_OF_TICKS; i++)
         {
-          if (i < 9)
+          string nameX = $"_grid_x{(i + 1).ToString()}";
+          Line lx = (Line)_gridXt.FindName(nameX);
+          if (i < ticksX.Length)
           {
-            string nameX = $"_grid_x{(i + 1).ToString()}";
-            Line lx = (Line)_gridXt.FindName(nameX);
             lx.Visibility = Visibility.Visible;
             lx.Stroke = gridBrush;
 
@@ -771,13 +774,15 @@ namespace BatInspector.Controls
             lx.X2 = x;
             lx.Y2 = _imgFt.ActualHeight + _imgFt.Margin.Top;
           }
+          else
+            lx.Visibility = Visibility.Hidden;
         }
-        for (int i = 0; i < ticksY.Length; i++)
+        for (int i = 0; i < AppParams.NR_OF_TICKS; i++)
         {
-          if (i < 9)
+          string nameY = $"_grid_y{(i + 1).ToString()}";
+          Line ly = (Line)_gridXt.FindName(nameY);
+          if (i < ticksY.Length)
           {
-            string nameY = $"_grid_y{(i+1).ToString()}";
-            Line ly = (Line)_gridXt.FindName(nameY);
             ly.Visibility = Visibility.Visible;
             ly.Stroke = gridBrush;
 
@@ -788,6 +793,8 @@ namespace BatInspector.Controls
             ly.X2 = _imgFt.ActualWidth + _imgFt.Margin.Left;
             ly.Y2 = y;
           }
+          else
+            ly.Visibility = Visibility.Hidden;
         }
       }
       else

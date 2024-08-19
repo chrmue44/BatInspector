@@ -358,6 +358,7 @@ namespace BatInspector.Forms
         if ((_model.Prj != null) && _model.Prj.Ok)
         {
           _ctlPrjInfo.setup(_model.Prj);
+          _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
           _ctlScatter.initPrj();
           _switchTabToPrj = true;
           if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)

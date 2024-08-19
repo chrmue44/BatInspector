@@ -4,9 +4,24 @@ TODO
 - training of model
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
-- simplification of report form (default pathes)
+- activity diagram
+- overcome the limit of 1000 files per project
+- adjust detected call data of detected calls when cutout tool was used (store original data as well)
+- batInfo file mit in Installer aufnehmen
+- Projektauswahl klappt irgendwann zu im Laufe des Ablaufs, dollte offen bleiben
 
-V0.8.5.0
+V0.8.6.0
+- bugfix: grid after zoomIn/zoomOut sometimes not OK (when less than 9 lines)
+- bugfix: opening of large WAV files with WAV-Tool crashed
+- bugfix: opening WAV files without having opened a project before didn't work
+- bugfix: editing of remarks in project view now works again
+- bugfix: "?" and "Social" are not added anymore to BatInfo.json
+- project info now on top of treeview on the left side of main screen (hopefully easier to spot)
+
+
+
+V0.8.5.0   15.08.24
+- simplification of report form (default pathes)
 - bugfix: offset error between ft and xt diagram at high zoom rates
 - enable/disable a grid in the zoom view, color is configurable in app settings
 - show bandwidth in zoom view when both cursors are active

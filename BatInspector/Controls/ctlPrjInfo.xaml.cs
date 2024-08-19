@@ -38,7 +38,6 @@ namespace BatInspector.Controls
       _prj = prj;
    //   _tbCreated.Text = _prj.Created;
       _tbNotes.Text = _prj.Notes;
-      _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileName(_prj.Name) + "]";
     }
   }
 }

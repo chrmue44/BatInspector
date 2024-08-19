@@ -206,7 +206,7 @@ namespace BatInspector
 
     public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount)
     {
-      int size = len * 8 / bitsPerSample/chanCount;
+      int size = len / bitsPerSample * 8 / chanCount;
       WaveData = new short[size];
       if (chanCount == 1)
       {

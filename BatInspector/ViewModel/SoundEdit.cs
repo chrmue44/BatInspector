@@ -336,13 +336,16 @@ namespace BatInspector
       }
     }
 
-    public void undo()
+    public bool undo()
     {
-      if (_originalSamples != null)
+      bool update = false;
+      if(_originalSamples != null)
       {
+        update = true;
         _samples = new double[_originalSamples.Length];
         Array.Copy(_originalSamples, _samples, _originalSamples.Length);
       }
+      return update;
     }
 
     public void applyHeterodynModulation(double freq)

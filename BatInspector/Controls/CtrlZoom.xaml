@@ -93,7 +93,7 @@
                 <Button x:Name="_btnReduceNoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnReduceNoise_Click" ToolTip="{x:Static res:MyResources.ToolTipReduceNoise}">
                     <Image Source="../images/icons8-cleanup-noise-100.png"></Image>
                 </Button>
-                <Button x:Name="_btnCutOuat"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnCutOut_Click"  ToolTip="{x:Static res:MyResources.ToolTipCutOut}">
+                <Button x:Name="_btnCutOut"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnCutOut_Click"  ToolTip="{x:Static res:MyResources.ToolTipCutOut}">
                     <Image Source="../images/scissors.png"></Image>
                 </Button>
                 <Button x:Name="_btnNormalize"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnNormalize_Click" ToolTip="{x:Static res:MyResources.ToolTipNormalizeVol}">
@@ -102,10 +102,7 @@
                 <Button x:Name="_btnUndo"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnUndo_Click" ToolTip="{x:Static res:MyResources.ToolTipUndo}">
                     <Image Source="../images/Undo_icon-icons.com_73701.png"></Image>
                 </Button>
-                <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSave_Click" ToolTip="{x:Static res:MyResources.ToolTipSave}">
-                    <Image Source="../images/icons8-save-48.png"></Image>
-                </Button>
-                <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
+                 <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
                     <Image Source="../images/icons8-save-as-48.png"></Image>
                 </Button>
         <Button x:Name="_btnExport"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnExport_Click" ToolTip="{x:Static res:MyResources.ToolTipExport}">

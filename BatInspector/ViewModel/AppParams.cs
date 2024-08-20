@@ -186,6 +186,7 @@ namespace BatInspector
     public const string EXT_GPX = ".gpx";                 // file extension for GPX files
     public const string EXT_KML = ".kml";                 // file extension for GPX files
     public const string EXT_TXT = ".txt";                 // file extension for TXT files
+    public const string EXT_CSV = ".csv";                 // file extension for CSV files
 
     public const string CSV_SEPARATOR = ";";              // CSV separator
     public const string DIR_SCRIPT = "scripts";           // sub directory containig scripts

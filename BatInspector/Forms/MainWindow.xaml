@@ -228,16 +228,19 @@
               </Grid.RowDefinitions>
               <Label Name="_lblPrj" Grid.Row="0" Content="{x:Static res:MyResources.ctlProjectInfo}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center"/>
               <Grid  Grid.Row="1">
-     
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="79*"/>
+                  <ColumnDefinition Width="37*"/>
+                </Grid.ColumnDefinitions>
+
                 <Grid.RowDefinitions>
-                  <RowDefinition Height="110"/>
+                  <RowDefinition Height="90"/>
+                  <RowDefinition Height="25"/>
                   <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="0"/>
-                <StackPanel Orientation="Vertical" Grid.Row="1">
-                <Label  Grid.Row="0" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center"/>
-                <TreeView  Name="trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
-                </StackPanel>
+                <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="0" Grid.ColumnSpan="2"/>
+                <Label  Grid.Row="1" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                <TreeView  Grid.Row="2" Name="trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
               </Grid>
             </Grid>
             <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>

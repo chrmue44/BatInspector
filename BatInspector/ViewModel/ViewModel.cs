@@ -5,6 +5,7 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using BatInspector.Controls;
 using libParser;
 using libScripter;
 using System;
@@ -172,6 +173,9 @@ namespace BatInspector
     {
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
         _prj.Analysis.read(Prj.ReportName);
+      else if ((Query != null) && File.Exists(Query.ReportName))
+        _query.Analysis.read(Query.ReportName);
+
     }
 
 
@@ -200,7 +204,7 @@ namespace BatInspector
         _prj.readPrjFile(files[0]);
         if (File.Exists(Prj.ReportName))
         {
-          _prj.Analysis.read(_prj.ReportName);
+          _prj.Analysis.read(Prj.ReportName);
           _prj.Analysis.openSummary(_prj.SummaryName, _prj.Notes);
           if (_prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
           {
@@ -295,14 +299,14 @@ namespace BatInspector
       string pngName = fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       if (!File.Exists(pngName))
       {
-        createPng(fullName, pngName,AppParams.FFT_WIDTH);
+        createPng(fullName, pngName,AppParams.FFT_WIDTH, _colorTable);
       }
     }
 
 
-    public void createPng(string wavName, string pngName, int fftWidth)
+    public static void createPng(string wavName, string pngName, int fftWidth, ColorTable colorTable)
     {
-      Waterfall wf = new Waterfall(wavName, _colorTable, fftWidth);
+      Waterfall wf = new Waterfall(wavName,  colorTable, fftWidth);
       if (wf.Ok)
       {
         wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
@@ -317,7 +321,15 @@ namespace BatInspector
         DebugLog.log("could not create PNG for " + wavName, enLogType.WARNING);
     }
 
-    public BitmapImage getFtImage(string wavName, int fftWidth)
+    public void createNewPng(ctlWavFile ctlWav, string wavName, string pngName, ColorTable colorTable)
+    {
+      if (ctlWav != null)
+      {
+        ctlWav._img.Source = getFtImage(wavName, AppParams.FFT_WIDTH, colorTable);
+      }
+    }
+
+    public static BitmapImage getFtImage(string wavName, int fftWidth, ColorTable colorTable)
     {
       BitmapImage bImg = null;
       string pngName = "";
@@ -329,7 +341,7 @@ namespace BatInspector
           bmp = new Bitmap(pngName);
         else
         {
-          Waterfall wf = new Waterfall(wavName, _colorTable, fftWidth);
+          Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
           if (wf.Ok)
           {
             wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
@@ -352,7 +364,7 @@ namespace BatInspector
     public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec,  bool fromQuery)
     {
       string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
-      BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH);
+      BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH, _colorTable);
       if ((bImg == null) && (_prj != null))
       {
         _prj.removeFile(rec.File);

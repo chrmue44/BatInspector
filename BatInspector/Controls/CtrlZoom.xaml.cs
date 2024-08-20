@@ -203,26 +203,8 @@ namespace BatInspector.Controls
 
       _ctlSpectrum.init(_model.ZoomView.Spectrum, _model.ZoomView.Waterfall.SamplingRate / 2000);
 
-      string[] items = new string[_model.ZoomView.Analysis.Calls.Count];
-      if (_model.ZoomView.Analysis.Calls.Count > 0)
-      {
-        setVisabilityCallData(true);
-        for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
-          items[i] = _model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
-        _ctlSelectCall.setItems(items);
-        _ctlSelectCall2.setItems(items);
-        _ctlMeanCallMin.setItems(items);
-        _ctlMeanCallMax.setItems(items);
-        setupCallData(0);
-        _ctlMeanCallMin.setValue("1");
-        _ctlMeanCallMax.setValue(_model.ZoomView.Analysis.Calls.Count.ToString());
-        calcMeanValues(0, 0);
 
-      }
-      else
-      {
-        setVisabilityCallData(false);
-      }
+      initCallSelectors();
 
       update();
       _btnZoomTotal_Click(null, null);
@@ -239,6 +221,7 @@ namespace BatInspector.Controls
       _cbGrid.IsChecked = true;
     }
 
+    
     void setVisabilityCallData(bool on)
     {
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
@@ -255,6 +238,29 @@ namespace BatInspector.Controls
       //_ctlSnr.Visibility = vis;
       _ctlDist.Visibility = vis;
       _ctlDuration.Visibility = vis;
+    }
+
+    void initCallSelectors()
+    {
+      if (_model.ZoomView.Analysis.Calls.Count > 0)
+      {
+        setVisabilityCallData(true);
+        string[] items = new string[_model.ZoomView.Analysis.Calls.Count];
+        for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
+          items[i] = _model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
+        _ctlSelectCall.setItems(items);
+        _ctlSelectCall2.setItems(items);
+        _ctlMeanCallMin.setItems(items);
+        _ctlMeanCallMax.setItems(items);
+        setupCallData(0);
+        _ctlMeanCallMin.setValue("1");
+        _ctlMeanCallMax.setValue(_model.ZoomView.Analysis.Calls.Count.ToString());
+        calcMeanValues(0, 0);
+      }
+      else
+      {
+        setVisabilityCallData(false);
+      }
     }
 
     public void update(bool initRuler = true)
@@ -1284,7 +1290,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnSave_Click(object sender, RoutedEventArgs e)
+    private void saveChanges()
     {
       try
       {
@@ -1293,13 +1299,7 @@ namespace BatInspector.Controls
           wavSubDir = _model.Prj.WavSubDir;
         _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, wavSubDir);
         string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        if (_ctlWav != null)
-        {
-          // delete existing PNG to force creation of a new one
-          if (File.Exists(pngName))
-            File.Delete(pngName);
-          _ctlWav._img.Source = _model.getFtImage(_model.ZoomView.Waterfall.WavName, AppParams.FFT_WIDTH);
-        }
+        _model.createNewPng(_ctlWav, _model.ZoomView.Waterfall.WavName, pngName, _model.ColorTable);
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1328,6 +1328,7 @@ namespace BatInspector.Controls
           double fMin = _model.ZoomView.Cursor1.Freq * 1000;
           double fMax = _model.ZoomView.Cursor2.Freq * 1000;
           _model.ZoomView.applyBandpass(fMin, fMax);
+          saveChanges();
           hideCursors();
           createZoomImg();
         }
@@ -1343,8 +1344,9 @@ namespace BatInspector.Controls
 
     private void _btnReduceNoise_Click(object sender, RoutedEventArgs e)
     {
-        DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
-        _model.ZoomView.reduceNoise();
+      DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
+      _model.ZoomView.reduceNoise();
+      saveChanges();
       createZoomImg();
     }
 
@@ -1354,10 +1356,16 @@ namespace BatInspector.Controls
       {
         if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
         {
-          if((_model.Prj != null) && _model.Prj.Ok)
+          if ((_model.Prj != null) && _model.Prj.Ok)
+          {
             ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
-          else if(_model.Query != null)
+            _model.ZoomView.saveAnalysisBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+          }
+          else if (_model.Query != null)
+          {
             ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName);
+            _model.ZoomView.saveAnalysisBackup(_model.ZoomView.Waterfall.WavName);
+          }
           else
           {
             DebugLog.log("cut out not possible", enLogType.ERROR);
@@ -1365,7 +1373,13 @@ namespace BatInspector.Controls
           }
           double tMin = _model.ZoomView.Cursor1.Time;
           double tMax = _model.ZoomView.Cursor2.Time;
-          _model.ZoomView.removeSection(tMin, tMax);
+          if (_model.ZoomView.removeSection(tMin, tMax))
+          {
+            initCallSelectors();
+            _model.CurrentlyOpen?.Analysis.updateControls(_model.ZoomView.Analysis.Name);
+            _model.updateReport();
+          }
+          saveChanges();
           hideCursors();
           createZoomImg();
           update(false);
@@ -1386,6 +1400,7 @@ namespace BatInspector.Controls
       try
       {
         _model.ZoomView.normalize();
+        saveChanges();
         createZoomImg();
         DebugLog.log("Zoom:Btn 'Normalize' clicked", enLogType.DEBUG);
       }
@@ -1400,6 +1415,9 @@ namespace BatInspector.Controls
       try
       {
         _model.ZoomView.undoChanges();
+        _model.updateReport();
+        string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        _model.createNewPng(_ctlWav, _model.ZoomView.Waterfall.WavName, pngName, _model.ColorTable);
         createZoomImg();
         DebugLog.log("Zoom:Btn 'Undo' clicked", enLogType.DEBUG);
       }
@@ -1438,5 +1456,6 @@ namespace BatInspector.Controls
     {
       drawGrid();
     }
+
   }
 }

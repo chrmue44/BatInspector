@@ -26,6 +26,7 @@ namespace BatInspector
     string _srcDir;
     string _destDir;
     string _expression;
+    string _reportName = "";
     ViewModel _model = null;
     QueryFile _queryFile = null;
     List<BatExplorerProjectFileRecordsRecord> _records = null;
@@ -49,7 +50,7 @@ namespace BatInspector
     /// </summary>
     public string Expression { get { return _expression; } }
 
-
+    public string ReportName { get {  return _reportName; } }
     public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
 
     public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions) :
@@ -183,6 +184,7 @@ namespace BatInspector
         retVal._analysis = new Analysis(model.SpeciesInfos, null);
         string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
         retVal._analysis.read(fullReportName);
+        retVal._reportName = fullReportName;
         retVal.initSpeciesList();
 
       }
@@ -243,6 +245,7 @@ namespace BatInspector
       }
       string reportName = Path.Combine(_destDir, _queryFile.ReportFile);
       _analysis.save(reportName, "sum query\nsum query");
+      _reportName = reportName;
       DebugLog.log(_cntCall.ToString() + " calls in " + _cntFile.ToString() + " files found", enLogType.INFO);
     }
 

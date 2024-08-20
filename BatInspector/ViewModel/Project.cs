@@ -43,7 +43,6 @@ namespace BatInspector
     public bool IsProjectFolder { get; set; } 
     public bool OverwriteLocation { get; set; }
     public bool RemoveSource { get; set; }
-
     public string WavSubDir { get; set; } = AppParams.DIR_WAVS;
 
   }
@@ -1013,16 +1012,37 @@ namespace BatInspector
     {
       if (changedFiles)
       {
+        ColorTable colorTable = new ColorTable();
+        colorTable.createColorLookupTable();
+
         string srcDir = Path.Combine(PrjDir, AppParams.DIR_ORIG);
         string dstDir = Path.Combine(PrjDir, WavSubDir);
         DirectoryInfo dir = new DirectoryInfo(srcDir);
         foreach (FileInfo file in dir.GetFiles())
         {
-          string dstFile = Path.Combine(dstDir, file.Name);
-          if (File.Exists(dstFile))
-            File.Delete(dstFile);
-          File.Copy(file.FullName, dstFile);
-          File.Delete(file.FullName);
+          string wavName = "";
+          if (Path.GetExtension(file.FullName).ToLower() == AppParams.EXT_CSV)
+          {
+            wavName = Path.GetFileNameWithoutExtension(file.FullName) + AppParams.EXT_WAV;
+            _analysis.undo(file.FullName);
+            File.Delete(file.FullName);
+            _analysis.save(ReportName, Notes);
+            _analysis.read(ReportName);
+            _analysis.updateControls(wavName);
+          }
+          else
+          {
+            string dstFile = Path.Combine(dstDir, file.Name);
+            if (File.Exists(dstFile))
+              File.Delete(dstFile);
+            File.Copy(file.FullName, dstFile);
+            File.Delete(file.FullName);
+            if (Path.GetExtension(file.FullName).ToLower() == AppParams.EXT_WAV)
+            {
+              string pngName = file.FullName.Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+              ViewModel.createPng(file.FullName, pngName, AppParams.FFT_WIDTH, colorTable);
+            }
+          }
         }
         DebugLog.log("original files of Prj '" + Name + "' recovered", enLogType.INFO);
       }

@@ -78,7 +78,14 @@ namespace BatInspector.Controls
     public void updateCallInformations(AnalysisFile analysis)
     {
       _analysis = analysis;
-      for(int i = 0; i < _analysis.Calls.Count; i++)
+      List<string> spec = new List<string>();
+      if (_spDataMan.Children.Count > 0)
+      {
+        ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
+        spec = ctl.getItems();
+      }
+      initCallInformations(spec);
+/*      for(int i = 0; i < _analysis.Calls.Count; i++)
       {
         AnalysisCall call = _analysis.Calls[i];
         if (i < _spDataAuto.Children.Count)
@@ -88,7 +95,7 @@ namespace BatInspector.Controls
           ctlSelectItem im = _spDataMan.Children[i] as ctlSelectItem;
           im.setValue(call.getString(Cols.SPECIES_MAN));
         }
-      }
+      } */
       _cbSel.IsChecked = _analysis.Selected;
     }
 
@@ -99,9 +106,27 @@ namespace BatInspector.Controls
       _btnWavFile.Content = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
-      int wLbl = 48;
+      initCallInformations(spec);
+      _initialized = true;
+    }
+
+    public void setFocus()
+    {
+      _cbSel.Focus();
+    }
+
+    public void toggleCheckBox()
+    {
+      _cbSel.IsChecked = !_cbSel.IsChecked;
+      if(_analysis != null)
+        _analysis.Selected = _cbSel.IsChecked == true;
+    }
+
+    private void initCallInformations(List<string> spec)
+    {
       if (_analysis != null)
       {
+        int wLbl = 48;
         int callNr = 1;
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();
@@ -117,26 +142,13 @@ namespace BatInspector.Controls
 
           ctlSelectItem im = new ctlSelectItem();
           im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
-          MyResources.ctlWavToolTipCall);
+                MyResources.ctlWavToolTipCall);
           im.setItems(spec.ToArray());
           im.setValue(call.getString(Cols.SPECIES_MAN));
           _spDataMan.Children.Add(im);
           callNr++;
         }
       }
-      _initialized = true;
-    }
-
-    public void setFocus()
-    {
-      _cbSel.Focus();
-    }
-
-    public void toggleCheckBox()
-    {
-      _cbSel.IsChecked = !_cbSel.IsChecked;
-      if(_analysis != null)
-        _analysis.Selected = _cbSel.IsChecked == true;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

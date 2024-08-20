@@ -5,6 +5,7 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -82,6 +83,14 @@ namespace BatInspector.Controls
           _cb.Items.Add(it);
       }
       _cb.SelectedIndex = 0;
+    }
+
+    public List<string> getItems()
+    {
+      List<string> retVal = new List<string>();
+      foreach (string it in _cb.Items)
+        retVal.Add(it);
+      return retVal;
     }
 
     public string getValue()

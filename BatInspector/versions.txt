@@ -6,9 +6,8 @@ TODO
 - simplification of script to copy auto to man species
 - activity diagram
 - overcome the limit of 1000 files per project
-- adjust detected call data of detected calls when cutout tool was used (store original data as well)
 - batInfo file mit in Installer aufnehmen
-- Projektauswahl klappt irgendwann zu im Laufe des Ablaufs, dollte offen bleiben
+- project selector collapses occasionally during work  
 
 V0.8.6.0
 - bugfix: grid after zoomIn/zoomOut sometimes not OK (when less than 9 lines)
@@ -17,6 +16,7 @@ V0.8.6.0
 - bugfix: editing of remarks in project view now works again
 - bugfix: "?" and "Social" are not added anymore to BatInfo.json
 - project info now on top of treeview on the left side of main screen (hopefully easier to spot)
+- improved editing in zoom view: all chges are saved immediately, call information is updated properly according to chages (especially cutout)
 
 
 

@@ -377,6 +377,37 @@ namespace BatInspector
       
     }
 
+    public static void undo(string undoFileName, Csv csv)
+    {
+      Csv undoFile = new Csv();
+      undoFile.read(undoFileName, ";", true);
+      string wavFile = undoFile.getCell(2, Cols.NAME);
+      if (undoFile.RowCnt > 1)
+      {
+        int row = csv.findInCol(wavFile, Cols.NAME);
+        while (row > 0)
+        {
+          csv.removeRow(row);
+          row = csv.findInCol(wavFile, Cols.NAME);
+        }
+
+        row = 2;
+        while (row <= undoFile.RowCnt)
+        {
+          csv.addRow(undoFile.getRow(row));
+          row++;
+        }
+      }
+    }
+
+
+    public void undo(string undoFileName)
+    {
+      undo(undoFileName, _csv);
+    }
+
+
+
     public void save(string path, string notes)
     {
       lock (_fileLock)
@@ -398,6 +429,12 @@ namespace BatInspector
           createSummary(sumName, notes);
         }
       }
+    }
+
+    public void updateControls(string wavName)
+    {
+      if(_dlgUpdate != null)
+        _dlgUpdate(wavName);
     }
 
     public void removeDeletedWavsFromReport(Project prj)
@@ -845,7 +882,7 @@ namespace BatInspector
     /// </summary>
     public double DistToPrev { get; set; }
 
-    public int ReportRow { get { return _row; } }
+    public int ReportRow { get { return _row; } set { _row = value; } }
 
     public AnalysisCall(Csv csv, int row, DlgUpdateFile delegateUpdate)
     {
@@ -869,9 +906,23 @@ namespace BatInspector
       return _csv.getCellAsDouble(_row, key, disableErrorMsg);
     }
 
+    public void setDouble(string key , double val)
+    {
+      _csv.setCell(_row, key, val);
+      if (_dlgUpdate != null)
+        _dlgUpdate(_csv.getCell(_row, Cols.NAME));
+    }
+
     public int getInt(string key)
     {
       return _csv.getCellAsInt(_row, key);  
+    }
+
+    public void setInt(string key, int val)
+    {
+      _csv.setCell(_row, key, val);
+      if (_dlgUpdate != null)
+        _dlgUpdate(_csv.getCell(_row, Cols.NAME));
     }
 
     public string getString(string key)
@@ -971,6 +1022,7 @@ namespace BatInspector
     private Csv _csv;
     private DateTime _recTime;
     private string _name;
+    private string _backup = null;
     public bool Selected { get; set; } = false;
 
     public string Name { get { return _name; } set { _name = value; } }
@@ -997,6 +1049,27 @@ namespace BatInspector
     }
 
 
+
+    /// <summary>
+    /// save Analysis of a single file as separate CSV
+    /// </summary>
+    /// <param name="filename"></param>
+    public void saveAs(string filename)
+    {
+      _backup = filename;
+      Csv csv = new Csv(_csv.getRowAsString(1));
+      foreach(AnalysisCall call in _calls)
+      {
+        csv.addRow(_csv.getRow(call.ReportRow));
+      }
+      csv.saveAs(filename);
+    }
+
+    public void saveCsv()
+    {
+      _csv.save();
+    }
+
     public AnalysisFile(Csv csv, string name, int startRow, DateTime recTime)
     {
       _name = name;
@@ -1006,6 +1079,18 @@ namespace BatInspector
       _csv = csv;
       _recTime = recTime;
     }
+
+     public void removeCall(int i)
+    {
+      if((i >= 0) && (i < _calls.Count))
+      {
+        _csv.removeRow(_calls[i].ReportRow);
+        _calls.RemoveAt(i);
+        for (int j = i; j < _calls.Count; j++)
+          _calls[j].ReportRow--;
+      }
+    }
+
 
     public void updateRow(int row)
     {
@@ -1074,6 +1159,19 @@ namespace BatInspector
       }
       return retVal;
     }
+
+    public bool undo()
+    {
+      bool update = false;
+
+      if (_backup != null)
+      {
+        update = true;
+        Analysis.undo(_backup, _csv);
+      }
+      return update;
+    }
+
 
     public void checkConfidence(List<SpeciesInfos> species)
     {

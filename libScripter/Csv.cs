@@ -23,6 +23,8 @@ namespace libScripter
     bool _withHdr = false;
     Dictionary<string, int> _cols;
     bool _changed = false;
+    static int _idGen = 0;
+    int _id = 0;
 
     public int RowCnt {  get { return _cells.Count; } }
     public int ColCnt { get { return _colCnt; } }
@@ -35,6 +37,7 @@ namespace libScripter
 
     public Csv(bool withHdr = true)
     {
+      _id = _idGen++;
       _cells = new List<List<string>>();
       _withHdr = withHdr;
       _cols = new Dictionary<string, int>();
@@ -42,13 +45,14 @@ namespace libScripter
 
     public Csv(string header, char separator = ';')
     {
+      _id = _idGen++;
       _cells = new List<List<string>>();
       string[] cols = header.Split(separator); 
       _cells.Add(cols.ToList());
 
       _cols = new Dictionary<string, int>();
       _withHdr = true;
-      initColNames(header, true);
+      initColNames(header, false);
     }
 
     public void clear()
@@ -142,6 +146,15 @@ namespace libScripter
         row--;
         retVal = _cells[row];
       }
+      return retVal;
+    }
+
+    public string getRowAsString(int row, string delimiter=";")
+    {
+      string retVal = "";
+      List<string> cells = getRow(row);
+      if(cells != null)
+        retVal = string.Join(delimiter, cells);
       return retVal;
     }
 
@@ -426,8 +439,6 @@ namespace libScripter
           }
         }
       }
-      else
-        retVal = 1;
       return retVal;
     }
 

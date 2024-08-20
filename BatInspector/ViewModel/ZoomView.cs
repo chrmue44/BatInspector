@@ -265,12 +265,63 @@ namespace BatInspector
       _wf.Audio.FftBackward();
     }
 
-    public void removeSection(double tMin, double tMax)
+    /// <summary>
+    /// removes a section of a wav file. Start and end times of affected calls in analysis are adjusted
+    /// </summary>
+    /// <param name="tMin"></param>
+    /// <param name="tMax"></param>
+    /// <returns>true if at least one call was removed</returns>
+    public bool removeSection(double tMin, double tMax)
     {
+      bool retVal = false;
       _wf.Audio.removeSection(tMin, tMax);
       _rulerDataT.limits(0, _wf.Duration);
       if((tMin >= _rulerDataT.Min) && (tMax <= _rulerDataT.Max))
         _rulerDataT.setRange(_rulerDataT.Min, _rulerDataT.Max - tMax + tMin);
+      int callNr = 0;
+      while(callNr < _analysis.Calls.Count)
+      {
+        bool inc = true;
+        double tStart = _analysis.Calls[callNr].getDouble(Cols.START_TIME);
+        double duration = _analysis.Calls[callNr].getDouble(Cols.DURATION);
+        if ((tMin < tStart) && (tMax > (tStart + duration / 1000)))
+        {
+          _analysis.removeCall(callNr);     
+          tStart = _analysis.Calls[callNr].getDouble(Cols.START_TIME);
+          duration = _analysis.Calls[callNr].getDouble(Cols.DURATION);
+          retVal = true;
+          inc = false;
+        }
+        if (overLap(tMin, tMax, tStart, tStart + duration/1000))
+        {
+          if (tMin < tStart)
+          {
+            _analysis.Calls[callNr].setDouble(Cols.DURATION, (tStart - tMax) * 1000 + duration);
+            _analysis.Calls[callNr].setDouble(Cols.START_TIME, tMin);
+          }
+          else
+          {
+            _analysis.Calls[callNr].setDouble(Cols.START_TIME, tStart - tMax + tMin);
+            _analysis.Calls[callNr].setDouble(Cols.DURATION, (tMin - tStart) * 1000);
+          }
+        }
+        else
+        {
+          if(tMax < tStart)
+            _analysis.Calls[callNr].setDouble(Cols.START_TIME, tStart - tMax + tMin);
+        }
+        if(inc)
+          callNr++;
+      }
+      if(retVal)
+      {
+
+        for (int i = 0; i < _analysis.Calls.Count; i++)
+          _analysis.Calls[i].setInt(Cols.NR, i + 1);
+      }
+      _analysis.saveCsv();
+      
+      return retVal;
     }
 
     public void normalize()
@@ -300,6 +351,18 @@ namespace BatInspector
       }
     }
 
+    private bool overLap(double t1Min, double t1Max, double t2Min, double t2Max)
+    {
+      if ((t1Min > t2Min) && (t1Min < t2Max))
+        return true;
+      if ((t2Min > t1Min) && (t2Min < t1Max))
+        return true;
+      if ((t2Max > t1Min) && (t2Max < t1Max))
+        return true;
+      if ((t1Max > t2Min) && (t1Max < t2Max))
+        return true;
+      return false;
+    }
 
     private void onExitNoiseReduction(object sender, EventArgs e)
     {
@@ -313,9 +376,11 @@ namespace BatInspector
     }
 
 
-    public void undoChanges()
+    public bool undoChanges()
     {
-      _wf.Audio.undo();
+      bool update = _wf.Audio.undo();
+      update |= _analysis.undo();
+      return update;
     }
 
    
@@ -341,6 +406,16 @@ namespace BatInspector
         File.Copy(wavName, dstFile);
     }
 
+    public void saveAnalysisBackup(string wavName, string wavSubDir)
+    {
+      string dstPath = getDestPathForOriginal(wavName, wavSubDir);
+      if (!Directory.Exists(dstPath))
+        Directory.CreateDirectory(dstPath);
+      string dstFile = Path.Combine(dstPath, Path.GetFileNameWithoutExtension(wavName)) + AppParams.EXT_CSV;
+      if (!File.Exists(dstFile))
+        _analysis.saveAs(dstFile);
+    }
+
 
     public static void saveWavBackup(string wavName)
     {
@@ -355,6 +430,21 @@ namespace BatInspector
       string dstFile = Path.Combine(dstPath, Path.GetFileName(wavName));
       if (!File.Exists(dstFile))
         File.Copy(wavName, dstFile);
+    }
+
+    public void saveAnalysisBackup(string wavName)
+    {
+      string dstPath = "";
+      string srcPath = Path.GetDirectoryName(wavName);
+      if (srcPath.IndexOf(AppParams.DIR_WAVS) >= 0)
+        dstPath = srcPath.Replace(AppParams.DIR_WAVS, AppParams.DIR_ORIG);
+      else
+        dstPath = Path.Combine(srcPath, AppParams.DIR_ORIG);
+      if (!Directory.Exists(dstPath))
+        Directory.CreateDirectory(dstPath);
+      string dstFile = Path.Combine(dstPath, Path.GetFileNameWithoutExtension(wavName)) + AppParams.EXT_CSV;
+      if (!File.Exists(dstFile))
+        _analysis.saveAs(dstFile);
     }
 
     public int export(string dstDir, bool incPng, bool incXml, uint timeStretch, string prefix)

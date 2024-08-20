@@ -330,7 +330,8 @@ namespace BatInspector.Forms
         {
           if (ctl.Analysis?.getString(Cols.NAME) == fName)
           {
-            ctl.updateCallInformations(ctl.Analysis);
+            AnalysisFile newAnalysis = _model.CurrentlyOpen?.Analysis.find(fName);
+            ctl.updateCallInformations(newAnalysis);
             if (ctl.Analysis == _model.ZoomView.Analysis)
               _ctlZoom.updateManSpecies();
             break;
@@ -391,6 +392,8 @@ namespace BatInspector.Forms
         _tbZoom.Visibility = Visibility.Hidden;
       }
     }
+
+
 
     public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav)
     {

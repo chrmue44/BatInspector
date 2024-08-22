@@ -6,16 +6,16 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="Activity Diagram" Height="450" Width="800">
-    <Grid>
+        Title="{x:Static res:MyResources.ActivityDiagram}" Height="450" Width="800">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <local:ctlActivityDiagram x:Name="_ctlActivity" Grid.Row="0"/>
+        <local:ctlActivityDiagram x:Name="_ctlActivity" Grid.Row="0" Margin="0,10,0,10"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
-            <Button  Height="25" Width="120" Content="Create Diagram" Name="_btnCreate" Margin="0,0,10,0" Click="_btnCreate_Click"/>
-            <Button  Height="25" Width="120" Content="{x:Static res:MyResources.BtnOK}" Name="_btnOk"  Margin="0,0,10,0" Click="Button_Click"/>
+          <Button Name="_btnCreate" Height="25" Width="120" Content="Create Diagram" Margin="0,0,10,0" Click="_btnCreate_Click" IsEnabled="False"/>
+          <Button Name="_btnOk" Height="25" Width="120" Content="{x:Static res:MyResources.BtnOK}"  Margin="0,0,0,0" Click="_btnOK_Click"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -70,6 +70,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activity Diagram.
+        /// </summary>
+        public static string ActivityDiagram {
+            get {
+                return ResourceManager.GetString("ActivityDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add WAV file(s) to project.
         /// </summary>
         public static string AddWAVFileSToProject {
@@ -844,6 +853,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        public static string Day {
+            get {
+                return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deadtime.
         /// </summary>
         public static string DeadTime {
@@ -1191,6 +1209,24 @@ namespace BatInspector.Properties {
         public static string Frequency {
             get {
                 return ResourceManager.GetString("Frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grid lines.
+        /// </summary>
+        public static string frmActivityGridLines {
+            get {
+                return ResourceManager.GetString("frmActivityGridLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sunset &amp; Sunrise.
+        /// </summary>
+        public static string frmActivityTwilightLine {
+            get {
+                return ResourceManager.GetString("frmActivityTwilightLine", resourceCulture);
             }
         }
         
@@ -3193,6 +3229,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string Month {
+            get {
+                return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete all selected files?.
         /// </summary>
         public static string msgDeleteFiles {
@@ -3297,6 +3342,15 @@ namespace BatInspector.Properties {
         public static string OpenProjectFirst {
             get {
                 return ResourceManager.GetString("OpenProjectFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
             }
         }
         
@@ -4359,6 +4413,15 @@ namespace BatInspector.Properties {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Week.
+        /// </summary>
+        public static string Week {
+            get {
+                return ResourceManager.GetString("Week", resourceCulture);
             }
         }
         

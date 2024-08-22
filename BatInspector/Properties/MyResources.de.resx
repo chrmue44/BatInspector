@@ -1554,4 +1554,25 @@
   <data name="Bandwidth" xml:space="preserve">
     <value>Bandbreite</value>
   </data>
+  <data name="frmActivityGridLines" xml:space="preserve">
+    <value>Gitterlinien</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Monat</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>Woche</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="ActivityDiagram" xml:space="preserve">
+    <value>Aktivitätsdiagramm</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Optionen</value>
+  </data>
+  <data name="frmActivityTwilightLine" xml:space="preserve">
+    <value>Sonnenauf- &amp; Untergang</value>
+  </data>
 </root>

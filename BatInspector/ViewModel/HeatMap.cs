@@ -3,8 +3,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Windows.Markup;
+
 
 
 namespace BatInspector

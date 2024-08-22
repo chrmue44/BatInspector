@@ -422,7 +422,7 @@ namespace BatInspector
         DebugLog.log("unable to save sum report, directory does not exist: " + rootDir, enLogType.ERROR);
     }
 
-    void createHeatMapSync()
+    void createActivityDiagSync()
     {
       initDirTree(_rootDir, AppParams.PRJ_SUMMARY);
 
@@ -449,7 +449,7 @@ namespace BatInspector
         _showHeatMap(retVal);
     }
 
-    public void createHeatMapAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string expression, dlgShowHeatMap dlgShowHeatMap)
+    public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string expression, dlgShowHeatMap dlgShowHeatMap)
     {
       _start = start;
       _end = end;
@@ -459,7 +459,7 @@ namespace BatInspector
       _expression = expression;
       _showHeatMap = dlgShowHeatMap;
 
-      Thread t = new Thread(createHeatMapSync);
+      Thread t = new Thread(createActivityDiagSync);
       t.Start();
 
     }

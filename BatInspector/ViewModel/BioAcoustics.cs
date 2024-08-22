@@ -364,5 +364,11 @@ namespace BatInspector
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
     static public extern int getFftSize(int handle);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern int getFtImage(short[] samples, int sampleCnt, string pngName, int fftWidth, int waterFallWidth, int[] colorTable, int colorTableLen);
+//    static public extern int getFtImage(string wavName, string pngName, int fftWidth, int waterFallWidth, int[] colorTable, int colorTableLen);
+
+
   }
 }

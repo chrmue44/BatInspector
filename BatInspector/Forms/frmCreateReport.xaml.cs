@@ -69,12 +69,12 @@ namespace BatInspector.Forms
         }
         if(_ctlReport._cbActivityDiagram.IsChecked == true)
         {
-        /*
-          frmActivity frm = new frmActivity();
-          _model.SumReport.createHeatMapAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
+        
+          frmActivity frm = new frmActivity(_model);
+          frm.setup(start);
+          _model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
           _ctlReport._ctlDestDir.getValue(), _ctlReport.FilterExpression, frm.createPlot);
           frm.Show();
-    */
         }
       }
       else

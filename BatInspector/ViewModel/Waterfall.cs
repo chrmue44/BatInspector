@@ -166,12 +166,12 @@ namespace BatInspector
     }
 
 
-   
+
 
     //  http://web-tech.ga-usa.com/2012/05/creating-a-custom-hot-to-cold-temperature-color-gradient-for-use-with-rrdtool/index.html
- 
 
-    public double[] generateFft(int idx, int length, int fftWidth, DSP.Window.Type window = DSP.Window.Type.Hanning)
+
+    public double[] generateFft(int idx, int length, int fftWidth, enWIN_TYPE window = enWIN_TYPE.HANN)
     {
       bool logarithmic = AppParams.Inst.WaterfallLogarithmic;
       int zeroPadding = 0; // NOTE: Zero Padding
@@ -188,14 +188,8 @@ namespace BatInspector
       Array.Copy(_audio.Samples, idx, inputSignal, 0, length);
       double[] lmSpectrum;
       double wScaleFactor = 1.0;
-      enWIN_TYPE win = enWIN_TYPE.HANN;
-      switch(window)
-      {
-        case DSP.Window.Type.None:
-          win = enWIN_TYPE.NONE;
-          break;
-      }
-      int handle = BioAcoustics.getFft((uint)length, win);
+
+      int handle = BioAcoustics.getFft((uint)length, window);
       lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal);
 
       double s = 0;

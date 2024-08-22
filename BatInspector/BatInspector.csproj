@@ -320,6 +320,7 @@
     <Compile Include="ViewModel\Spectrum.cs" />
     <Compile Include="ViewModel\Statistic.cs" />
     <Compile Include="ViewModel\SumReport.cs" />
+    <Compile Include="ViewModel\Sunrise.cs" />
     <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
     <Compile Include="winUtils.cs" />

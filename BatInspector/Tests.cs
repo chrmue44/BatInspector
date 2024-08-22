@@ -7,6 +7,7 @@
  ********************************************************************************/
 
 using BatInspector.Controls;
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using OxyPlot;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace BatInspector
 {
@@ -42,7 +44,7 @@ namespace BatInspector
     ViewModel _model;
 
   public Tests(ViewModel model)
-    {
+   {
       _proc = new ProcessRunner();
       _model = model;
       _dataForm = new FormulaData[]
@@ -87,6 +89,7 @@ namespace BatInspector
       // testBioAcoustics();
       //testFft();
       //testDenoising();
+      testActivityDiagr();
       testNextStepDown();
       testIf(wrkDir);
       testWhile(wrkDir);
@@ -747,6 +750,30 @@ namespace BatInspector
 
     }
 
+
+    private void testActivityDiagr()
+    {
+      frmActivity frm = new frmActivity(_model);
+      frm.Show();
+      DateTime start = new DateTime(2024, 4, 25);
+      frm.setup(start);
+      List<List<int>> data = new List<List<int>>(); 
+      for(int d = 0; d < 80; d++)
+      {
+        int t = 24 * 60 / 5;
+        data.Add(new List<int>(t));
+        for(int h = 0; h < t; h++)
+        {
+          int val = 0;
+          if(h < 6)
+            val = 1 + h;
+          else if(h > 20)
+            val = 2 + h - 19;
+          data[d].Add(val);
+        }
+      }
+      frm.createPlot(data);
+    }
 
     private void testSplitWavs()
     {

@@ -436,7 +436,7 @@ namespace BatInspector
 
     [DataMember]
     [Browsable(false)]
-    public DSPLib.DSP.Window.Type FftWindow { get; set; }
+    public enWIN_TYPE FftWindow { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient"),
@@ -553,7 +553,7 @@ namespace BatInspector
 
       ExeEditor = "\"C:\\Windows\\Notepad.exe\"";
       WaterfallWidth = 1024;
-      FftWindow = DSPLib.DSP.Window.Type.Hann;
+      FftWindow = enWIN_TYPE.HANN;
       ColorXtLine = Color.Black;
       ColorXtBackground = Color.LightGray;
       MainWindowWidth = 1400;
@@ -724,10 +724,16 @@ namespace BatInspector
       LogDataPath = replaceDriveLetter(LogDataPath);
       AppDataPath = replaceDriveLetter(AppDataPath);
       DebugLog.log("root paths adapted to drive " + AppParams.DriveLetter, enLogType.DEBUG);
-
+      retVal.check();
       //    retVal.adjustActivateBat();
       retVal._isInitialized = true;
       _inst = retVal;
+    }
+
+    private void check()
+    {
+      if ((FftWindow < 0) || (FftWindow > enWIN_TYPE.NONE))
+        FftWindow = enWIN_TYPE.HANN;
     }
 
     static string replaceDriveLetter(string  path)

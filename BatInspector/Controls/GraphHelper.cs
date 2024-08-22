@@ -1,11 +1,18 @@
-﻿
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2023-08-22                       
+ *   Copyright (C) 2024: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
 using System.Globalization;
 using System;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+
 
 namespace BatInspector.Controls
 {
@@ -21,6 +28,23 @@ namespace BatInspector.Controls
       li.Stroke = brush;
       li.StrokeThickness = thickness;
       ca.Children.Add(li);
+    }
+
+    public static void createDot(Canvas ca, double x1, double y1, double dia, SolidColorBrush color)
+    {
+      if (dia > 0.01)
+      {
+        if(dia < 1.0)
+          dia = 1.0;
+        Ellipse el = new Ellipse();
+        el.Width = dia;
+        el.Height = dia;
+        el.Fill = color;
+        el.Stroke = color;
+        Canvas.SetLeft(el, x1 - dia / 2);
+        Canvas.SetTop(el, y1 - dia / 2);
+        ca.Children.Add(el);
+      }
     }
 
     public static void createBox(Canvas ca, double x1, double y1, double x2, double y2, int stroke, Brush brushBorder, Brush brushFill)
@@ -39,12 +63,39 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void createText(Canvas can, double x, double y, string text, Color color)
+    public static void createText(Canvas can, double x, double y, string text, SolidColorBrush color, double rotAngle = 0, double fontsize = 12, bool bold = false)
+    {
+      TextBlock textBlock = new TextBlock();
+      textBlock.Text = text;
+      textBlock.Foreground = color;
+      textBlock.TextAlignment = TextAlignment.Right;
+      textBlock.FontSize = fontsize;
+      if (bold)
+        textBlock.FontWeight = FontWeights.Bold;
+      if (rotAngle > 0)
+      {
+        textBlock.RenderTransformOrigin = new Point(0, 0);
+        textBlock.RenderTransform = new RotateTransform(rotAngle);
+      }
+      Canvas.SetLeft(textBlock, x);
+      Canvas.SetTop(textBlock, y);
+      can.Children.Add(textBlock);
+    }
+
+    public static void createText(Canvas can, double x, double y, string text, Color color, double rotAngle = 0, double fontsize = 12, bool bold = false)
     {
       TextBlock textBlock = new TextBlock();
       textBlock.Text = text;
       textBlock.Foreground = new SolidColorBrush(color);
       textBlock.TextAlignment = TextAlignment.Right;
+      textBlock.FontSize = fontsize;
+      if(bold)
+        textBlock.FontWeight = FontWeights.Bold; 
+      if(rotAngle > 0)
+      {
+        textBlock.RenderTransformOrigin = new Point(0,0);
+        textBlock.RenderTransform = new RotateTransform(rotAngle);
+      }
       Canvas.SetLeft(textBlock, x);
       Canvas.SetTop(textBlock, y);
       can.Children.Add(textBlock);

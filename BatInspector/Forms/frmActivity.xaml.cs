@@ -19,28 +19,48 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmActivity : Window
   {
-    private List<List<int>> _heatMap = null;
-    public frmActivity()
+    private List<List<int>> _data = null;
+    private DateTime _start;
+    public frmActivity(ViewModel model)
     {
       InitializeComponent();
+      _ctlActivity.setup(model);
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    public void setup(DateTime start)
+    {
+      _start = start;
+    }
+
+    /// <summary>
+    /// callback function after gathering of data is finished
+    /// </summary>
+    public void createPlot(List<List<int>> data)
+    {
+      _data = data;
+      _btnCreate.IsEnabled = true;
+    }
+
+    private void _btnOK_Click(object sender, RoutedEventArgs e)
     {
       this.Close();
     }
 
-    public void createPlot(List<List<int>> hm)
-    {
-      _heatMap = hm;
-    }
+    
+
 
     private void _btnCreate_Click(object sender, RoutedEventArgs e)
     {
-      if (_heatMap != null)
-      {
-        _ctlActivity.createPlot(_heatMap);
-      }
+      if (_data == null)
+        return;
+
+      double lat = 49;
+      double lon = 8;
+      _ctlActivity.createPlot(_data, _start, _ctlActivity._cbMonth.IsChecked == true,
+                                             _ctlActivity._cbWeek.IsChecked == true,
+                                             _ctlActivity._cbDay.IsChecked == true,
+                                             _ctlActivity._cbTwilight.IsChecked == true,
+                                             lat, lon);
     }
   }
 }

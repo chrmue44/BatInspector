@@ -173,8 +173,12 @@
     <ClCompile Include="bb_analyse.cpp" />
     <ClCompile Include="bb_detect.cpp" />
     <ClCompile Include="bb_extract.cpp" />
+    <ClCompile Include="Chunk.cpp" />
+    <ClCompile Include="cSonogram.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="fft.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Pixel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bat_bioacoustics.h" />
@@ -184,10 +188,14 @@
     <ClInclude Include="bb_extract.h" />
     <ClInclude Include="bb_kalman.h" />
     <ClInclude Include="bb_tools.h" />
+    <ClInclude Include="Chunk.h" />
+    <ClInclude Include="cSonogram.h" />
     <ClInclude Include="fft.h" />
     <ClInclude Include="fftw3.h" />
     <ClInclude Include="dllmain.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="linear_model.h" />
+    <ClInclude Include="Pixel.h" />
     <ClInclude Include="Rcpp.h" />
     <ClInclude Include="tools.h" />
   </ItemGroup>

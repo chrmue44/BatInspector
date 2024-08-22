@@ -272,4 +272,9 @@ namespace libBioAcoustics
     }
     return -1;
   }
+
+  DLL_API int getFtImage(short* samples, int sampleCnt, const char* pngName, int fftWidth, int waterFallWidth, int* colorTable, int colorTableLen)
+  {
+    return 0;
+  }
 }

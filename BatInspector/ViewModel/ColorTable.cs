@@ -9,27 +9,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using System;
 
 namespace BatInspector
 {
   public class ColorTable
   {
     Color[] _colorTable;
+    Int32[] _intColorTable;
 
 
     public ColorTable()
     {
+      _colorTable = new Color[100];
+      _intColorTable = new Int32[100];
     }
+
+    public Int32[] ColorTableInt32 { get { return _intColorTable;} }
 
     public void createColorLookupTable()
     {
-      _colorTable = new Color[100];
       for (int i = 0; i < _colorTable.Length; i++)
       {
         int r = getColorFromGradient((double)i, AppParams.Inst.ColorGradientRed);
         int g = getColorFromGradient((double)i, AppParams.Inst.ColorGradientGreen);
         int b = getColorFromGradient((double)i, AppParams.Inst.ColorGradientBlue);
         _colorTable[i] = Color.FromArgb(r, g, b);
+        _intColorTable[i] = r << 16 | g << 8 | b;
       }
     }
 

@@ -196,6 +196,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Circle.
+        /// </summary>
+        public static string Circle {
+            get {
+                return ResourceManager.GetString("Circle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string Class {
@@ -282,6 +291,24 @@ namespace BatInspector.Properties {
         public static string Count {
             get {
                 return ResourceManager.GetString("Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Colored.
+        /// </summary>
+        public static string ctlActivityColored {
+            get {
+                return ResourceManager.GetString("ctlActivityColored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display Style.
+        /// </summary>
+        public static string ctlActivityDisplayStyle {
+            get {
+                return ResourceManager.GetString("ctlActivityDisplayStyle", resourceCulture);
             }
         }
         
@@ -1209,6 +1236,24 @@ namespace BatInspector.Properties {
         public static string Frequency {
             get {
                 return ResourceManager.GetString("Frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Diagram.
+        /// </summary>
+        public static string frmActivityCreateDiagram {
+            get {
+                return ResourceManager.GetString("frmActivityCreateDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Diagram....
+        /// </summary>
+        public static string frmActivityExportDiagram {
+            get {
+                return ResourceManager.GetString("frmActivityExportDiagram", resourceCulture);
             }
         }
         
@@ -4089,6 +4134,15 @@ namespace BatInspector.Properties {
         public static string SpecDescWidthWf {
             get {
                 return ResourceManager.GetString("SpecDescWidthWf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Square.
+        /// </summary>
+        public static string Square {
+            get {
+                return ResourceManager.GetString("Square", resourceCulture);
             }
         }
         

@@ -12,7 +12,8 @@ using System.Windows.Shapes;
 using System.Windows;
 using System.Globalization;
 using System;
-
+using Pen = System.Drawing.Pen;
+using Graphics = System.Drawing.Graphics;
 
 namespace BatInspector.Controls
 {
@@ -47,6 +48,17 @@ namespace BatInspector.Controls
       }
     }
 
+    public static void createDot(Graphics ca, double x1, double y1, double dia, System.Drawing.Brush color)
+    {
+      if (dia > 0.001)
+      {
+        int d = (int)(dia + 0.5);
+        if (d < 2)
+          d = 2;
+        ca.FillRectangle(color, (int)(x1 - d/2), (int)(y1 - d/2), d, d);
+      }
+    }
+
     public static void createBox(Canvas ca, double x1, double y1, double x2, double y2, int stroke, Brush brushBorder, Brush brushFill)
     {
       if ((x2 > x1) && (y2 > y1))
@@ -62,6 +74,7 @@ namespace BatInspector.Controls
         ca.Children.Add(r);
       }
     }
+
 
     public static void createText(Canvas can, double x, double y, string text, SolidColorBrush color, double rotAngle = 0, double fontsize = 12, bool bold = false)
     {
@@ -82,6 +95,23 @@ namespace BatInspector.Controls
       can.Children.Add(textBlock);
     }
 
+
+    public static void createText(Graphics can, float x, float y, string text, System.Drawing.Brush color, float rotAngle = 0, float fontsize = 9, bool bold = false)
+    {
+      System.Drawing.Font font = new System.Drawing.Font("Tahoma",  fontsize);
+
+      if (rotAngle != 0)
+      {
+        can.TranslateTransform(x, y);
+        can.RotateTransform(rotAngle);
+        can.DrawString(text, font, color, 0, 0);
+        can.ResetTransform();
+      }
+      else
+        can.DrawString(text, font, color, x, y);
+    }
+
+
     public static void createText(Canvas can, double x, double y, string text, Color color, double rotAngle = 0, double fontsize = 12, bool bold = false)
     {
       TextBlock textBlock = new TextBlock();
@@ -100,6 +130,7 @@ namespace BatInspector.Controls
       Canvas.SetTop(textBlock, y);
       can.Children.Add(textBlock);
     }
+
 
     /// <summary>
     /// 

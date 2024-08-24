@@ -23,7 +23,7 @@ using System.Windows;
 namespace BatInspector
 {
 
-  public delegate void dlgShowHeatMap(List<List<int>> hm);
+  public delegate void dlgShowHeatMap(ActivityData data);
   public enum enPeriod
   {
     DAILY = 0,
@@ -336,6 +336,61 @@ namespace BatInspector
     }
   }
 
+  public class DailyActivity
+  {
+    public DailyActivity(DateTime date, int ticksPerHour) 
+    {
+      int cnt = 24 * ticksPerHour;
+      Counter = new List<int>(cnt);
+      for (int i = 0; i < cnt; i++)
+        Counter.Add(0);
+      Date = date;
+      TotalCalls = 0;
+      Latitude = 0;
+      Longitude = 0;
+    }
+
+    public List<int> Counter { get; }
+    public DateTime Date { get; }
+
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public int TotalCalls { get; set; }
+  }
+
+  public class ActivityData
+  {
+    public ActivityData(int ticksPerHour)
+    {
+      Days = new List<DailyActivity>();
+      TicksPerHour = ticksPerHour;
+    }
+    public List<DailyActivity> Days { get; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public int TicksPerHour { get; }
+    public DateTime StartDate{ get; set; }  
+    public DateTime EndDate { get; set; }
+    public void Add(DailyActivity activity)
+    {
+      Days.Add(activity);
+    }
+
+    public int find(DateTime day)
+    {
+      int retVal = -1;
+      for(int i = 0; i <  Days.Count; i++)
+      {
+        if(day.Date == Days[i].Date.Date)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+  }
+
   /// <summary>
   /// a class to create a sumarized report over multiple projects for a specified time period
   /// </summary>
@@ -353,7 +408,7 @@ namespace BatInspector
     private enPeriod _period;
     private string _dstDir;
     private string _expression;
-    private dlgShowHeatMap _showHeatMap = null;
+    private dlgShowHeatMap _showActivityData = null;
 
     public SumReport(ViewModel model)
     {
@@ -430,23 +485,37 @@ namespace BatInspector
       int minsPerPoint = 5;
       int ticksPerHour = 60 / minsPerPoint;
       bool addLine = false;
-      List<List<int>> retVal = new List<List<int>>();
-
+      ActivityData retVal = new ActivityData(ticksPerHour);
+      retVal.StartDate = _start;
+      retVal.EndDate = _end;
+      int countDaysWithData = 0;
+      double latitude = 0;
+      double longitude = 0;
       while (date < _end)
       {
-        List<int> heatMapLine = new List<int>(24 * ticksPerHour);
-        heatMapLine.AddRange(Enumerable.Repeat(0, 24 * ticksPerHour));
+        DailyActivity dailyActivity = new DailyActivity(date,ticksPerHour);
         int days = calcDays(date, _end, _period);
-        bool cont = createHeatMapLine(date, days, ticksPerHour, _expression, heatMapLine, out bool addedLine);
+        bool cont = gatherDailyActivity(date, days, _expression, dailyActivity, out bool addedLine);
+        if(dailyActivity.TotalCalls > 0)
+        {
+          countDaysWithData++;
+          latitude += dailyActivity.Latitude;
+          longitude += dailyActivity.Longitude;
+        }
         // after first line was found continue to add lines, even without having data
         if (addedLine)
           addLine = true;
         date = incrementDate(date, _period);
         if (addLine)
-          retVal.Add(heatMapLine);
+          retVal.Add(dailyActivity);
       }
-      if(_showHeatMap != null)
-        _showHeatMap(retVal);
+      if (countDaysWithData > 0)
+      {
+        retVal.Latitude = latitude / countDaysWithData;
+        retVal.Longitude = longitude / countDaysWithData;
+      }
+      if(_showActivityData != null)
+        _showActivityData(retVal);
     }
 
     public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string expression, dlgShowHeatMap dlgShowHeatMap)
@@ -457,7 +526,7 @@ namespace BatInspector
       _rootDir = rootDir;
       _dstDir = dstDir;
       _expression = expression;
-      _showHeatMap = dlgShowHeatMap;
+      _showActivityData = dlgShowHeatMap;
 
       Thread t = new Thread(createActivityDiagSync);
       t.Start();
@@ -574,7 +643,7 @@ namespace BatInspector
     }
 
 
-    private bool createHeatMapLine(DateTime start, int days, int ticksPerHour, string expression, List<int> heatMapLine, out bool addedLine)
+    private bool gatherDailyActivity(DateTime start, int days, string expression, DailyActivity dailyActivity, out bool addedLine)
     {
       bool retVal = true;
       addedLine = false;
@@ -598,9 +667,14 @@ namespace BatInspector
           }
           else
           {
-            int totalCalls = 0;
+            dailyActivity.TotalCalls = 0;
             foreach (AnalysisFile file in analysis.Files)
             {
+              if ((dailyActivity.Latitude == 0) && (dailyActivity.Longitude == 0))
+              {
+                dailyActivity.Latitude = file.getDouble(Cols.LAT);
+                dailyActivity.Longitude = file.getDouble(Cols.LON);
+              }
               foreach (AnalysisCall call in file.Calls)
               {
                 bool match = _model.Filter.apply(filter, call,
@@ -613,11 +687,12 @@ namespace BatInspector
                 }
                 if (match)
                 {
+                  int ticksPerHour = dailyActivity.Counter.Count / 24;
                   int idx = file.RecTime.Hour * ticksPerHour + file.RecTime.Minute * ticksPerHour / 60;
-                  if (idx < heatMapLine.Count)
+                  if (idx < dailyActivity.Counter.Count)
                   {
-                    heatMapLine[idx]++;
-                    totalCalls++;
+                    dailyActivity.Counter[idx]++;
+                    dailyActivity.TotalCalls++;
                   }
                   else
                     DebugLog.log("SumReport::createHeatMapLine, index error", enLogType.ERROR);
@@ -627,7 +702,7 @@ namespace BatInspector
                 break;
             }
             addedLine = true;
-            DebugLog.log($"evaluating report {reportName}  nr of calls: {totalCalls}", enLogType.INFO);
+            DebugLog.log($"evaluating report {reportName}  nr of calls: {dailyActivity.TotalCalls}", enLogType.INFO);
           }
         }
       }

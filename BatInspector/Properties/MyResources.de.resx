@@ -1575,4 +1575,22 @@
   <data name="frmActivityTwilightLine" xml:space="preserve">
     <value>Sonnenauf- &amp; Untergang</value>
   </data>
+  <data name="frmActivityCreateDiagram" xml:space="preserve">
+    <value>Diagramm erzeugen</value>
+  </data>
+  <data name="frmActivityExportDiagram" xml:space="preserve">
+    <value>Diagramm exportieren...</value>
+  </data>
+  <data name="ctlActivityDisplayStyle" xml:space="preserve">
+    <value>Anzeigeart</value>
+  </data>
+  <data name="ctlActivityColored" xml:space="preserve">
+    <value>Farbskala</value>
+  </data>
+  <data name="Circle" xml:space="preserve">
+    <value>Kreis</value>
+  </data>
+  <data name="Square" xml:space="preserve">
+    <value>Quadrat</value>
+  </data>
 </root>

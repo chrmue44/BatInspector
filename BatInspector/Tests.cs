@@ -757,20 +757,24 @@ namespace BatInspector
       frm.Show();
       DateTime start = new DateTime(2024, 4, 25);
       frm.setup(start);
-      List<List<int>> data = new List<List<int>>(); 
+      int ticksPerHour = 60 / 5;
+      ActivityData data = new ActivityData(ticksPerHour);
+      DateTime currDay = start; 
       for(int d = 0; d < 80; d++)
       {
-        int t = 24 * 60 / 5;
-        data.Add(new List<int>(t));
+        int t = 24 * ticksPerHour;
+        DailyActivity dailyData = new DailyActivity(currDay, ticksPerHour);
+        data.Add(dailyData);
         for(int h = 0; h < t; h++)
         {
           int val = 0;
-          if(h < 6)
-            val = 1 + h;
-          else if(h > 20)
-            val = 2 + h - 19;
-          data[d].Add(val);
+          if(h < 6 * 12)
+            val = 5 + (12 - 2*h);
+          else if(h > 20 * 12)
+            val = 2 + h - 19 * 12;
+          data.Days[d].Counter.Add(val);
         }
+        currDay = currDay.AddDays(1);
       }
       frm.createPlot(data);
     }

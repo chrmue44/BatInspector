@@ -48,7 +48,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void createDot(Graphics ca, double x1, double y1, double dia, System.Drawing.Brush color)
+    public static void createDot(Graphics ca, float x1, float y1, double dia, System.Drawing.Brush color)
     {
       if (dia > 0.001)
       {

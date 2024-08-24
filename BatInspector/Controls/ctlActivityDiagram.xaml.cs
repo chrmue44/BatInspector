@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Diagnostics;
 using libParser;
 
+
 namespace BatInspector.Controls
 {
   /// <summary>
@@ -27,6 +28,8 @@ namespace BatInspector.Controls
     const float X_BR = 20.0f;
     const float Y_BT = 80.0f;
     const float Y_BB = 80.0f;
+    DateTime DIAG_START_TIME = new DateTime(2024, 1, 1, 17, 0, 0);
+    DateTime DIAG_END_TIME = new DateTime(2024, 1, 1, 9, 0, 0);
 
     System.Drawing.Brush COL_TEXT = System.Drawing.Brushes.Black;
     System.Drawing.Color COL_BACK = System.Drawing.Color.WhiteSmoke;
@@ -80,11 +83,12 @@ namespace BatInspector.Controls
         _bmp = new Bitmap((int)_width, (int)_height);
         _graphics = Graphics.FromImage(_bmp);
         _graphics.Clear(COL_BACK);
-        createGrid(month, week, day);
+        int hours = 24 - DIAG_START_TIME.Hour + DIAG_END_TIME.Hour;
+        createGrid(month, week, day, hours);
         if (twilight)
           createTwilightLines();
         createTitle(_ctrlTitle.getValue());
-        createLabels(month, week, day);
+        createLabels(month, week, day, hours);
         drawData();
 
         BitmapImage bitmapimage = new BitmapImage();
@@ -116,6 +120,34 @@ namespace BatInspector.Controls
       }
     }
 
+    float getYCoord(int tick)
+    {
+      int hours = 24 - DIAG_START_TIME.Hour + DIAG_END_TIME.Hour;
+      if (tick <= (DIAG_END_TIME.Hour * _data.TicksPerHour))
+        tick += (24 - DIAG_START_TIME.Hour) * _data.TicksPerHour;
+      if (tick >= (DIAG_START_TIME.Hour * _data.TicksPerHour))
+        tick -= DIAG_START_TIME.Hour * _data.TicksPerHour;
+      float yPos = Y_BT + (_height - Y_BB - Y_BT) * tick / _data.TicksPerHour / hours;
+      yPos = swapY(yPos);
+      return yPos;
+    }
+
+    float getXCoord(DateTime d)
+    {
+      int days = (int)((_data.EndDate.Date - _data.StartDate).TotalDays);
+      if (days == 0)
+        days = 1;
+      float dx = 1.0f / days * (_width - X_BL - X_BR);
+      int dayIdx = (int)((d.Date - _data.StartDate.Date).TotalDays);
+      float xPos = ((float)dayIdx + 0.5f) * dx + X_BL;
+      return xPos;
+    }
+
+    float getYCoord(float hour)
+    {
+      return getYCoord((int)(hour * _data.TicksPerHour));
+    }
+
     private void drawData()
     {
       int days = (int)(_data.EndDate.Date- _data.StartDate.Date).TotalDays;
@@ -136,47 +168,47 @@ namespace BatInspector.Controls
 
       for(int i = 0; i < _data.Days.Count; i++)
       {
-        int dayIdx = (int)(_data.Days[i].Date.Date - _data.StartDate.Date).TotalDays;
-        if ((dayIdx >= 0) && (dayIdx < _data.Days.Count))
-        {
-          for (int j = 0; j < _data.Days[dayIdx].Counter.Count; j++)
+        int startTimeInTicks = DIAG_END_TIME.Hour * _data.TicksPerHour;
+          for (int j = 0; j < _data.Days[i].Counter.Count; j++)
           {
-            float dotDia = (float)_data.Days[dayIdx].Counter[j] / maxValue * maxDia;
-            float yPos = Y_BT + (_height - Y_BB - Y_BT) * j / _data.Days[dayIdx].Counter.Count;
-            float xPos = (float)dayIdx / days * (_width - X_BL - X_BR) + X_BL + dx / 2;
-            GraphHelper.createDot(_graphics, xPos, swapY(yPos), dotDia, COL_DATA);
+            float dotDia = (float)_data.Days[i].Counter[j] / maxValue * maxDia;
+            float xPos = getXCoord(_data.Days[i].Date);
+            if ((j <= startTimeInTicks) && (i > 0))
+              xPos -= dx;
+            GraphHelper.createDot(_graphics, xPos, getYCoord(j), dotDia, COL_DATA);
           }
-        }
-        else
-          DebugLog.log("drawData index error", enLogType.ERROR);
       }
     }
 
 
     private void createTwilightLines()
     {
-      int days = _data.Days.Count;
       DateTime currDay = _data.StartDate;
-      for (int i = 0; i < days; i++)
+      while(currDay.AddDays(1) < _data.EndDate)
       {
         Sunrise.getSunSetSunRise(_lat, _lon, currDay, out int srH1, out int srM1, out int ssH1, out int ssM1);
         float sr1 = (float)srH1 + (float)srM1 / 60;
         float ss1 = (float)ssH1 + (float)ssM1 / 60;
-        float x1 = (float)i / days * (_width - X_BL - X_BR) + X_BL;
-        float yr1 = (float)sr1 / 24 * (_height - Y_BB - Y_BT) + Y_BT;
-        float ys1 = (float)ss1 / 24 * (_height - Y_BB - Y_BT) + Y_BT;
+        float x1 = getXCoord(currDay);
+        float yr1 = getYCoord(sr1);
+        float ys1 = getYCoord(ss1);
         currDay = currDay.AddDays(1);
         Sunrise.getSunSetSunRise(_lat, _lon, currDay, out int srH2, out int srM2, out int ssH2, out int ssM2);
         float sr2 = (float)srH2 + (float)srM2 / 60;
         float ss2 = (float)ssH2 + (float)ssM2 / 60;
-        float x2 = (float)(i + 1) / days * (_width - X_BL - X_BR) + X_BL;
-        float yr2 = (float)sr2 / 24 * (_height - Y_BB - Y_BT) + Y_BT;
-        float ys2 = (float)ss2 / 24 * (_height - Y_BB - Y_BT) + Y_BT;
-        _graphics.DrawLine(COL_SUNSET, x1, swapY(ys1), x2, swapY(ys2));
-        _graphics.DrawLine(COL_SUNRISE, x1, swapY(yr1), x2, swapY(yr2));
+        float x2 = getXCoord(currDay.Date);
+        if ((sr1 <= DIAG_END_TIME.Hour) && (sr2 <= DIAG_END_TIME.Hour))
+        {
+          float yr2 = getYCoord(sr2);
+          _graphics.DrawLine(COL_SUNRISE, x1, yr1, x2, yr2);
+        }
+        if ((ss1 >= DIAG_START_TIME.Hour) && (ss2 >= DIAG_START_TIME.Hour))
+        {
+          float ys2 = getYCoord(ss2);
+          _graphics.DrawLine(COL_SUNSET, x1, ys1, x2, ys2);
+        }
       }
     }
-
 
     private void createTitle(string title)
     {
@@ -200,19 +232,21 @@ namespace BatInspector.Controls
     }
 
 
-    private void createLabels(bool months, bool weeks, bool days)
+    private void createLabels(bool months, bool weeks, bool days, int hours)
     {
       int dayCnt = (int)(_data.EndDate - _data.StartDate).TotalDays;
 
       // time of day
-      for (int i = 0; i < 24; i++)
+      int offs = 7;
+      for (float h = 0; h < 9.0; h += 2.0f)
       {
-        if (i % 6 == 0)
-        {
-          float yPos = Y_BT + 15 + (_height - Y_BB - Y_BT) * i / 24;
-          string tStr = i.ToString() + ":00";
-          GraphHelper.createText(_graphics, 5.0f, swapY(yPos), tStr, COL_TEXT);
-        }
+        float yPos = getYCoord(h) - offs;
+        GraphHelper.createText(_graphics, 5, yPos, ((int)h).ToString() + ":00", COL_TEXT);
+      }
+      for (float h = 18; h < 24.0; h += 2.0f)
+      {
+        float yPos = getYCoord(h) - offs;
+        GraphHelper.createText(_graphics, 5, yPos, ((int)h).ToString() + ":00", COL_TEXT);
       }
 
       // days
@@ -224,7 +258,7 @@ namespace BatInspector.Controls
           if (currDay.DayOfWeek == DayOfWeek.Monday)
           {
             float xPos = X_BL + (float)i / dayCnt * (_width - X_BL - X_BR);
-            GraphHelper.createText(_graphics, xPos, _height - 5, currDay.ToString("dd.MM.yyyy"), COL_TEXT, -90);
+            GraphHelper.createText(_graphics, xPos, _height - 5, currDay.ToString("dd.MM.yy"), COL_TEXT, -90);
           }
           currDay = currDay.AddDays(1);
         }
@@ -247,12 +281,12 @@ namespace BatInspector.Controls
     }
 
 
-    private void createGrid(bool month, bool week, bool day)
+    private void createGrid(bool month, bool week, bool day, int hours)
     {
       // time of day lines
-      for (int i = 0; i < 24; i++)
+      for (int i = 0; i < hours; i++)
       {
-        float yPos = Y_BT + (_height - Y_BB - Y_BT) * i / 24;
+        float yPos = Y_BT + (_height - Y_BB - Y_BT) * i / hours;
         Pen pen = (i % 6 == 0) ? COL_GRID_WEEK : COL_GRID_DAY;
         _graphics.DrawLine(pen, X_BL, yPos, _width - X_BR, yPos);
 

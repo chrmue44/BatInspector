@@ -755,12 +755,14 @@ namespace BatInspector
     {
       frmActivity frm = new frmActivity(_model);
       frm.Show();
-      DateTime start = new DateTime(2024, 4, 25);
-      frm.setup(start);
+      frm.setup();
       int ticksPerHour = 60 / 5;
       ActivityData data = new ActivityData(ticksPerHour);
-      DateTime currDay = start; 
-      for(int d = 0; d < 80; d++)
+      data.StartDate = new DateTime(2024, 3, 25);
+      data.EndDate = new DateTime(2024, 6, 25);
+      DateTime currDay = data.StartDate;
+      int d = 0;
+      while(currDay < data.EndDate)
       {
         int t = 24 * ticksPerHour;
         DailyActivity dailyData = new DailyActivity(currDay, ticksPerHour);
@@ -768,12 +770,13 @@ namespace BatInspector
         for(int h = 0; h < t; h++)
         {
           int val = 0;
-          if(h < 6 * 12)
-            val = 5 + (12 - 2*h);
-          else if(h > 20 * 12)
-            val = 2 + h - 19 * 12;
-          data.Days[d].Counter.Add(val);
+          if(h < 6 * ticksPerHour)
+            val = 5 + (12 * ticksPerHour - 2*h);
+          else if(h > 20 * ticksPerHour)
+            val = 2 + h - 19 * ticksPerHour;
+          data.Days[d].Counter[h] = val;
         }
+        d++;
         currDay = currDay.AddDays(1);
       }
       frm.createPlot(data);

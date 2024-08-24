@@ -71,7 +71,7 @@ namespace BatInspector.Forms
         {
         
           frmActivity frm = new frmActivity(_model);
-          frm.setup(start);
+          frm.setup();
           _model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
           _ctlReport._ctlDestDir.getValue(), _ctlReport.FilterExpression, frm.createPlot);
           frm.Show();

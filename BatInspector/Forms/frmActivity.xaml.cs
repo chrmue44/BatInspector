@@ -24,7 +24,6 @@ namespace BatInspector.Forms
   public partial class frmActivity : Window
   {
     private ActivityData _data = null;
-    private DateTime _start;
     public frmActivity(ViewModel model)
     {
       InitializeComponent();
@@ -33,9 +32,8 @@ namespace BatInspector.Forms
 
 
 
-    public void setup(DateTime start)
+    public void setup()
     {
-      _start = start;
     }
 
     /// <summary>

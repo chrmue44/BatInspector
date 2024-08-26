@@ -48,15 +48,14 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void createDot(Graphics ca, float x1, float y1, double dia, System.Drawing.Brush color)
+    public static void createDot(Graphics ca, float x1, float y1, float dia, System.Drawing.Brush color)
     {
-      if (dia > 0.001)
-      {
-        int d = (int)(dia + 0.5);
-        if (d < 2)
-          d = 2;
-        ca.FillRectangle(color, (int)(x1 - d/2), (int)(y1 - d/2), d, d);
-      }
+       ca.FillEllipse(color, (int)(x1 - dia/2), (int)(y1 - dia/2), dia, dia);
+    }
+
+    public static void createRectangle(Graphics ca, float x1, float y1, float width, float height, System.Drawing.Brush color)
+    {
+       ca.FillRectangle(color, (int)(x1 - width / 2), (int)(y1 - height / 2), width, height);
     }
 
     public static void createBox(Canvas ca, double x1, double y1, double x2, double y2, int stroke, Brush brushBorder, Brush brushFill)

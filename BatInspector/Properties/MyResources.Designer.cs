@@ -79,6 +79,33 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to max. Display Value.
+        /// </summary>
+        public static string ActivityMaxDisplayValue {
+            get {
+                return ResourceManager.GetString("ActivityMaxDisplayValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to total number of calls.
+        /// </summary>
+        public static string ActivityTotalCalls {
+            get {
+                return ResourceManager.GetString("ActivityTotalCalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All values above in red.
+        /// </summary>
+        public static string ActivityValuesAbove {
+            get {
+                return ResourceManager.GetString("ActivityValuesAbove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add WAV file(s) to project.
         /// </summary>
         public static string AddWAVFileSToProject {
@@ -210,6 +237,15 @@ namespace BatInspector.Properties {
         public static string Class {
             get {
                 return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string Color {
+            get {
+                return ResourceManager.GetString("Color", resourceCulture);
             }
         }
         
@@ -4458,6 +4494,15 @@ namespace BatInspector.Properties {
         public static string ToolTipZoomToCursor {
             get {
                 return ResourceManager.GetString("ToolTipZoomToCursor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
         

@@ -1593,4 +1593,19 @@
   <data name="Square" xml:space="preserve">
     <value>Quadrat</value>
   </data>
+  <data name="ActivityMaxDisplayValue" xml:space="preserve">
+    <value>max. Anzeigewert</value>
+  </data>
+  <data name="ActivityTotalCalls" xml:space="preserve">
+    <value>Gesamtzahl Rufe</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="ActivityValuesAbove" xml:space="preserve">
+    <value>Alle Werte darüber in rot</value>
+  </data>
 </root>

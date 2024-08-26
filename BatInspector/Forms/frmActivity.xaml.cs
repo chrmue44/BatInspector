@@ -65,13 +65,10 @@ namespace BatInspector.Forms
       if (_data == null)
         return;
 
-      double lat = 49;
-      double lon = 8;
       _ctlActivity.createPlot(_data, _ctlActivity._cbMonth.IsChecked == true,
                                      _ctlActivity._cbWeek.IsChecked == true,
                                      _ctlActivity._cbDay.IsChecked == true,
-                                     _ctlActivity._cbTwilight.IsChecked == true,
-                                     lat, lon);
+                                     _ctlActivity._cbTwilight.IsChecked == true);
     }
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)

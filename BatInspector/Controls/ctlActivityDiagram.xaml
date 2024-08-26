@@ -42,7 +42,7 @@
       </StackPanel>
     </StackPanel>
     <GroupBox Name="_grpImg" Grid.Row="1" BorderThickness="2">
-      <Image x:Name="_cnv" Margin="2" Stretch="Fill" />
+      <Image x:Name="_cnv" Margin="2" Stretch="Uniform" />
     </GroupBox>
   </Grid>
 </UserControl>

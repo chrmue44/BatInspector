@@ -1080,6 +1080,8 @@ namespace BatInspector
       return parseGeoCoord(coordStr, out coord, "E", "W", 180);
     }
 
+
+
     /// <summary>
     /// parse geographical coordinates, two formats are allowed:
     /// 1.: plain double e.g. 49.657489, -33.5679864

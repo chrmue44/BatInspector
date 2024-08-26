@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave.SampleProviders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -82,7 +83,7 @@ namespace BatInspector
     }
 
 
-    public static void getSunSetSunRise(double lat, double lon, DateTime date, out int srH, out int srM, out int ssH, out int ssM)
+    public static void getSunSetSunRise(double lat, double lon, DateTime date, out int srH, out int srM, out int srS, out int ssH, out int ssM, out int ssS)
     {
       double JD2000 = 2451545.0;
       double JD;
@@ -114,11 +115,13 @@ namespace BatInspector
 
       srM = (int)(60.0 * (Aufgang - (int)Aufgang) + 0.5);
       srH = (int)Aufgang;
-      adjustHm(ref srH, ref srM);
+      srS = (int)(((60.0 * (Aufgang - (int)Aufgang) + 0.5) - srM) * 60);
+      adjustHm(ref srH, ref srM, ref srS);
 
       ssM = (int)(60.0 * (Untergang - (int)Untergang) + 0.5);
       ssH = (int)Untergang;
-      adjustHm(ref ssH, ref ssM);
+      ssS = (int)(((60.0 * (Untergang - (int)Untergang) + 0.5) - ssM) * 60);
+      adjustHm(ref ssH, ref ssM, ref ssS);
     }
 
     static void adjustT(ref double t)
@@ -129,8 +132,18 @@ namespace BatInspector
         t -= 24.0;
     }
 
-    static void adjustHm(ref int h, ref int min)
+    static void adjustHm(ref int h, ref int min, ref int s)
     {
+      if(s >= 60)
+      {
+        s -= 60;
+        min++;
+      }
+      else if (s < 0)
+      {
+        s += 60;
+        min--;
+      }
       if (min >= 60)
       {
         min -= 60;
@@ -140,7 +153,7 @@ namespace BatInspector
       {
         min += 60;
         h--;
-        if (min < 0)
+        if (h < 0)
           h += 24;
       }
     }

@@ -89,7 +89,7 @@ namespace BatInspector
       // testBioAcoustics();
       //testFft();
       //testDenoising();
-      testActivityDiagr();
+      //testActivityDiagr();
       testNextStepDown();
       testIf(wrkDir);
       testWhile(wrkDir);
@@ -753,7 +753,8 @@ namespace BatInspector
 
     private void testActivityDiagr()
     {
-      frmActivity frm = new frmActivity(_model);
+      string bmpName = "F:\bat\bmptest.bmp";
+      frmActivity frm = new frmActivity(_model, bmpName);
       frm.Show();
       frm.setup();
       int ticksPerHour = 60 / 5;

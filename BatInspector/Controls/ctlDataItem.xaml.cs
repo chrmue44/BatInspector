@@ -134,7 +134,7 @@ namespace BatInspector.Controls
     {
       if (_textChanged)
       {
-        _textChanged = false;
+        _textChanged = false;        
         switch (_type)
         {
           case enDataType.INT:

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="About..." Height="650" Width="650" Loaded="Window_Loaded"
+        Title="{x:Static res:MyResources.About}" Height="650" Width="650" Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         Icon="../images/kopf64.png">
     <Grid>
@@ -20,10 +20,16 @@
       <TextBlock Name="_tbVersion" Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version 0.1.2</TextBlock>
       <Image Source="..\images\kopf256.jpg" Height="128" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
     </StackPanel>
-    <GroupBox Header="{x:Static res:MyResources.AboutHistory}" Grid.Row="1" Margin="8,3,8,3">
+    <GroupBox  Grid.Row="1" Margin="8,3,8,3" Template="{DynamicResource GroupBoxCmu}">
+      <GroupBox.Header>
+        <TextBlock Text="{x:Static res:MyResources.AboutHistory}" FontWeight="Bold"/>
+      </GroupBox.Header>
       <TextBox Name="_tbHistory" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" BorderThickness="0"></TextBox>
     </GroupBox>
-    <GroupBox Header="{x:Static res:MyResources.Licenses}" Grid.Row="2" Margin="8,3,8,3">
+    <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="2" Margin="8,3,8,3">
+      <GroupBox.Header>
+        <TextBlock Text="{x:Static res:MyResources.Licenses}" FontWeight="Bold"/>
+      </GroupBox.Header>
       <TextBox Name="_tbLicences" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" BorderThickness="0"></TextBox>
     </GroupBox>
     <Button Grid.Row="3" Name="_btnOk" Click="_btnOk_Click" Width="100" Height="25" HorizontalAlignment="Right" Margin="8,0,8,8">OK</Button>

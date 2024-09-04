@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
-
+using System.Configuration.Install;
 
 namespace BatInspector
 {
@@ -170,6 +170,7 @@ namespace BatInspector
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
     public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
     public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports
+    public const string REPORT_DATETIME_FORMAT2 = "dd.MM.yyyy HH:mm:ss"; //Date time format for reports
     public const string GPX_DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:ssZ"; // date format for reports
     public const string GPX_DATETIME_FORMAT_MS = "yyyy-MM-ddTHH:mm:ss.fffZ"; // date format with ms for reports
     public const string PRJ_REPORT = "report.csv";        // report name for project report

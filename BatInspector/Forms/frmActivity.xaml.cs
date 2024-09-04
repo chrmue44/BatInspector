@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BatInspector.Forms
 {
@@ -23,11 +11,13 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmActivity : Window
   {
-    private ActivityData _data = null;
-    public frmActivity(ViewModel model)
+    private string _bmpName;
+    public frmActivity(ViewModel model, string bmpName)
     {
       InitializeComponent();
       _ctlActivity.setup(model);
+     _bmpName = bmpName;
+     Title = $"{Properties.MyResources.ActivityDiagram}: {bmpName}";
     }
 
 
@@ -47,40 +37,13 @@ namespace BatInspector.Forms
       }
       else
       {
-        _data = data;
-        _btnCreate.IsEnabled = true;
+        _ctlActivity.createPlot(data, _bmpName);
       }
     }
 
     private void _btnOK_Click(object sender, RoutedEventArgs e)
     {
       this.Close();
-    }
-
-    
-
-
-    private void _btnCreate_Click(object sender, RoutedEventArgs e)
-    {
-      if (_data == null)
-        return;
-
-      _ctlActivity.createPlot(_data, _ctlActivity._cbMonth.IsChecked == true,
-                                     _ctlActivity._cbWeek.IsChecked == true,
-                                     _ctlActivity._cbDay.IsChecked == true,
-                                     _ctlActivity._cbTwilight.IsChecked == true);
-    }
-
-    private void _btnExport_Click(object sender, RoutedEventArgs e)
-    {
-      SaveFileDialog dlg = new SaveFileDialog();
-      string filter = "PNG files (*.png)|*.png";
-      dlg.Filter = filter;
-      System.Windows.Forms.DialogResult res = dlg.ShowDialog();
-      if (res == System.Windows.Forms.DialogResult.OK)
-      {
-        _ctlActivity.saveBitMap(dlg.FileName);
-      }
     }
   }
 }

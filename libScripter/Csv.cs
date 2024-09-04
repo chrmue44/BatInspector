@@ -273,6 +273,22 @@ namespace libScripter
       return getCellAsDouble(row, col, disableErrorMsg);
     }
 
+    public DateTime getCellAsDate(int row, string colName)
+    {
+      int col = getColNr(colName);
+      return getCellAsDate(row, col);
+    }
+
+    public DateTime getCellAsDate(int row, int col)
+    {
+      string str = getCell(row, col);
+      DateTime retVal;
+      bool ok = DateTime.TryParse(str, out retVal);
+      if (!ok)
+        log($"parsing of date string failed: {str}", enLogType.ERROR);
+      return retVal;
+    }
+
     /// <summary>
     /// get call value as double value if possible (with decimal POINT, independent from localization of PC)
     /// </summary>

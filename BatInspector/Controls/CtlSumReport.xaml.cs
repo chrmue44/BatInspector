@@ -28,13 +28,13 @@ namespace BatInspector.Controls
     {
       InitializeComponent();
       int lblW = 150;
-      _cbPeriod.SelectedIndex = 0;
+  //    _cbPeriod.SelectedIndex = 0;
       _ctlCsvReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlCsvReportName.setValue("sum_report.csv");
       _ctlWebReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlWebReportName.setValue("sum_report.md");
       _ctlActivityDiagName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
-      _ctlActivityDiagName.setValue("activity.pdf");
+      _ctlActivityDiagName.setValue("activity.png");
       _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true, "", initDestDir);
       _ctlDestDir.setup(MyResources.CtlSumReportDstDirectory, 150, true);
 
@@ -52,7 +52,10 @@ namespace BatInspector.Controls
 
     private void initDestDir()
     {
-      _ctlDestDir.setValue(Path.Combine(_ctlRootDir.getValue(), "Auswertungen"));
+      string path = Path.Combine(_ctlRootDir.getValue(), "Auswertungen");
+      if(!Directory.Exists(path))
+        Directory.CreateDirectory(path);
+      _ctlDestDir.setValue(path);
     }
 
     private void bringParentToFront()

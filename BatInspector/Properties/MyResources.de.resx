@@ -1575,12 +1575,6 @@
   <data name="frmActivityTwilightLine" xml:space="preserve">
     <value>Sonnenauf- &amp; Untergang</value>
   </data>
-  <data name="frmActivityCreateDiagram" xml:space="preserve">
-    <value>Diagramm erzeugen</value>
-  </data>
-  <data name="frmActivityExportDiagram" xml:space="preserve">
-    <value>Diagramm exportieren...</value>
-  </data>
   <data name="ctlActivityDisplayStyle" xml:space="preserve">
     <value>Anzeigeart</value>
   </data>
@@ -1591,7 +1585,7 @@
     <value>Kreis</value>
   </data>
   <data name="Square" xml:space="preserve">
-    <value>Quadrat</value>
+    <value>Rechteck</value>
   </data>
   <data name="ActivityMaxDisplayValue" xml:space="preserve">
     <value>max. Anzeigewert</value>
@@ -1607,5 +1601,29 @@
   </data>
   <data name="ActivityValuesAbove" xml:space="preserve">
     <value>Alle Werte darüber in rot</value>
+  </data>
+  <data name="ActivityNightsWithActivity" xml:space="preserve">
+    <value>Nächte mit Aktivität</value>
+  </data>
+  <data name="CtlSumReport_CSVFile" xml:space="preserve">
+    <value>CSV-Datei</value>
+  </data>
+  <data name="ctlReportWebPage" xml:space="preserve">
+    <value>Webseite (Markdown)</value>
+  </data>
+  <data name="DataSource" xml:space="preserve">
+    <value>Datenquelle</value>
+  </data>
+  <data name="ClassWidth" xml:space="preserve">
+    <value>Klassenbreite</value>
+  </data>
+  <data name="ActivityMaxCountsPerClass" xml:space="preserve">
+    <value>max. Zählwert pro Klasse</value>
+  </data>
+  <data name="MaxValue" xml:space="preserve">
+    <value>max. Wert</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Über...</value>
   </data>
 </root>

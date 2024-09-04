@@ -1,4 +1,12 @@
-﻿using BatInspector.Controls;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2024-08-20                                       
+ *   Copyright (C) 2024: Christian Müller chrmue44(at)gmail(dot)com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+
+using BatInspector.Controls;
 using libParser;
 using System;
 using System.Collections.Generic;
@@ -39,18 +47,18 @@ namespace BatInspector
     Graphics _graphics;
     ColorTable _colorTable;
     float _maxDispValue;
-    int _totalCnt;
 
     public ActivityDiagram(ColorTable colorTable)
     {
       _colorTable = colorTable;
     }
     
-    public Bitmap createPlot(ActivityData hm, string title, int style, bool month, bool week, bool day, bool twilight)
+    public Bitmap createPlot(ActivityData hm, string title, int style, int maxDispValue, bool month, bool week, bool day, bool twilight)
     {
       try
       {
         _data = hm;
+        _maxDispValue = maxDispValue;
         _width = BMP_WITH;
         _height = BMP_HEIGHT;
         _bmp = new Bitmap((int)_width, (int)_height);
@@ -72,28 +80,42 @@ namespace BatInspector
       return _bmp;
     }
 
+    public void saveBitMap(string fileName)
+    {
+      if (_bmp != null)
+      {
+        System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Bmp;
+        _bmp.Save(fileName, format);
+        DebugLog.log($"activity diagram '{fileName}' successfully exported", enLogType.INFO);
+      }
+    }
+
 
     void drawLegend(int style)
     {
       int lh = 20;
       int bl = 20;
-      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT, $"{BatInspector.Properties.MyResources.ActivityTotalCalls}: {_totalCnt}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT, $"{BatInspector.Properties.MyResources.ActivityTotalCalls}: {_data.TotalCalls}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + lh, $"{BatInspector.Properties.MyResources.ActivityNightsWithActivity}: {_data.DaysWithData}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 2 * lh, $"{BatInspector.Properties.MyResources.ClassWidth}: {(60/_data.TicksPerHour).ToString()} min", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 3 * lh, $"{BatInspector.Properties.MyResources.ActivityMaxCountsPerClass}: {(_data.MaxCount).ToString()}", COL_TEXT);
 
-      GraphHelper.createText(_graphics, _width - X_BR + bl , Y_BT + 3 * lh, $"Position", COL_TEXT);
-      GraphHelper.createText(_graphics, _width - X_BR + bl + 100 , Y_BT + 3 * lh, $"{Utils.LatitudeToString(_data.Latitude)}", COL_TEXT);
-      GraphHelper.createText(_graphics, _width - X_BR + bl + 100, Y_BT + 4 * lh, $"{Utils.LongitudeToString(_data.Longitude)}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl , Y_BT + 6 * lh, $"Position", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl + 100 , Y_BT + 6 * lh, $"{Utils.LatitudeToString(_data.Latitude)}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl + 100, Y_BT + 7 * lh, $"{Utils.LongitudeToString(_data.Longitude)}", COL_TEXT);
 
       if (style == 0)
       {
-        drawColorLegend(8 * lh, bl + 10);
+        drawColorLegend(10 * lh, bl + 10);
       }
       else
       {
-        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 8*lh, $"{BatInspector.Properties.MyResources.ActivityMaxDisplayValue}: {(int)_maxDispValue}", COL_TEXT);
-        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 9*lh, $"{BatInspector.Properties.MyResources.ActivityValuesAbove}", COL_TEXT);
+        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 11*lh, $"{BatInspector.Properties.MyResources.ActivityMaxDisplayValue}: {(int)_maxDispValue}", COL_TEXT);
+        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 12*lh, $"{BatInspector.Properties.MyResources.ActivityValuesAbove}", COL_TEXT);
       }
     }
     
+
     void drawColorLegend(float bt,  float bl)
     {
       int barWidth = 20;
@@ -149,18 +171,11 @@ namespace BatInspector
       return getYCoord((int)(hour * _data.TicksPerHour));
     }
 
-    private void drawData(int style)
+    void calcMeanValue()
     {
-      int days = (int)(_data.EndDate.Date - _data.StartDate.Date).TotalDays;
-      float dy = (_height - Y_BB - Y_BT) / 24;
-      float dx = 1.0f / days * (_width - X_BL - X_BR);
-      float maxDia = Math.Max(Math.Min(dy, dx) - 2, 1);
-      float maxValue = 0;
-      float meanValue = 0;
       float sum = 0;
       int countEvents = 0;
-      _totalCnt = 0;
-
+      float meanValue = 0;
       for (int i = 0; i < _data.Days.Count; i++)
       {
         for (int j = 0; j < _data.Days[i].Counter.Count; j++)
@@ -170,15 +185,21 @@ namespace BatInspector
             sum += _data.Days[i].Counter[j];
             countEvents++;
           }
-          if (maxValue < _data.Days[i].Counter[j])
-            maxValue = _data.Days[i].Counter[j];
         }
-        _totalCnt += _data.Days[i].TotalCalls;
       }
       if (countEvents == 0)
         countEvents++;
       meanValue = sum / (float)countEvents;
       _maxDispValue = meanValue;
+    }
+
+    private void drawData(int style)
+    {
+      int days = (int)(_data.EndDate.Date - _data.StartDate.Date).TotalDays;
+      float dy = (_height - Y_BB - Y_BT) / 24;
+      float dx = 1.0f / days * (_width - X_BL - X_BR);
+      float maxDia = Math.Max(Math.Min(dy, dx) - 2, 1);
+
 
       float wBox = dx - 2;
       float hBox = dy / _data.TicksPerHour + 0.5f;
@@ -189,6 +210,8 @@ namespace BatInspector
         for (int j = 0; j < _data.Days[i].Counter.Count; j++)
         {
           float xPos = getXCoord(_data.Days[i].Date);
+          if (j < startTimeInTicks)
+            xPos -= dx;
           switch (style)
           {
             case 0:
@@ -299,7 +322,7 @@ namespace BatInspector
         DateTime currDay = _data.StartDate;
         for (int i = 0; i < dayCnt; i++)
         {
-          if (currDay.DayOfWeek == DayOfWeek.Monday)
+          if ((currDay.DayOfWeek == DayOfWeek.Monday) || (dayCnt < 10))
           {
             float xPos = X_BL + (float)i / dayCnt * (_width - X_BL - X_BR);
             GraphHelper.createText(_graphics, xPos, _height - 5, currDay.ToString("dd.MM.yy"), COL_TEXT, -90);
@@ -317,7 +340,7 @@ namespace BatInspector
           if (currDay.Day == 1)
           {
             float xPos = X_BL + (float)i / dayCnt * (_width - X_BL - X_BR);
-            GraphHelper.createText(_graphics, xPos, _height - 5, currDay.ToString("dd.MM.yyyy"), COL_TEXT, -90);
+            GraphHelper.createText(_graphics, xPos, _height - 5, currDay.ToString("dd.MM.yy"), COL_TEXT, -90);
           }
           currDay = currDay.AddDays(1);
         }

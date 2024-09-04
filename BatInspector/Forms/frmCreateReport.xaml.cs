@@ -44,19 +44,20 @@ namespace BatInspector.Forms
 
         DateTime start = (DateTime)_ctlReport._dtStart.SelectedDate;
         DateTime end = (DateTime)_ctlReport._dtEnd.SelectedDate;
-        enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
+        //        enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
+        enPeriod period = enPeriod.DAILY;
         if (_ctlReport._cbCsvFile.IsChecked == true)
         {
           _model.SumReport.createCsvReport(start, end, period, _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
-                                      _ctlReport._ctlCsvReportName.getValue(), _model.SpeciesInfos);
+                                      _ctlReport._ctlCsvReportName.getValue(), _model.SpeciesInfos, _ctlReport.FilterExpression);
         }
         if (_ctlReport._cbWebPage.IsChecked == true)
         {
           SumReportJson rep = _model.SumReport.createWebReport(start, end, period,
                                       _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
-                                      _ctlReport._ctlWebReportName.getValue(), _model.SpeciesInfos);
+                                      _ctlReport._ctlWebReportName.getValue(), _model.SpeciesInfos, _ctlReport.FilterExpression);
           rep.save(Path.Combine(_ctlReport._ctlDestDir.getValue(), "sumReport.json"));
           frmReportAssistant frm = new frmReportAssistant(rep, setFormDataName);
           frm.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -70,11 +71,9 @@ namespace BatInspector.Forms
         if(_ctlReport._cbActivityDiagram.IsChecked == true)
         {
         
-          frmActivity frm = new frmActivity(_model);
-          frm.setup();
           _model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
-          _ctlReport._ctlDestDir.getValue(), _ctlReport.FilterExpression, frm.createPlot);
-          frm.Show();
+          _ctlReport._ctlDestDir.getValue(), _ctlReport.FilterExpression, 
+          _ctlReport._ctlActivityDiagName.getValue(), showActivityDiagram);
         }
       }
       else
@@ -82,8 +81,22 @@ namespace BatInspector.Forms
         this.Visibility = Visibility.Hidden;
       }
 
+    private void showActivityDiagram(ActivityData data, string bmpName)
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.BeginInvoke(new dlgShowActivityDiag(showActivityDiagram), data, bmpName);
+      }
+      else
+      {
+        frmActivity frm = new frmActivity(_model, bmpName);
+        frm.setup();
+        frm.Show();
+        frm.createPlot(data);
+      }
+    }
 
-      private void _btnCancel_Click(object sender, RoutedEventArgs e)
+    private void _btnCancel_Click(object sender, RoutedEventArgs e)
       {
         this.Visibility = Visibility.Hidden;
       }

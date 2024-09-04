@@ -24,9 +24,9 @@
         </GroupBox.Header>
 
         <StackPanel Orientation="Horizontal">
-        <CheckBox Name="_cbMonth" Content="{x:Static res:MyResources.Month}" Margin="0,7,20,5"/>
-        <CheckBox Name="_cbWeek" Content="{x:Static res:MyResources.Week}" Margin="0,7,20,5"/>
-        <CheckBox Name="_cbDay" Content="{x:Static res:MyResources.Day}" Margin="0,7,20,5"/>
+        <CheckBox Name="_cbMonth" Content="{x:Static res:MyResources.Month}" Margin="0,7,20,5" Click="_cbMonth_Click"/>
+                        <CheckBox Name="_cbWeek" Content="{x:Static res:MyResources.Week}" Margin="0,7,20,5" Click="_cbMonth_Click"/>
+                        <CheckBox Name="_cbDay" Content="{x:Static res:MyResources.Day}" Margin="0,7,20,5" Click="_cbMonth_Click"/>
           </StackPanel>
         </GroupBox>
                 <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="2">
@@ -34,10 +34,11 @@
             <TextBlock  Text="{x:Static res:MyResources.Options}" FontWeight="Bold" />
           </GroupBox.Header>
           <StackPanel Orientation="Horizontal">
-            <CheckBox Name="_cbTwilight" Content="{x:Static res:MyResources.frmActivityTwilightLine}" Margin="0,7,20,5"/>
+                        <CheckBox Name="_cbTwilight" Content="{x:Static res:MyResources.frmActivityTwilightLine}" Margin="0,7,10,5" Click="_cbMonth_Click"/>
             <local:ctlSelectItem x:Name="_ctlStyle" Margin="5,5,10,5"/>
-                                 
-          </StackPanel>          
+                        <local:ctlDataItem x:Name="_ctlMaxValue" Margin="5,5,10,5" Width="170"/>
+
+                    </StackPanel>          
         </GroupBox>
       </StackPanel>
     </StackPanel>

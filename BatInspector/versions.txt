@@ -4,20 +4,21 @@ TODO
 - training of model
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
-- activity diagram
 - overcome the limit of 1000 files per project
-- batInfo file mit in Installer aufnehmen
 - project selector collapses occasionally during work  
 
-V0.8.6.0
+V0.8.6.0   02.09.24
 - bugfix: grid after zoomIn/zoomOut sometimes not OK (when less than 9 lines)
 - bugfix: opening of large WAV files with WAV-Tool crashed
 - bugfix: opening WAV files without having opened a project before didn't work
 - bugfix: editing of remarks in project view now works again
 - bugfix: "?" and "Social" are not added anymore to BatInfo.json
-- project info now on top of treeview on the left side of main screen (hopefully easier to spot)
-- improved editing in zoom view: all chges are saved immediately, call information is updated properly according to chages (especially cutout)
-
+- project info now on top of treeview on the left side of main screen 
+  (hopefully easier to spot)
+- improved editing in zoom view: all changes are saved immediately, 
+  call information is updated properly according to changes (especially cutout tool)
+- activity diagram
+- in place creation of projects
 
 
 V0.8.5.0   15.08.24

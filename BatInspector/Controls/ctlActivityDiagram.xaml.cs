@@ -15,7 +15,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Diagnostics;
 using libParser;
-
+using BatInspector.Forms;
 
 namespace BatInspector.Controls
 {
@@ -27,6 +27,8 @@ namespace BatInspector.Controls
     ActivityDiagram _diagram;
     ViewModel _model = null;
     Bitmap _bmp = null;
+    ActivityData _data = null;
+    string _bmpName;
 
     public ctlActivityDiagram()
     {
@@ -38,8 +40,12 @@ namespace BatInspector.Controls
       _model = model;
       _diagram = new ActivityDiagram(_model.ColorTable);
       int lblW = 150;
-      _ctrlTitle.setup(BatInspector.Properties.MyResources.DiagramTitle, enDataType.STRING, 0, lblW, true);
-      _ctlStyle.setup(BatInspector.Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 100);
+      _ctrlTitle.setup(BatInspector.Properties.MyResources.DiagramTitle, enDataType.STRING, 0, lblW, true, textChanged);
+      _ctlStyle.setup(BatInspector.Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 100, styleChanged);
+      _ctlMaxValue.setup(BatInspector.Properties.MyResources.MaxValue, enDataType.INT, 0, 80, true, textChanged);
+      _cbWeek.IsChecked = true;
+      _cbDay.IsChecked = true;
+      _cbTwilight.IsChecked = true;
       string[] items = new string[3];
       items[0] = BatInspector.Properties.MyResources.ctlActivityColored;
       items[1] = BatInspector.Properties.MyResources.Square;
@@ -47,11 +53,46 @@ namespace BatInspector.Controls
       _ctlStyle.setItems(items);
     }
 
-
-
-    public void createPlot(ActivityData hm, bool month, bool week, bool day, bool twilight)
+    private void textChanged(enDataType type, object val)
     {
-      _bmp = _diagram.createPlot(hm, _ctrlTitle.getValue(), _ctlStyle.getSelectedIndex(), month, week, day, twilight);
+      createPlot();
+    }
+
+    private void styleChanged(int index, string val)
+    {
+      createPlot();
+    }
+
+    public ActivityDiagram Diagram { get{ return _diagram; } }
+
+    public void createPlot(ActivityData hm, string bmpName)
+    {
+      _data = hm;
+      _bmpName = bmpName;
+      createPlot();
+    }
+
+
+
+
+    private void createPlot()
+    {
+      if (_data == null)
+        return;
+      bool month = _cbMonth.IsChecked == true;
+      bool week = _cbWeek.IsChecked == true;
+      bool day = _cbDay.IsChecked == true;
+      bool twilight = _cbTwilight.IsChecked == true;
+
+      int maxDispValue = _ctlMaxValue.getIntValue();
+      if (maxDispValue == 0)
+      {
+        maxDispValue = (int)_data.calcMeanValue();
+        _ctlMaxValue.setValue(maxDispValue);
+      }
+
+
+      _bmp = _diagram.createPlot(_data, _ctrlTitle.getValue(), _ctlStyle.getSelectedIndex(), maxDispValue, month, week, day, twilight);
       try
       {
         BitmapImage bitmapimage = new BitmapImage();
@@ -66,6 +107,7 @@ namespace BatInspector.Controls
 
         }
         _cnv.Source = bitmapimage;
+        _diagram.saveBitMap(_bmpName);
       }
       catch (Exception ex)
       {
@@ -73,14 +115,9 @@ namespace BatInspector.Controls
       }
     }
 
-    public void saveBitMap(string fileName)
+    private void _cbMonth_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-      if (_bmp != null)
-      {
-        System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Bmp;
-        _bmp.Save(fileName, format);
-        DebugLog.log($"activity diagram '{fileName}' successfully exported", enLogType.INFO);
-      }
+      createPlot();
     }
   }
 }

@@ -61,6 +61,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About....
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version History.
         /// </summary>
         public static string AboutHistory {
@@ -79,11 +88,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to max. counts per class.
+        /// </summary>
+        public static string ActivityMaxCountsPerClass {
+            get {
+                return ResourceManager.GetString("ActivityMaxCountsPerClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to max. Display Value.
         /// </summary>
         public static string ActivityMaxDisplayValue {
             get {
                 return ResourceManager.GetString("ActivityMaxDisplayValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nights with activity.
+        /// </summary>
+        public static string ActivityNightsWithActivity {
+            get {
+                return ResourceManager.GetString("ActivityNightsWithActivity", resourceCulture);
             }
         }
         
@@ -237,6 +264,15 @@ namespace BatInspector.Properties {
         public static string Class {
             get {
                 return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class width.
+        /// </summary>
+        public static string ClassWidth {
+            get {
+                return ResourceManager.GetString("ClassWidth", resourceCulture);
             }
         }
         
@@ -457,6 +493,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Web Page (Markdown).
+        /// </summary>
+        public static string ctlReportWebPage {
+            get {
+                return ResourceManager.GetString("ctlReportWebPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Characteristic Calls.
         /// </summary>
         public static string ctlSpeciesDataCharCalls {
@@ -543,6 +588,15 @@ namespace BatInspector.Properties {
         public static string ctlStatRecTime {
             get {
                 return ResourceManager.GetString("ctlStatRecTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSV file.
+        /// </summary>
+        public static string CtlSumReport_CSVFile {
+            get {
+                return ResourceManager.GetString("CtlSumReport_CSVFile", resourceCulture);
             }
         }
         
@@ -903,6 +957,15 @@ namespace BatInspector.Properties {
         public static string DataAcquisition {
             get {
                 return ResourceManager.GetString("DataAcquisition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Source.
+        /// </summary>
+        public static string DataSource {
+            get {
+                return ResourceManager.GetString("DataSource", resourceCulture);
             }
         }
         
@@ -1272,24 +1335,6 @@ namespace BatInspector.Properties {
         public static string Frequency {
             get {
                 return ResourceManager.GetString("Frequency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create Diagram.
-        /// </summary>
-        public static string frmActivityCreateDiagram {
-            get {
-                return ResourceManager.GetString("frmActivityCreateDiagram", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export Diagram....
-        /// </summary>
-        public static string frmActivityExportDiagram {
-            get {
-                return ResourceManager.GetString("frmActivityExportDiagram", resourceCulture);
             }
         }
         
@@ -3283,6 +3328,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to max. Value.
+        /// </summary>
+        public static string MaxValue {
+            get {
+                return ResourceManager.GetString("MaxValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mean v..
         /// </summary>
         public static string Mean {
@@ -4174,7 +4228,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Square.
+        ///   Looks up a localized string similar to Rectangle.
         /// </summary>
         public static string Square {
             get {

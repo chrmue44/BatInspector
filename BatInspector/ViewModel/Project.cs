@@ -6,17 +6,13 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Controls;
-using BatInspector.Forms;
 using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -533,7 +529,7 @@ namespace BatInspector
         else
           DebugLog.log("No WAV files in directory " + info.SrcDir, enLogType.ERROR);
         // remove src project
-        if(info.RemoveSource)
+        if(info.RemoveSource && (info.SrcDir != Path.Combine(info.DstDir, info.Name)))
           Directory.Delete(info.SrcDir, true);
       }
       catch (Exception e)

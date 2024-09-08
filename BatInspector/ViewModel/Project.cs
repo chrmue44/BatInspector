@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -67,6 +68,21 @@ namespace BatInspector
 
     public abstract string getFullFilePath(string path);
     public abstract BatExplorerProjectFileRecordsRecord[] getRecords(); 
+
+    public BatExplorerProjectFileRecordsRecord findRecord(string wavName)
+    {
+      BatExplorerProjectFileRecordsRecord retVal = null;
+      BatExplorerProjectFileRecordsRecord[] records = getRecords();
+      foreach(BatExplorerProjectFileRecordsRecord rec in records)
+      {
+        if(rec.File.ToLower() == wavName.ToLower())
+        {
+          retVal = rec;
+          break;
+        }
+      }
+      return retVal;
+    }
 
     /// <summary>
     /// init the list of species valid for the project.

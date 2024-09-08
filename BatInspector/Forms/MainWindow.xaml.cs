@@ -66,6 +66,11 @@ namespace BatInspector.Forms
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
 
+    double _scrollBarPos = 0;
+    bool _mouseIsDowwnOnScroll = false;
+    List<string> _showWavFiles = new List<string>();
+    int _startWavIdx = 0;  //index of first file in controls in _showWavFiles
+
     public MainWindow()
     {
       System.Version version;
@@ -294,7 +299,7 @@ namespace BatInspector.Forms
       else
       {
         DebugLog.log("start to open query", enLogType.DEBUG);
-        _scrlViewer.ScrollToVerticalOffset(0);
+        _scrollPrj.Value = 0;
         checkSavePrj();
         _model.initQuery(file);
         if (_frmQuery == null)
@@ -303,16 +308,9 @@ namespace BatInspector.Forms
 
         _switchTabToPrj = true;
         _lblProject.Text = "QUERY: " + file.FullName;
+        buildWavFileList(false);
         if (_model.Query != null)
-        {
-          if (_model.Query.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
-            populateFiles();
-          else
-          {
-            DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
-            hideMsg();
-          }
-        }
+          populateFiles();
       }
     }
 
@@ -350,7 +348,7 @@ namespace BatInspector.Forms
       {
         showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgLoading, true);
         DebugLog.log("start to open project", enLogType.DEBUG);
-        _scrlViewer.ScrollToVerticalOffset(0);
+        _scrollPrj.Value = 0;
         checkSavePrj();
         _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
         setStatus("");
@@ -358,16 +356,36 @@ namespace BatInspector.Forms
         _tbReport_GotFocus(_spSpectrums, null);
         if ((_model.Prj != null) && _model.Prj.Ok)
         {
+          _scrollPrj.Minimum = 0;
+          _scrollBarPos = 0;
+          _scrollPrj.Maximum = _model.Prj.Records.Length - 1;
+          // TODO set button size
           _ctlPrjInfo.setup(_model.Prj);
           _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
           _ctlScatter.initPrj();
           _switchTabToPrj = true;
-          if (_model.Prj.Records.Length < AppParams.MAX_FILES_PRJ_OVERVIEW)
-            populateFiles();
-          else
-            DebugLog.log("too much files in project, could not open file views", enLogType.INFO);
+          buildWavFileList(false);
+          populateFiles();
         }
+        _model.Status.State = enAppState.OPEN_PRJ;
+
       }
+    }
+
+    private void buildWavFileList(bool selectedOnly)
+    {
+      if (_model.CurrentlyOpen == null)
+        return;
+
+      _showWavFiles.Clear();
+      BatExplorerProjectFileRecordsRecord[] list = _model.CurrentlyOpen.getRecords();
+      foreach(BatExplorerProjectFileRecordsRecord rec in list)
+      {
+        if (!selectedOnly || (selectedOnly && rec.Selected))
+          _showWavFiles.Add(rec.File);
+      }
+      _scrollPrj.SmallChange = 1.0;
+      _scrollPrj.Maximum = _showWavFiles.Count - 1;
     }
 
     private void initZoomWindow()
@@ -487,7 +505,7 @@ namespace BatInspector.Forms
       _workerStartup = new Thread(createImageFiles);
       _workerStartup.Priority = ThreadPriority.AboveNormal;
       _workerStartup.Start();
-      _model.Status.State = enAppState.OPEN_PRJ;
+//      _model.Status.State = enAppState.OPEN_PRJ;
     }
 
     void worker_ProgressChanged(string pngName)
@@ -500,26 +518,97 @@ namespace BatInspector.Forms
 
     }
 
-    private void populateControls()
+    /// <summary>
+    /// faster up down scroll for increment 1
+    /// </summary>
+    /// <param name="up"></param>
+    private void incrementControls(bool up)
     {
-      createFftImages();
+      if (_model.CurrentlyOpen == null)
+        return;
+      bool append = false;
+      string wavName = "";
+      if (up)
+      {
+        if (_startWavIdx < (_showWavFiles.Count - 1))
+          _startWavIdx++;
+        {
+          _spSpectrums.Children.RemoveAt(0);
+          if ((_startWavIdx + _spSpectrums.Children.Count) <
+             (_showWavFiles.Count - 1))
+          {
+            wavName = _showWavFiles[_startWavIdx + _spSpectrums.Children.Count + 1];
+            append = true;
+          }
+        }
+      }
+      else
+      {
+        if (_startWavIdx > 0)
+        {
+          _startWavIdx--;
+          wavName = _showWavFiles[_startWavIdx];
+          append = true;
+        }
+      }
+      if (append)
+      {
+        BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(wavName);
+        AnalysisFile analysisFile = null;
+        if (_model.CurrentlyOpen.Analysis != null)
+          analysisFile = _model.CurrentlyOpen.Analysis.find(rec.File);
+        ctlWavFile ctl = new ctlWavFile(analysisFile, rec.File, _model, this, true);
+        if (up)
+          _spSpectrums.Children.Add(ctl);
+        else
+          _spSpectrums.Children.Insert(0, ctl);
+        bool isQuery = _model.Query != null;
+        initCtlWav(ctl, rec, isQuery);
+      }
+    }
+
+    private void populateControls(int startIdx)
+    {
+      _startWavIdx = startIdx;
+      int index = 0;
+      BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+      bool isQuery = _model.Query != null;
+      Analysis analysis = _model.CurrentlyOpen.Analysis;
+      if (recList != null)
+      { 
+        _spSpectrums.Children.Clear();
+        int maxCtl = Math.Min(_showWavFiles.Count, 6);
+        for (int i = 0; i < maxCtl; i++)
+        {
+          string wavName = _showWavFiles[_showWavFiles.Count- maxCtl + i];
+          if ((startIdx + i) < _showWavFiles.Count)
+              wavName = _showWavFiles[i + startIdx];
+          BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(wavName);
+          AnalysisFile analysisFile = null;
+          if (analysis != null)
+            analysisFile = _model.Prj.Analysis.find(rec.File);
+          index++;
+          ctlWavFile ctl = new ctlWavFile(analysisFile, rec.File, _model, this, true);
+          DockPanel.SetDock(ctl, Dock.Bottom);
+          _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
+          {
+            _spSpectrums.Children.Add(ctl);
+          }));
+
+          initCtlWav(ctl, rec, isQuery);
+        }
+      }
     }
 
     private void createImageFiles()
     {
       try
       {
+        DebugLog.log("start creating missing image files", enLogType.INFO);
         Stopwatch s = new Stopwatch();
         s.Start();
-        BatExplorerProjectFileRecordsRecord[] recList = null;
-        bool fromQuery = false;
-        if ((_model.Prj != null) && (_model.Prj.Ok))
-          recList = _model.Prj.Records;
-        else if (_model.Query != null)
-        {
-          recList = _model.Query.Records;
-          fromQuery = true;
-        }
+        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        bool fromQuery = _model.Query != null;
         if (recList != null)
         {
           _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
@@ -534,8 +623,9 @@ namespace BatInspector.Forms
             }
           }
         }
+        DebugLog.log("finishing to create missing image files", enLogType.INFO);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log("error creating image files: " + ex.ToString(), enLogType.ERROR);
         DebugLog.save();
@@ -574,62 +664,6 @@ namespace BatInspector.Forms
 //        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
     }
 
-    void createFftImages()
-    {
-      int index = 0;
-      if ((_model.Prj != null) && (_model.Prj.Ok))
-      {
-        _spSpectrums.Children.Clear();
-        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Prj.Records)
-        {
-          AnalysisFile analysis = null;
-          if (_model.Prj.Analysis != null)
-            analysis = _model.Prj.Analysis.find(rec.File);
-          index++;
-          ctlWavFile ctl = new ctlWavFile(analysis, rec.File, _model, this, true);
-          DockPanel.SetDock(ctl, Dock.Bottom);
-          _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
-          {
-            _spSpectrums.Children.Add(ctl);
-          }));
-
-          if (!_fastOpen || (index < 5))
-          {
-            initCtlWav(ctl, rec, false);
-          }
-        }
-        DebugLog.log("project opened: " + _model.Prj.Name, enLogType.INFO);
-        showStatus();
-      }
-      else if (_model.Query != null)
-      {
-        _spSpectrums.Children.Clear();
-
-        foreach (BatExplorerProjectFileRecordsRecord rec in _model.Query.Records)
-        {
-          AnalysisFile analysis = null;
-          if (_model.Query.Analysis != null)
-            analysis = _model.Query.Analysis.find(rec.File);
-          index++;
-          ctlWavFile ctl = new ctlWavFile(analysis, rec.File, _model, this, false);
-          DockPanel.SetDock(ctl, Dock.Bottom);
-          _spSpectrums.Dispatcher.BeginInvoke((Action)(() =>
-          {
-            _spSpectrums.Children.Add(ctl);
-          }));
-
-          if (!_fastOpen || (index < 5))
-          {
-            initCtlWav(ctl, rec, true);
-          }
-        }
-        if (_model.Prj != null)
-          DebugLog.log("Project opened: " + _model.Prj.Name, enLogType.INFO);
-        else if (_model.Query != null)
-          DebugLog.log("Query opened: " + _model.Query.Name, enLogType.INFO);
-        showStatus();
-      }
-    }
 
     void showStatus()
     {
@@ -638,26 +672,37 @@ namespace BatInspector.Forms
         report = _model.CurrentlyOpen.Analysis.Report != null ?
                  BatInspector.Properties.MyResources.MainWindowMsgReport :
                  BatInspector.Properties.MyResources.MainWindow_showStatus_NoReport;
+  
+      setStatus($"  [{BatInspector.Properties.MyResources.MainWindowFiles}: {_showWavFiles.Count}/{_model.CurrentlyOpen.getRecords().Length} | { report} ]");
+    }
 
-      int vis = 0;
-      foreach (ctlWavFile c in _spSpectrums.Children)
+
+    private void updateControls()
+    {
+      foreach (UIElement it in _spSpectrums.Children)
       {
-        if (c.Visibility == Visibility.Visible)
-          vis++;
+        ctlWavFile ctl = it as ctlWavFile;
+        BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen?.findRecord(ctl.WavName);
+        if(rec != null)
+          setCheckboxInWavCtl(ctl, rec.Selected);
       }
-      setStatus("  [ "+ BatInspector.Properties.MyResources.MainWindowFiles + ": " + vis.ToString() + "/" + _spSpectrums.Children.Count.ToString() + " | " + report + " ]");
+
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)
     {
       try
       {
-        foreach (UIElement it in _spSpectrums.Children)
+        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        if (recList != null)
         {
-          ctlWavFile ctl = it as ctlWavFile;
-          setCheckboxInWavCtl(ctl, true);
+          foreach (BatExplorerProjectFileRecordsRecord rec in recList)
+          {
+            rec.Selected = true;
+          }
+          updateControls();
+          DebugLog.log("select all files", enLogType.DEBUG);
         }
-        DebugLog.log("select all files", enLogType.DEBUG);
       }
       catch (Exception ex)
       {
@@ -669,12 +714,16 @@ namespace BatInspector.Forms
     {
       try
       {
-        foreach (UIElement it in _spSpectrums.Children)
+        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        if (recList != null)
         {
-          ctlWavFile ctl = it as ctlWavFile;
-          setCheckboxInWavCtl(ctl, false);
+          foreach (BatExplorerProjectFileRecordsRecord rec in recList)
+          {
+            rec.Selected = false;
+          }
+          updateControls();
+          DebugLog.log("deselect all files", enLogType.DEBUG);
         }
-        DebugLog.log("deselect all files", enLogType.DEBUG);
       }
       catch (Exception ex)
       {
@@ -721,8 +770,10 @@ namespace BatInspector.Forms
     {
       try
       {
-        foreach (ctlWavFile ctl in _spSpectrums.Children)
-          ctl.Visibility = ctl._cbSel.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+//        foreach (ctlWavFile ctl in _spSpectrums.Children)
+//          ctl.Visibility = ctl._cbSel.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        buildWavFileList(true);
+        populateFiles();
         showStatus();
         DebugLog.log("MainWin:BTN 'hide unselected files' clicked", enLogType.DEBUG);
       }
@@ -736,8 +787,10 @@ namespace BatInspector.Forms
     {
       try
       {
-        foreach (ctlWavFile ctl in _spSpectrums.Children)
-          ctl.Visibility = Visibility.Visible;
+ //       foreach (ctlWavFile ctl in _spSpectrums.Children)
+ //         ctl.Visibility = Visibility.Visible;
+        buildWavFileList(false);
+        populateFiles();
         showStatus();
         DebugLog.log("MainWin:BTN 'show all' clicked", enLogType.DEBUG);
       }
@@ -831,13 +884,6 @@ namespace BatInspector.Forms
       {
         DebugLog.log("MainWin:BTN 'Size' failed: " + ex.ToString(), enLogType.ERROR);
       }
-    }
-
-
-
-    private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-      _model.KeyPressed = e.Key;
     }
 
     private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
@@ -946,14 +992,18 @@ namespace BatInspector.Forms
       {
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
                          filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilter.Text);
-        if (filter != null)
+        if ((filter != null) && (_model.CurrentlyOpen != null))
         {
-          foreach (ctlWavFile c in _spSpectrums.Children)
+          foreach (AnalysisFile a in _model.CurrentlyOpen.Analysis.Files)         
           {
-            bool res = _model.Filter.apply(filter, c.Analysis);
-            setCheckboxInWavCtl(c, res);
+            bool res = _model.Filter.apply(filter, a);
+            BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(a.Name);
+            if(rec != null)
+              rec.Selected = res;
           }
-          _btnHideUnSelected_Click(sender, e);
+          buildWavFileList(true);
+          populateControls(0);
+          updateControls();
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
         }
         else
@@ -1186,16 +1236,17 @@ namespace BatInspector.Forms
         case enAppState.OPEN_PRJ:
           if (_btnCreatePrj.IsEnabled)
             _btnCreatePrj.IsEnabled = false;
-          if ((_workerStartup != null) && (!_workerStartup.IsAlive))
-          {
-            _workerStartup = null;
-            populateControls();
-            if ((_model.Prj != null) && _model.Prj.Ok)
-              _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
-            if (_model.Query != null)
-              _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
-            _model.Status.State = enAppState.WAIT_FOR_GUI;
-          }
+          populateControls(0);
+          if ((_model.Prj != null) && _model.Prj.Ok)
+            _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + _model.Prj.Name;
+          if (_model.Query != null)
+            _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + _model.Query.Name;
+          _model.Status.State = enAppState.WAIT_FOR_GUI;
+          if (_model.Prj != null)
+            DebugLog.log("Project opened: " + _model.Prj.Name, enLogType.INFO);
+          else if (_model.Query != null)
+            DebugLog.log("Query opened: " + _model.Query.Name, enLogType.INFO);
+          showStatus();
           break;
 
         case enAppState.WAIT_FOR_GUI:
@@ -1334,8 +1385,44 @@ namespace BatInspector.Forms
       return rect.IntersectsWith(bounds);
     }
 
+    private void _scrollPrj_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+      _mouseIsDowwnOnScroll = true;
+    }
+
+    
+    private void _scrollPrj_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      if(!_mouseIsDowwnOnScroll)
+      {
+        if ((_model.Prj == null) || (!_model.Prj.Ok))
+        {
+          if (_model.Query == null)
+            return;
+        }
+        if (_scrollBarPos == _scrollPrj.Value)
+          return;
+
+        double diff = _scrollPrj.Value - _scrollBarPos;
+        if ((diff < 2) && (diff > 0))
+          incrementControls(true);
+        else if ((diff > -2) && (diff < 0))
+          incrementControls(false);
+        else
+          populateControls((int)_scrollPrj.Value);
+        _scrollBarPos = _scrollPrj.Value;
+      }
+    }
+
+    private void _scrollPrj_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+      _mouseIsDowwnOnScroll = false;
+      _scrollPrj_ValueChanged(null, null);
+    }
+
     private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
+      //@@@
       if (!_fastOpen)
         return;
 

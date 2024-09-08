@@ -227,6 +227,10 @@ public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplor
       this.nameField = value;
     }
   }
+
+  [XmlIgnoreAttribute]
+  public bool Selected { get; set; } = false;
+
   public int CompareTo(BatExplorerProjectFileRecordsRecord obj)
   { 
     return string.Compare(File, obj.File); 

@@ -7,6 +7,10 @@ TODO
 - overcome the limit of 1000 files per project
 - project selector collapses occasionally during work  
 
+V0.9.0.0
+- remove checkProject() in initProject() for faster start of big projects
+- faster display of files in big projects (and much less memory consumption)
+
 V0.8.6.0   02.09.24
 - bugfix: grid after zoomIn/zoomOut sometimes not OK (when less than 9 lines)
 - bugfix: opening of large WAV files with WAV-Tool crashed

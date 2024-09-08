@@ -93,8 +93,6 @@ namespace BatInspector
 
     public System.Windows.Input.Key LastKey { get; set; }
 
-    public System.Windows.Input.Key KeyPressed { get; set; }
-
     public SumReport SumReport { get { return _sumReport; } }
 
     public BatSpeciesRegions Regions { get { return _batSpecRegions; } }
@@ -214,8 +212,8 @@ namespace BatInspector
         }
         else
           _prj.Analysis.init(_prj.SpeciesInfos);
-        if (_prj.Ok && _prj.Analysis.Report != null)
-          checkProject();
+//        if (_prj.Ok && _prj.Analysis.Report != null)
+//          checkProject();
         initScripter();
       }
       else if (Project.containsWavs(dir))

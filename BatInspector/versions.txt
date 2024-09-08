@@ -10,6 +10,7 @@ TODO
 V0.9.0.0
 - remove checkProject() in initProject() for faster start of big projects
 - faster display of files in big projects (and much less memory consumption)
+- no more generating of png files in advance
 
 V0.8.6.0   02.09.24
 - bugfix: grid after zoomIn/zoomOut sometimes not OK (when less than 9 lines)

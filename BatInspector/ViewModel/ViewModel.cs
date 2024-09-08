@@ -817,7 +817,6 @@ namespace BatInspector
         // remove src project
         Directory.Delete(prjPath, true);
       }
-      Status.State = enAppState.OPEN_PRJ;
       Prj.ReloadInGui = true;
     }
   }

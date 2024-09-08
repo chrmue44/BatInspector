@@ -25,7 +25,7 @@ namespace BatInspector.Controls
   {
     AnalysisFile _analysis;
     string _wavFilePath;
-    string _wavName;
+    BatExplorerProjectFileRecordsRecord _record;
     ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
@@ -33,7 +33,7 @@ namespace BatInspector.Controls
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
     public AnalysisFile Analysis { get { return _analysis; } }
-    public string WavName { get { return _wavName; } }
+    public string WavName { get { return _record.File; } }
 
     public bool InfoVisible
     {
@@ -58,19 +58,20 @@ namespace BatInspector.Controls
     }
 
 
-    public ctlWavFile(AnalysisFile analysis, string fileName,  ViewModel model, MainWindow parent, bool showButtons)
+    public ctlWavFile(AnalysisFile analysis, BatExplorerProjectFileRecordsRecord record,  ViewModel model, MainWindow parent, bool showButtons)
     {
       _model = model;
       _parent = parent;
       InitializeComponent();
       _ctlRemarks.setup(MyResources.CtlWavRemarks, enDataType.STRING, 0, 80, true, _tbRemarks_TextChanged);
       _analysis = analysis;
-      _wavName = fileName;
+      _record = record;
       _btnCopy.Visibility = showButtons ? Visibility.Visible : Visibility.Collapsed;
       _btnCopy.IsEnabled = showButtons;
       _btnTools.Visibility = showButtons ? Visibility.Visible : Visibility.Collapsed;
       _btnTools.IsEnabled = showButtons;
       _cbSel.Focusable = true;
+      _cbSel.IsChecked = record.Selected;
       Visibility = Visibility.Visible;
     }
 
@@ -99,11 +100,12 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = _analysis.Selected;
     }
 
-    public void setFileInformations(string Name, string wavFilePath, AnalysisFile analysis, List<string> spec)
+    public void setFileInformations(BatExplorerProjectFileRecordsRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec)
     {
       _wavFilePath = wavFilePath;
-      _wavName = Name;
-      _btnWavFile.Content = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
+      _record = record;
+      _cbSel.IsChecked = record.Selected;
+      _btnWavFile.Content = _record.File.Replace("_", "__");  //hack, because single '_' shows as underlined char
       //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
       initCallInformations(spec);
@@ -153,21 +155,21 @@ namespace BatInspector.Controls
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      string fName = Path.Combine(_wavFilePath ,_wavName);
+      string fName = Path.Combine(_wavFilePath ,_record.File);
       if (File.Exists(fName))
       {
         if (_analysis != null)
         {
-          _parent.setZoom(_wavName, _analysis, _wavFilePath, this);
+          _parent.setZoom(_record.File, _analysis, _wavFilePath, this);
         }
         else
         {
-          AnalysisFile ana = new AnalysisFile(_wavName, 383500, 3.001);
-           _parent.setZoom(_wavName, ana, _wavFilePath, this);
+          AnalysisFile ana = new AnalysisFile(_record.File, 383500, 3.001);
+           _parent.setZoom(_record.File, ana, _wavFilePath, this);
         }
       }
       else
-        DebugLog.log("Zoom not possible, file '" + _wavName + "' does not exist", enLogType.ERROR);
+        DebugLog.log("Zoom not possible, file '" + _record.File + "' does not exist", enLogType.ERROR);
     }
 
     private void selItemChanged(int index, string val)
@@ -240,7 +242,7 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        FrmTools frm = new FrmTools(_wavName, _model);
+        FrmTools frm = new FrmTools(_record.File, _model);
         bool upd = frm.ShowDialog() == true;
         if (upd)
           update();
@@ -251,6 +253,7 @@ namespace BatInspector.Controls
     {
       if(_analysis != null)
         _analysis.Selected = _cbSel.IsChecked == true;
+      _record.Selected = _cbSel.IsChecked == true;
     }
 
     private void _btnWavFile_Click(object sender, RoutedEventArgs e)
@@ -261,7 +264,7 @@ namespace BatInspector.Controls
         if (!string.IsNullOrEmpty(exe))
         {
           ProcessRunner p = new ProcessRunner();
-          string fName = Path.Combine(WavFilePath, _wavName);
+          string fName = Path.Combine(WavFilePath, _record.File);
           p.launchCommandLineApp(exe, null, "", true, fName);
         }
       }

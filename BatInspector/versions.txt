@@ -8,6 +8,8 @@ TODO
 - project selector collapses occasionally during work  
 - sum of total calls in activity diagram probably too low
 
+V0.8.6.1   09.09.24
+- bugfix: import from path names with blanks is now possible
 
 V0.8.6.0   02.09.24
 - bugfix: grid after zoomIn/zoomOut sometimes not OK (when less than 9 lines)

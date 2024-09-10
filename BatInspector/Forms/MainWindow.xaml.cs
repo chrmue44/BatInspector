@@ -97,6 +97,8 @@ namespace BatInspector.Forms
       _ctlLog._cbWarn.IsChecked = AppParams.Inst.LogShowWarning;
       _ctlLog._cbInfo.IsChecked = AppParams.Inst.LogShowInfo;
       _ctlLog._cbDebug.IsChecked = AppParams.Inst.LogShowDebug;
+      _ctlPrjBtn.setup(_model, this, true, false);
+      _ctlListBtn.setup(_model, this, false, true);
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog, _ctlLog.checkMaxLogSize, AppParams.LogDataPath);
       initTreeView();
       populateFilterComboBoxes();
@@ -240,7 +242,7 @@ namespace BatInspector.Forms
       _spSpectrums.Children.Clear();
       if ((dir != null) && (Project.containsProject(dir) != ""))
       {
-        initFileButton(false);
+        _ctlPrjBtn.initFileButton(false);
         _tbSum.Visibility = Visibility.Visible;
         worker.DoWork += delegate (object s, DoWorkEventArgs args)
         {
@@ -254,7 +256,7 @@ namespace BatInspector.Forms
         FileInfo file = item.Tag as FileInfo;
         if ((file != null) && Query.isQuery(file))
         {
-          initFileButton(true);
+          _ctlPrjBtn.initFileButton(true);
           _tbSum.Visibility = Visibility.Collapsed;
           worker.DoWork += delegate (object s, DoWorkEventArgs args)
           {
@@ -273,7 +275,8 @@ namespace BatInspector.Forms
 
     public void populateFilterComboBoxes()
     {
-      Filter.populateFilterComboBox(_cbFilter, _model);
+      Filter.populateFilterComboBox(_ctlPrjBtn._cbFilter, _model);
+      Filter.populateFilterComboBox(_ctlListBtn._cbFilter, _model);
       _ctlScatter.populateComboBoxes();
       _ctlStatistic.populateComboBoxes();
     }
@@ -289,6 +292,19 @@ namespace BatInspector.Forms
         case enWinType.BAT:
           _frmSpecies = null;
           break;
+      }
+    }
+
+    public void togglePngSize()
+    {
+      _imgHeight >>= 1;
+      if (_imgHeight < 64)
+        _imgHeight = MAX_IMG_HEIGHT;
+      foreach (UIElement ui in _spSpectrums.Children)
+      {
+        ctlWavFile ctl = ui as ctlWavFile;
+        ctl._img.MaxHeight = _imgHeight;
+        ctl._img.Height = _imgHeight;
       }
     }
 
@@ -369,7 +385,19 @@ namespace BatInspector.Forms
       }
     }
 
-    void initializeProject(DirectoryInfo dir)
+    public void toggleCallInfo()
+    {
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
+        ctl.InfoVisible = !ctl.InfoVisible;
+      if (_spSpectrums.Children.Count > 0)
+      {
+        ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
+        AppParams.Inst.HideInfos = !ctl0.InfoVisible;
+        DebugLog.log("MainWin:BTN 'Call Info' clicked", enLogType.DEBUG);
+      }
+    }
+
+    public void initializeProject(DirectoryInfo dir)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
@@ -394,7 +422,7 @@ namespace BatInspector.Forms
 
 
 
-    private void buildWavFileList(bool selectedOnly)
+    public void buildWavFileList(bool selectedOnly)
     {
       if (_model.CurrentlyOpen == null)
         return;
@@ -414,7 +442,7 @@ namespace BatInspector.Forms
       _scrollPrj.InvalidateVisual();
       _scrollPrj.Value = 0;
       if (oldValue == _scrollPrj.Value)
-        populateControls((int)oldValue);
+        populateControls(0);
     }
 
     private void initZoomWindow()
@@ -597,7 +625,7 @@ namespace BatInspector.Forms
         bool isQuery = _model.Query != null;
         initCtlWav(ctl, rec, isQuery);
       }
-      _tbPrj.Header = $"{MyResources.MainWinProjectView} ({_startWavIdx}/{_showWavFiles.Count})";
+      _tbPrj.Header = $"{MyResources.MainWinProjectView} ({_startWavIdx + 1}/{_showWavFiles.Count})";
 
     }
 
@@ -634,7 +662,7 @@ namespace BatInspector.Forms
             }
           }
         }
-        _tbPrj.Header = $"{MyResources.MainWinProjectView} ({startIdx}/{_showWavFiles.Count})";
+        _tbPrj.Header = $"{MyResources.MainWinProjectView} ({startIdx + 1}/{_showWavFiles.Count})";
       }
     }
 
@@ -702,19 +730,21 @@ namespace BatInspector.Forms
     }
 
 
-    void showStatus()
+    public void showStatus()
     {
       string report = "";
       if (_model.CurrentlyOpen != null)
+      {
         report = _model.CurrentlyOpen.Analysis.Report != null ?
                  BatInspector.Properties.MyResources.MainWindowMsgReport :
                  BatInspector.Properties.MyResources.MainWindow_showStatus_NoReport;
-  
-      setStatus($"  [{BatInspector.Properties.MyResources.MainWindowFiles}: {_showWavFiles.Count}/{_model.CurrentlyOpen.getRecords().Length} | { report} ]");
+
+        setStatus($"  [{BatInspector.Properties.MyResources.MainWindowFiles}: {_showWavFiles.Count}/{_model.CurrentlyOpen.getRecords().Length} | {report} ]");
+      }
     }
 
 
-    private void updateControls()
+    public void updateControls()
     {
       foreach (UIElement it in _spSpectrums.Children)
       {
@@ -726,129 +756,7 @@ namespace BatInspector.Forms
 
     }
 
-    private void _btnAll_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
-        if (recList != null)
-        {
-          foreach (BatExplorerProjectFileRecordsRecord rec in recList)
-          {
-            rec.Selected = true;
-          }
-          if (_model.CurrentlyOpen.Analysis != null)
-          {
-            foreach (AnalysisFile ana in _model.CurrentlyOpen.Analysis.Files)
-            {
-              ana.Selected = true;
-            }
-          }
-
-          updateControls();
-          DebugLog.log("select all files", enLogType.DEBUG);
-        }
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN Select all failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
-    private void _btnNone_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
-        if (recList != null)
-        {
-          foreach (BatExplorerProjectFileRecordsRecord rec in recList)
-          {
-            rec.Selected = false;
-          }
-          if (_model.CurrentlyOpen.Analysis != null)
-          {
-            foreach (AnalysisFile ana in _model.CurrentlyOpen.Analysis.Files)
-            {
-              ana.Selected = false;
-            }
-          }
-          updateControls();
-          DebugLog.log("deselect all files", enLogType.DEBUG);
-        }
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN Deselect all failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
-
-    private void _btnDelSelected_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        List<UIElement> list = new List<UIElement>();
-        List<string> files = new List<string>();
-        MessageBoxResult res = MessageBox.Show(MyResources.msgDeleteFiles, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
-        if (res == MessageBoxResult.Yes)
-        {
-
-          foreach (UIElement it in _spSpectrums.Children)
-          {
-            ctlWavFile ctl = it as ctlWavFile;
-            if (ctl._cbSel.IsChecked == true)
-            {
-              files.Add(ctl.WavName.ToString());
-              list.Add(it);
-            }
-          }
-
-          _model.deleteFiles(files);
-          foreach (UIElement it in list)
-            _spSpectrums.Children.Remove(it);
-
-          showStatus();
-          DebugLog.log("MainWin:BTN 'dletete all files' clicked", enLogType.DEBUG);
-        }
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'dletete all files' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
-    private void _btnHideUnSelected_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        buildWavFileList(true);
-        showStatus();
-        DebugLog.log("MainWin:BTN 'hide unselected files' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'hide unselected files' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
-    private void _btnShowAll_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
- //       foreach (ctlWavFile ctl in _spSpectrums.Children)
- //         ctl.Visibility = Visibility.Visible;
-        buildWavFileList(false);
-        showStatus();
-        DebugLog.log("MainWin:BTN 'show all' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'show all' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-
-    }
-
+    
     void showMsg(string title, string msg, bool topmost = false)
     {
       Application.Current.Dispatcher.BeginInvoke((Action)(() =>
@@ -913,27 +821,6 @@ namespace BatInspector.Forms
     }
 
 
-    private void _btnSize_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        _imgHeight >>= 1;
-        if (_imgHeight < 64)
-          _imgHeight = MAX_IMG_HEIGHT;
-        foreach (UIElement ui in _spSpectrums.Children)
-        {
-          ctlWavFile ctl = ui as ctlWavFile;
-          ctl._img.MaxHeight = _imgHeight;
-          ctl._img.Height = _imgHeight;
-        }
-        DebugLog.log("MainWin:BTN 'Size' clicked ", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Size' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
     private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
     {
       try
@@ -962,7 +849,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        if (_model.CurrentlyOpen.Analysis.Summary != null)
+        if ((_model.CurrentlyOpen != null) && (_model.CurrentlyOpen.Analysis.Summary != null))
           _dgSum.ItemsSource = _model.CurrentlyOpen.Analysis.Summary;
         DebugLog.log("TAB 'Summary' got focus", enLogType.DEBUG);
       }
@@ -1034,35 +921,6 @@ namespace BatInspector.Forms
         ctl.Analysis.Selected = check;
     }
 
-    private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
-                         filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilter.Text);
-        if ((filter != null) && (_model.CurrentlyOpen != null))
-        {
-          foreach (AnalysisFile a in _model.CurrentlyOpen.Analysis.Files)         
-          {
-            bool res = _model.Filter.apply(filter, a);
-            BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(a.Name);
-            if(rec != null)
-              rec.Selected = res;
-          }
-          buildWavFileList(true);
-          updateControls();
-          showStatus();
-          DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
-        }
-        else
-          DebugLog.log("no filter applied", enLogType.INFO);        
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Apply Filter' failed:" + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -1101,24 +959,6 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _btnCallInfo_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        foreach (ctlWavFile ctl in _spSpectrums.Children)
-          ctl.InfoVisible = !ctl.InfoVisible;
-        if (_spSpectrums.Children.Count > 0)
-        {
-          ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
-          AppParams.Inst.HideInfos = !ctl0.InfoVisible;
-          DebugLog.log("MainWin:BTN 'Call Info' clicked", enLogType.DEBUG);
-        }
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Call Info' failed:" + ex.ToString(), enLogType.ERROR);
-      }
-    }
 
     private void _btnColorPalette_Click(object sender, RoutedEventArgs e)
     {
@@ -1344,21 +1184,6 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _btnCopySpec_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        if ((AppParams.Inst.ScriptCopyAutoToMan != null) && (AppParams.Inst.ScriptCopyAutoToMan != ""))
-          _model.Scripter.runScript(AppParams.Inst.ScriptCopyAutoToMan);
-        else
-          MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-        DebugLog.log("MainWin:BTN 'Copy Species' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Copy Species' failed:" + ex.ToString(), enLogType.ERROR);
-      }
-    }
 
     private void _grdSplitterH_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
     {
@@ -1569,59 +1394,6 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _btnaddFile_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        if ((_model.Prj != null) && _model.Prj.Ok)
-        {
-          System.Windows.Forms.OpenFileDialog ofi = new System.Windows.Forms.OpenFileDialog();
-          ofi.Filter = "*.wav|*.wav";
-          ofi.Title = BatInspector.Properties.MyResources.AddWAVFileSToProject;
-          ofi.Multiselect = true;
-          System.Windows.Forms.DialogResult ok = ofi.ShowDialog();
-          if (ok == System.Windows.Forms.DialogResult.OK)
-          {
-            _model.Prj.addFiles(ofi.FileNames);
-            if (_model.Prj.Analysis != null)
-              _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
-            _model.Prj.writePrjFile();
-            _spSpectrums.Children.Clear();
-            DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
-            initializeProject(dir);
-          }
-        }
-        else if (_model.Query != null)
-        {
-          System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
-          ofo.Description = MyResources.SelectExportDirectory;
-          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
-          if (res == System.Windows.Forms.DialogResult.OK)
-            _model.Query.exportFiles(ofo.SelectedPath);
-        }
-        else
-          MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
-        DebugLog.log("MainWin:BTN 'Add file' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Add file' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
-    private void initFileButton(bool isQuery)
-    {
-      if(isQuery)
-      {
-        _btnaddFile.Content = MyResources.MainBtnExportSel;
-        _btnaddFile.ToolTip = MyResources.MainToolExportSel;
-      }
-      else
-      {
-        _btnaddFile.Content = MyResources.MainBtnAddFile;
-        _btnaddFile.ToolTip = MyResources.MainToolAddFile;
-      }
-    }
 
     private void _btnQuery_Click(object sender, RoutedEventArgs e)
     {
@@ -1698,25 +1470,6 @@ namespace BatInspector.Forms
       {
         DebugLog.log("MainWin:BTN 'Clean Up' failed: " + ex.ToString(), enLogType.ERROR);
       }
-    }
-
-
-    private void _cbFilter_DropDownOpened(object sender, EventArgs e)
-    {
-      _model.Filter.TempFilter = null;
-      _cbFilter.Items[1] = MyResources.MainFilterNew;
-    }
-
-    private void _cbFilter_DropDownClosed(object sender, EventArgs e)
-    {
-      DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
-      bool apply;
-      bool resetFilter;
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _model, _cbFilter);
-      if(apply)
-        _btnApplyFilter_Click(sender, null);
-      if(resetFilter)
-        _btnShowAll_Click(sender, null);
     }
 
 

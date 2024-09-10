@@ -147,6 +147,9 @@
     <Compile Include="Controls\ctlExpressionEditor.xaml.cs">
       <DependentUpon>ctlExpressionEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CtlPrjButtons.xaml.cs">
+      <DependentUpon>CtlPrjButtons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlStatistic.xaml.cs">
       <DependentUpon>ctlStatistic.xaml</DependentUpon>
     </Compile>
@@ -371,6 +374,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ctlExpressionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CtlPrjButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

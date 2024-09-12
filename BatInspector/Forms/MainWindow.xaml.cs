@@ -26,6 +26,7 @@ using System.Windows.Threading;
 using System.Linq;
 using NAudio.MediaFoundation;
 
+
 namespace BatInspector.Forms
 {
 
@@ -114,6 +115,13 @@ namespace BatInspector.Forms
       }
       this.Top = AppParams.Inst.MainWindowPosX;
       this.Left = AppParams.Inst.MainWindowPosY;
+       
+      // TODO
+      if ((this.Left + this.Width) > WpfScreen.Primary.WorkingArea.Width)
+        this.Width = WpfScreen.Primary.WorkingArea.Width - this.Left;
+      if ((this.Top + this.Height) > WpfScreen.Primary.WorkingArea.Height)
+        this.Height = WpfScreen.Primary.WorkingArea.Height - this.Top;
+              
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);

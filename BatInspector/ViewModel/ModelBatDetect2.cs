@@ -51,9 +51,7 @@ namespace BatInspector
                          AppParams.Inst.ModelRootPath  :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
         string wrkDir = Path.Combine(modPath, AppParams.Inst.Models[this.Index].Dir);
-
-        string args = wrkDir + " " + wavDir + " " +
-                     annDir + " " + _minProb.ToString(CultureInfo.InvariantCulture);
+        string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {_minProb.ToString(CultureInfo.InvariantCulture)}";
         string cmd = Path.Combine(wrkDir, AppParams.Inst.Models[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)

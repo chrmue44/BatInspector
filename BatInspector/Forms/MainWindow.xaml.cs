@@ -24,6 +24,7 @@ using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
 using System.Linq;
+using NAudio.MediaFoundation;
 
 namespace BatInspector.Forms
 {
@@ -68,10 +69,10 @@ namespace BatInspector.Forms
     Stopwatch _sw = new Stopwatch();
     DirectoryInfo _projectDir;
 
-    double _scrollBarPos = 0;
-    bool _mouseIsDowwnOnScroll = false;
-    List<string> _showWavFiles = new List<string>();
-    int _startWavIdx = 0;  //index of first file in controls in _showWavFiles
+    double _scrollBarPrjPos = 0;
+    bool _mouseIsDownOnScrollPrj = false;
+    double _scrollBarListPos = 0;
+    bool _mouseIsDownOnScrollList = false;
 
     public MainWindow()
     {
@@ -344,13 +345,14 @@ namespace BatInspector.Forms
     {
       if (Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        _tbReport_GotFocus(null, null);
+//        _tbReport_GotFocus(null, null);
         foreach (ctlWavFile ctl in _spSpectrums.Children)
         {
           if (ctl.Analysis?.getString(Cols.NAME) == fName)
           {
             AnalysisFile newAnalysis = _model.CurrentlyOpen?.Analysis.find(fName);
-            ctl.updateCallInformations(newAnalysis);
+            BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen?.findRecord(fName);
+            ctl.updateCallInformations(newAnalysis, rec);
             if (ctl.Analysis == _model.ZoomView.Analysis)
               _ctlZoom.updateManSpecies();
             break;
@@ -369,12 +371,15 @@ namespace BatInspector.Forms
       else
       {
         _model.initProject(_projectDir, callbackUpdateAnalysis);
-        _tbReport_GotFocus(_spSpectrums, null);
+  //      _tbReport_GotFocus(_spSpectrums, null);
         if ((_model.Prj != null) && _model.Prj.Ok)
         {
           _scrollPrj.Minimum = 0;
-          _scrollBarPos = 0;
+          _scrollBarPrjPos = 0;
           _scrollPrj.Maximum = _model.Prj.Records.Length - 1;
+          _scrollList.Minimum = 0;
+          _scrollBarListPos = 0;
+          _scrollList.Maximum = _model.Prj.Records.Length - 1;
           // TODO set button size
           _ctlPrjInfo.setup(_model.Prj);
           _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
@@ -410,39 +415,49 @@ namespace BatInspector.Forms
         _model.Busy = true;
         setMouseStatus();
         DebugLog.log("start to open project", enLogType.DEBUG);
-        _model.Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
+        showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgOpenPrj);
+        _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
         _scrollPrj.Value = 0;
         checkSavePrj();
-        _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgLoading;
         setStatus("");
         _workerStartup = null;
       }
     }
 
 
-
-
-    public void buildWavFileList(bool selectedOnly)
+    
+    public void buildWavFileList(bool selectedOnly, Filter filter = null, FilterItem filterItem = null)
     {
       if (_model.CurrentlyOpen == null)
         return;
-
-      _showWavFiles.Clear();
-      BatExplorerProjectFileRecordsRecord[] list = _model.CurrentlyOpen.getRecords();
-      foreach(BatExplorerProjectFileRecordsRecord rec in list)
+      _model.View.buildListOfVisibles(selectedOnly);
+      if (_tbPrj.IsSelected)
       {
-        if (!selectedOnly || (selectedOnly && rec.Selected))
-          _showWavFiles.Add(rec.File);
+        double oldValue = _scrollPrj.Value;
+        _scrollPrj.SmallChange = 1.0;
+        _scrollPrj.Maximum = Math.Max(1, _model.View.VisibleFiles.Count - 1);
+        _scrollPrj.Track.ViewportSize = double.NaN;
+        _scrollPrj.Track.Thumb.Height = Math.Max(10, _spSpectrums.ActualHeight / _scrollPrj.Maximum / 3);
+        _scrollPrj.InvalidateVisual();
+        _scrollPrj.Value = 0;
+        if (oldValue == _scrollPrj.Value)
+          populateControls(0);
       }
-      double oldValue = _scrollPrj.Value;
-      _scrollPrj.SmallChange = 1.0;
-      _scrollPrj.Maximum = Math.Max(1, _showWavFiles.Count - 1);
-      _scrollPrj.Track.ViewportSize = double.NaN;
-      _scrollPrj.Track.Thumb.Height =  Math.Max(10, _spSpectrums.ActualHeight / _scrollPrj.Maximum/3);
-      _scrollPrj.InvalidateVisual();
-      _scrollPrj.Value = 0;
-      if (oldValue == _scrollPrj.Value)
-        populateControls(0);
+      else
+      {
+        _model.View.populateList(0, filter, filterItem);
+        initDataGridSource();
+        _scrollList.SmallChange = 1.0;
+        _scrollList.Maximum = Math.Max(1, _model.View.VisibleFiles.Count - 1);
+        _scrollList.Value = 0;
+        setListHeader(_model.View.StartIdx);
+        if (_scrollList.Track != null)    // no idea why this happens
+        {
+          _scrollList.Track.ViewportSize = double.NaN;
+          _scrollList.Track.Thumb.Height = Math.Max(10, _dgData.ActualHeight / _scrollList.Maximum / 3);
+        }
+        _scrollList.InvalidateVisual();
+      }
     }
 
     private void initZoomWindow()
@@ -550,8 +565,9 @@ namespace BatInspector.Forms
       foreach (ctlWavFile ctl in _spSpectrums.Children)
       {
         AnalysisFile anaF = _model.Prj.Analysis.find(ctl.WavName);
-        if (anaF != null)
-          ctl.updateCallInformations(anaF);
+        BatExplorerProjectFileRecordsRecord rec = _model.Prj.findRecord(ctl.WavName);
+        if ((anaF != null) && (rec != null))
+          ctl.updateCallInformations(anaF, rec);
       }
     
     }
@@ -590,24 +606,24 @@ namespace BatInspector.Forms
       string wavName = "";
       if (up)
       {
-        if (_startWavIdx < (_showWavFiles.Count - 1))
+        if (_model.View.StartIdx < (_model.View.VisibleFiles.Count - 1))
         {
-          _startWavIdx++;
+          _model.View.StartIdx++;
           _spSpectrums.Children.RemoveAt(0);
-          if ((_startWavIdx + _spSpectrums.Children.Count) <
-             (_showWavFiles.Count - 1))
+          if ((_model.View.StartIdx + _spSpectrums.Children.Count) <
+             (_model.View.VisibleFiles.Count - 1))
           {
-            wavName = _showWavFiles[_startWavIdx + _spSpectrums.Children.Count + 1];
+            wavName = _model.View.VisibleFiles[_model.View.StartIdx + _spSpectrums.Children.Count + 1];
             append = true;
           }
         }
       }
       else
       {
-        if (_startWavIdx > 0)
+        if (_model.View.StartIdx > 0)
         {
-          _startWavIdx--;
-          wavName = _showWavFiles[_startWavIdx];
+          _model.View.StartIdx--;
+          wavName = _model.View.VisibleFiles[_model.View.StartIdx];
           append = true;
         }
       }
@@ -625,8 +641,17 @@ namespace BatInspector.Forms
         bool isQuery = _model.Query != null;
         initCtlWav(ctl, rec, isQuery);
       }
-      _tbPrj.Header = $"{MyResources.MainWinProjectView} ({_startWavIdx + 1}/{_showWavFiles.Count})";
+      setPrjHeader(_model.View.StartIdx);
+    }
 
+    void setPrjHeader(int idx)
+    {
+      _tbPrj.Header = $"{MyResources.MainWinProjectView} ({idx + 1}/{_model.View.VisibleFiles.Count})";
+    }
+
+    void setListHeader(int idx)
+    {
+      _tbReport.Header = $"{MyResources.MainReportProject} ({idx + 1}/{_model.View.VisibleFiles.Count})";
     }
 
     private void populateControls(int startIdx)
@@ -637,20 +662,20 @@ namespace BatInspector.Forms
       }
       else
       {
-        _startWavIdx = startIdx;
+        _model.View.StartIdx = startIdx;
         BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
         bool isQuery = _model.Query != null;
         Analysis analysis = _model.CurrentlyOpen.Analysis;
         if (recList != null)
         {
           _spSpectrums.Children.Clear();
-          int maxCtl = Math.Min(_showWavFiles.Count, 6);
+          int maxCtl = Math.Min(_model.View.VisibleFiles.Count, 6);
           for (int i = 0; i < maxCtl; i++)
           {
             //          string wavName = _showWavFiles[_showWavFiles.Count- maxCtl + i];
-            if ((startIdx + i) < _showWavFiles.Count)
+            if ((startIdx + i) < _model.View.VisibleFiles.Count)
             {
-              string wavName = _showWavFiles[i + startIdx];
+              string wavName = _model.View.VisibleFiles[i + startIdx];
               BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(wavName);
               AnalysisFile analysisFile = null;
               if ((analysis != null) && (rec != null))
@@ -662,7 +687,7 @@ namespace BatInspector.Forms
             }
           }
         }
-        _tbPrj.Header = $"{MyResources.MainWinProjectView} ({startIdx + 1}/{_showWavFiles.Count})";
+        setPrjHeader(startIdx);
       }
     }
 
@@ -735,11 +760,11 @@ namespace BatInspector.Forms
       string report = "";
       if (_model.CurrentlyOpen != null)
       {
-        report = _model.CurrentlyOpen.Analysis.Report != null ?
+        report = !_model.CurrentlyOpen.Analysis.IsEmpty ?
                  BatInspector.Properties.MyResources.MainWindowMsgReport :
                  BatInspector.Properties.MyResources.MainWindow_showStatus_NoReport;
 
-        setStatus($"  [{BatInspector.Properties.MyResources.MainWindowFiles}: {_showWavFiles.Count}/{_model.CurrentlyOpen.getRecords().Length} | {report} ]");
+        setStatus($"  [{BatInspector.Properties.MyResources.MainWindowFiles}: {_model.View.VisibleFiles.Count}/{_model.CurrentlyOpen.getRecords().Length} | {report} ]");
       }
     }
 
@@ -797,7 +822,7 @@ namespace BatInspector.Forms
         {
           MessageBoxResult res = MessageBoxResult.Yes;
           DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
-          if (_model.CurrentlyOpen?.Analysis.Report != null)
+          if (_model.CurrentlyOpen?.Analysis.IsEmpty == false)
             res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
             BatInspector.Properties.MyResources.msgQuestion,
             MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -821,44 +846,65 @@ namespace BatInspector.Forms
     }
 
 
-    private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
+    public void initDataGridSource()
     {
-      try
+      _dgData.ItemsSource = null;
+      _dgData.ItemsSource = _model.View.ListView;
+      if (_dgData.Columns.Count > 0)
       {
-        if (_model.CurrentlyOpen != null)
+        _dgData.Columns[0].Visibility = Visibility.Hidden; // hide 'changed'
+      }
+      for (int i = 0; i < _dgData.Columns.Count; i++)
+        _dgData.Columns[i].IsReadOnly = true;
+    }
+
+    private void _tbMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      if(_tbPrj.IsSelected)
+      {
+        try
         {
-          if (_model.CurrentlyOpen.Analysis.Report != null)
-          {
-            _dgData.ItemsSource = _model.CurrentlyOpen.Analysis.Report;
-            if (_dgData.Columns.Count > 0)
-              _dgData.Columns[0].Visibility = Visibility.Hidden; // hide 'changed'
-            _dgData.IsReadOnly = true;
-          }
-          else
-            _dgData.ItemsSource= null;
+          if (_model.CurrentlyOpen != null)
+            buildWavFileList(false);
+          DebugLog.log("TAB 'Project' got selected", enLogType.DEBUG);
         }
-        DebugLog.log("TAB 'Report' got focus", enLogType.DEBUG);
+        catch (Exception ex)
+        {
+          DebugLog.log("TAB 'Project' selection failed:" + ex.ToString(), enLogType.ERROR);
+        }
+
       }
-      catch (Exception ex)
+
+      else if(_tbReport.IsSelected)
       {
-        DebugLog.log("TAB 'Report' focus failed:" + ex.ToString(), enLogType.ERROR);
+        try
+        {
+          if (_model.CurrentlyOpen != null)
+            buildWavFileList(false);
+          else
+            _dgData.ItemsSource = null;
+          DebugLog.log("TAB 'Report' got selected", enLogType.DEBUG);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("TAB 'Report' selection failed:" + ex.ToString(), enLogType.ERROR);
+        }
+      }
+
+      else if (_tbSum.IsSelected)
+      {
+        try
+        {
+          if ((_model.CurrentlyOpen != null) && (_model.CurrentlyOpen.Analysis.Summary != null))
+            _dgSum.ItemsSource = _model.CurrentlyOpen.Analysis.Summary;
+          DebugLog.log("TAB 'Summary' selected", enLogType.DEBUG);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("TAB 'Summary' selection failed:" + ex.ToString(), enLogType.ERROR);
+        }
       }
     }
-
-    private void _tbSum_GotFocus(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        if ((_model.CurrentlyOpen != null) && (_model.CurrentlyOpen.Analysis.Summary != null))
-          _dgSum.ItemsSource = _model.CurrentlyOpen.Analysis.Summary;
-        DebugLog.log("TAB 'Summary' got focus", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("TAB 'Summary' focus failed:" + ex.ToString(), enLogType.ERROR);
-      }
-    }
-
 
     private void Window_Closing(object sender, CancelEventArgs e)
     {
@@ -917,8 +963,6 @@ namespace BatInspector.Forms
     private void setCheckboxInWavCtl(ctlWavFile ctl, bool check)
     {
       ctl._cbSel.IsChecked = check;
-      if (ctl.Analysis != null)
-        ctl.Analysis.Selected = check;
     }
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
@@ -932,7 +976,7 @@ namespace BatInspector.Forms
         }
         _model.saveSettings();
         if ((_model != null) && (_model.Prj != null) && (_model.Prj.Analysis != null) &&
-          (_model.Prj.Analysis.Report != null))
+          (!_model.Prj.Analysis.IsEmpty))
           _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
         DebugLog.log("MainWin:BTN 'save' clicked", enLogType.DEBUG);
       }
@@ -1076,7 +1120,7 @@ namespace BatInspector.Forms
       {
         if ((_model.Prj != null) && (_model.Prj.Analysis != null))
           _model.Prj.Analysis.updateSpeciesCount();
-        _tbReport_GotFocus(null, null);
+//        _tbReport_GotFocus(null, null);
         updateWavControls();
         _model.UpdateUi = false;
       }
@@ -1268,67 +1312,67 @@ namespace BatInspector.Forms
 
     private void _scrollPrj_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-      _mouseIsDowwnOnScroll = true;
+      _mouseIsDownOnScrollPrj = true;
     }
 
-    
+    private void _scrollList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+      _mouseIsDownOnScrollList = true;
+    }
+
+
     private void _scrollPrj_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-      if(!_mouseIsDowwnOnScroll)
+      if(!_mouseIsDownOnScrollPrj)
       {
-        if ((_model.Prj == null) || (!_model.Prj.Ok))
-        {
-          if (_model.Query == null)
-            return;
-        }
-        if (_scrollBarPos == _scrollPrj.Value)
+        if (_model.CurrentlyOpen == null) 
+          return;
+        
+        if (_scrollBarPrjPos == _scrollPrj.Value)
           return;
 
-        double diff = _scrollPrj.Value - _scrollBarPos;
+        double diff = _scrollPrj.Value - _scrollBarPrjPos;
         if ((diff < 2) && (diff > 0))
           incrementControls(true);
         else if ((diff > -2) && (diff < 0))
           incrementControls(false);
         else
           populateControls((int)_scrollPrj.Value);
-        _scrollBarPos = _scrollPrj.Value;
+        _scrollBarPrjPos = _scrollPrj.Value;
       }
     }
+
+    private void _scrollList_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      if (!_mouseIsDownOnScrollList)
+      {
+        if (_model.CurrentlyOpen == null)
+          return;
+
+        if (_scrollBarListPos == _scrollList.Value)
+          return;
+        FilterItem filterItem = (_ctlListBtn._cbFilter.SelectedIndex == 1) ?
+               _model.Filter.TempFilter : _model.Filter.getFilter(_ctlListBtn._cbFilter.Text);
+        _model.View.populateList((int)_scrollList.Value, _model.Filter, filterItem);
+        _scrollBarListPos = _scrollList.Value;
+        initDataGridSource();
+        setListHeader(_model.View.StartIdx);
+      }
+    }
+
 
     private void _scrollPrj_MouseUp(object sender, MouseButtonEventArgs e)
     {
-      _mouseIsDowwnOnScroll = false;
+      _mouseIsDownOnScrollPrj = false;
       _scrollPrj_ValueChanged(null, null);
     }
 
-    private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+    private void _scrollList_MouseUp(object sender, MouseButtonEventArgs e)
     {
-      //@@@
-      if (!_fastOpen)
-        return;
-
-      double h = e.ExtentHeight;
-      double p = e.VerticalOffset;
-      int k = (int)((double)_spSpectrums.Children.Count * p / h);
-
-      foreach (ctlWavFile c in _spSpectrums.Children)
-      {
-        if (IsUserVisible(c, this) && !c.WavInit && !_model.Scripter.IsBusy)
-        {
-          if ((_model.Prj != null) && _model.Prj.Ok)
-          {
-            BatExplorerProjectFileRecordsRecord rec = _model.Prj.find(c.WavName);
-            initCtlWav(c, rec, false);
-          }
-          else if (_model.Query != null)
-          {
-            BatExplorerProjectFileRecordsRecord rec = _model.Query.find(c.WavName);
-            initCtlWav(c, rec, true);
-          }
-          c.UpdateLayout();
-        }
-      }
+      _mouseIsDownOnScrollList = false;
+      _scrollList_ValueChanged(null, null);
     }
+
 
 
     private void DropdownButton_Checked(object sender, RoutedEventArgs e)
@@ -1618,6 +1662,46 @@ namespace BatInspector.Forms
     private void _tbStatistic_GotFocus(object sender, RoutedEventArgs e)
     {
       _ctlStatistic.createPlot();
+    }
+
+    private void Window_KeyDown(object sender, KeyEventArgs e)
+    {
+      if (_tbPrj.IsSelected)
+      {
+        _tbPrj.Focus();
+        switch (e.Key)
+        {
+          case Key.PageDown:
+            if (_scrollPrj.Value < _scrollPrj.Maximum)
+              _scrollPrj.Value += 1;
+            break;
+          case Key.PageUp:
+            if (_scrollPrj.Value > 0)
+              _scrollPrj.Value -= 1;
+            break;
+
+          default:
+            break;
+        }
+      }
+      else if(_tbReport.IsSelected)
+      {
+        _tbReport.Focus();
+        switch (e.Key)
+        {
+          case Key.PageDown:
+            if (_scrollList.Value < _scrollList.Maximum)
+              _scrollList.Value += 1;
+            break;
+          case Key.PageUp:
+            if (_scrollList.Value > 0)
+              _scrollList.Value -= 1;
+            break;
+
+          default:
+            break;
+        }
+      }
     }
   }
   public enum enWinType

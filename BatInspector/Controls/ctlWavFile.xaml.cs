@@ -76,7 +76,7 @@ namespace BatInspector.Controls
     }
 
 
-    public void updateCallInformations(AnalysisFile analysis)
+    public void updateCallInformations(AnalysisFile analysis, BatExplorerProjectFileRecordsRecord rec)
     {
       _analysis = analysis;
       List<string> spec = new List<string>();
@@ -97,7 +97,7 @@ namespace BatInspector.Controls
           im.setValue(call.getString(Cols.SPECIES_MAN));
         }
       } */
-      _cbSel.IsChecked = _analysis.Selected;
+      _cbSel.IsChecked = rec.Selected;
     }
 
     public void setFileInformations(BatExplorerProjectFileRecordsRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec)
@@ -120,8 +120,7 @@ namespace BatInspector.Controls
     public void toggleCheckBox()
     {
       _cbSel.IsChecked = !_cbSel.IsChecked;
-      if(_analysis != null)
-        _analysis.Selected = _cbSel.IsChecked == true;
+      _record.Selected = !_record.Selected;
     }
 
     private void initCallInformations(List<string> spec)
@@ -233,7 +232,7 @@ namespace BatInspector.Controls
 
     private void update()
     {
-      updateCallInformations(_analysis);
+      updateCallInformations(_analysis, _record);
       this.InvalidateVisual();
       this.UpdateLayout();
     }
@@ -251,8 +250,6 @@ namespace BatInspector.Controls
 
     private void _cbSel_Click(object sender, RoutedEventArgs e)
     {
-      if(_analysis != null)
-        _analysis.Selected = _cbSel.IsChecked == true;
       _record.Selected = _cbSel.IsChecked == true;
     }
 

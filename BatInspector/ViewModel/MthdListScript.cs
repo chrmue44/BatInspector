@@ -464,7 +464,7 @@ namespace BatInspector
               {
                   case enFileInfo.SELECT:
                     argv[2].changeType(AnyType.tType.RT_BOOL);
-                    _inst._model.Prj.Analysis.Files[idxF].Selected = argv[2].getBool();
+                    _inst._model.Prj.Records[idxF].Selected = argv[2].getBool();
                     break;
                   case enFileInfo.SAMPLE_RATE:
                     break;
@@ -578,7 +578,7 @@ namespace BatInspector
                   result.assign(_inst._model.Prj.Analysis.Files[idxF].getDouble(Cols.DURATION));
                   break;
                 case enFileInfo.SELECT:
-                 result.assignBool(_inst._model.Prj.Analysis.Files[idxF].Selected);
+                 result.assignBool(_inst._model.Prj.Records[idxF].Selected);
                   break;
                 case enFileInfo.LATITUDE:
                   result.assign(_inst._model.Prj.Analysis.Files[idxF].getDouble(Cols.LAT));

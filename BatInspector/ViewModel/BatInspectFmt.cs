@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Documents;
 using System.Xml.Serialization;
 
@@ -143,8 +144,9 @@ public partial class BatExplorerProjectFile
   }
 
   /// <remarks/>
-  [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
+  [XmlIgnoreAttribute]
+  //[System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  //[System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
   public BatExplorerProjectFileRecordsRecord[] Records
   {
     get
@@ -200,6 +202,19 @@ public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplor
 
   private string nameField;
 
+  public BatExplorerProjectFileRecordsRecord()
+  {
+    fileField = "";
+    Selected = false;
+  }
+
+  public BatExplorerProjectFileRecordsRecord(string name)
+  {
+    fileField = name;
+    nameField = Path.GetFileNameWithoutExtension(name);
+    Selected = false;
+  }
+
   /// <remarks/>
   [System.Xml.Serialization.XmlAttributeAttribute()]
   public string File
@@ -214,6 +229,7 @@ public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplor
     }
   }
 
+  
   /// <remarks/>
   [System.Xml.Serialization.XmlAttributeAttribute()]
   public string Name
@@ -227,6 +243,7 @@ public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplor
       this.nameField = value;
     }
   }
+  
 
   [XmlIgnoreAttribute]
   public bool Selected { get; set; } = false;

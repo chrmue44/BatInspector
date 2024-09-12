@@ -313,6 +313,7 @@
     <Compile Include="ViewModel\ModelBatDetect2.cs" />
     <Compile Include="ViewModel\ModelCmuTsa.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />
+    <Compile Include="ViewModel\PrjView.cs" />
     <Compile Include="ViewModel\Query.cs" />
     <Compile Include="ViewModel\QueryFile.cs" />
     <Compile Include="ViewModel\ScatterDiagram.cs" />

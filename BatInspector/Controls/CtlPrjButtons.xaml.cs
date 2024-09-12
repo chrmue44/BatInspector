@@ -32,14 +32,26 @@ namespace BatInspector.Controls
       _isListView = isListView;
       if(_isPrjView)
       {
+        _btnAll.Visibility = Visibility.Visible;
+        _btnNone.Visibility = Visibility.Visible;
+        _btnDelSelected.Visibility = Visibility.Visible;
+        _btnCopySpec.Visibility = Visibility.Visible;
+        _btnaddFile.Visibility = Visibility.Visible;
         _btnCallInfo.Visibility = Visibility.Visible;
         _btnSize.Visibility = Visibility.Visible;
+        _sep2.Visibility = Visibility.Visible;
         _sep3.Visibility = Visibility.Visible;
       }
       else
       {
+        _btnAll.Visibility = Visibility.Collapsed;
+        _btnNone.Visibility = Visibility.Collapsed;
+        _btnDelSelected.Visibility = Visibility.Collapsed;
+        _btnCopySpec.Visibility = Visibility.Collapsed;
+        _btnaddFile.Visibility = Visibility.Collapsed;
         _btnCallInfo.Visibility = Visibility.Collapsed;
         _btnSize.Visibility = Visibility.Collapsed;
+        _sep2.Visibility = Visibility.Collapsed;
         _sep3.Visibility = Visibility.Collapsed;
       }
     }
@@ -70,13 +82,6 @@ namespace BatInspector.Controls
           {
             rec.Selected = true;
           }
-          if (_model.CurrentlyOpen.Analysis != null)
-          {
-            foreach (AnalysisFile ana in _model.CurrentlyOpen.Analysis.Files)
-            {
-              ana.Selected = true;
-            }
-          }
 
           _parent.updateControls();
           DebugLog.log("select all files", enLogType.DEBUG);
@@ -98,13 +103,6 @@ namespace BatInspector.Controls
           foreach (BatExplorerProjectFileRecordsRecord rec in recList)
           {
             rec.Selected = false;
-          }
-          if (_model.CurrentlyOpen.Analysis != null)
-          {
-            foreach (AnalysisFile ana in _model.CurrentlyOpen.Analysis.Files)
-            {
-              ana.Selected = false;
-            }
           }
           _parent.updateControls();
           DebugLog.log("deselect all files", enLogType.DEBUG);
@@ -261,8 +259,7 @@ namespace BatInspector.Controls
             if (rec != null)
               rec.Selected = res;
           }
-          _parent.buildWavFileList(true);
-          _parent.updateControls();
+          _parent.buildWavFileList(true, _model.Filter, filter);
           _parent.showStatus();
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
         }

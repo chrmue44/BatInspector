@@ -203,16 +203,16 @@ namespace BatInspector
       if (Directory.Exists(outputDir)) 
       {
         DebugLog.log("start files export from Query " + _name, enLogType.INFO);
-        foreach (AnalysisFile f in _analysis.Files) 
+        foreach (BatExplorerProjectFileRecordsRecord rec in _records) 
         {
-          if(f.Selected)
+          if(rec.Selected)
           {
-            string srcWavName = Path.Combine(_destDir, f.Name);
+            string srcWavName = Path.Combine(_destDir, rec.File);
             string srcXmlName = srcWavName.ToLower().Replace("wav", "xml");
             string srcPngName = srcWavName.ToLower().Replace("wav", "png");
-            string dstWavName = Path.Combine(outputDir, Path.GetFileName(f.Name));
-            string dstXmlName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(f.Name)) + ".xml";
-            string dstPngName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(f.Name)) + ".png";
+            string dstWavName = Path.Combine(outputDir, Path.GetFileName(rec.File));
+            string dstXmlName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(rec.File)) + ".xml";
+            string dstPngName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(rec.File)) + ".png";
             if (File.Exists(srcWavName))
             {
               File.Copy(srcWavName, dstWavName, true);
@@ -253,10 +253,8 @@ namespace BatInspector
     private bool evaluatePrj(DirectoryInfo dir)
     {
       bool retVal = false;
-      string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
-                   System.IO.SearchOption.TopDirectoryOnly);
       Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
-      prj.readPrjFile(files[0]);
+      prj.readPrjFile(dir.FullName);
       Analysis analysis = new Analysis(_model.SpeciesInfos, null);
       analysis.read(prj.ReportName);
 
@@ -294,16 +292,14 @@ namespace BatInspector
 
                 string absPath = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
                 rec.File = Utils.relativePath(this._destDir, absPath);
-                rec.Name = Path.GetFileNameWithoutExtension(file.Name);
+         //       rec.Name = Path.GetFileNameWithoutExtension(file.Name);
                 _records.Add(rec);
                 file.Name = rec.File;
-                _analysis.addFile(file);
                 lastFileName = file.Name;
               }
               List<string> row = call.getReportRow();
               row[0] = file.Name;
               _analysis.addCsvReportRow(row);
-              _analysis.addReportItem(file, call);
             }
           }
           if (!retVal)

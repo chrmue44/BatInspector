@@ -41,7 +41,7 @@ namespace BatInspector.Forms
       _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, _widthLbl, true, "", initDailogAfterSelectingSrc);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, _widthLbl, true);
       _ctlMaxFiles.setup(MyResources.frmCreatePrjMaxFiles, Controls.enDataType.INT, 0, _widthLbl, true);
-      _ctlMaxFiles.setValue(1000);
+      _ctlMaxFiles.setValue(10000);
       _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, _widthLbl, true);
       _ctlMaxFileLen.setValue(5.0);
       _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, _widthLbl, true);

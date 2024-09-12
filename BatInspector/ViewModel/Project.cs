@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using System;
@@ -45,6 +46,7 @@ namespace BatInspector
   }
 
 
+
   public abstract class PrjBase
   {
     protected List<string> _speciesList;
@@ -58,6 +60,7 @@ namespace BatInspector
     public List<string> Species { get { return _speciesList; } }
     public Analysis Analysis { get { return _analysis; } }
 
+    static protected readonly XmlSerializer PrjSerializer = new XmlSerializer(typeof(BatExplorerProjectFile));
     public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions, DlgUpdateFile dlgUpdate)
     {
       _speciesList = new List<string>();
@@ -125,6 +128,7 @@ namespace BatInspector
     private string _selectedDir;
     private BatExplorerProjectFile _batExplorerPrj;
     private bool _reloadInGui;
+    private string _extension;
     
     public bool Ok { get { return _ok; } }
 
@@ -180,6 +184,7 @@ namespace BatInspector
     : base(speciesInfo, regions, dlgUpdate)
     {
       _wavSubDir = wavSubDir;
+      _extension = AppParams.EXT_BATSPY;
     }
 
 
@@ -204,8 +209,17 @@ namespace BatInspector
       {
         string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
                          System.IO.SearchOption.TopDirectoryOnly);
+        
         if (files.Length > 0)
           return files[0];
+        else
+        {
+          files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_BATSPY,
+                  System.IO.SearchOption.TopDirectoryOnly);
+
+          if (files.Length > 0)
+            return files[0];
+        }
       }
       catch { }
       return "";
@@ -469,8 +483,7 @@ namespace BatInspector
           string wavDir = Path.Combine(info.SrcDir, info.WavSubDir);
 
           Project prjSrc = new Project(regions, speciesInfo, null, info.WavSubDir);
-          string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
-          prjSrc.readPrjFile(fName);
+          prjSrc.readPrjFile(info.SrcDir);
           string[] notes = prjSrc.Notes.Split('\n');
 
           info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
@@ -719,32 +732,54 @@ namespace BatInspector
       }
     }
 
-    public void readPrjFile(string fName)
+
+    public void readPrjFile(string prjDir)
     {
       try
       {
-        _prjFileName = fName;
-        _selectedDir = Path.GetDirectoryName(fName);
-        string xml = File.ReadAllText(fName);
-        var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-        _speciesList.Clear();
-        TextReader reader = new StringReader(xml);
-        _batExplorerPrj = (BatExplorerProjectFile)serializer.Deserialize(reader);
-        if (_batExplorerPrj.Created == null)
-          _batExplorerPrj.Created = "";
-        if (_batExplorerPrj.Notes == null)
-          _batExplorerPrj.Notes = "";
-        if (Directory.Exists(Path.Combine(_selectedDir, AppParams.DIR_WAVS)))
-          _wavSubDir = AppParams.DIR_WAVS;
-        else
-          _wavSubDir = "";
-        initSpeciesList();
-        _ok = true;
-        _changed = false;
+        string[] files = System.IO.Directory.GetFiles(prjDir, "*" + AppParams.EXT_BATSPY,
+                   System.IO.SearchOption.TopDirectoryOnly);
+        if (files.Length == 0)
+        {
+          files =  System.IO.Directory.GetFiles(prjDir, "*" + AppParams.EXT_PRJ,
+                     System.IO.SearchOption.TopDirectoryOnly);
+          _extension = AppParams.EXT_PRJ;
+        }
+        if (files.Length > 0)
+        {
+          _prjFileName = files[0];
+          _selectedDir = prjDir;
+          string xml = File.ReadAllText(_prjFileName);
+          if(_extension == AppParams.EXT_PRJ)
+            _prjFileName = Path.Combine(Path.GetDirectoryName(_prjFileName), Path.GetFileNameWithoutExtension(_prjFileName) + AppParams.EXT_BATSPY);
+          _speciesList.Clear();
+          TextReader reader = new StringReader(xml);
+          _batExplorerPrj = (BatExplorerProjectFile)PrjSerializer.Deserialize(reader);
+          if (_batExplorerPrj.Created == null)
+            _batExplorerPrj.Created = "";
+          if (_batExplorerPrj.Notes == null)
+            _batExplorerPrj.Notes = "";
+          if (Directory.Exists(Path.Combine(_selectedDir, AppParams.DIR_WAVS)))
+            _wavSubDir = AppParams.DIR_WAVS;
+          else
+            _wavSubDir = "";
+
+          DirectoryInfo dir = new DirectoryInfo(Path.Combine(_selectedDir, _wavSubDir));
+          FileInfo[] wavFiles = dir.GetFiles("*.wav");
+          _batExplorerPrj.Records = new BatExplorerProjectFileRecordsRecord[wavFiles.Length];
+          for (int i = 0; i < wavFiles.Length; i++)
+          {
+            _batExplorerPrj.Records[i] = new BatExplorerProjectFileRecordsRecord(wavFiles[i].Name);
+          }
+
+          initSpeciesList();
+          _ok = true;
+          _changed = false;
+        }
       }
       catch (Exception ex)
       {
-        DebugLog.log("error reading project file: " + fName + " :" + ex.ToString(), enLogType.ERROR);
+        DebugLog.log("error reading project file: " + prjDir + " :" + ex.ToString(), enLogType.ERROR);
         _ok = false;
       }
     }
@@ -754,9 +789,8 @@ namespace BatInspector
       if ((_batExplorerPrj != null) && _changed)
       {
         _batExplorerPrj.FileVersion = "3";
-        var serializer = new XmlSerializer(typeof(BatExplorerProjectFile));
         TextWriter writer = new StreamWriter(_prjFileName);
-        serializer.Serialize(writer, _batExplorerPrj);
+        PrjSerializer.Serialize(writer, _batExplorerPrj);
         writer.Close();
         _changed = false;
         DebugLog.log("project '" + _prjFileName + "' saved", enLogType.INFO);
@@ -787,7 +821,7 @@ namespace BatInspector
 
       foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
       {
-        if (Analysis.find(rec.Name) == null)
+        if (Analysis.find(rec.File) == null)
         {
           string name = Path.Combine(PrjDir, WavSubDir, rec.File);
           DebugLog.log("delete file " + name, enLogType.DEBUG);
@@ -882,8 +916,8 @@ namespace BatInspector
       BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
       string name = Path.GetFileName(filePath);
       rec.File = name;
-      name = Path.GetFileNameWithoutExtension(filePath);
-      rec.Name = name;
+//      name = Path.GetFileNameWithoutExtension(filePath);
+//      rec.Name = name;
       list.Add(rec);
     }
 

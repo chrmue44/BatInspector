@@ -154,7 +154,7 @@
     <value>Einstellungen speichern</value>
   </data>
   <data name="MainWinProjectView" xml:space="preserve">
-    <value>Projekt-Ansicht</value>
+    <value>Projekt</value>
   </data>
   <data name="MainBtnAll" xml:space="preserve">
     <value>Alle</value>
@@ -454,7 +454,7 @@
     <value>Artnachweis</value>
   </data>
   <data name="MainReportProject" xml:space="preserve">
-    <value>Auswertung Projekt</value>
+    <value>Auswertung</value>
   </data>
   <data name="MainSelectFolder" xml:space="preserve">
     <value>Projekt auswählen</value>
@@ -898,7 +898,8 @@
     <value>Alle temporären Mac OS-Dateien löschen? (wenn nein, wird die Erzeugung des Projekts abgebrochen)</value>
   </data>
   <data name="SetCatPrjExplorer" xml:space="preserve">
-    <value>Projekt-Eplorer</value>
+    <value>Auswertung
+</value>
   </data>
   <data name="SetDescShowOnlyFiltered" xml:space="preserve">
     <value>Zeige nur Verzeichnisse im Explorer, die der Filterbedingung der Filterliste entsprechen</value>

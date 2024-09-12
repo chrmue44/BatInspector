@@ -69,6 +69,10 @@ namespace BatInspector
     CtrlRecorder _recorder;
     Statistic _statistic;
     string _tempCmd;
+    PrjView _prjView;
+
+    public PrjView View { get{ return _prjView; } }
+
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -165,6 +169,7 @@ namespace BatInspector
       _recorder = new CtrlRecorder(_colorTable);
       _statistic = new Statistic(AppParams.STATISTIC_CLASSES);
       UpdateUi = false;
+      _prjView = new PrjView(ref _prj, ref _query);
     }
 
     public void updateReport()
@@ -195,11 +200,7 @@ namespace BatInspector
       {
         _query = null;
         _selectedDir = dir.FullName;
-        string[] files = System.IO.Directory.GetFiles(dir.FullName, "*" + AppParams.EXT_PRJ,
-                         System.IO.SearchOption.TopDirectoryOnly);
-        if (_prj == null)
-          _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
-        _prj.readPrjFile(files[0]);
+        _prj.readPrjFile(_selectedDir);
         if (File.Exists(Prj.ReportName))
         {
           _prj.Analysis.read(Prj.ReportName);

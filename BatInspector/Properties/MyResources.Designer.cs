@@ -2878,7 +2878,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report Project.
+        ///   Looks up a localized string similar to Report.
         /// </summary>
         public static string MainReportProject {
             get {
@@ -3310,7 +3310,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Project View.
+        ///   Looks up a localized string similar to Project.
         /// </summary>
         public static string MainWinProjectView {
             get {

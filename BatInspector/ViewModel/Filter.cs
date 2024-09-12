@@ -182,6 +182,9 @@ namespace BatInspector
 
     public bool apply(FilterItem filter, AnalysisCall call)
     {
+      if (filter == null)
+        return true;
+
       bool retVal = false;
 
       _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));

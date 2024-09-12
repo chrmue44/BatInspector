@@ -18,7 +18,7 @@
             <Button x:Name="_btnShowAll" ToolTip="{x:Static res:MyResources.MainToolBtnShowAll}" Click="_btnShowAll_Click" Content="{x:Static res:MyResources.MainBtnShowAll}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
             <Button x:Name="_btnDelSelected" ToolTip="{x:Static res:MyResources.MainToolBtnDelSel}" Click ="_btnDelSelected_Click" Content="{x:Static res:MyResources.MainBtnDelSelected}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
             <Button x:Name="_btnCopySpec" ToolTip="{x:Static res:MyResources.MainToolCopySelected}" Click ="_btnCopySpec_Click" Content="{x:Static res:MyResources.MainBtnCopySpec}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
-            <Separator Margin="10,0,5,0" Width="3"/>
+            <Separator x:Name="_sep2" Margin="10,0,5,0" Width="3"/>
             <Button x:Name="_btnCallInfo" ToolTip="{x:Static res:MyResources.MainToolHideCallInfo}" Click ="_btnCallInfo_Click" Content="{x:Static res:MyResources.MainBtnHideShowInfo}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
             <Button x:Name="_btnSize" ToolTip="{x:Static res:MyResources.MainToolBtnSize}" Click ="_btnSize_Click"  Content="{x:Static res:MyResources.MainBtnSize}" HorizontalAlignment="Left" Margin="5,0,0,0"></Button>
             <Separator x:Name="_sep3" Margin="10,0,5,0" Width="3"/>

@@ -154,7 +154,7 @@
     <value>save settings</value>
   </data>
   <data name="MainWinProjectView" xml:space="preserve">
-    <value>Project View</value>
+    <value>Project</value>
   </data>
   <data name="MainBtnAll" xml:space="preserve">
     <value>All</value>
@@ -454,7 +454,7 @@
     <value>Proof of Species</value>
   </data>
   <data name="MainReportProject" xml:space="preserve">
-    <value>Report Project</value>
+    <value>Report</value>
   </data>
   <data name="MainSelectFolder" xml:space="preserve">
     <value>Select Project</value>

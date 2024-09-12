@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -167,7 +168,6 @@ namespace BatInspector
     private Cols _cols;
     private object _fileLock = new object();
     private List<AnalysisFile> _list;
-    private List<ReportItem> _report;
     private Csv _csv;
     private List<SumItem> _summary;
     private List<SpeciesInfos> _speciesInfos;
@@ -177,8 +177,7 @@ namespace BatInspector
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
 
-    public List<ReportItem> Report { get { return _report; } }
-
+    public int CsvRowCount { get{ return _csv == null ? 0 : _csv.RowCnt; } }
     public bool IsEmpty { get { return _list.Count == 0; } }
 
     public List<SumItemReport> Summary {
@@ -227,30 +226,16 @@ namespace BatInspector
       _csv.addRow(row);
     }
 
-
-    public void addReportItem(AnalysisFile file, AnalysisCall call)
+    public List<string> getCsvRow(int row)
     {
-      if (_report != null)
-      {
-        ReportItem item = new ReportItem(file, call);
-        _report.Add(item);
-      }
+      return _csv.getRow(row);
     }
-
 
     public bool Changed
     {
       get
       {
         bool retVal = _csv.Changed;
-
-        if (_report != null)
-        {
-          foreach (ReportItem r in _report)
-          {
-            retVal |= r.Changed;
-          }
-        }
         return retVal;
       }
     }
@@ -258,7 +243,6 @@ namespace BatInspector
     public void init(List<SpeciesInfos> specInfos)
     {
       _list = new List<AnalysisFile>();
-      _report = null;
       _cols = new Cols();
       _csv = ModelBatDetect2.createReport(Cols.SPECIES);
       _speciesInfos = specInfos;
@@ -313,7 +297,6 @@ namespace BatInspector
         _list.Clear();
         string lastFileName = "$$$";
         int callNr = 1;
-        _report = new List<ReportItem>();
         double oldStartTime = 0.0;
         AnalysisFile file = null;
         for (int row = 2; row <= _csv.RowCnt; row++)
@@ -344,8 +327,6 @@ namespace BatInspector
           bool isInList = SpeciesInfos.isInList(_speciesInfos, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
-          ReportItem rItem = new ReportItem(file, call);
-          _report.Add(rItem);
           callNr++;
         }
 
@@ -416,18 +397,8 @@ namespace BatInspector
           _csv.save();
         else
           _csv.saveAs(path);
-        if (_report != null)
-        {
-          foreach (ReportItem r in _report)
-          {
-            r.resetChanged();
-          }
-        }
-        if (Report != null)
-        {
-          string sumName = _csv.FileName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
-          createSummary(sumName, notes);
-        }
+        string sumName = _csv.FileName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
+        createSummary(sumName, notes);
       }
     }
 
@@ -478,30 +449,7 @@ namespace BatInspector
         foreach (AnalysisCall c in file.Calls)
         {
           _csv.addRow(c.getReportRow());
-          addReportItem(file, c);
         }
-      }
-    }
-
-
-    public void updateReport()
-    {
-      foreach(ReportItem item in _report)
-      {
-        int row = item.Row;
-        item.Longitude = _csv.getCell(row, Cols.LON);
-        item.Latitude = _csv.getCell(row, Cols.LAT);
-        item.FreqMax = _csv.getCell(row, Cols.F_MAX);
-        item.FreqMin = _csv.getCell(row, Cols.F_MIN);
-        item.Duration = _csv.getCell(row, Cols.DURATION);
-        item.CallNr = _csv.getCell(row, Cols.NR);
-        item.FileName = _csv.getCell(row, Cols.NAME);
-        item.FreqMaxAmp = _csv.getCell(row, Cols.F_MAX_AMP);
-        item.Probability = _csv.getCell(row, Cols.PROBABILITY);
-        item.Remarks = _csv.getCell(row, Cols.REMARKS);
-        item.StartTime = _csv.getCell(row, Cols.START_TIME);
-        item.SpeciesAuto = _csv.getCell(row, Cols.SPECIES);
-        item.SpeciesMan = _csv.getCell(row, Cols.SPECIES_MAN);
       }
     }
 
@@ -517,15 +465,7 @@ namespace BatInspector
         _csv.setCell(_csv.RowCnt, Cols.NAME, wavFileName);
         _csv.setCell(_csv.RowCnt, Cols.SAMPLERATE, samplerate);
         _csv.setCell(_csv.RowCnt, Cols.FILE_LEN, duration);
-        _csv.setCell(_csv.RowCnt, Cols.NR, 1);
-        if(_report != null)
-        {
-          ReportItem rep = new ReportItem();
-          rep.FileName = wavFileName;
-          rep.Duration = duration.ToString();
-          _report.Add(rep);
-        }
-        
+        _csv.setCell(_csv.RowCnt, Cols.NR, 1);        
       }
     }
 
@@ -547,19 +487,6 @@ namespace BatInspector
         else
         {
           DebugLog.log("Analysis::removeFile: report file: " + reportName + " not found", enLogType.ERROR);
-        }
-
-        // remove from report control
-        if (_report != null)
-        {
-          List<ReportItem> list = new List<ReportItem>();
-          foreach (ReportItem item in _report)
-          {
-            if (item.FileName == wavName)
-              list.Add(item);
-          }
-          foreach (ReportItem item in list)
-            _report.Remove(item);
         }
       }
     }
@@ -776,97 +703,10 @@ namespace BatInspector
 
     void resetChanged()
     {
-      if (_report != null)
-      {
-        foreach (ReportItem r in _report)
-        {
-          r.resetChanged();
-        }
-      }
-
     }
 
   }
 
-  public class ReportItem
-  {
-    bool _changed = false;
-    string _remarks;
-
-    public ReportItem()
-    {
-
-    }
-
-    public ReportItem(AnalysisFile file, AnalysisCall call)
-    {
-
-      FileName = file.Name;
-      int callNr = call.getInt(Cols.NR);
-      CallNr = callNr.ToString();
-      if (callNr < 2)
-        Remarks = file.getString(Cols.REMARKS);
-      callNr++;
-      Row = call.ReportRow;
-      FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-      FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-      FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-      Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
-      StartTime = call.getString(Cols.START_TIME);
-      SpeciesAuto = call.getString(Cols.SPECIES);
-      Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
-      Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
-      Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
-      Temperature = call.getDouble(Cols.TEMPERATURE).ToString("0.#", CultureInfo.InvariantCulture);
-      Humidity= call.getDouble(Cols.HUMIDITY).ToString("0.#", CultureInfo.InvariantCulture);
-      //  Snr = call.getDouble(Cols.SNR).ToString();
-      SpeciesMan = call.getString(Cols.SPECIES_MAN);
-    }
-
-    public bool Changed { get { return _changed; } }
-    public int Row { get; set; }
-    public string FileName { get; set; }
-    public string CallNr { get; set; }
-    public string StartTime { get; set; }
-    public string Duration { get; set; }
-    public string FreqMin { get; set; }
-    public string FreqMax { get; set; }
-    public string FreqMaxAmp { get; set; }
-
-    public string SpeciesAuto { get; set; }
-    public string SpeciesMan { get; set; }
-    public string Probability { get; set; }
-  //  public string Snr { get; set; }
-
-    public string Latitude {get;set;}
-    public string Longitude { get;set;}
-    public string Temperature { get;set;}
-    public string Humidity { get;set;}
-    public string Remarks
-    {
-      get { return _remarks; }
-      set
-      {
-        _remarks = value;
-        _changed = true;
-      }
-    }
-
-    public void resetChanged()
-    {
-      _changed = false;
-    }
-
-    public static ReportItem find(string filename, List<ReportItem> list)
-    {
-      foreach(ReportItem r in list)
-      {
-        if(r.FileName == filename)
-          return r;
-      }
-      return null;
-    }
-  }
 
   public class AnalysisCall
   {
@@ -1023,7 +863,6 @@ namespace BatInspector
     private DateTime _recTime;
     private string _name;
     private string _backup = null;
-    public bool Selected { get; set; } = false;
 
     public string Name { get { return _name; } set { _name = value; } }
     public DateTime RecTime { get { return _recTime; } set { _recTime = value; } }

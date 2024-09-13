@@ -96,6 +96,7 @@ namespace BatInspector
     List<string> _showWavFiles = new List<string>();
     Project _prj;
     Query _query;
+    int _lastListStartIdx = -1;
 
     public List<ReportItem> ListView { get { return _report; } }
     public List<string> VisibleFiles { get { return _showWavFiles; } }
@@ -128,13 +129,17 @@ namespace BatInspector
       }
     }
 
-    public void populateList(int startIdx, Filter filter, FilterItem filterItem)
+    public bool populateList(int startIdx, Filter filter, FilterItem filterItem)
     {
+      if ((startIdx == _lastListStartIdx) && (_report.Count > 0))
+        return false;
+      
       StartIdx = startIdx;
       BatExplorerProjectFileRecordsRecord[] recList = getRecords();
       Analysis analysis = getAnalysis();
       if (recList != null)
       {
+        _lastListStartIdx = startIdx;
         _report.Clear();
         int maxLines = 50;
         int fileIdx = startIdx;
@@ -162,6 +167,7 @@ namespace BatInspector
           fileIdx++;
         }
       }
+      return true;
     }
 
     public void addReportItem(AnalysisFile file, AnalysisCall call)

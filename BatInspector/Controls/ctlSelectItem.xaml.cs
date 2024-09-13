@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

@@ -69,6 +69,7 @@ namespace BatInspector.Forms
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
     DirectoryInfo _projectDir;
+    string _oldTab = "";
 
     double _scrollBarPrjPos = 0;
     bool _mouseIsDownOnScrollPrj = false;
@@ -453,13 +454,13 @@ namespace BatInspector.Forms
         _scrollPrj.Track.Thumb.Height = Math.Max(10, _spSpectrums.ActualHeight / _scrollPrj.Maximum / 3);
         _scrollPrj.InvalidateVisual();
         _scrollPrj.Value = 0;
-        if (oldValue == _scrollPrj.Value)
-          populateControls(0);
+//        if (oldValue == _scrollPrj.Value)  // TODO do we need it?
+//          populateControls(0);             // TODO
       }
       else
       {
-        _model.View.populateList(0, filter, filterItem);
-        initDataGridSource();
+        if(_model.View.populateList(0, filter, filterItem))
+          initDataGridSource();
         _scrollList.SmallChange = 1.0;
         _scrollList.Maximum = Math.Max(1, _model.View.VisibleFiles.Count - 1);
         _scrollList.Value = 0;
@@ -832,8 +833,9 @@ namespace BatInspector.Forms
 
     private void _tbMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      if(_tbPrj.IsSelected)
+      if(_tbPrj.IsSelected && (_oldTab != "Prj"))
       {
+        _oldTab = "Prj";
         try
         {
           if (_model.CurrentlyOpen != null)
@@ -847,8 +849,9 @@ namespace BatInspector.Forms
 
       }
 
-      else if(_tbReport.IsSelected)
+      else if(_tbReport.IsSelected && (_oldTab != "Report"))
       {
+        _oldTab = "Report";
         try
         {
           if (_model.CurrentlyOpen != null)
@@ -863,8 +866,9 @@ namespace BatInspector.Forms
         }
       }
 
-      else if (_tbSum.IsSelected)
+      else if (_tbSum.IsSelected && (_oldTab != "Sum"))
       {
+        _oldTab = "Sum";
         try
         {
           if ((_model.CurrentlyOpen != null) && (_model.CurrentlyOpen.Analysis.Summary != null))
@@ -875,6 +879,11 @@ namespace BatInspector.Forms
         {
           DebugLog.log("TAB 'Summary' selection failed:" + ex.ToString(), enLogType.ERROR);
         }
+      }
+
+      else if (_tbScatter.IsSelected && (_oldTab != "Scat"))
+      {
+        _oldTab = "Scat";
       }
     }
 

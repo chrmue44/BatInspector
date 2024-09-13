@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using BatInspector.Forms;
 using System.Xml.Linq;
-
+using System.Diagnostics;
 
 namespace BatInspector.Controls
 {
@@ -244,6 +244,8 @@ namespace BatInspector.Controls
     {
       if (_model.ZoomView.Analysis.Calls.Count > 0)
       {
+        Stopwatch sw = new Stopwatch(); //@@@
+        sw.Start();   //@@@
         setVisabilityCallData(true);
         string[] items = new string[_model.ZoomView.Analysis.Calls.Count];
         for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
@@ -256,6 +258,7 @@ namespace BatInspector.Controls
         _ctlMeanCallMin.setValue("1");
         _ctlMeanCallMax.setValue(_model.ZoomView.Analysis.Calls.Count.ToString());
         calcMeanValues(0, 0);
+        sw.Stop();  //@@@
       }
       else
       {

@@ -38,7 +38,10 @@ namespace BatInspector
 
     public abstract void train();
     public abstract int classify(Project prj, bool cli = false);
-
+    public virtual int createReport(Project prj)
+    {
+      return 0;
+    }
     public static BaseModel Create(int index, enModel type, ViewModel model)
     {
       switch (type) 

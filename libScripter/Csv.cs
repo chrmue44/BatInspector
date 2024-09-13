@@ -94,7 +94,6 @@ namespace libScripter
           }
           if(_withHdr)
             initColNames(lines[0]);
-          log("file " + file + " opened successfully", enLogType.DEBUG);
         }
         else
         {

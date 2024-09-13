@@ -338,7 +338,6 @@ namespace BatInspector.Forms
         buildWavFileList(false);
         if (_model.Query != null)
         {
-          populateFiles();
           showStatus();
         }
       }
@@ -378,22 +377,28 @@ namespace BatInspector.Forms
       }
       else
       {
-        _model.initProject(_projectDir, callbackUpdateAnalysis);
-  //      _tbReport_GotFocus(_spSpectrums, null);
-        if ((_model.Prj != null) && _model.Prj.Ok)
+        try
         {
-          _scrollPrj.Minimum = 0;
-          _scrollBarPrjPos = 0;
-          _scrollPrj.Maximum = _model.Prj.Records.Length - 1;
-          _scrollList.Minimum = 0;
-          _scrollBarListPos = 0;
-          _scrollList.Maximum = _model.Prj.Records.Length - 1;
-          // TODO set button size
-          _ctlPrjInfo.setup(_model.Prj);
-          _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
-          _ctlScatter.initPrj();
-          _switchTabToPrj = true;
-          buildWavFileList(false);
+          _model.initProject(_projectDir, callbackUpdateAnalysis);
+          if ((_model.Prj != null) && _model.Prj.Ok)
+          {
+            _scrollPrj.Minimum = 0;
+            _scrollBarPrjPos = 0;
+            _scrollPrj.Maximum = _model.Prj.Records.Length - 1;
+            _scrollList.Minimum = 0;
+            _scrollBarListPos = 0;
+            _scrollList.Maximum = _model.Prj.Records.Length - 1;
+            // TODO set button size
+            _ctlPrjInfo.setup(_model.Prj);
+            _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
+            _ctlScatter.initPrj();
+            _switchTabToPrj = true;
+            buildWavFileList(false);
+          }
+        }
+        catch(Exception ex)
+        {
+          DebugLog.log("Error opening project: " + ex.ToString(), enLogType.ERROR);
         }
       }
     }
@@ -581,17 +586,6 @@ namespace BatInspector.Forms
     }
 
 
-
-
-    private void populateFiles()
-    {
-      setMouseStatus();
-      _workerStartup = new Thread(createImageFiles);
-      _workerStartup.Priority = ThreadPriority.AboveNormal;
-      _workerStartup.Start();
-//      _model.Status.State = enAppState.OPEN_PRJ;
-    }
-
     void worker_ProgressChanged(string pngName)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
@@ -699,36 +693,6 @@ namespace BatInspector.Forms
       }
     }
 
-    private void createImageFiles()
-    {
-      try
-      {
-        DebugLog.log("start creating missing image files", enLogType.INFO);
-        Stopwatch s = new Stopwatch();
-        s.Start();
-        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
-        bool fromQuery = _model.Query != null;
-        if (recList != null)
-        {
-          for (int i = 0; i < recList.Length; i++)
-          {
-            _model.createPngIfMissing(recList[i], fromQuery);
-            if (s.ElapsedMilliseconds > 2500)
-            {
-//              _model.Status.Msg = i.ToString() + "/" + recList.Length + " " + BatInspector.Properties.MyResources.MainWindowFilesProcessed;
-              s.Restart();
-              Thread.Yield();
-            }
-          }
-        }
-        DebugLog.log("finishing to create missing image files", enLogType.INFO);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("error creating image files: " + ex.ToString(), enLogType.ERROR);
-        DebugLog.save();
-      }
-    }
 
     void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
     {

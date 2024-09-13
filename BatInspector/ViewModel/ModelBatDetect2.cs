@@ -10,6 +10,7 @@
 using BatInspector.Forms;
 using libParser;
 using libScripter;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -82,6 +83,23 @@ namespace BatInspector
     public override void train()
     {
       throw new NotImplementedException();
+    }
+
+    public override int createReport(Project prj)
+    {
+      int retVal = 0;
+      string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
+      string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
+      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
+      if (ok)
+      {
+        //        cleanup(prj.PrjDir);
+        prj.Analysis.read(prj.ReportName);
+        prj.removeFilesNotInReport();
+      }
+      else
+        retVal = 2;
+      return retVal;
     }
 
     public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode)

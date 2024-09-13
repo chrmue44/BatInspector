@@ -493,6 +493,22 @@ namespace BatInspector
       return retVal;
     }
 
+    public int createReport(Project prj)
+    {
+      int retVal = 0;
+      if (prj != null)
+      {
+        for (int i = 0; i < AppParams.Inst.Models.Count; i++)
+        {
+          if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
+          {
+            retVal = _models[i].createReport(prj);
+          }
+        }
+      }
+      return retVal;
+    }
+
     public List<SpeciesItem> getPossibleSpecies(double charFreq, double duration, double callDist)
     {
       List<SpeciesItem> retVal = new List<SpeciesItem>();

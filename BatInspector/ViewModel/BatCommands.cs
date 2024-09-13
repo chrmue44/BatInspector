@@ -29,7 +29,8 @@ namespace BatInspector
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
-        new OptItem("CreatePrjFile", "create project file in directory <dirName>",1, fctCreatePrjFile)
+        new OptItem("CreatePrjFile", "create project file in directory <dirName>",1, fctCreatePrjFile),
+        new OptItem("CreateReport", "create report from annotations <prjDirName>",1, ftcCreateReport )
       });
 
       _options = new Options(_features, false);
@@ -50,7 +51,7 @@ namespace BatInspector
       return 0;
     }
 
-    int fctSplitProject(List<string> pars, out string ErrText)
+    int fctSplitProject(List<string> pars, out string ErrText) 
     {
       ErrText = "";
       if ((_model.Prj != null) && (_model.Prj.Ok))
@@ -112,6 +113,17 @@ namespace BatInspector
       Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
       DirectoryInfo dir = new DirectoryInfo(fileName);
       prj.fillFromDirectory(dir, AppParams.DIR_WAVS);
+      return retVal;
+    }
+
+    int ftcCreateReport(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string prjDir = pars[0];
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      prj.readPrjFile(prjDir);
+      retVal = _model.createReport(prj);
       return retVal;
     }
   }

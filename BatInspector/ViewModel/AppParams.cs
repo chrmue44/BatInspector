@@ -160,6 +160,9 @@ namespace BatInspector
     [DataMember,
     LocalizedDescription("SetDescReportColumn")]
     public string ReportColumn { get; set; }
+    [DataMember,
+    LocalizedDescription("SetDescModelName")]
+    public string Name { get; set; }
   }
 
 

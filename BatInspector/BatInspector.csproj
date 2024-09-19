@@ -135,6 +135,9 @@
     <Compile Include="Controls\ctlHistogram.xaml.cs">
       <DependentUpon>ctlHistogram.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlModParItem.xaml.cs">
+      <DependentUpon>ctlModParItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlParamEditItem.xaml.cs">
       <DependentUpon>ctlParamEditItem.xaml</DependentUpon>
     </Compile>
@@ -229,6 +232,9 @@
     </Compile>
     <Compile Include="Forms\FrmMessage.xaml.cs">
       <DependentUpon>FrmMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmModelParams.xaml.cs">
+      <DependentUpon>frmModelParams.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmRecovery.xaml.cs">
       <DependentUpon>FrmRecovery.xaml</DependentUpon>
@@ -362,6 +368,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ctlModParItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ctlParamEditItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -491,6 +501,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmModelParams.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

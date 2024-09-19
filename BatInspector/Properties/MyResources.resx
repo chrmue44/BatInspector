@@ -1626,4 +1626,19 @@
   <data name="About" xml:space="preserve">
     <value>About...</value>
   </data>
+  <data name="selectedAIModels" xml:space="preserve">
+    <value>Enabled AI models...</value>
+  </data>
+  <data name="SetDescModelName" xml:space="preserve">
+    <value>Name of the AI model</value>
+  </data>
+  <data name="frmModParsTitle" xml:space="preserve">
+    <value>AI-Model Parameter</value>
+  </data>
+  <data name="ctlModParItemModellparameter" xml:space="preserve">
+    <value>Model Parameter</value>
+  </data>
+  <data name="ctlModParItem_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
 </root>

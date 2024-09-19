@@ -6,7 +6,6 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Forms;
 using libParser;
 using libScripter;
 using System;
@@ -14,7 +13,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Permissions;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -70,13 +68,13 @@ namespace BatInspector
     }
 
     public abstract string getFullFilePath(string path);
-    public abstract BatExplorerProjectFileRecordsRecord[] getRecords(); 
+    public abstract PrjRecord[] getRecords(); 
 
-    public BatExplorerProjectFileRecordsRecord findRecord(string wavName)
+    public PrjRecord findRecord(string wavName)
     {
-      BatExplorerProjectFileRecordsRecord retVal = null;
-      BatExplorerProjectFileRecordsRecord[] records = getRecords();
-      foreach(BatExplorerProjectFileRecordsRecord rec in records)
+      PrjRecord retVal = null;
+      PrjRecord[] records = getRecords();
+      foreach(PrjRecord rec in records)
       {
         if(rec.File.ToLower() == wavName.ToLower())
         {
@@ -93,7 +91,7 @@ namespace BatInspector
     /// </summary>
     protected void initSpeciesList()
     {
-      BatExplorerProjectFileRecordsRecord[] records = getRecords();
+      PrjRecord[] records = getRecords();
       if (records.Length > 0)
       {
         string fName = getFullFilePath(records[0].File);
@@ -132,7 +130,7 @@ namespace BatInspector
     
     public bool Ok { get { return _ok; } }
 
-    public BatExplorerProjectFileRecordsRecord[] Records
+    public PrjRecord[] Records
     {
       get {
         if (_batExplorerPrj.Records != null)
@@ -170,6 +168,7 @@ namespace BatInspector
       set { _batExplorerPrj.Created = value; } }
     public string PrjDir { get { return _selectedDir; } }
 
+    public ModelParams[] ModelParams { get { return _batExplorerPrj.Models; } }
 
     public string ReportName { get { return getReportName(_selectedDir); } }
 
@@ -466,7 +465,7 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
+    public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, ModelParams[] defaultParams)
     {
       if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
       {
@@ -483,7 +482,7 @@ namespace BatInspector
           string wavDir = Path.Combine(info.SrcDir, info.WavSubDir);
 
           Project prjSrc = new Project(regions, speciesInfo, null, info.WavSubDir);
-          prjSrc.readPrjFile(info.SrcDir);
+          prjSrc.readPrjFile(info.SrcDir, defaultParams);
           string[] notes = prjSrc.Notes.Split('\n');
 
           info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
@@ -649,7 +648,7 @@ namespace BatInspector
 
     private static void copyAnalysisPart(Project prjSrc, Project prjDest)
     {
-      foreach(BatExplorerProjectFileRecordsRecord rec in prjDest.Records)
+      foreach(PrjRecord rec in prjDest.Records)
       {
         AnalysisFile f = prjSrc.Analysis.getAnalysis(rec.File);
         if(f != null)
@@ -733,7 +732,7 @@ namespace BatInspector
     }
 
 
-    public void readPrjFile(string prjDir)
+    public void readPrjFile(string prjDir, ModelParams[] defaultParams)
     {
       try
       {
@@ -759,6 +758,8 @@ namespace BatInspector
             _batExplorerPrj.Created = "";
           if (_batExplorerPrj.Notes == null)
             _batExplorerPrj.Notes = "";
+          if (_batExplorerPrj.Models == null)
+            _batExplorerPrj.Models = defaultParams;  
           if (Directory.Exists(Path.Combine(_selectedDir, AppParams.DIR_WAVS)))
             _wavSubDir = AppParams.DIR_WAVS;
           else
@@ -766,10 +767,10 @@ namespace BatInspector
 
           DirectoryInfo dir = new DirectoryInfo(Path.Combine(_selectedDir, _wavSubDir));
           FileInfo[] wavFiles = dir.GetFiles("*.wav");
-          _batExplorerPrj.Records = new BatExplorerProjectFileRecordsRecord[wavFiles.Length];
+          _batExplorerPrj.Records = new PrjRecord[wavFiles.Length];
           for (int i = 0; i < wavFiles.Length; i++)
           {
-            _batExplorerPrj.Records[i] = new BatExplorerProjectFileRecordsRecord(wavFiles[i].Name);
+            _batExplorerPrj.Records[i] = new PrjRecord(wavFiles[i].Name);
           }
 
           initSpeciesList();
@@ -799,8 +800,8 @@ namespace BatInspector
 
     public void removeFile(string wavName)
     {
-      List<BatExplorerProjectFileRecordsRecord> list = _batExplorerPrj.Records.ToList();
-      foreach (BatExplorerProjectFileRecordsRecord rec in list)
+      List<PrjRecord> list = _batExplorerPrj.Records.ToList();
+      foreach (PrjRecord rec in list)
       {
         if (rec.File == wavName)
         {
@@ -814,12 +815,12 @@ namespace BatInspector
 
     public void removeFilesNotInReport()
     {
-      List<BatExplorerProjectFileRecordsRecord> newList = new List<BatExplorerProjectFileRecordsRecord>();
+      List<PrjRecord> newList = new List<PrjRecord>();
       string destDir = Path.Combine(this.PrjDir, AppParams.DIR_DEL);
       if (!Directory.Exists(destDir))
         Directory.CreateDirectory(destDir);
 
-      foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
+      foreach (PrjRecord rec in _batExplorerPrj.Records)
       {
         if (Analysis.find(rec.File) == null)
         {
@@ -855,12 +856,12 @@ namespace BatInspector
     /// </summary>
     /// <param name="fileName">name of the file (full path or just file name)</param>
     /// <returns>record containing the file information</returns>
-    public BatExplorerProjectFileRecordsRecord find(string fileName)
+    public PrjRecord find(string fileName)
     {
-      BatExplorerProjectFileRecordsRecord retVal = null;
+      PrjRecord retVal = null;
       if (fileName != null)
       {
-        foreach (BatExplorerProjectFileRecordsRecord r in _batExplorerPrj.Records)
+        foreach (PrjRecord r in _batExplorerPrj.Records)
         {
           if (fileName.ToLower().Contains(r.File.ToLower()))
           {
@@ -875,8 +876,8 @@ namespace BatInspector
 
     public void addFiles(string[] files, bool removeSrc = false)
     {
-      List<BatExplorerProjectFileRecordsRecord> list = new List<BatExplorerProjectFileRecordsRecord>();
-      foreach (BatExplorerProjectFileRecordsRecord rec in _batExplorerPrj.Records)
+      List<PrjRecord> list = new List<PrjRecord>();
+      foreach (PrjRecord rec in _batExplorerPrj.Records)
         list.Add(rec);
       foreach (string file in files)
       {
@@ -911,9 +912,9 @@ namespace BatInspector
     }
 
 
-    private void addRecord(string filePath, ref List<BatExplorerProjectFileRecordsRecord> list)
+    private void addRecord(string filePath, ref List<PrjRecord> list)
     {
-      BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
+      PrjRecord rec = new PrjRecord();
       string name = Path.GetFileName(filePath);
       rec.File = name;
 //      name = Path.GetFileNameWithoutExtension(filePath);
@@ -993,7 +994,7 @@ namespace BatInspector
         string dirName = Path.Combine(dir.FullName, wavSubDir);
         string[] files = System.IO.Directory.GetFiles(dirName, "*.wav",
                          System.IO.SearchOption.TopDirectoryOnly);
-        List<BatExplorerProjectFileRecordsRecord> records = new List<BatExplorerProjectFileRecordsRecord>();
+        List<PrjRecord> records = new List<PrjRecord>();
         _selectedDir = dir.FullName;
         for (int i = 0; i < files.Length; i++)
           addRecord(files[i], ref records);
@@ -1021,7 +1022,7 @@ namespace BatInspector
       DebugLog.log("creating xml infofcreate files...", enLogType.INFO);
 
       //gpx gpxFile = gpx.read(info.GpxFile);
-      foreach (BatExplorerProjectFileRecordsRecord record in _batExplorerPrj.Records)
+      foreach (PrjRecord record in _batExplorerPrj.Records)
       {
         bool create = replaceAll;
         string fullName = Path.Combine(_selectedDir, _wavSubDir, record.File);
@@ -1110,7 +1111,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public override BatExplorerProjectFileRecordsRecord[] getRecords() 
+    public override PrjRecord[] getRecords() 
     {
       return _batExplorerPrj.Records;
     }

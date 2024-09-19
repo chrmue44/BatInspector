@@ -371,7 +371,7 @@ namespace BatInspector
         EndTime = new DateTime(2022,7,14),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos);
+      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos, _model.getDefaultModelParams());
     }
 
     private void testReportModelBatdetect2()

@@ -5,11 +5,12 @@ TODO
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
 - project selector collapses occasionally during work  
-- sum of total calls in activity diagram probably too low
 - calculate SNR for each detected call
 
 
 V0.9.0.0
+- bugfix: activity diagram: total count of calls was incorrect
+- bugfix: min probability for model evaluation now taken from app settings (not fix 0.5 anymore)
 - limit of max files now set to 10000 (should be tested)
 - remove checkProject() in initProject() for faster start of big projects
 - faster display of files in big projects (and much less memory consumption)

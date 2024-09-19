@@ -114,7 +114,7 @@ namespace BatInspector.Controls
         case enDataType.STRING:
           return _valString;
         case enDataType.DOUBLE:
-          return _valDouble.ToString();
+          return _valDouble.ToString(CultureInfo.InvariantCulture);
         case enDataType.INT:
           return _valInt.ToString();
         case enDataType.UINT:

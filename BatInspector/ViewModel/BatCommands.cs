@@ -122,7 +122,7 @@ namespace BatInspector
       ErrText = "";
       string prjDir = pars[0];
       Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
-      prj.readPrjFile(prjDir);
+      prj.readPrjFile(prjDir, _model.getDefaultModelParams());
       retVal = _model.createReport(prj);
       return retVal;
     }

@@ -8,15 +8,55 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using BatInspector;
+using BatInspector.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Documents;
 using System.Xml.Serialization;
 
-// 
-// Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.3928.0.
-// 
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public class ModelParItem
+{
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Name { get; set; }
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public enDataType Type { get; set; }
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Value { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public int Decimals { get; set; }
+}
+
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public class ModelParams
+{
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Name { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string DataSet { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public enModel Type { get;set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public bool Enabled { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public ModelParItem[] Parameters { get; set; } = new ModelParItem[5];
+}
 
 
 /// <remarks/>
@@ -29,135 +69,82 @@ using System.Xml.Serialization;
 public partial class BatExplorerProjectFile
 {
 
-  private string nameField;
+  private string _name;
 
-  private string createdField;
+  private string _created;
 
-  private string notesField;
+  private string _notes;
 
-  private string autoProcessField;
+  private string _autoProcess;
 
-  private string disSpeciesField;
+  private string _disSpecies;
 
-  private BatExplorerProjectFileRecordsRecord[] recordsField;
+  private PrjRecord[] _records;
 
-  private string fileVersionField;
-
-  //private string typeField;
-
+  private string _fileVersion;
+  
   public BatExplorerProjectFile()
   {
+    
   }
+
   public BatExplorerProjectFile(string name, int fileCount)
   {
-    nameField = name;
-    recordsField = new BatExplorerProjectFileRecordsRecord[fileCount];
-    for (int i = 0; i < recordsField.Length; i++)
-      recordsField[i] = new BatExplorerProjectFileRecordsRecord();
-      notesField = "";
-    createdField = "";
-    autoProcessField = "true";
+    _name = name;
+    _records = new PrjRecord[fileCount];
+    for (int i = 0; i < _records.Length; i++)
+      _records[i] = new PrjRecord();
+      _notes = "";
+    _created = "";
+    _autoProcess = "true";
     //typeField = "";
     //originatorField = "";
   }
 
-  public BatExplorerProjectFile(string name, List<BatExplorerProjectFileRecordsRecord> records)
+  public BatExplorerProjectFile(string name, List<PrjRecord> records)
   {
-    nameField = name;
-    recordsField = records.ToArray();
-    notesField = "";
-    createdField = "";
-    autoProcessField = "true";
-    //typeField = "";
-    //originatorField = "";
+    _name = name;
+    _records = records.ToArray();
+    _notes = "";
+    _created = "";
+    _autoProcess = "true";
   }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Name
-  {
-    get
-    {
-      return this.nameField;
-    }
-    set
-    {
-      this.nameField = value;
-    }
-  }
+  public string Name { get { return _name;} set {_name = value;} }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Created
-  {
-    get
-    {
-      return this.createdField;
-    }
-    set
-    {
-      this.createdField = value;
-    }
-  }
+  public string Created { get { return _created; }  set {_created = value;} }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Notes
-  {
-    get
-    {
-      return this.notesField;
-    }
-    set
-    {
-      this.notesField = value;
-    }
-  }
+  public string Notes { get { return _notes; } set {_notes = value; }  }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string AutoProcess
-  {
-    get
-    {
-      return this.autoProcessField;
-    }
-    set
-    {
-      this.autoProcessField = value;
-    }
-  }
+  public string AutoProcess { get {return _autoProcess;} set {_autoProcess = value;} }
 
-
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string DisSpecies
-  {
-    get
-    {
-      return this.disSpeciesField;
-    }
-    set
-    {
-      this.disSpeciesField = value;
-    }
-  }
 
   /// <remarks/>
   [XmlIgnoreAttribute]
   //[System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   //[System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
-  public BatExplorerProjectFileRecordsRecord[] Records
+  public PrjRecord[] Records
   {
     get
     {
-      return this.recordsField;
+      return this._records;
     }
     set
     {
-      this.recordsField = value;
+      this._records = value;
     }
   }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public ModelParams[] Models { get; set; } = new ModelParams[5];
 
   /// <remarks/>
   [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -165,11 +152,11 @@ public partial class BatExplorerProjectFile
   {
     get
     {
-      return this.fileVersionField;
+      return this._fileVersion;
     }
     set
     {
-      this.fileVersionField = value;
+      this._fileVersion = value;
     }
   }
 
@@ -195,20 +182,20 @@ public partial class BatExplorerProjectFile
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplorerProjectFileRecordsRecord>
+public partial class PrjRecord : IComparable<PrjRecord>
 {
 
   private string fileField;
 
   private string nameField;
 
-  public BatExplorerProjectFileRecordsRecord()
+  public PrjRecord()
   {
     fileField = "";
     Selected = false;
   }
 
-  public BatExplorerProjectFileRecordsRecord(string name)
+  public PrjRecord(string name)
   {
     fileField = name;
     nameField = Path.GetFileNameWithoutExtension(name);
@@ -248,7 +235,7 @@ public partial class BatExplorerProjectFileRecordsRecord : IComparable<BatExplor
   [XmlIgnoreAttribute]
   public bool Selected { get; set; } = false;
 
-  public int CompareTo(BatExplorerProjectFileRecordsRecord obj)
+  public int CompareTo(PrjRecord obj)
   { 
     return string.Compare(File, obj.File); 
   }

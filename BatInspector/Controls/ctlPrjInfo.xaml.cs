@@ -6,7 +6,10 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Forms;
 using BatInspector.Properties;
+using libParser;
+using System;
 using System.IO;
 using System.Windows.Controls;
 
@@ -36,8 +39,61 @@ namespace BatInspector.Controls
     public void setup(Project prj) 
     {
       _prj = prj;
-   //   _tbCreated.Text = _prj.Created;
       _tbNotes.Text = _prj.Notes;
+      initModelComboBox();
+    }
+
+    public void initModelComboBox()
+    {
+      _cbModels.Items.Clear();
+      _cbModels.Items.Add(MyResources.selectedAIModels);
+      for (int i = 0; i < _prj.ModelParams.Length; i++)
+      {
+        CheckBox cb = new CheckBox();
+        cb.Content = _prj.ModelParams[i].Name;
+        cb.IsChecked = _prj.ModelParams[i].Enabled;
+        cb.BorderThickness = new System.Windows.Thickness(0);
+        _cbModels.Items.Add(cb);
+      }
+      _cbModels.SelectedIndex = 0;
+    }
+
+
+    private void _btnPars_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+      try
+      {
+        if ((_prj != null) && _prj.Ok)
+        {
+          frmModelParams frm = new frmModelParams(_prj);
+          bool? result = frm.ShowDialog();
+          if (result == true)
+            initModelComboBox();
+        }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("Error openening Model Parameter Dialog: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+    private void _cbModels_DropDownClosed(object sender, EventArgs e)
+    {
+      try
+      {
+        if((_prj == null) || !_prj.Ok)
+          return;
+        _cbModels.SelectedIndex = 0;
+        for (int i = 0; i < _prj.ModelParams.Length; i++)
+        {
+          CheckBox cb = _cbModels.Items[i + 1] as CheckBox;
+          _prj.ModelParams[i].Enabled = (cb.IsChecked == true);
+        }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("error selecting models for project: " + ex.ToString(), enLogType.ERROR);
+      }
     }
   }
 }

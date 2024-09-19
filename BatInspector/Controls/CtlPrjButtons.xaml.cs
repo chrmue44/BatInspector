@@ -75,10 +75,10 @@ namespace BatInspector.Controls
     {
       try
       {
-        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = _model.CurrentlyOpen?.getRecords();
         if (recList != null)
         {
-          foreach (BatExplorerProjectFileRecordsRecord rec in recList)
+          foreach (PrjRecord rec in recList)
           {
             rec.Selected = true;
           }
@@ -97,10 +97,10 @@ namespace BatInspector.Controls
     {
       try
       {
-        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = _model.CurrentlyOpen?.getRecords();
         if (recList != null)
         {
-          foreach (BatExplorerProjectFileRecordsRecord rec in recList)
+          foreach (PrjRecord rec in recList)
           {
             rec.Selected = false;
           }
@@ -123,7 +123,7 @@ namespace BatInspector.Controls
         MessageBoxResult res = MessageBox.Show(MyResources.msgDeleteFiles, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
         if ((res == MessageBoxResult.Yes) && (_model.CurrentlyOpen != null))
         {
-          foreach (BatExplorerProjectFileRecordsRecord rec in _model.CurrentlyOpen.getRecords())
+          foreach (PrjRecord rec in _model.CurrentlyOpen.getRecords())
           {
             if (rec.Selected == true)
               files.Add(rec.File);
@@ -255,7 +255,7 @@ namespace BatInspector.Controls
           foreach (AnalysisFile a in _model.CurrentlyOpen.Analysis.Files)
           {
             bool res = _model.Filter.apply(filter, a);
-            BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(a.Name);
+            PrjRecord rec = _model.CurrentlyOpen.findRecord(a.Name);
             if (rec != null)
               rec.Selected = res;
           }

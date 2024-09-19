@@ -359,7 +359,7 @@ namespace BatInspector.Forms
           if (ctl.Analysis?.getString(Cols.NAME) == fName)
           {
             AnalysisFile newAnalysis = _model.CurrentlyOpen?.Analysis.find(fName);
-            BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen?.findRecord(fName);
+            PrjRecord rec = _model.CurrentlyOpen?.findRecord(fName);
             ctl.updateCallInformations(newAnalysis, rec);
             if (ctl.Analysis == _model.ZoomView.Analysis)
               _ctlZoom.updateManSpecies();
@@ -579,7 +579,7 @@ namespace BatInspector.Forms
       foreach (ctlWavFile ctl in _spSpectrums.Children)
       {
         AnalysisFile anaF = _model.Prj.Analysis.find(ctl.WavName);
-        BatExplorerProjectFileRecordsRecord rec = _model.Prj.findRecord(ctl.WavName);
+        PrjRecord rec = _model.Prj.findRecord(ctl.WavName);
         if ((anaF != null) && (rec != null))
           ctl.updateCallInformations(anaF, rec);
       }
@@ -632,7 +632,7 @@ namespace BatInspector.Forms
       }
       if (append)
       {
-        BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(wavName);
+        PrjRecord rec = _model.CurrentlyOpen.findRecord(wavName);
         AnalysisFile analysisFile = null;
         if (_model.CurrentlyOpen.Analysis != null)
           analysisFile = _model.CurrentlyOpen.Analysis.find(rec.File);
@@ -666,7 +666,7 @@ namespace BatInspector.Forms
       else
       {
         _model.View.StartIdx = startIdx;
-        BatExplorerProjectFileRecordsRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = _model.CurrentlyOpen?.getRecords();
         bool isQuery = _model.Query != null;
         Analysis analysis = _model.CurrentlyOpen.Analysis;
         if (recList != null)
@@ -679,7 +679,7 @@ namespace BatInspector.Forms
             if ((startIdx + i) < _model.View.VisibleFiles.Count)
             {
               string wavName = _model.View.VisibleFiles[i + startIdx];
-              BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen.findRecord(wavName);
+              PrjRecord rec = _model.CurrentlyOpen.findRecord(wavName);
               AnalysisFile analysisFile = null;
               if ((analysis != null) && (rec != null))
                 analysisFile = analysis.find(rec.File);
@@ -695,7 +695,7 @@ namespace BatInspector.Forms
     }
 
 
-    void initCtlWav(ctlWavFile ctl, BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
+    void initCtlWav(ctlWavFile ctl, PrjRecord rec, bool fromQuery)
     {
       ctl._img.Source = _model.getFtImage(rec, fromQuery);
       ctl._img.MaxHeight = _imgHeight;
@@ -747,7 +747,7 @@ namespace BatInspector.Forms
       foreach (UIElement it in _spSpectrums.Children)
       {
         ctlWavFile ctl = it as ctlWavFile;
-        BatExplorerProjectFileRecordsRecord rec = _model.CurrentlyOpen?.findRecord(ctl.WavName);
+        PrjRecord rec = _model.CurrentlyOpen?.findRecord(ctl.WavName);
         if(rec != null)
           setCheckboxInWavCtl(ctl, rec.Selected);
       }

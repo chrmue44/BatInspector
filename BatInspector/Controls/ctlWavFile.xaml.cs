@@ -25,7 +25,7 @@ namespace BatInspector.Controls
   {
     AnalysisFile _analysis;
     string _wavFilePath;
-    BatExplorerProjectFileRecordsRecord _record;
+    PrjRecord _record;
     ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
@@ -58,7 +58,7 @@ namespace BatInspector.Controls
     }
 
 
-    public ctlWavFile(AnalysisFile analysis, BatExplorerProjectFileRecordsRecord record,  ViewModel model, MainWindow parent, bool showButtons)
+    public ctlWavFile(AnalysisFile analysis, PrjRecord record,  ViewModel model, MainWindow parent, bool showButtons)
     {
       _model = model;
       _parent = parent;
@@ -76,7 +76,7 @@ namespace BatInspector.Controls
     }
 
 
-    public void updateCallInformations(AnalysisFile analysis, BatExplorerProjectFileRecordsRecord rec)
+    public void updateCallInformations(AnalysisFile analysis, PrjRecord rec)
     {
       _analysis = analysis;
       List<string> spec = new List<string>();
@@ -100,7 +100,7 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = rec.Selected;
     }
 
-    public void setFileInformations(BatExplorerProjectFileRecordsRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec)
+    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec)
     {
       _wavFilePath = wavFilePath;
       _record = record;

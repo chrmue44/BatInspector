@@ -11,11 +11,6 @@
 using System;
 using System.Xml.Serialization;
 
-// 
-// Dieser Quellcode wurde automatisch generiert von xsd, Version=4.8.3928.0.
-// 
-
-
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
@@ -24,189 +19,55 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
 public partial class BatRecord
-{
-
-  private string fileNameField;
-
-  private string dateTimeField;
-
-  private string samplerateField;
-
-  private string gainField;
-
-  private string inputFilterField;
-
-  private string durationField;
-
-  private string peakValueField;
-
-  private string temperatureField;
-
-  private string humidityField;
-  
-  private BatRecordTrigger triggerField;
-
-  private BatRecordGPS gPSField;
+{ 
 
   public BatRecord()
   {
-    gPSField = new BatRecordGPS();
-    triggerField = new BatRecordTrigger();
   }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string FileName
-  {
-    get
-    {
-      return this.fileNameField;
-    }
-    set
-    {
-      this.fileNameField = value;
-    }
-  }
+  public string FileName { get; set; }
+ 
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string DateTime { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string DateTime
-  {
-    get
-    {
-      return this.dateTimeField;
-    }
-    set
-    {
-      this.dateTimeField = value;
-    }
-  }
+  public string Samplerate { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Samplerate
-  {
-    get
-    {
-      return this.samplerateField;
-    }
-    set
-    {
-      this.samplerateField = value;
-    }
-  }
+  public string Gain { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Gain
-  {
-    get
-    {
-      return this.gainField;
-    }
-    set
-    {
-      this.gainField = value;
-    }
-  }
+  public string InputFilter { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string InputFilter
-  {
-    get
-    {
-      return this.inputFilterField;
-    }
-    set
-    {
-      this.inputFilterField = value;
-    }
-  }
+  public string Duration{ get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Duration
-  {
-    get
-    {
-      return this.durationField;
-    }
-    set
-    {
-      this.durationField = value;
-    }
-  }
+  public string PeakValue { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string PeakValue
-  {
-    get
-    {
-      return this.peakValueField;
-    }
-    set
-    {
-      this.peakValueField = value;
-    }
-  }
+  public string Temparature { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Temparature
-  {
-    get
-    {
-      return this.temperatureField;
-    }
-    set
-    {
-      this.temperatureField = value;
-    }
-  }
+  public string Humidity { get; set; }
+  /// <remarks/>
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public BatRecordTrigger Trigger { get; set; } = new BatRecordTrigger();
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Humidity
-  {
-    get
-    {
-      return this.humidityField;
-    }
-    set
-    {
-      this.humidityField = value;
-    }
-  }
-
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public BatRecordTrigger Trigger
-  {
-    get
-    {
-      return this.triggerField;
-    }
-    set
-    {
-      this.triggerField = value;
-    }
-  }
-
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public BatRecordGPS GPS
-  {
-    get
-    {
-      return this.gPSField;
-    }
-    set
-    {
-      this.gPSField = value;
-    }
-  }
+  public BatRecordGPS GPS { get; set; } = new BatRecordGPS();
 }
 
 /// <remarks/>
@@ -218,53 +79,17 @@ public partial class BatRecord
 public partial class BatRecordTrigger
 {
 
-  private string levelField;
-
-  private string filterField;
-
-  private string frequencyField;
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Level { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Level
-  {
-    get
-    {
-      return this.levelField;
-    }
-    set
-    {
-      this.levelField = value;
-    }
-  }
-
+  public string Filter { get; set; }
+  
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Filter
-  {
-    get
-    {
-      return this.filterField;
-    }
-    set
-    {
-      this.filterField = value;
-    }
-  }
-
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Frequency
-  {
-    get
-    {
-      return this.frequencyField;
-    }
-    set
-    {
-      this.frequencyField = value;
-    }
-  }
+  public string Frequency { get; set; }
 }
 
 /// <remarks/>
@@ -275,49 +100,8 @@ public partial class BatRecordTrigger
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class BatRecordGPS
 {
-
-  private string positionField;
-
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Position
-  {
-    get
-    {
-      return this.positionField;
-    }
-    set
-    {
-      this.positionField = value;
-    }
-  }
+  public string Position { get; set; }
 }
-
-/*
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-public partial class NewDataSet
-{
-
-  private BatRecord[] itemsField;
-
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute("BatRecord")]
-  public BatRecord[] Items
-  {
-    get
-    {
-      return this.itemsField;
-    }
-    set
-    {
-      this.itemsField = value;
-    }
-  }
-}*/
 

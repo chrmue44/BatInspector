@@ -17,6 +17,8 @@ namespace BatInspector
 {
   public class ModelCmuTsa : BaseModel
   {
+    public const string MODEL_NAME = "CMrnn";
+    public const string NAME_MIN_PROB = "min. Probability";
     public const int OPT_INSPECT = 0x01;
     public const int OPT_CUT = 0x02;
     public const int OPT_PREPARE = 0x04;
@@ -27,9 +29,24 @@ namespace BatInspector
     public const int OPT_CLEANUP = 0x100;
 
     public ModelCmuTsa(int index, ViewModel model) :
-      base(index, enModel.rnn6aModel, model)
+      base(index, enModel.rnn6aModel, MODEL_NAME, model)
     {
 
+    }
+
+    public static string[] DataSetItems { get; } = new string[1] { "CM Süd Hessen" };
+
+    public override ModelParItem[] getDefaultModelParams()
+    {
+      ModelParItem[] retVal = new ModelParItem[1];
+      retVal[0] = new ModelParItem()
+      {
+        Name = NAME_MIN_PROB,
+        Type = Controls.enDataType.DOUBLE,
+        Decimals = 2,
+        Value = "0.5"
+      };
+      return retVal;
     }
 
 

@@ -113,8 +113,8 @@ namespace BatInspector
     public void buildListOfVisibles(bool selectedOnly)
     {
       _showWavFiles.Clear();
-      BatExplorerProjectFileRecordsRecord[] list = getRecords();
-      foreach (BatExplorerProjectFileRecordsRecord rec in list)
+      PrjRecord[] list = getRecords();
+      foreach (PrjRecord rec in list)
       {
         if (!selectedOnly || (selectedOnly && rec.Selected))
           _showWavFiles.Add(rec.File);
@@ -135,7 +135,7 @@ namespace BatInspector
         return false;
       
       StartIdx = startIdx;
-      BatExplorerProjectFileRecordsRecord[] recList = getRecords();
+      PrjRecord[] recList = getRecords();
       Analysis analysis = getAnalysis();
       if (recList != null)
       {
@@ -200,9 +200,9 @@ namespace BatInspector
       }
     }
 
-    private BatExplorerProjectFileRecordsRecord[] getRecords()
+    private PrjRecord[] getRecords()
     {
-      BatExplorerProjectFileRecordsRecord[] retVal = new BatExplorerProjectFileRecordsRecord[0];
+      PrjRecord[] retVal = new PrjRecord[0];
       if ((_prj != null) && (_prj.Ok))
       {
         retVal = _prj.Records;

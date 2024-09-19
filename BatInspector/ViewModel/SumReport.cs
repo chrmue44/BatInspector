@@ -690,6 +690,7 @@ namespace BatInspector
       bool retVal = true;
       addedLine = false;
       DateTime end = start.AddDays(days);
+      dailyActivity.TotalCalls = 0;
       foreach (ReportListItem rep in _reports)
       {
         if ((rep.StartDate >= start) && (rep.StartDate < end) || (rep.EndDate >= start) && (rep.EndDate < end))
@@ -706,7 +707,6 @@ namespace BatInspector
           }
           else
           {
-            dailyActivity.TotalCalls = 0;
             foreach (AnalysisFile file in analysis.Files)
             {
               DateTime t = file.RecTime;

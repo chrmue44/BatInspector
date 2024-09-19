@@ -10,8 +10,20 @@
 <!--    <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoCreated}" Height="45" Background="{DynamicResource colorBackGround}">
       <TextBlock Name="_tbCreated" TextWrapping="Wrap" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}" ></TextBlock>
     </GroupBox> -->
-    <GroupBox Template="{DynamicResource GroupBoxCmu}" Header="{x:Static res:MyResources.ctlPrjInfoNotes}" Height="80" Background="{DynamicResource colorBackGround}">
-      <TextBox Name="_tbNotes" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="_tbNotes_TextChanged" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
+    <GroupBox Template="{DynamicResource GroupBoxCmu}"  Height="80" Background="{DynamicResource colorBackGround}" Margin="3">
+            <GroupBox.Header>
+                <TextBlock Text="{x:Static res:MyResources.ctlPrjInfoNotes}" FontWeight="Bold"/>
+            </GroupBox.Header>
+        <TextBox Name="_tbNotes" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="_tbNotes_TextChanged" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
     </GroupBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+        <ComboBox Name="_cbModels"  Grid.Column="0" Height="25" SelectedIndex="0" Margin="6,3,6,0" DropDownClosed="_cbModels_DropDownClosed">
+        </ComboBox>
+            <Button Name="_btnPars" Margin="0,0,6,0"  Grid.Column="1" Content="Pars..." Click="_btnPars_Click"/>
+        </Grid>
   </StackPanel>
 </UserControl>

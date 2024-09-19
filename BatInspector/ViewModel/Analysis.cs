@@ -415,7 +415,7 @@ namespace BatInspector
       {
         string wavName = _csv.getCell(r, Cols.NAME);
 
-        BatExplorerProjectFileRecordsRecord rec = prj.find(wavName);
+        PrjRecord rec = prj.find(wavName);
         if (rec == null)
           res |= removeWavFromReport(wavName);
       }

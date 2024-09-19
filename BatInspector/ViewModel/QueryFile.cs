@@ -41,7 +41,7 @@ namespace BatInspector
 
     private string _reportFile;
 
-    private BatExplorerProjectFileRecordsRecord[] _records;
+    private PrjRecord[] _records;
 
     public QueryFile()
     {
@@ -69,7 +69,7 @@ namespace BatInspector
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
-    public BatExplorerProjectFileRecordsRecord[] Records { get { return _records; } set { _records = value; } }
+    [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(PrjRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
+    public PrjRecord[] Records { get { return _records; } set { _records = value; } }
   }
 }

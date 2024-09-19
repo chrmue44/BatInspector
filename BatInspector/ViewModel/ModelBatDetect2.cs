@@ -10,6 +10,7 @@
 using BatInspector.Forms;
 using libParser;
 using libScripter;
+using NAudio.MediaFoundation;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -28,15 +29,31 @@ namespace BatInspector
 
   public class ModelBatDetect2 : BaseModel
   {
+    const string MIN_PROB = "minimal Probability";
+    const string MODEL_NAME = "BatDetect2";
     double _minProb = 0.5;
     Project _prj;
-
+    
     public double MinProb {  get { return _minProb; } set { _minProb = value; } }
-
+    public static string[] DataSetItems { get; } = new string[1] { "UK Species" };
     public ModelBatDetect2(int index, ViewModel model) : 
-      base(index, enModel.BAT_DETECT2, model)
+      base(index, enModel.BAT_DETECT2, MODEL_NAME, model)
     {
     }
+
+    public override ModelParItem[] getDefaultModelParams()
+    {
+      ModelParItem[] retVal = new ModelParItem[1];
+      retVal[0] = new ModelParItem()
+      {
+        Name = MIN_PROB,
+        Type = Controls.enDataType.DOUBLE,
+        Value = "0.5",
+        Decimals = 2
+      };
+      return retVal;
+    }
+
 
     public override int classify(Project prj, bool cli = false)
     {
@@ -46,6 +63,7 @@ namespace BatInspector
       int retVal = 0;
       try
       {
+        _minProb = AppParams.Inst.ProbabilityMin;
         string wavDir = Path.Combine(prj.PrjDir ,prj.WavSubDir);
         string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?

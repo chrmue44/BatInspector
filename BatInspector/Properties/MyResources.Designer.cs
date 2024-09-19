@@ -457,6 +457,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string ctlModParItem_Enabled {
+            get {
+                return ResourceManager.GetString("ctlModParItem_Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model Parameter.
+        /// </summary>
+        public static string ctlModParItemModellparameter {
+            get {
+                return ResourceManager.GetString("ctlModParItemModellparameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created.
         /// </summary>
         public static string ctlPrjInfoCreated {
@@ -1884,6 +1902,15 @@ namespace BatInspector.Properties {
         public static string frmMainYAxis {
             get {
                 return ResourceManager.GetString("frmMainYAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AI-Model Parameter.
+        /// </summary>
+        public static string frmModParsTitle {
+            get {
+                return ResourceManager.GetString("frmModParsTitle", resourceCulture);
             }
         }
         
@@ -3553,6 +3580,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enabled AI models....
+        /// </summary>
+        public static string selectedAIModels {
+            get {
+                return ResourceManager.GetString("selectedAIModels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select directory to store exported files.
         /// </summary>
         public static string SelectExportDirectory {
@@ -3846,6 +3882,15 @@ namespace BatInspector.Properties {
         public static string SetDescModDir {
             get {
                 return ResourceManager.GetString("SetDescModDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the AI model.
+        /// </summary>
+        public static string SetDescModelName {
+            get {
+                return ResourceManager.GetString("SetDescModelName", resourceCulture);
             }
         }
         

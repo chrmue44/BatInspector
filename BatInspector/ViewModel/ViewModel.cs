@@ -200,7 +200,7 @@ namespace BatInspector
       {
         _query = null;
         _selectedDir = dir.FullName;
-        _prj.readPrjFile(_selectedDir);
+        _prj.readPrjFile(_selectedDir, getDefaultModelParams());
         if (File.Exists(Prj.ReportName))
         {
           _prj.Analysis.read(Prj.ReportName);
@@ -245,7 +245,7 @@ namespace BatInspector
     void checkProject()
     {
       bool ok = true;
-      foreach (BatExplorerProjectFileRecordsRecord rec in _prj.Records)
+      foreach (PrjRecord rec in _prj.Records)
       {
         AnalysisFile a = _prj.Analysis.find(rec.File);
         if (a == null)
@@ -256,7 +256,7 @@ namespace BatInspector
       }
       foreach (AnalysisFile a in _prj.Analysis.Files)
       {
-        BatExplorerProjectFileRecordsRecord r = _prj.find(a.Name);
+        PrjRecord r = _prj.find(a.Name);
         if (r == null)
         {
           DebugLog.log("mismatch Prj against Report, missing file " + a.Name + " in project", enLogType.ERROR);
@@ -292,7 +292,7 @@ namespace BatInspector
       AppParams.Inst.save();
     }
 
-    public void createPngIfMissing(BatExplorerProjectFileRecordsRecord rec, bool fromQuery)
+    public void createPngIfMissing(PrjRecord rec, bool fromQuery)
     {
       string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
       string pngName = fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
@@ -360,7 +360,7 @@ namespace BatInspector
       return bImg;
     }
 
-    public BitmapImage getFtImage(BatExplorerProjectFileRecordsRecord rec,  bool fromQuery)
+    public BitmapImage getFtImage(PrjRecord rec,  bool fromQuery)
     {
       string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
       BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH, _colorTable);
@@ -492,6 +492,40 @@ namespace BatInspector
       DebugLog.log("evaluation of species done", enLogType.INFO);
       return retVal;
     }
+
+    public BaseModel getClassifier(enModel type)
+    {
+      BaseModel retVal = null;
+      foreach(BaseModel m in _models)
+      {
+        if(type == m.Type)
+        {
+          retVal = m;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+
+    public ModelParams[] getDefaultModelParams()
+    {
+      ModelParams[] retVal = new ModelParams[AppParams.Inst.Models.Count];
+      for (int i = 0; i < AppParams.Inst.Models.Count; i++)
+      {
+        BaseModel c = getClassifier(AppParams.Inst.Models[i].ModelType);
+        retVal[i] = new ModelParams()
+        {
+          Name = c.Name,
+          Type = c.Type,
+          Parameters = c.getDefaultModelParams(),
+          DataSet = BaseModel.getDataSetItems(c.Type)[0],
+          Enabled = (i == 0)
+        };
+      }
+      return retVal;
+    }
+
 
     public int createReport(Project prj)
     {
@@ -814,7 +848,7 @@ namespace BatInspector
 
     public void createProject(PrjInfo info, bool inspect, bool cli)
     {
-      Project.createPrjFromWavs(info, Regions, SpeciesInfos);
+      Project.createPrjFromWavs(info, Regions, SpeciesInfos, getDefaultModelParams());
       string prjPath = Path.Combine(info.DstDir, info.Name);
       DirectoryInfo dir = new DirectoryInfo(prjPath);
       initProject(dir, null);

@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="BatInspector.Controls.ctlModParItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="10,5,10,5">
+            <GroupBox.Header>
+                <TextBlock Name="_header" Text="{x:Static res:MyResources.ctlModParItemModellparameter}" FontWeight="Bold"/>
+            </GroupBox.Header>
+            <StackPanel Orientation="Vertical">
+                <CheckBox Name="_cbEnabled" Content="{x:Static res:MyResources.ctlModParItem_Enabled}" Margin="20,5,5,5"/>
+                <local:ctlSelectItem x:Name="_ctlDataSet"/>
+                <StackPanel x:Name="_spPars" Orientation="Vertical"/>
+            </StackPanel>
+        </GroupBox>  
+    </Grid>
+</UserControl>

@@ -23,25 +23,40 @@ namespace BatInspector
     protected bool _cli = false;
 
     protected ProcessRunner _proc = new ProcessRunner();
-    protected BaseModel(int index, enModel type, ViewModel model)
+    protected BaseModel(int index, enModel type, string name, ViewModel model)
     {
       _index = index;
       _type = type;
-      Name = _type.ToString();
+      Name = name;
       _model = model;
     }
 
     public string Name { get; }
-
     public int Index { get { return _index; } }
     public bool IsBusy { get { return _isBusy; } }
+    public enModel Type { get { return _type; } }
 
     public abstract void train();
     public abstract int classify(Project prj, bool cli = false);
+    public abstract ModelParItem[] getDefaultModelParams();
+
+    public static string[] getDataSetItems(enModel type)
+    {
+      switch(type) 
+      {
+        case enModel.rnn6aModel:
+          return ModelCmuTsa.DataSetItems;
+        case enModel.BAT_DETECT2:
+          return ModelBatDetect2.DataSetItems;
+        default:
+          return new string[0];
+      }
+    }
     public virtual int createReport(Project prj)
     {
       return 0;
     }
+
     public static BaseModel Create(int index, enModel type, ViewModel model)
     {
       switch (type) 

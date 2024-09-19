@@ -898,8 +898,7 @@
     <value>Alle temporären Mac OS-Dateien löschen? (wenn nein, wird die Erzeugung des Projekts abgebrochen)</value>
   </data>
   <data name="SetCatPrjExplorer" xml:space="preserve">
-    <value>Auswertung
-</value>
+    <value>Auswertung</value>
   </data>
   <data name="SetDescShowOnlyFiltered" xml:space="preserve">
     <value>Zeige nur Verzeichnisse im Explorer, die der Filterbedingung der Filterliste entsprechen</value>
@@ -1626,5 +1625,20 @@
   </data>
   <data name="About" xml:space="preserve">
     <value>Über...</value>
+  </data>
+  <data name="selectedAIModels" xml:space="preserve">
+    <value>Aktivierte KI-Modelle...</value>
+  </data>
+  <data name="SetDescModelName" xml:space="preserve">
+    <value>Name des KI-Modells</value>
+  </data>
+  <data name="frmModParsTitle" xml:space="preserve">
+    <value>KI-Modell-Parameter</value>
+  </data>
+  <data name="ctlModParItemModellparameter" xml:space="preserve">
+    <value>Modellparameter</value>
+  </data>
+  <data name="ctlModParItem_Enabled" xml:space="preserve">
+    <value>Aktiviert</value>
   </data>
 </root>

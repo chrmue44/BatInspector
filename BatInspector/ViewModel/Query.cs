@@ -29,7 +29,7 @@ namespace BatInspector
     string _reportName = "";
     ViewModel _model = null;
     QueryFile _queryFile = null;
-    List<BatExplorerProjectFileRecordsRecord> _records = null;
+    List<PrjRecord> _records = null;
     int _cntCall;
     int _cntFile;
 
@@ -51,7 +51,7 @@ namespace BatInspector
     public string Expression { get { return _expression; } }
 
     public string ReportName { get {  return _reportName; } }
-    public BatExplorerProjectFileRecordsRecord[] Records { get { return _queryFile.Records; } }
+    public PrjRecord[] Records { get { return _queryFile.Records; } }
 
     public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions) :
     base(speciesInfo, regions, null)
@@ -60,7 +60,7 @@ namespace BatInspector
       _srcDir = srcDir; 
       _destDir = dstDir;  
       _expression = query;
-      _records = new List<BatExplorerProjectFileRecordsRecord>();
+      _records = new List<PrjRecord>();
     }
 
     public void evaluate(ViewModel model)
@@ -106,7 +106,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public override BatExplorerProjectFileRecordsRecord[] getRecords()
+    public override PrjRecord[] getRecords()
     {
       return _records.ToArray();
     }
@@ -121,10 +121,10 @@ namespace BatInspector
     /// </summary>
     /// <param name="fileName">name of the file (full path or just file name)</param>
     /// <returns>record containing the file information</returns>
-    public BatExplorerProjectFileRecordsRecord find(string fileName)
+    public PrjRecord find(string fileName)
     {
-      BatExplorerProjectFileRecordsRecord retVal = null;
-      foreach (BatExplorerProjectFileRecordsRecord r in Records)
+      PrjRecord retVal = null;
+      foreach (PrjRecord r in Records)
       {
         if (fileName.ToLower().Contains(r.File.ToLower()))
         {
@@ -177,7 +177,7 @@ namespace BatInspector
         TextReader reader = new StringReader(xml);
         QueryFile qFile = (QueryFile)serializer.Deserialize(reader);
         retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, model.SpeciesInfos, model.Regions);
-        foreach(BatExplorerProjectFileRecordsRecord rec in qFile.Records)
+        foreach(PrjRecord rec in qFile.Records)
           retVal._records.Add(rec);
         retVal._queryFile = qFile;
         retVal._model = model;
@@ -203,7 +203,7 @@ namespace BatInspector
       if (Directory.Exists(outputDir)) 
       {
         DebugLog.log("start files export from Query " + _name, enLogType.INFO);
-        foreach (BatExplorerProjectFileRecordsRecord rec in _records) 
+        foreach (PrjRecord rec in _records) 
         {
           if(rec.Selected)
           {
@@ -254,7 +254,7 @@ namespace BatInspector
     {
       bool retVal = false;
       Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
-      prj.readPrjFile(dir.FullName);
+      prj.readPrjFile(dir.FullName, _model.getDefaultModelParams());
       Analysis analysis = new Analysis(_model.SpeciesInfos, null);
       analysis.read(prj.ReportName);
 
@@ -288,7 +288,7 @@ namespace BatInspector
               if (lastFileName != file.Name)
               {
                 _cntFile++;
-                BatExplorerProjectFileRecordsRecord rec = new BatExplorerProjectFileRecordsRecord();
+                PrjRecord rec = new PrjRecord();
 
                 string absPath = Path.Combine(prj.PrjDir, prj.WavSubDir, file.Name);
                 rec.File = Utils.relativePath(this._destDir, absPath);

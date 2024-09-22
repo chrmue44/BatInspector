@@ -256,7 +256,7 @@ namespace BatInspector.Controls
           {
             bool res = _model.Filter.apply(filter, a);
             PrjRecord rec = _model.CurrentlyOpen.findRecord(a.Name);
-            if (rec != null)
+            if (res && (rec != null))
               rec.Selected = res;
           }
           _parent.buildWavFileList(true, _model.Filter, filter);

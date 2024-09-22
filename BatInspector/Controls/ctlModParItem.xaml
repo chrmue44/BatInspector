@@ -15,6 +15,7 @@
             <StackPanel Orientation="Vertical">
                 <CheckBox Name="_cbEnabled" Content="{x:Static res:MyResources.ctlModParItem_Enabled}" Margin="20,5,5,5"/>
                 <local:ctlSelectItem x:Name="_ctlDataSet"/>
+                <local:ctlDataItem x:Name="_ctlSubDir"/>
                 <StackPanel x:Name="_spPars" Orientation="Vertical"/>
             </StackPanel>
         </GroupBox>  

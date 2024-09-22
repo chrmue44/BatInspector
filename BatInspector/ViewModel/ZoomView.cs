@@ -121,7 +121,7 @@ namespace BatInspector
       _analysis = null;
       _modelState = modelState;
       _wrkDir = Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath,
-                             AppParams.Inst.Models[0].Dir);
+                             "bd2"); //TODO
 
       _tmp1Wav = Path.Combine(_wrkDir, "temp1.wav");
       _tmp2Wav = Path.Combine(_wrkDir, "temp2.wav");

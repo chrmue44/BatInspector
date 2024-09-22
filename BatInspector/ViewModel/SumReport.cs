@@ -443,6 +443,7 @@ namespace BatInspector
     private string _expression;
     private dlgShowActivityDiag _showActivityData = null;
     private string _bmpName;
+    private ModelParams _modelParams;
     public SumReport(ViewModel model)
     {
       _model = model;
@@ -554,7 +555,7 @@ namespace BatInspector
         _showActivityData(retVal, Path.Combine(_dstDir,_bmpName));
     }
 
-    public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
+    public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
     {
       _start = start;
       _end = end;
@@ -564,6 +565,7 @@ namespace BatInspector
       _expression = expression;
       _showActivityData = dlgShowHeatMap;
       _bmpName = bmpName;
+      _modelParams = modelPars;
 
       Thread t = new Thread(createActivityDiagSync);
       t.Start();
@@ -654,7 +656,7 @@ namespace BatInspector
       foreach (DirectoryInfo subDir in dir.GetDirectories())
       {
         crawlDirTree(subDir, reportName);
-        string prjFile = Project.containsReport(subDir, reportName);
+        string prjFile = Project.containsReport(subDir, reportName, _modelParams);
         if (prjFile != "")
         {
           Csv csv = new Csv();

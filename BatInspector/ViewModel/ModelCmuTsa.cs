@@ -18,7 +18,6 @@ namespace BatInspector
   public class ModelCmuTsa : BaseModel
   {
     public const string MODEL_NAME = "CMrnn";
-    public const string NAME_MIN_PROB = "min. Probability";
     public const int OPT_INSPECT = 0x01;
     public const int OPT_CUT = 0x02;
     public const int OPT_PREPARE = 0x04;
@@ -34,22 +33,6 @@ namespace BatInspector
 
     }
 
-    public static string[] DataSetItems { get; } = new string[1] { "CM Süd Hessen" };
-
-    public override ModelParItem[] getDefaultModelParams()
-    {
-      ModelParItem[] retVal = new ModelParItem[1];
-      retVal[0] = new ModelParItem()
-      {
-        Name = NAME_MIN_PROB,
-        Type = Controls.enDataType.DOUBLE,
-        Decimals = 2,
-        Value = "0.5"
-      };
-      return retVal;
-    }
-
-
     public override int classify(Project prj, bool cli = false)
     {
       int retVal = 0;
@@ -58,12 +41,12 @@ namespace BatInspector
       int options = frmStartPredict.Options;
       string reportName = prj.ReportName;
       reportName = reportName.Replace("\\", "/");
-      ModelItem modPar = AppParams.Inst.Models[this.Index];
+      ModelParams modPar = prj.ModelParams[this.Index];
       string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
                  AppParams.Inst.ModelRootPath :
                  Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
 
-      string speciesFile = Path.Combine(modPath, modPar.Dir,"species.csv");
+      string speciesFile = Path.Combine(modPath, modPar.SubDir,"species.csv");
       addSpeciesColsToReport(reportName, speciesFile);
       string datFile = Path.Combine(prj.PrjDir, "Xdata000.npy");
       string wrkDir = "C:/Users/chrmu/prj/BatInspector/py";
@@ -90,7 +73,7 @@ namespace BatInspector
           args += " --prepPredict";
         if ((options & OPT_PREDICT1) != 0)
           args += " --predict";
-        string modelDir = modPath + "/" + modPar.Dir;
+        string modelDir = modPath + "/" + modPar.SubDir;
         args += " --csvcalls " + reportName +
              " --root " + modelDir + " --specFile " + modelDir + "/speies.csv" +
              " --dataDir " + prj.PrjDir +

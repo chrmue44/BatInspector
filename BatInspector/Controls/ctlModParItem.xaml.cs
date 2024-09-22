@@ -19,11 +19,13 @@ namespace BatInspector.Controls
     public void setup(ModelParams pars, string[] dataSetItems)
     {
       int w = 120;
-      int wCombo = 150;
+      int wCombo = 250;
       _pars = pars;
       _ctlDataSet.setup("DataSet", 0, w, wCombo);
       _ctlDataSet.setItems(dataSetItems);
       _cbEnabled.IsChecked = pars.Enabled;
+      _ctlSubDir.setup("SubDirectory", enDataType.STRING, 0, w);
+      _ctlSubDir.setValue(pars.SubDir);
       _spPars.Children.Clear();
       _header.Text = MyResources.ctlModParItemModellparameter + " " + pars.Name;
       for (int i = 0; i < _pars.Parameters.Length; i++)

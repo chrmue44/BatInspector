@@ -55,6 +55,15 @@ public class ModelParams
   public bool Enabled { get; set; }
 
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string SubDir { get;set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Script { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string[] AvailableDataSets{ get; set; } = new string[0];
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public ModelParItem[] Parameters { get; set; } = new ModelParItem[5];
 }
 

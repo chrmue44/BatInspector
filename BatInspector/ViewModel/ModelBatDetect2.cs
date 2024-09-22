@@ -7,11 +7,8 @@
  ********************************************************************************/
 
 
-using BatInspector.Forms;
 using libParser;
 using libScripter;
-using NAudio.MediaFoundation;
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +26,6 @@ namespace BatInspector
 
   public class ModelBatDetect2 : BaseModel
   {
-    const string MIN_PROB = "minimal Probability";
     const string MODEL_NAME = "BatDetect2";
     double _minProb = 0.5;
     Project _prj;
@@ -39,19 +35,6 @@ namespace BatInspector
     public ModelBatDetect2(int index, ViewModel model) : 
       base(index, enModel.BAT_DETECT2, MODEL_NAME, model)
     {
-    }
-
-    public override ModelParItem[] getDefaultModelParams()
-    {
-      ModelParItem[] retVal = new ModelParItem[1];
-      retVal[0] = new ModelParItem()
-      {
-        Name = MIN_PROB,
-        Type = Controls.enDataType.DOUBLE,
-        Value = "0.5",
-        Decimals = 2
-      };
-      return retVal;
     }
 
 
@@ -69,9 +52,9 @@ namespace BatInspector
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
                          AppParams.Inst.ModelRootPath  :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
-        string wrkDir = Path.Combine(modPath, AppParams.Inst.Models[this.Index].Dir);
+        string wrkDir = Path.Combine(modPath, prj.ModelParams[this.Index].SubDir);
         string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {_minProb.ToString(CultureInfo.InvariantCulture)}";
-        string cmd = Path.Combine(wrkDir, AppParams.Inst.Models[this.Index].Script);
+        string cmd = Path.Combine(wrkDir, prj.ModelParams[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
@@ -125,13 +108,12 @@ namespace BatInspector
       bool retVal = true;
       try
       {
-        string colSpecies = AppParams.Inst.Models[this.Index].ReportColumn;
         Csv report;
         if (mode == enRepMode.REPLACE)
         {
           if (File.Exists(reportName))
             File.Delete(reportName);
-          report = createReport(colSpecies);
+          report = createReport(Cols.SPECIES);
         }
         else
         {
@@ -248,7 +230,7 @@ namespace BatInspector
                   abbr += latin;
                 if (prob < minProb)
                   abbr += "]";
-                report.setCell(repRow, colSpecies, abbr);
+                report.setCell(repRow, Cols.SPECIES, abbr);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
                 report.setCell(repRow, Cols.REMARKS, "");
               }

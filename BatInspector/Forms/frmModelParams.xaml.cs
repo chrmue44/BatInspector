@@ -36,7 +36,7 @@ namespace BatInspector.Forms
       for(int i = 0; i < mp.Length; i++) 
       {
         ctlModParItem ctl = new ctlModParItem();
-        string[] dataSetItems = BaseModel.getDataSetItems(mp[i].Type);
+        string[] dataSetItems = mp[i].AvailableDataSets;
         ctl.setup(mp[i], dataSetItems);
         _sp.Children.Add(ctl);
       }

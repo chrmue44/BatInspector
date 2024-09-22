@@ -104,14 +104,14 @@ namespace BatInspector
         {
           foreach (string sp in reg.Species)
             _speciesList.Add(sp);
-          _speciesList.Add("?");
-          _speciesList.Add("Social");
         }
         else
         {
           foreach (SpeciesInfos sp in _speciesInfo)
             _speciesList.Add(sp.Abbreviation);
         }
+        _speciesList.Add("?");
+        _speciesList.Add("Social");
         _speciesList.Add("todo");
       }
     }
@@ -170,9 +170,9 @@ namespace BatInspector
 
     public ModelParams[] ModelParams { get { return _batExplorerPrj.Models; } }
 
-    public string ReportName { get { return getReportName(_selectedDir); } }
+    public string ReportName { get { return getReportName(_selectedDir, ModelParams[0]); } } // TODO find another way for multiple models }
 
-    public string SummaryName { get { return getSummaryName(_selectedDir); } }
+    public string SummaryName { get { return getSummaryName(_selectedDir, ModelParams[0]); } } // TODO find another way for multiple models
 
     public bool ReloadInGui { get { return _reloadInGui; } set { _reloadInGui = value; } }
 
@@ -187,14 +187,14 @@ namespace BatInspector
     }
 
 
-    public static string getReportName(string dir)
+    public static string getReportName(string dir, ModelParams mp)
     {
-      return Path.Combine (dir ,AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir, AppParams.PRJ_REPORT);
+      return Path.Combine (dir , mp.SubDir, AppParams.PRJ_REPORT);
     }
 
-    public static string getSummaryName(string dir)
+    public static string getSummaryName(string dir, ModelParams mp)
     {
-      return Path.Combine(dir, AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir, AppParams.PRJ_SUMMARY);
+      return Path.Combine(dir, mp.SubDir, AppParams.PRJ_SUMMARY);
     }
 
     /// <summary>
@@ -230,9 +230,9 @@ namespace BatInspector
     /// <param name="dir">directory info of directory to check</param>
     /// <param name="repName">naem of the report to search for</param>
     /// <returns></returns>
-    public static string containsReport(DirectoryInfo dir, string repName)
+    public static string containsReport(DirectoryInfo dir, string repName, ModelParams modelParams)
     {
-      string dirName = dir.FullName + "/" + AppParams.Inst.Models[AppParams.Inst.SelectedModel].Dir;
+      string dirName = dir.FullName + "/" +  modelParams.SubDir; //TODO for all possible models
       if (Directory.Exists(dirName))
       {
         try
@@ -274,10 +274,10 @@ namespace BatInspector
     /// </summary>
     /// <param name="dir"></param>
     /// <returns></returns>
-    public static bool evaluationDone(DirectoryInfo dir)
+    public static bool evaluationDone(DirectoryInfo dir, ModelParams[] mp)
     {
       bool retVal = false;
-      string sumName = Project.getSummaryName(dir.FullName);
+      string sumName = getSummaryName(dir.FullName, mp[0]); //TODO find another way for multiple models
       if (File.Exists(sumName))
       {
         Csv csv = new Csv();
@@ -287,7 +287,7 @@ namespace BatInspector
       }
       else
       {
-        string fName = Project.getReportName(dir.FullName);
+        string fName = getReportName(dir.FullName, mp[0]); //TODO find another way for multiple models
         if (File.Exists(fName))
         {
           Csv csv = new Csv();

@@ -254,7 +254,7 @@ namespace BatInspector
     {
       bool retVal = false;
       Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
-      prj.readPrjFile(dir.FullName, _model.getDefaultModelParams());
+      prj.readPrjFile(dir.FullName, _model.DefaultModelParams);
       Analysis analysis = new Analysis(_model.SpeciesInfos, null);
       analysis.read(prj.ReportName);
 

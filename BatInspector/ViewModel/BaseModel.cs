@@ -8,14 +8,30 @@
 using libParser;
 using libScripter;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Web.UI.WebControls;
+using System.Xml.Serialization;
 
 namespace BatInspector
 {
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+  [System.SerializableAttribute()]
+  [System.Diagnostics.DebuggerStepThroughAttribute()]
+  [System.ComponentModel.DesignerCategoryAttribute("code")]
+  [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+  [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+  public class DefModelParamFile
+  {
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public ModelParams[] Models { get; set; } = new ModelParams[5];
   
+  }
 
   public abstract class BaseModel
   {
+    static protected readonly XmlSerializer ModParSerializer = new XmlSerializer(typeof(DefModelParamFile));
+
     int _index = 0;
     enModel _type;
     protected bool _isBusy = false;
@@ -38,20 +54,6 @@ namespace BatInspector
 
     public abstract void train();
     public abstract int classify(Project prj, bool cli = false);
-    public abstract ModelParItem[] getDefaultModelParams();
-
-    public static string[] getDataSetItems(enModel type)
-    {
-      switch(type) 
-      {
-        case enModel.rnn6aModel:
-          return ModelCmuTsa.DataSetItems;
-        case enModel.BAT_DETECT2:
-          return ModelBatDetect2.DataSetItems;
-        default:
-          return new string[0];
-      }
-    }
     public virtual int createReport(Project prj)
     {
       return 0;
@@ -68,6 +70,25 @@ namespace BatInspector
         default:
           return null;  
       }    
+    }
+
+    public static void writeModelParams(ModelParams[] modelParams, string fileName)
+    {
+      TextWriter writer = new StreamWriter(fileName);
+      DefModelParamFile dmf = new DefModelParamFile();
+      dmf.Models = modelParams;
+      ModParSerializer.Serialize(writer, dmf);
+      writer.Close();
+    }
+
+
+    public static ModelParams[] readDefaultModelParams()
+    {
+      string xml = File.ReadAllText(AppParams.Inst.ModelDefaultParamsFile);
+      TextReader reader = new StringReader(xml);
+      DefModelParamFile f = (DefModelParamFile)ModParSerializer.Deserialize(reader);
+      ModelParams[] retVal = f.Models;
+      return retVal;
     }
 
     public void stopClassification()

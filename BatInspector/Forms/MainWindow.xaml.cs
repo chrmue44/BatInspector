@@ -193,7 +193,7 @@ namespace BatInspector.Forms
                 if (Project.containsProject(subDir) != "")
                 {
                   childItem.FontWeight = FontWeights.Bold;
-                  if (Project.evaluationDone(subDir))
+                  if (Project.evaluationDone(subDir, _model.DefaultModelParams))
                     childItem.Foreground = new SolidColorBrush(Colors.Green);
                   else
                     childItem.Foreground = new SolidColorBrush(Colors.Violet);
@@ -454,8 +454,8 @@ namespace BatInspector.Forms
         _scrollPrj.Track.Thumb.Height = Math.Max(10, _spSpectrums.ActualHeight / _scrollPrj.Maximum / 3);
         _scrollPrj.InvalidateVisual();
         _scrollPrj.Value = 0;
-//        if (oldValue == _scrollPrj.Value)  // TODO do we need it?
-//          populateControls(0);             // TODO
+        if (oldValue == _scrollPrj.Value)  //if value is different list will be built by change event  
+          populateControls(0);             
       }
       else
       {
@@ -756,8 +756,7 @@ namespace BatInspector.Forms
 
     
     void showMsg(string title, string msg, bool topmost = false)
-    {
-      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+    {  Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         _frmMsg.showMessage(title, msg, topmost);
         _frmMsg.Visibility = Visibility.Visible;

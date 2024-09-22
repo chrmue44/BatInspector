@@ -10,12 +10,9 @@ using BatInspector.Controls;
 using BatInspector.Forms;
 using libParser;
 using libScripter;
-using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Markup;
-using System.Windows.Media;
 
 namespace BatInspector
 {
@@ -116,6 +113,8 @@ namespace BatInspector
       testRemoveSection();
       testCheckSpecAtLocation();
       //testSplitWavs();
+
+      //testWriteModParams(); not a test, a one time function
       //adjustJsonIds(); not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); not a test, a one time function
       if (_errors == 0)
@@ -371,7 +370,7 @@ namespace BatInspector
         EndTime = new DateTime(2022,7,14),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos, _model.getDefaultModelParams());
+      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos, _model.DefaultModelParams);
     }
 
     private void testReportModelBatdetect2()
@@ -404,7 +403,7 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
       {
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
         if (repName != "")
         {
           Project p = new Project(_model.Regions, _model.SpeciesInfos, null);
@@ -630,7 +629,7 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
       {
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
         if (repName != "")
         {
           _model.initProject(subDir, null);
@@ -699,7 +698,7 @@ namespace BatInspector
     {
       DirectoryInfo subDir = new DirectoryInfo(prjName);
       
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT);
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
         if (repName != "")
         {
           _model.initProject(subDir, null);
@@ -747,7 +746,6 @@ namespace BatInspector
       {
         assert("occorsAtLocation() fails", s.Occurs == _model.Regions.occursAtLocation(s.Species, s.Lat, s.Lon));
       }
-
     }
 
 
@@ -781,6 +779,67 @@ namespace BatInspector
         currDay = currDay.AddDays(1);
       }
       frm.createPlot(data);
+    }
+
+    private void testWriteModParams()
+    {
+      ModelParams[] mp = new ModelParams[2];
+      mp[0] = new ModelParams();
+      mp[0].Name = "BatDetect2";
+      mp[0].Type = enModel.BAT_DETECT2;
+      mp[0].DataSet = "UK_Bat_Species";
+      mp[0].Enabled = true;
+      mp[0].Parameters = new ModelParItem[1];
+      mp[0].Parameters[0] = new ModelParItem()
+      {
+        Name = "minimal Probability",
+        Type = enDataType.DOUBLE,
+        Decimals = 2,
+        Value = "0.5"
+      };
+      mp[0].AvailableDataSets = new string[1];
+      mp[0].AvailableDataSets[0] = "UK_Bat_Species";
+
+      mp[1] = new ModelParams();
+      mp[1].Name = "BattyBirdNET";
+      mp[1].Type = enModel.BATTY_BIRD_NET;
+      mp[1].DataSet = "BattyBirdNET-Bavaria-256kHz";
+      mp[1].Enabled = false; 
+      
+      mp[1].Parameters = new ModelParItem[2];
+      mp[1].AvailableDataSets = new string[15];
+      mp[1].AvailableDataSets[0] = "BattyBirdNET-Bavaria-256kHz";
+      mp[1].AvailableDataSets[1] = "BattyBirdNET-Bavaria-144kHz";
+      mp[1].AvailableDataSets[2] = "BattyBirdNET-EU-256kHz";
+      mp[1].AvailableDataSets[3] = "BattyBirdNET-EU-144kHz";
+      mp[1].AvailableDataSets[4] = "BattyBirdNET-MarinCounty-256kHz";
+      mp[1].AvailableDataSets[5] = "BattyBirdNET-MarinCounty-144kHz";
+      mp[1].AvailableDataSets[6] = "BattyBirdNET-Scotland-256kHz";
+      mp[1].AvailableDataSets[7] = "BattyBirdNET-Scotland-144kHz";
+      mp[1].AvailableDataSets[8] = "BattyBirdNET-SouthWales-256kHz";
+      mp[1].AvailableDataSets[9] = "BattyBirdNET-Sweden-256kHz";
+      mp[1].AvailableDataSets[10] = "BattyBirdNET-Sweden-144kHz";
+      mp[1].AvailableDataSets[11] = "BattyBirdNET-UK-256kHz";
+      mp[1].AvailableDataSets[12] = "BattyBirdNET-UK-144kHz";
+      mp[1].AvailableDataSets[13] = "BattyBirdNET-USA-256kHz";
+      mp[1].AvailableDataSets[14] = "BattyBirdNET-USA-144kHz";
+
+      mp[1].Parameters[0] = new ModelParItem()
+      {
+        Name = "minimal Probability",
+        Type = enDataType.DOUBLE,
+        Decimals = 2,
+        Value = "0.5"
+      };
+      mp[1].Parameters[1] = new ModelParItem()
+      {
+        Name = "Sensitivity",
+        Type = enDataType.DOUBLE,
+        Decimals = 2,
+        Value = "1.0"
+      };
+
+      BaseModel.writeModelParams(mp, "F:\\batInspector\\dat\\default_model_params.xml");
     }
 
     private void testSplitWavs()

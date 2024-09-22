@@ -79,6 +79,9 @@ namespace BatInspector.Forms
       if (Directory.Exists(_ctlSrcFolder.getValue()))
       {
         string[] files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.bpr");
+        if (files == null || (files.Length == 0))
+          files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.batspy");
+
         // folder contains project file
         _cbTimeFilter.IsChecked = false;
         if (files != null && files.Length > 0)

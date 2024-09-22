@@ -70,6 +70,7 @@ namespace BatInspector
     Statistic _statistic;
     string _tempCmd;
     PrjView _prjView;
+    ModelParams[] _defaultModelParams;
 
     public PrjView View { get{ return _prjView; } }
 
@@ -111,6 +112,9 @@ namespace BatInspector
     
     public CtrlRecorder Recorder { get { return _recorder; } }
 
+    public ModelParams[] DefaultModelParams { get { return _defaultModelParams; } }
+
+
     /// <summary>
     /// currently opened object (prj, query or null)
     /// </summary>
@@ -149,9 +153,11 @@ namespace BatInspector
       _models = new List<BaseModel>();
       _query = null;
       int index = 0;
-      foreach (ModelItem m in AppParams.Inst.Models)
+
+      _defaultModelParams = BaseModel.readDefaultModelParams();
+      foreach ( ModelParams m in _defaultModelParams)
       {
-        _models.Add(BaseModel.Create(index, m.ModelType, this));
+        _models.Add(BaseModel.Create(index, m.Type, this));
         index++;
       }
 
@@ -200,7 +206,7 @@ namespace BatInspector
       {
         _query = null;
         _selectedDir = dir.FullName;
-        _prj.readPrjFile(_selectedDir, getDefaultModelParams());
+        _prj.readPrjFile(_selectedDir, DefaultModelParams);
         if (File.Exists(Prj.ReportName))
         {
           _prj.Analysis.read(Prj.ReportName);
@@ -459,11 +465,11 @@ namespace BatInspector
 
     public void stopEvaluation()
     {
-      if (Prj != null)
+      if ((Prj != null) && (Prj.Ok))
       {
-        for (int i = 0; i < AppParams.Inst.Models.Count; i++)
+        for (int i = 0; i < Prj.ModelParams.Length; i++)
         {
-          if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
+          if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
           {
             _models[i].stopClassification();
             DebugLog.log("evaluation of species stopped", enLogType.INFO);
@@ -478,11 +484,11 @@ namespace BatInspector
     public int evaluate(bool cli)
     {
       int retVal = 2;
-      if(Prj != null)
+      if((Prj != null) && Prj.Ok)
       {
-        for(int i = 0; i < AppParams.Inst.Models.Count; i++)
+        for(int i = 0; i < Prj.ModelParams.Length; i++)
         {
-          if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
+          if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
           {
             retVal = _models[i].classify(Prj, cli);
           }
@@ -507,7 +513,7 @@ namespace BatInspector
       return retVal;
     }
 
-
+/*
     public ModelParams[] getDefaultModelParams()
     {
       ModelParams[] retVal = new ModelParams[AppParams.Inst.Models.Count];
@@ -525,16 +531,16 @@ namespace BatInspector
       }
       return retVal;
     }
-
+    */
 
     public int createReport(Project prj)
     {
       int retVal = 0;
       if (prj != null)
       {
-        for (int i = 0; i < AppParams.Inst.Models.Count; i++)
+        for (int i = 0; i < prj.ModelParams.Length; i++)
         {
-          if ((i < _models.Count) && (AppParams.Inst.Models[i].Active == true))
+          if ((i < _models.Count) && (prj.ModelParams[i].Enabled == true))
           {
             retVal = _models[i].createReport(prj);
           }
@@ -848,7 +854,7 @@ namespace BatInspector
 
     public void createProject(PrjInfo info, bool inspect, bool cli)
     {
-      Project.createPrjFromWavs(info, Regions, SpeciesInfos, getDefaultModelParams());
+      Project.createPrjFromWavs(info, Regions, SpeciesInfos, DefaultModelParams);
       string prjPath = Path.Combine(info.DstDir, info.Name);
       DirectoryInfo dir = new DirectoryInfo(prjPath);
       initProject(dir, null);

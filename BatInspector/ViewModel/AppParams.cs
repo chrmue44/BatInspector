@@ -32,7 +32,8 @@ namespace BatInspector
   {
     rnn6aModel,
     resNet34Model,
-    BAT_DETECT2
+    BAT_DETECT2,
+    BATTY_BIRD_NET
   };
 
   public enum enZoomType
@@ -131,40 +132,6 @@ namespace BatInspector
   }
 
   
-  [DataContract]
-  public class ModelItem
-  {
-    [DataMember,
-    Description("select type of model for prediction")]
-    public enModel ModelType { get; set; }
-
-    [DataMember]
-    public bool Active { get; set; }
-
-    [DataMember,
-    LocalizedDescription("SetDescModDir")]
-    public string Dir { get; set; }
-
-    [DataMember,
-    LocalizedDescription("SetDescLearningRate")]
-    public double LearningRate { get; set; }
-
-    [DataMember,
-    LocalizedDescription("SetDescEpochs")]
-    public int Epochs { get; set; }
-
-    [DataMember,
-    LocalizedDescription("SetDescScriptPredict")]
-    public string Script { get; set; }
-
-    [DataMember,
-    LocalizedDescription("SetDescReportColumn")]
-    public string ReportColumn { get; set; }
-    [DataMember,
-    LocalizedDescription("SetDescModelName")]
-    public string Name { get; set; }
-  }
-
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
@@ -434,11 +401,11 @@ namespace BatInspector
     [Browsable(false)]
     public int SelectedModel { get; set; } = 0;
 
-    [DataMember]
+/*    [DataMember]
     [LocalizedCategory("SetCatModel")]
     [Browsable(false)]
     public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
-
+    */
     [DataMember]
     [Browsable(false)]
     public enWIN_TYPE FftWindow { get; set; }
@@ -542,11 +509,21 @@ namespace BatInspector
     [DataMember]
     public LocFileSettings LocFileSettings { get; set; }
 
+    [DataMember]
+    [Browsable(false)]
+    public string ModelDefaultParamsFile { get; set; }
+
     [Browsable(false)]
     public ScriptInventory ScriptInventory { get { return _scriptInventory; } }
     public AppParams()
     {
       init();
+    }
+
+    private void updateFromOlderVersions()
+    {
+      if (string.IsNullOrEmpty(ModelDefaultParamsFile))
+        ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
     }
 
     public void init()
@@ -579,8 +556,9 @@ namespace BatInspector
       initFilterParams();
       initColorGradient();
       ModelRootPath = Path.Combine(AppDataPath, "models");
+      ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
       SelectedModel = 0;
-      initModels();
+    //  initModels();
       SamplingRate = 312500;
       ScriptCopyAutoToMan = "copyAutoToMan.scr";
       LogShowError = true;
@@ -611,27 +589,6 @@ namespace BatInspector
       p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);
-    }
-
-    private void initModels()
-    {
-      Models = new List<ModelItem>();
-      Models.Add(new ModelItem());
-      Models[0].Active = true;
-      Models[0].Script = "run.bat";
-      Models[0].Dir = "bd2";
-      Models[0].Epochs = 0;
-      Models[0].LearningRate = 0;
-      Models[0].ModelType = enModel.BAT_DETECT2;
-      Models[0].ReportColumn = "Species";
-      Models.Add(new ModelItem());
-      Models[1].Active = false;
-      Models[1].Script = "py/run.bat";
-      Models[1].Dir = "tsa";
-      Models[1].Epochs = 30;
-      Models[1].LearningRate = 0.00002;
-      Models[1].ReportColumn = "Species";
-      Models[1].ModelType = enModel.rnn6aModel;
     }
 
     public void saveAs(string fName)
@@ -681,10 +638,11 @@ namespace BatInspector
             DebugLog.log("settings file not well formed!", enLogType.ERROR);
           if (retVal.ColorGradientBlue == null)
             retVal.initColorGradient();
-          if (retVal.Models == null)
-            retVal.initModels();
+//          if (retVal.Models == null)
+//            retVal.initModels();
           DebugLog.log("successfully loaded", enLogType.DEBUG);
           retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
+          retVal.updateFromOlderVersions();
         }
         else
         {
@@ -765,7 +723,6 @@ namespace BatInspector
         DebugLog.log("content " + _dataPath + ": " + path, enLogType.DEBUG);
         if (path == VAR_DATA_PATH)
         {
-
           AppDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                                      PROG_DAT_DIR);
         }

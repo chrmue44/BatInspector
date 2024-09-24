@@ -6,7 +6,7 @@
         xmlns:res="clr-namespace:BatInspector.Properties" 
         xmlns:controls="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
-        Title="BatInspector" Height="900" Width="1400" MinWidth="1200" MinHeight="640"
+        Title="BatInspector" Height="900" Width="1400" MinWidth="1280" MinHeight="640"
         Icon="../images/kopf64.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" 
         >
     <!-- PreviewKeyDown="Window_KeyDown" -->

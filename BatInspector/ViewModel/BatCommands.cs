@@ -41,7 +41,7 @@ namespace BatInspector
     {
       ErrText = "";
       _model.removeDeletedWavsFromReport(_model.Prj.ReportName);
-      _model.Prj?.Analysis?.save(_model.Prj.ReportName, _model.Prj.Notes);
+      _model.Prj?.Analysis?.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
       return 0;
     }
     int fctAdjustProject(List<string> pars, out string ErrText)
@@ -62,7 +62,7 @@ namespace BatInspector
         if (prjCount > (int)prjCount)
           prjCount += 1;
         string prjPath = _model.Prj.PrjDir;
-        Project.splitProject(_model.Prj, (int)prjCount, _model.Regions);
+        Project.splitProject(_model.Prj, (int)prjCount, _model.Regions, _model.DefaultModelParams);
         DebugLog.log("start deleting " + prjPath, enLogType.INFO);
         Directory.Delete(prjPath, true);
       }
@@ -110,7 +110,7 @@ namespace BatInspector
       int retVal = 0;
       ErrText = "";
       string fileName = pars[0];
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
       DirectoryInfo dir = new DirectoryInfo(fileName);
       prj.fillFromDirectory(dir, AppParams.DIR_WAVS);
       return retVal;
@@ -121,7 +121,7 @@ namespace BatInspector
       int retVal = 0;
       ErrText = "";
       string prjDir = pars[0];
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
       prj.readPrjFile(prjDir, _model.DefaultModelParams);
       retVal = _model.createReport(prj);
       return retVal;

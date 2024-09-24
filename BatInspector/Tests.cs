@@ -362,8 +362,7 @@ namespace BatInspector
         DstDir = "F:\\bat\\test",
         MaxFileLenSec = 5,
         MaxFileCnt = 30,
-        Weather = "12°C, bedeckt",
-        Landscape = "Uferbereich Waldweiher",
+        Notes = "12°C, bedeckt; Uferbereich Waldweiher",
         Latitude = 49.123,
         Longitude = 8.123,
         StartTime = new DateTime(2022,7,12),
@@ -381,10 +380,10 @@ namespace BatInspector
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
       Analysis a = new Analysis(prj.SpeciesInfos, null);
       a.read(reportName);
-      a.save(reportName, prj.Notes);
+      a.save(reportName, prj.Notes, prj.SummaryName);
     }
 
     private void testQuery()
@@ -393,7 +392,7 @@ namespace BatInspector
       string dstDir = "D:\\bat\\Queries";
       string name = "test";
       string query = "(FreqMin > 18000) && (FreqMin < 21000) && (SpeciesAuto == \"NLEI\")";
-      Query qry = new Query(name, srcDir, dstDir, query, _model.SpeciesInfos, _model.Regions);
+      Query qry = new Query(name, srcDir, dstDir, query, _model.SpeciesInfos, _model.Regions, _model.DefaultModelParams);
       qry.evaluate(_model);      
     }
 
@@ -406,7 +405,7 @@ namespace BatInspector
         string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
         if (repName != "")
         {
-          Project p = new Project(_model.Regions, _model.SpeciesInfos, null);
+          Project p = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
           Analysis a = new Analysis(p.SpeciesInfos, null);
           a.read(repName);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
@@ -640,7 +639,7 @@ namespace BatInspector
             foreach(AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
           }
-          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
+          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
         }
       }
     }
@@ -709,7 +708,7 @@ namespace BatInspector
             foreach (AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
           }
-          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
+          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
         }
       
     }

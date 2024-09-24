@@ -10,6 +10,7 @@
 
 using BatInspector;
 using BatInspector.Controls;
+using libParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,6 +66,17 @@ public class ModelParams
 
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public ModelParItem[] Parameters { get; set; } = new ModelParItem[5];
+
+  public string getPar(string name)
+  {
+    foreach(ModelParItem p in Parameters)
+    {
+      if(p.Name == name)
+        return p.Value; 
+    }
+    DebugLog.log($"Model Parameter with name {name} not found", enLogType.ERROR);
+    return "";
+  }
 }
 
 

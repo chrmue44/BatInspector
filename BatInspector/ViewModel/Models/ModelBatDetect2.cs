@@ -27,18 +27,17 @@ namespace BatInspector
   public class ModelBatDetect2 : BaseModel
   {
     const string MODEL_NAME = "BatDetect2";
-    double _minProb = 0.5;
+    const string PAR_DETECTION_THRESHOLD = "Detection Threshold";
+    public const string BD2_DEFAULT_MODEL = "Net2DFast_UK_same.pth.tar";
     Project _prj;
     
-    public double MinProb {  get { return _minProb; } set { _minProb = value; } }
-    public static string[] DataSetItems { get; } = new string[1] { "UK Species" };
     public ModelBatDetect2(int index, ViewModel model) : 
       base(index, enModel.BAT_DETECT2, MODEL_NAME, model)
     {
     }
 
 
-    public override int classify(Project prj, bool cli = false)
+    public override int classify(Project prj,  bool cli = false)
     {
       _isBusy = true;
       _prj = prj;
@@ -46,23 +45,24 @@ namespace BatInspector
       int retVal = 0;
       try
       {
-        _minProb = AppParams.Inst.ProbabilityMin;
+        ModelParams pars = prj.ModelParams[prj.SelectedModel];
+        string detTrsh = pars.getPar(PAR_DETECTION_THRESHOLD);
         string wavDir = Path.Combine(prj.PrjDir ,prj.WavSubDir);
         string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
                          AppParams.Inst.ModelRootPath  :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
         string wrkDir = Path.Combine(modPath, prj.ModelParams[this.Index].SubDir);
-        string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {_minProb.ToString(CultureInfo.InvariantCulture)}";
+        string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {detTrsh} {pars.DataSet}";
         string cmd = Path.Combine(wrkDir, prj.ModelParams[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
-          bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
+          bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
           if (ok)
           {
     //        cleanup(prj.PrjDir);
-            prj.Analysis.read(prj.ReportName);
+            prj.Analysis.read(prj.getReportName(this.Index));
             prj.removeFilesNotInReport();
           }
           else
@@ -91,11 +91,11 @@ namespace BatInspector
       int retVal = 0;
       string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
       string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
-      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.ReportName, enRepMode.REPLACE);
+      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
       if (ok)
       {
         //        cleanup(prj.PrjDir);
-        prj.Analysis.read(prj.ReportName);
+        prj.Analysis.read(prj.getReportName(this.Index));
         prj.removeFilesNotInReport();
       }
       else
@@ -302,7 +302,7 @@ namespace BatInspector
       if (ev.Data?.ToLower().IndexOf(AppParams.EXT_WAV) > 0)
       {
         int pos = ev.Data.IndexOf(' ');
-        if (pos > 0) 
+        if (pos > 0)
         {
           string intStr = ev.Data.Substring(0, pos);
           if (int.TryParse(intStr, out int val) && (_prj != null) && _prj.Ok)
@@ -316,6 +316,8 @@ namespace BatInspector
           }
         }
       }
+      else if ((ev.Data?.ToLower().IndexOf("error") > 0) && (ev.Data?.ToLower().IndexOf("error.") < 0))
+        DebugLog.log(ev.Data, enLogType.ERROR);
     }
 
 

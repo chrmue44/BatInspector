@@ -15,6 +15,7 @@
         <StackPanel Name="_sp"/>
         </ScrollViewer>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="_btnUpdate" Content="{x:Static res:MyResources.frmModelParamsUpdate}" Width="250" Margin="0,5,100,0" Click="_btnUpdate_Click" />
             <Button x:Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Width="150" Margin="0,5,10,0" Click="_btnCancel_Click" />
             <Button x:Name="_btnOK" Content="{x:Static res:MyResources.BtnOK}" Width="150" Margin="0,5,30,0" Click="_btnOK_Click" />
 

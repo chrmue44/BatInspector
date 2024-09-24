@@ -39,7 +39,7 @@ namespace BatInspector
 
       frmStartPredict.showMsg();
       int options = frmStartPredict.Options;
-      string reportName = prj.ReportName;
+      string reportName = prj.getReportName(this.Index);
       reportName = reportName.Replace("\\", "/");
       ModelParams modPar = prj.ModelParams[this.Index];
       string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
@@ -88,7 +88,7 @@ namespace BatInspector
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
         prj.Analysis.read(reportName);
         prj.Analysis.checkConfidence(prj.SpeciesInfos);
-        prj.Analysis.save(reportName, prj.Notes);
+        prj.Analysis.save(reportName, prj.Notes, prj.SummaryName);
         prj.Analysis.read(reportName);
       }
 

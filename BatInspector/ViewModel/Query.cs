@@ -53,8 +53,8 @@ namespace BatInspector
     public string ReportName { get {  return _reportName; } }
     public PrjRecord[] Records { get { return _queryFile.Records; } }
 
-    public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions) :
-    base(speciesInfo, regions, null)
+    public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions, ModelParams[] defaultParams) :
+    base(speciesInfo, regions, null, defaultParams)
     {
       _name = name;
       _srcDir = srcDir; 
@@ -75,7 +75,7 @@ namespace BatInspector
         {
           DirectoryInfo dir = new DirectoryInfo(_srcDir);
           _model = model;
-          _analysis = new Analysis(_model.SpeciesInfos, null);
+          _analysis[SelectedModel] = new Analysis(_model.SpeciesInfos, null);
           _cntCall = 0;
           _cntFile = 0;
           createQueryFile();
@@ -176,14 +176,15 @@ namespace BatInspector
         var serializer = new XmlSerializer(typeof(QueryFile));
         TextReader reader = new StringReader(xml);
         QueryFile qFile = (QueryFile)serializer.Deserialize(reader);
-        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, model.SpeciesInfos, model.Regions);
-        foreach(PrjRecord rec in qFile.Records)
+        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, model.SpeciesInfos, model.Regions, model.DefaultModelParams);
+        retVal._analysis = new Analysis[model.DefaultModelParams.Length];
+        foreach (PrjRecord rec in qFile.Records)
           retVal._records.Add(rec);
         retVal._queryFile = qFile;
         retVal._model = model;
-        retVal._analysis = new Analysis(model.SpeciesInfos, null);
+        retVal._analysis[retVal.SelectedModel] = new Analysis(model.SpeciesInfos, null);
         string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
-        retVal._analysis.read(fullReportName);
+        retVal._analysis[retVal.SelectedModel].read(fullReportName);
         retVal._reportName = fullReportName;
         retVal.initSpeciesList();
 
@@ -244,7 +245,7 @@ namespace BatInspector
         DebugLog.log("query '" + name + "' saved", enLogType.INFO);
       }
       string reportName = Path.Combine(_destDir, _queryFile.ReportFile);
-      _analysis.save(reportName, "sum query\nsum query");
+      _analysis[SelectedModel].save(reportName, "sum query\nsum query", null);
       _reportName = reportName;
       DebugLog.log(_cntCall.ToString() + " calls in " + _cntFile.ToString() + " files found", enLogType.INFO);
     }
@@ -253,10 +254,10 @@ namespace BatInspector
     private bool evaluatePrj(DirectoryInfo dir)
     {
       bool retVal = false;
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null);
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
       prj.readPrjFile(dir.FullName, _model.DefaultModelParams);
       Analysis analysis = new Analysis(_model.SpeciesInfos, null);
-      analysis.read(prj.ReportName);
+      analysis.read(prj.getReportName(SelectedModel));
 
       FilterItem filter = new FilterItem(-1, "query",
        _expression.Replace('\n', ' '), false);
@@ -299,7 +300,7 @@ namespace BatInspector
               }
               List<string> row = call.getReportRow();
               row[0] = file.Name;
-              _analysis.addCsvReportRow(row);
+              _analysis[SelectedModel].addCsvReportRow(row);
             }
           }
           if (!retVal)

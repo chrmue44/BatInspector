@@ -9,7 +9,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
     <StackPanel  Orientation="Horizontal" Background="{DynamicResource colorBackGroundToolB}" Grid.Row="0">
@@ -18,16 +17,16 @@
         <CheckBox  Name="_cbInfo"  Content="Info" Margin="5,5,0,0"></CheckBox>
         <CheckBox  Name="_cbDebug"  Content="Debug" Margin="5,5,0,0"></CheckBox>
             <Button Name="_btnClear" Margin="15,1,0,0" Click="_btnClear_Click" Height="18" Content="{x:Static res:MyResources.CtlLogClear}"></Button>
-      </StackPanel>
-        <Grid  Grid.Row="1">
+        <Grid Margin="40,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="700" />
             </Grid.ColumnDefinitions>
       <Label Content="{x:Static res:MyResources.CtlLogCommand}" Grid.Column="0" HorizontalAlignment="Stretch" Background="{DynamicResource colorBackGroundToolB}"> </Label>
             <TextBox x:Name="_tbCmd" Grid.Column="1" Text="{x:Static res:MyResources.CtlLogEnterCommandHere}" KeyDown="_tbCmd_KeyDown" VerticalAlignment="Center" Height="25"> </TextBox>
         </Grid>
-    <ScrollViewer   Name="_scrViewer" VerticalScrollBarVisibility="Auto" Grid.Row="2">
+        </StackPanel>
+        <ScrollViewer   Name="_scrViewer" VerticalScrollBarVisibility="Auto" Grid.Row="1">
       <StackPanel Name="_spEntries"  Margin="5">
 
       </StackPanel>

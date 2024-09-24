@@ -149,7 +149,6 @@ namespace BatInspector
       _wav = new WavFile();
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
       _sumReport = new SumReport(this);
-      _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
       _models = new List<BaseModel>();
       _query = null;
       int index = 0;
@@ -160,6 +159,7 @@ namespace BatInspector
         _models.Add(BaseModel.Create(index, m.Type, this));
         index++;
       }
+      _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams);
 
       List<string> species = new List<string>();
       foreach (SpeciesInfos info in _speciesInfos)
@@ -214,7 +214,7 @@ namespace BatInspector
           if (_prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
           {
             _prj.Analysis.filloutTemperature(Path.Combine(_selectedDir, _prj.WavSubDir));
-            _prj.Analysis.save(_prj.ReportName, _prj.Notes);
+            _prj.Analysis.save(_prj.ReportName, _prj.Notes, _prj.SummaryName);
           }
         }
         else
@@ -225,7 +225,7 @@ namespace BatInspector
       }
       else if (Project.containsWavs(dir))
       {
-        _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate);
+        _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams);
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName;
         initScripter();
@@ -421,7 +421,7 @@ namespace BatInspector
       foreach (string f in files)
         deleteFile(f);
 
-      _prj.Analysis.save(_prj.ReportName, _prj.Notes);
+      _prj.Analysis.save(_prj.ReportName, _prj.Notes, _prj.SummaryName);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
@@ -467,14 +467,19 @@ namespace BatInspector
     {
       if ((Prj != null) && (Prj.Ok))
       {
-        for (int i = 0; i < Prj.ModelParams.Length; i++)
+        if (AppParams.Inst.AllowMoreThanOneModel)
         {
-          if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
+          for (int i = 0; i < Prj.ModelParams.Length; i++)
           {
-            _models[i].stopClassification();
-            DebugLog.log("evaluation of species stopped", enLogType.INFO);
+            if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
+            {
+              _models[i].stopClassification();
+              DebugLog.log("evaluation of species stopped", enLogType.INFO);
+            }
           }
         }
+        else
+          _models[Prj.SelectedModel].stopClassification();
       }
     }
 
@@ -486,12 +491,19 @@ namespace BatInspector
       int retVal = 2;
       if((Prj != null) && Prj.Ok)
       {
-        for(int i = 0; i < Prj.ModelParams.Length; i++)
+        if (AppParams.Inst.AllowMoreThanOneModel)
         {
-          if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
+          for (int i = 0; i < Prj.ModelParams.Length; i++)
           {
-            retVal = _models[i].classify(Prj, cli);
+            if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
+            {
+              retVal = _models[i].classify(Prj,  cli);
+            }
           }
+        }
+        else
+        {
+          retVal = _models[Prj.SelectedModel].classify(Prj, cli);
         }
         _prj.writePrjFile();
       }
@@ -538,13 +550,18 @@ namespace BatInspector
       int retVal = 0;
       if (prj != null)
       {
-        for (int i = 0; i < prj.ModelParams.Length; i++)
+        if (AppParams.Inst.AllowMoreThanOneModel)
         {
-          if ((i < _models.Count) && (prj.ModelParams[i].Enabled == true))
+          for (int i = 0; i < prj.ModelParams.Length; i++)
           {
-            retVal = _models[i].createReport(prj);
+            if ((i < _models.Count) && (prj.ModelParams[i].Enabled == true))
+            {
+              retVal = _models[i].createReport(prj);
+            }
           }
         }
+        else
+          retVal = _models[prj.SelectedModel].createReport(prj);
       }
       return retVal;
     }
@@ -868,7 +885,7 @@ namespace BatInspector
         double prjCnt = (double)Prj.Records.Length / info.MaxFileCnt;
         if (prjCnt > (int)prjCnt)
           prjCnt += 1;
-        List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions);
+        List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, DefaultModelParams);
         if (prjs.Count > 0)
           initProject(new DirectoryInfo(prjs[0]), null);
         // remove src project

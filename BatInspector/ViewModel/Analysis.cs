@@ -389,7 +389,7 @@ namespace BatInspector
 
 
 
-    public void save(string path, string notes)
+    public void save(string path, string notes, string sumName)
     {
       lock (_fileLock)
       {
@@ -397,7 +397,6 @@ namespace BatInspector
           _csv.save();
         else
           _csv.saveAs(path);
-        string sumName = _csv.FileName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
         createSummary(sumName, notes);
       }
     }
@@ -600,6 +599,8 @@ namespace BatInspector
 
     public void createSummary(string fileName, string notes)
     {
+      if (string.IsNullOrEmpty(fileName))
+        return;
       if (_list.Count > 0)
       {
         _summary.Clear();

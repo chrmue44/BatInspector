@@ -1528,15 +1528,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Landscape.
-        /// </summary>
-        public static string frmCreatePrjLandscape {
-            get {
-                return ResourceManager.GetString("frmCreatePrjLandscape", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string FrmCreatePrjLLocation {
@@ -1650,15 +1641,6 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjTitle {
             get {
                 return ResourceManager.GetString("frmCreatePrjTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Weather Conditions Recording.
-        /// </summary>
-        public static string frmCreatePrjWeather {
-            get {
-                return ResourceManager.GetString("frmCreatePrjWeather", resourceCulture);
             }
         }
         
@@ -1902,6 +1884,15 @@ namespace BatInspector.Properties {
         public static string frmMainYAxis {
             get {
                 return ResourceManager.GetString("frmMainYAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Available Models.
+        /// </summary>
+        public static string frmModelParamsUpdate {
+            get {
+                return ResourceManager.GetString("frmModelParamsUpdate", resourceCulture);
             }
         }
         
@@ -3760,6 +3751,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default AI model for new projects.
+        /// </summary>
+        public static string SetDescDefaultModel {
+            get {
+                return ResourceManager.GetString("SetDescDefaultModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of filters to apply on root directory in file explorer.
         /// </summary>
         public static string SetDescDirFilter {
@@ -3895,11 +3895,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimal probability to copy automated to manually set probability with copy button.
+        ///   Looks up a localized string similar to True: more than one enabled AI moel in project allowed.
         /// </summary>
-        public static string SetDescProb {
+        public static string SetDescMultiModel {
             get {
-                return ResourceManager.GetString("SetDescProb", resourceCulture);
+                return ResourceManager.GetString("SetDescMultiModel", resourceCulture);
             }
         }
         
@@ -4201,47 +4201,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show debug messages in log view.
-        /// </summary>
-        public static string SpecDescShowDebug {
-            get {
-                return ResourceManager.GetString("SpecDescShowDebug", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show error messages in log view.
-        /// </summary>
-        public static string SpecDescShowError {
-            get {
-                return ResourceManager.GetString("SpecDescShowError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show info messages in log view.
-        /// </summary>
-        public static string SpecDescShowInfo {
-            get {
-                return ResourceManager.GetString("SpecDescShowInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Show species in comboboxes to select species.
         /// </summary>
         public static string SpecDescShowSpec {
             get {
                 return ResourceManager.GetString("SpecDescShowSpec", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show warnings in log view.
-        /// </summary>
-        public static string SpecDescShowWarning {
-            get {
-                return ResourceManager.GetString("SpecDescShowWarning", resourceCulture);
             }
         }
         

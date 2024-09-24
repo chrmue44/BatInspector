@@ -23,7 +23,9 @@ namespace BatInspector.Controls
       _pars = pars;
       _ctlDataSet.setup("DataSet", 0, w, wCombo);
       _ctlDataSet.setItems(dataSetItems);
+      _ctlDataSet.setValue(pars.DataSet);
       _cbEnabled.IsChecked = pars.Enabled;
+      _cbEnabled.Visibility = AppParams.Inst.AllowMoreThanOneModel ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
       _ctlSubDir.setup("SubDirectory", enDataType.STRING, 0, w);
       _ctlSubDir.setValue(pars.SubDir);
       _spPars.Children.Clear();

@@ -185,7 +185,7 @@ namespace BatInspector.Controls
           {
             _model.Prj.addFiles(ofi.FileNames);
             if (_model.Prj.Analysis != null)
-              _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
+              _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
             _model.Prj.writePrjFile();
             _parent._spSpectrums.Children.Clear();
             DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);

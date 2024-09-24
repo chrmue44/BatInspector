@@ -73,5 +73,10 @@ namespace BatInspector.Forms
         DebugLog.log("error writing model parameters: " + ex.ToString(), enLogType.ERROR);
       }
     }
+
+    private void _btnUpdate_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

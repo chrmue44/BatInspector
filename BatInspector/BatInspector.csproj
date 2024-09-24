@@ -293,9 +293,9 @@
     </Compile>
     <Compile Include="Tests.cs" />
     <Compile Include="ViewModel\ActivityDiagram.cs" />
-    <Compile Include="ViewModel\BaseModel.cs" />
+    <Compile Include="ViewModel\Models\BaseModel.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
-    <Compile Include="ViewModel\Bd2AnnFile.cs" />
+    <Compile Include="ViewModel\Models\Bd2AnnFile.cs" />
     <Compile Include="ViewModel\BatInfo.cs" />
     <Compile Include="ViewModel\BatRecord.cs" />
     <Compile Include="ViewModel\BatSpeciesRegions.cs" />
@@ -316,8 +316,9 @@
     <Compile Include="ViewModel\kml.cs" />
     <Compile Include="ViewModel\kmlPart.cs" />
     <Compile Include="ViewModel\LocFileTxt.cs" />
-    <Compile Include="ViewModel\ModelBatDetect2.cs" />
-    <Compile Include="ViewModel\ModelCmuTsa.cs" />
+    <Compile Include="ViewModel\Models\ModelBatDetect2.cs" />
+    <Compile Include="ViewModel\Models\ModelBattyB.cs" />
+    <Compile Include="ViewModel\Models\ModelCmuTsa.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />
     <Compile Include="ViewModel\PrjView.cs" />
     <Compile Include="ViewModel\Query.cs" />

@@ -46,6 +46,16 @@ namespace BatInspector.Controls
     public void initModelComboBox()
     {
       _cbModels.Items.Clear();
+      for (int i = 0; i < _prj.ModelParams.Length; i++)
+        _cbModels.Items.Add(_prj.ModelParams[i].Name);
+
+      _cbModels.SelectedIndex = _prj.SelectedModel;
+    }
+
+    /* alternative way...
+    public void initModelComboBox()
+    {
+      _cbModels.Items.Clear();
       _cbModels.Items.Add(MyResources.selectedAIModels);
       for (int i = 0; i < _prj.ModelParams.Length; i++)
       {
@@ -56,7 +66,7 @@ namespace BatInspector.Controls
         _cbModels.Items.Add(cb);
       }
       _cbModels.SelectedIndex = 0;
-    }
+    } */
 
 
     private void _btnPars_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -81,6 +91,22 @@ namespace BatInspector.Controls
     {
       try
       {
+        if ((_prj == null) || !_prj.Ok)
+          return;
+        _prj.SelectedModel = _cbModels.SelectedIndex;
+        _prj.ModelParams[_prj.SelectedModel].Enabled = true;
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error selecting models for project: " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+    /* alternative way
+    private void _cbModels_DropDownClosed(object sender, EventArgs e)
+    {
+      try
+      {
         if((_prj == null) || !_prj.Ok)
           return;
         _cbModels.SelectedIndex = 0;
@@ -94,6 +120,6 @@ namespace BatInspector.Controls
       {
         DebugLog.log("error selecting models for project: " + ex.ToString(), enLogType.ERROR);
       }
-    }
+    } */
   }
 }

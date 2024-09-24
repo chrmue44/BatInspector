@@ -10,6 +10,8 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,8 +30,7 @@ namespace BatInspector
     public double MaxFileLenSec { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public string Weather { get; set; } 
-    public string Landscape { get; set; } 
+    public string Notes { get; set; } 
     public string GpxFile { get; set; }
     public bool LocSourceGpx { get; set; }
     public bool LocSourceKml { get; set; }
@@ -51,19 +52,23 @@ namespace BatInspector
 
     protected List<SpeciesInfos> _speciesInfo;
 
-    protected Analysis _analysis;
+    protected Analysis[] _analysis;
     protected BatSpeciesRegions _batSpecRegions;
 
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
     public List<string> Species { get { return _speciesList; } }
-    public Analysis Analysis { get { return _analysis; } }
+    public Analysis Analysis { get { return _analysis[SelectedModel]; } }
+    public int SelectedModel { get; set; } = 0;
 
     static protected readonly XmlSerializer PrjSerializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions, DlgUpdateFile dlgUpdate)
+    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions, DlgUpdateFile dlgUpdate, ModelParams[] defaultParams)
     {
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
-      _analysis = new Analysis(this.SpeciesInfos, dlgUpdate);
+      _analysis = new Analysis[defaultParams.Length];
+      for (int i = 0; i < _analysis.Length; i++)
+        _analysis[i] = new Analysis(_speciesInfo, dlgUpdate);
+
       _batSpecRegions = batSpecRegions;
     }
 
@@ -127,7 +132,8 @@ namespace BatInspector
     private BatExplorerProjectFile _batExplorerPrj;
     private bool _reloadInGui;
     private string _extension;
-    
+    bool _changed = false;
+
     public bool Ok { get { return _ok; } }
 
     public PrjRecord[] Records
@@ -170,31 +176,63 @@ namespace BatInspector
 
     public ModelParams[] ModelParams { get { return _batExplorerPrj.Models; } }
 
-    public string ReportName { get { return getReportName(_selectedDir, ModelParams[0]); } } // TODO find another way for multiple models }
+    public string ReportName { get { return getReportName(SelectedModel); } } 
 
-    public string SummaryName { get { return getSummaryName(_selectedDir, ModelParams[0]); } } // TODO find another way for multiple models
+    public string SummaryName { get { return getSummaryName(SelectedModel); } } 
 
     public bool ReloadInGui { get { return _reloadInGui; } set { _reloadInGui = value; } }
 
-
-    bool _changed = false;
-
-    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, DlgUpdateFile dlgUpdate, string wavSubDir = "")
-    : base(speciesInfo, regions, dlgUpdate)
+    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, DlgUpdateFile dlgUpdate, ModelParams[] defaultParams, string wavSubDir = "")
+    : base(speciesInfo, regions, dlgUpdate, defaultParams)
     {
       _wavSubDir = wavSubDir;
       _extension = AppParams.EXT_BATSPY;
     }
 
 
-    public static string getReportName(string dir, ModelParams mp)
+    public string getReportName(int modelIndex)
     {
-      return Path.Combine (dir , mp.SubDir, AppParams.PRJ_REPORT);
+      if ((modelIndex >= 0) && (modelIndex < ModelParams.Length))
+      {
+        ModelParams mp = ModelParams[modelIndex];
+        if ((mp.Type == enModel.BAT_DETECT2) && (mp.DataSet == ModelBatDetect2.BD2_DEFAULT_MODEL))
+          return Path.Combine(PrjDir, mp.SubDir, AppParams.PRJ_REPORT);
+        else
+          return Path.Combine(PrjDir, mp.SubDir, $"report_{mp.Name}_{mp.DataSet}.csv");
+      }
+      else
+        DebugLog.log($"model index {modelIndex} out of range  ( 0.. {ModelParams.Length - 1}", enLogType.ERROR);
+      return "";
     }
 
-    public static string getSummaryName(string dir, ModelParams mp)
+    public static string getReportName(string dir, ModelParams mp, string dataSet)
     {
-      return Path.Combine(dir, mp.SubDir, AppParams.PRJ_SUMMARY);
+        if ((mp.Type == enModel.BAT_DETECT2) && (mp.DataSet == ModelBatDetect2.BD2_DEFAULT_MODEL))
+          return Path.Combine(dir, mp.SubDir, AppParams.PRJ_REPORT);
+        else
+          return Path.Combine(dir, mp.SubDir, $"report_{mp.Name}_{dataSet}.csv");
+    }
+
+    public string getSummaryName(int modelIndex)
+    {
+      if ((modelIndex >= 0) && (modelIndex < ModelParams.Length))
+      {
+        ModelParams mp = ModelParams[modelIndex];
+        if ((mp.Type == enModel.BAT_DETECT2) && (mp.DataSet == ModelBatDetect2.BD2_DEFAULT_MODEL))
+          return Path.Combine(PrjDir, mp.SubDir, AppParams.PRJ_SUMMARY);
+        else
+          return Path.Combine(PrjDir, mp.SubDir, $"summary_{mp.Name}_{mp.DataSet}.csv");
+      }
+      else
+        DebugLog.log($"model index {modelIndex} out of range  ( 0.. {ModelParams.Length - 1}", enLogType.ERROR);
+      return "";
+    }
+    public static string getSummaryName(string dir, ModelParams mp, string dataSet)
+    {
+      if ((mp.Type == enModel.BAT_DETECT2) && (mp.DataSet == ModelBatDetect2.BD2_DEFAULT_MODEL))
+        return Path.Combine(dir, mp.SubDir, AppParams.PRJ_SUMMARY);
+      else
+        return Path.Combine(dir, mp.SubDir, $"summary_{mp.Name}_{dataSet}.csv");
     }
 
     /// <summary>
@@ -232,7 +270,7 @@ namespace BatInspector
     /// <returns></returns>
     public static string containsReport(DirectoryInfo dir, string repName, ModelParams modelParams)
     {
-      string dirName = dir.FullName + "/" +  modelParams.SubDir; //TODO for all possible models
+      string dirName = Path.Combine(dir.FullName, modelParams.SubDir); 
       if (Directory.Exists(dirName))
       {
         try
@@ -277,30 +315,40 @@ namespace BatInspector
     public static bool evaluationDone(DirectoryInfo dir, ModelParams[] mp)
     {
       bool retVal = false;
-      string sumName = getSummaryName(dir.FullName, mp[0]); //TODO find another way for multiple models
-      if (File.Exists(sumName))
+      for(int i = 0; i < mp.Length; i++)
       {
-        Csv csv = new Csv();
-        csv.read(sumName, ";", true);
-        int col = csv.findInCol("todo", Cols.SPECIES_MAN);
-        retVal = (col == 0);
-      }
-      else
-      {
-        string fName = getReportName(dir.FullName, mp[0]); //TODO find another way for multiple models
-        if (File.Exists(fName))
-        {
-          Csv csv = new Csv();
+        foreach (string dataSet in mp[i].AvailableDataSets)
+        {          
+          string sumName = getSummaryName(dir.FullName, mp[i], dataSet);
+          if (File.Exists(sumName))
           {
-            csv.read(fName, ";", true);
-            int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
-            if (colSp > 0)
+            Csv csv = new Csv();
+            csv.read(sumName, ";", true);
+            int col = csv.findInCol("todo", Cols.SPECIES_MAN);
+            retVal = (col == 0);
+          }
+          else
+          {
+            string fName = getReportName(dir.FullName, mp[i], dataSet);
+            if (File.Exists(fName))
             {
-              int row = csv.findInCol("todo", colSp);
-              if (row == 0)
-                retVal = true;
+              Csv csv = new Csv();
+              {
+                csv.read(fName, ";", true);
+                int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
+                if (colSp > 0)
+                {
+                  int row = csv.findInCol("todo", colSp);
+                  if (row == 0)
+                    retVal = true;
+                  if (!retVal)
+                    break;
+                }
+              }
             }
           }
+          if (!retVal)
+            break;
         }
       }
 
@@ -481,16 +529,13 @@ namespace BatInspector
         {
           string wavDir = Path.Combine(info.SrcDir, info.WavSubDir);
 
-          Project prjSrc = new Project(regions, speciesInfo, null, info.WavSubDir);
+          Project prjSrc = new Project(regions, speciesInfo, null, defaultParams, info.WavSubDir);
           prjSrc.readPrjFile(info.SrcDir, defaultParams);
-          string[] notes = prjSrc.Notes.Split('\n');
 
           info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
-          info.Landscape = notes[0];
+          info.Notes = prjSrc.Notes;
           info.StartTime = new DateTime(1900, 1, 1);
           info.EndTime = new DateTime(2100, 1, 1);
-          if (notes.Length > 1)
-            info.Weather = notes[1];
         }
 
         string[] files = getSelectedFiles(info, "*.wav");
@@ -506,10 +551,10 @@ namespace BatInspector
           Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
 
           // create project
-          Project prj = new Project(regions, speciesInfo, null);
+          Project prj = new Project(regions, speciesInfo, null, defaultParams);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           DebugLog.log("creating project...", enLogType.INFO);
-          prj.fillFromDirectory(dir, info.WavSubDir, info.Landscape + "\n" + info.Weather);
+          prj.fillFromDirectory(dir, info.WavSubDir, info.Notes);
 
           // copy location files is present
           DebugLog.log("copy location files...", enLogType.INFO);
@@ -595,7 +640,7 @@ namespace BatInspector
             File.Delete(oldXml);
         }
       }
-      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), prj.WavSubDir, info.Landscape + "\n" + info.Weather);
+      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), prj.WavSubDir, info.Notes);
     }
 
 
@@ -603,7 +648,7 @@ namespace BatInspector
     /// split a project into multiple projects
     /// </summary>
     /// <param name="prj">the project to split</param>
-    public static List<string> splitProject(Project prj, int prjCnt, BatSpeciesRegions regions)
+    public static List<string> splitProject(Project prj, int prjCnt, BatSpeciesRegions regions, ModelParams[] defaultParams)
     {
       List<string> retVal = new List<string>();
       string wavSrc = Path.Combine(prj.PrjDir, prj.WavSubDir);
@@ -637,7 +682,7 @@ namespace BatInspector
         string[] txtFiles = Directory.GetFiles(prj.PrjDir, "*.txt");
         Utils.copyFiles(txtFiles, dirName);
 
-        Project dstprj = new Project(regions, prj.SpeciesInfos, null);
+        Project dstprj = new Project(regions, prj.SpeciesInfos, null, defaultParams);
         dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
 
         copyAnalysisPart(prj, dstprj);
@@ -650,16 +695,16 @@ namespace BatInspector
     {
       foreach(PrjRecord rec in prjDest.Records)
       {
-        AnalysisFile f = prjSrc.Analysis.getAnalysis(rec.File);
+        AnalysisFile f = prjSrc._analysis[prjSrc.SelectedModel].getAnalysis(rec.File);
         if(f != null)
         {
           prjDest.Analysis.addFile(f, true);
         }
       }
-      string dir = Path.GetDirectoryName(prjDest.ReportName);
+      string dir = Path.GetDirectoryName(prjDest.getReportName(prjDest.SelectedModel));
       if (!Directory.Exists(dir))
         Directory.CreateDirectory(dir);
-      prjDest.Analysis.save(prjDest.ReportName, prjDest.Notes);
+      prjDest.Analysis.save(prjDest.getReportName(prjDest.SelectedModel), prjDest.Notes, prjDest.SummaryName);
     }
 
     private static void replaceLocations(string[] xmlfiles, string wavDir, gpx gpxFile)
@@ -883,11 +928,11 @@ namespace BatInspector
       {
         _changed = true;
         addRecord(file, ref list);
-        if (_analysis?.IsEmpty == false)
+        if (_analysis[SelectedModel]?.IsEmpty == false)
         {
           WavFile wFile = new WavFile();
           wFile.readFile(file);
-          _analysis.addFile(ReportName, file, (int)wFile.FormatChunk.Frequency,
+          _analysis[SelectedModel].addFile(ReportName, file, (int)wFile.FormatChunk.Frequency,
                             (double)wFile.AudioSamples.Length / wFile.FormatChunk.Frequency);
         }
       }
@@ -906,8 +951,8 @@ namespace BatInspector
       }
       Utils.copyFiles(fileList.ToArray(), dstPath, removeSrc);
       writePrjFile();
-      if(_analysis?.IsEmpty == false)
-        _analysis?.save(ReportName, Notes);
+      if(_analysis[SelectedModel]?.IsEmpty == false)
+        _analysis[SelectedModel]?.save(ReportName, Notes, SummaryName);
       _reloadInGui = true;
     }
 
@@ -1071,11 +1116,11 @@ namespace BatInspector
           if (Path.GetExtension(file.FullName).ToLower() == AppParams.EXT_CSV)
           {
             wavName = Path.GetFileNameWithoutExtension(file.FullName) + AppParams.EXT_WAV;
-            _analysis.undo(file.FullName);
+            _analysis[SelectedModel].undo(file.FullName);
             File.Delete(file.FullName);
-            _analysis.save(ReportName, Notes);
-            _analysis.read(ReportName);
-            _analysis.updateControls(wavName);
+            _analysis[SelectedModel].save(ReportName, Notes, SummaryName);
+            _analysis[SelectedModel].read(ReportName);
+            _analysis[SelectedModel].updateControls(wavName);
           }
           else
           {

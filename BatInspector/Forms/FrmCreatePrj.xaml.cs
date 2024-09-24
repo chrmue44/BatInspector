@@ -44,10 +44,8 @@ namespace BatInspector.Forms
       _ctlMaxFiles.setValue(10000);
       _ctlMaxFileLen.setup(MyResources.frmCreatePrjMaxFileLen, Controls.enDataType.DOUBLE, 1, _widthLbl, true);
       _ctlMaxFileLen.setValue(5.0);
-      _ctlPrjWeather.setup(MyResources.frmCreatePrjWeather, Controls.enDataType.STRING, 0, _widthLbl, true);
-      _ctlPrjWeather.setValue("");
-      _ctlPrjLandscape.setup(MyResources.frmCreatePrjLandscape, Controls.enDataType.STRING, 0, _widthLbl, true);
-      _ctlPrjLandscape.setValue("");
+      _ctlPrjNotes.setup(MyResources.ctlPrjInfoNotes, Controls.enDataType.STRING, 0, _widthLbl, true);
+      _ctlPrjNotes.setValue("");
       _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, _widthLbl, false, "gpx Files (*.gpx)|*.gpx|All files(*.*)|*.*");
       _ctlGpxFile.IsEnabled = false;
       _rbGpxFile.IsChecked = false;
@@ -146,8 +144,7 @@ namespace BatInspector.Forms
     private void enableGuiElements()
     {
       _ctlPrjName.IsEnabled = !_isProjectFolder;
-      _ctlPrjWeather.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
-      _ctlPrjLandscape.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      _ctlPrjNotes.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       setVisibilityTimeFilter();
       _cbOverwriteLoc.Visibility = _isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       _cbOverwriteLoc.IsChecked = !_isProjectFolder;
@@ -213,8 +210,7 @@ namespace BatInspector.Forms
         Thread thr = new Thread(createProject);
         if (!_isProjectFolder)
         {
-          _info.Weather = _ctlPrjWeather.getValue();
-          _info.Landscape = _ctlPrjLandscape.getValue();
+          _info.Notes = _ctlPrjNotes.getValue();
           _info.GpxFile = (_rbGpxFile.IsChecked == true) || (_rbKmlFile.IsChecked == true)
             || (_rbTxtFile.IsChecked == true) ? _ctlGpxFile.getValue() : "";
           _info.StartTime = _dtStart.DateTime;

@@ -381,9 +381,6 @@
   <data name="SetDescBatSpecies" xml:space="preserve">
     <value>Settings for bat species</value>
   </data>
-  <data name="SetDescProb" xml:space="preserve">
-    <value>Minimal probability to copy automated to manually set probability with copy button</value>
-  </data>
   <data name="SetCatColorGradient" xml:space="preserve">
     <value>Color Gradient</value>
   </data>
@@ -774,12 +771,6 @@
   <data name="frmCreatePrjMaxFiles" xml:space="preserve">
     <value>Max. Files in Project</value>
   </data>
-  <data name="frmCreatePrjWeather" xml:space="preserve">
-    <value>Weather Conditions Recording</value>
-  </data>
-  <data name="frmCreatePrjLandscape" xml:space="preserve">
-    <value>Landscape</value>
-  </data>
   <data name="frmCreatePrjMaxFileLen" xml:space="preserve">
     <value>Max. File Length [s]</value>
   </data>
@@ -1010,18 +1001,6 @@
   </data>
   <data name="SetCatLog" xml:space="preserve">
     <value>Log View</value>
-  </data>
-  <data name="SpecDescShowError" xml:space="preserve">
-    <value>Show error messages in log view</value>
-  </data>
-  <data name="SpecDescShowWarning" xml:space="preserve">
-    <value>Show warnings in log view</value>
-  </data>
-  <data name="SpecDescShowInfo" xml:space="preserve">
-    <value>Show info messages in log view</value>
-  </data>
-  <data name="SpecDescShowDebug" xml:space="preserve">
-    <value>Show debug messages in log view</value>
   </data>
   <data name="InstallerModTxt1" xml:space="preserve">
     <value>install AI model batdetect2 (Univerity of Edinborough)</value>
@@ -1640,5 +1619,14 @@
   </data>
   <data name="ctlModParItem_Enabled" xml:space="preserve">
     <value>Enabled</value>
+  </data>
+  <data name="frmModelParamsUpdate" xml:space="preserve">
+    <value>Update Available Models</value>
+  </data>
+  <data name="SetDescMultiModel" xml:space="preserve">
+    <value>True: more than one enabled AI moel in project allowed</value>
+  </data>
+  <data name="SetDescDefaultModel" xml:space="preserve">
+    <value>Default AI model for new projects</value>
   </data>
 </root>

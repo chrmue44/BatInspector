@@ -38,8 +38,7 @@
         <StackPanel Margin="5">
                     <local:ctlDataItem x:Name="_ctlMaxFiles" Margin=" 0,0,0,0"/>
                     <local:ctlDataItem x:Name="_ctlMaxFileLen" Margin=" 0,0,0,0"/>
-                    <local:ctlDataItem x:Name="_ctlPrjWeather" Margin=" 0,0,0,0"/>
-                    <local:ctlDataItem x:Name="_ctlPrjLandscape" Margin=" 0,0,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlPrjNotes" Margin=" 0,0,0,0"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Template="{DynamicResource GroupBoxCmu}" >

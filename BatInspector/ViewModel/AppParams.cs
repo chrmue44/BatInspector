@@ -364,11 +364,6 @@ namespace BatInspector
     public double GradientRange { get; set; } = 15;
 
     [DataMember]
-    [LocalizedCategory("SetCatModel")]
-    [LocalizedDescription("SetDescProb")]
-    public double ProbabilityMin { get; set; } = 0.5;
-
-    [DataMember]
     [Category("Filter")]
     [LocalizedDescription("SetDescFilter")]
     [Browsable(false)]
@@ -397,9 +392,14 @@ namespace BatInspector
     public string ModelRootPath { get; set; } = "";
 
     [DataMember]
-    [LocalizedCategory("SetCatModel")]
-    [Browsable(false)]
-    public int SelectedModel { get; set; } = 0;
+    [LocalizedCategory("SetCatModel"),
+    LocalizedDescription("SetDescMultiModel")]
+    public bool AllowMoreThanOneModel { get; set; } = false;
+
+    [DataMember]
+    [LocalizedCategory("SetCatModel"),
+    LocalizedDescription("SetDescDefaultModel")]
+    public enModel DefaultModel { get; set; } = enModel.BAT_DETECT2;
 
 /*    [DataMember]
     [LocalizedCategory("SetCatModel")]
@@ -482,18 +482,25 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatLog"),
      LocalizedDescription("SpecDescShowError")]
+    [Browsable(false)]
     public bool LogShowError { get; set; }
+
     [DataMember]
     [LocalizedCategory("SetCatLog"),
      LocalizedDescription("SpecDescShowWarning")]
+    [Browsable(false)]
     public bool LogShowWarning { get; set; }
+    
     [DataMember]
     [LocalizedCategory("SetCatLog"),
      LocalizedDescription("SpecDescShowInfo")]
+    [Browsable(false)]
     public bool LogShowInfo { get; set; }
+    
     [DataMember]
     [LocalizedCategory("SetCatLog"),
      LocalizedDescription("SpecDescShowDebug")]
+    [Browsable(false)]
     public bool LogShowDebug { get; set; }
 
     [DataMember]
@@ -524,9 +531,10 @@ namespace BatInspector
     {
       if (string.IsNullOrEmpty(ModelDefaultParamsFile))
         ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
-    }
+      DefaultModel = enModel.BAT_DETECT2;
+  }
 
-    public void init()
+  public void init()
     {
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
       LogDataPath = Path.Combine(AppDataPath, "log");
@@ -549,7 +557,6 @@ namespace BatInspector
       MainWindowPosX = 0;
       MainWindowPosY = 0;
       GradientRange = 12;
-      ProbabilityMin = 0.5;
       HideInfos = false;
       WaterfallLogarithmic = true;
       Culture = enCulture.de_DE;
@@ -557,9 +564,10 @@ namespace BatInspector
       initColorGradient();
       ModelRootPath = Path.Combine(AppDataPath, "models");
       ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
-      SelectedModel = 0;
+      DefaultModel = enModel.BAT_DETECT2;
+
     //  initModels();
-      SamplingRate = 312500;
+    SamplingRate = 312500;
       ScriptCopyAutoToMan = "copyAutoToMan.scr";
       LogShowError = true;
       LogShowWarning = true;

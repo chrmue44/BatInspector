@@ -117,7 +117,7 @@ namespace BatInspector.Forms
       this.Top = AppParams.Inst.MainWindowPosX;
       this.Left = AppParams.Inst.MainWindowPosY;
        
-      // TODO
+      // TODO find a working way to limit the window size
       if ((this.Left + this.Width) > WpfScreen.Primary.WorkingArea.Width)
         this.Width = WpfScreen.Primary.WorkingArea.Width - this.Left;
       if ((this.Top + this.Height) > WpfScreen.Primary.WorkingArea.Height)
@@ -389,7 +389,7 @@ namespace BatInspector.Forms
             _scrollList.Minimum = 0;
             _scrollBarListPos = 0;
             _scrollList.Maximum = _model.Prj.Records.Length - 1;
-            // TODO set button size
+            // TODO set scroll button size
             _ctlPrjInfo.setup(_model.Prj);
             _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
             _ctlScatter.initPrj();
@@ -539,7 +539,7 @@ namespace BatInspector.Forms
         {
           MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
-            _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
+            _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
         }
       }
     }
@@ -957,7 +957,7 @@ namespace BatInspector.Forms
         _model.saveSettings();
         if ((_model != null) && (_model.Prj != null) && (_model.Prj.Analysis != null) &&
           (!_model.Prj.Analysis.IsEmpty))
-          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes);
+          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
         DebugLog.log("MainWin:BTN 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)

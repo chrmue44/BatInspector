@@ -242,8 +242,7 @@ namespace BatInspector
           Latitude = argv[5].getFloat(),
           Longitude = argv[6].getFloat(),
           GpxFile = "",
-          Landscape = "",
-          Weather = "",
+          Notes = "",
           StartTime = new DateTime(1, 1, 1),
           EndTime = new DateTime(2099, 12, 31),
           OverwriteLocation = true,
@@ -272,8 +271,7 @@ namespace BatInspector
           Latitude = 0,
           Longitude = 0,
           GpxFile = locFile,
-          Landscape = "",
-          Weather = "",
+          Notes = "",
           RemoveSource = argv[6].getBool(),
           StartTime = new DateTime(1, 1, 1),
           EndTime = new DateTime(2099, 12, 31),
@@ -315,8 +313,7 @@ namespace BatInspector
           Latitude = 0.0,
           Longitude = 0.0,
           GpxFile = "",
-          Landscape = "",
-          Weather = "",
+          Notes = "",
           IsProjectFolder = true,
           LocSourceGpx = false,
           LocSourceKml = false,
@@ -360,7 +357,7 @@ namespace BatInspector
       if (_inst._model.Prj.Name != "")
       {
         _inst._model.Prj.writePrjFile();
-        _inst._model.Prj.Analysis.save(_inst._model.Prj.ReportName, _inst._model.Prj.Notes);
+        _inst._model.Prj.Analysis.save(_inst._model.Prj.ReportName, _inst._model.Prj.Notes, _inst._model.Prj.SummaryName);
       }
       return err;
     }

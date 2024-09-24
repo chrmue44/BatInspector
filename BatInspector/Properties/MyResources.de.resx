@@ -381,9 +381,6 @@
   <data name="SetDescBatSpecies" xml:space="preserve">
     <value>Einstellungen für Fledermausarten</value>
   </data>
-  <data name="SetDescProb" xml:space="preserve">
-    <value>Mindestwert für die Erkennungswahrscheinlichkeit, um automatisch erkannte Art mit dem "Copy"-Button zu kopieren</value>
-  </data>
   <data name="SetCatColorGradient" xml:space="preserve">
     <value>Farbverlauf</value>
   </data>
@@ -774,12 +771,6 @@
   <data name="frmCreatePrjMaxFiles" xml:space="preserve">
     <value>max. Dateianzahl im Projekt</value>
   </data>
-  <data name="frmCreatePrjWeather" xml:space="preserve">
-    <value>Wetter bei der Aufnahme</value>
-  </data>
-  <data name="frmCreatePrjLandscape" xml:space="preserve">
-    <value>Landschaft</value>
-  </data>
   <data name="frmCreatePrjMaxFileLen" xml:space="preserve">
     <value>max. Dateilänge [s]</value>
   </data>
@@ -1010,18 +1001,6 @@
   </data>
   <data name="SetCatLog" xml:space="preserve">
     <value>Log-Anzeige</value>
-  </data>
-  <data name="SpecDescShowError" xml:space="preserve">
-    <value>Zeige Fehlermeldungen in der Log-Anzeige</value>
-  </data>
-  <data name="SpecDescShowWarning" xml:space="preserve">
-    <value>Zeige Warnmeldungen in der Log-Anzeige</value>
-  </data>
-  <data name="SpecDescShowInfo" xml:space="preserve">
-    <value>Zeige Informationsmeldungen in der Log-Anzeige</value>
-  </data>
-  <data name="SpecDescShowDebug" xml:space="preserve">
-    <value>Zeige Debug-Meldungen in der Log-Anzeige</value>
   </data>
   <data name="InstallerDataTxt1" xml:space="preserve">
     <value>Kopiere Skripte ins Arbeitsverzeichnis</value>
@@ -1640,5 +1619,14 @@
   </data>
   <data name="ctlModParItem_Enabled" xml:space="preserve">
     <value>Aktiviert</value>
+  </data>
+  <data name="frmModelParamsUpdate" xml:space="preserve">
+    <value>Verfügbare Modelle aktualisieren</value>
+  </data>
+  <data name="SetDescMultiModel" xml:space="preserve">
+    <value>True: Es können auch mehr als ein KI-Modell im Projekt aktiviert sein</value>
+  </data>
+  <data name="SetDescDefaultModel" xml:space="preserve">
+    <value>Default KI-Modell für neu erzeugte Projekte</value>
   </data>
 </root>

@@ -52,7 +52,8 @@ namespace BatInspector.Forms
 
     private void btnOK_Click(object sender, RoutedEventArgs e)
     {
-      _model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(), _tbQuery.Text, _model.SpeciesInfos, _model.Regions );
+      _model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(),
+                               _tbQuery.Text, _model.SpeciesInfos, _model.Regions, _model.DefaultModelParams);
       this.Visibility = Visibility.Hidden;
       if (_frmHelp != null)
         _frmHelp.Close();

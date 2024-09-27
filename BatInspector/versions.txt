@@ -1,12 +1,9 @@
 TODO
-- choose between different AI models
-- information about chosen model in project file
 - training of model
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
 - project selector collapses occasionally during work  
 - calculate SNR for each detected call
-
 
 V0.9.0.0
 - bugfix: "?" and "todo" where missing in Species list (drop down for manual selection)
@@ -18,6 +15,8 @@ V0.9.0.0
 - remove checkProject() in initProject() for faster start of big projects
 - faster display of files in big projects (and much less memory consumption)
 - no more generating of png files in advance
+- prepared for multiple model (BatDetect2, BattyBirdNET, ...)
+- prepared for multiple training data sets for one model (BatDetect2:UK, BateDetect2:Germany, ...)
 
 V0.8.6.1   09.09.24
 - bugfix: import from path names with blanks is now possible

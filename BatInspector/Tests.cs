@@ -369,7 +369,7 @@ namespace BatInspector
         EndTime = new DateTime(2022,7,14),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos, _model.DefaultModelParams);
+      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos, _model.DefaultModelParams[0],_model.DefaultModelParams);
     }
 
     private void testReportModelBatdetect2()
@@ -380,7 +380,8 @@ namespace BatInspector
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
+      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
       Analysis a = new Analysis(prj.SpeciesInfos, null);
       a.read(reportName);
       a.save(reportName, prj.Notes, prj.SummaryName);
@@ -392,7 +393,9 @@ namespace BatInspector
       string dstDir = "D:\\bat\\Queries";
       string name = "test";
       string query = "(FreqMin > 18000) && (FreqMin < 21000) && (SpeciesAuto == \"NLEI\")";
-      Query qry = new Query(name, srcDir, dstDir, query, _model.SpeciesInfos, _model.Regions, _model.DefaultModelParams);
+      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Query qry = new Query(name, srcDir, dstDir, query, _model.SpeciesInfos, 
+                            _model.Regions, modelParams, _model.DefaultModelParams.Length);
       qry.evaluate(_model);      
     }
 
@@ -405,7 +408,8 @@ namespace BatInspector
         string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
         if (repName != "")
         {
-          Project p = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
+          ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
+          Project p = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
           Analysis a = new Analysis(p.SpeciesInfos, null);
           a.read(repName);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);

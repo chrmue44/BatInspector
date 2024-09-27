@@ -519,9 +519,6 @@
   <data name="fMaxAmpl" xml:space="preserve">
     <value>Hauptfreq. [kHz]</value>
   </data>
-  <data name="MainTrainData" xml:space="preserve">
-    <value>Trainingsdaten</value>
-  </data>
   <data name="frmStartPredInspect" xml:space="preserve">
     <value>Rufe ermitteln</value>
   </data>
@@ -619,7 +616,7 @@
     <value>Fmax</value>
   </data>
   <data name="SetCatModel" xml:space="preserve">
-    <value>Modell</value>
+    <value>KI-Klassifizierer</value>
   </data>
   <data name="SetDescLearningRate" xml:space="preserve">
     <value>Learning Rate zum trainieren des Modells</value>
@@ -736,7 +733,7 @@
     <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus WAV-Dateien ergänzen</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Importiere WAV Datei(en) oder Elekon-Projekt</value>
+    <value>Importiere WAV Datei(en), BatSpy- oder Elekon-Projekt</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Formatfehler Geografische Breite: </value>
@@ -817,7 +814,7 @@
     <value>Name der Auswertung</value>
   </data>
   <data name="frmCreatePrjEvalPrj" xml:space="preserve">
-    <value>Erzeugte Projekt(e) automatisch auswerten</value>
+    <value>Projekt(e)  auswerten</value>
   </data>
   <data name="ToolTipDenoise" xml:space="preserve">
     <value>Rauschunterdrückung</value>
@@ -1628,5 +1625,14 @@
   </data>
   <data name="SetDescDefaultModel" xml:space="preserve">
     <value>Default KI-Modell für neu erzeugte Projekte</value>
+  </data>
+  <data name="ctlModParDataSet" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="SubDirectory" xml:space="preserve">
+    <value>Unterverzeichnis</value>
+  </data>
+  <data name="FrmCreatePrj_Evaluation" xml:space="preserve">
+    <value>Auswertung</value>
   </data>
 </root>

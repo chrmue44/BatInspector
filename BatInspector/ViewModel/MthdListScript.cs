@@ -288,7 +288,12 @@ namespace BatInspector
       else
         err = tParseError.NR_OF_ARGUMENTS;
       if (err == tParseError.SUCCESS)
-        Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos, _inst._model.DefaultModelParams);
+      {
+        ModelParams modelParams = _inst._model.DefaultModelParams[_inst._model.getModelIndex(AppParams.Inst.DefaultModel)];
+
+        Project.createPrjFromWavs(info, _inst._model.Regions, _inst._model.SpeciesInfos,
+                                  modelParams, _inst._model.DefaultModelParams);
+      }
       result.assignInt64((long)err);
       return err;
     }

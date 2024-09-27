@@ -519,9 +519,6 @@
   <data name="fMaxAmpl" xml:space="preserve">
     <value>FmaxAmpl [kHz]</value>
   </data>
-  <data name="MainTrainData" xml:space="preserve">
-    <value>Training Data</value>
-  </data>
   <data name="frmStartPredInspect" xml:space="preserve">
     <value>Identify calls</value>
   </data>
@@ -619,7 +616,7 @@
     <value>Fmax</value>
   </data>
   <data name="SetCatModel" xml:space="preserve">
-    <value>Model</value>
+    <value>AI Classifier</value>
   </data>
   <data name="SetDescLearningRate" xml:space="preserve">
     <value>Set the learning rate to train the model</value>
@@ -736,7 +733,7 @@
     <value>Longitude</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Import WAV files or another Elekon project</value>
+    <value>Import WAV files, BatSpy- or Elekon Project</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Latitude format error: </value>
@@ -817,7 +814,7 @@
     <value>Report Name</value>
   </data>
   <data name="frmCreatePrjEvalPrj" xml:space="preserve">
-    <value>Evaluate created Project(s) automatically</value>
+    <value>Evaluate Project(s)</value>
   </data>
   <data name="ToolTipDenoise" xml:space="preserve">
     <value>Denoise the current file</value>
@@ -1628,5 +1625,14 @@
   </data>
   <data name="SetDescDefaultModel" xml:space="preserve">
     <value>Default AI model for new projects</value>
+  </data>
+  <data name="ctlModParDataSet" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SubDirectory" xml:space="preserve">
+    <value>Subdirectory</value>
+  </data>
+  <data name="FrmCreatePrj_Evaluation" xml:space="preserve">
+    <value>Evaluation</value>
   </data>
 </root>

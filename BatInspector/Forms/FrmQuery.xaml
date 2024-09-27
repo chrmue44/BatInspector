@@ -28,15 +28,16 @@
 
     <StackPanel Margin="10,10,10,10" Grid.Row="1" Grid.ColumnSpan="4">
       <local:ctlDataItem x:Name="_ctlName" Margin="0,5,0,0"/>
-      <local:CtlSelectFile x:Name="_ctlSelectSource" Margin="0,5,0,0"/>
-      <local:CtlSelectFile x:Name="_ctlSelectDest" Margin="0,5,0,0"/>
-      <Grid Margin="0,5,0,0">
+      <local:CtlSelectFile x:Name="_ctlSelectSource" Margin="5,5,0,0"/>
+      <local:CtlSelectFile x:Name="_ctlSelectDest" Margin="5,5,0,0"/>
+            <local:ctlSelectItem x:Name="_ctlModel" Margin="0,5,0,0"/>
+            <Grid Margin="0,5,0,0">
         <Grid.RowDefinitions>
           <RowDefinition Height="25"></RowDefinition>
                     <RowDefinition Height="200"/>
                 </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="120" x:Name="_grdCol1"/>
+          <ColumnDefinition Width="130" x:Name="_grdCol1"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0" Text="{x:Static res:MyResources.frmQueryQuery}"></TextBlock>

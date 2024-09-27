@@ -326,6 +326,16 @@ namespace libParser
       return isalpha(ch) || isdigit(ch);
     }
 
+
+    public static double toDouble(string val, string context)
+    {
+      double retVal = 0.0;
+      bool ok = double.TryParse(val, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
+      if (!ok)
+        DebugLog.log($"{context}: '{val}' is not a valid double", enLogType.ERROR);
+      return retVal;
+    }
+    
     /// <summary>
     // The main function that checks if  
     // two given strings match. The first string  

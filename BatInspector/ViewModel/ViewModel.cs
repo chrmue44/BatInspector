@@ -159,7 +159,8 @@ namespace BatInspector
         _models.Add(BaseModel.Create(index, m.Type, this));
         index++;
       }
-      _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams);
+      _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate,
+                 DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
 
       List<string> species = new List<string>();
       foreach (SpeciesInfos info in _speciesInfos)
@@ -225,7 +226,7 @@ namespace BatInspector
       }
       else if (Project.containsWavs(dir))
       {
-        _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams);
+        _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
         _prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName;
         initScripter();
@@ -483,6 +484,33 @@ namespace BatInspector
       }
     }
 
+    public int getModelIndex(enModel modType)
+    {
+      int retVal = -1;
+      for(int i = 0; i < _models.Count; i++)
+      {
+        if(modType == _models[i].Type)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public int getModelIndex(string modelName)
+    {
+      int retVal = -1;
+      for (int i = 0; i < _models.Count; i++)
+      {
+        if (modelName == _models[i].Name)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
     /// <summary>
     /// evaluation of bat species
     /// </summary>
@@ -697,7 +725,9 @@ namespace BatInspector
         }
         if (delAnn)
         {
-          string annDir = Path.Combine(dir.FullName, AppParams.ANNOTATION_SUBDIR);
+          Project prj = new Project(Regions, SpeciesInfos, null, DefaultModelParams[0], DefaultModelParams.Length);
+          prj.readPrjFile(dir.FullName, DefaultModelParams);
+          string annDir = prj.getAnnotationDir();
           if (Directory.Exists(annDir))
           {
             Directory.Delete(annDir, true);
@@ -746,8 +776,9 @@ namespace BatInspector
           foreach (FileInfo file in d.GetFiles())
             origSpace += (int)(file.Length / 1024);
         }
-
-        string annDir = Path.Combine(dir.FullName, AppParams.ANNOTATION_SUBDIR);
+        Project prj = new Project(Regions, SpeciesInfos, null, DefaultModelParams[0], DefaultModelParams.Length);
+        prj.readPrjFile(dir.FullName, DefaultModelParams);
+        string annDir = prj.getAnnotationDir();
         if (Directory.Exists(annDir))
         {
           DirectoryInfo d = new DirectoryInfo(annDir);
@@ -871,7 +902,7 @@ namespace BatInspector
 
     public void createProject(PrjInfo info, bool inspect, bool cli)
     {
-      Project.createPrjFromWavs(info, Regions, SpeciesInfos, DefaultModelParams);
+      Project.createPrjFromWavs(info, Regions, SpeciesInfos, info.ModelParams, DefaultModelParams);
       string prjPath = Path.Combine(info.DstDir, info.Name);
       DirectoryInfo dir = new DirectoryInfo(prjPath);
       initProject(dir, null);
@@ -885,7 +916,7 @@ namespace BatInspector
         double prjCnt = (double)Prj.Records.Length / info.MaxFileCnt;
         if (prjCnt > (int)prjCnt)
           prjCnt += 1;
-        List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, DefaultModelParams);
+        List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, info.ModelParams,  DefaultModelParams.Length);
         if (prjs.Count > 0)
           initProject(new DirectoryInfo(prjs[0]), null);
         // remove src project

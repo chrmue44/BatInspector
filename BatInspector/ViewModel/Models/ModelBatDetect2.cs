@@ -48,7 +48,7 @@ namespace BatInspector
         ModelParams pars = prj.ModelParams[prj.SelectedModel];
         string detTrsh = pars.getPar(PAR_DETECTION_THRESHOLD);
         string wavDir = Path.Combine(prj.PrjDir ,prj.WavSubDir);
-        string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
+        string annDir = prj.getAnnotationDir();
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
                          AppParams.Inst.ModelRootPath  :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
@@ -61,7 +61,7 @@ namespace BatInspector
           bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
           if (ok)
           {
-    //        cleanup(prj.PrjDir);
+    //        cleanup(prj);
             prj.Analysis.read(prj.getReportName(this.Index));
             prj.removeFilesNotInReport();
           }
@@ -321,9 +321,11 @@ namespace BatInspector
     }
 
 
-    void cleanup(string root)
+    void cleanup(Project prj)
     {
-      removeDir(root, AppParams.ANNOTATION_SUBDIR);
+      string dir = prj.getAnnotationDir();
+      if (Directory.Exists(dir))
+        Directory.Delete(dir, true);
     }
   }
 }

@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Controls;
 using BatInspector.Properties;
 using libParser;
 using System;
@@ -27,12 +28,16 @@ namespace BatInspector.Forms
     private bool _isProjectFolder = false;
     private int _widthLbl;
 
+
     public FrmCreatePrj(ViewModel model)
     {
       InitializeComponent();
       _model = model;
       _info = new PrjInfo();
       _widthLbl = 200;
+      _dtStart._lbl.Text = MyResources.CtlSumReportStartDate;
+      _dtEnd._lbl.Text = MyResources.CtlSumReportEndDate;
+
       _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlLat.setValue("49° 46.002 N");
@@ -51,7 +56,22 @@ namespace BatInspector.Forms
       _rbGpxFile.IsChecked = false;
       _rbFixedPos.IsChecked = true;
       _cbOverwriteLoc.Visibility = Visibility.Hidden;
+      _ctlModel.setup(BatInspector.Properties.MyResources.SetCatModel, 0, 70, 150, modelHasChanged);
+      int modelIndex = _model.getModelIndex(AppParams.Inst.DefaultModel);
+      ctlPrjInfo.initModelComboBox(_ctlModel._cb, _model.DefaultModelParams, modelIndex);
+      _ctlDataSet.setup(BatInspector.Properties.MyResources.ctlModParDataSet, 0, 100, 200);
+      string[] dataSetItems = _model.DefaultModelParams[modelIndex].AvailableDataSets;
+      _ctlDataSet.setItems(dataSetItems);
+      _ctlDataSet.setValue(_model.DefaultModelParams[modelIndex].DataSet);
       setVisibilityTimeFilter();
+    }
+
+    private void modelHasChanged(int index, string val)
+    {
+      int modelIndex = _model.getModelIndex(val);
+      string[] dataSetItems = _model.DefaultModelParams[modelIndex].AvailableDataSets;
+      _ctlDataSet.setItems(dataSetItems);
+      _ctlDataSet.setValue(_model.DefaultModelParams[modelIndex].DataSet);
     }
 
     public void init()
@@ -68,8 +88,6 @@ namespace BatInspector.Forms
       Visibility vis = _cbTimeFilter.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
       _dtStart.Visibility = vis;
       _dtEnd.Visibility = vis;
-      _lblDateStart.Visibility = vis;
-      _lblDateEnd.Visibility = vis;
     }
 
     private void initDailogAfterSelectingSrc()
@@ -170,6 +188,8 @@ namespace BatInspector.Forms
         _info.LocSourceTxt = _rbTxtFile.IsChecked == true;
         _inspect = _cbEvalPrj.IsChecked == true;
         _info.IsProjectFolder = _isProjectFolder;
+        _info.ModelParams = _model.DefaultModelParams[_ctlModel.SelectIndex];
+        _info.ModelParams.DataSet = _ctlDataSet.getValue();
         bool ok = true;
         double lat = 0;
         double lon = 0;

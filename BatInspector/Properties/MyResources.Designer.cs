@@ -457,6 +457,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string ctlModParDataSet {
+            get {
+                return ResourceManager.GetString("ctlModParDataSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enabled.
         /// </summary>
         public static string ctlModParItem_Enabled {
@@ -1447,6 +1456,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluation.
+        /// </summary>
+        public static string FrmCreatePrj_Evaluation {
+            get {
+                return ResourceManager.GetString("FrmCreatePrj_Evaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overwrite location in source files.
         /// </summary>
         public static string FrmCreatePrjCbOverwriteLoc {
@@ -1474,7 +1492,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluate created Project(s) automatically.
+        ///   Looks up a localized string similar to Evaluate Project(s).
         /// </summary>
         public static string frmCreatePrjEvalPrj {
             get {
@@ -1636,7 +1654,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import WAV files or another Elekon project.
+        ///   Looks up a localized string similar to Import WAV files, BatSpy- or Elekon Project.
         /// </summary>
         public static string frmCreatePrjTitle {
             get {
@@ -3229,15 +3247,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Training Data.
-        /// </summary>
-        public static string MainTrainData {
-            get {
-                return ResourceManager.GetString("MainTrainData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to no report.
         /// </summary>
         public static string MainWindow_showStatus_NoReport {
@@ -3661,7 +3670,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Model.
+        ///   Looks up a localized string similar to AI Classifier.
         /// </summary>
         public static string SetCatModel {
             get {
@@ -4278,6 +4287,15 @@ namespace BatInspector.Properties {
         public static string StringNumber {
             get {
                 return ResourceManager.GetString("StringNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subdirectory.
+        /// </summary>
+        public static string SubDirectory {
+            get {
+                return ResourceManager.GetString("SubDirectory", resourceCulture);
             }
         }
         

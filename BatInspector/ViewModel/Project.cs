@@ -41,7 +41,7 @@ namespace BatInspector
     public bool OverwriteLocation { get; set; }
     public bool RemoveSource { get; set; }
     public string WavSubDir { get; set; } = AppParams.DIR_WAVS;
-
+    public ModelParams ModelParams { get; set; }
   }
 
 
@@ -54,6 +54,7 @@ namespace BatInspector
 
     protected Analysis[] _analysis;
     protected BatSpeciesRegions _batSpecRegions;
+    protected ModelParams _modelParams;
 
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfo; } }
     public List<string> Species { get { return _speciesList; } }
@@ -61,15 +62,16 @@ namespace BatInspector
     public int SelectedModel { get; set; } = 0;
 
     static protected readonly XmlSerializer PrjSerializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions, DlgUpdateFile dlgUpdate, ModelParams[] defaultParams)
+    public PrjBase(List<SpeciesInfos> speciesInfo, BatSpeciesRegions batSpecRegions, DlgUpdateFile dlgUpdate, ModelParams modelParams, int modelCount)
     {
       _speciesList = new List<string>();
       _speciesInfo = speciesInfo;
-      _analysis = new Analysis[defaultParams.Length];
+      _analysis = new Analysis[modelCount];
       for (int i = 0; i < _analysis.Length; i++)
         _analysis[i] = new Analysis(_speciesInfo, dlgUpdate);
 
       _batSpecRegions = batSpecRegions;
+      _modelParams = modelParams;
     }
 
     public abstract string getFullFilePath(string path);
@@ -182,13 +184,17 @@ namespace BatInspector
 
     public bool ReloadInGui { get { return _reloadInGui; } set { _reloadInGui = value; } }
 
-    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, DlgUpdateFile dlgUpdate, ModelParams[] defaultParams, string wavSubDir = "")
-    : base(speciesInfo, regions, dlgUpdate, defaultParams)
+    public Project(BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, DlgUpdateFile dlgUpdate, ModelParams modelParams, int modelCount, string wavSubDir = "")
+    : base(speciesInfo, regions, dlgUpdate, modelParams, modelCount)
     {
       _wavSubDir = wavSubDir;
       _extension = AppParams.EXT_BATSPY;
     }
 
+    public string getAnnotationDir()
+    {
+      return Path.Combine(PrjDir, _modelParams.SubDir, AppParams.ANNOTATION_SUBDIR);
+    }
 
     public string getReportName(int modelIndex)
     {
@@ -513,7 +519,7 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, ModelParams[] defaultParams)
+    public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, ModelParams modelParams, ModelParams[] defaultParams)
     {
       if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
       {
@@ -529,7 +535,7 @@ namespace BatInspector
         {
           string wavDir = Path.Combine(info.SrcDir, info.WavSubDir);
 
-          Project prjSrc = new Project(regions, speciesInfo, null, defaultParams, info.WavSubDir);
+          Project prjSrc = new Project(regions, speciesInfo, null, modelParams, defaultParams.Length, info.WavSubDir);
           prjSrc.readPrjFile(info.SrcDir, defaultParams);
 
           info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
@@ -551,7 +557,7 @@ namespace BatInspector
           Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
 
           // create project
-          Project prj = new Project(regions, speciesInfo, null, defaultParams);
+          Project prj = new Project(regions, speciesInfo, null, modelParams, defaultParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           DebugLog.log("creating project...", enLogType.INFO);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes);
@@ -648,7 +654,7 @@ namespace BatInspector
     /// split a project into multiple projects
     /// </summary>
     /// <param name="prj">the project to split</param>
-    public static List<string> splitProject(Project prj, int prjCnt, BatSpeciesRegions regions, ModelParams[] defaultParams)
+    public static List<string> splitProject(Project prj, int prjCnt, BatSpeciesRegions regions, ModelParams modelParams, int modelCount)
     {
       List<string> retVal = new List<string>();
       string wavSrc = Path.Combine(prj.PrjDir, prj.WavSubDir);
@@ -682,7 +688,7 @@ namespace BatInspector
         string[] txtFiles = Directory.GetFiles(prj.PrjDir, "*.txt");
         Utils.copyFiles(txtFiles, dirName);
 
-        Project dstprj = new Project(regions, prj.SpeciesInfos, null, defaultParams);
+        Project dstprj = new Project(regions, prj.SpeciesInfos, null, modelParams, modelCount);
         dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
 
         copyAnalysisPart(prj, dstprj);

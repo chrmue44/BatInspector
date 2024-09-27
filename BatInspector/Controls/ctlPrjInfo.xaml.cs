@@ -40,16 +40,16 @@ namespace BatInspector.Controls
     {
       _prj = prj;
       _tbNotes.Text = _prj.Notes;
-      initModelComboBox();
+      initModelComboBox(_cbModels, _prj.ModelParams, _prj.SelectedModel);
     }
 
-    public void initModelComboBox()
+    public static void initModelComboBox(ComboBox cbm, ModelParams[] mp, int index)
     {
-      _cbModels.Items.Clear();
-      for (int i = 0; i < _prj.ModelParams.Length; i++)
-        _cbModels.Items.Add(_prj.ModelParams[i].Name);
+      cbm.Items.Clear();
+      for (int i = 0; i < mp.Length; i++)
+        cbm.Items.Add(mp[i].Name);
 
-      _cbModels.SelectedIndex = _prj.SelectedModel;
+      cbm.SelectedIndex = index;
     }
 
     /* alternative way...
@@ -78,7 +78,7 @@ namespace BatInspector.Controls
           frmModelParams frm = new frmModelParams(_prj);
           bool? result = frm.ShowDialog();
           if (result == true)
-            initModelComboBox();
+            initModelComboBox(_cbModels, _prj.ModelParams, _prj.SelectedModel);
         }
       }
       catch(Exception ex)

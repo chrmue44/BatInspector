@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Controls;
 using libParser;
 using System;
 using System.Threading;
@@ -30,6 +31,8 @@ namespace BatInspector.Forms
       _ctlName.setup( BatInspector.Properties.MyResources.frmQueryQueryName, Controls.enDataType.STRING, 0, wLabel, true);
       _ctlSelectSource.setup(BatInspector.Properties.MyResources.frmQuerySelSrcDir, wLabel, true);
       _ctlSelectDest.setup(BatInspector.Properties.MyResources.frmQuerySelDestDir, wLabel, true);
+      _ctlModel.setup(BatInspector.Properties.MyResources.SetCatModel, 0, wLabel, 200);
+      ctlPrjInfo.initModelComboBox(_ctlModel._cb, _model.DefaultModelParams, _model.getModelIndex(AppParams.Inst.DefaultModel));
       _grdCol1.Width = new GridLength(wLabel);
     }
 
@@ -52,8 +55,9 @@ namespace BatInspector.Forms
 
     private void btnOK_Click(object sender, RoutedEventArgs e)
     {
+       ModelParams modelParams = _model.DefaultModelParams[_ctlModel.getSelectedIndex()];
       _model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(),
-                               _tbQuery.Text, _model.SpeciesInfos, _model.Regions, _model.DefaultModelParams);
+                               _tbQuery.Text, _model.SpeciesInfos, _model.Regions, modelParams, _model.DefaultModelParams.Length);
       this.Visibility = Visibility.Hidden;
       if (_frmHelp != null)
         _frmHelp.Close();

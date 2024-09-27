@@ -53,8 +53,8 @@ namespace BatInspector
     public string ReportName { get {  return _reportName; } }
     public PrjRecord[] Records { get { return _queryFile.Records; } }
 
-    public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions, ModelParams[] defaultParams) :
-    base(speciesInfo, regions, null, defaultParams)
+    public Query(string name, string srcDir, string dstDir, string query, List<SpeciesInfos> speciesInfo, BatSpeciesRegions regions, ModelParams modelParams, int modelCount) :
+    base(speciesInfo, regions, null, modelParams, modelCount)
     {
       _name = name;
       _srcDir = srcDir; 
@@ -176,7 +176,9 @@ namespace BatInspector
         var serializer = new XmlSerializer(typeof(QueryFile));
         TextReader reader = new StringReader(xml);
         QueryFile qFile = (QueryFile)serializer.Deserialize(reader);
-        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, model.SpeciesInfos, model.Regions, model.DefaultModelParams);
+        ModelParams modelParams = model.DefaultModelParams[model.getModelIndex(AppParams.Inst.DefaultModel)];
+        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, model.SpeciesInfos, model.Regions, 
+                           modelParams, model.DefaultModelParams.Length);
         retVal._analysis = new Analysis[model.DefaultModelParams.Length];
         foreach (PrjRecord rec in qFile.Records)
           retVal._records.Add(rec);
@@ -254,7 +256,8 @@ namespace BatInspector
     private bool evaluatePrj(DirectoryInfo dir)
     {
       bool retVal = false;
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, _model.DefaultModelParams);
+      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
       prj.readPrjFile(dir.FullName, _model.DefaultModelParams);
       Analysis analysis = new Analysis(_model.SpeciesInfos, null);
       analysis.read(prj.getReportName(SelectedModel));

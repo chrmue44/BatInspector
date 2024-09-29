@@ -4,8 +4,14 @@ TODO
 - simplification of script to copy auto to man species
 - project selector collapses occasionally during work  
 - calculate SNR for each detected call
+- File Access Rights problem Win 11 (Delete)
+- markieren von manuell geänderten Rufen
 
-V0.9.0.0
+V0.9.0.1
+- bugfix: forbid wav file import without specifying fix positon of position from file (gpx, kml, txt)
+- changed manual species are marked in project and zoom view
+
+V0.9.0.0  28.09.24
 - bugfix: "?" and "todo" where missing in Species list (drop down for manual selection)
           when recording was made outside a specified region in BatSpeciesRegions.json
 - bugfix: activity diagram: total count of calls was incorrect

@@ -61,10 +61,12 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\Release\de\*"; DestDir: "{app}\de"; Fl
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\dat";
+source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\batInfo.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2";
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\";
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 

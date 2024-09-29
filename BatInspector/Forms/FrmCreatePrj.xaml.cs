@@ -219,6 +219,14 @@ namespace BatInspector.Forms
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
           }
+          else
+          {
+            ok = File.Exists(_ctlGpxFile.getValue());
+            if (!ok)
+              MessageBox.Show(BatInspector.Properties.MyResources.gpxFileError,
+                              BatInspector.Properties.MyResources.Error,
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+          }
         }
         if (!ok)
           return;

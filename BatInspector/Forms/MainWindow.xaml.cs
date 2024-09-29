@@ -69,6 +69,7 @@ namespace BatInspector.Forms
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
     DirectoryInfo _projectDir;
+    FileInfo _queryFile;
     string _oldTab = "";
 
     double _scrollBarPrjPos = 0;
@@ -326,21 +327,15 @@ namespace BatInspector.Forms
       }
       else
       {
-        DebugLog.log("start to open query", enLogType.DEBUG);
-        _scrollPrj.Value = 0;
-        checkSavePrj();
-        _model.initQuery(file);
-        if (_frmQuery == null)
-          _frmQuery = new FrmQuery(_model);
-        _frmQuery.initFieldsFromQuery();
+        _queryFile = file;
+        _projectDir = null;
+        _model.Status.State = enAppState.OPEN_PRJ;
+        _model.Busy = true;
+        setMouseStatus();
 
-        _switchTabToPrj = true;
-        _lblProject.Text = "QUERY: " + file.FullName;
-        buildWavFileList(false);
-        if (_model.Query != null)
-        {
-          showStatus();
-        }
+        DebugLog.log("start to open query", enLogType.DEBUG);
+        showMsg(BatInspector.Properties.MyResources.msgInformation, MyResources.MainWindowMsgOpenQuery);
+        checkSavePrj();
       }
     }
 
@@ -404,6 +399,44 @@ namespace BatInspector.Forms
       }
     }
 
+    private void initQueryAsync()
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.BeginInvoke(new dlgVoid(initQueryAsync));
+      }
+      else
+      {
+        try
+        {
+          _model.initQuery(_queryFile);
+          if (_model.Query!= null) 
+          {
+            _scrollPrj.Minimum = 0;
+            _scrollBarPrjPos = 0;
+            _scrollPrj.Maximum = _model.Query.Records.Length - 1;
+            _scrollList.Minimum = 0;
+            _scrollBarListPos = 0;
+            _scrollList.Maximum = _model.Query.Records.Length - 1;
+            // TODO set scroll button size
+            _lblPrj.Content = "QUERY:" + " [" + Path.GetFileNameWithoutExtension(_model.Query.Name) + "]";
+            if (_frmQuery == null)
+              _frmQuery = new FrmQuery(_model);
+            _frmQuery.initFieldsFromQuery();
+
+            _switchTabToPrj = true;
+            buildWavFileList(false);
+            if (_model.Query != null)
+              showStatus();
+          }
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("Error opening project: " + ex.ToString(), enLogType.ERROR);
+        }
+      }
+    }
+
     public void toggleCallInfo()
     {
       foreach (ctlWavFile ctl in _spSpectrums.Children)
@@ -425,11 +458,12 @@ namespace BatInspector.Forms
       else
       {
         _projectDir = dir;
+        _queryFile = null;
         _model.Status.State = enAppState.OPEN_PRJ;
         _model.Busy = true;
         setMouseStatus();
         DebugLog.log("start to open project", enLogType.DEBUG);
-        showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgOpenPrj);
+        showMsg(MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgOpenPrj);
         _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
         _scrollPrj.Value = 0;
         checkSavePrj();
@@ -516,7 +550,7 @@ namespace BatInspector.Forms
           _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav, openExportWindow);
         else
           _ctlZoom.setup(analysis, wavFilePath, _model, null, null, openExportWindow);
-        _tbZoom.Header = "Zoom: " + name;
+        _tbZoom.Header = "Zoom: " + Path.GetFileName(name);
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
         Dispatcher.BeginInvoke((Action)(() => _tbMain.SelectedItem = _tbZoom));
@@ -708,7 +742,7 @@ namespace BatInspector.Forms
       {
         fullWavName = Path.Combine(_model.SelectedDir, rec.File);
         wavName = Path.GetFileName(fullWavName);
-        wavFilePath = Path.GetDirectoryName(fullWavName);
+        wavFilePath = _model.SelectedDir;
         analysis = _model.Query.Analysis.find(rec.File);
         species = _model.Query.Species;
       }
@@ -959,6 +993,8 @@ namespace BatInspector.Forms
           (!_model.Prj.Analysis.IsEmpty))
           _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
         DebugLog.log("MainWin:BTN 'save' clicked", enLogType.DEBUG);
+        foreach (ctlWavFile c in _spSpectrums.Children)
+          c.update();
       }
       catch (Exception ex)
       {
@@ -1149,7 +1185,10 @@ namespace BatInspector.Forms
         case enAppState.OPEN_PRJ:
           if (_workerStartup == null)
           {
-            _workerStartup = new Thread(initProjectAsync);
+            if(_projectDir != null)
+              _workerStartup = new Thread(initProjectAsync);
+            else if (_queryFile != null)
+              _workerStartup = new Thread(initQueryAsync);
             _workerStartup.Start();
           }
           else if(!_workerStartup.IsAlive)

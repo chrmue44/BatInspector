@@ -37,7 +37,6 @@ namespace BatInspector.Controls
       _ctlActivityDiagName.setValue("activity.png");
       _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true, "", initDestDir);
       _ctlDestDir.setup(MyResources.CtlSumReportDstDirectory, 150, true);
-
     }
 
     public void setup(Window parent, ViewModel model)
@@ -46,6 +45,7 @@ namespace BatInspector.Controls
       _model = model;
       _dtEnd.SelectedDate = DateTime.Now;
       _dtStart.SelectedDate = new DateTime(DateTime.Now.Year, 1, 1);
+      ctlPrjInfo.initModelComboBox(_cbModel, _model.DefaultModelParams, _model.getModelIndex(AppParams.Inst.DefaultModel));
     }
 
     public string FilterExpression { get { return _filterExpression; } }
@@ -83,7 +83,7 @@ namespace BatInspector.Controls
       if (apply)
       {
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
-                   filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilter.Text);
+                    _model.Filter.TempFilter : _model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
           _filterExpression = filter.Expression;
         if (resetFilter)

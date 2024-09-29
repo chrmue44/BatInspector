@@ -253,8 +253,10 @@ namespace BatInspector
             }
           }
         }
+        return bmp.Bmp;
       }
-      return bmp.Bmp;
+      else
+        return null;
     }
 
     public Bitmap generateXtPicture(double aMin, double aMax, double tMin, double tMax)

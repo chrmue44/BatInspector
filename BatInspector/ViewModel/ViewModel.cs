@@ -50,7 +50,6 @@ namespace BatInspector
   public class ViewModel
   {
     string _selectedDir = "";
-    Project _prj;
     string _version;
     ProcessRunner _proc;
     ZoomView _zoom;
@@ -65,14 +64,13 @@ namespace BatInspector
     BatSpeciesRegions _batSpecRegions;
     Forms.MainWindow _mainWin;
     List<BaseModel> _models;
-    Query _query;
     CtrlRecorder _recorder;
     Statistic _statistic;
     string _tempCmd;
-    PrjView _prjView;
+    PrjView _view;
     ModelParams[] _defaultModelParams;
 
-    public PrjView View { get{ return _prjView; } }
+    public PrjView View { get{ return _view; } }
 
     public string SelectedDir { get { return _selectedDir; } }
 
@@ -82,7 +80,7 @@ namespace BatInspector
 
     public ClassifierBarataud Classifier { get { return _clsBarataud; } }
 
-    public Project Prj { get { return _prj; } }
+    public Project Prj { get { return _view.Prj; } }
 
     public ZoomView ZoomView { get { return _zoom; } }
 
@@ -104,7 +102,7 @@ namespace BatInspector
 
     public bool UpdateUi { get; set; }
 
-    public Query Query { get { return _query; } set { _query = value; } }
+    public Query Query { get { return _view.Query; } set { _view.Query = value; } }
 
     public ModelState Status { get; set; }
 
@@ -122,10 +120,10 @@ namespace BatInspector
     {
       get
       {
-        if ((_prj != null) && (_prj.Ok))
-          return _prj;
-        else if (_query != null)
-          return _query;
+        if ((_view.Prj != null) && (_view.Prj.Ok))
+          return _view.Prj;
+        else if (_view.Query != null)
+          return _view.Query;
         else
           return null;
       }
@@ -150,7 +148,8 @@ namespace BatInspector
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
       _sumReport = new SumReport(this);
       _models = new List<BaseModel>();
-      _query = null;
+      _view = new PrjView();
+      _view.Query = null;
       int index = 0;
 
       _defaultModelParams = BaseModel.readDefaultModelParams();
@@ -159,7 +158,7 @@ namespace BatInspector
         _models.Add(BaseModel.Create(index, m.Type, this));
         index++;
       }
-      _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate,
+      _view.Prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate,
                  DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
 
       List<string> species = new List<string>();
@@ -176,15 +175,14 @@ namespace BatInspector
       _recorder = new CtrlRecorder(_colorTable);
       _statistic = new Statistic(AppParams.STATISTIC_CLASSES);
       UpdateUi = false;
-      _prjView = new PrjView(ref _prj, ref _query);
     }
 
     public void updateReport()
     {
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
-        _prj.Analysis.read(Prj.ReportName);
+        _view.Prj.Analysis.read(Prj.ReportName);
       else if ((Query != null) && File.Exists(Query.ReportName))
-        _query.Analysis.read(Query.ReportName);
+        _view.Query.Analysis.read(Query.ReportName);
 
     }
 
@@ -193,46 +191,46 @@ namespace BatInspector
     {
       if (Query.isQuery(file))
       {
-        _prj = null;
-        _query = Query.readQueryFile(file.FullName, this);
+        _view.Prj = null;
+        _view.Query = Query.readQueryFile(file.FullName, this);
         _selectedDir = Path.GetDirectoryName(file.FullName);
       }
       else
-        _query = null;
+        _view.Query = null;
     }
 
     public void initProject(DirectoryInfo dir, DlgUpdateFile dlgUpdate)
     {
       if (Project.containsProject(dir) != "")
       {
-        _query = null;
+        _view.Query = null;
         _selectedDir = dir.FullName;
-        _prj.readPrjFile(_selectedDir, DefaultModelParams);
+        _view.Prj.readPrjFile(_selectedDir, DefaultModelParams);
         if (File.Exists(Prj.ReportName))
         {
-          _prj.Analysis.read(Prj.ReportName);
-          _prj.Analysis.openSummary(_prj.SummaryName, _prj.Notes);
-          if (_prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
+          _view.Prj.Analysis.read(Prj.ReportName);
+          _view.Prj.Analysis.openSummary(_view.Prj.SummaryName, _view.Prj.Notes);
+          if (_view.Prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
           {
-            _prj.Analysis.filloutTemperature(Path.Combine(_selectedDir, _prj.WavSubDir));
-            _prj.Analysis.save(_prj.ReportName, _prj.Notes, _prj.SummaryName);
+            _view.Prj.Analysis.filloutTemperature(Path.Combine(_selectedDir, _view.Prj.WavSubDir));
+            _view.Prj.Analysis.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
           }
         }
         else
-          _prj.Analysis.init(_prj.SpeciesInfos);
+          _view.Prj.Analysis.init(_view.Prj.SpeciesInfos);
 //        if (_prj.Ok && _prj.Analysis.Report != null)
 //          checkProject();
         initScripter();
       }
       else if (Project.containsWavs(dir))
       {
-        _prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
-        _prj.fillFromDirectory(dir);
+        _view.Prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
+        _view.Prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName;
         initScripter();
       }
       else
-        _prj = null;
+        _view.Prj = null;
     }
 
     void initScripter()
@@ -252,18 +250,18 @@ namespace BatInspector
     void checkProject()
     {
       bool ok = true;
-      foreach (PrjRecord rec in _prj.Records)
+      foreach (PrjRecord rec in _view.Prj.Records)
       {
-        AnalysisFile a = _prj.Analysis.find(rec.File);
+        AnalysisFile a = _view.Prj.Analysis.find(rec.File);
         if (a == null)
         {
           DebugLog.log("mismatch Prj against Report, missing file " + rec.File + " in report", enLogType.ERROR);
           ok = false;
         }
       }
-      foreach (AnalysisFile a in _prj.Analysis.Files)
+      foreach (AnalysisFile a in _view.Prj.Analysis.Files)
       {
-        PrjRecord r = _prj.find(a.Name);
+        PrjRecord r = _view.Prj.find(a.Name);
         if (r == null)
         {
           DebugLog.log("mismatch Prj against Report, missing file " + a.Name + " in project", enLogType.ERROR);
@@ -301,7 +299,7 @@ namespace BatInspector
 
     public void createPngIfMissing(PrjRecord rec, bool fromQuery)
     {
-      string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
+      string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _view.Prj.WavSubDir, rec.File);
       string pngName = fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       if (!File.Exists(pngName))
       {
@@ -369,13 +367,13 @@ namespace BatInspector
 
     public BitmapImage getFtImage(PrjRecord rec,  bool fromQuery)
     {
-      string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _prj.WavSubDir, rec.File);
+      string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _view.Prj.WavSubDir, rec.File);
       BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH, _colorTable);
-      if ((bImg == null) && (_prj != null))
+      if ((bImg == null) && (_view.Prj != null))
       {
-        _prj.removeFile(rec.File);
-        if (_prj.Analysis?.IsEmpty == false)
-          _prj.Analysis.removeFile(Prj.ReportName, rec.File);
+        _view.Prj.removeFile(rec.File);
+        if (_view.Prj.Analysis?.IsEmpty == false)
+          _view.Prj.Analysis.removeFile(Prj.ReportName, rec.File);
       }
       return bImg;
     }
@@ -417,26 +415,26 @@ namespace BatInspector
     public void deleteFiles(List<string> files)
     {
       DebugLog.log("start deleting files", enLogType.INFO);
-      _prj.writePrjFile();
+      _view.Prj.writePrjFile();
 
       foreach (string f in files)
         deleteFile(f);
 
-      _prj.Analysis.save(_prj.ReportName, _prj.Notes, _prj.SummaryName);
+      _view.Prj.Analysis.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
     public void removeDeletedWavsFromReport(string reportName)
     {
-      if (_prj.Analysis != null)
-        _prj.Analysis.removeDeletedWavsFromReport(_prj);
+      if (_view.Prj.Analysis != null)
+        _view.Prj.Analysis.removeDeletedWavsFromReport(_view.Prj);
     }
 
     void deleteFile(string wavName)
     {
-      if (_prj != null)
+      if (_view.Prj != null)
       {
-        string dirName = Path.Combine(_selectedDir, _prj.WavSubDir);
+        string dirName = Path.Combine(_selectedDir, _view.Prj.WavSubDir);
         string delName = System.IO.Path.GetFileName(wavName);
         delName = delName.ToLower().Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
@@ -457,10 +455,10 @@ namespace BatInspector
 
         }
 
-        _prj.removeFile(wavName);
-        _prj.writePrjFile();
-        if(_prj.Analysis.IsEmpty == false)
-          _prj.Analysis.removeFile(_prj.ReportName, wavName);
+        _view.Prj.removeFile(wavName);
+        _view.Prj.writePrjFile();
+        if(_view.Prj.Analysis.IsEmpty == false)
+          _view.Prj.Analysis.removeFile(_view.Prj.ReportName, wavName);
       }
     }
 
@@ -533,7 +531,7 @@ namespace BatInspector
         {
           retVal = _models[Prj.SelectedModel].classify(Prj, cli);
         }
-        _prj.writePrjFile();
+        _view.Prj.writePrjFile();
       }
       DebugLog.log("evaluation of species done", enLogType.INFO);
       return retVal;

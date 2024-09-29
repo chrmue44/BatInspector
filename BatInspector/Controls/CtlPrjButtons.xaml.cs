@@ -248,8 +248,9 @@ namespace BatInspector.Controls
     {
       try
       {
+        _btnNone_Click(sender, null);
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
-                         filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilter.Text);
+                          _model.Filter.TempFilter :  _model.Filter.getFilter(_cbFilter.Text);
         if ((filter != null) && (_model.CurrentlyOpen != null))
         {
           foreach (AnalysisFile a in _model.CurrentlyOpen.Analysis.Files)

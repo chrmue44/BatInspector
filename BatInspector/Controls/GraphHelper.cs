@@ -150,6 +150,8 @@ namespace BatInspector.Controls
       nrTicks = fTicks.Length;
       GraphHelper.createLine(can, x , y, x , y + height, Brushes.Black);
       double span = max - min;
+      if (span == 0)
+        span = 1;
       for (int i = 0; i < nrTicks; i++)
       {
         double yp =y + height - ((fTicks[i] - min) / span * height);
@@ -181,6 +183,8 @@ namespace BatInspector.Controls
       nrTicks = tTicks.Length;
       GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
       double span = max - min;
+      if (span == 0)
+        span = 1;
       double min1 = min;
       for (int i = 0; i < nrTicks; i++)
       {
@@ -197,7 +201,6 @@ namespace BatInspector.Controls
     public static void createRulerX(Canvas can, double x, double y, double width, double min, double max, double[] tTicks, string nrFmt = "0.#")
     {
       GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
-      double span = max - min;
       double min1 = min;
       for (int i = 0; i < tTicks.Length; i++)
       {

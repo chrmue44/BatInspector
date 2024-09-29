@@ -109,7 +109,11 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
-
+    public void setBgColor(SolidColorBrush color)
+    {
+      _cb.Background = color;
+      _lbl.Background = color;
+    }
 
 
     private void _cb_SelectionChanged_1(object sender, SelectionChangedEventArgs e)

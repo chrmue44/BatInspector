@@ -83,7 +83,7 @@ namespace BatInspector
       PrjRecord[] records = getRecords();
       foreach(PrjRecord rec in records)
       {
-        if(rec.File.ToLower() == wavName.ToLower())
+        if(rec.File.ToLower().IndexOf(wavName.ToLower()) >= 0)
         {
           retVal = rec;
           break;
@@ -281,7 +281,7 @@ namespace BatInspector
       {
         try
         {
-          string[] files = System.IO.Directory.GetFiles(dirName, "*.*",
+          string[] files = System.IO.Directory.GetFiles(dirName, "*" + AppParams.EXT_CSV,
                            System.IO.SearchOption.TopDirectoryOnly);
           foreach (string file in files)
           {

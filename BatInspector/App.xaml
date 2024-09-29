@@ -16,6 +16,8 @@
     <SolidColorBrush x:Key="colorBackGroundGrpFrame" Color="White" />
     <SolidColorBrush x:Key="colorBackGroundCombo" Color="#FFF7F9FE" />
     <SolidColorBrush x:Key="colorForeGroundSlider" Color="#FFC7C9CE" />
+    <SolidColorBrush x:Key="colorBackgroundAttn" Color="#FFFFD010" />
+
 
         <!--
         <Style  TargetType="GroupBox">

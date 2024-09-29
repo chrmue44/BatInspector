@@ -1635,4 +1635,10 @@
   <data name="FrmCreatePrj_Evaluation" xml:space="preserve">
     <value>Auswertung</value>
   </data>
+  <data name="MainWindowMsgOpenQuery" xml:space="preserve">
+    <value>Öffne Abfrage, bitte Warten</value>
+  </data>
+  <data name="gpxFileError" xml:space="preserve">
+    <value>Positionsdatei nicht gefunden, bitte Datei auswählen!</value>
+  </data>
 </root>

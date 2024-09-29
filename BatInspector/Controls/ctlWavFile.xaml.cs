@@ -15,6 +15,8 @@ using System.Windows.Controls;
 using BatInspector.Properties;
 using System.IO;
 using libScripter;
+using System.Drawing;
+using System.Windows.Media;
 
 namespace BatInspector.Controls
 {
@@ -146,6 +148,8 @@ namespace BatInspector.Controls
                 MyResources.ctlWavToolTipCall);
           im.setItems(spec.ToArray());
           im.setValue(call.getString(Cols.SPECIES_MAN));
+          if (call.Changed)
+            im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
           _spDataMan.Children.Add(im);
           callNr++;
         }
@@ -230,7 +234,7 @@ namespace BatInspector.Controls
       _parent.changeCallInZoom(index);
     }
 
-    private void update()
+    public void update()
     {
       updateCallInformations(_analysis, _record);
       this.InvalidateVisual();

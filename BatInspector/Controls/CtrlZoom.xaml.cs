@@ -148,9 +148,8 @@ namespace BatInspector.Controls
       _deltaF.setup(MyResources.Bandwidth + " kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _wavFilePath = wavFilePath;
       
-      string fName = System.IO.Path.GetFileName(analysis.Name);
-      _tbWavName.Text = fName;
-      string wavName = File.Exists(fName) ? fName : _wavFilePath + "/" + fName;
+      _tbWavName.Text = System.IO.Path.GetFileName(analysis.Name);
+      string wavName = File.Exists(analysis.Name) ? analysis.Name : _wavFilePath + "/" + analysis.Name;
 
       _model.ZoomView.initWaterfallDiagram(wavName);
       _duration.setValue(_model.ZoomView.Waterfall.Duration);
@@ -292,7 +291,10 @@ namespace BatInspector.Controls
       if (_model.ZoomView.Analysis != null)
       {
         if ((_model.ZoomView.SelectedCallIdx >= 0) && (_model.ZoomView.SelectedCallIdx < _model.ZoomView.Analysis.Calls.Count))
+        {
           _model.ZoomView.Analysis.Calls[_model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, val);
+          _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+        }
         else
           DebugLog.log("ctlZoom.ctlSpecManChanged(): index error", enLogType.ERROR);
       }
@@ -512,14 +514,14 @@ namespace BatInspector.Controls
     {
       _rulerF.Children.Clear();
       GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max, AppParams.NR_OF_TICKS);
-      GraphHelper.createText(_rulerF, 10, _rulerF.ActualHeight - 25, "[kHz]", Colors.Black);
+      GraphHelper.createText(_rulerF, 10, _rulerF.ActualHeight - 15, "[kHz]", Colors.Black);
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
       GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, AppParams.NR_OF_TICKS, "0.###");
-      GraphHelper.createText(_rulerT, 15, 5, "[sec]", Colors.Black);
+      GraphHelper.createText(_rulerT, 5, 5, "[sec]", Colors.Black);
     }
 
 
@@ -1096,6 +1098,11 @@ namespace BatInspector.Controls
       _model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
       double pre = 0.01;
       _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + AppParams.Inst.ZoomOneCall / 1000.0 - pre);
+      if (_model.ZoomView.Analysis.Calls[idx].Changed)
+        _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+      else
+        _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackGroundTextB"]);
+
       hideCursors();
       createZoomImg();
       _cbZoomAmpl_Click(null, null);
@@ -1148,6 +1155,8 @@ namespace BatInspector.Controls
         _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));
         _ctlProbability.setValue(call.getDouble(Cols.PROBABILITY));
         _ctlSpecMan.setValue(call.getString(Cols.SPECIES_MAN));
+        if (call.Changed)
+          _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
       }
     }
 

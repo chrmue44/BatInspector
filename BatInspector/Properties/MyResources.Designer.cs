@@ -2635,6 +2635,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position file not found, please select file!.
+        /// </summary>
+        public static string gpxFileError {
+            get {
+                return ResourceManager.GetString("gpxFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Altitude.
         /// </summary>
         public static string Height {
@@ -3306,6 +3315,15 @@ namespace BatInspector.Properties {
         public static string MainWindowMsgOpenPrj {
             get {
                 return ResourceManager.GetString("MainWindowMsgOpenPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Query, please wait.
+        /// </summary>
+        public static string MainWindowMsgOpenQuery {
+            get {
+                return ResourceManager.GetString("MainWindowMsgOpenQuery", resourceCulture);
             }
         }
         

@@ -462,7 +462,7 @@ namespace BatInspector
     public void createCsvReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
                              List<SpeciesInfos> species, string expression)
     {
-      initDirTree(rootDir, AppParams.PRJ_SUMMARY);
+      initDirTree(rootDir, "summary");
       _rep = new Csv(true);
       string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.LANDSCAPE, Cols.WEATHER, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX };
       _rep.initColNames(header, true);
@@ -514,7 +514,7 @@ namespace BatInspector
     void createActivityDiagSync()
     {
       DebugLog.log("start creating activity diagram...", enLogType.INFO);
-      initDirTree(_rootDir, AppParams.PRJ_REPORT);
+      initDirTree(_rootDir, "report");
 
       DateTime date = _start;
       int minsPerPoint = 5;
@@ -577,7 +577,7 @@ namespace BatInspector
                          List<SpeciesInfos> species, string expression)
     {
       SumReportJson retVal = new SumReportJson();
-      initDirTree(rootDir, AppParams.PRJ_REPORT);
+      initDirTree(rootDir, "report");
 
       DateTime date = start;
       while (date < end)

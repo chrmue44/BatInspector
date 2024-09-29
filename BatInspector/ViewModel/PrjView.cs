@@ -94,18 +94,17 @@ namespace BatInspector
   {
     List<ReportItem> _report = new List<ReportItem>();
     List<string> _showWavFiles = new List<string>();
-    Project _prj;
-    Query _query;
     int _lastListStartIdx = -1;
 
     public List<ReportItem> ListView { get { return _report; } }
     public List<string> VisibleFiles { get { return _showWavFiles; } }
 
+    public Project Prj { get; set; }
+
+    public Query Query { get; set;}
     public int StartIdx { get; set; } = 0;
-    public PrjView(ref Project prj, ref Query query)
+    public PrjView()
     {
-      _prj = prj;
-      _query = query;
     }
 
 
@@ -203,13 +202,13 @@ namespace BatInspector
     private PrjRecord[] getRecords()
     {
       PrjRecord[] retVal = new PrjRecord[0];
-      if ((_prj != null) && (_prj.Ok))
+      if ((Prj != null) && (Prj.Ok))
       {
-        retVal = _prj.Records;
+        retVal = Prj.Records;
       }
-      else if (_query != null)
+      else if (Query != null)
       {
-        retVal = _query.Records;
+        retVal = Query.Records;
       }
       return retVal;
     }
@@ -217,13 +216,13 @@ namespace BatInspector
     private Analysis getAnalysis()
     {
       Analysis retVal = null;
-      if ((_prj != null) && (_prj.Ok))
+      if ((Prj != null) && (Prj.Ok))
       {
-        retVal = _prj.Analysis;
+        retVal = Prj.Analysis;
       }
-      else if (_query != null)
+      else if (Query != null)
       {
-        retVal = _query.Analysis;
+        retVal = Query.Analysis;
       }
       return retVal;
     }

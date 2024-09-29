@@ -72,7 +72,7 @@ namespace BatInspector.Forms
         {
         
           _model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
-          _ctlReport._ctlDestDir.getValue(), _model.DefaultModelParams[0], _ctlReport.FilterExpression,   //TODO find another way for multiple models
+          _ctlReport._ctlDestDir.getValue(), _model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex], _ctlReport.FilterExpression,   //TODO find another way for multiple models
           _ctlReport._ctlActivityDiagName.getValue(), showActivityDiagram);
         }
       }

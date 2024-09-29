@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DefModelParamFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Models>
+    <Name>BatDetect2</Name>
+    <DataSet>Net2DFast_UK_same.pth.tar</DataSet>
+    <Type>BAT_DETECT2</Type>
+    <Enabled>true</Enabled>
+	<SubDir>bd2</SubDir>
+	<Script>run.bat</Script>
+    <AvailableDataSets>Net2DFast_UK_same.pth.tar</AvailableDataSets>
+    <AvailableDataSets>GermanBats.pth.tar</AvailableDataSets>
+    <Parameters>
+      <Name>Detection Threshold</Name>
+      <Type>DOUBLE</Type>
+      <Value>0.5</Value>
+      <Decimals>2</Decimals>
+    </Parameters>
+  </Models>
+  <Models>
+    <Name>BattyBirdNET</Name>
+    <DataSet>BattyBirdNET-Bavaria-256kHz</DataSet>
+    <Type>BATTY_BIRD_NET</Type>
+    <Enabled>false</Enabled>
+	<SubDir>bbnet</SubDir>
+	<Script>run.bat</Script>
+    <AvailableDataSets>BattyBirdNET-Bavaria-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-Bavaria-144kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-EU-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-EU-144kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-MarinCounty-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-MarinCounty-144kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-Scotland-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-Scotland-144kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-SouthWales-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-Sweden-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-Sweden-144kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-UK-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-UK-144kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-USA-256kHz</AvailableDataSets>
+    <AvailableDataSets>BattyBirdNET-USA-144kHz</AvailableDataSets>
+    <Parameters>
+      <Name>minimal Probability</Name>
+      <Type>DOUBLE</Type>
+      <Value>0.5</Value>
+      <Decimals>2</Decimals>
+    </Parameters>
+    <Parameters>
+      <Name>Sensitivity</Name>
+      <Type>DOUBLE</Type>
+      <Value>1.0</Value>
+      <Decimals>2</Decimals>
+    </Parameters>
+  </Models>
+</DefModelParamFile>

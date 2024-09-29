@@ -397,6 +397,7 @@ namespace BatInspector
           _csv.save();
         else
           _csv.saveAs(path);
+        resetChanged();
         createSummary(sumName, notes);
       }
     }
@@ -702,10 +703,11 @@ namespace BatInspector
       DebugLog.log("read out start time of recordings, exec time: " + sw.Elapsed.ToString(), enLogType.INFO);
     }
 
-    void resetChanged()
+    public void resetChanged()
     {
+      foreach (AnalysisFile f in _list)
+        f.resetChanged();
     }
-
   }
 
 
@@ -722,6 +724,8 @@ namespace BatInspector
     /// distance to previous call [ms]
     /// </summary>
     public double DistToPrev { get; set; }
+
+    public bool Changed { get; set; } = false;
 
     public int ReportRow { get { return _row; } set { _row = value; } }
 
@@ -773,6 +777,7 @@ namespace BatInspector
 
     public void setString(string key, string value)
     {
+      Changed = true;
       _csv.setCell(_row, key, value);
       if (_dlgUpdate != null)
         _dlgUpdate(_csv.getCell(_row, Cols.NAME));
@@ -1033,6 +1038,12 @@ namespace BatInspector
             _specFound.Add(spec, 1);
         }
       }
+    }
+
+    public void resetChanged()
+    {
+      foreach (AnalysisCall c in _calls)
+        c.Changed = false;
     }
 
 

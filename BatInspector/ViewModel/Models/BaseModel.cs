@@ -87,10 +87,14 @@ namespace BatInspector
 
     public static ModelParams[] readDefaultModelParams()
     {
+      if (!File.Exists(AppParams.Inst.ModelDefaultParamsFile))
+        DebugLog.log("Default model params not found: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       string xml = File.ReadAllText(AppParams.Inst.ModelDefaultParamsFile);
       TextReader reader = new StringReader(xml);
       DefModelParamFile f = (DefModelParamFile)ModParSerializer.Deserialize(reader);
       ModelParams[] retVal = f.Models;
+      if (retVal == null)
+        DebugLog.log("Serialization failed: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       return retVal;
     }
 

@@ -698,8 +698,8 @@ namespace BatInspector
         if ((rep.StartDate >= start) && (rep.StartDate < end) || (rep.EndDate >= start) && (rep.EndDate < end))
         {
 
-          Analysis analysis = new Analysis(_model.SpeciesInfos, null);
-          analysis.read(rep.ReportName);
+          Analysis analysis = new Analysis(_model.SpeciesInfos, null, enModel.BAT_DETECT2);
+          analysis.read(rep.ReportName, _model.DefaultModelParams);
           FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
 
           if (analysis.Files.Count == 0)
@@ -822,8 +822,8 @@ namespace BatInspector
       {
         if ((rep.StartDate >= date) && (rep.StartDate < end) || (rep.EndDate >= date) && (rep.EndDate < end))
         {
-          Analysis analysis = new Analysis(_model.SpeciesInfos, null);
-          analysis.read(rep.ReportName);
+          Analysis analysis = new Analysis(_model.SpeciesInfos, null, enModel.BAT_DETECT2);
+          analysis.read(rep.ReportName, _model.DefaultModelParams);
           if (analysis.Files.Count > 0)
           {
             foreach (AnalysisFile file in analysis.Files)

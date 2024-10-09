@@ -37,7 +37,7 @@ namespace BatInspector
     }
 
 
-    public override int classify(Project prj,  bool cli = false)
+    public override int classify(Project prj, bool removeEmptyFiles, bool cli = false)
     {
       _isBusy = true;
       _prj = prj;
@@ -45,16 +45,16 @@ namespace BatInspector
       int retVal = 0;
       try
       {
-        ModelParams pars = prj.ModelParams[prj.SelectedModel];
+        ModelParams pars = prj.AvailableModelParams[prj.SelectedModelIndex];
         string detTrsh = pars.getPar(PAR_DETECTION_THRESHOLD);
         string wavDir = Path.Combine(prj.PrjDir ,prj.WavSubDir);
         string annDir = prj.getAnnotationDir();
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
                          AppParams.Inst.ModelRootPath  :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
-        string wrkDir = Path.Combine(modPath, prj.ModelParams[this.Index].SubDir);
+        string wrkDir = Path.Combine(modPath, prj.AvailableModelParams[this.Index].SubDir);
         string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {detTrsh} {pars.DataSet}";
-        string cmd = Path.Combine(wrkDir, prj.ModelParams[this.Index].Script);
+        string cmd = Path.Combine(wrkDir, prj.AvailableModelParams[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
@@ -62,8 +62,9 @@ namespace BatInspector
           if (ok)
           {
     //        cleanup(prj);
-            prj.Analysis.read(prj.getReportName(this.Index));
-            prj.removeFilesNotInReport();
+            prj.Analysis.read(prj.getReportName(this.Index), _model.DefaultModelParams);
+            if(removeEmptyFiles)
+              prj.removeFilesNotInReport();
           }
           else
             retVal = 2;
@@ -95,7 +96,7 @@ namespace BatInspector
       if (ok)
       {
         //        cleanup(prj.PrjDir);
-        prj.Analysis.read(prj.getReportName(this.Index));
+        prj.Analysis.read(prj.getReportName(this.Index), _model.DefaultModelParams);
         prj.removeFilesNotInReport();
       }
       else

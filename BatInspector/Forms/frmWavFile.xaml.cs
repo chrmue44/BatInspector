@@ -79,12 +79,12 @@ namespace BatInspector.Forms
 
           double duration = (double)_model.WavFile.AudioSamples.Length / _model.WavFile.FormatChunk.Frequency;
           AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)_model.WavFile.FormatChunk.Frequency, duration);
-          _parent.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null);
+          _parent.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);
         }
       }
       catch (Exception ex)
       {
-        DebugLog.log($"error opening WAV file {wavFile}", enLogType.ERROR);
+        DebugLog.log($"error opening WAV file {wavFile}: {ex.ToString()}", enLogType.ERROR);
       }
     }
 

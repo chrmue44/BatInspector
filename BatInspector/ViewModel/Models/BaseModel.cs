@@ -53,7 +53,7 @@ namespace BatInspector
     public enModel Type { get { return _type; } }
 
     public abstract void train();
-    public abstract int classify(Project prj, bool cli = false);
+    public abstract int classify(Project prj, bool removeEmptyFiles, bool cli = false);
     public virtual int createReport(Project prj)
     {
       return 0;

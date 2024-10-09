@@ -1,6 +1,6 @@
 SET dirName =(PAR1)
 SET factor =(PAR2)
-SET NrFiles =(countFiles(dirName, "*.wav") - 1)
+SET NrFiles =(countFiles(dirName, "*.wav"))
 LOG =("reading dir " + dirName + " containing " + NrFiles + " files")
 FOR FileNr 0 NrFiles
   SET FileName =(getFile(FileNr))

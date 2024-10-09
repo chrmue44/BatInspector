@@ -90,6 +90,7 @@ namespace BatInspector
       testNextStepDown();
       testIf(wrkDir);
       testWhile(wrkDir);
+      testFor(wrkDir);
       testParser();
       testCsvFuncs(wrkDir);
       testClassifier();
@@ -213,6 +214,15 @@ namespace BatInspector
       scr.SetVariable("b", "1");
       scr.runScript(Path.Combine(wrkDir, "test_while.scr"), false, false);
       assert(scr.getVariable("sum"), "5");
+    }
+
+    private void testFor(string wrkDir)
+    {
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      scr.runScript(Path.Combine(wrkDir, "test_for.scr"), false, false);
+      assert(scr.getVariable("sum1"), "12");
+      assert(scr.getVariable("sum2"), "0");
+
     }
 
     private void testIf(string wrkDir)
@@ -382,8 +392,8 @@ namespace BatInspector
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
       ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
       Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
-      Analysis a = new Analysis(prj.SpeciesInfos, null);
-      a.read(reportName);
+      Analysis a = new Analysis(prj.SpeciesInfos, null, enModel.BAT_DETECT2);
+      a.read(reportName, _model.DefaultModelParams);
       a.save(reportName, prj.Notes, prj.SummaryName);
     }
 
@@ -410,8 +420,8 @@ namespace BatInspector
         {
           ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
           Project p = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
-          Analysis a = new Analysis(p.SpeciesInfos, null);
-          a.read(repName);
+          Analysis a = new Analysis(p.SpeciesInfos, null, enModel.BAT_DETECT2);
+          a.read(repName, _model.DefaultModelParams);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
           a.createSummary(sumName, p.Notes);
         }

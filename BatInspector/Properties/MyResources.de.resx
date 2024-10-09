@@ -1641,4 +1641,7 @@
   <data name="gpxFileError" xml:space="preserve">
     <value>Positionsdatei nicht gefunden, bitte Datei auswählen!</value>
   </data>
+  <data name="CtlWavSection" xml:space="preserve">
+    <value>Absch.</value>
+  </data>
 </root>

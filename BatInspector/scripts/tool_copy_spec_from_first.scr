@@ -1,6 +1,6 @@
 ﻿# Tool: copy species MAN from first call to all following calls
 SET FileNr =(getFileIndex(VAR_FILE_NAME))
-SET NrOfCalls =(getCallCount(FileNr) - 1)
+SET NrOfCalls =(getCallCount(FileNr))
 SET Species =(getCallInfo(FileNr, 0, "SPEC_MAN"))
 FOR i 1 NrOfCalls
   =(setCallInfo(FileNr, i, "SPEC_MAN", Species))

@@ -555,9 +555,18 @@ namespace libScripter
           switch (_currBlock.Type)
           {
             case enBlockType.IF:
-              bool ok = checkForElse(line) || checkForEnd(line);
-              if (ok)
-                retVal = ParseLine(line);
+              {
+                bool ok = checkForElse(line) || checkForEnd(line);
+                if (ok)
+                  retVal = ParseLine(line);
+              }
+              break;
+            case enBlockType.FOR:
+              {
+                bool ok = checkForEnd(line);
+                if (ok)
+                  retVal = ParseLine(line);
+              }
               break;
           }
         }

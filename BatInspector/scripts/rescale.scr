@@ -1,6 +1,6 @@
 #rescale the sampling rate of all files in the project
 #if 
-SET NrFiles =(getPrjFileCount() - 1)
+SET NrFiles =(getPrjFileCount())
 SET Factor 10
 FOR FileNr 0 NrFiles
   SET FileName =(getFileName(FileNr))

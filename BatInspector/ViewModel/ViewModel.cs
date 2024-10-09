@@ -180,9 +180,9 @@ namespace BatInspector
     public void updateReport()
     {
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
-        _view.Prj.Analysis.read(Prj.ReportName);
+        _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams);
       else if ((Query != null) && File.Exists(Query.ReportName))
-        _view.Query.Analysis.read(Query.ReportName);
+        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams);
 
     }
 
@@ -209,9 +209,9 @@ namespace BatInspector
         _view.Prj.readPrjFile(_selectedDir, DefaultModelParams);
         if (File.Exists(Prj.ReportName))
         {
-          _view.Prj.Analysis.read(Prj.ReportName);
+          _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams);
           _view.Prj.Analysis.openSummary(_view.Prj.SummaryName, _view.Prj.Notes);
-          if (_view.Prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
+          if ((_view.Prj.Analysis.Files.Count > 0) && _view.Prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
           {
             _view.Prj.Analysis.filloutTemperature(Path.Combine(_selectedDir, _view.Prj.WavSubDir));
             _view.Prj.Analysis.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
@@ -469,9 +469,9 @@ namespace BatInspector
       {
         if (AppParams.Inst.AllowMoreThanOneModel)
         {
-          for (int i = 0; i < Prj.ModelParams.Length; i++)
+          for (int i = 0; i < Prj.AvailableModelParams.Length; i++)
           {
-            if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
+            if ((i < _models.Count) && (Prj.AvailableModelParams[i].Enabled == true))
             {
               _models[i].stopClassification();
               DebugLog.log("evaluation of species stopped", enLogType.INFO);
@@ -479,7 +479,7 @@ namespace BatInspector
           }
         }
         else
-          _models[Prj.SelectedModel].stopClassification();
+          _models[Prj.SelectedModelIndex].stopClassification();
       }
     }
 
@@ -520,17 +520,24 @@ namespace BatInspector
       {
         if (AppParams.Inst.AllowMoreThanOneModel)
         {
-          for (int i = 0; i < Prj.ModelParams.Length; i++)
+          for (int i = 0; i < Prj.AvailableModelParams.Length; i++)
           {
-            if ((i < _models.Count) && (Prj.ModelParams[i].Enabled == true))
+            if ((i < _models.Count) && (Prj.AvailableModelParams[i].Enabled == true))
             {
-              retVal = _models[i].classify(Prj,  cli);
+              retVal = _models[i].classify(Prj, false, cli);
             }
           }
         }
         else
         {
-          retVal = _models[Prj.SelectedModel].classify(Prj, cli);
+          bool removeEmptyFiles = true;
+          for(int i = 0; i < Prj.AvailableModelParams.Length; i++)
+          {
+            string report = Prj.getReportName(i);
+            if (File.Exists(report))
+              removeEmptyFiles = false;
+          }
+          retVal = _models[Prj.SelectedModelIndex].classify(Prj, removeEmptyFiles, cli);
         }
         _view.Prj.writePrjFile();
       }
@@ -579,16 +586,16 @@ namespace BatInspector
       {
         if (AppParams.Inst.AllowMoreThanOneModel)
         {
-          for (int i = 0; i < prj.ModelParams.Length; i++)
+          for (int i = 0; i < prj.AvailableModelParams.Length; i++)
           {
-            if ((i < _models.Count) && (prj.ModelParams[i].Enabled == true))
+            if ((i < _models.Count) && (prj.AvailableModelParams[i].Enabled == true))
             {
               retVal = _models[i].createReport(prj);
             }
           }
         }
         else
-          retVal = _models[prj.SelectedModel].createReport(prj);
+          retVal = _models[prj.SelectedModelIndex].createReport(prj);
       }
       return retVal;
     }

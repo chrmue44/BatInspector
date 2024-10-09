@@ -32,7 +32,7 @@ namespace BatInspector.Forms
 
     private void setup()
     {
-      ModelParams[] mp = _prj.ModelParams;
+      ModelParams[] mp = _prj.AvailableModelParams;
       for(int i = 0; i < mp.Length; i++) 
       {
         ctlModParItem ctl = new ctlModParItem();
@@ -52,7 +52,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        ModelParams[] mp = _prj.ModelParams;
+        ModelParams[] mp = _prj.AvailableModelParams;
 
         for (int i = 0; i < _sp.Children.Count; i++)
         {

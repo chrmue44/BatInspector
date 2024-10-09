@@ -33,7 +33,7 @@ namespace BatInspector
 
     }
 
-    public override int classify(Project prj, bool cli = false)
+    public override int classify(Project prj, bool removeEmptyFiles, bool cli = false)
     {
       int retVal = 0;
 
@@ -41,7 +41,7 @@ namespace BatInspector
       int options = frmStartPredict.Options;
       string reportName = prj.getReportName(this.Index);
       reportName = reportName.Replace("\\", "/");
-      ModelParams modPar = prj.ModelParams[this.Index];
+      ModelParams modPar = prj.AvailableModelParams[this.Index];
       string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
                  AppParams.Inst.ModelRootPath :
                  Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
@@ -60,7 +60,7 @@ namespace BatInspector
         if (File.Exists(reportName))
           File.Delete(reportName);
         BioAcoustics.analyzeFiles(reportName, dir);
-        prj.Analysis.read(reportName);
+        prj.Analysis.read(reportName, _model.DefaultModelParams);
       }
 
       if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)
@@ -86,10 +86,10 @@ namespace BatInspector
       if ((options & OPT_CONF95) != 0)
       {
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
-        prj.Analysis.read(reportName);
+        prj.Analysis.read(reportName, _model.DefaultModelParams);
         prj.Analysis.checkConfidence(prj.SpeciesInfos);
         prj.Analysis.save(reportName, prj.Notes, prj.SummaryName);
-        prj.Analysis.read(reportName);
+        prj.Analysis.read(reportName, _model.DefaultModelParams);
       }
 
       if ((options & OPT_CLEANUP) != 0)

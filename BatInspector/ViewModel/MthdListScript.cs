@@ -324,9 +324,31 @@ namespace BatInspector
           LocSourceKml = false,
           LocSourceTxt = false,
           OverwriteLocation = false,
-          RemoveSource = false
+          RemoveSource = false,
         };
-        if (File.Exists(Path.Combine(info.SrcDir, info.Name + ".bpr")))
+        ModelParams modPars = _inst._model.DefaultModelParams[_inst._model.getModelIndex(AppParams.Inst.DefaultModel)];
+        if (argv.Count > 4)
+        {
+          modPars = _inst._model.DefaultModelParams[_inst._model.getModelIndex(argv[4].getString())];
+          if (argv.Count > 5)
+          {
+            string dataSet = argv[5].getString();
+            bool found = false;
+            foreach (string s in modPars.AvailableDataSets)
+            {
+              if (s == dataSet)
+                found = true;
+            }
+            if (found)
+              modPars.DataSet = dataSet;
+            else
+              DebugLog.log($"Model '{dataSet}' not found!", enLogType.ERROR);
+          }
+        }
+        else
+          DebugLog.log("import project with default model: " + AppParams.Inst.DefaultModel, enLogType.INFO);
+        if (File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_PRJ)) || 
+            File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_BATSPY)))
         {
           _inst._model.createProject(info, true, true);
         }

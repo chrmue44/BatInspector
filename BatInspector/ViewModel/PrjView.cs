@@ -10,17 +10,12 @@ namespace BatInspector
 {
 
 
-  public class ReportItem
+  public class ReportItemBd2
   {
     string _remarks;
     bool _changed = false;
 
-    public ReportItem()
-    {
-
-    }
-
-    public ReportItem(AnalysisFile file, AnalysisCall call)
+    public ReportItemBd2(AnalysisFile file, AnalysisCall call, enModel modelType)
     {
 
       FileName = file.Name;
@@ -30,9 +25,6 @@ namespace BatInspector
         Remarks = file.getString(Cols.REMARKS);
       _changed = false;
       Row = call.ReportRow;
-      FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-      FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
-      FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
       Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
       StartTime = call.getString(Cols.START_TIME);
       SpeciesAuto = call.getString(Cols.SPECIES);
@@ -43,6 +35,12 @@ namespace BatInspector
       Humidity = call.getDouble(Cols.HUMIDITY).ToString("0.#", CultureInfo.InvariantCulture);
       //  Snr = call.getDouble(Cols.SNR).ToString();
       SpeciesMan = call.getString(Cols.SPECIES_MAN);
+      if (modelType != enModel.BATTY_BIRD_NET)
+      {
+        FreqMin = (call.getDouble(Cols.F_MIN) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+        FreqMax = (call.getDouble(Cols.F_MAX) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+        FreqMaxAmp = (call.getDouble(Cols.F_MAX_AMP) / 1000).ToString("0.#", CultureInfo.InvariantCulture);
+      }
     }
 
     public bool Changed { get { return _changed; } }
@@ -50,11 +48,10 @@ namespace BatInspector
     public string FileName { get; set; }
     public string CallNr { get; set; }
     public string StartTime { get; set; }
-    public string Duration { get; set; }
     public string FreqMin { get; set; }
     public string FreqMax { get; set; }
     public string FreqMaxAmp { get; set; }
-
+    public string Duration { get; set; }
     public string SpeciesAuto { get; set; }
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
@@ -79,9 +76,9 @@ namespace BatInspector
       _changed = false;
     }
 
-    public static ReportItem find(string filename, List<ReportItem> list)
+    public static ReportItemBd2 find(string filename, List<ReportItemBd2> list)
     {
-      foreach (ReportItem r in list)
+      foreach (ReportItemBd2 r in list)
       {
         if (r.FileName == filename)
           return r;
@@ -90,13 +87,14 @@ namespace BatInspector
     }
   }
 
+  
   public class PrjView
   {
-    List<ReportItem> _report = new List<ReportItem>();
+    List<ReportItemBd2> _report = new List<ReportItemBd2>();
     List<string> _showWavFiles = new List<string>();
     int _lastListStartIdx = -1;
 
-    public List<ReportItem> ListView { get { return _report; } }
+    public List<ReportItemBd2> ListView { get { return _report; } }
     public List<string> VisibleFiles { get { return _showWavFiles; } }
 
     public Project Prj { get; set; }
@@ -120,11 +118,11 @@ namespace BatInspector
       }
     }
 
-    public void addFile(AnalysisFile file)
+    public void addFile(AnalysisFile file, enModel modelType)
     {
       foreach (AnalysisCall c in file.Calls)
       {
-        addReportItem(file, c);
+        addReportItem(file, c, modelType);
       }
     }
 
@@ -157,7 +155,7 @@ namespace BatInspector
                 res = filter.apply(filterItem, f.Calls[c]);
               if (res)
               {
-                ReportItem it = new ReportItem(f, f.Calls[c]);
+                ReportItemBd2 it = new ReportItemBd2(f, f.Calls[c], analysis.ModelType);
                 _report.Add(it);
                 line++;
               }
@@ -169,18 +167,18 @@ namespace BatInspector
       return true;
     }
 
-    public void addReportItem(AnalysisFile file, AnalysisCall call)
+    public void addReportItem(AnalysisFile file, AnalysisCall call, enModel modelType)
     {
       if (_report != null)
       {
-        ReportItem item = new ReportItem(file, call);
+        ReportItemBd2 item = new ReportItemBd2(file, call, modelType);
         _report.Add(item);
       }
     }
 
     public void updateReport(Csv csv)
     {
-      foreach (ReportItem item in _report)
+      foreach (ReportItemBd2 item in _report)
       {
         int row = item.Row;
         item.Longitude = csv.getCell(row, Cols.LON);

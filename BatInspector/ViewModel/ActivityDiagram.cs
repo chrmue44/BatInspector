@@ -39,8 +39,6 @@ namespace BatInspector
     System.Drawing.Brush COL_DATA2 = System.Drawing.Brushes.Red;
 
     ActivityData _data;
-    List<string> _labelsY;
-    List<string> _labelsX;
     Bitmap _bmp = null;
     float _width = 0;
     float _height = 0;

@@ -62,7 +62,6 @@ namespace BatInspector.Forms
     CtrlZoom _ctlZoom = null;
     TabItem _tbZoom = null;
     frmSpeciesData _frmSpecies = null;
-    bool _fastOpen = true;
     Thread _workerPredict = null;
     Thread _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
@@ -533,23 +532,23 @@ namespace BatInspector.Forms
 
 
 
-    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav)
+    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav, enModel modelType)
     {
       DebugLog.log("activate zoom view of: " + name, enLogType.DEBUG);
       if (AppParams.Inst.ZoomSeparateWin)
       {
         if (_frmZoom == null)
           _frmZoom = new FrmZoom(_model, closeWindow);
-        _frmZoom.setup(name, analysis, wavFilePath, ctlWav, openExportWindow);
+        _frmZoom.setup(name, analysis, wavFilePath, ctlWav, openExportWindow, modelType);
         setZoomPosition();
         _frmZoom.Show();
       }
       else
       {
         if (_model.CurrentlyOpen != null)
-          _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav, openExportWindow);
+          _ctlZoom.setup(analysis, wavFilePath, _model, _model.CurrentlyOpen.Species, ctlWav, openExportWindow, modelType);
         else
-          _ctlZoom.setup(analysis, wavFilePath, _model, null, null, openExportWindow);
+          _ctlZoom.setup(analysis, wavFilePath, _model, null, null, openExportWindow, modelType);
         _tbZoom.Header = "Zoom: " + Path.GetFileName(name);
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -738,6 +737,7 @@ namespace BatInspector.Forms
       string fullWavName;
       string wavName;
       string wavFilePath;
+      enModel modelType;
       if (fromQuery)
       {
         fullWavName = Path.Combine(_model.SelectedDir, rec.File);
@@ -745,6 +745,7 @@ namespace BatInspector.Forms
         wavFilePath = _model.SelectedDir;
         analysis = _model.Query.Analysis.find(rec.File);
         species = _model.Query.Species;
+        modelType = _model.Query.Analysis.ModelType;
       }
       else
       {
@@ -753,9 +754,10 @@ namespace BatInspector.Forms
         fullWavName = Path.Combine(_model.SelectedDir, rec.File);
         analysis = _model.Prj.Analysis.find(rec.File);
         species = _model.Prj.Species;
+        modelType = _model.Prj.Analysis.ModelType;
       }
 
-      ctl.setFileInformations(rec, wavFilePath, analysis, species);
+      ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
 //      if (!_fastOpen)
 //        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
@@ -1488,7 +1490,7 @@ namespace BatInspector.Forms
         if (dep == null)
           return;
 
-        ReportItem it = null;
+        ReportItemBd2 it = null;
         if (dep is DataGridCell)
         {
           DataGridCell cell = dep as DataGridCell;
@@ -1497,7 +1499,7 @@ namespace BatInspector.Forms
             dep = VisualTreeHelper.GetParent(dep);
 
           DataGridRow row = dep as DataGridRow;
-          it = row.DataContext as ReportItem;
+          it = row.DataContext as ReportItemBd2;
         }
 
         if (_model.CurrentlyOpen != null)
@@ -1508,7 +1510,7 @@ namespace BatInspector.Forms
             AnalysisFile analysis = _model.CurrentlyOpen.Analysis.find(it.FileName);
             string fileName = Path.GetFileName(it.FileName);
             string wavPath = Path.GetDirectoryName(_model.CurrentlyOpen.getFullFilePath(it.FileName));
-            setZoom(fileName, analysis, wavPath, null);
+            setZoom(fileName, analysis, wavPath, null, _model.CurrentlyOpen.Analysis.ModelType);
             changeCallInZoom(callNr - 1);
           }
         }

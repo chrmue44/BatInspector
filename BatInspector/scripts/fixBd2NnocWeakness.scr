@@ -1,8 +1,8 @@
-SET NrFiles =(getPrjFileCount() - 1)
+SET NrFiles =(getPrjFileCount())
 SET Count 0
 FOR FileNr 0 NrFiles
   IF =(getFileInfo(FileNr, "SELECT"))
-    SET NrCalls =(getCallCount(FileNr) - 1)
+    SET NrCalls =(getCallCount(FileNr))
     FOR i 0 NrCalls
       SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
       SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))

@@ -1,5 +1,13 @@
+SET sum1 0
 FOR i 1 5
-  FOR j 1 5
+  FOR j 1 4
+    SET sum1 =(sum1 + 1)
     LOG =("i: " + i + ", j:" + j)
   END
 END
+
+SET sum2 0
+FOR i 1 1
+  SET sum2 =(sum2 + 1)
+END
+

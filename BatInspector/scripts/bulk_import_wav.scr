@@ -4,7 +4,7 @@ SET removeSrc =(PAR3)
 SET maxFiles 10000
 SET maxFileLen 5
 
-SET dirCount =(countDirs(srcDir,"*") - 1)
+SET dirCount =(countDirs(srcDir,"*"))
 SET withSubDir 0
 LOG =("found " + (dirCount + 1) + " directories")
 

@@ -98,8 +98,6 @@ public partial class BatExplorerProjectFile
 
   private string _autoProcess;
 
-  private string _disSpecies;
-
   private PrjRecord[] _records;
 
   private string _fileVersion;

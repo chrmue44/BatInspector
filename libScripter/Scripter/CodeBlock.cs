@@ -84,7 +84,7 @@ namespace libScripter
         _itEnd = (int)end.getInt64();
 
         _iterator = _itStart;
-        _vars.VarList.set(_itName, _iterator);
+        loopStart("");
       }
       else
         _errText = "IF: missing argument";
@@ -94,16 +94,14 @@ namespace libScripter
     public override void loopStart(string condition)
     {
       _vars.VarList.set(_itName, _iterator);
+      _execute = (_iterator < _itEnd);
     }
 
     public override bool loopEnd()
     {
-      bool retVal = true;
       _iterator++;
       _vars.VarList.set(_itName, _iterator);
-      if (_iterator > _itEnd)
-        retVal = false;
-      return retVal;
+      return _execute;
     }
   }
 

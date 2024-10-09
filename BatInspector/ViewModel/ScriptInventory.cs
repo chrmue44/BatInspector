@@ -230,7 +230,8 @@ namespace BatInspector
         new ScriptItem(8, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
         new ScriptItem(9, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
         new ScriptItem(10, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(11, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>())
+        new ScriptItem(11, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(12, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, new List<ParamItem>())
       };
     }
 

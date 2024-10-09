@@ -3,7 +3,7 @@ SET dstDir =(PAR2)
 SET maxFiles 10000
 SET maxFileLen 5
 
-SET dirCount =(countDirs(srcDir,"*") - 1)
+SET dirCount =(countDirs(srcDir,"*"))
 LOG =("found " + (dirCount + 1) + " sub directories")
 
 FOR i 0 dirCount

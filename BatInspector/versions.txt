@@ -7,6 +7,11 @@ TODO
 - File Access Rights problem Win 11 (Delete)
 - markieren von manuell geänderten Rufen
 
+V0.9.1.0:
+- script function importPrj accepts 2 additional parameters: classifier and model
+- for loop now runs from iterator_start until iterator_end - 1 (allows loops that never execute  )
+- supports now BattyBirdNET
+
 V0.9.0.1
 - bugfix: forbid wav file import without specifying fix positon of position from file (gpx, kml, txt)
 - changed manual species are marked in project and zoom view

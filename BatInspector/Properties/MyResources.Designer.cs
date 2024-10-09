@@ -754,6 +754,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sect..
+        /// </summary>
+        public static string CtlWavSection {
+            get {
+                return ResourceManager.GetString("CtlWavSection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tools.
         /// </summary>
         public static string ctlWavTools {

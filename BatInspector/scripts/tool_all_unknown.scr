@@ -1,6 +1,6 @@
 ﻿# Tool: set all species man to '?'
 SET FileNr =(getFileIndex(VAR_FILE_NAME))
-SET NrOfCalls =(getCallCount(FileNr) - 1)
+SET NrOfCalls =(getCallCount(FileNr))
 FOR i 0 NrOfCalls
   SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
   IF =(toupper(specMan) == "TODO")

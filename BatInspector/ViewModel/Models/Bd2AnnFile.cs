@@ -188,7 +188,7 @@ namespace BatInspector
             }
           }
           file.Annatations = splitAnns.ToArray();
-          int pos = name.IndexOf(".wav.json");
+          int pos = name.ToLower().IndexOf(".wav.json");
           string fName = name.Substring(0, pos);
           fName += "_" + ext + ".wav.json";
           file.saveAs(fName);

@@ -15,6 +15,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media.Animation;
+using System.Xml.Linq;
 using BatInspector.Forms;
 using libParser;
 using libScripter;
@@ -172,6 +173,7 @@ namespace BatInspector
     private List<SumItem> _summary;
     private List<SpeciesInfos> _speciesInfos;
     private DlgUpdateFile _dlgUpdate;
+    private enModel _modelType;
  //   private string _notes;
 
     public List<AnalysisFile> Files { get { return _list; } }
@@ -179,6 +181,8 @@ namespace BatInspector
 
     public int CsvRowCount { get{ return _csv == null ? 0 : _csv.RowCnt; } }
     public bool IsEmpty { get { return _list.Count == 0; } }
+
+    public enModel ModelType { get { return _modelType; } }
 
     public List<SumItemReport> Summary {
       get {
@@ -197,10 +201,11 @@ namespace BatInspector
       } 
     }
 
-    public Analysis(List<SpeciesInfos> specInfos, DlgUpdateFile dlgUpdate)
+    public Analysis(List<SpeciesInfos> specInfos, DlgUpdateFile dlgUpdate, enModel modelType)
     {
       init(specInfos);
       _dlgUpdate = dlgUpdate;
+      _modelType = modelType;
     }
 
     public AnalysisFile find(string name)
@@ -249,7 +254,7 @@ namespace BatInspector
       _summary = new List<SumItem>();
     }
 
-    public void read(string fileName)
+    public void read(string fileName, ModelParams[] modelParams)
     {
       init(_speciesInfos);
       lock (_fileLock)
@@ -291,6 +296,15 @@ namespace BatInspector
             _csv.insertCol(colnr, "", Cols.TEMPERATURE);
             _csv.insertCol(colnr + 1, "", Cols.HUMIDITY);
             _csv.save();
+          }
+        }
+
+        for(int i = 0; i < modelParams.Length; i++)
+        {
+          if(fileName.IndexOf(modelParams[i].Name) >= 0)
+          {
+            _modelType = modelParams[i].Type;
+            break;
           }
         }
 

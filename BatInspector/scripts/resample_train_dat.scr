@@ -1,6 +1,6 @@
 SET resamplingRate 384000
 SET dirName =(PAR1)
-SET NrFiles =(readDir(dirName, "*.wav") - 1)
+SET NrFiles =(readDir(dirName, "*.wav"))
 LOG =("reading dir " + dirName)
 FOR FileNr 0 NrFiles
   SET FileName =(getFile(FileNr))

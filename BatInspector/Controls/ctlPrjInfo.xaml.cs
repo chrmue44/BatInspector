@@ -40,7 +40,7 @@ namespace BatInspector.Controls
     {
       _prj = prj;
       _tbNotes.Text = _prj.Notes;
-      initModelComboBox(_cbModels, _prj.ModelParams, _prj.SelectedModel);
+      initModelComboBox(_cbModels, _prj.AvailableModelParams, _prj.SelectedModelIndex);
     }
 
     public static void initModelComboBox(ComboBox cbm, ModelParams[] mp, int index)
@@ -78,7 +78,7 @@ namespace BatInspector.Controls
           frmModelParams frm = new frmModelParams(_prj);
           bool? result = frm.ShowDialog();
           if (result == true)
-            initModelComboBox(_cbModels, _prj.ModelParams, _prj.SelectedModel);
+            initModelComboBox(_cbModels, _prj.AvailableModelParams, _prj.SelectedModelIndex);
         }
       }
       catch(Exception ex)
@@ -93,8 +93,14 @@ namespace BatInspector.Controls
       {
         if ((_prj == null) || !_prj.Ok)
           return;
-        _prj.SelectedModel = _cbModels.SelectedIndex;
-        _prj.ModelParams[_prj.SelectedModel].Enabled = true;
+        _prj.SelectedModelIndex = _cbModels.SelectedIndex;
+        if(!AppParams.Inst.AllowMoreThanOneModel)
+        {
+          foreach (ModelParams p in _prj.AvailableModelParams)
+            p.Enabled = false;
+        }
+        _prj.AvailableModelParams[_prj.SelectedModelIndex].Enabled = true;
+        _prj.SelectedModelParams = _prj.AvailableModelParams[_prj.SelectedModelIndex];
       }
       catch (Exception ex)
       {

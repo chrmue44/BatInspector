@@ -37,6 +37,7 @@ namespace BatInspector.Controls
     Image[] _playImgs;
     ctlWavFile _ctlWav = null;
     dlgVoid _openExportForm= null;
+    enModel _modelType;
 
     public CtrlZoom()
     {
@@ -123,12 +124,13 @@ namespace BatInspector.Controls
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, 
-                       List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow)
+                       List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
     {
       int lblWidth = 110;
       InitializeComponent();
       _model = model;
       _ctlWav = ctlWav;
+      _modelType = modelType;
       _openExportForm = openExpWindow;
       _imgFt.Source = (ctlWav != null) ? ctlWav._img.Source : null;
       _model.ZoomView.Analysis = analysis;
@@ -168,6 +170,14 @@ namespace BatInspector.Controls
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
       //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, lblWidth);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
+
+      if(_modelType == enModel.BATTY_BIRD_NET)
+      {
+        _ctlFMin.Visibility = Visibility.Hidden;
+        _ctlFMax.Visibility = Visibility.Hidden;
+        _ctlFMaxAmpl.Visibility = Visibility.Hidden;
+        _ctlDist.Visibility = Visibility.Hidden;
+      }
 
       lblWidth = 110;
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, lblWidth);
@@ -244,7 +254,6 @@ namespace BatInspector.Controls
       if (_model.ZoomView.Analysis.Calls.Count > 0)
       {
         Stopwatch sw = new Stopwatch(); //@@@
-        sw.Start();   //@@@
         setVisabilityCallData(true);
         string[] items = new string[_model.ZoomView.Analysis.Calls.Count];
         for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
@@ -256,8 +265,8 @@ namespace BatInspector.Controls
         setupCallData(0);
         _ctlMeanCallMin.setValue("1");
         _ctlMeanCallMax.setValue(_model.ZoomView.Analysis.Calls.Count.ToString());
-        calcMeanValues(0, 0);
-        sw.Stop();  //@@@
+        if(_modelType != enModel.BATTY_BIRD_NET)
+          calcMeanValues(0, 0);
       }
       else
       {
@@ -1097,7 +1106,13 @@ namespace BatInspector.Controls
       //_ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, samplingRate,_cbMode.SelectedIndex);
       _model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
       double pre = 0.01;
-      _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + AppParams.Inst.ZoomOneCall / 1000.0 - pre);
+      double length = AppParams.Inst.ZoomOneCall / 1000.0;
+      if(((_model.Prj != null) && (_model.Prj.Ok) && (_model.Prj.Analysis.ModelType == enModel.BATTY_BIRD_NET)) ||
+         ((_model.Query != null) && (_model.Query.Analysis.ModelType == enModel.BATTY_BIRD_NET)))
+      {
+          length = _model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION) / 1000;
+      }
+      _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + length - pre);
       if (_model.ZoomView.Analysis.Calls[idx].Changed)
         _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
       else
@@ -1147,9 +1162,12 @@ namespace BatInspector.Controls
       if (idx < _model.ZoomView.Analysis.Calls.Count)
       {
         AnalysisCall call = _model.ZoomView.Analysis.Calls[idx];
-        _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
-        _ctlFMax.setValue(call.getDouble(Cols.F_MAX) / 1000);
-        _ctlFMaxAmpl.setValue(call.getDouble(Cols.F_MAX_AMP) / 1000);
+        if (_modelType != enModel.BATTY_BIRD_NET)
+        {
+          _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
+          _ctlFMax.setValue(call.getDouble(Cols.F_MAX) / 1000);
+          _ctlFMaxAmpl.setValue(call.getDouble(Cols.F_MAX_AMP) / 1000);
+        }
         _ctlDuration.setValue(call.getDouble(Cols.DURATION));
         _ctlDist.setValue(call.DistToPrev);
         _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));

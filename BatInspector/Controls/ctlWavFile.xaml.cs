@@ -31,6 +31,7 @@ namespace BatInspector.Controls
     ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
+    enModel _modelType;
 
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
@@ -80,6 +81,9 @@ namespace BatInspector.Controls
 
     public void updateCallInformations(AnalysisFile analysis, PrjRecord rec)
     {
+      if (rec == null)
+        return;
+
       _analysis = analysis;
       List<string> spec = new List<string>();
       if (_spDataMan.Children.Count > 0)
@@ -102,10 +106,11 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = rec.Selected;
     }
 
-    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec)
+    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec, enModel modelType)
     {
       _wavFilePath = wavFilePath;
       _record = record;
+      _modelType = modelType;
       _cbSel.IsChecked = record.Selected;
       _btnWavFile.Content = _record.File.Replace("_", "__");  //hack, because single '_' shows as underlined char
       //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
@@ -139,12 +144,12 @@ namespace BatInspector.Controls
           string callStr = call.getString(Cols.NR);
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
-          it.setup(MyResources.CtlWavCall + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
+          it.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
 
           ctlSelectItem im = new ctlSelectItem();
-          im.setup(MyResources.CtlWavCall + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
+          im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
                 MyResources.ctlWavToolTipCall);
           im.setItems(spec.ToArray());
           im.setValue(call.getString(Cols.SPECIES_MAN));
@@ -163,12 +168,12 @@ namespace BatInspector.Controls
       {
         if (_analysis != null)
         {
-          _parent.setZoom(_record.File, _analysis, _wavFilePath, this);
+          _parent.setZoom(_record.File, _analysis, _wavFilePath, this, _model.CurrentlyOpen.Analysis.ModelType);
         }
         else
         {
           AnalysisFile ana = new AnalysisFile(_record.File, 383500, 3.001);
-           _parent.setZoom(_record.File, ana, _wavFilePath, this);
+           _parent.setZoom(_record.File, ana, _wavFilePath, this, _model.CurrentlyOpen.Analysis.ModelType);
         }
       }
       else
@@ -183,6 +188,17 @@ namespace BatInspector.Controls
           _analysis.Calls[index].setString(Cols.SPECIES_MAN, val);
         else
           DebugLog.log("ctlWavFile.selItemChanged(): index error", enLogType.ERROR);
+      }
+    }
+
+    private string getLabelStr()
+    {
+      switch (_modelType)
+      {
+        case enModel.BAT_DETECT2:
+          return MyResources.CtlWavCall;
+        default:
+          return MyResources.CtlWavSection;
       }
     }
 

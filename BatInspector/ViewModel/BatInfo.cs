@@ -227,7 +227,7 @@ namespace BatInspector
       }
       catch(Exception ex)
       {
-        DebugLog.log("unable to copy " + srcFileName, enLogType.ERROR);
+        DebugLog.log($"unable to copy {srcFileName} : {ex.ToString()}", enLogType.ERROR);
       }
     }
 

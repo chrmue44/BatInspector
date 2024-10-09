@@ -11,7 +11,6 @@ SET BD2_VERSION=%4
 SET BBNET_HASH=%5
 
 @echo params %PYTHON_DIR% %PY_INST% %REQ_VERSION% %BD2_VERSION%
-goto model_bbnet
 
 FOR /F "tokens=*" %%a in ('python -V') do SET VERSION=%%a
 
@@ -41,6 +40,7 @@ call %VENV%/Scripts/activate
 pip install -r requirements.txt
 
 :model_bbnet
+cd ..
 @echo install BattyBirdNET
 cd %MODEL_BB_DIR%
 curl -L %BBNET_ARCH%%BBNET_HASH%.zip --output bbnet.zip

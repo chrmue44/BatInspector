@@ -242,7 +242,6 @@ namespace BatInspector
             DebugLog.log(msg, enLogType.INFO);
           else
             _model.Status.Msg = msg;
-
         }
       }
       else if ((ev.Data?.ToLower().IndexOf("error") > 0) && (ev.Data?.ToLower().IndexOf("error.") < 0))

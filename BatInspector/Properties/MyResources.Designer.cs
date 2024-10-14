@@ -4516,7 +4516,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to save zoomed section as WAV file.
+        ///   Looks up a localized string similar to save displayed range as WAV file.
         /// </summary>
         public static string ToolTipSaveAs {
             get {

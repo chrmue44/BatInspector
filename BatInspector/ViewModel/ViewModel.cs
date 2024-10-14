@@ -923,12 +923,12 @@ namespace BatInspector
         if (prjCnt > (int)prjCnt)
           prjCnt += 1;
         List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, info.ModelParams,  DefaultModelParams.Length);
-        if (prjs.Count > 0)
-          initProject(new DirectoryInfo(prjs[0]), null);
+        initProject(new DirectoryInfo(prjs[0]), null);
         // remove src project
         Directory.Delete(prjPath, true);
       }
-      Prj.ReloadInGui = true;
+      if(!cli)
+        Prj.ReloadInGui = true;
     }
   }
 }

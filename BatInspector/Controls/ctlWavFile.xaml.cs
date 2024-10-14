@@ -50,12 +50,12 @@ namespace BatInspector.Controls
         if (!value)
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
-          _grid.ColumnDefinitions[2].Width = new GridLength(0);
+//          _grid.ColumnDefinitions[2].Width = new GridLength(0);
         }
         else
         {
-          _grid.ColumnDefinitions[1].Width = new GridLength(160);
-          _grid.ColumnDefinitions[2].Width = new GridLength(160);
+          _grid.ColumnDefinitions[1].Width = new GridLength(300);
+  //        _grid.ColumnDefinitions[2].Width = new GridLength(160);
         }
       }
     }
@@ -106,7 +106,7 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = rec.Selected;
     }
 
-    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec, enModel modelType)
+    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec, enModel modelType, double height)
     {
       _wavFilePath = wavFilePath;
       _record = record;
@@ -117,6 +117,7 @@ namespace BatInspector.Controls
       _analysis = analysis;
       initCallInformations(spec);
       _initialized = true;
+      setHeight(height);
     }
 
     public void setFocus()
@@ -130,6 +131,12 @@ namespace BatInspector.Controls
       _record.Selected = !_record.Selected;
     }
 
+    public void setHeight(double height)
+    {
+      _grid.RowDefinitions[1].Height = new GridLength(height);
+      _img.MaxHeight = height;
+      _img.Height = height;
+    }
     private void initCallInformations(List<string> spec)
     {
       if (_analysis != null)

@@ -757,7 +757,7 @@
     <value>Laden ...</value>
   </data>
   <data name="ToolTipSaveAs" xml:space="preserve">
-    <value>gezoomten Ausschnitt als WAV-Datei speichern</value>
+    <value>Angezeigten Bereich als WAV-Datei speichern</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
     <value>Quellverzeichnis (*.wav, *.bpr)</value>

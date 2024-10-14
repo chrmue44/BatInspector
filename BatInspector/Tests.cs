@@ -13,6 +13,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 
 namespace BatInspector
 {
@@ -115,9 +116,12 @@ namespace BatInspector
       testCheckSpecAtLocation();
       //testSplitWavs();
 
+      //checkIfWavFilesExist(); // not a test, a one time function
+      //fixAnnotationIds(); // not a test, a one time function
       //testWriteModParams(); not a test, a one time function
       //adjustJsonIds(); not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); not a test, a one time function
+
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -863,6 +867,47 @@ namespace BatInspector
       double splitLengh = 0.7;
       WavFile.splitWav(wavName, splitLengh, true);
       Bd2AnnFile.splitAnnotation(jsonName, splitLengh, true);
+    }
+
+
+    private void fixAnnotationIds()
+    {
+      //      string[] dirs = { "Bbar", "Enil", "Eser", "Hsav", "Malc", "Mbec", "Mbra", "Mdas","Mdau","Mema", "Mmyo", "Mmys", "Mnat","Nlei",
+      //                        "Nnoc", "Pkuh", "Plecotus", "Pnat", "Ppip", "Ppyg", "Rfer", "Rhip", "Vmur" };
+      string[] dirs = { "Rfer" };
+      string root = "F:\\bat\\trainingBd2\\raw";
+      foreach (string dir in dirs)
+      {
+        string[] files = Directory.GetFiles(Path.Combine(root, dir, "annotations"), "*.json");
+        foreach (string fileName in files)
+        {
+          Bd2AnnFile.checkAndFixId(fileName);
+        }
+      }
+    }
+
+    private void checkIfWavFilesExist()
+    {
+      string root = "F:\\bat\\trainingBd2";
+      string[] files = Directory.GetFiles(Path.Combine(root, "ann"), "*.json");
+      foreach (string fileName in files)
+      {
+        Bd2AnnFile file = Bd2AnnFile.loadFrom(fileName);
+        if (file != null)
+        {
+          string wavFile = Path.Combine(root, "wav", file.id);
+          if (!File.Exists(wavFile))
+          {
+            _errors++;
+            DebugLog.log($"file not existing: {wavFile} ", enLogType.ERROR);
+          }
+        }
+        else
+        {
+          _errors++;
+          DebugLog.log("erroneous annotation File: {fileName}", enLogType.ERROR);
+        }
+      }
     }
 
 

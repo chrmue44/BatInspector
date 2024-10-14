@@ -6,8 +6,18 @@ TODO
 - calculate SNR for each detected call
 - File Access Rights problem Win 11 (Delete)
 - markieren von manuell geänderten Rufen
+- more flexible import: 
+  - parsing date/time form different file names
+  - real "inplace" import
+- new icon for band pass
+- left collumn collapses automatically after opening project
+- export zoom view: set default file name: call_nr_species_filename.wav
+- highlight manually changed species in man. species list
+
 
 V0.9.1.0:
+- new order for buttons in zoom view (player to the right)
+- scroll viewer for call lists in Project View to restrict viewer to const size
 - script function importPrj accepts 2 additional parameters: classifier and model
 - for loop now runs from iterator_start until iterator_end - 1 (allows loops that never execute  )
 - supports now BattyBirdNET

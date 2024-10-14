@@ -313,8 +313,7 @@ namespace BatInspector.Forms
       foreach (UIElement ui in _spSpectrums.Children)
       {
         ctlWavFile ctl = ui as ctlWavFile;
-        ctl._img.MaxHeight = _imgHeight;
-        ctl._img.Height = _imgHeight;
+        ctl.setHeight(_imgHeight);
       }
     }
 
@@ -757,7 +756,7 @@ namespace BatInspector.Forms
         modelType = _model.Prj.Analysis.ModelType;
       }
 
-      ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType);
+      ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
 //      if (!_fastOpen)
 //        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");

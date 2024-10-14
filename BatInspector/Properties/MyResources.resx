@@ -757,7 +757,7 @@
     <value>Load ...</value>
   </data>
   <data name="ToolTipSaveAs" xml:space="preserve">
-    <value>save zoomed section as WAV file</value>
+    <value>save displayed range as WAV file</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
     <value>Source Folder(*.wav, *.bpr)</value>

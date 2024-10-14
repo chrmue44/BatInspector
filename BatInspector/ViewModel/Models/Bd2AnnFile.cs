@@ -191,11 +191,28 @@ namespace BatInspector
           int pos = name.ToLower().IndexOf(".wav.json");
           string fName = name.Substring(0, pos);
           fName += "_" + ext + ".wav.json";
+          file.id = fName + ext + "wav";
           file.saveAs(fName);
           ext++;
         }
         if (File.Exists(name) && removeOriginal)
           File.Delete(name);
+      }
+    }
+
+
+    public static void checkAndFixId(string name)
+    {
+      Bd2AnnFile file = Bd2AnnFile.loadFrom(name);
+      if (file != null)
+      {
+        string fName = Path.GetFileNameWithoutExtension(name);
+        if(file.id != fName)
+        {
+          file.id = fName;
+          file.saveAs(name);
+          DebugLog.log($"fixed id: {name}", enLogType.INFO);
+        }
       }
     }
   }

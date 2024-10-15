@@ -661,19 +661,32 @@ namespace BatInspector
         {
           Csv csv = new Csv();
           csv.read(prjFile, AppParams.CSV_SEPARATOR, true);
-          string startDateStr = csv.getCell(2, Cols.REC_TIME);
-          string endDateStr = csv.getCell(csv.RowCnt, Cols.REC_TIME);
+          findStartEnd(csv, out string startDateStr, out string endDateStr);
           DateTime startDate = new DateTime();
           DateTime endDate = new DateTime();
+          bool ok_s = false;
+          bool ok_e = false;
           try
           {
-            startDate = DateTime.ParseExact(startDateStr, AppParams.REPORT_DATETIME_FORMAT2, CultureInfo.InvariantCulture);
-            endDate = DateTime.ParseExact(endDateStr, AppParams.REPORT_DATETIME_FORMAT2, CultureInfo.InvariantCulture);
+            ok_s = DateTime.TryParseExact(startDateStr, AppParams.REPORT_DATETIME_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out startDate);
+            if(!ok_s)
+              ok_s= DateTime.TryParseExact(startDateStr, AppParams.REPORT_DATETIME_FORMAT2, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out startDate);
+            if (!ok_s)
+              ok_s = DateTime.TryParseExact(startDateStr, AppParams.REPORT_DATETIME_FORMAT3, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out startDate);
+
+            ok_e = DateTime.TryParseExact(endDateStr, AppParams.REPORT_DATETIME_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out endDate);
+            if(!ok_e)
+              ok_e = DateTime.TryParseExact(endDateStr, AppParams.REPORT_DATETIME_FORMAT2, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out endDate);
+            if (!ok_e)
+              ok_e = DateTime.TryParseExact(endDateStr, AppParams.REPORT_DATETIME_FORMAT3, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out endDate);
           }
           catch
           {
-            DebugLog.log($"unrecognized date format in {prjFile}:  {startDateStr} and/or {endDateStr}", enLogType.ERROR);
+            ok_s = false;
           }
+          if(!ok_s || !ok_e)
+            DebugLog.log($"unrecognized date format in {prjFile}:  {startDateStr} and/or {endDateStr}", enLogType.ERROR);
+
           ReportListItem rec = new ReportListItem
           {
             ReportName = prjFile,
@@ -686,6 +699,21 @@ namespace BatInspector
       }
     }
 
+    private void findStartEnd(Csv csv, out string start, out string end)
+    {
+      DateTime dStart =  DateTime.MaxValue;
+      DateTime dEnd = DateTime.MinValue;
+      for(int row = 2; row <= csv.RowCnt; row++)
+      {
+        DateTime d = csv.getCellAsDate(row, Cols.REC_TIME);
+        if (d < dStart)
+          dStart = d;
+        if (d > dEnd)
+          dEnd = d;
+      }
+      start = dStart.ToString(AppParams.REPORT_DATETIME_FORMAT2);
+      end = dEnd.ToString(AppParams.REPORT_DATETIME_FORMAT2);
+    }
 
     private bool gatherDailyActivity(DateTime start, int days, string expression, DailyActivity dailyActivity, out bool addedLine)
     {

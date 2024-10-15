@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Diagnostics;
 using libParser;
 using BatInspector.Forms;
+using BatInspector.Properties;
 
 namespace BatInspector.Controls
 {
@@ -40,9 +41,11 @@ namespace BatInspector.Controls
       _model = model;
       _diagram = new ActivityDiagram(_model.ColorTable);
       int lblW = 150;
-      _ctrlTitle.setup(BatInspector.Properties.MyResources.DiagramTitle, enDataType.STRING, 0, lblW, true, textChanged);
-      _ctlStyle.setup(BatInspector.Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 100, styleChanged);
-      _ctlMaxValue.setup(BatInspector.Properties.MyResources.MaxValue, enDataType.INT, 0, 80, true, textChanged);
+      _ctrlTitle.setup(Properties.MyResources.DiagramTitle, enDataType.STRING, 0, lblW, true, textChanged);
+      _ctlStyle.setup(Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 100, styleChanged);
+      _ctlMaxValue.setup(Properties.MyResources.MaxValue, enDataType.INT, 0, 80, true, textChanged);
+      _ctlTimeShift.setup(MyResources.ctlActivityTimeShift, 160, 30, textChanged);
+      
       _cbWeek.IsChecked = true;
       _cbDay.IsChecked = true;
       _cbTwilight.IsChecked = true;
@@ -51,6 +54,7 @@ namespace BatInspector.Controls
       items[1] = BatInspector.Properties.MyResources.Square;
       items[2] = BatInspector.Properties.MyResources.Circle;
       _ctlStyle.setItems(items);
+      _ctlTimeShift.NUDTextBox.Text="0";
     }
 
     private void textChanged(enDataType type, object val)
@@ -84,6 +88,8 @@ namespace BatInspector.Controls
       bool day = _cbDay.IsChecked == true;
       bool twilight = _cbTwilight.IsChecked == true;
 
+      int offsetHours = _ctlTimeShift.Value;
+
       int maxDispValue = _ctlMaxValue.getIntValue();
       if (maxDispValue == 0)
       {
@@ -92,7 +98,7 @@ namespace BatInspector.Controls
       }
 
 
-      _bmp = _diagram.createPlot(_data, _ctrlTitle.getValue(), _ctlStyle.getSelectedIndex(), maxDispValue, month, week, day, twilight);
+      _bmp = _diagram.createPlot(_data, _ctrlTitle.getValue(), _ctlStyle.getSelectedIndex(), maxDispValue, month, week, day, twilight, offsetHours);
       try
       {
         BitmapImage bitmapimage = new BitmapImage();

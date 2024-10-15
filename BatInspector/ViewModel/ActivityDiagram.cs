@@ -51,7 +51,7 @@ namespace BatInspector
       _colorTable = colorTable;
     }
     
-    public Bitmap createPlot(ActivityData hm, string title, int style, int maxDispValue, bool month, bool week, bool day, bool twilight)
+    public Bitmap createPlot(ActivityData hm, string title, int style, int maxDispValue, bool month, bool week, bool day, bool twilight, int offsetHours)
     {
       try
       {
@@ -68,7 +68,7 @@ namespace BatInspector
           createTwilightLines();
         createTitle(title);
         createLabels(month, week, day, hours);
-        drawData(style);
+        drawData(style, offsetHours);
         drawLegend(style);
       }
       catch (Exception ex)
@@ -93,8 +93,9 @@ namespace BatInspector
     {
       int lh = 20;
       int bl = 20;
+      int nights = _data.DaysWithData > 1 ? _data.DaysWithData - 1 : _data.DaysWithData;
       GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT, $"{BatInspector.Properties.MyResources.ActivityTotalCalls}: {_data.TotalCalls}", COL_TEXT);
-      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + lh, $"{BatInspector.Properties.MyResources.ActivityNightsWithActivity}: {_data.DaysWithData}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + lh, $"{BatInspector.Properties.MyResources.ActivityNightsWithActivity}: {nights}", COL_TEXT);
       GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 2 * lh, $"{BatInspector.Properties.MyResources.ClassWidth}: {(60/_data.TicksPerHour).ToString()} min", COL_TEXT);
       GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 3 * lh, $"{BatInspector.Properties.MyResources.ActivityMaxCountsPerClass}: {(_data.MaxCount).ToString()}", COL_TEXT);
 
@@ -141,14 +142,14 @@ namespace BatInspector
     }
 
 
-    float getYCoord(int tick)
+    float getYCoord(int tick, int tOffset)
     {
       int hours = 24 - DIAG_START_TIME.Hour + DIAG_END_TIME.Hour;
       if (tick <= (DIAG_END_TIME.Hour * _data.TicksPerHour))
         tick += (24 - DIAG_START_TIME.Hour) * _data.TicksPerHour;
       if (tick >= (DIAG_START_TIME.Hour * _data.TicksPerHour))
         tick -= DIAG_START_TIME.Hour * _data.TicksPerHour;
-      float yPos = Y_BT + (_height - Y_BB - Y_BT) * tick / _data.TicksPerHour / hours;
+      float yPos = Y_BT + (_height - Y_BB - Y_BT) * (tick + tOffset) / _data.TicksPerHour / hours;
       yPos = swapY(yPos);
       return yPos;
     }
@@ -164,9 +165,9 @@ namespace BatInspector
       return xPos;
     }
 
-    float getYCoord(float hour)
+    float getYCoord(float hour, float offsetH)
     {
-      return getYCoord((int)(hour * _data.TicksPerHour));
+      return getYCoord((int)(hour * _data.TicksPerHour), (int)(offsetH * _data.TicksPerHour));
     }
 
     void calcMeanValue()
@@ -191,7 +192,7 @@ namespace BatInspector
       _maxDispValue = meanValue;
     }
 
-    private void drawData(int style)
+    private void drawData(int style, int offsetHours)
     {
       int days = (int)(_data.EndDate.Date - _data.StartDate.Date).TotalDays;
       float dy = (_height - Y_BB - Y_BT) / 24;
@@ -201,44 +202,46 @@ namespace BatInspector
 
       float wBox = dx - 2;
       float hBox = dy / _data.TicksPerHour + 0.5f;
+      int offset = offsetHours * _data.TicksPerHour;
 
       for (int i = 0; i < _data.Days.Count; i++)
       {
         int startTimeInTicks = DIAG_END_TIME.Hour * _data.TicksPerHour;
         for (int j = 0; j < _data.Days[i].Counter.Count; j++)
         {
-          float xPos = getXCoord(_data.Days[i].Date);
-          if (j < startTimeInTicks)
+          float xPos = getXCoord(_data.Days[i].Date);          
+           if (j < startTimeInTicks)
             xPos -= dx;
+          int tCountValue = _data.Days[i].Counter[j];
           switch (style)
           {
             case 0:
-              if (_data.Days[i].Counter[j] > 0)
+              if (tCountValue > 0)
               {
-                Color col = _colorTable.getColor((double)_data.Days[i].Counter[j], 0, _maxDispValue);
+                Color col = _colorTable.getColor((double)tCountValue, 0, _maxDispValue);
                 System.Drawing.Brush b = new System.Drawing.SolidBrush(col);
-                GraphHelper.createRectangle(_graphics, xPos, getYCoord(j), wBox, hBox, b);
+                GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), wBox, hBox, b);
               }
               break;
 
             case 1:
-              wBox = (float)_data.Days[i].Counter[j] / _maxDispValue * (dx - 2);
+              wBox = (float)tCountValue / _maxDispValue * (dx - 2);
               if ((wBox > 0.01f) && (wBox < 2.0f))
                 wBox = 2.0f;
               if (_data.Days[i].Counter[j] <= _maxDispValue)
-                GraphHelper.createRectangle(_graphics, xPos, getYCoord(j), wBox, hBox, COL_DATA);
+                GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), wBox, hBox, COL_DATA);
               else
-                GraphHelper.createRectangle(_graphics, xPos, getYCoord(j), (dx - 2), hBox, COL_DATA2);
+                GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), (dx - 2), hBox, COL_DATA2);
               break;
 
             case 2:
-              float dotDia = (float)_data.Days[i].Counter[j] / _maxDispValue * maxDia;
+              float dotDia = (float)tCountValue / _maxDispValue * maxDia;
               if ((dotDia > 0.01f) && (dotDia < 3.0f))
                 dotDia = 3.0f;
-              if (_data.Days[i].Counter[j] <= _maxDispValue)
-                GraphHelper.createDot(_graphics, xPos, getYCoord(j), dotDia, COL_DATA);
+              if (tCountValue <= _maxDispValue)
+                GraphHelper.createDot(_graphics, xPos, getYCoord(j, offset), dotDia, COL_DATA);
               else
-                GraphHelper.createDot(_graphics, xPos, getYCoord(j), (dx - 2), COL_DATA2);
+                GraphHelper.createDot(_graphics, xPos, getYCoord(j, offset), (dx - 2), COL_DATA2);
               break;
           }
         }
@@ -255,8 +258,8 @@ namespace BatInspector
         float sr1 = (float)srH1 + (float)srM1 / 60 + (float)srS1 / 3600;
         float ss1 = (float)ssH1 + (float)ssM1 / 60 + (float)ssS1 / 3600;
         float x1 = getXCoord(currDay);
-        float yr1 = getYCoord(sr1);
-        float ys1 = getYCoord(ss1);
+        float yr1 = getYCoord(sr1, 0);
+        float ys1 = getYCoord(ss1, 0);
         currDay = currDay.AddDays(1);
         Sunrise.getSunSetSunRise(_data.Latitude, _data.Longitude, currDay, out int srH2, out int srM2, out int srS2, out int ssH2, out int ssM2, out int ssS2);
         float sr2 = (float)srH2 + (float)srM2 / 60 + (float)srS2 / 3600;
@@ -264,12 +267,12 @@ namespace BatInspector
         float x2 = getXCoord(currDay.Date);
         if ((sr1 <= DIAG_END_TIME.Hour) && (sr2 <= DIAG_END_TIME.Hour))
         {
-          float yr2 = getYCoord(sr2);
+          float yr2 = getYCoord(sr2, 0);
           _graphics.DrawLine(COL_SUNRISE, x1, yr1, x2, yr2);
         }
         if ((ss1 >= DIAG_START_TIME.Hour) && (ss2 >= DIAG_START_TIME.Hour))
         {
-          float ys2 = getYCoord(ss2);
+          float ys2 = getYCoord(ss2, 0);
           _graphics.DrawLine(COL_SUNSET, x1, ys1, x2, ys2);
         }
       }
@@ -305,12 +308,12 @@ namespace BatInspector
       int offs = 7;
       for (float h = 0; h < 9.0; h += 2.0f)
       {
-        float yPos = getYCoord(h) - offs;
+        float yPos = getYCoord(h, 0) - offs;
         GraphHelper.createText(_graphics, 5, yPos, ((int)h).ToString() + ":00", COL_TEXT);
       }
       for (float h = 18; h < 24.0; h += 2.0f)
       {
-        float yPos = getYCoord(h) - offs;
+        float yPos = getYCoord(h, 0) - offs;
         GraphHelper.createText(_graphics, 5, yPos, ((int)h).ToString() + ":00", COL_TEXT);
       }
 

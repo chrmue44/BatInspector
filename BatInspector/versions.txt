@@ -2,27 +2,30 @@ TODO
 - training of model
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
-- project selector collapses occasionally during work  
 - calculate SNR for each detected call
-- File Access Rights problem Win 11 (Delete)
 - markieren von manuell geänderten Rufen
 - more flexible import: 
   - parsing date/time form different file names
   - real "inplace" import
 - new icon for band pass
-- left collumn collapses automatically after opening project
 - export zoom view: set default file name: call_nr_species_filename.wav
-- highlight manually changed species in man. species list
 
+V0.9.1.1: 14.10.24
+- bugfix: activity diagram now works also for projexts imported from plain WAVs
+- project browser collapses automatically after selecting project
+- added time shift selector to activity diagram
 
-V0.9.1.0:
+V0.9.1.0: 14.10.24
+- left column collapses automatically after opening project
 - new order for buttons in zoom view (player to the right)
 - scroll viewer for call lists in Project View to restrict viewer to const size
 - script function importPrj accepts 2 additional parameters: classifier and model
 - for loop now runs from iterator_start until iterator_end - 1 (allows loops that never execute  )
 - supports now BattyBirdNET
+- highlight manually changed species in man. species list
+- preliminary model for German bat species
 
-V0.9.0.1
+V0.9.0.1:
 - bugfix: forbid wav file import without specifying fix positon of position from file (gpx, kml, txt)
 - changed manual species are marked in project and zoom view
 

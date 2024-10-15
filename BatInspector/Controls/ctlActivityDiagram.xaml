@@ -34,10 +34,10 @@
             <TextBlock  Text="{x:Static res:MyResources.Options}" FontWeight="Bold" />
           </GroupBox.Header>
           <StackPanel Orientation="Horizontal">
-                        <CheckBox Name="_cbTwilight" Content="{x:Static res:MyResources.frmActivityTwilightLine}" Margin="0,7,10,5" Click="_cbMonth_Click"/>
+            <CheckBox Name="_cbTwilight" Content="{x:Static res:MyResources.frmActivityTwilightLine}" Margin="0,7,10,5" Click="_cbMonth_Click"/>
             <local:ctlSelectItem x:Name="_ctlStyle" Margin="5,5,10,5"/>
-                        <local:ctlDataItem x:Name="_ctlMaxValue" Margin="5,5,10,5" Width="170"/>
-
+            <local:ctlDataItem x:Name="_ctlMaxValue" Margin="5,5,10,5" Width="170"/>
+            <local:ctlNumericUpDown x:Name="_ctlTimeShift" Margin="5,5,10,5"/>
                     </StackPanel>          
         </GroupBox>
       </StackPanel>

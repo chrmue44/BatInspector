@@ -151,7 +151,7 @@
     <value>Cancel</value>
   </data>
   <data name="ToolTipSaveSettings" xml:space="preserve">
-    <value>save settings</value>
+    <value>save settings and project</value>
   </data>
   <data name="MainWinProjectView" xml:space="preserve">
     <value>Project</value>
@@ -1643,5 +1643,14 @@
   </data>
   <data name="CtlWavSection" xml:space="preserve">
     <value>Sect.</value>
+  </data>
+  <data name="ToolTipOpenPrj" xml:space="preserve">
+    <value>Show project browser to select project</value>
+  </data>
+  <data name="MainWindowCollapse" xml:space="preserve">
+    <value>Show/hide project selector</value>
+  </data>
+  <data name="ctlActivityTimeShift" xml:space="preserve">
+    <value>Time shift</value>
   </data>
 </root>

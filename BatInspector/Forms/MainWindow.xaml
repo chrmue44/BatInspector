@@ -112,6 +112,9 @@
                     </Grid.RowDefinitions>
                     <ToolBarTray Grid.Row="0"  Height="44" VerticalAlignment="Top" ToolBarTray.IsLocked="True">
                         <ToolBar x:Name="toolBar1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" >
+                            <Button x:Name="_btnOpenPrj"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipOpenPrj}" Click="_btnOpenPrj_Click">
+                                <Image Source="../images/icons8-offener-ordner-64.png"></Image>
+                            </Button>
                             <Button x:Name="_btnSave"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.ToolTipSaveSettings}" Click="_btnSave_Click">
                                 <Image Source="../images/icons8-save-48.png"></Image>
                             </Button>
@@ -225,23 +228,35 @@
                                 <RowDefinition Height="30"></RowDefinition>
                                 <RowDefinition Height="*" ></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Name="_lblPrj" Grid.Row="0" Content="{x:Static res:MyResources.ctlProjectInfo}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center"/>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="20"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Name="_lblPrj" Grid.Column="0" Content="{x:Static res:MyResources.ctlProjectInfo}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center"/>
+                                <Button Name="_btnCollapse" Grid.Column="1" Grid.Row="0" Content="&lt;" Style="{DynamicResource SharpCornerButton}" BorderThickness="0" ToolTip="{x:Static res:MyResources.MainWindowCollapse}" Click="_btnCollapse_Click"/>
+                            </Grid>
+
                             <Grid  Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="120"/>
                                     <RowDefinition Height="25"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <controls:ctlPrjInfo x:Name="_ctlPrjInfo" Grid.Row ="0"  />
-                                <Label  Grid.Row="1" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
-                                <TreeView  Grid.Row="2" Name="trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
+                                <StackPanel Name="_spPrjInfo" Grid.Row ="0">
+                                <controls:ctlPrjInfo x:Name="_ctlPrjInfo"   />
+                                    </StackPanel>
+                                <Label Name="_lblProjectSelect" Grid.Row="1" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                                <StackPanel Name ="_spTreeView" Grid.Row="2">
+                                    <TreeView   Name="_trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
+                                </StackPanel>
                             </Grid>
                         </Grid>
                         <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
                         <TabControl  Grid.Column="2" x:Name="_tbMain"  BorderThickness="0" Margin="0,10,0,0" Background="{DynamicResource colorBackGroundWindow}" Template="{DynamicResource TabControlCm}" SelectionChanged="_tbMain_SelectionChanged">
 
                             <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0,0,0,0" BorderThickness="0" Height="24" VerticalAlignment="Bottom" >
-                                <Grid Grid.Column="2" Margin="0">
+                                <Grid Grid.Column="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="922*"/>
                                         <ColumnDefinition Width="25"/>

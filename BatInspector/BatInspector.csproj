@@ -138,6 +138,9 @@
     <Compile Include="Controls\ctlModParItem.xaml.cs">
       <DependentUpon>ctlModParItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlNumericUpDown.xaml.cs">
+      <DependentUpon>ctlNumericUpDown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlParamEditItem.xaml.cs">
       <DependentUpon>ctlParamEditItem.xaml</DependentUpon>
     </Compile>
@@ -370,6 +373,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ctlModParItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlNumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -621,6 +628,9 @@
     <Resource Include="images\Button-Blank-Blue.48.png" />
     <Resource Include="kopf64.ico" />
     <Resource Include="images\icons8-save-48-exp.png" />
+    <Resource Include="images\icons8-save_plain-48.png" />
+    <Resource Include="images\icons8-offener-ordner-64.png" />
+    <Resource Include="images\Bandpass.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

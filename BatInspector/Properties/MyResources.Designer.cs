@@ -385,6 +385,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time shift.
+        /// </summary>
+        public static string ctlActivityTimeShift {
+            get {
+                return ResourceManager.GetString("ctlActivityTimeShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Left Side.
         /// </summary>
         public static string ctlExpressionEditorLeftSide {
@@ -3283,6 +3292,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show/hide project selector.
+        /// </summary>
+        public static string MainWindowCollapse {
+            get {
+                return ResourceManager.GetString("MainWindowCollapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files.
         /// </summary>
         public static string MainWindowFiles {
@@ -4462,6 +4480,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show project browser to select project.
+        /// </summary>
+        public static string ToolTipOpenPrj {
+            get {
+                return ResourceManager.GetString("ToolTipOpenPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pause playing audio.
         /// </summary>
         public static string ToolTipPausePlayingAudio {
@@ -4525,7 +4552,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to save settings.
+        ///   Looks up a localized string similar to save settings and project.
         /// </summary>
         public static string ToolTipSaveSettings {
             get {

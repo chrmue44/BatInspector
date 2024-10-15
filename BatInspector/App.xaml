@@ -38,9 +38,9 @@
         </Style>
 
         <Style TargetType="Grid">
-      <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
-    </Style>
-    <Style TargetType="CheckBox">
+            <Setter Property="Background" Value="{DynamicResource colorBackGround}"/>
+        </Style>
+        <Style TargetType="CheckBox">
       <Setter Property="Background" Value="{DynamicResource colorBackGroundCheckB}"/>
     </Style>
     <Style TargetType="TreeView">
@@ -118,8 +118,19 @@
         </Style>
       </Style.Resources>
     </Style>
-      
-    <Style x:Key="ImageEnabled" TargetType="Image">
+
+        <Style TargetType="Button" x:Key="SharpCornerButton">
+            <Setter Property="Background" Value="{DynamicResource colorBackGroundWindow}"/>
+            <Setter Property="Foreground" Value="{DynamicResource colorForeGroundButton}" />
+            <Setter Property="Padding"    Value="6,0,6,0" />
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="0" />
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style x:Key="ImageEnabled" TargetType="Image">
       <Style.Triggers>
         <Trigger Property="IsEnabled" Value="False">
           <Setter Property="Opacity" Value="0.25"></Setter>

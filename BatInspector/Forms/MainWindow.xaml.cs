@@ -75,7 +75,7 @@ namespace BatInspector.Forms
     bool _mouseIsDownOnScrollPrj = false;
     double _scrollBarListPos = 0;
     bool _mouseIsDownOnScrollList = false;
-
+    bool _treeViewCollaped = false;
     public MainWindow()
     {
       System.Version version;
@@ -136,15 +136,14 @@ namespace BatInspector.Forms
 #endif
       DebugLog.log(versionStr + " started", enLogType.DEBUG);
       Installer.hideSplash();
-#if !DEBUG
-#endif
+      collapseTreeView(false);
     }
 
 
 
     public void initTreeView()
     {
-      trvStructure.Items.Clear();
+      _trvStructure.Items.Clear();
       DriveInfo[] drives = DriveInfo.GetDrives();
       if (AppParams.Inst.ShowOnlyFilteredDirs)
       {
@@ -153,7 +152,7 @@ namespace BatInspector.Forms
           if ((dir != null) && (dir.Length > 0))
           {
             DirectoryInfo batDataDir = new DirectoryInfo(dir);
-            trvStructure.Items.Add(CreateTreeItem(batDataDir));
+            _trvStructure.Items.Add(CreateTreeItem(batDataDir));
           }
         }
       }
@@ -162,7 +161,7 @@ namespace BatInspector.Forms
         foreach (DriveInfo driveInfo in drives)
         {
           DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
-          trvStructure.Items.Add(CreateTreeItem(dir));
+          _trvStructure.Items.Add(CreateTreeItem(dir));
         }
       }
     }
@@ -254,6 +253,7 @@ namespace BatInspector.Forms
       {
         _ctlPrjBtn.initFileButton(false);
         _tbSum.Visibility = Visibility.Visible;
+        collapseTreeView(true);
         worker.DoWork += delegate (object s, DoWorkEventArgs args)
         {
           DirectoryInfo d = (DirectoryInfo)args.Argument;
@@ -1256,6 +1256,9 @@ namespace BatInspector.Forms
 
     private void _grdSplitterV_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
     {
+      if (_grdCtrl.ColumnDefinitions[0].Width.Value < 50)
+        _grdCtrl.ColumnDefinitions[0].Width = new GridLength(50);
+
       AppParams.Inst.WidthFileSelector = _grdCtrl.ColumnDefinitions[0].Width.Value;
     }
 
@@ -1723,7 +1726,48 @@ namespace BatInspector.Forms
         }
       }
     }
+
+    private void _btnCollapse_Click(object sender, RoutedEventArgs e)
+    {
+      collapseTreeView(!_treeViewCollaped);
+    }
+
+
+    private void collapseTreeView(bool collapse)
+    {
+      _treeViewCollaped = collapse;
+      if (_treeViewCollaped)
+      {
+        _btnCollapse.Content = ">";
+        _grdCtrl.ColumnDefinitions[0].Width = new GridLength(20);
+        _ctlPrjInfo.Visibility = Visibility.Collapsed;
+        _lblProjectSelect.Content = "";
+        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
+        _spPrjInfo.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
+        _trvStructure.Visibility = Visibility.Collapsed;
+        _grdCtrl.ColumnDefinitions[1].Width = new GridLength(0);
+        _btnOpenPrj.Visibility = Visibility.Visible;
+      }
+      else
+      {
+        _btnCollapse.Content = "<";
+        _grdCtrl.ColumnDefinitions[0].Width = new GridLength(AppParams.Inst.WidthFileSelector);
+        _ctlPrjInfo.Visibility = Visibility.Visible;
+        _lblProjectSelect.Content = MyResources.MainSelectFolder;
+        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGround"];
+        _spPrjInfo.Background = (SolidColorBrush)App.Current.Resources["colorBackGround"];
+        _trvStructure.Visibility = Visibility.Visible;
+        _grdCtrl.ColumnDefinitions[1].Width = new GridLength(8);
+        _btnOpenPrj.Visibility = Visibility.Hidden;
+      }
+    }
+
+    private void _btnOpenPrj_Click(object sender, RoutedEventArgs e)
+    {
+      collapseTreeView(false);
+    }
   }
+
   public enum enWinType
   {
     ZOOM,

@@ -65,7 +65,7 @@
                 </Button>
               -->
                 <Button x:Name="_btnBandpass"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnBandpass_Click" ToolTip="{x:Static res:MyResources.ToolTipBandpass}">
-                    <Image Source="../images/filter_settings_icon_143016.png"></Image>
+                    <Image Source="../images/Bandpass.png"></Image>
                 </Button>
                 <Button x:Name="_btnReduceNoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnReduceNoise_Click" ToolTip="{x:Static res:MyResources.ToolTipReduceNoise}">
                     <Image Source="../images/icons8-cleanup-noise-100.png"></Image>

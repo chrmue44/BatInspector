@@ -98,6 +98,9 @@ https://icons8.com/icons/set/zoom-in
 icons8-folder-48.png
 https://icons8.com/icons/set/folder
 
+icons8-offener-ordner-64.png
+https://icons8.de/icons/set/open-folder
+
 icons8-plus-+-48.png
 https://icons8.com/icons/set/plus
 

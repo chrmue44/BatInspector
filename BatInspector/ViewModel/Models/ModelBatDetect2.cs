@@ -261,8 +261,10 @@ namespace BatInspector
     {
       if (spec == "Barbastellus barbastellus")
         return "Barbastella barbastellus";
+      else if (spec == "Myotis natteri")
+        return "Myotis nattereri";
       else
-        return spec;
+      return spec;
     }
     public static Csv createReport(string colSpecies)
     {

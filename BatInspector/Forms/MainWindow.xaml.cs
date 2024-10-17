@@ -1742,9 +1742,10 @@ namespace BatInspector.Forms
         _grdCtrl.ColumnDefinitions[0].Width = new GridLength(20);
         _ctlPrjInfo.Visibility = Visibility.Collapsed;
         _lblProjectSelect.Content = "";
-        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
+//        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
         _spPrjInfo.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
         _trvStructure.Visibility = Visibility.Collapsed;
+        _rect.Visibility = Visibility.Visible;
         _grdCtrl.ColumnDefinitions[1].Width = new GridLength(0);
         _btnOpenPrj.Visibility = Visibility.Visible;
       }
@@ -1754,9 +1755,11 @@ namespace BatInspector.Forms
         _grdCtrl.ColumnDefinitions[0].Width = new GridLength(AppParams.Inst.WidthFileSelector);
         _ctlPrjInfo.Visibility = Visibility.Visible;
         _lblProjectSelect.Content = MyResources.MainSelectFolder;
-        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGround"];
+        _trvStructure.Background = (SolidColorBrush)App.Current.Resources["colorBackGround"];
+        //       _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGround"];
         _spPrjInfo.Background = (SolidColorBrush)App.Current.Resources["colorBackGround"];
         _trvStructure.Visibility = Visibility.Visible;
+        _rect.Visibility = Visibility.Collapsed;
         _grdCtrl.ColumnDefinitions[1].Width = new GridLength(8);
         _btnOpenPrj.Visibility = Visibility.Hidden;
       }

@@ -137,7 +137,7 @@
         </Trigger>
       </Style.Triggers>
     </Style>
-      
+
     <Style TargetType="StatusBar">
       <Setter Property="Background" Value="#FFF7F9FE"/>
     </Style>
@@ -233,7 +233,9 @@
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>
-  </Application.Resources>
+
+
+    </Application.Resources>
 
 </Application>
  

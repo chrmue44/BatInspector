@@ -247,15 +247,14 @@
                                 <controls:ctlPrjInfo x:Name="_ctlPrjInfo"   />
                                     </StackPanel>
                                 <Label Name="_lblProjectSelect" Grid.Row="1" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
-                                <StackPanel Name ="_spTreeView" Grid.Row="2">
-                                    <TreeView   Name="_trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,5,5,5" Grid.ColumnSpan="2"/>
-                                </StackPanel>
+                                <TreeView  Grid.Row="2" x:Name="_trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,0,0,0" Grid.ColumnSpan="2"/>
+                                <Rectangle Name="_rect" Grid.Row="2" Fill="{DynamicResource colorBackGroundWindow}" Visibility="Collapsed"/>
                             </Grid>
                         </Grid>
                         <GridSplitter Name="_grdSplitterV" Grid.Column="1" Width="9" HorizontalAlignment="Stretch" Margin="0,0" Grid.RowSpan="3" BorderThickness="0" DragCompleted="_grdSplitterV_DragCompleted"/>
                         <TabControl  Grid.Column="2" x:Name="_tbMain"  BorderThickness="0" Margin="0,10,0,0" Background="{DynamicResource colorBackGroundWindow}" Template="{DynamicResource TabControlCm}" SelectionChanged="_tbMain_SelectionChanged">
 
-                            <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0,0,0,0" BorderThickness="0" Height="24" VerticalAlignment="Bottom" >
+                            <TabItem Name="_tbPrj" Header="{x:Static res:MyResources.MainWinProjectView}" Margin="0,0,0,0" BorderThickness="0"  >
                                 <Grid Grid.Column="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="922*"/>

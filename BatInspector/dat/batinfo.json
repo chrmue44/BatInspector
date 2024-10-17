@@ -64,6 +64,27 @@
       "WavExample": "dat\/Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
     },
     {
+      "Abbreviation": "HSAV",
+      "CallDistMax": 0,
+      "CallDistMin": 0,
+      "CharCalls": "Rufsequenzen mit fm und fm-qcf Rufen wenn keine Rufwechsel auftreten und die Rufe im Hinblick auf Form, Frequenz und Rufintervalle sehr uniform sind. Bei qcf-Rufen müssen die Rufabstände etwa 300 (200 - 400) ms und bei fm-qcf-Rufen zwischen 100 und 300 ms betragen. Bei letzteren müssen die Aufwärtshäkchen am Ende ausgeprägt sein. \r\nbei qcf-Rufen fMin 21 - 25 kHz; bei fm-qcf Rufen fMin < 26 kHz",
+      "ConfusionSpec": "PKUH, PNAT, MDAS",
+      "DurationMax": 8,
+      "DurationMin": 15,
+      "FreqCharMax": 30,
+      "FreqCharMin": 38,
+      "FreqMaxMax": 0,
+      "FreqMaxMin": 0,
+      "FreqMinMax": 0,
+      "FreqMinMin": 0,
+      "Habitat": "",
+      "Latin": "Hypsugo savii",
+      "Local": "Alpenfledermaus",
+      "ProofSpecies": "qcf: Fchar <= 34 kHz\r\n fm-qcf: Fchar <= 35 kHz\r\nmindestens 3 Sequenzen (> 20 Rufe)\r\nkeine Verwechslungsarten innerhalb 2 min.\r\n",
+      "Show": true,
+      "WavExample": null  
+    },
+    {
       "Abbreviation": "MALC",
       "CallDistMax": 90,
       "CallDistMin": 50,

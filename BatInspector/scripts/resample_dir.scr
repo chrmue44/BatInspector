@@ -1,0 +1,10 @@
+SET dirName =(PAR1)
+SET NrFiles =(countFiles(dirName, "*.wav") - 1)
+SET samplingRate 384000
+LOG =("reading dir " + dirName + " containing " + NrFiles + " files")
+FOR FileNr 0 NrFiles
+  SET FileName =(getFile(FileNr))
+  =(reSampleWav(FileName, samplingRate))
+  LOG =("file '" + FileName + "' rescaled to: " + samplingRate)
+END
+LOG =("resampling of files completed")

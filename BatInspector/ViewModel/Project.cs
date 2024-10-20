@@ -323,43 +323,47 @@ namespace BatInspector
     public static bool evaluationDone(DirectoryInfo dir, ModelParams[] mp)
     {
       bool retVal = false;
-      for(int i = 0; i < mp.Length; i++)
+      string sumName = "";
+      string reportName = "";
+      if (mp != null)
       {
-        foreach (string dataSet in mp[i].AvailableDataSets)
-        {          
-          string sumName = getSummaryName(dir.FullName, mp[i], dataSet);
-          if (File.Exists(sumName))
+        for (int i = 0; i < mp.Length; i++)
+        {
+          if (mp[i].Enabled)
           {
-            Csv csv = new Csv();
-            csv.read(sumName, ";", true);
-            int col = csv.findInCol("todo", Cols.SPECIES_MAN);
-            retVal = (col == 0);
+            sumName = getSummaryName(dir.FullName, mp[i], mp[i].DataSet);
+            reportName = getReportName(dir.FullName, mp[i], mp[i].DataSet);
           }
-          else
-          {
-            string fName = getReportName(dir.FullName, mp[i], dataSet);
-            if (File.Exists(fName))
-            {
-              Csv csv = new Csv();
-              {
-                csv.read(fName, ";", true);
-                int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
-                if (colSp > 0)
-                {
-                  int row = csv.findInCol("todo", colSp);
-                  if (row == 0)
-                    retVal = true;
-                  if (!retVal)
-                    break;
-                }
-              }
-            }
-          }
-          if (!retVal)
-            break;
         }
       }
+      // legacy format
+      else
+      {
+        sumName = Path.Combine(dir.FullName, "bd2", AppParams.SUM_REPORT);
+        reportName = Path.Combine(dir.FullName, "bd2", AppParams.PRJ_REPORT);
+      }
 
+      if (File.Exists(sumName))
+      {
+        Csv csv = new Csv();
+        csv.read(sumName, ";", true);
+        int col = csv.findInCol("todo", Cols.SPECIES_MAN);
+        retVal = (col == 0);
+      }
+      else if (File.Exists(reportName))
+      {
+        Csv csv = new Csv();
+        {
+          csv.read(reportName, ";", true);
+          int colSp = csv.findInRow(1, Cols.SPECIES_MAN);
+          if (colSp > 0)
+          {
+            int row = csv.findInCol("todo", colSp);
+            if (row == 0)
+              retVal = true;
+          }
+        }
+      }
       return retVal;
     }
 
@@ -784,6 +788,18 @@ namespace BatInspector
       }
     }
 
+    public static ModelParams[] readModelParams(string prjFile)
+    {
+      ModelParams[] retVal = null;
+      string xml = File.ReadAllText(prjFile);
+      if (Path.GetExtension(prjFile) == AppParams.EXT_BATSPY)
+      {
+        TextReader reader = new StringReader(xml);
+        BatExplorerProjectFile pf = (BatExplorerProjectFile)PrjSerializer.Deserialize(reader);
+        retVal = pf.Models;
+      }
+      return retVal;
+    }
 
     public void readPrjFile(string prjDir, ModelParams[] defaultParams)
     {

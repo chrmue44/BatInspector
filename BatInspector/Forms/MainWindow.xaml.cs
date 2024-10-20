@@ -189,10 +189,12 @@ namespace BatInspector.Forms
               {
                 TreeViewItem childItem = CreateTreeItem(subDir);
                 item.Items.Add(childItem);
-                if (Project.containsProject(subDir) != "")
+                string prjFile = Project.containsProject(subDir);
+                if (prjFile != "")
                 {
+                  ModelParams[] modelParams = Project.readModelParams(prjFile);
                   childItem.FontWeight = FontWeights.Bold;
-                  if (Project.evaluationDone(subDir, _model.DefaultModelParams))
+                  if (Project.evaluationDone(subDir, modelParams))
                     childItem.Foreground = new SolidColorBrush(Colors.Green);
                   else
                     childItem.Foreground = new SolidColorBrush(Colors.Violet);

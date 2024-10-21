@@ -11,7 +11,7 @@ namespace BatInspector
 
     public static int main(string[] args)
     {
-      _model = new ViewModel(null, "1", null);
+      _model = new ViewModel(null, null);
       int retVal = 0;
       if(args.Length == 0)
         return 1;

@@ -3,11 +3,26 @@
 The components taken from other sources are listed below
 
 *******************
-* AI model   *
+* AI models       *
 *******************
 
 AI model to detect bat species:
+
+Model 1:
 https://github.com/macaodha/batdetect2
+Model 2:
+https://github.com/rdz-oss/BattyBirdNET-Analyzer
+
+*******************
+* Training Data   *
+*******************
+www.tierstimmenarchiv.de
+https://github.com/rdz-oss/BattyBirdNET-Analyzer (download link in readme)
+Rudolf Böhm
+Christian Müller
+
+thanks to Martin Hoier for annotating a lot of files
+
 
 *******************
 * Noise reduction *

@@ -19,6 +19,9 @@ using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
 using System.Configuration.Install;
+using NAudio.SoundFont;
+using System.Deployment.Application;
+using System.Reflection;
 
 namespace BatInspector
 {
@@ -173,7 +176,7 @@ namespace BatInspector
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
     public const string CMD_REDUCE_NOISE = "reduce_noise.bat"; //command to reduce the background noise in WAV file
 
-    const string _fName = "BatInspectorSettings.json";
+    const string FILE_NAME_SETTINGS = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;
     public const string PythonBin = "\"C:/Program Files/Python310/python.exe\"";
@@ -187,6 +190,25 @@ namespace BatInspector
     bool _isInitialized = false;
     ScriptInventory _scriptInventory = null;
     static public  bool IsInitialized { get { return _inst._isInitialized; } }
+   
+    public static string AppVersion 
+    {
+      get
+      {
+        System.Version version;
+        try
+        {
+          version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
+        }
+        catch
+        {
+          version = Assembly.GetExecutingAssembly().GetName().Version;
+        }
+
+        return version.ToString();
+      }
+    }
+    
     public static AppParams Inst 
     { 
       get 
@@ -210,7 +232,7 @@ namespace BatInspector
     [Browsable(false)]
     public string FileName
     {
-      get { return Path.Combine(AppDataPath, _fName); }
+      get { return Path.Combine(AppParamsPath, FILE_NAME_SETTINGS); }
     }
 
     [DataMember]
@@ -219,10 +241,15 @@ namespace BatInspector
     [Browsable(false)]
     public string AppRootPath { get; set; } = "";
 
- 
+
+    public static String AppParamsPath { get; set; } = "";
     public static string AppDataPath { get; set; } = "";
 
     public static string LogDataPath { get; set; } = "";
+
+    [DataMember]
+    [Browsable(false)]
+    public string Version { get; set; } = "";
 
 
     [DataMember]
@@ -530,13 +557,17 @@ namespace BatInspector
 
     private void updateFromOlderVersions()
     {
-      if (string.IsNullOrEmpty(ModelDefaultParamsFile))
-        ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
-      DefaultModel = enModel.BAT_DETECT2;
-  }
+      if (string.IsNullOrEmpty(Version) || (Version != AppVersion))
+      {
+        if (string.IsNullOrEmpty(ModelDefaultParamsFile))
+          ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
+        Version = AppVersion;
+      }
+    }
 
-  public void init()
+    public void init()
     {
+      Version = AppVersion;
       AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
       LogDataPath = Path.Combine(AppDataPath, "log");
       ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
@@ -725,6 +756,8 @@ namespace BatInspector
     public static void load()
     {
       DebugLog.log("searching " + _dataPath + " in directory " + AppDomain.CurrentDomain.BaseDirectory, enLogType.DEBUG);
+      AppParamsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+                                   PROG_DAT_DIR);
       if (File.Exists(_dataPath))
       {
         DebugLog.log(_dataPath + " found", enLogType.DEBUG);
@@ -738,6 +771,7 @@ namespace BatInspector
         else
         {
           AppDataPath = replaceDriveLetter(path);
+          AppParamsPath = AppDataPath;
         }
       }
       else
@@ -747,9 +781,7 @@ namespace BatInspector
       }
       DebugLog.log("resulting data path: " + AppDataPath, enLogType.INFO);
       LogDataPath = Path.Combine(AppDataPath, "log");
-      string fPath = Path.Combine(AppDataPath, _fName);
-      if (!File.Exists(fPath))
-        fPath = DriveLetter.Substring(0, 1) + fPath.Substring(1);
+      string fPath = Path.Combine(AppParamsPath, FILE_NAME_SETTINGS);
       loadFrom(fPath);
     }
 

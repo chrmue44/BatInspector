@@ -10,8 +10,10 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -50,7 +52,6 @@ namespace BatInspector
   public class ViewModel
   {
     string _selectedDir = "";
-    string _version;
     ProcessRunner _proc;
     ZoomView _zoom;
     Filter _filter;
@@ -75,8 +76,6 @@ namespace BatInspector
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
-
-    public string Version { get { return _version; } }
 
     public ClassifierBarataud Classifier { get { return _clsBarataud; } }
 
@@ -129,7 +128,7 @@ namespace BatInspector
       }
     }
 
-    public ViewModel(Forms.MainWindow mainWin, string version, DlgUpdateFile dlgUpdate)
+    public ViewModel(Forms.MainWindow mainWin, DlgUpdateFile dlgUpdate)
     {
       if (!AppParams.IsInitialized)
         AppParams.load();
@@ -137,9 +136,8 @@ namespace BatInspector
       _proc = new ProcessRunner();
       _mainWin = mainWin;
       _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
-   //   _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));     // why here???
-   //   _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-      _version = version;
+      //   _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));     // why here???
+      //   _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
       _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();
       Status = new ModelState();
@@ -916,6 +914,7 @@ namespace BatInspector
       {
         Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
         evaluate(cli);
+        initProject(dir, null);  // re init project to take deleted files into account
       }
       if (Prj.Records.Length > info.MaxFileCnt)
       {
@@ -927,7 +926,7 @@ namespace BatInspector
         // remove src project
         Directory.Delete(prjPath, true);
       }
-      if(!cli)
+      if (!cli)
         Prj.ReloadInGui = true;
     }
   }

@@ -401,7 +401,7 @@ namespace BatInspector
         wavSubDir = AppParams.DIR_WAVS;
 
       Project prjSrc = new Project(regions, speciesInfo, null, wavSubDir);
-      string fName = Path.Combine(info.SrcDir, info.Name) + ".bpr";
+      string fName = Path.Combine(info.SrcDir, info.Name) + AppParams.EXT_PRJ;
       prjSrc.readPrjFile(fName);
       string[] notes = prjSrc.Notes.Split('\n');
 
@@ -1098,7 +1098,7 @@ namespace BatInspector
         _ok = true;
         _prjFileName = Path.GetFileName(dir.FullName);
         _batExplorerPrj.Name = _prjFileName;
-        _prjFileName = Path.Combine(dir.FullName , _prjFileName + ".bpr");
+        _prjFileName = Path.Combine(dir.FullName , _prjFileName + AppParams.EXT_BATSPY);
         _changed = true;
         Created = DateTime.Now.ToString(AppParams.GPX_DATETIME_FORMAT);
         Notes = notes;

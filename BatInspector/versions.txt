@@ -10,10 +10,11 @@ TODO
 - new icon for band pass
 - export zoom view: set default file name: call_nr_species_filename.wav
 
-V0.9.1.1: 14.10.24
+V0.9.1.1: 20.10.24
 - bugfix: activity diagram now works also for projexts imported from plain WAVs
 - project browser collapses automatically after selecting project
 - added time shift selector to activity diagram
+- Program settings are now saved in Common Documents Path and will no longer be erased when updating the software
 
 V0.9.1.0: 14.10.24
 - left column collapses automatically after opening project

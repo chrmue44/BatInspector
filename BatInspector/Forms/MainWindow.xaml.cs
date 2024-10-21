@@ -78,19 +78,11 @@ namespace BatInspector.Forms
     bool _treeViewCollaped = false;
     public MainWindow()
     {
-      System.Version version;
-      try
-      {
-        version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
-      }
-      catch
-      {
-        version = Assembly.GetExecutingAssembly().GetName().Version;
-      }
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
-      string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
-      _model = new ViewModel(this, versionStr, callbackUpdateAnalysis);
+      _model = new ViewModel(this, callbackUpdateAnalysis);
+      
       _model.Status.State = enAppState.IDLE;
+      string versionStr = "BatInspector V" + AppParams.AppVersion + " " + linkTimeLocal.ToString();
       setLanguage();
       InitializeComponent();
       _ctlScatter.setup(_model);
@@ -1010,7 +1002,7 @@ namespace BatInspector.Forms
       try
       {
         if (_frmAbout == null)
-          _frmAbout = new FrmAbout(_model.Version);
+          _frmAbout = new FrmAbout(AppParams.AppVersion);
         _frmAbout.Show();
         _frmAbout.Visibility = Visibility.Visible;
         _frmAbout.Topmost = true;
@@ -1348,22 +1340,29 @@ namespace BatInspector.Forms
 
     private void _scrollPrj_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-      if(!_mouseIsDownOnScrollPrj)
+      try
       {
-        if (_model.CurrentlyOpen == null) 
-          return;
-        
-        if (_scrollBarPrjPos == _scrollPrj.Value)
-          return;
+        if (!_mouseIsDownOnScrollPrj)
+        {
+          if (_model.CurrentlyOpen == null)
+            return;
 
-        double diff = _scrollPrj.Value - _scrollBarPrjPos;
-        if ((diff < 2) && (diff > 0))
-          incrementControls(true);
-        else if ((diff > -2) && (diff < 0))
-          incrementControls(false);
-        else
-          populateControls((int)_scrollPrj.Value);
-        _scrollBarPrjPos = _scrollPrj.Value;
+          if (_scrollBarPrjPos == _scrollPrj.Value)
+            return;
+
+          double diff = _scrollPrj.Value - _scrollBarPrjPos;
+          if ((diff < 2) && (diff > 0))
+            incrementControls(true);
+          else if ((diff > -2) && (diff < 0))
+            incrementControls(false);
+          else
+            populateControls((int)_scrollPrj.Value);
+          _scrollBarPrjPos = _scrollPrj.Value;
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log(ex.ToString(), enLogType.ERROR);
       }
     }
 

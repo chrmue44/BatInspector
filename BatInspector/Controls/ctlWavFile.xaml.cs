@@ -54,7 +54,7 @@ namespace BatInspector.Controls
         }
         else
         {
-          _grid.ColumnDefinitions[1].Width = new GridLength(300);
+          _grid.ColumnDefinitions[1].Width = new GridLength(360);
   //        _grid.ColumnDefinitions[2].Width = new GridLength(160);
         }
       }
@@ -141,7 +141,7 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        int wLbl = 48;
+        int wLbl = 55;
         int callNr = 1;
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();

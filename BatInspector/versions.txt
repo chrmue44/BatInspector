@@ -7,7 +7,6 @@ TODO
 - more flexible import: 
   - parsing date/time form different file names
   - real "inplace" import
-- new icon for band pass
 - export zoom view: set default file name: call_nr_species_filename.wav
 
 V0.9.1.1: 20.10.24
@@ -15,6 +14,8 @@ V0.9.1.1: 20.10.24
 - project browser collapses automatically after selecting project
 - added time shift selector to activity diagram
 - Program settings are now saved in Common Documents Path and will no longer be erased when updating the software
+- Project view list of species a bit wider
+- new icon for band pass
 
 V0.9.1.0: 14.10.24
 - left column collapses automatically after opening project

@@ -20,23 +20,23 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="18" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="360" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Grid.Row="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <Button Width="134" Name="_btnCopy"  Margin="3" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
-                <Button Width="134" Name="_btnTools" Margin="3" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
+                <Button Width="165" Name="_btnCopy"  Margin="3" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
+                <Button Width="165" Name="_btnTools" Margin="3" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
             </StackPanel>
             <ScrollViewer Name="_sv" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel Name="_spCalls" Orientation="Horizontal">
-                    <GroupBox Width="140" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto"  Background="{DynamicResource colorBackGround}">
+                    <GroupBox Width="170" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto"  Background="{DynamicResource colorBackGround}">
                         <GroupBox.Header>
                             <TextBlock Text="{x:Static res:MyResources.CtlWavAutoDetection}" FontWeight="Bold" />
                         </GroupBox.Header>
                         <StackPanel x:Name="_spDataAuto" />
                     </GroupBox>
-                    <GroupBox Width="140" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan"  Background="{DynamicResource colorBackGround}">
+                    <GroupBox Width="170" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan"  Background="{DynamicResource colorBackGround}">
                         <GroupBox.Header>
                             <TextBlock Text="{x:Static res:MyResources.CtlWavManualDetection}" FontWeight="Bold" />
                         </GroupBox.Header>

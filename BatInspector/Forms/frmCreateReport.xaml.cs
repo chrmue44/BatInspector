@@ -31,7 +31,7 @@ namespace BatInspector.Forms
       _ctlReport.setup(this, model);
     }
 
-    private void setFormDataName(string s)
+    private void setFormDataName(string s, dlgVoid callBack)
     {
       _formDataName = s;
     }

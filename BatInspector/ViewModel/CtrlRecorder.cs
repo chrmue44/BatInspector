@@ -197,7 +197,7 @@ namespace BatInspector
           bmp.setPixel(w, height - 1 - h, col);
         }
       }
-      BitmapImage img = ViewModel.Convert(bmp.Bmp);
+      BitmapImage img = PrjView.Convert(bmp.Bmp);
       return img;
     }
 

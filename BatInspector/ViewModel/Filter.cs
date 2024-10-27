@@ -144,6 +144,9 @@ namespace BatInspector
       if (filter.IsForAllCalls)
         retVal = true;
 
+      if (string.IsNullOrEmpty(filter.Expression))
+        return true;
+
       if (file != null)
       {
         _expression.setVariable(VAR_REMARKS, file.getString(Cols.REMARKS));

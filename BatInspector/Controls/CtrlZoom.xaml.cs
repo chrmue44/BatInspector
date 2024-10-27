@@ -857,7 +857,7 @@ namespace BatInspector.Controls
                                                                                 _model.ZoomView.RulerDataF.Max);
       if (bmpFt != null)
       {
-        BitmapImage bImg = ViewModel.Convert(bmpFt);
+        BitmapImage bImg = PrjView.Convert(bmpFt);
         _imgFt.Source = bImg;
       }
       updateXtImage();
@@ -871,7 +871,7 @@ namespace BatInspector.Controls
                                                           _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
       if (bmpXt != null)
       {
-        BitmapImage bImg = ViewModel.Convert(bmpXt);
+        BitmapImage bImg = PrjView.Convert(bmpXt);
         _imgXt.Source = bImg;
       }
     }

@@ -7,9 +7,9 @@
         xmlns:controls="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400" MinWidth="1280" MinHeight="640"
-        Icon="../images/kopf64.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" 
-        >
-    <!-- PreviewKeyDown="Window_KeyDown" -->
+        Icon="../images/kopf64.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
+        PreviewKeyDown="Window_KeyDown"
+    >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="34" />
     </WindowChrome.WindowChrome>
@@ -268,22 +268,20 @@
                                     <controls:CtlPrjButtons x:Name="_ctlPrjBtn" Grid.Row ="0"  Grid.Column="0" />
                                     <StackPanel Grid.Row="2" Grid.Column="0" Name="_spSpectrums" Orientation="Vertical"  >
                                     </StackPanel>
-                                    <ScrollBar Name="_scrollPrj" Orientation="Vertical" Grid.Row="2" Grid.Column="1" MouseUp="_scrollPrj_MouseUp" PreviewMouseLeftButtonUp="_scrollPrj_MouseUp"  ValueChanged="_scrollPrj_ValueChanged" PreviewMouseLeftButtonDown="_scrollPrj_PreviewMouseLeftButtonDown" Margin="4,0,4,0"/>
+                                    <ScrollBar Name="_scrollPrj" Orientation="Vertical" Grid.Row="2" Grid.Column="1" MouseUp="_scrollPrj_MouseUp" 
+                                               PreviewMouseLeftButtonUp="_scrollPrj_MouseUp"  ValueChanged="_scrollPrj_ValueChanged" 
+                                               PreviewMouseLeftButtonDown="_scrollPrj_PreviewMouseLeftButtonDown" Margin="4,0,4,0" 
+                                               MouseWheel="_scrollPrj_MouseWheel"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Name="_tbReport" Header="{x:Static res:MyResources.MainReportProject}" Margin="0,0,0,0" >
                                 <Grid >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="26"/>
-                                        <RowDefinition/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="25"/>
-                                    </Grid.ColumnDefinitions>
-                                    <controls:CtlPrjButtons x:Name="_ctlListBtn" Grid.Column="0" Grid.Row="0" />
-                                    <DataGrid x:Name="_dgData" Grid.Column="0" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" MouseDoubleClick="_dgData_MouseDoubleClick" />
-                                    <ScrollBar Name="_scrollList" Orientation="Vertical" Grid.Row="1" Grid.Column="1" MouseUp="_scrollList_MouseUp" PreviewMouseLeftButtonUp="_scrollList_MouseUp"  ValueChanged="_scrollList_ValueChanged" PreviewMouseLeftButtonDown="_scrollList_PreviewMouseLeftButtonDown" Margin="4,0,4,0"/>
+                                    <controls:CtlPrjButtons x:Name="_ctlListBtn"  Grid.Row="0" />
+                                    <DataGrid x:Name="_dgData"  Grid.Row="1"  MouseDoubleClick="_dgData_MouseDoubleClick" />
                                 </Grid>
                             </TabItem>
                             <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" >

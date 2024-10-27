@@ -70,6 +70,7 @@ namespace BatInspector
     string _tempCmd;
     PrjView _view;
     ModelParams[] _defaultModelParams;
+    dlgVoid _callBackEnd = null;
 
     public PrjView View { get{ return _view; } }
 
@@ -328,62 +329,20 @@ namespace BatInspector
     {
       if (ctlWav != null)
       {
-        ctlWav._img.Source = getFtImage(wavName, AppParams.FFT_WIDTH, colorTable);
+        ctlWav._img.Source = PrjView.getFtImage(wavName, AppParams.FFT_WIDTH, colorTable);
       }
     }
 
-    public static BitmapImage getFtImage(string wavName, int fftWidth, ColorTable colorTable)
-    {
-      BitmapImage bImg = null;
-      string pngName = "";
-      try
-      {
-        pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        Bitmap bmp = null;
-        if (File.Exists(pngName))
-          bmp = new Bitmap(pngName);
-        else
-        {
-          Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
-          if (wf.Ok)
-          {
-            wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-            bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000);
-            bmp.Save(pngName);
-          }
-          else
-            DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
-        }
-        if (bmp != null)
-          bImg = Convert(bmp);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
-      }
-      return bImg;
-    }
-
-    public BitmapImage getFtImage(PrjRecord rec,  bool fromQuery)
-    {
-      string wavName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _view.Prj.WavSubDir, rec.File);
-      BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH, _colorTable);
-      if ((bImg == null) && (_view.Prj != null))
-      {
-        _view.Prj.removeFile(rec.File);
-        if (_view.Prj.Analysis?.IsEmpty == false)
-          _view.Prj.Analysis.removeFile(Prj.ReportName, rec.File);
-      }
-      return bImg;
-    }
+  
 
     /// <summary>
     /// execute command in separate thread
     /// </summary>
     /// <param name="cmd"></param>
-    public void executeCmd(string cmd)
+    public void executeCmd(string cmd, dlgVoid callBackEnd)
     {
       _tempCmd = cmd;
+      _callBackEnd = callBackEnd;
       Thread thr = new Thread(threadExecCmd);
       thr.Start();
     }
@@ -391,6 +350,11 @@ namespace BatInspector
     public void threadExecCmd()
     {
       _scripter.execCmd(_tempCmd);
+      if(_callBackEnd != null)
+      {
+        _callBackEnd();
+        _callBackEnd = null;
+      }
     }
 
     public void cancelScript()
@@ -670,29 +634,6 @@ namespace BatInspector
 
 
 
-    public static BitmapImage Convert(Bitmap bitmap)
-    {
-      var bitmapImage = new BitmapImage();
-      try
-      {
-        using (MemoryStream memory = new MemoryStream())
-        {
-          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-          memory.Position = 0;
-
-          bitmapImage.BeginInit();
-          bitmapImage.StreamSource = memory;
-          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-          bitmapImage.EndInit();
-          bitmapImage.Freeze();
-        }
-      }
-      catch(Exception ex) 
-      {
-        DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
-      }
-      return bitmapImage;
-    } 
 
     private void initFilter()
     {

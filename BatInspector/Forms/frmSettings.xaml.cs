@@ -7,8 +7,10 @@
  ********************************************************************************/
 using BatInspector.Properties;
 using libParser;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 
 namespace BatInspector.Forms

@@ -3130,6 +3130,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export files (with filtering) to another directory.
+        /// </summary>
+        public static string MainToolExport {
+            get {
+                return ResourceManager.GetString("MainToolExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export all selected files to directory.
         /// </summary>
         public static string MainToolExportSel {

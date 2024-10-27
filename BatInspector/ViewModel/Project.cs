@@ -15,6 +15,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
 
@@ -243,6 +244,12 @@ namespace BatInspector
         return Path.Combine(dir, mp.SubDir, $"summary_{mp.Name}_{dataSet}.csv");
     }
 
+    public static string containsProject(string dir)
+    {
+      DirectoryInfo d = new DirectoryInfo(dir);
+      return containsProject(d);
+    }
+
     /// <summary>
     /// checks wether a directory contains a project
     /// </summary>
@@ -367,6 +374,56 @@ namespace BatInspector
       return retVal;
     }
 
+    public int applyFilter(Filter filter, FilterItem filterItem)
+    {
+      int retVal = 0;
+      if(Analysis?.Files.Count > 0)
+      {
+        foreach(PrjRecord rec in Records)
+        {
+          AnalysisFile f = Analysis.find(rec.File);
+          if (f != null)
+          {
+            rec.Selected = filter.apply(filterItem, f);
+          }
+          else
+            rec.Selected = false;
+        }
+      }
+      return retVal;
+    }
+    public void exportFiles(string outputDir, bool withXml = true, bool withPng = true)
+    {
+      int countWav = 0;
+      if (Directory.Exists(outputDir))
+      {
+        DebugLog.log($"start files export from Project {Name}", enLogType.INFO);
+        foreach (PrjRecord rec in Records)
+        {
+          if (rec.Selected)
+          {
+            string srcWavName = Path.Combine(PrjDir, WavSubDir, rec.File);
+            string srcXmlName = srcWavName.ToLower().Replace("wav", "xml");
+            string srcPngName = srcWavName.ToLower().Replace("wav", "png");
+            string dstWavName = Path.Combine(outputDir, Path.GetFileName(rec.File));
+            string dstXmlName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(rec.File)) + ".xml";
+            string dstPngName = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(rec.File)) + ".png";
+            if (File.Exists(srcWavName))
+            {
+              File.Copy(srcWavName, dstWavName, true);
+              countWav++;
+            }
+            if (withXml && File.Exists(srcXmlName))
+              File.Copy(srcXmlName, dstXmlName, true);
+            if (withPng && File.Exists(srcPngName))
+              File.Copy(srcPngName, dstPngName, true);
+          }
+        }
+        DebugLog.log($"{countWav} files exported from project {Name}", enLogType.INFO);
+      }
+      else
+        DebugLog.log("could not find target directory " + outputDir, enLogType.ERROR);
+    }
 
     /// <summary>
     /// returns the selected files according to search pattern and file creation time
@@ -387,34 +444,7 @@ namespace BatInspector
       return strings.ToArray();
     }
 
-    /// <summary>
-    /// create one or multiple projects from a directory containing a project
-    /// </summary>
-    /// <param name="info">parameters to specify project</param>
-    /// <param name="regions"></param>
-    /// <param name="speciesInfo"></param>
-   /* public static void splitPrj(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo)
-    {
-      string wavDir = Path.Combine(info.SrcDir, AppParams.DIR_WAVS);
-      string wavSubDir = "";
-      if (Directory.Exists(wavDir))
-        wavSubDir = AppParams.DIR_WAVS;
-
-      Project prjSrc = new Project(regions, speciesInfo, null, wavSubDir);
-      string fName = Path.Combine(info.SrcDir, info.Name) + AppParams.EXT_PRJ;
-      prjSrc.readPrjFile(fName);
-      string[] notes = prjSrc.Notes.Split('\n');
-
-      info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
-      info.Landscape = notes[0];
-      info.StartTime = new DateTime(1900, 1, 1);
-      info.EndTime = new DateTime(2100, 1, 1);
-      if (notes.Length > 1)
-        info.Weather = notes[1];
-
-      createPrj(info, regions, speciesInfo);
-    } */
-
+ 
     private static bool removeAppleTempFiles(PrjInfo info)
     {
       bool retVal = true;
@@ -703,6 +733,69 @@ namespace BatInspector
       return retVal;
     }
 
+    public static Project combineProjects(List<Project> prjs, string dir, string prjName)
+    {
+      if (prjs.Count == 0)
+        return null;
+      string destDir = Path.Combine(dir, prjName);
+      bool ok = createPrjDirStructure(destDir, out string wavDir, prjs[0].WavSubDir);
+      Project retVal = new Project(prjs[0]._batSpecRegions, prjs[0].SpeciesInfos, null, 
+                                   prjs[0].SelectedModelParams, 
+                                   prjs[0].AvailableModelParams.Length, prjs[0].WavSubDir);
+      retVal._selectedDir = destDir;
+      string[] report = new string[prjs[0].AvailableModelParams.Length];
+      for (int i = 0; i < report.Length; i++)
+        report[i] = "";
+
+      foreach (Project prj in prjs)
+      {
+        DebugLog.log($"append project {prj.Name}", enLogType.INFO);
+        if (retVal._batExplorerPrj == null)
+          retVal._batExplorerPrj = prj._batExplorerPrj;
+        else
+          retVal._batExplorerPrj.Records = retVal._batExplorerPrj.Records.Concat(prj.Records).ToArray();
+        string wavPath = Path.Combine(prj.PrjDir, prj.WavSubDir);
+        string wavDest = Path.Combine(retVal.PrjDir, retVal.WavSubDir);
+        Utils.CopyFolder(wavPath, wavDest);
+        for(int i = 0; i < prjs[0].AvailableModelParams.Length; i++)
+        {
+          
+          string modPath = Path.Combine(prj.PrjDir, prj.AvailableModelParams[i].SubDir);
+          string modDest = Path.Combine(retVal.PrjDir, prj.AvailableModelParams[i].SubDir);
+          if(Directory.Exists(modPath))
+            Utils.CopyFolder(modPath, modDest);
+          appendToReport(ref report[i], prj.getReportName(i));
+        }
+      }
+      retVal._changed = true;
+      retVal._prjFileName = Path.Combine(retVal.PrjDir, prjName + AppParams.EXT_BATSPY);
+      retVal.writePrjFile();
+      for (int i = 0; i < prjs[0].AvailableModelParams.Length; i++)
+      {
+        if(report[i] != "")
+          File.WriteAllText(retVal.getReportName(i), report[i]);
+      }
+      retVal.Analysis.read(retVal.ReportName, retVal.AvailableModelParams);
+      retVal.Analysis.createSummary(retVal.SummaryName, "");
+      return retVal;
+    }
+
+    private static void appendToReport(ref string report, string reportName)
+    {
+      if (File.Exists(reportName))
+      {
+        if (report == "")
+          report = File.ReadAllText(reportName);
+        else
+        {
+          string[] lines = File.ReadAllLines(reportName);
+          StringBuilder str = new StringBuilder();
+          for (int i = 1; i < lines.Length; i++)
+            str.AppendLine(lines[i]);
+          report += str;
+        }
+      }
+    }
     private static void copyAnalysisPart(Project prjSrc, Project prjDest)
     {
       foreach(PrjRecord rec in prjDest.Records)

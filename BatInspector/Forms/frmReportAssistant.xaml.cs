@@ -123,7 +123,7 @@ namespace BatInspector.Forms
     {
       save();
       if(_dlgSetFormDataName != null)
-        _dlgSetFormDataName(_ctlFormData.getValue());
+        _dlgSetFormDataName(_ctlFormData.getValue(), null);
       this.DialogResult = true;
       this.Close();
     }

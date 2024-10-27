@@ -297,5 +297,10 @@ namespace BatInspector.Controls
         DebugLog.log("error launching WAV tool: " + ex.ToString(), enLogType.ERROR);
       }
     }
+
+    private void UserControl_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+      _parent._scrollPrj_MouseWheel(sender, e);
+    }
   }
 }

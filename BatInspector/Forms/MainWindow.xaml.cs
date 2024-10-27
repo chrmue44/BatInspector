@@ -25,7 +25,7 @@ using BatInspector.Properties;
 using System.Windows.Threading;
 using System.Linq;
 using NAudio.MediaFoundation;
-
+using System.Xml;
 
 namespace BatInspector.Forms
 {
@@ -64,6 +64,7 @@ namespace BatInspector.Forms
     frmSpeciesData _frmSpecies = null;
     Thread _workerPredict = null;
     Thread _workerStartup = null;
+    Thread _pngThread = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
@@ -356,6 +357,11 @@ namespace BatInspector.Forms
       }
     }
 
+    private void createPngImages()
+    {
+      _model.View.createPngFiles(_model.ColorTable);
+      DebugLog.log("generation of PNGs finished", enLogType.INFO);
+    }
 
     private void initProjectAsync()
     {
@@ -373,15 +379,21 @@ namespace BatInspector.Forms
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = _model.Prj.Records.Length - 1;
-            _scrollList.Minimum = 0;
             _scrollBarListPos = 0;
-            _scrollList.Maximum = _model.Prj.Records.Length - 1;
             // TODO set scroll button size
             _ctlPrjInfo.setup(_model.Prj);
             _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(_model.Prj.Name) + "]";
             _ctlScatter.initPrj();
             _switchTabToPrj = true;
             buildWavFileList(false);
+            if ((_pngThread != null) && (_pngThread.IsAlive))
+            {
+              DebugLog.log("abort background generation of PNGs", enLogType.INFO);
+              _pngThread.Abort();
+            }
+            _pngThread = new Thread(createPngImages);
+            _pngThread.Start();
+
           }
         }
         catch(Exception ex)
@@ -407,9 +419,7 @@ namespace BatInspector.Forms
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = _model.Query.Records.Length - 1;
-            _scrollList.Minimum = 0;
             _scrollBarListPos = 0;
-            _scrollList.Maximum = _model.Query.Records.Length - 1;
             // TODO set scroll button size
             _lblPrj.Content = "QUERY:" + " [" + Path.GetFileNameWithoutExtension(_model.Query.Name) + "]";
             if (_frmQuery == null)
@@ -461,6 +471,7 @@ namespace BatInspector.Forms
         checkSavePrj();
         setStatus("");
         _workerStartup = null;
+        _tbPrj.Focus();
       }
     }
 
@@ -483,20 +494,10 @@ namespace BatInspector.Forms
         if (oldValue == _scrollPrj.Value)  //if value is different list will be built by change event  
           populateControls(0);             
       }
-      else
+      else if(_tbReport.IsSelected) 
       {
-        if(_model.View.populateList(0, filter, filterItem))
+        if(_model.View.populateList(filter, filterItem))
           initDataGridSource();
-        _scrollList.SmallChange = 1.0;
-        _scrollList.Maximum = Math.Max(1, _model.View.VisibleFiles.Count - 1);
-        _scrollList.Value = 0;
-        setListHeader(_model.View.StartIdx);
-        if (_scrollList.Track != null)    // no idea why this happens
-        {
-          _scrollList.Track.ViewportSize = double.NaN;
-          _scrollList.Track.Thumb.Height = Math.Max(10, _dgData.ActualHeight / _scrollList.Maximum / 3);
-        }
-        _scrollList.InvalidateVisual();
       }
     }
 
@@ -678,11 +679,6 @@ namespace BatInspector.Forms
       _tbPrj.Header = $"{MyResources.MainWinProjectView} ({idx + 1}/{_model.View.VisibleFiles.Count})";
     }
 
-    void setListHeader(int idx)
-    {
-      _tbReport.Header = $"{MyResources.MainReportProject} ({idx + 1}/{_model.View.VisibleFiles.Count})";
-    }
-
     private void populateControls(int startIdx)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
@@ -701,18 +697,20 @@ namespace BatInspector.Forms
           int maxCtl = Math.Min(_model.View.VisibleFiles.Count, 6);
           for (int i = 0; i < maxCtl; i++)
           {
-            //          string wavName = _showWavFiles[_showWavFiles.Count- maxCtl + i];
             if ((startIdx + i) < _model.View.VisibleFiles.Count)
             {
               string wavName = _model.View.VisibleFiles[i + startIdx];
               PrjRecord rec = _model.CurrentlyOpen.findRecord(wavName);
-              AnalysisFile analysisFile = null;
-              if ((analysis != null) && (rec != null))
-                analysisFile = analysis.find(rec.File);
-              ctlWavFile ctl = new ctlWavFile(analysisFile, rec, _model, this, true);
-              DockPanel.SetDock(ctl, Dock.Bottom);
-              _spSpectrums.Children.Add(ctl);
-              initCtlWav(ctl, rec, isQuery);
+              lock (rec)
+              {
+                AnalysisFile analysisFile = null;
+                if ((analysis != null) && (rec != null))
+                  analysisFile = analysis.find(rec.File);
+                ctlWavFile ctl = new ctlWavFile(analysisFile, rec, _model, this, true);
+                DockPanel.SetDock(ctl, Dock.Bottom);
+                _spSpectrums.Children.Add(ctl);
+                initCtlWav(ctl, rec, isQuery);
+              }
             }
           }
         }
@@ -723,7 +721,7 @@ namespace BatInspector.Forms
 
     void initCtlWav(ctlWavFile ctl, PrjRecord rec, bool fromQuery)
     {
-      ctl._img.Source = _model.getFtImage(rec, fromQuery);
+      ctl._img.Source = _model.View.getFtImage(rec, fromQuery, _model.ColorTable);
       ctl._img.MaxHeight = _imgHeight;
       AnalysisFile analysis;
       List<string> species;
@@ -752,8 +750,6 @@ namespace BatInspector.Forms
 
       ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
-//      if (!_fastOpen)
-//        setStatus("loading [" + ctl.Index.ToString() + "/" + _model.Prj.Records.Length.ToString() + "]");
     }
 
 
@@ -849,14 +845,14 @@ namespace BatInspector.Forms
 
     public void initDataGridSource()
     {
+      _dgData.EnableColumnVirtualization = true;
       _dgData.ItemsSource = null;
-      _dgData.ItemsSource = _model.View.ListView;
-      if (_dgData.Columns.Count > 0)
-      {
-        _dgData.Columns[0].Visibility = Visibility.Hidden; // hide 'changed'
-      }
+      _dgData.ItemsSource =  _model.View.ListView;
+
       for (int i = 0; i < _dgData.Columns.Count; i++)
+      {
         _dgData.Columns[i].IsReadOnly = true;
+      } 
     }
 
     private void _tbMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1180,7 +1176,7 @@ namespace BatInspector.Forms
         case enAppState.OPEN_PRJ:
           if (_workerStartup == null)
           {
-            if(_projectDir != null)
+            if (_projectDir != null)
               _workerStartup = new Thread(initProjectAsync);
             else if (_queryFile != null)
               _workerStartup = new Thread(initQueryAsync);
@@ -1304,7 +1300,6 @@ namespace BatInspector.Forms
         }
         _frmDebug.Visibility = Visibility.Visible;  
         _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
-  //      _frmDebug.Topmost = true;
         DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
 
       }
@@ -1366,38 +1361,11 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _scrollList_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-      if (!_mouseIsDownOnScrollList)
-      {
-        if (_model.CurrentlyOpen == null)
-          return;
-
-        if (_scrollBarListPos == _scrollList.Value)
-          return;
-        FilterItem filterItem = (_ctlListBtn._cbFilter.SelectedIndex == 1) ?
-               _model.Filter.TempFilter : _model.Filter.getFilter(_ctlListBtn._cbFilter.Text);
-        _model.View.populateList((int)_scrollList.Value, _model.Filter, filterItem);
-        _scrollBarListPos = _scrollList.Value;
-        initDataGridSource();
-        setListHeader(_model.View.StartIdx);
-      }
-    }
-
-
     private void _scrollPrj_MouseUp(object sender, MouseButtonEventArgs e)
     {
       _mouseIsDownOnScrollPrj = false;
       _scrollPrj_ValueChanged(null, null);
     }
-
-    private void _scrollList_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-      _mouseIsDownOnScrollList = false;
-      _scrollList_ValueChanged(null, null);
-    }
-
-
 
     private void DropdownButton_Checked(object sender, RoutedEventArgs e)
     {
@@ -1688,6 +1656,35 @@ namespace BatInspector.Forms
       _ctlStatistic.createPlot();
     }
 
+    private int getScrollDist()
+    {
+      if (_imgHeight >= 256)
+        return 2;
+      else if (_imgHeight >= 128)
+        return 3;
+      else
+        return 4;
+    }
+
+    public void _scrollPrj_MouseWheel(object sender, MouseWheelEventArgs e)
+    {
+      int idx = -e.Delta / 100;
+      if (idx > 0)
+      {
+        if (_scrollPrj.Value < _scrollPrj.Maximum + idx - 1)
+          _scrollPrj.Value += idx;
+        else
+          _scrollPrj.Value += _scrollPrj.Maximum;
+      }
+      else if (idx < 0)
+      { 
+        if (_scrollPrj.Value > idx)
+          _scrollPrj.Value -= idx;
+        else
+          _scrollPrj.Value = 0;
+      }
+    }
+
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {
       if (_tbPrj.IsSelected)
@@ -1695,16 +1692,28 @@ namespace BatInspector.Forms
         _tbPrj.Focus();
         switch (e.Key)
         {
-          case Key.PageDown:
+          case Key.Down:
             if (_scrollPrj.Value < _scrollPrj.Maximum)
               _scrollPrj.Value += 1;
             break;
+          case Key.PageDown:
+            if (_scrollPrj.Value < _scrollPrj.Maximum - getScrollDist())
+              _scrollPrj.Value += getScrollDist();
+
+            break;
           case Key.PageUp:
+            if (_scrollPrj.Value > getScrollDist())
+              _scrollPrj.Value -= getScrollDist();
+            else
+              _scrollPrj.Value = 0;
+            break;
+          case Key.Up:
             if (_scrollPrj.Value > 0)
               _scrollPrj.Value -= 1;
             break;
 
           default:
+            _ctlLog._tbCmd.Focus();
             break;
         }
       }
@@ -1714,15 +1723,22 @@ namespace BatInspector.Forms
         switch (e.Key)
         {
           case Key.PageDown:
-            if (_scrollList.Value < _scrollList.Maximum)
-              _scrollList.Value += 1;
+          case Key.Down:
+            if (_dgData.SelectedIndex < (_dgData.Items.Count - 20))
+              _dgData.SelectedIndex += 20;
+            _dgData.ScrollIntoView(_dgData.Items[_dgData.SelectedIndex]);
             break;
           case Key.PageUp:
-            if (_scrollList.Value > 0)
-              _scrollList.Value -= 1;
+          case Key.Up:
+            if (_dgData.SelectedIndex >  20)
+              _dgData.SelectedIndex -= 20;
+            else
+              _dgData.SelectedIndex = 0;
+            _dgData.ScrollIntoView(_dgData.Items[_dgData.SelectedIndex]);
             break;
 
           default:
+            _ctlLog._tbCmd.Focus();
             break;
         }
       }
@@ -1766,9 +1782,16 @@ namespace BatInspector.Forms
       }
     }
 
+
+
     private void _btnOpenPrj_Click(object sender, RoutedEventArgs e)
     {
       collapseTreeView(false);
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+
     }
   }
 

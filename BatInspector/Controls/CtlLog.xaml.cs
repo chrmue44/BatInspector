@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-public delegate void DlgCmd(string cmd);
+public delegate void DlgCmd(string cmd, dlgVoid callBack);
 public delegate void dlgAddTextLine(string text, Brush color);
 
 namespace BatInspector.Controls
@@ -118,13 +118,26 @@ namespace BatInspector.Controls
       _spEntries.Children.Clear();
     }
 
-    private void _tbCmd_KeyDown(object sender, KeyEventArgs e)
+    private void activateCmd()
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        Dispatcher.BeginInvoke(new delegateLogClear(activateCmd));
+        return;
+      }
+      _tbCmd.IsEnabled = true;
+    }
+
+    public void _tbCmd_KeyDown(object sender, KeyEventArgs e)
     {
       if (e.Key == Key.Return)
       {
         string cmd = _tbCmd.Text;
         if (_dlgCmd != null)
-          _dlgCmd(cmd);
+        {
+          _tbCmd.IsEnabled = false;
+          _dlgCmd(cmd, activateCmd);
+        }
         if (_clearAfterReturn)
           _tbCmd.Text = "";
       }

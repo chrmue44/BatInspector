@@ -60,15 +60,9 @@ namespace BatInspector.Controls
     public void initFileButton(bool isQuery)
     {
       if (isQuery)
-      {
-        _btnaddFile.Content = MyResources.MainBtnExportSel;
-        _btnaddFile.ToolTip = MyResources.MainToolExportSel;
-      }
+        _btnaddFile.Visibility = Visibility.Collapsed;
       else
-      {
-        _btnaddFile.Content = MyResources.MainBtnAddFile;
-        _btnaddFile.ToolTip = MyResources.MainToolAddFile;
-      }
+        _btnaddFile.Visibility = Visibility.Visible;
     }
 
     private void _btnAll_Click(object sender, RoutedEventArgs e)
@@ -192,14 +186,6 @@ namespace BatInspector.Controls
             _parent.initializeProject(dir);
           }
         }
-        else if (_model.Query != null)
-        {
-          System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
-          ofo.Description = MyResources.SelectExportDirectory;
-          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
-          if (res == System.Windows.Forms.DialogResult.OK)
-            _model.Query.exportFiles(ofo.SelectedPath);
-        }
         else
           MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
         DebugLog.log("MainWin:BTN 'Add file' clicked", enLogType.DEBUG);
@@ -302,6 +288,35 @@ namespace BatInspector.Controls
       }
     }
 
+    private void _btnExport_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        if (_model.Prj?.Ok ==  true)
+        {
+          System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
+          ofo.Description = MyResources.SelectExportDirectory;
+          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
+          if (res == System.Windows.Forms.DialogResult.OK)
+            _model.Prj.exportFiles(ofo.SelectedPath);
+        }
+        else if (_model.Query != null)
+        {
+          System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
+          ofo.Description = MyResources.SelectExportDirectory;
+          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
+          if (res == System.Windows.Forms.DialogResult.OK)
+            _model.Query.exportFiles(ofo.SelectedPath);
+        }
+        else
+          MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
 
+        DebugLog.log("MainWin:BTN 'Export sel.' clicked", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("MainWin:BTN 'Export sel.' failed:" + ex.ToString(), enLogType.ERROR);
+      }
+    }
   }
 }

@@ -1,10 +1,15 @@
 ﻿using BatInspector.Controls;
+using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace BatInspector
 {
@@ -43,7 +48,6 @@ namespace BatInspector
       }
     }
 
-    public bool Changed { get { return _changed; } }
     public int Row { get; set; }
     public string FileName { get; set; }
     public string CallNr { get; set; }
@@ -92,7 +96,6 @@ namespace BatInspector
   {
     List<ReportItemBd2> _report = new List<ReportItemBd2>();
     List<string> _showWavFiles = new List<string>();
-    int _lastListStartIdx = -1;
 
     public List<ReportItemBd2> ListView { get { return _report; } }
     public List<string> VisibleFiles { get { return _showWavFiles; } }
@@ -126,25 +129,17 @@ namespace BatInspector
       }
     }
 
-    public bool populateList(int startIdx, Filter filter, FilterItem filterItem)
-    {
-      if ((startIdx == _lastListStartIdx) && (_report.Count > 0))
-        return false;
-      
-      StartIdx = startIdx;
+    public bool populateList(Filter filter, FilterItem filterItem)
+    {      
       PrjRecord[] recList = getRecords();
       Analysis analysis = getAnalysis();
       if (recList != null)
       {
-        _lastListStartIdx = startIdx;
         _report.Clear();
-        int maxLines = 50;
-        int fileIdx = startIdx;
-        int line = 0;
 
-        while ((line < maxLines) && (fileIdx < VisibleFiles.Count))
+        foreach(PrjRecord rec in recList)
         {
-          string wavFile = VisibleFiles[fileIdx];
+          string wavFile = rec.File;
           AnalysisFile f = analysis.find(wavFile);
           if (f != null)
           {
@@ -157,11 +152,9 @@ namespace BatInspector
               {
                 ReportItemBd2 it = new ReportItemBd2(f, f.Calls[c], analysis.ModelType);
                 _report.Add(it);
-                line++;
               }
             }
           }
-          fileIdx++;
         }
       }
       return true;
@@ -175,6 +168,96 @@ namespace BatInspector
         _report.Add(item);
       }
     }
+
+    public BitmapImage getFtImage(PrjRecord rec, bool fromQuery, ColorTable colorTable)
+    {
+      string wavName = fromQuery ? Path.Combine(Query.DestDir, rec.File) : Path.Combine(Prj.PrjDir, Prj.WavSubDir, rec.File);
+      BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH, colorTable);
+      if ((bImg == null) && (Prj != null))
+      {
+        Prj.removeFile(rec.File);
+        if (Prj.Analysis?.IsEmpty == false)
+          Prj.Analysis.removeFile(Prj.ReportName, rec.File);
+      }
+      return bImg;
+    }
+
+    public static BitmapImage getFtImage(string wavName, int fftWidth, ColorTable colorTable)
+    {
+      BitmapImage bImg = null;
+      string pngName = "";
+      try
+      {
+        pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        Bitmap bmp = null;
+        if (File.Exists(pngName))
+          bmp = new Bitmap(pngName);
+        else
+        {
+          Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
+          if (wf.Ok)
+          {
+            wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
+            bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000);
+            bmp.Save(pngName);
+          }
+          else
+            DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
+        }
+        if (bmp != null)
+          bImg = Convert(bmp);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
+      }
+      return bImg;
+    }
+
+
+    public static BitmapImage Convert(Bitmap bitmap)
+    {
+      var bitmapImage = new BitmapImage();
+      try
+      {
+        using (MemoryStream memory = new MemoryStream())
+        {
+          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+          memory.Position = 0;
+
+          bitmapImage.BeginInit();
+          bitmapImage.StreamSource = memory;
+          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+          bitmapImage.EndInit();
+          bitmapImage.Freeze();
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
+      }
+      return bitmapImage;
+    }
+
+
+    public void createPngFiles(ColorTable colorTable)
+    {
+      if((Prj != null))
+      {
+        foreach(PrjRecord rec in Prj.Records)
+        {
+          string pngName = Path.Combine(Prj.PrjDir, Prj.WavSubDir, Path.GetFileNameWithoutExtension(rec.File) + AppParams.EXT_IMG);
+          if(!File.Exists(pngName)) 
+          {
+            lock(rec)
+            {
+              getFtImage(rec, false, colorTable);
+            }
+          }
+        }
+      }
+    }
+
 
     public void updateReport(Csv csv)
     {

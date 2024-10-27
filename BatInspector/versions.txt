@@ -9,6 +9,15 @@ TODO
   - real "inplace" import
 - export zoom view: set default file name: call_nr_species_filename.wav
 
+V0.9.2.0  27.10.24
+- new command "CombineProjects"
+- new command "exportFiles"
+- show all calls in one list in Report tab as it was before V0.9 (for sorting)
+- automatic generation of PNG files in background task for faster scrolling
+- export files button (with filter) in project view
+- mouse wheel works in Project view and Report view
+- Keys Up/PageUp Down/PageDown work in Project and Report view
+
 V0.9.1.1: 20.10.24
 - bugfix: activity diagram now works also for projexts imported from plain WAVs
 - project browser collapses automatically after selecting project

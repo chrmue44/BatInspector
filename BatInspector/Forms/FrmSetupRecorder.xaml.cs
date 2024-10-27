@@ -421,7 +421,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void execCmd(string cmd)
+    private void execCmd(string cmd, dlgVoid callBack)
     {
       if (BatSpy.IsConnected)
       {

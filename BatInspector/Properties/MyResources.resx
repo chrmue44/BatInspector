@@ -1653,4 +1653,7 @@
   <data name="ctlActivityTimeShift" xml:space="preserve">
     <value>Time shift</value>
   </data>
+  <data name="MainToolExport" xml:space="preserve">
+    <value>Export files (with filtering) to another directory</value>
+  </data>
 </root>

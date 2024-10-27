@@ -103,6 +103,15 @@ namespace libParser
       }
     }
 
+    static public void copyFiles(FileInfo[] fileInfos, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false)
+    {
+      string[] files = new string[fileInfos.Length];
+      for (int i = 0; i < files.Length; i++)
+        files[i] = fileInfos[i].FullName;
+      copyFiles(files, dstFolder, removeSrc, overWriteIfNewer);
+    }
+
+
     static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false)
     {
       foreach (string file in files)

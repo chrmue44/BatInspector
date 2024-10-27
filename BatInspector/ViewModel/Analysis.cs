@@ -226,6 +226,14 @@ namespace BatInspector
     }
 
 
+    public void concat(Analysis a)
+    {
+      foreach(AnalysisFile f in a.Files)
+      {
+        _list.Add(f);
+      }
+    }
+
     public void addCsvReportRow(List<string> row)
     {
       _csv.addRow(row);

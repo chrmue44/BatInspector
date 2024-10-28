@@ -48,16 +48,20 @@ namespace BatInspector.Forms
         enPeriod period = enPeriod.DAILY;
         if (_ctlReport._cbCsvFile.IsChecked == true)
         {
-          _model.SumReport.createCsvReport(start, end, period, _ctlReport._ctlRootDir.getValue(),
+          _model.SumReport.createCsvReportAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
-                                      _ctlReport._ctlCsvReportName.getValue(), _model.SpeciesInfos, _ctlReport.FilterExpression);
+                                      _ctlReport._ctlCsvReportName.getValue(), _model.SpeciesInfos, 
+                                      _ctlReport.FilterExpression,
+                                      _model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
         }
         if (_ctlReport._cbWebPage.IsChecked == true)
         {
           SumReportJson rep = _model.SumReport.createWebReport(start, end, period,
                                       _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
-                                      _ctlReport._ctlWebReportName.getValue(), _model.SpeciesInfos, _ctlReport.FilterExpression);
+                                      _ctlReport._ctlWebReportName.getValue(),
+                                      _model.SpeciesInfos, _ctlReport.FilterExpression, 
+                                      _model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
           rep.save(Path.Combine(_ctlReport._ctlDestDir.getValue(), "sumReport.json"));
           frmReportAssistant frm = new frmReportAssistant(rep, setFormDataName);
           frm.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -66,7 +70,8 @@ namespace BatInspector.Forms
           bool? ok = frm.ShowDialog();
           if (ok == true)
             _model.SumReport.createWebPage(rep, _formDataName, _model.SpeciesInfos,
-                      Path.Combine(_ctlReport._ctlDestDir.getValue(), _ctlReport._ctlWebReportName.getValue()));
+                      Path.Combine(_ctlReport._ctlDestDir.getValue(), 
+                      _ctlReport._ctlWebReportName.getValue()));
         }
         if(_ctlReport._cbActivityDiagram.IsChecked == true)
         {

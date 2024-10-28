@@ -444,12 +444,32 @@ namespace BatInspector
     private dlgShowActivityDiag _showActivityData = null;
     private string _bmpName;
     private ModelParams _modelParams;
+    private string _reportName;
+    private List<SpeciesInfos> _species;
+
     public SumReport(ViewModel model)
     {
       _model = model;
       _rep = new Csv(true);
       _reports = new List<ReportListItem>();
       _totalSum = new List<SumItem>();
+    }
+
+    public void createCsvReportAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
+                         List<SpeciesInfos> species, string expression, ModelParams modelParams)
+    {
+      _start = start;
+      _end = end;
+      _period = period;
+      _rootDir = rootDir;
+      _dstDir = dstDir;
+      _expression = expression;
+      _reportName = reportName;
+      _species = species;
+      _modelParams = modelParams;
+
+      Thread t = new Thread(createCsvReportSync);
+      t.Start();
     }
 
     /// <summary>
@@ -459,23 +479,23 @@ namespace BatInspector
     /// <param name="end">end time</param>
     /// <param name="period">granularity of time</param>
     /// <param name="rootDir">root dir to start search for projects</param>
-    public void createCsvReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
-                             List<SpeciesInfos> species, string expression)
+    public void createCsvReportSync()
     {
-      initDirTree(rootDir, "summary");
+      DebugLog.log("start generation of sum report", enLogType.INFO);
+      initDirTree(_rootDir, "report");
       _rep = new Csv(true);
-      string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.LANDSCAPE, Cols.WEATHER, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX };
+      string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX };
       _rep.initColNames(header, true);
       _totalSum.Clear();
-      foreach (SpeciesInfos sp in species)
+      foreach (SpeciesInfos sp in _species)
         _totalSum.Add(new SumItem(sp.Abbreviation, 0));
 
       SumReportItem item;
-      DateTime date = start;
-      while (date < end)
+      DateTime date = _start;
+      while (date < _end)
       {
-        int days = calcDays(date, end, period);
-        item = getSums(date, days, species, expression);
+        int days = calcDays(date, _end, _period);
+        item = getSums(date, days, _species, _expression);
 
         int nrCalls = 0;
         foreach (SumItem it in item.SpecList)
@@ -487,7 +507,7 @@ namespace BatInspector
         if (nrCalls > 0)
           addEntryToCsvReport(item);
 
-        date = incrementDate(date, period);
+        date = incrementDate(date, _period);
       }
 
       _rep.addRow();
@@ -501,14 +521,14 @@ namespace BatInspector
           _rep.setCell(_rep.RowCnt, it.Species, it.Count);
       }
 
-      if (Directory.Exists(dstDir))
+      if (Directory.Exists(_dstDir))
       {
-        string fileName = Path.Combine(dstDir, reportName);
+        string fileName = Path.Combine(_dstDir, _reportName);
         _rep.saveAs(fileName);
       }
       else
 
-        DebugLog.log("unable to save sum report, directory does not exist: " + rootDir, enLogType.ERROR);
+        DebugLog.log("unable to save sum report, directory does not exist: " + _rootDir, enLogType.ERROR);
     }
 
     void createActivityDiagSync()
@@ -574,9 +594,10 @@ namespace BatInspector
 
 
     public SumReportJson createWebReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
-                         List<SpeciesInfos> species, string expression)
+                         List<SpeciesInfos> species, string expression, ModelParams modelPars)
     {
       SumReportJson retVal = new SumReportJson();
+      _modelParams = modelPars;
       initDirTree(rootDir, "report");
 
       DateTime date = start;
@@ -661,7 +682,8 @@ namespace BatInspector
         {
           Csv csv = new Csv();
           csv.read(prjFile, AppParams.CSV_SEPARATOR, true);
-          findStartEnd(csv, out string startDateStr, out string endDateStr);
+          string colName = (reportName.IndexOf("summary") >= 0) ? "Date" : Cols.REC_TIME; 
+          findStartEnd(csv, colName, out string startDateStr, out string endDateStr);
           DateTime startDate = new DateTime();
           DateTime endDate = new DateTime();
           bool ok_s = false;
@@ -699,16 +721,17 @@ namespace BatInspector
       }
     }
 
-    private void findStartEnd(Csv csv, out string start, out string end)
+    private void findStartEnd(Csv csv, string colName, out string start, out string end)
     {
       DateTime dStart =  DateTime.MaxValue;
       DateTime dEnd = DateTime.MinValue;
+      
       for(int row = 2; row <= csv.RowCnt; row++)
       {
-        DateTime d = csv.getCellAsDate(row, Cols.REC_TIME);
-        if (d < dStart)
+        DateTime d = csv.getCellAsDate(row, colName);
+        if ((d > DateTime.MinValue) && (d < dStart))
           dStart = d;
-        if (d > dEnd)
+        if ((d > DateTime.MinValue) && (d > dEnd))
           dEnd = d;
       }
       start = dStart.ToString(AppParams.REPORT_DATETIME_FORMAT2);
@@ -806,8 +829,6 @@ namespace BatInspector
       _rep.setCell(row, Cols.DAYS, item.Days);
       _rep.setCell(row, Cols.LAT, item.Latitude);
       _rep.setCell(row, Cols.LON, item.Longitude);
-      _rep.setCell(row, Cols.LANDSCAPE, item.Landscape);
-      _rep.setCell(row, Cols.WEATHER, item.Weather);
       _rep.setCell(row, Cols.TEMP_MIN, item.TempMin);
       _rep.setCell(row, Cols.TEMP_MAX, item.TempMax);
       _rep.setCell(row, Cols.HUMID_MIN, item.HumidityMin);
@@ -862,6 +883,7 @@ namespace BatInspector
               DateTime t = file.RecTime;
               if (!((t.Date >= date) && (t < end)))
                 continue;
+              DebugLog.log($"evaluating report {rep.ReportName}", enLogType.INFO);
               foreach (AnalysisCall call in file.Calls)
               {
                 bool match = _model.Filter.apply(filter, call,
@@ -907,65 +929,6 @@ namespace BatInspector
       return retVal;
     }
 
-      /*    private SumReportItem getSums(DateTime date, int days, List<SpeciesInfos> species)
-          {
-            SumReportItem retVal = new SumReportItem(species);
-            retVal.Date = date;
-            DateTime end = date.AddDays(days);
-            retVal.Days = days;
-            List<SumItem> list = new List<SumItem>();
-            foreach (SpeciesInfos speciesInfo in species)
-              list.Add(new SumItem(speciesInfo.Abbreviation, 0));
-            double latitude = 0;
-            double longitude = 0; ;
-            int sumCnt = 0;
-
-            foreach (ReportListItem rep in _reports)
-            {
-              if ((rep.StartDate >= date) && (rep.StartDate < end) || (rep.EndDate >= date) && (rep.EndDate < end))
-              {
-                sumCnt++;
-                Csv summary = new Csv();
-                summary.read(rep.SummaryName, ";", true);
-                int startColTime = summary.findInRow(1, Cols.T18H);
-                retVal.Weather = summary.getCell(2, Cols.WEATHER).Replace(',', ' ');
-                retVal.Landscape = summary.getCell(2, Cols.LANDSCAPE).Replace(',', ' ');
-                for (int row = 2; row <= summary.RowCnt; row++)
-                {
-                  DateTime t = summary.getCellAsDate(row, Cols.DATE);
-                  if ((t >= date) && (t < end))
-                  {
-                    latitude += summary.getCellAsDouble(row, Cols.LAT);
-                    longitude += summary.getCellAsDouble(row, Cols.LON);
-                    string spec = summary.getCell(row, Cols.SPECIES_MAN);
-                    int count = summary.getCellAsInt(row, Cols.COUNT);
-                    SumItem item = SumItem.find(spec, list, true);
-                    item.Count += count;
-                    if (retVal.TempMin > summary.getCellAsDouble(row, Cols.TEMP_MIN))
-                      retVal.TempMin = summary.getCellAsDouble(row, Cols.TEMP_MIN);
-                    if (retVal.TempMax < summary.getCellAsDouble(row, Cols.TEMP_MAX))
-                      retVal.TempMax = summary.getCellAsDouble(row, Cols.TEMP_MAX);
-                    if (retVal.HumidityMin > summary.getCellAsDouble(row, Cols.HUMID_MIN))
-                      retVal.HumidityMin = summary.getCellAsDouble(row, Cols.HUMID_MIN);
-                    if (retVal.HumidityMax < summary.getCellAsDouble(row, Cols.HUMID_MAX))
-                      retVal.HumidityMax = summary.getCellAsDouble(row, Cols.HUMID_MAX);
-                    for (int i = 0; i < item.CountTime.Length; i++)
-                    {
-                      int cnt = summary.getCellAsInt(row, startColTime + i);
-                      item.CountTime[i] += cnt;
-                    }
-                  }
-                }
-              }
-            }
-
-            latitude /= sumCnt;
-            longitude /= sumCnt;
-            retVal.Latitude = latitude;
-            retVal.Longitude = longitude;
-            retVal.SpecList = list;
-            return retVal;
-          } */
 
       static int findInList(string s, List<string> list)
     {

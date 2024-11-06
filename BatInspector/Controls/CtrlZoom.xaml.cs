@@ -338,7 +338,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.Waterfall.Range += 1.0;
+        _model.ZoomView.Waterfall.Range += 3.0;
         //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
         updateRuler();
         updateImage();
@@ -356,7 +356,7 @@ namespace BatInspector.Controls
       {
         if (_model.ZoomView.Waterfall.Range > 3)
         {
-          _model.ZoomView.Waterfall.Range -= 1.0;
+          _model.ZoomView.Waterfall.Range -= 3.0;
           //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
           updateRuler();
           updateImage();
@@ -1471,9 +1471,16 @@ namespace BatInspector.Controls
 
     private void _btnShowLoc_Click(object sender, RoutedEventArgs e)
     {
-      FrmLocationView frm = new FrmLocationView();
-      frm.navigate(_model.ZoomView.FileInfo.FileName, _model.ZoomView.FileInfo.GPS.Position, 17);
-      frm.Show();
+      try
+      {
+        FrmLocationView frm = new FrmLocationView();
+        frm.navigate(_model.ZoomView.FileInfo.FileName, _model.ZoomView.FileInfo.GPS.Position, 17);
+        frm.Show();
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log("unable to display location", enLogType.ERROR);
+      }
     }
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)

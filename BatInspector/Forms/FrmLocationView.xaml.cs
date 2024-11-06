@@ -29,8 +29,13 @@ namespace BatInspector.Forms
     public void navigate(string title, string location, int zoom)
     {
       this.Title = BatInspector.Properties.MyResources.FrmLocationLocationOfRecordingFor + " " + title;
-      string url = Utils.BingMapUrl(location, title, zoom);
-      _wb.Navigate(url);
+      string[] loc = location.Split(' ');
+      if (loc.Length > 1)
+      {
+        //string url = Utils.BingMapUrl(location, title, zoom);
+        string url = Utils.OsmMapUrl(loc[0], loc[1], "", zoom);
+        _wb.Source = new Uri(url);
+      }     
     }
   }
 }

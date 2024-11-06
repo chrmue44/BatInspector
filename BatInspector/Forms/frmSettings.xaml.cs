@@ -23,6 +23,11 @@ namespace BatInspector.Forms
     public frmSettings(AppParams settings)
     {
       InitializeComponent();
+      update(settings);
+    }
+
+    public void update(AppParams settings)
+    {
       _pg.SelectedObject = settings;
       Title = MyResources.Settings + ":  " + settings.FileName;
     }

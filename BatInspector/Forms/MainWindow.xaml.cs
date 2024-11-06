@@ -1050,6 +1050,8 @@ namespace BatInspector.Forms
       {
         if (_frmSettings == null)
           _frmSettings = new frmSettings(AppParams.Inst);
+        else
+          _frmSettings.update(AppParams.Inst);
         _frmSettings.Show();
         _frmSettings.Visibility = Visibility.Visible;
 //        _frmSettings.Topmost = true;

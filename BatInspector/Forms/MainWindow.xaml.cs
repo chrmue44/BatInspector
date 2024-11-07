@@ -17,15 +17,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows.Input;
-using System.Deployment.Application;
 using System.Reflection;
 using BatInspector.Controls;
 using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
 using System.Linq;
-using NAudio.MediaFoundation;
-using System.Xml;
 
 namespace BatInspector.Forms
 {

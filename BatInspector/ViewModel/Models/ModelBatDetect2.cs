@@ -149,6 +149,8 @@ namespace BatInspector
               double temperature = -20;
               double humidity = -1;
               BatRecord info = ElekonInfoFile.read(infoName);
+              WavFile wav = new WavFile();
+              int res = wav.readFile(wavName);
               if (info != null)
               {
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
@@ -216,7 +218,8 @@ namespace BatInspector
                 report.setCell(repRow, Cols.BANDWIDTH, bandwidth);
                 report.setCell(repRow, Cols.CALL_INTERVALL, callInterval * 1000, 1);
                 report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
-                report.setCell(repRow, Cols.SNR, -1.0);
+                double snr = res == 0 ? wav.calcSnr(startTime, startTime + duration) : -1;
+                report.setCell(repRow, Cols.SNR, snr);
                 string latin = translate(csvAnn.getCell(row, "class"));
 
                 double prob = csvAnn.getCellAsDouble(row, "class_prob");

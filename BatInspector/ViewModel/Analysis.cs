@@ -174,15 +174,16 @@ namespace BatInspector
     private List<SpeciesInfos> _speciesInfos;
     private DlgUpdateFile _dlgUpdate;
     private enModel _modelType;
- //   private string _notes;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
 
-    public int CsvRowCount { get{ return _csv == null ? 0 : _csv.RowCnt; } }
+    public int CsvRowCount { get { return _csv == null ? 0 : _csv.RowCnt; } }
     public bool IsEmpty { get { return _list.Count == 0; } }
 
     public enModel ModelType { get { return _modelType; } }
+
+    public Csv Csv { get { return _csv; } }
 
     public List<SumItemReport> Summary {
       get {

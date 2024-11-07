@@ -9,6 +9,14 @@ TODO
   - real "inplace" import
 - export zoom view: set default file name: call_nr_species_filename.wav
 
+V0.9.3.0
+- new web browser control to show location (no more script error messages)
+- show loaction on OSM
+- SNR calculation
+- bugfix: GradientRange for Sonogram now in real dB
+- bugfix update settings form, when settigns change (GradientRange)
+
+
 V0.9.2.2  28.10.24
 - bugfix: create csv report works again
 

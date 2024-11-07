@@ -561,8 +561,17 @@ namespace BatInspector
       {
         if (string.IsNullOrEmpty(ModelDefaultParamsFile))
           ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
-        Version = AppVersion;
       }
+      int comparison = String.Compare(Version, "0.9.2.3", comparisonType: StringComparison.OrdinalIgnoreCase);
+      if (string.IsNullOrEmpty(Version) || (comparison < 0))
+      {
+        double grad = GradientRange;
+        grad = Math.Exp(grad);
+        grad = Math.Log10(grad) * 10 + 20;
+        GradientRange = grad;
+      }
+
+      Version = AppVersion;
     }
 
     public void init()

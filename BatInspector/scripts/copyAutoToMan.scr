@@ -84,7 +84,8 @@ FOR FileNr 0 NrFiles
             =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
 	  	    SET newAuto =("??REG[" + replace(specAuto,"(","]("))
             =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
-            LOG =(specAuto +" not expected in region") 
+            SET region =(getRegion(lat, lon))
+            LOG =(specAuto +" not expected in region '" + region + "'") 
 	      END
 		END
 	  END

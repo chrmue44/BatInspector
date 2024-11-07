@@ -92,17 +92,6 @@ namespace BatInspector.Controls
         spec = ctl.getItems();
       }
       initCallInformations(spec);
-/*      for(int i = 0; i < _analysis.Calls.Count; i++)
-      {
-        AnalysisCall call = _analysis.Calls[i];
-        if (i < _spDataAuto.Children.Count)
-        {
-          ctlDataItem it = _spDataAuto.Children[i] as ctlDataItem;
-          it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
-          ctlSelectItem im = _spDataMan.Children[i] as ctlSelectItem;
-          im.setValue(call.getString(Cols.SPECIES_MAN));
-        }
-      } */
       _cbSel.IsChecked = rec.Selected;
     }
 
@@ -137,6 +126,8 @@ namespace BatInspector.Controls
       _img.MaxHeight = height;
       _img.Height = height;
     }
+
+
     private void initCallInformations(List<string> spec)
     {
       if (_analysis != null)

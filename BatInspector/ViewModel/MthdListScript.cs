@@ -13,6 +13,8 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using NAudio.MediaFoundation;
+using System.Globalization;
 
 namespace BatInspector
 {
@@ -103,6 +105,10 @@ namespace BatInspector
       _scriptHelpTab.Add(new HelpTabItem("occursAtLocation", "check wether speicies occurs at spcified loction",
                       new List<string> {"1: species abbrviation, 2: latitude, 3: longitude"},
                       new List<string> { "1: boolean if occurs or not"}));
+      addMethod(new FuncTabItem("getRegion", getRegion));
+      _scriptHelpTab.Add(new HelpTabItem("getRegion", "get name of region",
+                      new List<string> { "1: latitude, 2: longitude" },
+                      new List<string> { "1: name of detected region" }));
       addMethod(new FuncTabItem("createPrjFromFiles", createPrjFromFiles));
       _scriptHelpTab.Add(new HelpTabItem("createPrjFromFiles", "create a project from a list of WAV files",
                       new List<string> { "1: project name","2:source folder containing project","3:destination folder","4: max files per project (int)",
@@ -155,6 +161,9 @@ namespace BatInspector
                       new List<string> { "1: ColFilename", "2: ColLatitude","3: ColLongititude", "4: Mode (0=FileName, 1=TimeStamp)",
                                          "5: ColNS", "6: ColWE","7: ColDate", "8: ColTime", "9: Delimiter"},
                                          new List<string> { "1: error code" }));
+      addMethod(new FuncTabItem("calcSNR", calcSNR));
+      _scriptHelpTab.Add(new HelpTabItem("calcSNR", "calculate sound noise ratio for each call in file",
+                      new List<string> { "1: file name"}, new List<string> { "1: error code" }));
 
 
     }
@@ -1343,7 +1352,38 @@ namespace BatInspector
       return err;
     }
 
-    static tParseError occursAtLocation(List<AnyType> argv, out AnyType result)
+    static tParseError getRegion(List<AnyType> argv, out AnyType result)
+    {
+      result = new AnyType();
+      tParseError err = tParseError.SUCCESS;
+      if (argv.Count >= 2)
+      { 
+        argv[0].changeType(AnyType.tType.RT_FLOAT);
+        double lat = argv[0].getFloat();
+        if ((lat >= -90) && (lat <= 90))
+        {
+          argv[1].changeType(AnyType.tType.RT_FLOAT);
+          double lon = argv[1].getFloat();
+          if ((lon >= -180) && (lon <= 180))
+          {
+            ParRegion region = _inst._model.Regions.findRegion(lat, lon);
+            if (region != null)
+              result.assign(region.Name);
+            else
+              result.assign("unspecific");
+          }
+        else
+          err = tParseError.ARG2_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.ARG1_OUT_OF_RANGE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
+  static tParseError occursAtLocation(List<AnyType> argv, out AnyType result)
     {
       result = new AnyType();
       tParseError err = tParseError.SUCCESS;
@@ -1372,6 +1412,44 @@ namespace BatInspector
         err = tParseError.NR_OF_ARGUMENTS;
       return err;
     }
+
+    static tParseError calcSNR(List<AnyType> argv, out AnyType result)
+    {
+      result = new AnyType();
+      tParseError err = 0;
+      if (argv.Count >= 1)
+      {
+        string fileName = argv[0].getString();
+        if(_inst._model.Prj?.Ok == true)
+        {
+          AnalysisFile f = _inst._model.Prj.Analysis.find(fileName);
+          if (f != null)
+          {
+            WavFile wav = new WavFile();
+            int res = wav.readFile(Path.Combine(_inst._model.Prj.PrjDir, _inst._model.Prj.WavSubDir, fileName));
+            if (res == 0)
+            {
+              foreach (AnalysisCall c in f.Calls)
+              {
+                double tStart = c.getDouble(Cols.START_TIME);
+                double tEnd = tStart + c.getDouble(Cols.DURATION) / 1000;
+                double snr = wav.calcSnr(tStart, tEnd);
+                _inst._model.Prj.Analysis.Csv.setCell(c.ReportRow, Cols.SNR, snr.ToString(CultureInfo.InvariantCulture));
+              }
+              _inst._model.Prj.Analysis.Csv.save(false);
+            }
+            else
+              err = tParseError.ARG1_OUT_OF_RANGE;
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
 
     static tParseError checkOverdrive(List<AnyType> argv, out AnyType result)
     {

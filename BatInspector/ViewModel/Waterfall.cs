@@ -108,7 +108,7 @@ namespace BatInspector
           step = 1;
         if (step > fftSize)
           step = fftSize;
-
+        _maxAmplitude = -120.0;
         int max = (int)(idxEnd - idxStart) / (int)step;
         for (int i = 0; i < max; i++)
           _spec.Add(null);
@@ -124,12 +124,44 @@ namespace BatInspector
           }
         }
         );
+    //    denoise(fftSize/2);
         sw.Stop();
       }
       else
         DebugLog.log("generateDiagram(): WAV file is not open!", enLogType.ERROR);
     }
 
+    private void denoise(int binSize)
+    {
+      double sum = 0;
+      int count = 0;
+      for (int s = 0; s < _spec.Count; s++)
+      {
+        for (int f = 0; f < binSize; f++)
+        {
+          if (_spec[s] != null)
+          {
+            sum += _spec[s][f];
+            count++;
+          }
+        }
+      }
+      sum /= count;
+
+      for (int s = 0; s < _spec.Count; s++)
+      {
+        for (int f = 0; f < binSize; s++)
+        {
+          if (_spec[s] != null)
+          {
+            if (_spec[s][f] < sum)
+              _spec[s][f] = -120;
+            count++;
+          }
+        }
+      }
+
+    }
     public void play(int stretch, double tStart, double tEnd, double playPosition)
     {
       if (_wav == null)
@@ -202,7 +234,7 @@ namespace BatInspector
         {
           if (logarithmic)
           {
-            lmSpectrum[i] = Math.Log(lmSpectrum[i]) * wScaleFactor;
+            lmSpectrum[i] = 20*Math.Log10(lmSpectrum[i]) * wScaleFactor;
             if (lmSpectrum[i] > _maxAmplitude)
               _maxAmplitude = lmSpectrum[i];
           }

@@ -1207,7 +1207,7 @@ namespace BatInspector
     {
       bool replaceAll = false;
       DebugLog.log("creating xml infofcreate files...", enLogType.INFO);
-
+      bool msgBoxShown = false;
       //gpx gpxFile = gpx.read(info.GpxFile);
       foreach (PrjRecord record in _batExplorerPrj.Records)
       {
@@ -1215,7 +1215,7 @@ namespace BatInspector
         string fullName = Path.Combine(_selectedDir, _wavSubDir, record.File);
         if (File.Exists(fullName))
         {
-          if (!replaceAll && File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))
+          if (!msgBoxShown && File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))
           {
             MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.ProjectmsgReplaceInfo, 
                                                    BatInspector.Properties.MyResources.msgQuestion, 
@@ -1225,9 +1225,8 @@ namespace BatInspector
               replaceAll = true;
               create = true;
             }
+            msgBoxShown = true;
           }
-          else
-            create = true;
           if (create)
           {
             DateTime time = ElekonInfoFile.getDateTimeFromFileName(fullName);

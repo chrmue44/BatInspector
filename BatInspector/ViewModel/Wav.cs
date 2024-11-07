@@ -714,6 +714,60 @@ namespace BatInspector
       return retVal;
     }
 
+    /// <summary>
+    /// calculates SNR: search max. Amplitude between tStart and tEnd and the go to next minimum
+    /// </summary>
+    /// <param name="tStart"></param>
+    /// <param name="tEnd"></param>
+    /// <param name="width"></param>
+    /// <returns></returns>
+    public double calcSnr(double tStart, double tEnd, double width = 0.001)
+    {
+      double retVal = 0;
+      int idx = (int)(tStart * _format.Frequency);
+      int wSlice = (int)(width * _format.Frequency);
+      double idxEnd = tEnd * _format.Frequency;
+      double max = 0;
+
+      while (idx < idxEnd)
+      {
+        double sum = calcSlicePower(ref idx, wSlice);
+        if (sum > max)
+          max = sum;
+      }
+      double min = max;
+
+      while ((idx < (_data.WaveData.Length - wSlice)) && (idx > 6 * wSlice))
+      {
+        if (idx > _data.WaveData.Length / 2)
+          idx -= 6 * wSlice;
+        double sum = calcSlicePower(ref idx, 3 * wSlice);
+        if (sum < min)
+          min = sum;
+        else
+          break;
+      }
+
+      if (min != 0)
+        retVal = 10 * Math.Log10(max / min);
+      return retVal;
+    }
+
+
+    private double calcSlicePower(ref int idx, int wSlice)
+    {
+      int idxNextSlice = idx + wSlice;
+      double sum = 0;
+      while (idx < idxNextSlice)
+      {
+        sum += _data.WaveData[idx] * _data.WaveData[idx];
+        idx++;
+      }
+      return sum / wSlice;
+    }
+
+
+
     private int timeToIndex(double t)
     {
       int retVal = (int)(t * _format.Frequency);

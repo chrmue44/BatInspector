@@ -12,6 +12,7 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Linq;
 
@@ -115,6 +116,8 @@ namespace BatInspector
       testRemoveSection();
       testCheckSpecAtLocation();
       //testSplitWavs();
+      testCalcSnr();
+      testCreatePngCpp();
 
       //checkIfWavFilesExist(); // not a test, a one time function
       //fixAnnotationIds(); // not a test, a one time function
@@ -485,6 +488,29 @@ namespace BatInspector
       result.FftBackward();
       string newName = file.ToLower().Replace(".wav", "_edit.wav");
       result.saveAs(newName, "Records");
+    }
+
+    private void testCalcSnr()
+    {
+      WavFile w = new WavFile();
+      string prjDir = "F:\\prj\\BatInspector\\TestData\\20220906";
+      string file = "20220906_0005.wav";
+      w.readFile(Path.Combine(prjDir, "Records", file));
+      string report = Path.Combine(prjDir, "bd2", "report_BatDetect2_GermanBats.pth.tar.csv");
+      Analysis a = new Analysis(_model.SpeciesInfos, null, enModel.BAT_DETECT2);
+      a.read(report, _model.DefaultModelParams);
+      AnalysisFile f = a.find(file);
+      assert("open test data", f != null);
+
+      double tStart = f.Calls[0].getDouble(Cols.START_TIME);
+      double tEnd = tStart + f.Calls[0].getDouble(Cols.DURATION) / 1000;
+      double snr = w.calcSnr(tStart, tEnd);
+      assert("SNR call 1", Math.Abs(snr - 15.9) < 0.1);
+
+      tStart = f.Calls[9].getDouble(Cols.START_TIME);
+      tEnd = tStart + f.Calls[7].getDouble(Cols.DURATION) / 1000;
+      snr = w.calcSnr(tStart, tEnd);
+      assert("SNR call 8", Math.Abs(snr - 3.1) < 0.1);
     }
 
     private void testRemoveSection()
@@ -869,6 +895,18 @@ namespace BatInspector
       Bd2AnnFile.splitAnnotation(jsonName, splitLengh, true);
     }
 
+    private void testCreatePngCpp()
+    {
+      string path = "F:/prj/BatInspector/TestData/wavTest";
+      string wavName = path + "/Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms.wav";
+//      WavFile wav = new WavFile();
+//      wav.readFile(wavName);
+      BioAcoustics.setColorTable();
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+      BioAcoustics.createPngFromWav(wavName, 0, 2, 0, 150, 512, 512, 30);
+      sw.Stop();
+    }
 
     private void fixAnnotationIds()
     {

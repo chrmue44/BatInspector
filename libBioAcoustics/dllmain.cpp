@@ -5,6 +5,8 @@
 #include <vector>
 #include "dllmain.h"
 #include <mutex>
+#include "FtDiagram.h"
+#include "ColorTable.h"
 
 BOOL APIENTRY DllMain(HMODULE hModule,
   DWORD  ul_reason_for_call,
@@ -277,4 +279,19 @@ namespace libBioAcoustics
   {
     return 0;
   }
+
+  ColorTable colorTable;
+
+  DLL_API int createPng(const char* name, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange)
+  {
+    FtDiagram d;
+    return d.createPng(name, startTime, endTime, fMin, fMax, width, height, gradientRange, &colorTable);
+  }
+
+
+  DLL_API void setColorGradient(int* colTable)
+  {
+    colorTable.set(colTable);
+  }
+
 }

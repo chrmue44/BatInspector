@@ -313,6 +313,36 @@ namespace BatInspector
       }
     }
 
+    [HandleProcessCorruptedStateExceptions]
+    public static int createPngFromWav(string name, double tStart, double tEnd, double fMin, double fMax, int width, int height, double gradientRange)
+    {
+      return createPng(name, tStart, tEnd, fMin, fMax, width, height, gradientRange);
+    }
+
+    [HandleProcessCorruptedStateExceptions]
+    public static void setColorTable()
+    {
+      int max = AppParams.Inst.ColorGradientRed.Count;
+      int[] colors = new int[3 * max * 2];
+      int idx = 0;
+      for (int i = 0; i < max; i++)
+      {
+        colors[idx++] = AppParams.Inst.ColorGradientRed[i].Color;
+        colors[idx++] = AppParams.Inst.ColorGradientRed[i].Value;
+      }
+      for (int i = 0; i < max; i++)
+      {
+        colors[idx++] = AppParams.Inst.ColorGradientGreen[i].Color;
+        colors[idx++] = AppParams.Inst.ColorGradientGreen[i].Value;
+      }
+      for (int i = 0; i < max; i++)
+      {
+        colors[idx++] = AppParams.Inst.ColorGradientBlue[i].Color;
+        colors[idx++] = AppParams.Inst.ColorGradientBlue[i].Value;
+      }
+      setColorGradient(colors);
+    }
+
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
     static extern int threshold_detection(
     short[] audio_samples,
@@ -367,8 +397,13 @@ namespace BatInspector
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
     static public extern int getFtImage(short[] samples, int sampleCnt, string pngName, int fftWidth, int waterFallWidth, int[] colorTable, int colorTableLen);
-//    static public extern int getFtImage(string wavName, string pngName, int fftWidth, int waterFallWidth, int[] colorTable, int colorTableLen);
+    //    static public extern int getFtImage(string wavName, string pngName, int fftWidth, int waterFallWidth, int[] colorTable, int colorTableLen);
 
 
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern int createPng(string fileName, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange);
+
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern void  setColorGradient(int[] colorTable);
   }
 }

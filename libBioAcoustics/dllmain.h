@@ -54,8 +54,9 @@ namespace libBioAcoustics
      */
     extern "C" DLL_API void __cdecl calcFftInverse(int handle, double* spectrum, double** samples);
 
-//    extern "C" DLL_API void initFft(unsigned int size, FFT::WIN_TYPE win);
-
     extern "C" DLL_API int getFftSize(int handle);
 
+    extern "C" DLL_API int __cdecl createPng(const char* fileName, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange);
+
+    extern "C" DLL_API void __cdecl setColorGradient(int* colorTable);
 }

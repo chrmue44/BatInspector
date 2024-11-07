@@ -21,15 +21,13 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmScript : Window
   {
-    ViewModel _model;
     List<ScriptItem> _temp;
     dlgUpdateMenu _updateMenu;
     dlgDebugScript _debugScript;
 
-    public FrmScript(ViewModel model, dlgUpdateMenu updateMenu, dlgDebugScript debug)
+    public FrmScript(dlgUpdateMenu updateMenu, dlgDebugScript debug)
     {
-      _model = model;
-      _temp = _model.Scripter.getScripts();
+      _temp = App.Model.Scripter.getScripts();
       InitializeComponent();
       Title += "   [ " + AppParams.Inst.ScriptInventoryPath + " ]";
       populateTree();
@@ -44,7 +42,7 @@ namespace BatInspector.Forms
       foreach (ScriptItem sItem in _temp)
       {
         ctlScriptItem sIt = new ctlScriptItem();
-        sIt.setup(sItem, deleteScript, _model, debugScript);
+        sIt.setup(sItem, deleteScript, debugScript);
         _sp.Children.Add(sIt);
       }
     }
@@ -54,7 +52,7 @@ namespace BatInspector.Forms
       ScriptItem s = new ScriptItem(_temp.Count, "SCRIPT_NAME", "DESCRIPTION", false, new List<ParamItem>());
       _temp.Add(s);
       ctlScriptItem it = new ctlScriptItem();
-      it.setup(s, deleteScript, _model, debugScript);
+      it.setup(s, deleteScript, debugScript);
       populateTree();
     }
 
@@ -88,8 +86,8 @@ namespace BatInspector.Forms
           _temp[it.Index].Parameter = it.Parameter;
         }
       }
-      _model.Scripter.setScripts(_temp);
-      _model.Scripter.saveScripts();
+      App.Model.Scripter.setScripts(_temp);
+      App.Model.Scripter.saveScripts();
       this.Visibility = Visibility.Hidden;
       if (_updateMenu != null)
         _updateMenu();

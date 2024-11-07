@@ -20,12 +20,10 @@ namespace BatInspector.Forms
 
   public partial class frmSpeciesData : Window
   {
-    ViewModel _model;
     dlgcloseChildWindow _closWin;
     MainWindow _parent;
-    public frmSpeciesData(ViewModel model, dlgcloseChildWindow closeWin, MainWindow parent)
+    public frmSpeciesData(dlgcloseChildWindow closeWin, MainWindow parent)
     {
-      _model = model;
       _closWin = closeWin;
       _parent = parent;
       InitializeComponent();
@@ -37,7 +35,7 @@ namespace BatInspector.Forms
       _ctlSpecData1.setDelegate(showSpecExample);
       _ctlSpecData2.setDelegate(showSpecExample);
 
-      foreach (SpeciesInfos si in _model.SpeciesInfos)
+      foreach (SpeciesInfos si in App.Model.SpeciesInfos)
       {
         _ctlSelSpecies1._cb.Items.Add(si.Latin);
         _ctlSelSpecies2._cb.Items.Add(si.Latin);
@@ -56,7 +54,7 @@ namespace BatInspector.Forms
 
     private void showSpecExample(string locSpecName)
     {
-      foreach(SpeciesInfos spec in _model.SpeciesInfos)
+      foreach(SpeciesInfos spec in App.Model.SpeciesInfos)
       {
         if(spec.Local == locSpecName)
         {
@@ -94,7 +92,7 @@ namespace BatInspector.Forms
 
     private void species1Changed(int idx, string val)
     {
-      foreach (SpeciesInfos si in _model.SpeciesInfos)
+      foreach (SpeciesInfos si in App.Model.SpeciesInfos)
       {
         if(si.Latin == val)
         {
@@ -120,7 +118,7 @@ namespace BatInspector.Forms
 
     private void species2Changed(int idx, string val)
     {
-      foreach (SpeciesInfos si in _model.SpeciesInfos)
+      foreach (SpeciesInfos si in App.Model.SpeciesInfos)
       {
         if (si.Latin == val)
         {
@@ -146,7 +144,7 @@ namespace BatInspector.Forms
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
-      foreach (SpeciesInfos si in _model.SpeciesInfos)
+      foreach (SpeciesInfos si in App.Model.SpeciesInfos)
       {
         if (si.Latin == _ctlSelSpecies1._cb.Text)
         {
@@ -183,7 +181,7 @@ namespace BatInspector.Forms
         }
       }
       BatInfo bi = new BatInfo();
-      bi.Species = _model.SpeciesInfos;
+      bi.Species = App.Model.SpeciesInfos;
       bi.save(AppParams.Inst.BatInfoPath);
     }
 

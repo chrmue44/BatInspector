@@ -17,6 +17,7 @@ using System.IO;
 using libScripter;
 using System.Drawing;
 using System.Windows.Media;
+using Microsoft.Web.WebView2.Core;
 
 namespace BatInspector.Controls
 {
@@ -28,7 +29,6 @@ namespace BatInspector.Controls
     AnalysisFile _analysis;
     string _wavFilePath;
     PrjRecord _record;
-    ViewModel _model;
     MainWindow _parent;
     bool _initialized = false;
     enModel _modelType;
@@ -60,10 +60,13 @@ namespace BatInspector.Controls
       }
     }
 
-
-    public ctlWavFile(AnalysisFile analysis, PrjRecord record,  ViewModel model, MainWindow parent, bool showButtons)
+    public ctlWavFile()
     {
-      _model = model;
+
+    }
+
+    public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons)
+    {
       _parent = parent;
       InitializeComponent();
       _ctlRemarks.setup(MyResources.CtlWavRemarks, enDataType.STRING, 0, 80, true, _tbRemarks_TextChanged);
@@ -166,12 +169,12 @@ namespace BatInspector.Controls
       {
         if (_analysis != null)
         {
-          _parent.setZoom(_record.File, _analysis, _wavFilePath, this, _model.CurrentlyOpen.Analysis.ModelType);
+          _parent.setZoom(_record.File, _analysis, _wavFilePath, this, App.Model.CurrentlyOpen.Analysis.ModelType);
         }
         else
         {
           AnalysisFile ana = new AnalysisFile(_record.File, 383500, 3.001);
-           _parent.setZoom(_record.File, ana, _wavFilePath, this, _model.CurrentlyOpen.Analysis.ModelType);
+           _parent.setZoom(_record.File, ana, _wavFilePath, this, App.Model.CurrentlyOpen.Analysis.ModelType);
         }
       }
       else
@@ -218,7 +221,7 @@ namespace BatInspector.Controls
         {
           ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
           if ((_analysis.Calls[i].getDouble(Cols.PROBABILITY) >= 0.5) &&  //TODO no fix value
-               SpeciesInfos.isInList(_model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
+               SpeciesInfos.isInList(App.Model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
             ctlm.setValue(Analysis.Calls[i].getString(Cols.SPECIES).ToUpper());
           else
             ctlm.setValue("?");
@@ -259,7 +262,7 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        FrmTools frm = new FrmTools(_record.File, _model);
+        FrmTools frm = new FrmTools(_record.File);
         bool upd = frm.ShowDialog() == true;
         if (upd)
           update();

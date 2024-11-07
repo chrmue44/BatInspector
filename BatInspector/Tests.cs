@@ -40,12 +40,10 @@ namespace BatInspector
     ProcessRunner _proc;
     int _errors = 0;
     FormulaData[] _dataForm;
-    ViewModel _model;
 
-  public Tests(ViewModel model)
+  public Tests()
    {
       _proc = new ProcessRunner();
-      _model = model;
       _dataForm = new FormulaData[]
         {
         new FormulaData(1, "substr(\"ABCDE\",0,2)", "AB",""),
@@ -138,7 +136,7 @@ namespace BatInspector
     private void testSumReport()
     {
       // calcDays()
-      SumReport rep = new SumReport(_model);
+      SumReport rep = new SumReport();
       DateTime dat = new DateTime(2022, 09, 15);
       DateTime end = new DateTime(2022, 09, 30);
       int days = rep.calcDays(dat, end, enPeriod.DAILY);
@@ -178,7 +176,7 @@ namespace BatInspector
 
     private void testCsvFuncs(string wrkDir)
     {
-      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null);
       scr.runScript(Path.Combine(wrkDir, "test_csv.scr"), false);
       assert(scr.getVariable("c23"), "23");
       assert(scr.getVariable("c123"), "123");
@@ -204,7 +202,7 @@ namespace BatInspector
 
     private void testWhile(string wrkDir)
     {
-      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null);
       scr.SetVariable("Limit", "9");
       scr.SetVariable("b", "0");
       scr.runScript(Path.Combine(wrkDir,"test_while.scr"), false, false);
@@ -225,7 +223,7 @@ namespace BatInspector
 
     private void testFor(string wrkDir)
     {
-      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null);
       scr.runScript(Path.Combine(wrkDir, "test_for.scr"), false, false);
       assert(scr.getVariable("sum1"), "12");
       assert(scr.getVariable("sum2"), "0");
@@ -234,7 +232,7 @@ namespace BatInspector
 
     private void testIf(string wrkDir)
     {
-      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null, null);
+      ScriptRunner scr = new ScriptRunner(ref _proc, wrkDir, null);
 
       scr.SetVariable("A", "55");
       scr.SetVariable("B", "34");
@@ -269,7 +267,7 @@ namespace BatInspector
       {
         string form = f.Formula;
         Expression exp = new Expression(null);
-        MthdListScript mthdListScript = new MthdListScript(_model, "");
+        MthdListScript mthdListScript = new MthdListScript( "");
         exp.addMethodList(mthdListScript);
         string res = exp.parseToString(form);
         if((f.Result != res) || ((f.Error != res) && (exp.Errors > 0)))
@@ -386,21 +384,21 @@ namespace BatInspector
         EndTime = new DateTime(2022,7,14),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, _model.Regions, _model.SpeciesInfos, _model.DefaultModelParams[0],_model.DefaultModelParams);
+      Project.createPrjFromWavs(prj, App.Model.Regions, App.Model.SpeciesInfos, App.Model.DefaultModelParams[0],App.Model.DefaultModelParams);
     }
 
     private void testReportModelBatdetect2()
     {
       List <SpeciesInfos> species = BatInfo.loadFrom("F:/BatInspector/dat").Species;
-      ModelBatDetect2 model = new ModelBatDetect2(1, null);
+      ModelBatDetect2 model = new ModelBatDetect2(1);
       string WavDir = "G:\\bat\\2022\\20220326\\Records";
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
-      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
-      Analysis a = new Analysis(prj.SpeciesInfos, null, enModel.BAT_DETECT2);
-      a.read(reportName, _model.DefaultModelParams);
+      ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
+      Analysis a = new Analysis(prj.SpeciesInfos, false, enModel.BAT_DETECT2);
+      a.read(reportName, App.Model.DefaultModelParams);
       a.save(reportName, prj.Notes, prj.SummaryName);
     }
 
@@ -410,10 +408,10 @@ namespace BatInspector
       string dstDir = "D:\\bat\\Queries";
       string name = "test";
       string query = "(FreqMin > 18000) && (FreqMin < 21000) && (SpeciesAuto == \"NLEI\")";
-      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Query qry = new Query(name, srcDir, dstDir, query, _model.SpeciesInfos, 
-                            _model.Regions, modelParams, _model.DefaultModelParams.Length);
-      qry.evaluate(_model);      
+      ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Query qry = new Query(name, srcDir, dstDir, query, App.Model.SpeciesInfos, 
+                            App.Model.Regions, modelParams, App.Model.DefaultModelParams.Length);
+      qry.evaluate();      
     }
 
     private void updateSummaries()
@@ -422,13 +420,13 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
       {
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
         if (repName != "")
         {
-          ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
-          Project p = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
-          Analysis a = new Analysis(p.SpeciesInfos, null, enModel.BAT_DETECT2);
-          a.read(repName, _model.DefaultModelParams);
+          ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+          Project p = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
+          Analysis a = new Analysis(p.SpeciesInfos, false, enModel.BAT_DETECT2);
+          a.read(repName, App.Model.DefaultModelParams);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
           a.createSummary(sumName, p.Notes);
         }
@@ -441,8 +439,8 @@ namespace BatInspector
       i.Latitude = lat;
       i.Longitude = lon;
       DirectoryInfo dirInfo = new DirectoryInfo(prjName);
-      _model.initProject(dirInfo, null);
-      _model.Prj.createXmlInfoFiles(i);
+      App.Model.initProject(dirInfo, false);
+      App.Model.Prj.createXmlInfoFiles(i);
     }
 
 
@@ -497,8 +495,8 @@ namespace BatInspector
       string file = "20220906_0005.wav";
       w.readFile(Path.Combine(prjDir, "Records", file));
       string report = Path.Combine(prjDir, "bd2", "report_BatDetect2_GermanBats.pth.tar.csv");
-      Analysis a = new Analysis(_model.SpeciesInfos, null, enModel.BAT_DETECT2);
-      a.read(report, _model.DefaultModelParams);
+      Analysis a = new Analysis(App.Model.SpeciesInfos, false, enModel.BAT_DETECT2);
+      a.read(report, App.Model.DefaultModelParams);
       AnalysisFile f = a.find(file);
       assert("open test data", f != null);
 
@@ -625,7 +623,7 @@ namespace BatInspector
 
       // test search for date time
       Expression exp = new Expression(null);
-      MthdListScript mthdListScript = new MthdListScript(_model, "");
+      MthdListScript mthdListScript = new MthdListScript("");
       exp.addMethodList(mthdListScript);
       exp.parse("setTxtLocfilePars(0,2,4,1,3,5,0,1,\",\")");
       fName = "F:\\prj\\BatInspector\\TestData\\Peter\\PTG01_Summary.txt";
@@ -672,18 +670,18 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
       {
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
         if (repName != "")
         {
-          _model.initProject(subDir, null);
-          foreach(AnalysisFile f in _model.Prj.Analysis.Files)
+          App.Model.initProject(subDir, false);
+          foreach(AnalysisFile f in App.Model.Prj.Analysis.Files)
           {
-            string info = Path.Combine(_model.Prj.PrjDir, _model.Prj.WavSubDir, f.Name.ToLower().Replace(".wav", ".xml"));
+            string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.ToLower().Replace(".wav", ".xml"));
             BatRecord rec = ElekonInfoFile.read(info);
             foreach(AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
           }
-          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
+          App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
         }
       }
     }
@@ -741,18 +739,18 @@ namespace BatInspector
     {
       DirectoryInfo subDir = new DirectoryInfo(prjName);
       
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, _model.DefaultModelParams[0]);
+        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
         if (repName != "")
         {
-          _model.initProject(subDir, null);
-          foreach (AnalysisFile f in _model.Prj.Analysis.Files)
+          App.Model.initProject(subDir, false);
+          foreach (AnalysisFile f in App.Model.Prj.Analysis.Files)
           {
-            string info = Path.Combine(_model.Prj.PrjDir, _model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
+            string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
             BatRecord rec = ElekonInfoFile.read(info);
             foreach (AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
           }
-          _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
+          App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
         }
       
     }
@@ -787,7 +785,7 @@ namespace BatInspector
 
       foreach (stSpecLoc s in tests)
       {
-        assert("occorsAtLocation() fails", s.Occurs == _model.Regions.occursAtLocation(s.Species, s.Lat, s.Lon));
+        assert("occorsAtLocation() fails", s.Occurs == App.Model.Regions.occursAtLocation(s.Species, s.Lat, s.Lon));
       }
     }
 
@@ -795,7 +793,7 @@ namespace BatInspector
     private void testActivityDiagr()
     {
       string bmpName = "F:\bat\bmptest.bmp";
-      frmActivity frm = new frmActivity(_model, bmpName);
+      frmActivity frm = new frmActivity(bmpName);
       frm.Show();
       frm.setup();
       int ticksPerHour = 60 / 5;

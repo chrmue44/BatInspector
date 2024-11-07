@@ -258,12 +258,12 @@ namespace BatInspector
       return _vars;
     }
 
-    public static void populateFilterComboBox(ComboBox fiBox, ViewModel model)
+    public static void populateFilterComboBox(ComboBox fiBox)
     {
       fiBox.Items.Clear();
       fiBox.Items.Add(MyResources.MainFilterNone);
       fiBox.Items.Add(MyResources.MainFilterNew);
-      foreach (FilterItem f in model.Filter.Items)
+      foreach (FilterItem f in App.Model.Filter.Items)
       {
         string name = f.Name;
         fiBox.Items.Add(name);

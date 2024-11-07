@@ -14,8 +14,6 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlPrjButtons : UserControl
   {
-    ViewModel _model;
-    MainWindow _parent;
     bool _isPrjView = false;
     bool _isListView = false;
 
@@ -24,10 +22,8 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
-    public void setup(ViewModel model, MainWindow parent, bool isPrjView, bool isListView)
+    public void setup(bool isPrjView, bool isListView)
     {
-      _model = model;
-      _parent = parent;
       _isPrjView = isPrjView;
       _isListView = isListView;
       if(_isPrjView)
@@ -69,7 +65,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        PrjRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = App.Model.CurrentlyOpen?.getRecords();
         if (recList != null)
         {
           foreach (PrjRecord rec in recList)
@@ -77,7 +73,7 @@ namespace BatInspector.Controls
             rec.Selected = true;
           }
 
-          _parent.updateControls();
+          App.MainWin.updateControls();
           DebugLog.log("select all files", enLogType.DEBUG);
         }
       }
@@ -91,14 +87,14 @@ namespace BatInspector.Controls
     {
       try
       {
-        PrjRecord[] recList = _model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = App.Model.CurrentlyOpen?.getRecords();
         if (recList != null)
         {
           foreach (PrjRecord rec in recList)
           {
             rec.Selected = false;
           }
-          _parent.updateControls();
+          App.MainWin.updateControls();
           DebugLog.log("deselect all files", enLogType.DEBUG);
         }
       }
@@ -115,17 +111,17 @@ namespace BatInspector.Controls
       {
         List<string> files = new List<string>();
         MessageBoxResult res = MessageBox.Show(MyResources.msgDeleteFiles, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
-        if ((res == MessageBoxResult.Yes) && (_model.CurrentlyOpen != null))
+        if ((res == MessageBoxResult.Yes) && (App.Model.CurrentlyOpen != null))
         {
-          foreach (PrjRecord rec in _model.CurrentlyOpen.getRecords())
+          foreach (PrjRecord rec in App.Model.CurrentlyOpen.getRecords())
           {
             if (rec.Selected == true)
               files.Add(rec.File);
           }
 
-          _model.deleteFiles(files);
-          _parent.buildWavFileList(false);
-          _parent.showStatus();
+          App.Model.deleteFiles(files);
+          App.MainWin.buildWavFileList(false);
+          App.MainWin.showStatus();
           DebugLog.log("MainWin:BTN 'dletete all files' clicked", enLogType.DEBUG);
         }
       }
@@ -139,8 +135,8 @@ namespace BatInspector.Controls
     {
       try
       {
-        _parent.buildWavFileList(true);
-        _parent.showStatus();
+        App.MainWin.buildWavFileList(true);
+        App.MainWin.showStatus();
         DebugLog.log("MainWin:BTN 'hide unselected files' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -155,7 +151,7 @@ namespace BatInspector.Controls
       try
       {
         if (_isPrjView)
-          _parent.togglePngSize();
+          App.MainWin.togglePngSize();
         DebugLog.log("MainWin:BTN 'Size' clicked ", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -168,7 +164,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        if ((_model.Prj != null) && _model.Prj.Ok)
+        if ((App.Model.Prj != null) && App.Model.Prj.Ok)
         {
           System.Windows.Forms.OpenFileDialog ofi = new System.Windows.Forms.OpenFileDialog();
           ofi.Filter = "*.wav|*.wav";
@@ -177,13 +173,13 @@ namespace BatInspector.Controls
           System.Windows.Forms.DialogResult ok = ofi.ShowDialog();
           if (ok == System.Windows.Forms.DialogResult.OK)
           {
-            _model.Prj.addFiles(ofi.FileNames);
-            if (_model.Prj.Analysis != null)
-              _model.Prj.Analysis.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
-            _model.Prj.writePrjFile();
-            _parent._spSpectrums.Children.Clear();
-            DirectoryInfo dir = new DirectoryInfo(_model.SelectedDir);
-            _parent.initializeProject(dir);
+            App.Model.Prj.addFiles(ofi.FileNames);
+            if (App.Model.Prj.Analysis != null)
+              App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
+            App.Model.Prj.writePrjFile();
+            App.MainWin._spSpectrums.Children.Clear();
+            DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
+            App.MainWin.initializeProject(dir);
           }
         }
         else
@@ -198,7 +194,7 @@ namespace BatInspector.Controls
 
     private void _cbFilter_DropDownOpened(object sender, EventArgs e)
     {
-      _model.Filter.TempFilter = null;
+      App.Model.Filter.TempFilter = null;
       _cbFilter.Items[1] = MyResources.MainFilterNew;
     }
 
@@ -207,7 +203,7 @@ namespace BatInspector.Controls
       DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
       bool apply;
       bool resetFilter;
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _model, _cbFilter);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter);
       if (apply)
         _btnApplyFilter_Click(sender, null);
       if (resetFilter)
@@ -220,8 +216,8 @@ namespace BatInspector.Controls
       {
         //       foreach (ctlWavFile ctl in _spSpectrums.Children)
         //         ctl.Visibility = Visibility.Visible;
-        _parent.buildWavFileList(false);
-        _parent.showStatus();
+        App.MainWin.buildWavFileList(false);
+        App.MainWin.showStatus();
         DebugLog.log("MainWin:BTN 'show all' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -236,18 +232,18 @@ namespace BatInspector.Controls
       {
         _btnNone_Click(sender, null);
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
-                          _model.Filter.TempFilter :  _model.Filter.getFilter(_cbFilter.Text);
-        if ((filter != null) && (_model.CurrentlyOpen != null))
+                          App.Model.Filter.TempFilter :  App.Model.Filter.getFilter(_cbFilter.Text);
+        if ((filter != null) && (App.Model.CurrentlyOpen != null))
         {
-          foreach (AnalysisFile a in _model.CurrentlyOpen.Analysis.Files)
+          foreach (AnalysisFile a in App.Model.CurrentlyOpen.Analysis.Files)
           {
-            bool res = _model.Filter.apply(filter, a);
-            PrjRecord rec = _model.CurrentlyOpen.findRecord(a.Name);
+            bool res = App.Model.Filter.apply(filter, a);
+            PrjRecord rec = App.Model.CurrentlyOpen.findRecord(a.Name);
             if (res && (rec != null))
               rec.Selected = res;
           }
-          _parent.buildWavFileList(true, _model.Filter, filter);
-          _parent.showStatus();
+          App.MainWin.buildWavFileList(true, App.Model.Filter, filter);
+          App.MainWin.showStatus();
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
         }
         else
@@ -264,7 +260,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _parent.toggleCallInfo();
+        App.MainWin.toggleCallInfo();
       }
       catch (Exception ex)
       {
@@ -277,7 +273,7 @@ namespace BatInspector.Controls
       try
       {
         if ((AppParams.Inst.ScriptCopyAutoToMan != null) && (AppParams.Inst.ScriptCopyAutoToMan != ""))
-          _model.Scripter.runScript(AppParams.Inst.ScriptCopyAutoToMan);
+          App.Model.Scripter.runScript(AppParams.Inst.ScriptCopyAutoToMan);
         else
           MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         DebugLog.log("MainWin:BTN 'Copy Species' clicked", enLogType.DEBUG);
@@ -292,21 +288,21 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (_model.Prj?.Ok ==  true)
+        if (App.Model.Prj?.Ok ==  true)
         {
           System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
           ofo.Description = MyResources.SelectExportDirectory;
           System.Windows.Forms.DialogResult res = ofo.ShowDialog();
           if (res == System.Windows.Forms.DialogResult.OK)
-            _model.Prj.exportFiles(ofo.SelectedPath);
+            App.Model.Prj.exportFiles(ofo.SelectedPath);
         }
-        else if (_model.Query != null)
+        else if (App.Model.Query != null)
         {
           System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
           ofo.Description = MyResources.SelectExportDirectory;
           System.Windows.Forms.DialogResult res = ofo.ShowDialog();
           if (res == System.Windows.Forms.DialogResult.OK)
-            _model.Query.exportFiles(ofo.SelectedPath);
+            App.Model.Query.exportFiles(ofo.SelectedPath);
         }
         else
           MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);

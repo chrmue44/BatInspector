@@ -20,28 +20,26 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlStatistic : UserControl
   {
-    ViewModel _model = null;
 
     public ctlStatistic()
     {
       InitializeComponent();
     }
 
-    public void setup(ViewModel model)
+    public void setup()
     {
-      _model = model;
-      _stat1.initHistogram(_model.Statistic.Fmin, BatInspector.Properties.MyResources.ctlStatMinFreq);
-      _stat2.initHistogram(_model.Statistic.Fmax, BatInspector.Properties.MyResources.ctlStatMaxFreq);
-      _stat3.initHistogram(_model.Statistic.FmaxAmp, BatInspector.Properties.MyResources.ctlStatFreqMaxAmp);
-      _stat4.initHistogram(_model.Statistic.Duration, BatInspector.Properties.MyResources.ctlStatDuration);
-      _stat5.initHistogram(_model.Statistic.CallDist, BatInspector.Properties.MyResources.ctlStatCallInterval);
+      _stat1.initHistogram(App.Model.Statistic.Fmin, BatInspector.Properties.MyResources.ctlStatMinFreq);
+      _stat2.initHistogram(App.Model.Statistic.Fmax, BatInspector.Properties.MyResources.ctlStatMaxFreq);
+      _stat3.initHistogram(App.Model.Statistic.FmaxAmp, BatInspector.Properties.MyResources.ctlStatFreqMaxAmp);
+      _stat4.initHistogram(App.Model.Statistic.Duration, BatInspector.Properties.MyResources.ctlStatDuration);
+      _stat5.initHistogram(App.Model.Statistic.CallDist, BatInspector.Properties.MyResources.ctlStatCallInterval);
       double[] ticksY = { 20,21,22,23,0,1,2,3,4,5,6};
-      _stat6.initHistogram(_model.Statistic.RecTime, BatInspector.Properties.MyResources.ctlStatRecTime, ticksY);
+      _stat6.initHistogram(App.Model.Statistic.RecTime, BatInspector.Properties.MyResources.ctlStatRecTime, ticksY);
     }
 
     public void populateComboBoxes()
     {
-      Filter.populateFilterComboBox(_cbFilterStatistic, _model);
+      Filter.populateFilterComboBox(_cbFilterStatistic);
     }
 
 
@@ -102,10 +100,10 @@ namespace BatInspector.Controls
       try
       {
         FilterItem filterExp = (_cbFilterStatistic.SelectedIndex == 1) ?
-                    filterExp = _model.Filter.TempFilter : filterExp = _model.Filter.getFilter(_cbFilterStatistic.Text);
-        if (_model.CurrentlyOpen != null)
+                    filterExp = App.Model.Filter.TempFilter : filterExp = App.Model.Filter.getFilter(_cbFilterStatistic.Text);
+        if (App.Model.CurrentlyOpen != null)
         {
-          _model.Statistic.calcStatistic(filterExp, _model.CurrentlyOpen.Analysis, _model.Filter);
+          App.Model.Statistic.calcStatistic(filterExp, App.Model.CurrentlyOpen.Analysis, App.Model.Filter);
           _stat1.createHistogram();
           _stat2.createHistogram();
           _stat3.createHistogram();
@@ -122,7 +120,7 @@ namespace BatInspector.Controls
 
     private void _cbFilter_DropDownOpened(object sender, EventArgs e)
     {
-      _model.Filter.TempFilter = null;
+      App.Model.Filter.TempFilter = null;
       _cbFilterStatistic.Items[1] = MyResources.MainFilterNew;
     }
 
@@ -132,7 +130,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
 
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _model, _cbFilterStatistic);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterStatistic);
       createPlot();
     }
 
@@ -151,11 +149,11 @@ namespace BatInspector.Controls
       {
         string fileName = dlg.FileName;
         string prjName = "";
-        if (_model.Prj != null)
-          prjName = _model.Prj.Name;
-        else if(_model.Query != null)
-          prjName = _model.Query.Name;
-        _model.Statistic.exportToCsv(fileName, prjName);
+        if (App.Model.Prj != null)
+          prjName = App.Model.Prj.Name;
+        else if(App.Model.Query != null)
+          prjName = App.Model.Query.Name;
+        App.Model.Statistic.exportToCsv(fileName, prjName);
       }
     }
   }

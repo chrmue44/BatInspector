@@ -20,9 +20,8 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmExport : Window
   {
-    ViewModel _model;
 
-    public frmExport(ViewModel model)
+    public frmExport()
     {
       InitializeComponent();
       _ctlDest.setup(BatInspector.Properties.MyResources.frmExpSelectDst, 150, true);
@@ -30,7 +29,6 @@ namespace BatInspector.Forms
       _cbIncPng.IsChecked = true;
       _cbIncXML.IsChecked = true;
       _cbTimeStretch.IsChecked = true;
-      _model = model;
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
@@ -40,7 +38,7 @@ namespace BatInspector.Forms
       bool incXml= _cbIncXML.IsChecked == true;
       uint timeStretch = (uint)(_cbTimeStretch.IsChecked == true ? 10 : 1);
       string prefix = _ctlPrefix.getValue();
-      _model.ZoomView.export(dstDir, incPng, incXml, timeStretch, prefix);
+      App.Model.ZoomView.export(dstDir, incPng, incXml, timeStretch, prefix);
       this.Hide();
     }
 

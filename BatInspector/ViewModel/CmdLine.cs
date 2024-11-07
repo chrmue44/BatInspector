@@ -7,11 +7,8 @@ namespace BatInspector
 {
   public class CmdLine
   {
-    static ViewModel _model;
-
     public static int main(string[] args)
     {
-      _model = new ViewModel(null, null);
       int retVal = 0;
       if(args.Length == 0)
         return 1;
@@ -41,7 +38,7 @@ namespace BatInspector
     {
       int retVal = 0;
       string fullPath = Path.Combine(AppParams.AppDataPath, AppParams.DIR_SCRIPT, script);
-      _model.Scripter.runScript(fullPath, true, false);
+      App.Model.Scripter.runScript(fullPath, true, false);
       return retVal;
     }
   }

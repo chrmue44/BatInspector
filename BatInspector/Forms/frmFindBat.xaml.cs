@@ -20,12 +20,11 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmFindBat : Window
   {
-    ViewModel _model;
     string strNo = "no";
     string strYes = "yes;";
     string _strUndef = "undef";
 
-    public frmFindBat(ViewModel model)
+    public frmFindBat()
     {
       string[] items = {strNo, strYes, _strUndef };
       string[] itemsSig =
@@ -39,7 +38,6 @@ namespace BatInspector.Forms
 
       InitializeComponent();
       
-      _model = model;
       _ctlSigStruct.setup("Signal Structure", 0, 120);
       _ctlSigStruct.setItems(itemsSig);
       _ctlSigStruct.setValue(enSigStructure.FM_QCF.ToString());
@@ -113,7 +111,7 @@ namespace BatInspector.Forms
       MissingInfo info = new MissingInfo();
       setInfo(info);
       List<string> steps;
-      List<enSpec> specs = _model.Classifier.classify(pars, ref info, out steps);
+      List<enSpec> specs = App.Model.Classifier.classify(pars, ref info, out steps);
       setInfo(info);
       _tbSpecies.Text = "";
       foreach (enSpec sp in specs)
@@ -151,14 +149,14 @@ namespace BatInspector.Forms
 
     private void _btnGet_Click(object sender, RoutedEventArgs e)
     {
-      AnalysisFile a = _model.Prj.Analysis.getAnalysis(_model.ZoomView.FileInfo.FileName);
+      AnalysisFile a = App.Model.Prj.Analysis.getAnalysis(App.Model.ZoomView.FileInfo.FileName);
       if (a != null)
       {
-        int idx = _model.ZoomView.SelectedCallIdx;
+        int idx = App.Model.ZoomView.SelectedCallIdx;
         if ((idx >= 0) && (idx < a.Calls.Count))
         {
           AnalysisCall c = a.Calls[idx];
-          ElekonInfoFile.parsePosition(_model.ZoomView.FileInfo, out double lat, out double lon);
+          ElekonInfoFile.parsePosition(App.Model.ZoomView.FileInfo, out double lat, out double lon);
           _ctlLat.setValue(lat);
           _ctlLon.setValue(lon);
           _ctlFstart.setValue(c.getDouble(Cols.F_MAX) / 1000.0);

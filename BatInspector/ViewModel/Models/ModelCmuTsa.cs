@@ -27,8 +27,8 @@ namespace BatInspector
     public const int OPT_PREDICT3 = 0x80;
     public const int OPT_CLEANUP = 0x100;
 
-    public ModelCmuTsa(int index, ViewModel model) :
-      base(index, enModel.rnn6aModel, MODEL_NAME, model)
+    public ModelCmuTsa(int index) :
+      base(index, enModel.rnn6aModel, MODEL_NAME)
     {
 
     }
@@ -60,7 +60,7 @@ namespace BatInspector
         if (File.Exists(reportName))
           File.Delete(reportName);
         BioAcoustics.analyzeFiles(reportName, dir);
-        prj.Analysis.read(reportName, _model.DefaultModelParams);
+        prj.Analysis.read(reportName, App.Model.DefaultModelParams);
       }
 
       if ((options & (OPT_CUT | OPT_PREPARE | OPT_PREDICT1)) != 0)
@@ -86,10 +86,10 @@ namespace BatInspector
       if ((options & OPT_CONF95) != 0)
       {
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
-        prj.Analysis.read(reportName, _model.DefaultModelParams);
+        prj.Analysis.read(reportName, App.Model.DefaultModelParams);
         prj.Analysis.checkConfidence(prj.SpeciesInfos);
         prj.Analysis.save(reportName, prj.Notes, prj.SummaryName);
-        prj.Analysis.read(reportName, _model.DefaultModelParams);
+        prj.Analysis.read(reportName, App.Model.DefaultModelParams);
       }
 
       if ((options & OPT_CLEANUP) != 0)

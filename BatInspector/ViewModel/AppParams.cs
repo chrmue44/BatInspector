@@ -189,7 +189,7 @@ namespace BatInspector
 
     bool _isInitialized = false;
     ScriptInventory _scriptInventory = null;
-    static public  bool IsInitialized { get { return _inst._isInitialized; } }
+    static public  bool IsInitialized { get { return Inst._isInitialized; } }
    
     public static string AppVersion 
     {

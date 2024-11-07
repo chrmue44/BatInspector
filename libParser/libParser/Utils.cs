@@ -490,6 +490,12 @@ namespace libParser
       return locurl;
     }
 
+    public static string OsmMapUrl(string lat, string lon, string locName, int zoom)
+    {
+      string locurl = $"https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}";
+      return locurl;
+    }
+
     public static string LatitudeToString(double lat) 
     {
       double n = Math.Truncate(Math.Abs(lat));

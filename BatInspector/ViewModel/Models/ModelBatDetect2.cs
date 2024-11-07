@@ -31,8 +31,8 @@ namespace BatInspector
     public const string BD2_DEFAULT_MODEL = "Net2DFast_UK_same.pth.tar";
     Project _prj;
     
-    public ModelBatDetect2(int index, ViewModel model) : 
-      base(index, enModel.BAT_DETECT2, MODEL_NAME, model)
+    public ModelBatDetect2(int index) : 
+      base(index, enModel.BAT_DETECT2, MODEL_NAME)
     {
     }
 
@@ -62,7 +62,7 @@ namespace BatInspector
           if (ok)
           {
     //        cleanup(prj);
-            prj.Analysis.read(prj.getReportName(this.Index), _model.DefaultModelParams);
+            prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams);
             if(removeEmptyFiles)
               prj.removeFilesNotInReport();
           }
@@ -96,7 +96,7 @@ namespace BatInspector
       if (ok)
       {
         //        cleanup(prj.PrjDir);
-        prj.Analysis.read(prj.getReportName(this.Index), _model.DefaultModelParams);
+        prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams);
         prj.removeFilesNotInReport();
       }
       else
@@ -320,7 +320,7 @@ namespace BatInspector
             if (_cli)
               DebugLog.log(msg, enLogType.INFO);
             else
-              _model.Status.Msg = msg;
+              App.Model.Status.Msg = msg;
           }
         }
       }

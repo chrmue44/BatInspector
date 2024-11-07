@@ -12,10 +12,10 @@ namespace BatInspector.Forms
   public partial class frmActivity : Window
   {
     private string _bmpName;
-    public frmActivity(ViewModel model, string bmpName)
+    public frmActivity(string bmpName)
     {
       InitializeComponent();
-      _ctlActivity.setup(model);
+      _ctlActivity.setup();
      _bmpName = bmpName;
      Title = $"{Properties.MyResources.ActivityDiagram}: {bmpName}";
     }

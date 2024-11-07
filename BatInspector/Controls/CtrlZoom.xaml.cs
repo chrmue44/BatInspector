@@ -31,7 +31,6 @@ namespace BatInspector.Controls
   {
     //  AnalysisFile _analysis;
     string _wavFilePath;
-    ViewModel _model;
     int _stretch;
     int _oldCallIdx = -1;
     Image[] _playImgs;
@@ -123,19 +122,18 @@ namespace BatInspector.Controls
       };
     }
 
-    public void setup(AnalysisFile analysis, string wavFilePath, ViewModel model, 
-                       List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
+    public void setup(AnalysisFile analysis, string wavFilePath, 
+                     List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
     {
       int lblWidth = 110;
       InitializeComponent();
-      _model = model;
       _ctlWav = ctlWav;
       _modelType = modelType;
       _openExportForm = openExpWindow;
       _imgFt.Source = (ctlWav != null) ? ctlWav._img.Source : null;
-      _model.ZoomView.Analysis = analysis;
-      _model.ZoomView.Cursor1.set(0, 0, false);
-      _model.ZoomView.Cursor2.set(0, 0, false);
+      App.Model.ZoomView.Analysis = analysis;
+      App.Model.ZoomView.Cursor1.set(0, 0, false);
+      App.Model.ZoomView.Cursor2.set(0, 0, false);
 
       _freq1.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _time1.setup(MyResources.PointInTime + "[s]:", enDataType.DOUBLE, 3, lblWidth);
@@ -153,9 +151,9 @@ namespace BatInspector.Controls
       _tbWavName.Text = System.IO.Path.GetFileName(analysis.Name);
       string wavName = File.Exists(analysis.Name) ? analysis.Name : _wavFilePath + "/" + analysis.Name;
 
-      _model.ZoomView.initWaterfallDiagram(wavName);
-      _duration.setValue(_model.ZoomView.Waterfall.Duration);
-      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate / 1000);
+      App.Model.ZoomView.initWaterfallDiagram(wavName);
+      _duration.setValue(App.Model.ZoomView.Waterfall.Duration);
+      _sampleRate.setValue((double)App.Model.ZoomView.Waterfall.SamplingRate / 1000);
       //_ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);
       //_ctlRange.setValue(AppParams.Inst.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
@@ -197,20 +195,20 @@ namespace BatInspector.Controls
       int wt = 140;
       //int wv = 130;
       _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt);
-      DateTime t = AnyType.getDate(_model.ZoomView.FileInfo.DateTime);
+      DateTime t = AnyType.getDate(App.Model.ZoomView.FileInfo.DateTime);
       _ctlDateTime.setValue(AnyType.getTimeString(t, true));
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
-      _ctlGpsPos.setValue(ElekonInfoFile.formatPosition(_model.ZoomView.FileInfo.GPS.Position, 4));
+      _ctlGpsPos.setValue(ElekonInfoFile.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
       _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, enDataType.STRING, 0, wt);
-      _ctlGain.setValue(_model.ZoomView.FileInfo.Gain);
+      _ctlGain.setValue(App.Model.ZoomView.FileInfo.Gain);
       _ctlTrigLevel.setup(BatInspector.Properties.MyResources.CtlZoomTrigLevel, enDataType.STRING, 0, wt);
-      _ctlTrigLevel.setValue(_model.ZoomView.FileInfo.Trigger.Level);
+      _ctlTrigLevel.setValue(App.Model.ZoomView.FileInfo.Trigger.Level);
       _ctlTrigFilter.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilt, enDataType.STRING, 0, wt);
-      _ctlTrigFilter.setValue(_model.ZoomView.FileInfo.Trigger.Filter);
+      _ctlTrigFilter.setValue(App.Model.ZoomView.FileInfo.Trigger.Filter);
       _ctlTrigFiltFreq.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilttFreq, enDataType.STRING, 0, wt);
-      _ctlTrigFiltFreq.setValue(_model.ZoomView.FileInfo.Trigger.Frequency);
+      _ctlTrigFiltFreq.setValue(App.Model.ZoomView.FileInfo.Trigger.Frequency);
 
-      _ctlSpectrum.init(_model.ZoomView.Spectrum, _model.ZoomView.Waterfall.SamplingRate / 2000);
+      _ctlSpectrum.init(App.Model.ZoomView.Spectrum, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
 
 
       initCallSelectors();
@@ -251,20 +249,20 @@ namespace BatInspector.Controls
 
     void initCallSelectors()
     {
-      if (_model.ZoomView.Analysis.Calls.Count > 0)
+      if (App.Model.ZoomView.Analysis.Calls.Count > 0)
       {
         Stopwatch sw = new Stopwatch(); //@@@
         setVisabilityCallData(true);
-        string[] items = new string[_model.ZoomView.Analysis.Calls.Count];
-        for (int i = 0; i < _model.ZoomView.Analysis.Calls.Count; i++)
-          items[i] = _model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
+        string[] items = new string[App.Model.ZoomView.Analysis.Calls.Count];
+        for (int i = 0; i < App.Model.ZoomView.Analysis.Calls.Count; i++)
+          items[i] = App.Model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
         _ctlSelectCall.setItems(items);
         _ctlSelectCall2.setItems(items);
         _ctlMeanCallMin.setItems(items);
         _ctlMeanCallMax.setItems(items);
         setupCallData(0);
         _ctlMeanCallMin.setValue("1");
-        _ctlMeanCallMax.setValue(_model.ZoomView.Analysis.Calls.Count.ToString());
+        _ctlMeanCallMax.setValue(App.Model.ZoomView.Analysis.Calls.Count.ToString());
         if(_modelType != enModel.BATTY_BIRD_NET)
           calcMeanValues(0, 0);
       }
@@ -276,14 +274,14 @@ namespace BatInspector.Controls
 
     public void update(bool initRuler = true)
     {
-      if (_model != null)
+      if (App.Model != null)
       {
-        if (initRuler)
+        if (initRuler && (App.Model.ZoomView.Waterfall != null))
         {
-          _model.ZoomView.RulerDataA.setRange(-1, 1);
-          _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
-          _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-          _model.ZoomView.Spectrum.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+          App.Model.ZoomView.RulerDataA.setRange(-1, 1);
+          App.Model.ZoomView.RulerDataT.setRange(0, App.Model.ZoomView.Waterfall.Duration);
+          App.Model.ZoomView.RulerDataF.setRange(0, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
+          App.Model.ZoomView.Spectrum.RulerDataF.setRange(0, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
         }
         initRulerF();
         initRulerT();
@@ -297,11 +295,11 @@ namespace BatInspector.Controls
     private void ctlSpecManChanged(int index, string val)
     {
 
-      if (_model.ZoomView.Analysis != null)
+      if (App.Model.ZoomView.Analysis != null)
       {
-        if ((_model.ZoomView.SelectedCallIdx >= 0) && (_model.ZoomView.SelectedCallIdx < _model.ZoomView.Analysis.Calls.Count))
+        if ((App.Model.ZoomView.SelectedCallIdx >= 0) && (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
         {
-          _model.ZoomView.Analysis.Calls[_model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, val);
+          App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, val);
           _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
         }
         else
@@ -314,7 +312,7 @@ namespace BatInspector.Controls
       if (type == enDataType.DOUBLE)
       {
         double range = (double)val;
-        _model.ZoomView.Waterfall.Range = range;
+        App.Model.ZoomView.Waterfall.Range = range;
         updateRuler();
         updateImage();
       }
@@ -331,15 +329,15 @@ namespace BatInspector.Controls
 
     public void updateManSpecies()
     {
-      _ctlSpecMan.setValue(_model.ZoomView.Analysis.Calls[_model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+      _ctlSpecMan.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
     }
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
     {
       try
       {
-        _model.ZoomView.Waterfall.Range += 3.0;
-        //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
+        App.Model.ZoomView.Waterfall.Range += 3.0;
+        //_ctlRange.setValue(App.Model.ZoomView.Waterfall.Range);
         updateRuler();
         updateImage();
         DebugLog.log("Zoom:BTN 'increase range' clicked", enLogType.DEBUG);
@@ -354,10 +352,10 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (_model.ZoomView.Waterfall.Range > 3)
+        if (App.Model.ZoomView.Waterfall.Range > 3)
         {
-          _model.ZoomView.Waterfall.Range -= 3.0;
-          //_ctlRange.setValue(_model.ZoomView.Waterfall.Range);
+          App.Model.ZoomView.Waterfall.Range -= 3.0;
+          //_ctlRange.setValue(App.Model.ZoomView.Waterfall.Range);
           updateRuler();
           updateImage();
         }
@@ -374,14 +372,14 @@ namespace BatInspector.Controls
       try
       {
         Point p = e.GetPosition(_imgFt);
-        ZoomView z = _model.ZoomView;
+        ZoomView z = App.Model.ZoomView;
         double f = (1.0 - (double)(p.Y) / ((double)_imgFt.ActualHeight)) * (z.RulerDataF.Max - z.RulerDataF.Min) + z.RulerDataF.Min;
         double t = (double)(p.X - _imgFt.Margin.Left) / (double)_imgFt.ActualWidth * (z.RulerDataT.Max - z.RulerDataT.Min) + z.RulerDataT.Min;
         if (e.LeftButton == MouseButtonState.Pressed)
         {
           if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
           {
-            _model.ZoomView.Cursor1.set(t, f, true);
+            App.Model.ZoomView.Cursor1.set(t, f, true);
             drawCursor(1);
             setFileInformations();
           }
@@ -390,7 +388,7 @@ namespace BatInspector.Controls
         {
           if (z.RulerDataF.check(f) && z.RulerDataT.check(t))
           {
-            _model.ZoomView.Cursor2.set(t, f, true);
+            App.Model.ZoomView.Cursor2.set(t, f, true);
             drawCursor(2);
             setFileInformations();
           }
@@ -405,9 +403,9 @@ namespace BatInspector.Controls
 
     public void setFileInformations()
     {
-      ZoomView z = _model.ZoomView;
-      _sampleRate.setValue((double)_model.ZoomView.Waterfall.SamplingRate / 1000);
-      _duration.setValue(_model.ZoomView.Analysis.getDouble(Cols.DURATION));
+      ZoomView z = App.Model.ZoomView;
+      _sampleRate.setValue((double)App.Model.ZoomView.Waterfall.SamplingRate / 1000);
+      _duration.setValue(App.Model.ZoomView.Analysis.getDouble(Cols.DURATION));
       if (z.Cursor1.Visible)
       {
         _grpCursor1.Visibility = Visibility.Visible;
@@ -445,23 +443,23 @@ namespace BatInspector.Controls
       Line lx = _cursorX1;
       Line ly = _cursorY1;
       Line la = _cursorA1;
-      Cursor cursor = _model.ZoomView.Cursor1;
+      Cursor cursor = App.Model.ZoomView.Cursor1;
       if (cursorNr == 2)
       {
         lx = _cursorX2;
         ly = _cursorY2;
         la = _cursorA2;
-        cursor = _model.ZoomView.Cursor2;
+        cursor = App.Model.ZoomView.Cursor2;
       }
 
       lx.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       ly.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
       la.Visibility = cursor.Visible ? Visibility.Visible : Visibility.Hidden;
 
-      int x = (int)(_imgFt.Margin.Left + (cursor.Time - _model.ZoomView.RulerDataT.Min) /
-                       (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) * _imgFt.ActualWidth);
-      int y = (int)(_imgFt.Margin.Top + (1.0 - (cursor.Freq - _model.ZoomView.RulerDataF.Min) /
-                      (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min)) * _imgFt.ActualHeight);
+      int x = (int)(_imgFt.Margin.Left + (cursor.Time - App.Model.ZoomView.RulerDataT.Min) /
+                       (App.Model.ZoomView.RulerDataT.Max - App.Model.ZoomView.RulerDataT.Min) * _imgFt.ActualWidth);
+      int y = (int)(_imgFt.Margin.Top + (1.0 - (cursor.Freq - App.Model.ZoomView.RulerDataF.Min) /
+                      (App.Model.ZoomView.RulerDataF.Max - App.Model.ZoomView.RulerDataF.Min)) * _imgFt.ActualHeight);
       lx.X1 = x;
       lx.Y1 = _imgFt.Margin.Top;
       lx.X2 = x;
@@ -491,8 +489,8 @@ namespace BatInspector.Controls
 
     private void hideCursors()
     {
-      _model.ZoomView.Cursor1.hide();
-      _model.ZoomView.Cursor2.hide();
+      App.Model.ZoomView.Cursor1.hide();
+      App.Model.ZoomView.Cursor2.hide();
       _grpCursor1.Visibility = Visibility.Hidden;
       _grpCursor2.Visibility = Visibility.Hidden;
       _deltaT.Visibility = Visibility.Hidden;
@@ -508,7 +506,7 @@ namespace BatInspector.Controls
       GraphHelper.createLine(_rulerA, _rulerA.ActualWidth - 3, _imgXt.Margin.Top,
                           _rulerA.ActualWidth - 3, _imgXt.ActualHeight + _imgXt.Margin.Top, Brushes.Black);
       int steps = 4;
-      RulerData rData = _model.ZoomView.RulerDataA;
+      RulerData rData = App.Model.ZoomView.RulerDataA;
       for (int i = 0; i <= steps; i++)
       {
         double y = _imgXt.Margin.Top + _imgXt.ActualHeight * i / steps;
@@ -522,14 +520,14 @@ namespace BatInspector.Controls
     void initRulerF()
     {
       _rulerF.Children.Clear();
-      GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max, AppParams.NR_OF_TICKS);
+      GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max, AppParams.NR_OF_TICKS);
       GraphHelper.createText(_rulerF, 10, _rulerF.ActualHeight - 15, "[kHz]", Colors.Black);
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
-      GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, AppParams.NR_OF_TICKS, "0.###");
+      GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, AppParams.NR_OF_TICKS, "0.###");
       GraphHelper.createText(_rulerT, 5, 5, "[sec]", Colors.Black);
     }
 
@@ -537,14 +535,14 @@ namespace BatInspector.Controls
 
     public void tick(double ms)
     {
-      if ((_model != null) && (_model.ZoomView != null))
+      if (( App.Model != null) && (App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null))
       {
-        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        if (App.Model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
-          double val = _model.ZoomView.Waterfall.PlayPosition / (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) / Math.Abs(_stretch) * 100;
+          double val = App.Model.ZoomView.Waterfall.PlayPosition / (App.Model.ZoomView.RulerDataT.Max - App.Model.ZoomView.RulerDataT.Min) / Math.Abs(_stretch) * 100;
           _slider.Value = val;
         }
-        else if (_model.ZoomView.Waterfall.PlaybackState != NAudio.Wave.PlaybackState.Paused)
+        else if (App.Model.ZoomView.Waterfall.PlaybackState != NAudio.Wave.PlaybackState.Paused)
         {
           _slider.Value = 0;
           _btnPlay_20.IsEnabled = true;
@@ -556,10 +554,10 @@ namespace BatInspector.Controls
           _btnPlay_HET.IsEnabled = true;
           _btnPlay_HET.Content = _playImgs[7];
         }
-        if (_model.ZoomView.RefreshZoomImg)
+        if (App.Model.ZoomView.RefreshZoomImg)
         {
           createZoomImg();
-          _model.ZoomView.RefreshZoomImg = false;
+          App.Model.ZoomView.RefreshZoomImg = false;
         }
 
       }
@@ -581,11 +579,11 @@ namespace BatInspector.Controls
     {
       try
       {
-        ZoomView z = _model.ZoomView;
+        ZoomView z = App.Model.ZoomView;
         if (z.Cursor1.Visible && z.Cursor2.Visible)
         {
-          _model.ZoomView.RulerDataF.setRange(z.Cursor1.Freq, z.Cursor2.Freq);
-          _model.ZoomView.RulerDataT.setRange(z.Cursor1.Time, z.Cursor2.Time);
+          App.Model.ZoomView.RulerDataF.setRange(z.Cursor1.Freq, z.Cursor2.Freq);
+          App.Model.ZoomView.RulerDataT.setRange(z.Cursor1.Time, z.Cursor2.Time);
           hideCursors();
           createZoomImg();
         }
@@ -605,8 +603,8 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.RulerDataF.setRange(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
-        _model.ZoomView.RulerDataT.setRange(0, _model.ZoomView.Waterfall.Duration);
+        App.Model.ZoomView.RulerDataF.setRange(0, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
+        App.Model.ZoomView.RulerDataT.setRange(0, App.Model.ZoomView.Waterfall.Duration);
         hideCursors();
         createZoomImg();
         DebugLog.log("ZoomBtn: 'zoom total' clicked", enLogType.DEBUG);
@@ -621,7 +619,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.zoomInV();
+        App.Model.ZoomView.zoomInV();
         hideCursors();
         createZoomImg();
         DebugLog.log("ZoomBtn: 'zoom in V' clicked", enLogType.DEBUG);
@@ -636,7 +634,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.zoomOutV();
+        App.Model.ZoomView.zoomOutV();
         hideCursors();
         createZoomImg();
         DebugLog.log("ZoomBtn: 'zoom out V' clicked", enLogType.DEBUG);
@@ -651,7 +649,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.zoomInH();
+        App.Model.ZoomView.zoomInH();
         hideCursors();
         createZoomImg();
         DebugLog.log("ZoomBtn: 'zoom in H' clicked", enLogType.DEBUG);
@@ -666,7 +664,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.zoomOutH();
+        App.Model.ZoomView.zoomOutH();
         hideCursors();
         createZoomImg();
         DebugLog.log("ZoomBtn: 'zoom out H' clicked", enLogType.DEBUG);
@@ -681,7 +679,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (_model.ZoomView.moveLeft())
+        if (App.Model.ZoomView.moveLeft())
         {
           hideCursors();
           createZoomImg();
@@ -698,7 +696,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (_model.ZoomView.moveRight(_model.ZoomView.Waterfall.Duration))
+        if (App.Model.ZoomView.moveRight(App.Model.ZoomView.Waterfall.Duration))
         {
           hideCursors();
           createZoomImg();
@@ -715,7 +713,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (_model.ZoomView.moveUp(_model.ZoomView.Waterfall.SamplingRate / 2000))
+        if (App.Model.ZoomView.moveUp(App.Model.ZoomView.Waterfall.SamplingRate / 2000))
         {
           hideCursors();
           createZoomImg();
@@ -732,7 +730,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (_model.ZoomView.moveDown(0))
+        if (App.Model.ZoomView.moveDown(0))
         {
           hideCursors();
           createZoomImg();
@@ -758,13 +756,13 @@ namespace BatInspector.Controls
 
     private void updateRuler()
     {
-      _model.ZoomView.RulerDataT.limits(0, _model.ZoomView.Waterfall.Duration);
+      App.Model.ZoomView.RulerDataT.limits(0, App.Model.ZoomView.Waterfall.Duration);
       initRulerT();
 
-      _model.ZoomView.RulerDataF.limits(0, _model.ZoomView.Waterfall.SamplingRate / 2000);
+      App.Model.ZoomView.RulerDataF.limits(0, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
       initRulerF();
 
-      _model.ZoomView.RulerDataA.limits(-1, 1);
+      App.Model.ZoomView.RulerDataA.limits(-1, 1);
       initRulerA();
     }
 
@@ -776,8 +774,8 @@ namespace BatInspector.Controls
         System.Drawing.Color c = AppParams.Inst.GridColor;
         System.Windows.Media.Color gridColor = System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
         SolidColorBrush gridBrush = new SolidColorBrush(gridColor);
-        double[] ticksX = GraphHelper.createTicks(AppParams.NR_OF_TICKS, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
-        double[] ticksY = GraphHelper.createTicks(AppParams.NR_OF_TICKS, _model.ZoomView.RulerDataF.Min, _model.ZoomView.RulerDataF.Max);
+        double[] ticksX = GraphHelper.createTicks(AppParams.NR_OF_TICKS, App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
+        double[] ticksY = GraphHelper.createTicks(AppParams.NR_OF_TICKS, App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max);
         for (int i = 0; i < AppParams.NR_OF_TICKS; i++)
         {
           string nameX = $"_grid_x{(i + 1).ToString()}";
@@ -787,8 +785,8 @@ namespace BatInspector.Controls
             lx.Visibility = Visibility.Visible;
             lx.Stroke = gridBrush;
 
-            int x = (int)(_imgFt.Margin.Left + (ticksX[i] - _model.ZoomView.RulerDataT.Min) /
-                        (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min) * _imgFt.ActualWidth);
+            int x = (int)(_imgFt.Margin.Left + (ticksX[i] - App.Model.ZoomView.RulerDataT.Min) /
+                        (App.Model.ZoomView.RulerDataT.Max - App.Model.ZoomView.RulerDataT.Min) * _imgFt.ActualWidth);
             lx.X1 = x;
             lx.Y1 = _imgFt.Margin.Top;
             lx.X2 = x;
@@ -806,8 +804,8 @@ namespace BatInspector.Controls
             ly.Visibility = Visibility.Visible;
             ly.Stroke = gridBrush;
 
-            int y = (int)(_imgFt.Margin.Top + (1.0 - (ticksY[i] - _model.ZoomView.RulerDataF.Min) /
-                            (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min)) * _imgFt.ActualHeight);
+            int y = (int)(_imgFt.Margin.Top + (1.0 - (ticksY[i] - App.Model.ZoomView.RulerDataF.Min) /
+                            (App.Model.ZoomView.RulerDataF.Max - App.Model.ZoomView.RulerDataF.Min)) * _imgFt.ActualHeight);
             ly.X1 = _imgFt.Margin.Left;
             ly.Y1 = y;
             ly.X2 = _imgFt.ActualWidth + _imgFt.Margin.Left;
@@ -834,27 +832,27 @@ namespace BatInspector.Controls
     private void createZoomImg()
     {
       updateRuler();
-      double tStart = _model.ZoomView.RulerDataT.Min;
-      double tEnd = _model.ZoomView.RulerDataT.Max;
-      double fMin = _model.ZoomView.RulerDataF.Min;
-      double fMax = _model.ZoomView.RulerDataF.Max;
-      int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
-      double tStartCall = _model.ZoomView.Analysis.getStartTime(_oldCallIdx);
-      double tEndCall = _model.ZoomView.Analysis.getEndTime(_oldCallIdx);
+      double tStart = App.Model.ZoomView.RulerDataT.Min;
+      double tEnd = App.Model.ZoomView.RulerDataT.Max;
+      double fMin = App.Model.ZoomView.RulerDataF.Min;
+      double fMax = App.Model.ZoomView.RulerDataF.Max;
+      int samplingRate = App.Model.ZoomView.Waterfall.SamplingRate;
+      double tStartCall = App.Model.ZoomView.Analysis.getStartTime(_oldCallIdx);
+      double tEndCall = App.Model.ZoomView.Analysis.getEndTime(_oldCallIdx);
 
       if (((tEndCall - tStartCall) > 0) && ((tEndCall - tStartCall) < 0.2))
-        _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+        _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
-      _model.ZoomView.Waterfall.generateFtDiagram(tStart, tEnd, AppParams.Inst.WaterfallWidth);
+      App.Model.ZoomView.Waterfall.generateFtDiagram(tStart, tEnd, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
 
     private void updateImage()
     {
-      System.Drawing.Bitmap bmpFt = _model.ZoomView.Waterfall.generateFtPicture(_model.ZoomView.RulerDataT.Min, 
-                                                                                _model.ZoomView.RulerDataT.Max,
-                                                                                _model.ZoomView.RulerDataF.Min,
-                                                                                _model.ZoomView.RulerDataF.Max);
+      System.Drawing.Bitmap bmpFt = App.Model.ZoomView.Waterfall.generateFtPicture(App.Model.ZoomView.RulerDataT.Min, 
+                                                                                App.Model.ZoomView.RulerDataT.Max,
+                                                                                App.Model.ZoomView.RulerDataF.Min,
+                                                                                App.Model.ZoomView.RulerDataF.Max);
       if (bmpFt != null)
       {
         BitmapImage bImg = PrjView.Convert(bmpFt);
@@ -867,8 +865,8 @@ namespace BatInspector.Controls
 
     private void updateXtImage()
     {
-      System.Drawing.Bitmap bmpXt = _model.ZoomView.Waterfall.generateXtPicture(_model.ZoomView.RulerDataA.Min, _model.ZoomView.RulerDataA.Max,
-                                                          _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max);
+      System.Drawing.Bitmap bmpXt = App.Model.ZoomView.Waterfall.generateXtPicture(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
+                                                          App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
       if (bmpXt != null)
       {
         BitmapImage bImg = PrjView.Convert(bmpXt);
@@ -881,10 +879,10 @@ namespace BatInspector.Controls
       try
       {
         DebugLog.log("ZoomBtn: play 1' clicked", enLogType.DEBUG);
-        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        if (App.Model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
           _btnPlay_1.Content = _playImgs[1];
-          _model.ZoomView.Waterfall.pause();
+          App.Model.ZoomView.Waterfall.pause();
         }
         else
         {
@@ -908,18 +906,18 @@ namespace BatInspector.Controls
     /*
     private void _btnPause_Click(object sender, RoutedEventArgs e)
     {
-      _model.ZoomView.Waterfall.pause();
+      App.Model.ZoomView.Waterfall.pause();
     }
     */
     private void play(int stretch)
     {
       _stretch = stretch;
-      double pos = _slider.Value / 100.0 * _model.ZoomView.Waterfall.Duration;
+      double pos = _slider.Value / 100.0 * App.Model.ZoomView.Waterfall.Duration;
       if (stretch < 0)
-        _model.ZoomView.Waterfall.play_HET(AppParams.Inst.FrequencyHET, 
-                                           _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, pos);
+        App.Model.ZoomView.Waterfall.play_HET(AppParams.Inst.FrequencyHET, 
+                                           App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, pos);
       else
-      _model.ZoomView.Waterfall.play(_stretch, _model.ZoomView.RulerDataT.Min, _model.ZoomView.RulerDataT.Max, pos);
+      App.Model.ZoomView.Waterfall.play(_stretch, App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, pos);
     }
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
@@ -927,10 +925,10 @@ namespace BatInspector.Controls
       try
       {
         DebugLog.log("ZoomBtn: 'play 10' clicked", enLogType.DEBUG);
-        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        if (App.Model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
           _btnPlay_10.Content = _playImgs[2];
-          _model.ZoomView.Waterfall.pause();
+          App.Model.ZoomView.Waterfall.pause();
         }
         else
         {
@@ -955,10 +953,10 @@ namespace BatInspector.Controls
       try
       {
         DebugLog.log("ZoomView:BTN 'play 20' clicked", enLogType.DEBUG);
-        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        if (App.Model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
           _btnPlay_20.Content = _playImgs[3];
-          _model.ZoomView.Waterfall.pause();
+          App.Model.ZoomView.Waterfall.pause();
         }
         else
         {
@@ -984,10 +982,10 @@ namespace BatInspector.Controls
       try
       {
         DebugLog.log("ZoomView:BTN 'play HET' clicked", enLogType.DEBUG);
-        if (_model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
+        if (App.Model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
           _btnPlay_HET.Content = _playImgs[3];
-          _model.ZoomView.Waterfall.pause();
+          App.Model.ZoomView.Waterfall.pause();
         }
         else
         {
@@ -1012,10 +1010,10 @@ namespace BatInspector.Controls
       try
       {
         Point p = e.GetPosition(_imgFt);
-        double f = _model.ZoomView.RulerDataF.Min +
-                   (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (_model.ZoomView.RulerDataF.Max - _model.ZoomView.RulerDataF.Min);
-        double t = _model.ZoomView.RulerDataT.Min +
-        p.X / _imgFt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
+        double f = App.Model.ZoomView.RulerDataF.Min +
+                   (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (App.Model.ZoomView.RulerDataF.Max - App.Model.ZoomView.RulerDataF.Min);
+        double t = App.Model.ZoomView.RulerDataT.Min +
+        p.X / _imgFt.ActualWidth * (App.Model.ZoomView.RulerDataT.Max - App.Model.ZoomView.RulerDataT.Min);
 
         if (!_ftToolTip.IsOpen)
           _ftToolTip.IsOpen = true;
@@ -1041,7 +1039,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.Waterfall.stop();
+        App.Model.ZoomView.Waterfall.stop();
         _slider.Value = 0;
         _btnPlay_20.IsEnabled = true;
         _btnPlay_10.IsEnabled = true;
@@ -1092,28 +1090,28 @@ namespace BatInspector.Controls
 
     public void changeCall(int idx)
     {
-      _model.ZoomView.SelectedCallIdx = idx;
-      string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
+      App.Model.ZoomView.SelectedCallIdx = idx;
+      string callNr = App.Model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
       _ctlSelectCall.setValue(callNr);
       _ctlSelectCall2.setValue(callNr);
       _oldCallIdx = idx;
       setupCallData(idx);
-      double tStart = _model.ZoomView.Analysis.getStartTime(idx);
-      double tEnd = _model.ZoomView.Analysis.getEndTime(idx);
+      double tStart = App.Model.ZoomView.Analysis.getStartTime(idx);
+      double tEnd = App.Model.ZoomView.Analysis.getEndTime(idx);
       _ctlTimeMin.setValue(tStart);
       _ctlTimeMax.setValue(tEnd);
-      int samplingRate = _model.ZoomView.Waterfall.SamplingRate;
-      //_ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Samples, tStart, tEnd, samplingRate,_cbMode.SelectedIndex);
-      _model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
+      int samplingRate = App.Model.ZoomView.Waterfall.SamplingRate;
+      //_ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Samples, tStart, tEnd, samplingRate,_cbMode.SelectedIndex);
+      App.Model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
       double pre = 0.01;
       double length = AppParams.Inst.ZoomOneCall / 1000.0;
-      if(((_model.Prj != null) && (_model.Prj.Ok) && (_model.Prj.Analysis.ModelType == enModel.BATTY_BIRD_NET)) ||
-         ((_model.Query != null) && (_model.Query.Analysis.ModelType == enModel.BATTY_BIRD_NET)))
+      if(((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Analysis.ModelType == enModel.BATTY_BIRD_NET)) ||
+         ((App.Model.Query != null) && (App.Model.Query.Analysis.ModelType == enModel.BATTY_BIRD_NET)))
       {
-          length = _model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION) / 1000;
+          length = App.Model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION) / 1000;
       }
-      _model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + length - pre);
-      if (_model.ZoomView.Analysis.Calls[idx].Changed)
+      App.Model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + length - pre);
+      if (App.Model.ZoomView.Analysis.Calls[idx].Changed)
         _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
       else
         _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackGroundTextB"]);
@@ -1128,7 +1126,7 @@ namespace BatInspector.Controls
       min--;
       int.TryParse(_ctlMeanCallMax.getValue(), out int max);
       max--;
-      if ((min >= 0) && (max < _model.ZoomView.Analysis.Calls.Count))
+      if ((min >= 0) && (max < App.Model.ZoomView.Analysis.Calls.Count))
       {
         double fMin = 0;
         double fMax = 0;
@@ -1142,11 +1140,11 @@ namespace BatInspector.Controls
         {
           for (int i = min; i <= max; i++)
           {
-            fMin += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MIN) / count;
-            fMax += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX) / count;
-            fMaxAmpl += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
-            duration += _model.ZoomView.Analysis.Calls[i].getDouble(Cols.DURATION) / count;
-            callDist += _model.ZoomView.Analysis.Calls[i].DistToPrev / countDistPrev;
+            fMin += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MIN) / count;
+            fMax += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX) / count;
+            fMaxAmpl += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
+            duration += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.DURATION) / count;
+            callDist += App.Model.ZoomView.Analysis.Calls[i].DistToPrev / countDistPrev;
           }
           _ctlMeanDist.setValue(callDist);
           _ctlMeanFMax.setValue(fMax / 1000);
@@ -1159,9 +1157,9 @@ namespace BatInspector.Controls
 
     private void setupCallData(int idx)
     {
-      if (idx < _model.ZoomView.Analysis.Calls.Count)
+      if (idx < App.Model.ZoomView.Analysis.Calls.Count)
       {
-        AnalysisCall call = _model.ZoomView.Analysis.Calls[idx];
+        AnalysisCall call = App.Model.ZoomView.Analysis.Calls[idx];
         if (_modelType != enModel.BATTY_BIRD_NET)
         {
           _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
@@ -1181,20 +1179,20 @@ namespace BatInspector.Controls
     private int changeSpectrumMode(int mode)
     {
       int retVal = 0;
-      ZoomView z = _model.ZoomView;
+      ZoomView z = App.Model.ZoomView;
       
-      double tStart = _model.ZoomView.Analysis.getStartTime(_oldCallIdx);
-      double tEnd = _model.ZoomView.Analysis.getEndTime(_oldCallIdx);
-      double fMin = _model.ZoomView.RulerDataF.Min;
-      double fMax = _model.ZoomView.RulerDataF.Max;
+      double tStart = App.Model.ZoomView.Analysis.getStartTime(_oldCallIdx);
+      double tEnd = App.Model.ZoomView.Analysis.getEndTime(_oldCallIdx);
+      double fMin = App.Model.ZoomView.RulerDataF.Min;
+      double fMax = App.Model.ZoomView.RulerDataF.Max;
       switch (mode)
       {
         case 0:
           {
             _ctlTimeMin.setValue(tStart);
             _ctlTimeMax.setValue(tEnd);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax,
-                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+            _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax,
+                                        App.Model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
           }
           break;
 
@@ -1203,8 +1201,8 @@ namespace BatInspector.Controls
           {
             _ctlTimeMin.setValue(z.Cursor1.Time);
             _ctlTimeMax.setValue(z.Cursor2.Time);
-            _ctlSpectrum.createFftImage(_model.ZoomView.Waterfall.Audio.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax,
-                                        _model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+            _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax,
+                                        App.Model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
             retVal = 1;
           }
           else
@@ -1219,10 +1217,10 @@ namespace BatInspector.Controls
       try
       {
         int idx = _oldCallIdx - 1;
-        if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
+        if ((idx >= 0) && (idx < App.Model.ZoomView.Analysis.Calls.Count))
         {
           changeCall(idx);
-          string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
+          string callNr = App.Model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
           _ctlSelectCall.setValue(callNr);
           _ctlSelectCall2.setValue(callNr);
         }
@@ -1239,10 +1237,10 @@ namespace BatInspector.Controls
       try
       {
         int idx = _oldCallIdx + 1;
-        if ((idx >= 0) && (idx < _model.ZoomView.Analysis.Calls.Count))
+        if ((idx >= 0) && (idx < App.Model.ZoomView.Analysis.Calls.Count))
         {
           changeCall(idx);
-          string callNr = _model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
+          string callNr = App.Model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
           _ctlSelectCall.setValue(callNr);
           _ctlSelectCall2.setValue(callNr);
         }
@@ -1259,9 +1257,9 @@ namespace BatInspector.Controls
       try
       {
         if (_cbZoomAmpl.IsChecked == true)
-          _model.ZoomView.findMaxAmplitude();
+          App.Model.ZoomView.findMaxAmplitude();
         else
-          _model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
+          App.Model.ZoomView.RulerDataA.setRange(-1.0, 1.0);
         updateXtImage();
         initRulerA();
         DebugLog.log("ZoomBtn: 'Zoom Amplitude' clicked", enLogType.DEBUG);
@@ -1278,8 +1276,8 @@ namespace BatInspector.Controls
       try
       {
         Point pos = e.GetPosition(_imgXt);
-        double t = _model.ZoomView.RulerDataT.Min +
-        pos.X / _imgXt.ActualWidth * (_model.ZoomView.RulerDataT.Max - _model.ZoomView.RulerDataT.Min);
+        double t = App.Model.ZoomView.RulerDataT.Min +
+        pos.X / _imgXt.ActualWidth * (App.Model.ZoomView.RulerDataT.Max - App.Model.ZoomView.RulerDataT.Min);
         if (!_xtToolTip.IsOpen)
           _xtToolTip.IsOpen = true;
         _xtToolTip.HorizontalOffset = pos.X + 20;
@@ -1307,9 +1305,9 @@ namespace BatInspector.Controls
         if (res == System.Windows.Forms.DialogResult.OK)
         {
           WavFile wav = new WavFile();
-          int iStart = (int)(_model.ZoomView.RulerDataT.Min * _model.ZoomView.Waterfall.SamplingRate);
-          int iEnd = (int)(_model.ZoomView.RulerDataT.Max * _model.ZoomView.Waterfall.SamplingRate);
-          wav.createFile(1, _model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, _model.ZoomView.Waterfall.Audio.Samples);
+          int iStart = (int)(App.Model.ZoomView.RulerDataT.Min * App.Model.ZoomView.Waterfall.SamplingRate);
+          int iEnd = (int)(App.Model.ZoomView.RulerDataT.Max * App.Model.ZoomView.Waterfall.SamplingRate);
+          wav.createFile(1, App.Model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, App.Model.ZoomView.Waterfall.Audio.Samples);
           wav.saveFileAs(dlg.FileName);
         }
         DebugLog.log("Zoom:Btn 'save As' clicked", enLogType.DEBUG);
@@ -1325,11 +1323,11 @@ namespace BatInspector.Controls
       try
       {
         string wavSubDir = "";
-        if (_model.Prj != null)
-          wavSubDir = _model.Prj.WavSubDir;
-        _model.ZoomView.Waterfall.Audio.saveAs(_model.ZoomView.Waterfall.WavName, wavSubDir);
-        string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        _model.createNewPng(_ctlWav, _model.ZoomView.Waterfall.WavName, pngName, _model.ColorTable);
+        if (App.Model.Prj != null)
+          wavSubDir = App.Model.Prj.WavSubDir;
+        App.Model.ZoomView.Waterfall.Audio.saveAs(App.Model.ZoomView.Waterfall.WavName, wavSubDir);
+        string pngName = App.Model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        App.Model.createNewPng(_ctlWav, App.Model.ZoomView.Waterfall.WavName, pngName, App.Model.ColorTable);
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1343,21 +1341,21 @@ namespace BatInspector.Controls
     {
       try
       {
-        if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
+        if ((App.Model.ZoomView.Cursor1.Visible) && (App.Model.ZoomView.Cursor2.Visible))
         {
-          if ((_model.Prj != null) && (_model.Prj.Ok))
-            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
-          else if (_model.Query != null)
-            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName);
+          if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+            ZoomView.saveWavBackup(App.Model.ZoomView.Waterfall.WavName, App.Model.Prj.WavSubDir);
+          else if (App.Model.Query != null)
+            ZoomView.saveWavBackup(App.Model.ZoomView.Waterfall.WavName);
           else
           {
             DebugLog.log("saving orignal filenot possible", enLogType.INFO);
             return;
           }
 
-          double fMin = _model.ZoomView.Cursor1.Freq * 1000;
-          double fMax = _model.ZoomView.Cursor2.Freq * 1000;
-          _model.ZoomView.applyBandpass(fMin, fMax);
+          double fMin = App.Model.ZoomView.Cursor1.Freq * 1000;
+          double fMax = App.Model.ZoomView.Cursor2.Freq * 1000;
+          App.Model.ZoomView.applyBandpass(fMin, fMax);
           saveChanges();
           hideCursors();
           createZoomImg();
@@ -1375,7 +1373,7 @@ namespace BatInspector.Controls
     private void _btnReduceNoise_Click(object sender, RoutedEventArgs e)
     {
       DebugLog.log("Zoom:Btn 'ReduceNoise' clicked", enLogType.DEBUG);
-      _model.ZoomView.reduceNoise();
+      App.Model.ZoomView.reduceNoise();
       saveChanges();
       createZoomImg();
     }
@@ -1384,30 +1382,30 @@ namespace BatInspector.Controls
     {
       try
       {
-        if ((_model.ZoomView.Cursor1.Visible) && (_model.ZoomView.Cursor2.Visible))
+        if ((App.Model.ZoomView.Cursor1.Visible) && (App.Model.ZoomView.Cursor2.Visible))
         {
-          if ((_model.Prj != null) && _model.Prj.Ok)
+          if ((App.Model.Prj != null) && App.Model.Prj.Ok)
           {
-            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
-            _model.ZoomView.saveAnalysisBackup(_model.ZoomView.Waterfall.WavName, _model.Prj.WavSubDir);
+            ZoomView.saveWavBackup(App.Model.ZoomView.Waterfall.WavName, App.Model.Prj.WavSubDir);
+            App.Model.ZoomView.saveAnalysisBackup(App.Model.ZoomView.Waterfall.WavName, App.Model.Prj.WavSubDir);
           }
-          else if (_model.Query != null)
+          else if (App.Model.Query != null)
           {
-            ZoomView.saveWavBackup(_model.ZoomView.Waterfall.WavName);
-            _model.ZoomView.saveAnalysisBackup(_model.ZoomView.Waterfall.WavName);
+            ZoomView.saveWavBackup(App.Model.ZoomView.Waterfall.WavName);
+            App.Model.ZoomView.saveAnalysisBackup(App.Model.ZoomView.Waterfall.WavName);
           }
           else
           {
             DebugLog.log("cut out not possible", enLogType.ERROR);
             return;
           }
-          double tMin = _model.ZoomView.Cursor1.Time;
-          double tMax = _model.ZoomView.Cursor2.Time;
-          if (_model.ZoomView.removeSection(tMin, tMax))
+          double tMin = App.Model.ZoomView.Cursor1.Time;
+          double tMax = App.Model.ZoomView.Cursor2.Time;
+          if (App.Model.ZoomView.removeSection(tMin, tMax))
           {
             initCallSelectors();
-            _model.CurrentlyOpen?.Analysis.updateControls(_model.ZoomView.Analysis.Name);
-            _model.updateReport();
+            App.Model.CurrentlyOpen?.Analysis.updateControls(App.Model.ZoomView.Analysis.Name);
+            App.Model.updateReport();
           }
           saveChanges();
           hideCursors();
@@ -1429,7 +1427,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.normalize();
+        App.Model.ZoomView.normalize();
         saveChanges();
         createZoomImg();
         DebugLog.log("Zoom:Btn 'Normalize' clicked", enLogType.DEBUG);
@@ -1444,10 +1442,10 @@ namespace BatInspector.Controls
     {
       try
       {
-        _model.ZoomView.undoChanges();
-        _model.updateReport();
-        string pngName = _model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        _model.createNewPng(_ctlWav, _model.ZoomView.Waterfall.WavName, pngName, _model.ColorTable);
+        App.Model.ZoomView.undoChanges();
+        App.Model.updateReport();
+        string pngName = App.Model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        App.Model.createNewPng(_ctlWav, App.Model.ZoomView.Waterfall.WavName, pngName, App.Model.ColorTable);
         createZoomImg();
         DebugLog.log("Zoom:Btn 'Undo' clicked", enLogType.DEBUG);
       }
@@ -1461,10 +1459,10 @@ namespace BatInspector.Controls
     {
       int fHet = 0;
       bool ok = int.TryParse(_tbFreqHET.Text, out fHet);
-      if(ok && _model.ZoomView.Waterfall != null)
+      if(ok && App.Model.ZoomView.Waterfall != null)
       {
         double f = fHet * 1000;
-        if (fHet < _model.ZoomView.Waterfall.SamplingRate / 2)
+        if (fHet < App.Model.ZoomView.Waterfall.SamplingRate / 2)
           AppParams.Inst.FrequencyHET = f;
       }
     }
@@ -1474,7 +1472,7 @@ namespace BatInspector.Controls
       try
       {
         FrmLocationView frm = new FrmLocationView();
-        frm.navigate(_model.ZoomView.FileInfo.FileName, _model.ZoomView.FileInfo.GPS.Position, 17);
+        frm.navigate(App.Model.ZoomView.FileInfo.FileName, App.Model.ZoomView.FileInfo.GPS.Position, 17);
         frm.Show();
       }
       catch(Exception ex)

@@ -18,7 +18,6 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmCleanup : Window
   {
-    ViewModel _model;
     string _delFolder;
     bool _delWavs;
     bool _delLogs;
@@ -26,10 +25,9 @@ namespace BatInspector.Forms
     bool _delOrigs;
     bool _delAnn;
 
-    public frmCleanup(ViewModel model)
+    public frmCleanup()
     {
       InitializeComponent();
-      _model = model;
       _ctlSelectFolder.setup(MyResources.frmCleanupSelRootFolder, 120, true, "", folderSelected);
     }
 
@@ -45,7 +43,7 @@ namespace BatInspector.Forms
       string logUnit = "kB";
       string origUnit = "kB";
       string annUnit = "kB";
-      _model.checkMem(_ctlSelectFolder.getValue(), out wavSpace, out logSpace, out pngSpace, out origSpace, out annSpace);
+      App.Model.checkMem(_ctlSelectFolder.getValue(), out wavSpace, out logSpace, out pngSpace, out origSpace, out annSpace);
       if( wavSpace > 2048)
       {
         wavSpace /= 1024;
@@ -98,7 +96,7 @@ namespace BatInspector.Forms
 
     private void threadCleanup()
     {
-      _model.cleanup(_delFolder, _delWavs, _delLogs, _delPngs, _delOrigs, _delAnn);
+      App.Model.cleanup(_delFolder, _delWavs, _delLogs, _delPngs, _delOrigs, _delAnn);
       DebugLog.log("finished tidying up", enLogType.INFO);
     }
   }

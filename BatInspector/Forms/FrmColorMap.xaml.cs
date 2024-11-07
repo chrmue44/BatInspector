@@ -19,10 +19,8 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmColorMap : Window
   {
-    ViewModel _model;
-    public FrmColorMap(ViewModel model)
+    public FrmColorMap()
     {
-      _model = model;
       InitializeComponent();
       _ctlB.setup(MyResources.ColorMapBlue, AppParams.Inst.ColorGradientBlue);
       _ctlG.setup(MyResources.ColorMapGreen, AppParams.Inst.ColorGradientGreen);
@@ -72,13 +70,13 @@ namespace BatInspector.Forms
     private void _btnApply_Click(object sender, RoutedEventArgs e)
     {
       readValuesFromScreen();
-      _model.ColorTable.createColorLookupTable();
+      App.Model.ColorTable.createColorLookupTable();
       double w = _cvImg.ActualWidth;
       double h = _cvImg.ActualHeight;
       _cvImg.Children.Clear();
       for (double i = 0; i < w;i++)
       {
-        System.Windows.Media.Color color = _model.ColorTable.getSwmColor(i, 0, w);
+        System.Windows.Media.Color color = App.Model.ColorTable.getSwmColor(i, 0, w);
         GraphHelper.createLine(_cvImg, i, 0, i, h, new SolidColorBrush(color));
       }
     }

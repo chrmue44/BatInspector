@@ -23,7 +23,6 @@ namespace BatInspector.Forms
     int _index;
     dlgDelete _dlgDelete;
     dlgDelete _dlgDebug;
-    ViewModel _model;
 
     public int Index { get { return _index; } }
     public string ScriptName { get { return _tbScriptName.Text; } }
@@ -37,9 +36,8 @@ namespace BatInspector.Forms
       InitializeComponent();
     }
 
-    public void setup(ScriptItem script, dlgDelete del, ViewModel model, dlgDelete debug)
+    public void setup(ScriptItem script, dlgDelete del, dlgDelete debug)
     {
-      _model = model;
       _index = script.Index;
       _dlgDelete = del;
       _dlgDebug = debug;
@@ -68,7 +66,7 @@ namespace BatInspector.Forms
     private void _btnRun_Click(object sender, RoutedEventArgs e)
     {
       string script = _tbScriptName.Text;
-      ScriptItem item = _model.Scripter.getScript(script);
+      ScriptItem item = App.Model.Scripter.getScript(script);
       if (item != null)
       {
         if (item.Parameter.Count > 0)
@@ -77,16 +75,16 @@ namespace BatInspector.Forms
           frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
           frm.ShowDialog();
           if (frm.DialogResult == true)
-            _model.Scripter.runScript(script, frm.ParameterValues);
+            App.Model.Scripter.runScript(script, frm.ParameterValues);
         }
         else
-          _model.Scripter.runScript(script);
+          App.Model.Scripter.runScript(script);
       }
     }
 
     private void _btnEdit_Click(object sender, RoutedEventArgs e)
     {
-      _model.editScript(_tbScriptName.Text);
+      App.Model.editScript(_tbScriptName.Text);
     }
 
     private void _cbTool_Click(object sender, RoutedEventArgs e)

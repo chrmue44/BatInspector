@@ -28,17 +28,14 @@ namespace BatInspector.Forms
   /// Interaction logic for frmDebug.xaml
   /// </summary>
   public partial class frmDebug : Window
-  {
- 
-    ViewModel _model;
+  { 
     string _script;
     List<ParamItem> _params;
 
-    public frmDebug(ViewModel model)
+    public frmDebug()
     {
       InitializeComponent();
-      _model = model;
-      _ctlVarTable.setup(_model.Scripter.VarList);
+      _ctlVarTable.setup(App.Model.Scripter.VarList);
     }
 
     public void setup(string script, List<ParamItem> pars)
@@ -55,11 +52,11 @@ namespace BatInspector.Forms
           line.setup(i, lines[i], setBreakCondition);
           _spScript.Children.Add(line);
         }
-        _model.Scripter.initScriptForDbg(script);
+        App.Model.Scripter.initScriptForDbg(script);
         highlightActLine(true);
         _params = pars;
         initScriptParams();
-        _ctlVarTable.setup(_model.Scripter.VarList);
+        _ctlVarTable.setup(App.Model.Scripter.VarList);
       }
       catch (Exception ex)
       {
@@ -121,23 +118,23 @@ namespace BatInspector.Forms
             case enParamType.FILE:
             case enParamType.DIRECTORY:
               CtlSelectFile ctl = _spPars.Children[i] as CtlSelectFile;
-              _model.Scripter.VarList.set(_params[i].VarName, ctl.getValue());
+              App.Model.Scripter.VarList.set(_params[i].VarName, ctl.getValue());
               break;
             case enParamType.MICSCELLANOUS:
               ctlDataItem ctld = _spPars.Children[i] as ctlDataItem;
-              _model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
+              App.Model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
               break;
             case enParamType.BOOL:
               CheckBox chk = _spPars.Children[i] as CheckBox;
               String boolVal = "0";
               if ((chk != null) && (chk.IsChecked == true))
                 boolVal = "1";
-              _model.Scripter.VarList.set(_params[i].VarName, boolVal);
+              App.Model.Scripter.VarList.set(_params[i].VarName, boolVal);
               break;
           }
         }
       }
-      _ctlVarTable.setup(_model.Scripter.VarList);
+      _ctlVarTable.setup(App.Model.Scripter.VarList);
     }
 
 
@@ -153,7 +150,7 @@ namespace BatInspector.Forms
 
     private void _btnClose_Click(object sender, RoutedEventArgs e)
     {
-      _model.Scripter.breakDebugging();
+      App.Model.Scripter.breakDebugging();
       this.Visibility = Visibility.Hidden;
     }
 
@@ -161,7 +158,7 @@ namespace BatInspector.Forms
     {
       highlightActLine(false);
       setBusy(true);
-      _model.Scripter.continueDebugging(updateDebugView);
+      App.Model.Scripter.continueDebugging(updateDebugView);
     }
 
     private void updateDebugView()
@@ -174,7 +171,7 @@ namespace BatInspector.Forms
       highlightActLine(true);
       scrollToCurrentLine();
       setBusy(false);
-      _ctlVarTable.setup(_model.Scripter.VarList);
+      _ctlVarTable.setup(App.Model.Scripter.VarList);
     }
 
 
@@ -182,12 +179,12 @@ namespace BatInspector.Forms
     {
       setBusy(true);
       highlightActLine(false);
-     _model.Scripter.debugOneStep(updateDebugView);
+     App.Model.Scripter.debugOneStep(updateDebugView);
     }
 
     void highlightActLine(bool on)
     {
-      int lineNr = _model.Scripter.CurrentLineNr;
+      int lineNr = App.Model.Scripter.CurrentLineNr;
       if ((lineNr >= 0) && (lineNr < _spScript.Children.Count))
       {
         ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine;
@@ -198,32 +195,32 @@ namespace BatInspector.Forms
     private void scrollToCurrentLine()
     {
       int lineNr = 0;
-      if (_model.Scripter.CurrentLineNr < _spScript.Children.Count)
-        lineNr = _model.Scripter.CurrentLineNr;
+      if (App.Model.Scripter.CurrentLineNr < _spScript.Children.Count)
+        lineNr = App.Model.Scripter.CurrentLineNr;
       else
         lineNr = _spScript.Children.Count - 1;
       ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine; 
-      double verticalOffset = _model.Scripter.CurrentLineNr * ctl.ActualHeight - _spScript.ActualHeight/2;
+      double verticalOffset = App.Model.Scripter.CurrentLineNr * ctl.ActualHeight - _spScript.ActualHeight/2;
       _scrlViewer.ScrollToVerticalOffset(verticalOffset);
     }
 
   private void setBreakCondition(int lineNr, string condition)
     {
-      _model.Scripter.setBreakCondition(lineNr, condition);
+      App.Model.Scripter.setBreakCondition(lineNr, condition);
     }
 
     private void _btnPause_Click(object sender, RoutedEventArgs e)
     {
-      _model.Scripter.breakDebugging();
+      App.Model.Scripter.breakDebugging();
     }
 
     private void _btnStop_Click(object sender, RoutedEventArgs e)
     {
       highlightActLine(false);
-      _model.Scripter.restartScript();
+      App.Model.Scripter.restartScript();
       highlightActLine(true);
       setParams();
-      _ctlVarTable.setup(_model.Scripter.VarList);
+      _ctlVarTable.setup(App.Model.Scripter.VarList);
     }
 
     private void _grdSplitterV_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using libParser;
+﻿using BatInspector.Forms;
+using libParser;
 using System;
 
 using System.Windows;
@@ -12,6 +13,8 @@ namespace BatInspector
   public partial class App : Application
   {
     public static string[] _args;
+    public static MainWindow MainWin;
+    public static ViewModel Model;
 
     [STAThread]
     public static void Main()
@@ -37,6 +40,7 @@ namespace BatInspector
     {
       _args = e.Args;
       AppParams.load();
+      Model = new ViewModel();
       if (_args.Length == 0)
       {
 #if !DEBUG
@@ -58,10 +62,12 @@ namespace BatInspector
 
 
         DebugLog.setLogDelegate(null, null, null, AppParams.LogDataPath);
-
+        MainWin = new MainWindow();
+        this.MainWindow = MainWin;
+        MainWin.Show();
         // bool ok = Installer.checkTools("3.10", "1.0.6");
         // if (ok)
-        this.StartupUri = new System.Uri("Forms/MainWindow.xaml", System.UriKind.Relative);
+//        this.StartupUri = new System.Uri("Forms/MainWindow.xaml", System.UriKind.Relative);
         // else
         //   this.StartupUri = new System.Uri("Forms/frmInstall.xaml", System.UriKind.Relative);
       }

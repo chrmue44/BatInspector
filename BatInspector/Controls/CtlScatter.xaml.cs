@@ -19,21 +19,15 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlScatter : UserControl
   {
-    ViewModel _model = null;
-
     public CtlScatter()
     {
       InitializeComponent();
     }
 
-    public void setup(ViewModel model)
-    {
-      _model = model;
-    }
 
     public void populateComboBoxes()
     {
-      Filter.populateFilterComboBox(_cbFilterScatter, _model);
+      Filter.populateFilterComboBox(_cbFilterScatter);
     }
 
     public void initPrj()
@@ -47,7 +41,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ViewModel model, ComboBox cbFilter)
+    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ComboBox cbFilter)
     {
       applyFilter = false;
       resetFilter = false;
@@ -61,15 +55,15 @@ namespace BatInspector.Controls
         {
           if (cbFilter.SelectedIndex == 1)
           {
-            frmExpression frm = new frmExpression(model.Filter.ExpGenerator, true);
+            frmExpression frm = new frmExpression(App.Model.Filter.ExpGenerator, true);
             bool? res = frm.ShowDialog();
             if (res == true)
             {
               if (frm.SaveFilter)
               {
-                int idx = model.Filter.Items.Count;
+                int idx = App.Model.Filter.Items.Count;
                 FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
-                model.Filter.Items.Add(filter);
+                App.Model.Filter.Items.Add(filter);
                 cbFilter.Items.Add(filter.Name);
                 cbFilter.SelectedIndex = cbFilter.Items.Count - 1;
               }
@@ -80,7 +74,7 @@ namespace BatInspector.Controls
                 else
                   cbFilter.Items[1] = frm.FilterExpression.Substring(0, 21) + "...";
                 cbFilter.SelectedIndex = 1;
-                model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
+                App.Model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
               }
             }
           }
@@ -106,15 +100,15 @@ namespace BatInspector.Controls
         stAxisItem x = _scattDiagram.findAxisItem(_cbXaxis.SelectedItem.ToString());
         stAxisItem y = _scattDiagram.findAxisItem(_cbYaxis.SelectedItem.ToString());
         FilterItem filter = (_cbFilterScatter.SelectedIndex == 1) ?
-                        filter = _model.Filter.TempFilter : filter = _model.Filter.getFilter(_cbFilterScatter.Text);
+                        filter = App.Model.Filter.TempFilter : filter = App.Model.Filter.getFilter(_cbFilterScatter.Text);
 
-        _scattDiagram.createScatterDiagram(x, y, _model, filter, _cbFreezeAxis.IsChecked == true);
+        _scattDiagram.createScatterDiagram(x, y, filter, _cbFreezeAxis.IsChecked == true);
         _scatterModel.InvalidatePlot();
       }
     }
     private void _cbFilter_DropDownOpened(object sender, EventArgs e)
     {
-      _model.Filter.TempFilter = null;
+      App.Model.Filter.TempFilter = null;
       _cbFilterScatter.Items[1] = MyResources.MainFilterNew;
     }
 
@@ -124,7 +118,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
 
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _model, _cbFilterScatter);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterScatter);
       createPlot();
     }
   }

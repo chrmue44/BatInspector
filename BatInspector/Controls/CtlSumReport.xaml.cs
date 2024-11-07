@@ -21,7 +21,6 @@ namespace BatInspector.Controls
   public partial class CtlSumReport : UserControl
   {
     Window _parent = null;
-    ViewModel _model = null;
     string _filterExpression = "";
 
     public CtlSumReport()
@@ -39,13 +38,12 @@ namespace BatInspector.Controls
       _ctlDestDir.setup(MyResources.CtlSumReportDstDirectory, 150, true);
     }
 
-    public void setup(Window parent, ViewModel model)
+    public void setup(Window parent)
     {
       _parent = parent;
-      _model = model;
       _dtEnd.SelectedDate = DateTime.Now;
       _dtStart.SelectedDate = new DateTime(DateTime.Now.Year, 1, 1);
-      ctlPrjInfo.initModelComboBox(_cbModel, _model.DefaultModelParams, _model.getModelIndex(AppParams.Inst.DefaultModel));
+      ctlPrjInfo.initModelComboBox(_cbModel, App.Model.DefaultModelParams, App.Model.getModelIndex(AppParams.Inst.DefaultModel));
     }
 
     public string FilterExpression { get { return _filterExpression; } }
@@ -70,7 +68,7 @@ namespace BatInspector.Controls
 
     private void _cbFilter_DropDownOpened(object sender, EventArgs e)
     {
-      _model.Filter.TempFilter = null;
+      App.Model.Filter.TempFilter = null;
       _cbFilter.Items[1] = MyResources.MainFilterNew;
     }
 
@@ -79,11 +77,11 @@ namespace BatInspector.Controls
       DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
       bool apply;
       bool resetFilter;
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _model, _cbFilter);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter);
       if (apply)
       {
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
-                    _model.Filter.TempFilter : _model.Filter.getFilter(_cbFilter.Text);
+                    App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
           _filterExpression = filter.Expression;
         if (resetFilter)

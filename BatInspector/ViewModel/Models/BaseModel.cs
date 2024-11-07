@@ -35,16 +35,14 @@ namespace BatInspector
     int _index = 0;
     enModel _type;
     protected bool _isBusy = false;
-    protected ViewModel _model;
     protected bool _cli = false;
 
     protected ProcessRunner _proc = new ProcessRunner();
-    protected BaseModel(int index, enModel type, string name, ViewModel model)
+    protected BaseModel(int index, enModel type, string name)
     {
       _index = index;
       _type = type;
       Name = name;
-      _model = model;
     }
 
     public string Name { get; }
@@ -59,16 +57,16 @@ namespace BatInspector
       return 0;
     }
 
-    public static BaseModel Create(int index, enModel type, ViewModel model)
+    public static BaseModel Create(int index, enModel type)
     {
       switch (type) 
       {
         case enModel.rnn6aModel:
-           return new ModelCmuTsa(index, model) as BaseModel;
+           return new ModelCmuTsa(index) as BaseModel;
         case enModel.BAT_DETECT2:
-          return new ModelBatDetect2(index, model) as BaseModel;
+          return new ModelBatDetect2(index) as BaseModel;
         case enModel.BATTY_BIRD_NET:
-          return new ModelBattyB(index, model) as BaseModel;
+          return new ModelBattyB(index) as BaseModel;
 
         default:
           return null;  

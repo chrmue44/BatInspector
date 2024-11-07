@@ -434,7 +434,6 @@ namespace BatInspector
     private DirectoryInfo _dirInfo;
     private List<ReportListItem> _reports;
     private List<SumItem> _totalSum;
-    private ViewModel _model;
 
     private DateTime _start;
     private DateTime _end;
@@ -447,9 +446,8 @@ namespace BatInspector
     private string _reportName;
     private List<SpeciesInfos> _species;
 
-    public SumReport(ViewModel model)
+    public SumReport()
     {
-      _model = model;
       _rep = new Csv(true);
       _reports = new List<ReportListItem>();
       _totalSum = new List<SumItem>();
@@ -749,8 +747,8 @@ namespace BatInspector
         if ((rep.StartDate >= start) && (rep.StartDate < end) || (rep.EndDate >= start) && (rep.EndDate < end))
         {
 
-          Analysis analysis = new Analysis(_model.SpeciesInfos, null, enModel.BAT_DETECT2);
-          analysis.read(rep.ReportName, _model.DefaultModelParams);
+          Analysis analysis = new Analysis(App.Model.SpeciesInfos, false, enModel.BAT_DETECT2);
+          analysis.read(rep.ReportName, App.Model.DefaultModelParams);
           FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
 
           if (analysis.Files.Count == 0)
@@ -772,7 +770,7 @@ namespace BatInspector
               }
               foreach (AnalysisCall call in file.Calls)
               {
-                bool match = _model.Filter.apply(filter, call,
+                bool match = App.Model.Filter.apply(filter, call,
                               file.getString(Cols.REMARKS),
                               AnyType.getTimeString(file.RecTime), out retVal);
                 if (!retVal)
@@ -871,8 +869,8 @@ namespace BatInspector
       {
         if ((rep.StartDate >= date) && (rep.StartDate < end) || (rep.EndDate >= date) && (rep.EndDate < end))
         {
-          Analysis analysis = new Analysis(_model.SpeciesInfos, null, enModel.BAT_DETECT2);
-          analysis.read(rep.ReportName, _model.DefaultModelParams);
+          Analysis analysis = new Analysis(App.Model.SpeciesInfos, false, enModel.BAT_DETECT2);
+          analysis.read(rep.ReportName, App.Model.DefaultModelParams);
           if (analysis.Files.Count > 0)
           {
             foreach (AnalysisFile file in analysis.Files)
@@ -886,7 +884,7 @@ namespace BatInspector
               DebugLog.log($"evaluating report {rep.ReportName}", enLogType.INFO);
               foreach (AnalysisCall call in file.Calls)
               {
-                bool match = _model.Filter.apply(filter, call,
+                bool match = App.Model.Filter.apply(filter, call,
                                  file.getString(Cols.REMARKS),
                                  AnyType.getTimeString(file.RecTime), out bool ok);
                 if (!ok)

@@ -26,7 +26,6 @@ namespace BatInspector.Controls
   public partial class ctlActivityDiagram : UserControl
   {
     ActivityDiagram _diagram;
-    ViewModel _model = null;
     Bitmap _bmp = null;
     ActivityData _data = null;
     string _bmpName;
@@ -36,10 +35,9 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
-    public void setup(ViewModel model)
+    public void setup()
     {
-      _model = model;
-      _diagram = new ActivityDiagram(_model.ColorTable);
+      _diagram = new ActivityDiagram(App.Model.ColorTable);
       int lblW = 150;
       _ctrlTitle.setup(Properties.MyResources.DiagramTitle, enDataType.STRING, 0, lblW, true, textChanged);
       _ctlStyle.setup(Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 100, styleChanged);

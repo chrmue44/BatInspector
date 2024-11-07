@@ -22,17 +22,15 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmCreatePrj : Window
   {
-    private ViewModel _model;
     private PrjInfo _info;
     private bool _inspect;
     private bool _isProjectFolder = false;
     private int _widthLbl;
 
 
-    public FrmCreatePrj(ViewModel model)
+    public FrmCreatePrj()
     {
       InitializeComponent();
-      _model = model;
       _info = new PrjInfo();
       _widthLbl = 200;
       _dtStart._lbl.Text = MyResources.CtlSumReportStartDate;
@@ -57,21 +55,21 @@ namespace BatInspector.Forms
       _rbFixedPos.IsChecked = true;
       _cbOverwriteLoc.Visibility = Visibility.Hidden;
       _ctlModel.setup(BatInspector.Properties.MyResources.SetCatModel, 0, 70, 150, modelHasChanged);
-      int modelIndex = _model.getModelIndex(AppParams.Inst.DefaultModel);
-      ctlPrjInfo.initModelComboBox(_ctlModel._cb, _model.DefaultModelParams, modelIndex);
+      int modelIndex = App.Model.getModelIndex(AppParams.Inst.DefaultModel);
+      ctlPrjInfo.initModelComboBox(_ctlModel._cb, App.Model.DefaultModelParams, modelIndex);
       _ctlDataSet.setup(BatInspector.Properties.MyResources.ctlModParDataSet, 0, 100, 200);
-      string[] dataSetItems = _model.DefaultModelParams[modelIndex].AvailableDataSets;
+      string[] dataSetItems = App.Model.DefaultModelParams[modelIndex].AvailableDataSets;
       _ctlDataSet.setItems(dataSetItems);
-      _ctlDataSet.setValue(_model.DefaultModelParams[modelIndex].DataSet);
+      _ctlDataSet.setValue(App.Model.DefaultModelParams[modelIndex].DataSet);
       setVisibilityTimeFilter();
     }
 
     private void modelHasChanged(int index, string val)
     {
-      int modelIndex = _model.getModelIndex(val);
-      string[] dataSetItems = _model.DefaultModelParams[modelIndex].AvailableDataSets;
+      int modelIndex = App.Model.getModelIndex(val);
+      string[] dataSetItems = App.Model.DefaultModelParams[modelIndex].AvailableDataSets;
       _ctlDataSet.setItems(dataSetItems);
-      _ctlDataSet.setValue(_model.DefaultModelParams[modelIndex].DataSet);
+      _ctlDataSet.setValue(App.Model.DefaultModelParams[modelIndex].DataSet);
     }
 
     public void init()
@@ -188,7 +186,7 @@ namespace BatInspector.Forms
         _info.LocSourceTxt = _rbTxtFile.IsChecked == true;
         _inspect = _cbEvalPrj.IsChecked == true;
         _info.IsProjectFolder = _isProjectFolder;
-        _info.ModelParams = _model.DefaultModelParams[_ctlModel.SelectIndex];
+        _info.ModelParams = App.Model.DefaultModelParams[_ctlModel.SelectIndex];
         _info.ModelParams.DataSet = _ctlDataSet.getValue();
         bool ok = true;
         double lat = 0;
@@ -230,8 +228,8 @@ namespace BatInspector.Forms
         }
         if (!ok)
           return;
-        _model.Status.Msg = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
-        _model.Status.State = enAppState.IMPORT_PRJ;
+        App.Model.Status.Msg = BatInspector.Properties.MyResources.FrmCreatePrjImportingProject;
+        App.Model.Status.State = enAppState.IMPORT_PRJ;
         _info.Latitude = lat;
         _info.Longitude = lon;
 
@@ -258,13 +256,13 @@ namespace BatInspector.Forms
     {
       try
       {
-        _model.createProject(_info, _inspect, false);
+        App.Model.createProject(_info, _inspect, false);
       }
       catch(Exception ex)
       {
         DebugLog.log("error creating project: " + ex.ToString(), enLogType.ERROR);
         DebugLog.save();
-        _model.Status.State = enAppState.IDLE;
+        App.Model.Status.State = enAppState.IDLE;
       }
     }
 

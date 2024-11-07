@@ -11,11 +11,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using System.Windows;
-using System.Windows.Media.Animation;
-using System.Xml.Linq;
 using BatInspector.Forms;
 using libParser;
 using libScripter;
@@ -161,8 +158,6 @@ namespace BatInspector
     public int _06h { get { return _item.CountTime[12]; } }
   }
 
-  public delegate void DlgUpdateFile(string fName);
-
   public class Analysis
   {
 
@@ -172,8 +167,8 @@ namespace BatInspector
     private Csv _csv;
     private List<SumItem> _summary;
     private List<SpeciesInfos> _speciesInfos;
-    private DlgUpdateFile _dlgUpdate;
     private enModel _modelType;
+    private bool _updateCtls = false;
 
     public List<AnalysisFile> Files { get { return _list; } }
     public Cols Cols { get { return _cols; } }
@@ -202,10 +197,10 @@ namespace BatInspector
       } 
     }
 
-    public Analysis(List<SpeciesInfos> specInfos, DlgUpdateFile dlgUpdate, enModel modelType)
+    public Analysis(List<SpeciesInfos> specInfos, bool updateCtls, enModel modelType)
     {
+      _updateCtls = updateCtls;
       init(specInfos);
-      _dlgUpdate = dlgUpdate;
       _modelType = modelType;
     }
 
@@ -336,7 +331,7 @@ namespace BatInspector
             callNr = 1;
           }
          
-          AnalysisCall call = new AnalysisCall(_csv, row, _dlgUpdate);
+          AnalysisCall call = new AnalysisCall(_csv, row, _updateCtls);
           if(callNr == 1)
           {
             oldStartTime = 0;
@@ -427,8 +422,10 @@ namespace BatInspector
 
     public void updateControls(string wavName)
     {
-      if(_dlgUpdate != null)
-        _dlgUpdate(wavName);
+      if (_updateCtls)
+      {
+        App.MainWin.callbackUpdateAnalysis(wavName);
+      }
     }
 
     public void removeDeletedWavsFromReport(Project prj)
@@ -739,7 +736,7 @@ namespace BatInspector
     private Csv _csv;
     private int _row;
     private double _firstToSecond;
-    private DlgUpdateFile _dlgUpdate;
+    private bool _updateCtls = false;
 
     public double FirstToSecond { get { return _firstToSecond; } }
     
@@ -752,11 +749,11 @@ namespace BatInspector
 
     public int ReportRow { get { return _row; } set { _row = value; } }
 
-    public AnalysisCall(Csv csv, int row, DlgUpdateFile delegateUpdate)
+    public AnalysisCall(Csv csv, int row, bool updateCtls)
     {
       _csv = csv;
       _row = row;
-      _dlgUpdate = delegateUpdate;
+      _updateCtls = updateCtls;
     }
 
     public void updateRow(int row)
@@ -777,8 +774,10 @@ namespace BatInspector
     public void setDouble(string key , double val)
     {
       _csv.setCell(_row, key, val);
-      if (_dlgUpdate != null)
-        _dlgUpdate(_csv.getCell(_row, Cols.NAME));
+      if (_updateCtls)
+      {
+        App.MainWin.callbackUpdateAnalysis(_csv.getCell(_row, Cols.NAME));
+      }
     }
 
     public int getInt(string key)
@@ -789,8 +788,10 @@ namespace BatInspector
     public void setInt(string key, int val)
     {
       _csv.setCell(_row, key, val);
-      if (_dlgUpdate != null)
-        _dlgUpdate(_csv.getCell(_row, Cols.NAME));
+      if (_updateCtls)
+      {
+        App.MainWin.callbackUpdateAnalysis(_csv.getCell(_row, Cols.NAME));
+      }
     }
 
     public string getString(string key)
@@ -802,8 +803,10 @@ namespace BatInspector
     {
       Changed = true;
       _csv.setCell(_row, key, value);
-      if (_dlgUpdate != null)
-        _dlgUpdate(_csv.getCell(_row, Cols.NAME));
+      if (_updateCtls)
+      {
+         App.MainWin.callbackUpdateAnalysis(_csv.getCell(_row, Cols.NAME));
+      }
     }
 
 

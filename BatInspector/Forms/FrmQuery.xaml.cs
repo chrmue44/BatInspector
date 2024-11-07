@@ -21,29 +21,27 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmQuery : Window
   {
-    ViewModel _model;
     FrmHelpFilter _frmHelp = null;
-    public FrmQuery(ViewModel model)
+    public FrmQuery()
     {
       InitializeComponent();
-      _model = model;
       int wLabel = 150;
       _ctlName.setup( BatInspector.Properties.MyResources.frmQueryQueryName, Controls.enDataType.STRING, 0, wLabel, true);
       _ctlSelectSource.setup(BatInspector.Properties.MyResources.frmQuerySelSrcDir, wLabel, true);
       _ctlSelectDest.setup(BatInspector.Properties.MyResources.frmQuerySelDestDir, wLabel, true);
       _ctlModel.setup(BatInspector.Properties.MyResources.SetCatModel, 0, wLabel, 200);
-      ctlPrjInfo.initModelComboBox(_ctlModel._cb, _model.DefaultModelParams, _model.getModelIndex(AppParams.Inst.DefaultModel));
+      ctlPrjInfo.initModelComboBox(_ctlModel._cb, App.Model.DefaultModelParams, App.Model.getModelIndex(AppParams.Inst.DefaultModel));
       _grdCol1.Width = new GridLength(wLabel);
     }
 
     public void initFieldsFromQuery()
     {
-      if(_model.Query != null)
+      if(App.Model.Query != null)
       {
-        _ctlName.setValue(_model.Query.Name);
-        _ctlSelectSource.setValue(_model.Query.SrcDir);
-        _ctlSelectDest.setValue(_model.Query.DestDir);
-        _tbQuery.Text = _model.Query.Expression;
+        _ctlName.setValue(App.Model.Query.Name);
+        _ctlSelectSource.setValue(App.Model.Query.SrcDir);
+        _ctlSelectDest.setValue(App.Model.Query.DestDir);
+        _tbQuery.Text = App.Model.Query.Expression;
       }
     }
     private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -55,9 +53,9 @@ namespace BatInspector.Forms
 
     private void btnOK_Click(object sender, RoutedEventArgs e)
     {
-       ModelParams modelParams = _model.DefaultModelParams[_ctlModel.getSelectedIndex()];
-      _model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(),
-                               _tbQuery.Text, _model.SpeciesInfos, _model.Regions, modelParams, _model.DefaultModelParams.Length);
+       ModelParams modelParams = App.Model.DefaultModelParams[_ctlModel.getSelectedIndex()];
+      App.Model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(),
+                               _tbQuery.Text, App.Model.SpeciesInfos, App.Model.Regions, modelParams, App.Model.DefaultModelParams.Length);
       this.Visibility = Visibility.Hidden;
       if (_frmHelp != null)
         _frmHelp.Close();
@@ -69,7 +67,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        _model.Query.evaluate(_model);
+        App.Model.Query.evaluate();
       }
       catch(Exception ex)
       {
@@ -80,7 +78,7 @@ namespace BatInspector.Forms
     private void _btnHelp_Click(object sender, RoutedEventArgs e)
     {
       string str = BatInspector.Properties.MyResources.FrmFilterListOfVars + ":\n\n";
-      str += _model.Filter.getVariablesHelpList();
+      str += App.Model.Filter.getVariablesHelpList();
       if (_frmHelp == null)
         _frmHelp = new FrmHelpFilter();
       _frmHelp._tbHelp.Text = str;
@@ -96,7 +94,7 @@ namespace BatInspector.Forms
 
     private void _btnEdit_Click(object sender, RoutedEventArgs e)
     {
-      frmExpression frm = new frmExpression(_model.Filter.ExpGenerator, false);
+      frmExpression frm = new frmExpression(App.Model.Filter.ExpGenerator, false);
       frm.Topmost = true;
       bool? res = frm.ShowDialog();
       if (res == true)

@@ -22,13 +22,11 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmCreateReport : Window
   {
-    ViewModel _model;
     string _formDataName;
-    public frmCreateReport(ViewModel model)
+    public frmCreateReport()
     {
       InitializeComponent();
-      _model = model;
-      _ctlReport.setup(this, model);
+      _ctlReport.setup(this);
     }
 
     private void setFormDataName(string s, dlgVoid callBack)
@@ -48,20 +46,20 @@ namespace BatInspector.Forms
         enPeriod period = enPeriod.DAILY;
         if (_ctlReport._cbCsvFile.IsChecked == true)
         {
-          _model.SumReport.createCsvReportAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
+          App.Model.SumReport.createCsvReportAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
-                                      _ctlReport._ctlCsvReportName.getValue(), _model.SpeciesInfos, 
+                                      _ctlReport._ctlCsvReportName.getValue(), App.Model.SpeciesInfos, 
                                       _ctlReport.FilterExpression,
-                                      _model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
+                                      App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
         }
         if (_ctlReport._cbWebPage.IsChecked == true)
         {
-          SumReportJson rep = _model.SumReport.createWebReport(start, end, period,
+          SumReportJson rep = App.Model.SumReport.createWebReport(start, end, period,
                                       _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
                                       _ctlReport._ctlWebReportName.getValue(),
-                                      _model.SpeciesInfos, _ctlReport.FilterExpression, 
-                                      _model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
+                                      App.Model.SpeciesInfos, _ctlReport.FilterExpression, 
+                                      App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
           rep.save(Path.Combine(_ctlReport._ctlDestDir.getValue(), "sumReport.json"));
           frmReportAssistant frm = new frmReportAssistant(rep, setFormDataName);
           frm.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -69,15 +67,15 @@ namespace BatInspector.Forms
           frm.Top = 10;
           bool? ok = frm.ShowDialog();
           if (ok == true)
-            _model.SumReport.createWebPage(rep, _formDataName, _model.SpeciesInfos,
+            App.Model.SumReport.createWebPage(rep, _formDataName, App.Model.SpeciesInfos,
                       Path.Combine(_ctlReport._ctlDestDir.getValue(), 
                       _ctlReport._ctlWebReportName.getValue()));
         }
         if(_ctlReport._cbActivityDiagram.IsChecked == true)
         {
         
-          _model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
-          _ctlReport._ctlDestDir.getValue(), _model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex], _ctlReport.FilterExpression,   //TODO find another way for multiple models
+          App.Model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
+          _ctlReport._ctlDestDir.getValue(), App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex], _ctlReport.FilterExpression,   //TODO find another way for multiple models
           _ctlReport._ctlActivityDiagName.getValue(), showActivityDiagram);
         }
       }
@@ -94,7 +92,7 @@ namespace BatInspector.Forms
       }
       else
       {
-        frmActivity frm = new frmActivity(_model, bmpName);
+        frmActivity frm = new frmActivity(bmpName);
         frm.setup();
         frm.Show();
         frm.createPlot(data);

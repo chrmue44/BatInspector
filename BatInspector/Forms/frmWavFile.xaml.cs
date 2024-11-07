@@ -21,14 +21,10 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmWavFile : Window
   {
-    ViewModel _model;
-    MainWindow _parent;
 
-    public frmWavFile(ViewModel model, MainWindow parent)
+    public frmWavFile()
     {
       InitializeComponent();
-      _model = model;
-      _parent = parent;
       int wLbl = 110;
       _ctlFileName.setup("File name", Controls.enDataType.STRING, 0, wLbl);
 
@@ -59,27 +55,27 @@ namespace BatInspector.Forms
         if (openFileDialog.ShowDialog() == true)
         {
           wavFile = openFileDialog.FileName;
-          _model.WavFile.readFile(wavFile);
+          App.Model.WavFile.readFile(wavFile);
           _ctlFileName.setValue(openFileDialog.FileName);
 
-          _ctlFileType.setValue(_model.WavFile.WavHeader.FileTypeId);
-          _ctlFileLength.setValue(_model.WavFile.WavHeader.FileLength);
-          _ctlMediaTypeId.setValue(_model.WavFile.WavHeader.MediaTypeId);
+          _ctlFileType.setValue(App.Model.WavFile.WavHeader.FileTypeId);
+          _ctlFileLength.setValue(App.Model.WavFile.WavHeader.FileLength);
+          _ctlMediaTypeId.setValue(App.Model.WavFile.WavHeader.MediaTypeId);
 
-          _ctlChunkId.setValue(_model.WavFile.FormatChunk.ChunkId);
-          _ctlChunkSize.setValue(_model.WavFile.FormatChunk.ChunkSize);
-          _ctlFormatTag.setValue((uint)_model.WavFile.FormatChunk.FormatTag);
-          _ctlChannels.setValue((uint)_model.WavFile.FormatChunk.Channels);
-          _ctlSamplingRate.setValue(_model.WavFile.FormatChunk.Frequency);
-          _ctlAvgBytesPerSec.setValue(_model.WavFile.FormatChunk.AverageBytesPerSec);
-          _ctlBlockAlign.setValue((uint)_model.WavFile.FormatChunk.BlockAlign);
-          _ctlBitsPerSample.setValue((uint)_model.WavFile.FormatChunk.BitsPerSample);
+          _ctlChunkId.setValue(App.Model.WavFile.FormatChunk.ChunkId);
+          _ctlChunkSize.setValue(App.Model.WavFile.FormatChunk.ChunkSize);
+          _ctlFormatTag.setValue((uint)App.Model.WavFile.FormatChunk.FormatTag);
+          _ctlChannels.setValue((uint)App.Model.WavFile.FormatChunk.Channels);
+          _ctlSamplingRate.setValue(App.Model.WavFile.FormatChunk.Frequency);
+          _ctlAvgBytesPerSec.setValue(App.Model.WavFile.FormatChunk.AverageBytesPerSec);
+          _ctlBlockAlign.setValue((uint)App.Model.WavFile.FormatChunk.BlockAlign);
+          _ctlBitsPerSample.setValue((uint)App.Model.WavFile.FormatChunk.BitsPerSample);
 
-          _ctlSamples.setValue(_model.WavFile.AudioSamples.Length);
+          _ctlSamples.setValue(App.Model.WavFile.AudioSamples.Length);
 
-          double duration = (double)_model.WavFile.AudioSamples.Length / _model.WavFile.FormatChunk.Frequency;
-          AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)_model.WavFile.FormatChunk.Frequency, duration);
-          _parent.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);
+          double duration = (double)App.Model.WavFile.AudioSamples.Length / App.Model.WavFile.FormatChunk.Frequency;
+          AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)App.Model.WavFile.FormatChunk.Frequency, duration);
+          App.MainWin.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);
         }
       }
       catch (Exception ex)
@@ -90,21 +86,21 @@ namespace BatInspector.Forms
 
     private void _btnPlay_Click(object sender, RoutedEventArgs e)
     {
-      _model.WavFile.play();
+      App.Model.WavFile.play();
     }
 
     private void _btnSave_Click(object sender, RoutedEventArgs e)
     {
-      _model.WavFile.saveFile();
+      App.Model.WavFile.saveFile();
     }
 
     private void samplingRateChanged(enDataType type, object val)
     {
       int sr = _ctlSamplingRate.getIntValue();
-  //    uint oldSr = _model.WavFile.FormatChunk.Frequency;
-      _model.WavFile.FormatChunk.Frequency = (uint)sr;
+  //    uint oldSr = App.Model.WavFile.FormatChunk.Frequency;
+      App.Model.WavFile.FormatChunk.Frequency = (uint)sr;
   //    double fact = (double)sr / oldSr;
-  //    _model.WavFile.FormatChunk.AverageBytesPerSec = (uint)(fact * _model.WavFile.FormatChunk.AverageBytesPerSec);
+  //    App.Model.WavFile.FormatChunk.AverageBytesPerSec = (uint)(fact * App.Model.WavFile.FormatChunk.AverageBytesPerSec);
     }
 
     private void windowLoaded(object sender, RoutedEventArgs e)

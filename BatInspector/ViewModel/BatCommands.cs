@@ -21,10 +21,8 @@ namespace BatInspector
 {
   public class BatCommands : BaseCommands
   {
-    private ViewModel _model;
-    public BatCommands(delegateUpdateProgress delUpd, ViewModel model) : base(delUpd)
+    public BatCommands(delegateUpdateProgress delUpd) : base(delUpd)
     {
-      _model = model;
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
@@ -45,30 +43,30 @@ namespace BatInspector
     int fctAdjustReport(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      _model.removeDeletedWavsFromReport(_model.Prj.ReportName);
-      _model.Prj?.Analysis?.save(_model.Prj.ReportName, _model.Prj.Notes, _model.Prj.SummaryName);
+      App.Model.removeDeletedWavsFromReport(App.Model.Prj.ReportName);
+      App.Model.Prj?.Analysis?.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
       return 0;
     }
     int fctAdjustProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      _model.Prj?.removeFilesNotInReport();
+      App.Model.Prj?.removeFilesNotInReport();
       return 0;
     }
 
     int fctSplitProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      if ((_model.Prj != null) && (_model.Prj.Ok))
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
         DebugLog.log("starting to split project..", enLogType.INFO);
         int maxFilesPerProject = 600;
-        double prjCount = (double)_model.Prj.Records.Length / maxFilesPerProject + 1;
+        double prjCount = (double)App.Model.Prj.Records.Length / maxFilesPerProject + 1;
         if (prjCount > (int)prjCount)
           prjCount += 1;
-        string prjPath = _model.Prj.PrjDir;
-        ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
-        Project.splitProject(_model.Prj, (int)prjCount, _model.Regions, modelParams, _model.DefaultModelParams.Length);
+        string prjPath = App.Model.Prj.PrjDir;
+        ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+        Project.splitProject(App.Model.Prj, (int)prjCount, App.Model.Regions, modelParams, App.Model.DefaultModelParams.Length);
         DebugLog.log("start deleting " + prjPath, enLogType.INFO);
         Directory.Delete(prjPath, true);
       }
@@ -85,15 +83,15 @@ namespace BatInspector
       List<Project> prjs = new List<Project>();
       for (int i = 2; i < pars.Count; i++)
       {
-        Project prj = new Project(_model.Regions, _model.SpeciesInfos, null,
-        _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)],
-        _model.DefaultModelParams.Length);
+        Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false,
+        App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)],
+        App.Model.DefaultModelParams.Length);
         string prjDir = Path.Combine(dir, pars[i]);
         if (Project.containsProject(prjDir) != "")
         {
-          prj.readPrjFile(prjDir, _model.DefaultModelParams);
+          prj.readPrjFile(prjDir, App.Model.DefaultModelParams);
           if (File.Exists(prj.ReportName))
-            prj.Analysis.read(prj.ReportName, _model.DefaultModelParams);
+            prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams);
           prjs.Add(prj);
         }
         else
@@ -149,8 +147,8 @@ namespace BatInspector
       int retVal = 0;
       ErrText = "";
       string fileName = pars[0];
-      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
+      ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
       DirectoryInfo dir = new DirectoryInfo(fileName);
       prj.fillFromDirectory(dir, AppParams.DIR_WAVS);
       return retVal;
@@ -161,10 +159,10 @@ namespace BatInspector
       int retVal = 0;
       ErrText = "";
       string prjDir = pars[0];
-      ModelParams modelParams = _model.DefaultModelParams[_model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Project prj = new Project(_model.Regions, _model.SpeciesInfos, null, modelParams, _model.DefaultModelParams.Length);
-      prj.readPrjFile(prjDir, _model.DefaultModelParams);
-      retVal = _model.createReport(prj);
+      ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
+      prj.readPrjFile(prjDir, App.Model.DefaultModelParams);
+      retVal = App.Model.createReport(prj);
       return retVal;
     }
 
@@ -175,12 +173,12 @@ namespace BatInspector
       string outDir = pars[1];
       bool allCalls = pars[2] != "0";
       FilterItem filterItem = new FilterItem(0, "temp", filterExp, allCalls);
-      if (_model.Prj?.Ok == true)
+      if (App.Model.Prj?.Ok == true)
       {
-        _model.Prj.applyFilter(_model.Filter, filterItem);
-        _model.Prj.exportFiles(outDir);
+        App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
+        App.Model.Prj.exportFiles(outDir);
         filterItem.Expression = "";
-        _model.Prj.applyFilter(_model.Filter, filterItem);
+        App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
         ErrText = "";
       }
       else

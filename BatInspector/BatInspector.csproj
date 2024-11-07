@@ -300,6 +300,7 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Installer.cs" />
+    <Compile Include="Pool.cs" />
     <Compile Include="Properties\MyResources.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

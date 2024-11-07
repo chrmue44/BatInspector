@@ -14,7 +14,7 @@ namespace BatInspector
     Project _prj;
     int _counter = 0;
 
-    public ModelBattyB(int index, ViewModel model) : base(index, enModel.BATTY_BIRD_NET, "BattyBirdNET", model)
+    public ModelBattyB(int index) : base(index, enModel.BATTY_BIRD_NET, "BattyBirdNET")
     {
     }
 
@@ -47,7 +47,7 @@ namespace BatInspector
           if (ok)
           {
             //        cleanup(prj);
-            prj.Analysis.read(prj.getReportName(this.Index), _model.DefaultModelParams);
+            prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams);
             if (removeEmptyFiles)
               prj.removeFilesNotInReport();
           }
@@ -77,7 +77,7 @@ namespace BatInspector
       if (ok)
       {
         //        cleanup(prj.PrjDir);
-        prj.Analysis.read(prj.getReportName(this.Index), _model.DefaultModelParams);
+        prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams);
         prj.removeFilesNotInReport();
       }
       else
@@ -241,7 +241,7 @@ namespace BatInspector
           if (_cli)
             DebugLog.log(msg, enLogType.INFO);
           else
-            _model.Status.Msg = msg;
+            App.Model.Status.Msg = msg;
         }
       }
       else if ((ev.Data?.ToLower().IndexOf("error") > 0) && (ev.Data?.ToLower().IndexOf("error.") < 0))

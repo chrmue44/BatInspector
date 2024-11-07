@@ -82,7 +82,7 @@ namespace BatInspector
       _axisItems.Add(new stAxisItem("pc_knee", fMax, "kHz")); */
     }
     
-    public void createScatterDiagram(stAxisItem xAxis, stAxisItem yAxis, ViewModel model, FilterItem filter, bool freezeAxes)
+    public void createScatterDiagram(stAxisItem xAxis, stAxisItem yAxis, FilterItem filter, bool freezeAxes)
     { 
       ScatterSeries scatterSeries = new ScatterSeries { MarkerType = MarkerType.Square };
       if(!freezeAxes)
@@ -97,11 +97,11 @@ namespace BatInspector
       double y = 0;
       double xMax = 10;
       double yMax = 10;
-      foreach (AnalysisFile f in model.Prj.Analysis.Files)
+      foreach (AnalysisFile f in App.Model.Prj.Analysis.Files)
       {
         foreach(AnalysisCall c in f.Calls)
         {
-          bool res = (filter == null) || model.Filter.apply(filter, c);
+          bool res = (filter == null) || App.Model.Filter.apply(filter, c);
           if (res)
           {
             x = getAxisValue(xAxis.Name, c);

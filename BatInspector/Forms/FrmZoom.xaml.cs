@@ -21,25 +21,23 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmZoom : Window
   {
-    ViewModel _model;
     dlgcloseChildWindow _closeWin;
 
     public System.Windows.Media.ImageSource ImgSource
     {
       set { _ctl._imgFt.Source = value; }
     }
-    public FrmZoom(ViewModel model, dlgcloseChildWindow dlgClose)
+    public FrmZoom(dlgcloseChildWindow dlgClose)
     {
       InitializeComponent();
-      _model = model;
       _closeWin = dlgClose;
       ContentRendered += FrmZoom_ContentRendered;
     }
 
     public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
     {
-      List<string> species = _model.CurrentlyOpen == null ? null : _model.CurrentlyOpen.Species;
-        _ctl.setup(analysis, wavFilePath, _model, species, ctlWav, openExpWindow, modelType);
+      List<string> species = App.Model.CurrentlyOpen == null ? null : App.Model.CurrentlyOpen.Species;
+        _ctl.setup(analysis, wavFilePath, species, ctlWav, openExpWindow, modelType);
       this.Title = name;
     }
 

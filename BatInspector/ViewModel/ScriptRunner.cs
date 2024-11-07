@@ -27,26 +27,24 @@ namespace BatInspector
     BaseCommands[] _cmds;
     string _wrkDir;
     MthdListScript _mthdListScript;
-    ViewModel _model;
 
     public VarList VarList { get { return _parser.VarTable.VarList; } }
     public List<ScriptItem> Scripts { get { return AppParams.Inst.ScriptInventory.Scripts; } }
     public int CurrentLineNr { get { return _parser.CurrentLineNr; } }
-    public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg, ViewModel model)
+    public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg)
     {
       _proc = proc;
       _updProgress = updProg;
       _cmds = new BaseCommands[2];
-      BatCommands batCmds = new BatCommands(updProg, model);
+      BatCommands batCmds = new BatCommands(updProg);
       _cmds[0] = batCmds;
       OsCommands os = new OsCommands(updProg);
       os.WorkDir = wrkDir;
       _wrkDir = wrkDir;
       _cmds[1] = os;
-      _mthdListScript = new MthdListScript(model, wrkDir);
+      _mthdListScript = new MthdListScript(wrkDir);
       _parser = new Parser(ref _proc, _cmds, wrkDir, _updProgress);
       _parser.addMethodList(_mthdListScript);
-      _model = model;
     }
 
     public void setWorkDir(string wrkDir)
@@ -107,7 +105,7 @@ namespace BatInspector
     public void breakDebugging()
     {
       _parser.breakDebugging();
-      _model.stopEvaluation();
+      App.Model.stopEvaluation();
     }
     public int runScript(string fileName, bool background = true, bool initVars = true)
     {

@@ -129,13 +129,12 @@ namespace BatInspector
       }
     }
 
-    public ViewModel(Forms.MainWindow mainWin, DlgUpdateFile dlgUpdate)
+    public ViewModel()
     {
       if (!AppParams.IsInitialized)
         AppParams.load();
       _batSpecRegions = BatSpeciesRegions.loadFrom(AppParams.Inst.BatInfoPath);
       _proc = new ProcessRunner();
-      _mainWin = mainWin;
       _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
       //   _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));     // why here???
       //   _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
@@ -145,7 +144,7 @@ namespace BatInspector
       _zoom = new ZoomView(_colorTable, _proc, Status);
       _wav = new WavFile();
       _clsBarataud = new ClassifierBarataud(_batSpecRegions);
-      _sumReport = new SumReport(this);
+      _sumReport = new SumReport();
       _models = new List<BaseModel>();
       _view = new PrjView();
       _view.Query = null;
@@ -154,10 +153,10 @@ namespace BatInspector
       _defaultModelParams = BaseModel.readDefaultModelParams();
       foreach ( ModelParams m in _defaultModelParams)
       {
-        _models.Add(BaseModel.Create(index, m.Type, this));
+        _models.Add(BaseModel.Create(index, m.Type));
         index++;
       }
-      _view.Prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate,
+      _view.Prj = new Project(_batSpecRegions, _speciesInfos, true,
                  DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
 
       List<string> species = new List<string>();
@@ -169,7 +168,7 @@ namespace BatInspector
       _filter = new Filter(species);
       initFilter();
       string scriptDir = AppParams.Inst.ScriptInventoryPath;
-      _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress, this);
+      _scripter = new ScriptRunner(ref _proc, scriptDir, updateProgress);
       //_prj.Analysis.init(_prj.SpeciesInfos);
       _recorder = new CtrlRecorder(_colorTable);
       _statistic = new Statistic(AppParams.STATISTIC_CLASSES);
@@ -191,20 +190,20 @@ namespace BatInspector
       if (Query.isQuery(file))
       {
         _view.Prj = null;
-        _view.Query = Query.readQueryFile(file.FullName, this);
+        _view.Query = Query.readQueryFile(file.FullName);
         _selectedDir = Path.GetDirectoryName(file.FullName);
       }
       else
         _view.Query = null;
     }
 
-    public void initProject(DirectoryInfo dir, DlgUpdateFile dlgUpdate)
+    public void initProject(DirectoryInfo dir, bool updateCtls)
     {
       if (Project.containsProject(dir) != "")
       {
         _view.Query = null;
         _selectedDir = dir.FullName;
-        _view.Prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
+        _view.Prj = new Project(_batSpecRegions, _speciesInfos, updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
         _view.Prj.readPrjFile(_selectedDir, DefaultModelParams);
         if (File.Exists(Prj.ReportName))
         {
@@ -224,7 +223,7 @@ namespace BatInspector
       }
       else if (Project.containsWavs(dir))
       {
-        _view.Prj = new Project(_batSpecRegions, _speciesInfos, dlgUpdate, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
+        _view.Prj = new Project(_batSpecRegions, _speciesInfos, updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
         _view.Prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName;
         initScripter();
@@ -236,7 +235,7 @@ namespace BatInspector
     void initScripter()
     {
       if (_scripter == null)
-        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress, this);
+        _scripter = new ScriptRunner(ref _proc, _selectedDir, updateProgress);
       else
         _scripter.setWorkDir(_selectedDir);
     }
@@ -670,7 +669,7 @@ namespace BatInspector
         }
         if (delAnn)
         {
-          Project prj = new Project(Regions, SpeciesInfos, null, DefaultModelParams[0], DefaultModelParams.Length);
+          Project prj = new Project(Regions, SpeciesInfos, false, DefaultModelParams[0], DefaultModelParams.Length);
           prj.readPrjFile(dir.FullName, DefaultModelParams);
           string annDir = prj.getAnnotationDir();
           if (Directory.Exists(annDir))
@@ -721,7 +720,7 @@ namespace BatInspector
           foreach (FileInfo file in d.GetFiles())
             origSpace += (int)(file.Length / 1024);
         }
-        Project prj = new Project(Regions, SpeciesInfos, null, DefaultModelParams[0], DefaultModelParams.Length);
+        Project prj = new Project(Regions, SpeciesInfos, false, DefaultModelParams[0], DefaultModelParams.Length);
         prj.readPrjFile(dir.FullName, DefaultModelParams);
         string annDir = prj.getAnnotationDir();
         if (Directory.Exists(annDir))
@@ -850,12 +849,12 @@ namespace BatInspector
       Project.createPrjFromWavs(info, Regions, SpeciesInfos, info.ModelParams, DefaultModelParams);
       string prjPath = Path.Combine(info.DstDir, info.Name);
       DirectoryInfo dir = new DirectoryInfo(prjPath);
-      initProject(dir, null);
+      initProject(dir, false);
       if (inspect)
       {
         Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
         evaluate(cli);
-        initProject(dir, null);  // re init project to take deleted files into account
+        initProject(dir, false);  // re init project to take deleted files into account
       }
       if (Prj.Records.Length > info.MaxFileCnt)
       {
@@ -863,7 +862,7 @@ namespace BatInspector
         if (prjCnt > (int)prjCnt)
           prjCnt += 1;
         List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, info.ModelParams,  DefaultModelParams.Length);
-        initProject(new DirectoryInfo(prjs[0]), null);
+        initProject(new DirectoryInfo(prjs[0]), false);
         // remove src project
         Directory.Delete(prjPath, true);
       }

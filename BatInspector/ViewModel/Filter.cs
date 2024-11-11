@@ -69,6 +69,7 @@ namespace BatInspector
     const string VAR_PROBABILITY = "Probability";
     const string VAR_REMARKS = "Remarks";
     const string VAR_TIME = "RecTime";
+    const string VAR_SNR = "SNR";
 
     ExpressionGenerator _gen;
     List<FilterItem> _list;
@@ -87,16 +88,17 @@ namespace BatInspector
       _expression = new Expression(null);
       _vars = new List<FilterVarItem>
       {
-        new FilterVarItem (VAR_NR_CALLS, AnyType.tType.RT_INT64, true, false, false, BatInspector.Properties.MyResources.FilterHelpVarNrCalls),
-        new FilterVarItem (VAR_SPECIES_AUTO, AnyType.tType.RT_STR, true, true, false , BatInspector.Properties.MyResources.FilterHelpVarSpeciesAuto),
-        new FilterVarItem (VAR_SPECIES_MAN, AnyType.tType.RT_STR, true, true, true, BatInspector.Properties.MyResources.FilterHelpVarSpeciesMan),
-        new FilterVarItem (VAR_FREQ_MIN, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpFmin ),
-        new FilterVarItem (VAR_FREQ_MAX, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpFmax ),
-        new FilterVarItem (VAR_FREQ_MAX_AMP, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpFmaxAmp ),
-        new FilterVarItem (VAR_DURATION, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpDuration ),
-        new FilterVarItem (VAR_PROBABILITY, AnyType.tType.RT_FLOAT, true, true, false, BatInspector.Properties.MyResources.FilterVarHelpProb ),
-        new FilterVarItem (VAR_REMARKS, AnyType.tType.RT_STR, true, true, false , BatInspector.Properties.MyResources.FilterVarHelpRecording),
-        new FilterVarItem (VAR_TIME, AnyType.tType.RT_TIME, true, false, false, BatInspector.Properties.MyResources.FilterVarHelpTime)
+        new FilterVarItem (VAR_NR_CALLS, AnyType.tType.RT_INT64, true, false, false, MyResources.FilterHelpVarNrCalls),
+        new FilterVarItem (VAR_SPECIES_AUTO, AnyType.tType.RT_STR, true, true, false , MyResources.FilterHelpVarSpeciesAuto),
+        new FilterVarItem (VAR_SPECIES_MAN, AnyType.tType.RT_STR, true, true, true, MyResources.FilterHelpVarSpeciesMan),
+        new FilterVarItem (VAR_FREQ_MIN, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpFmin ),
+        new FilterVarItem (VAR_FREQ_MAX, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpFmax ),
+        new FilterVarItem (VAR_FREQ_MAX_AMP, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpFmaxAmp ),
+        new FilterVarItem (VAR_DURATION, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpDuration ),
+        new FilterVarItem (VAR_PROBABILITY, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpProb ),
+        new FilterVarItem (VAR_REMARKS, AnyType.tType.RT_STR, true, true, false , MyResources.FilterVarHelpRecording),
+        new FilterVarItem (VAR_TIME, AnyType.tType.RT_TIME, true, false, false, MyResources.FilterVarHelpTime),
+        new FilterVarItem (VAR_SNR, AnyType.tType.RT_FLOAT, true, true, false, MyResources.Snr)
       };
 
       _expression.Variables.set(VAR_NR_CALLS, 0);
@@ -109,34 +111,11 @@ namespace BatInspector
       _expression.Variables.set(VAR_PROBABILITY,"");
       _expression.Variables.set(VAR_REMARKS, "");
       _expression.Variables.set(VAR_TIME, 0);
+      _expression.Variables.set(VAR_SNR, 0);
 
       _gen = new ExpressionGenerator(getVariables, species);
     }
 
-    public bool apply(FilterItem filter, AnalysisCall call, string remarks, string time, out bool ok)
-    {
-      if (string.IsNullOrEmpty(filter.Expression))
-      {
-        ok = true;
-        return true;
-      }
-
-      bool retVal = false;
-      _expression.setVariable(VAR_REMARKS, remarks);
-      _expression.setVariable(VAR_TIME, time);
-      _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));
-      _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
-      _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
-      _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
-      _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
-      _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
-      _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
-      AnyType res = _expression.parse(filter.Expression);
-      ok = _expression.Errors == 0;
-      if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
-        retVal = true;
-      return retVal;
-    }
 
     public bool apply(FilterItem filter, AnalysisFile file)
     {
@@ -151,20 +130,13 @@ namespace BatInspector
       {
         _expression.setVariable(VAR_REMARKS, file.getString(Cols.REMARKS));
         _expression.setVariable(VAR_TIME, AnyType.getTimeString(file.RecTime));
+        _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
         foreach (AnalysisCall call in file.Calls)
         {
-          _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
-          _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));
-          _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
-          _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
-          _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
-          _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
-          _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
-          _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
-          AnyType res = _expression.parse(filter.Expression);
+          bool res = apply(filter, call);
           if (filter.IsForAllCalls)
           {
-            if ((res.getType() != AnyType.tType.RT_BOOL) || !res.getBool())
+            if (!res)
             {
               retVal = false;
               break;
@@ -172,7 +144,7 @@ namespace BatInspector
           }
           else
           {
-            if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
+            if (res)
             {
               retVal = true;
               break;
@@ -194,8 +166,10 @@ namespace BatInspector
       _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
       _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
       _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
+      _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
       _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
       _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
+      _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
       AnyType res = _expression.parse(filter.Expression);
       
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
@@ -203,6 +177,22 @@ namespace BatInspector
 
       return retVal;
     }
+
+    public bool apply(FilterItem filter, AnalysisCall call, string remarks, string time, out bool ok)
+    {
+      if (string.IsNullOrEmpty(filter.Expression))
+      {
+        ok = true;
+        return true;
+      }
+
+      _expression.setVariable(VAR_REMARKS, remarks);
+      _expression.setVariable(VAR_TIME, time);
+      bool retVal = apply(filter, call);
+      ok = _expression.Errors == 0;
+      return retVal;
+    }
+
 
     public bool apply(FilterItem filter, Csv csv, int row)
     {

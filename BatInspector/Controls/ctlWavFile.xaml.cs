@@ -18,13 +18,14 @@ using libScripter;
 using System.Drawing;
 using System.Windows.Media;
 using Microsoft.Web.WebView2.Core;
+using System.Windows.Media.Media3D;
 
 namespace BatInspector.Controls
 {
   /// <summary>
   /// Interaktionslogik für ctlWavFile.xaml
   /// </summary>
-  public partial class ctlWavFile : UserControl
+  public partial class ctlWavFile : UserControl, IPool
   {
     AnalysisFile _analysis;
     string _wavFilePath;
@@ -32,6 +33,8 @@ namespace BatInspector.Controls
     MainWindow _parent;
     bool _initialized = false;
     enModel _modelType;
+    Sonogram _sonogram = null;
+    dlgRelease _dlgRelease = null;
 
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
@@ -62,13 +65,45 @@ namespace BatInspector.Controls
 
     public ctlWavFile()
     {
+    }
 
+    public void setCallBack(dlgRelease dlg)
+    {
+      _dlgRelease = dlg;
+    }
+
+    public void release()
+    {
+      if (_sonogram != null)
+      {
+        _sonogram.release();
+        _sonogram = null;
+      }
+      if (_dlgRelease != null)
+        _dlgRelease(this);
+    }
+
+    public void createNewPng()
+    {
+      string wavName = Path.Combine(_wavFilePath, WavName);
+      _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
+      if ((_sonogram.Image == null) && (App.Model.Prj != null))
+        DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
+      else
+      {
+        _img.Source = _sonogram.Image;
+        _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
+        //Force render
+        _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
+        _img.Arrange(new Rect(_img.DesiredSize));;
+      }
     }
 
     public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons)
     {
       _parent = parent;
       InitializeComponent();
+      _sonogram = App.Model.View.createSonogram(record.Name);
       _ctlRemarks.setup(MyResources.CtlWavRemarks, enDataType.STRING, 0, 80, true, _tbRemarks_TextChanged);
       _analysis = analysis;
       _record = record;

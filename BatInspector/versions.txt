@@ -12,9 +12,11 @@ TODO
 V0.9.3.0
 - new web browser control to show location (no more script error messages)
 - show loaction on OSM
-- SNR calculation
+- SNR calculation and display in zoom view
 - bugfix: GradientRange for Sonogram now in real dB
-- bugfix update settings form, when settigns change (GradientRange)
+- bugfix: update settings form, when settigns change (GradientRange)
+- bugfix: entering comments in prj view works again 
+- improved memory management (pooling of image controls)
 
 
 V0.9.2.2  28.10.24

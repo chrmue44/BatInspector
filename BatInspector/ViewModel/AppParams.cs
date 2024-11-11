@@ -183,8 +183,8 @@ namespace BatInspector
     public const int MAX_LOG_COUNT = 600;     // max. numbe rof log entries before creating a new log file
     public const int STATISTIC_CLASSES = 40;  // number of classes in statistic histograms
     public const int FFT_WIDTH = 1024;
-    public const int NR_OF_TICKS = 9;    // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
-
+    public const int NR_OF_TICKS = 9;         // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
+    public const int CNT_WAV_CONTROLS = 16;   // max. number of wav file controls
     static AppParams _inst = null;
 
     bool _isInitialized = false;

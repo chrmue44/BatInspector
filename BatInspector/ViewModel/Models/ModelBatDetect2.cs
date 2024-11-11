@@ -91,7 +91,7 @@ namespace BatInspector
     {
       int retVal = 0;
       string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
-      string annDir = Path.Combine(prj.PrjDir, AppParams.ANNOTATION_SUBDIR);
+      string annDir = Path.Combine(prj.PrjDir, prj.SelectedModelParams.SubDir, AppParams.ANNOTATION_SUBDIR);
       bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
       if (ok)
       {
@@ -136,6 +136,8 @@ namespace BatInspector
           }
           else
           {
+            DebugLog.log("start creating report", enLogType.INFO);
+            int cnt = 0;
             foreach (string file in files)
             {
               // read infoFile
@@ -150,7 +152,8 @@ namespace BatInspector
               double humidity = -1;
               BatRecord info = ElekonInfoFile.read(infoName);
               WavFile wav = new WavFile();
-              int res = wav.readFile(wavName);
+              string fullName = Path.Combine(wavDir, wavName);
+              int res = wav.readFile(fullName);
               if (info != null)
               {
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
@@ -237,6 +240,11 @@ namespace BatInspector
                 report.setCell(repRow, Cols.SPECIES, abbr);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
                 report.setCell(repRow, Cols.REMARKS, "");
+
+                cnt++;
+                if((cnt % 20) == 0)
+                  DebugLog.log($"processed {cnt} files", enLogType.INFO);
+
               }
             }
           }

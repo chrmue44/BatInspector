@@ -1206,7 +1206,7 @@ namespace BatInspector
     public void createXmlInfoFiles(PrjInfo info)
     {
       bool replaceAll = false;
-      DebugLog.log("creating xml infofcreate files...", enLogType.INFO);
+      DebugLog.log("creating xml info files...", enLogType.INFO);
       bool msgBoxShown = false;
       //gpx gpxFile = gpx.read(info.GpxFile);
       foreach (PrjRecord record in _batExplorerPrj.Records)
@@ -1223,8 +1223,12 @@ namespace BatInspector
             if (res == MessageBoxResult.Yes)
             {
               replaceAll = true;
+              DebugLog.log("replacing existing xml files...", enLogType.INFO);
               create = true;
             }
+            else
+              DebugLog.log("copy existing xml files...", enLogType.INFO);
+
             msgBoxShown = true;
           }
           if (create)

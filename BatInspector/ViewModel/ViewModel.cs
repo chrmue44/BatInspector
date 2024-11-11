@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using BatInspector.Controls;
+using BatInspector.Forms;
 using libParser;
 using libScripter;
 using System;
@@ -324,14 +325,7 @@ namespace BatInspector
         DebugLog.log("could not create PNG for " + wavName, enLogType.WARNING);
     }
 
-    public void createNewPng(ctlWavFile ctlWav, string wavName, string pngName, ColorTable colorTable)
-    {
-      if (ctlWav != null)
-      {
-        ctlWav._img.Source = PrjView.getFtImage(wavName, AppParams.FFT_WIDTH, colorTable);
-      }
-    }
-
+    
   
 
     /// <summary>

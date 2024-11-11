@@ -37,7 +37,7 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class MainWindow : Window
   {
-    const int MAX_IMG_HEIGHT = 256;
+    public const int MAX_IMG_HEIGHT = 256;
     const int MAX_IMG_WIDTH = 512;
 
     FrmFilter _frmFilter = null;
@@ -125,7 +125,7 @@ namespace BatInspector.Forms
       DebugLog.log(versionStr + " started", enLogType.DEBUG);
       Installer.hideSplash();
       collapseTreeView(false);
-      _wavCtls = new Pool<ctlWavFile>(20);
+      _wavCtls = new Pool<ctlWavFile>(AppParams.CNT_WAV_CONTROLS);
     }
 
 
@@ -636,7 +636,7 @@ namespace BatInspector.Forms
         {
           App.Model.View.StartIdx++;
           ctlWavFile ctl = _spSpectrums.Children[0] as ctlWavFile;
-          _wavCtls.release(ctl);
+          ctl.release();
           _spSpectrums.Children.RemoveAt(0);
           if ((App.Model.View.StartIdx + _spSpectrums.Children.Count) <
              (App.Model.View.VisibleFiles.Count - 1))
@@ -661,7 +661,7 @@ namespace BatInspector.Forms
         AnalysisFile analysisFile = null;
         if (App.Model.CurrentlyOpen.Analysis != null)
           analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
-        ctlWavFile ctl = _wavCtls.get(); 
+        ctlWavFile ctl = _wavCtls.get("wavCtl append"); 
         ctl.setup(analysisFile, rec, this, true);
         if (up)
           _spSpectrums.Children.Add(ctl);
@@ -693,7 +693,7 @@ namespace BatInspector.Forms
         if (recList != null)
         {
           foreach (ctlWavFile c in _spSpectrums.Children)
-            _wavCtls.release(c);
+            c.release();
           _spSpectrums.Children.Clear();
 
           int maxCtl = Math.Min(App.Model.View.VisibleFiles.Count, 6);
@@ -708,7 +708,7 @@ namespace BatInspector.Forms
                 AnalysisFile analysisFile = null;
                 if ((analysis != null) && (rec != null))
                   analysisFile = analysis.find(rec.File);
-                ctlWavFile ctl = _wavCtls.get();
+                ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
                 ctl.setup(analysisFile, rec, this, true);
                 DockPanel.SetDock(ctl, Dock.Bottom);
                 _spSpectrums.Children.Add(ctl);
@@ -724,8 +724,6 @@ namespace BatInspector.Forms
 
     void initCtlWav(ctlWavFile ctl, PrjRecord rec, bool fromQuery)
     {
-      ctl._img.Source = App.Model.View.getFtImage(rec, fromQuery, App.Model.ColorTable);
-      ctl._img.MaxHeight = _imgHeight;
       AnalysisFile analysis;
       List<string> species;
       string fullWavName;
@@ -753,6 +751,7 @@ namespace BatInspector.Forms
 
       ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
+      ctl.createNewPng();
     }
 
 
@@ -1192,7 +1191,7 @@ namespace BatInspector.Forms
             App.Model.Busy = false;
             if (_btnCreatePrj.IsEnabled)
               _btnCreatePrj.IsEnabled = false;
-            populateControls(0);
+           // populateControls(0);
             if ((App.Model.Prj != null) && App.Model.Prj.Ok)
               _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + App.Model.Prj.Name;
             if (App.Model.Query != null)
@@ -1368,8 +1367,15 @@ namespace BatInspector.Forms
 
     private void _scrollPrj_MouseUp(object sender, MouseButtonEventArgs e)
     {
-      _mouseIsDownOnScrollPrj = false;
-      _scrollPrj_ValueChanged(null, null);
+      try
+      {
+        _mouseIsDownOnScrollPrj = false;
+        _scrollPrj_ValueChanged(null, null);
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log(ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void DropdownButton_Checked(object sender, RoutedEventArgs e)

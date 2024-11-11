@@ -224,6 +224,7 @@
                     <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
                     <local:ctlDataItem x:Name="_ctlDuration"/>
                     <local:ctlDataItem x:Name="_ctlDist"/>
+                    <local:ctlDataItem x:Name="_ctlSnr"/>
                 </StackPanel>
             </GroupBox>
 

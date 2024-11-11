@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -91,24 +92,29 @@ namespace BatInspector
     }
   }
 
-  
+
   public class PrjView
   {
     List<ReportItemBd2> _report = new List<ReportItemBd2>();
     List<string> _showWavFiles = new List<string>();
+    Pool<Sonogram> _sonograms = new Pool<Sonogram>(AppParams.CNT_WAV_CONTROLS);
 
     public List<ReportItemBd2> ListView { get { return _report; } }
     public List<string> VisibleFiles { get { return _showWavFiles; } }
 
     public Project Prj { get; set; }
 
-    public Query Query { get; set;}
+    public Query Query { get; set; }
     public int StartIdx { get; set; } = 0;
     public PrjView()
     {
     }
 
 
+    public Sonogram createSonogram(string id)
+    {
+      return _sonograms.get(id);
+    }
 
     public void buildListOfVisibles(bool selectedOnly)
     {
@@ -130,14 +136,14 @@ namespace BatInspector
     }
 
     public bool populateList(Filter filter, FilterItem filterItem)
-    {      
+    {
       PrjRecord[] recList = getRecords();
       Analysis analysis = getAnalysis();
       if (recList != null)
       {
         _report.Clear();
 
-        foreach(PrjRecord rec in recList)
+        foreach (PrjRecord rec in recList)
         {
           string wavFile = rec.File;
           AnalysisFile f = analysis.find(wavFile);
@@ -146,7 +152,7 @@ namespace BatInspector
             for (int c = 0; c < f.Calls.Count; c++)
             {
               bool res = true;
-              if(filter != null)
+              if (filter != null)
                 res = filter.apply(filterItem, f.Calls[c]);
               if (res)
               {
@@ -169,89 +175,36 @@ namespace BatInspector
       }
     }
 
-    public BitmapImage getFtImage(PrjRecord rec, bool fromQuery, ColorTable colorTable)
+
+
+
+
+    public void createPngFile(PrjRecord rec, bool fromQuery, ColorTable colorTable)
     {
       string wavName = fromQuery ? Path.Combine(Query.DestDir, rec.File) : Path.Combine(Prj.PrjDir, Prj.WavSubDir, rec.File);
-      BitmapImage bImg = getFtImage(wavName, AppParams.FFT_WIDTH, colorTable);
-      if ((bImg == null) && (Prj != null))
+      Sonogram tmp = _sonograms.get(rec.Name);
+      if (tmp != null)
       {
-        Prj.removeFile(rec.File);
-        if (Prj.Analysis?.IsEmpty == false)
-          Prj.Analysis.removeFile(Prj.ReportName, rec.File);
+        tmp.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, colorTable);
+        if ((tmp.Image == null) && (Prj != null))
+          DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
       }
-      return bImg;
-    }
-
-    public static BitmapImage getFtImage(string wavName, int fftWidth, ColorTable colorTable)
-    {
-      BitmapImage bImg = null;
-      string pngName = "";
-      try
-      {
-        pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        Bitmap bmp = null;
-        if (File.Exists(pngName))
-          bmp = new Bitmap(pngName);
-        else
-        {
-          Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
-          if (wf.Ok)
-          {
-            wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-            bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000);
-            bmp.Save(pngName);
-          }
-          else
-            DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
-        }
-        if (bmp != null)
-          bImg = Convert(bmp);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
-      }
-      return bImg;
-    }
-
-
-    public static BitmapImage Convert(Bitmap bitmap)
-    {
-      var bitmapImage = new BitmapImage();
-      try
-      {
-        using (MemoryStream memory = new MemoryStream())
-        {
-          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-          memory.Position = 0;
-
-          bitmapImage.BeginInit();
-          bitmapImage.StreamSource = memory;
-          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-          bitmapImage.EndInit();
-          bitmapImage.Freeze();
-        }
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
-      }
-      return bitmapImage;
+      tmp.release();
     }
 
 
     public void createPngFiles(ColorTable colorTable)
     {
-      if((Prj != null))
+      if ((Prj != null))
       {
-        foreach(PrjRecord rec in Prj.Records)
+        foreach (PrjRecord rec in Prj.Records)
         {
           string pngName = Path.Combine(Prj.PrjDir, Prj.WavSubDir, Path.GetFileNameWithoutExtension(rec.File) + AppParams.EXT_IMG);
-          if(!File.Exists(pngName)) 
+          if (!File.Exists(pngName))
           {
-            lock(rec)
+            lock (rec)
             {
-              getFtImage(rec, false, colorTable);
+              createPngFile(rec, false, colorTable);
             }
           }
         }
@@ -307,7 +260,130 @@ namespace BatInspector
       }
       return retVal;
     }
+  }
+
+  public class Sonogram : IPool
+  {
+    BitmapImage _bImg = null;
+    Bitmap _bmp = null;
+    dlgRelease _dlgRelease;
+    MemoryStream _memory = new MemoryStream();
+
+    public BitmapImage Image { get { return _bImg; } }
+
+    public void setCallBack(dlgRelease dlg)
+    {
+       _dlgRelease = dlg;
+    }
+
+    public void release()
+    {
+      if (_dlgRelease!= null)
+        _dlgRelease(this);
+    }
+
+    /*
+    BitmapImage Convert(Bitmap bitmap)
+    {
+      var bitmapImage = new BitmapImage();
+      try
+      {
+        using (MemoryStream memory = new MemoryStream())
+        {
+//          memory.Position = 0;
+          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+          bitmapImage.BeginInit();
+          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+          bitmapImage.StreamSource = memory;
+  //        bitmapImage.CacheOption = BitmapCacheOption.None;
+          bitmapImage.EndInit();
+          bitmapImage.Freeze();
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
+      }
+      return bitmapImage;
+    }
+    */
 
 
+    BitmapImage Convert(Bitmap bitmap)
+    {
+      var bitmapImage = new BitmapImage();
+      try
+      {
+        _memory.Position = 0;
+        _memory.SetLength(0);
+        bitmap.Save(_memory, System.Drawing.Imaging.ImageFormat.Png);
+        bitmapImage.BeginInit();
+        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        bitmapImage.StreamSource = _memory;
+          //        bitmapImage.CacheOption = BitmapCacheOption.None;
+        bitmapImage.EndInit();
+        bitmapImage.Freeze();
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error creating PNG: " + ex.ToString(), enLogType.ERROR);
+      }
+      return bitmapImage;
+    }
+
+
+    public void createFtImageFromWavFile(string wavName, int fftWidth, ColorTable colorTable)
+    {
+      string pngName = "";
+      try
+      {
+        pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        if (File.Exists(pngName))
+          _bmp = new Bitmap(pngName);
+        else
+        {
+          Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
+          if (wf.Ok)
+          {
+            wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
+            _bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000);
+            _bmp.Save(pngName);
+          }
+          else
+            DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
+        }
+        if (_bmp != null)
+          _bImg = Convert(_bmp);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
+      }
+    }
+
+
+    public void createZoomViewFt(double tStart, double tEnd, double fMin, double fMax)
+    {
+      _bmp = App.Model.ZoomView.Waterfall.generateFtPicture(tStart, tEnd, fMin, fMax);
+      if (_bmp != null)
+        _bImg = Convert(_bmp);
+      else
+      {
+        _bImg = null;
+        DebugLog.log("error creating zoom view", enLogType.ERROR);
+      }
+    }
+
+    public void createZoomViewXt(double aMin, double aMax, double tStart, double tEnd)
+    {
+      _bmp = App.Model.ZoomView.Waterfall.generateXtPicture(aMin, aMax, tStart, tEnd);
+      if (_bmp != null)
+        _bImg = Convert(_bmp);
+      else
+      {
+        _bImg = null;
+        DebugLog.log("error creating zoom view", enLogType.ERROR);
+      }
+    }
   }
 }

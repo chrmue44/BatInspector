@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400" MinWidth="1280" MinHeight="640"
         Icon="../images/kopf64.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
-        PreviewKeyDown="Window_KeyDown"
     >
+<!--    PreviewKeyDown="Window_KeyDown" -->
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="34" />
     </WindowChrome.WindowChrome>

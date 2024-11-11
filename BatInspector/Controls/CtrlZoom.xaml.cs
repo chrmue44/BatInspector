@@ -19,7 +19,6 @@ using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
 using BatInspector.Forms;
-using System.Xml.Linq;
 using System.Diagnostics;
 
 namespace BatInspector.Controls
@@ -37,7 +36,8 @@ namespace BatInspector.Controls
     ctlWavFile _ctlWav = null;
     dlgVoid _openExportForm= null;
     enModel _modelType;
-
+    Sonogram _sonogramFt;
+    Sonogram _sonogramXt;
     public CtrlZoom()
     {
       InitializeComponent();
@@ -120,10 +120,13 @@ namespace BatInspector.Controls
         Width = 32,
         Opacity = op
       };
+      _sonogramFt = App.Model.View.createSonogram("zoom F-t");
+      _sonogramXt = App.Model.View.createSonogram("zoom X-t");
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath, 
-                     List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
+                     List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow, 
+                     enModel modelType)
     {
       int lblWidth = 110;
       InitializeComponent();
@@ -168,13 +171,22 @@ namespace BatInspector.Controls
       _ctlDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
       //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, lblWidth);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
-
+      _ctlSnr.setup(MyResources.Snr + " [dB]:", enDataType.DOUBLE, 1, lblWidth);
       if(_modelType == enModel.BATTY_BIRD_NET)
       {
         _ctlFMin.Visibility = Visibility.Hidden;
         _ctlFMax.Visibility = Visibility.Hidden;
         _ctlFMaxAmpl.Visibility = Visibility.Hidden;
         _ctlDist.Visibility = Visibility.Hidden;
+        _ctlSnr.Visibility = Visibility.Hidden;
+      }
+      else
+      {
+        _ctlFMin.Visibility = Visibility.Visible;
+        _ctlFMax.Visibility = Visibility.Visible;
+        _ctlFMaxAmpl.Visibility = Visibility.Visible;
+        _ctlDist.Visibility = Visibility.Visible;
+        _ctlSnr.Visibility = Visibility.Visible;
       }
 
       lblWidth = 110;
@@ -848,16 +860,12 @@ namespace BatInspector.Controls
     }
 
     private void updateImage()
-    {
-      System.Drawing.Bitmap bmpFt = App.Model.ZoomView.Waterfall.generateFtPicture(App.Model.ZoomView.RulerDataT.Min, 
-                                                                                App.Model.ZoomView.RulerDataT.Max,
-                                                                                App.Model.ZoomView.RulerDataF.Min,
-                                                                                App.Model.ZoomView.RulerDataF.Max);
-      if (bmpFt != null)
-      {
-        BitmapImage bImg = PrjView.Convert(bmpFt);
-        _imgFt.Source = bImg;
-      }
+    {      
+      _sonogramFt.createZoomViewFt(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max,
+                                   App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max);
+      if(_sonogramFt.Image != null)
+        _imgFt.Source = _sonogramFt.Image;
+
       updateXtImage();
       drawGrid();
       
@@ -865,13 +873,10 @@ namespace BatInspector.Controls
 
     private void updateXtImage()
     {
-      System.Drawing.Bitmap bmpXt = App.Model.ZoomView.Waterfall.generateXtPicture(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
-                                                          App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
-      if (bmpXt != null)
-      {
-        BitmapImage bImg = PrjView.Convert(bmpXt);
-        _imgXt.Source = bImg;
-      }
+      _sonogramXt.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
+                                   App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
+      if (_sonogramXt.Image != null)
+        _imgXt.Source = _sonogramXt.Image;
     }
 
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)
@@ -1168,6 +1173,7 @@ namespace BatInspector.Controls
         }
         _ctlDuration.setValue(call.getDouble(Cols.DURATION));
         _ctlDist.setValue(call.DistToPrev);
+        _ctlSnr.setValue(call.getDouble(Cols.SNR));
         _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));
         _ctlProbability.setValue(call.getDouble(Cols.PROBABILITY));
         _ctlSpecMan.setValue(call.getString(Cols.SPECIES_MAN));
@@ -1327,7 +1333,7 @@ namespace BatInspector.Controls
           wavSubDir = App.Model.Prj.WavSubDir;
         App.Model.ZoomView.Waterfall.Audio.saveAs(App.Model.ZoomView.Waterfall.WavName, wavSubDir);
         string pngName = App.Model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        App.Model.createNewPng(_ctlWav, App.Model.ZoomView.Waterfall.WavName, pngName, App.Model.ColorTable);
+        _ctlWav.createNewPng();
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1445,7 +1451,7 @@ namespace BatInspector.Controls
         App.Model.ZoomView.undoChanges();
         App.Model.updateReport();
         string pngName = App.Model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        App.Model.createNewPng(_ctlWav, App.Model.ZoomView.Waterfall.WavName, pngName, App.Model.ColorTable);
+        _ctlWav.createNewPng();
         createZoomImg();
         DebugLog.log("Zoom:Btn 'Undo' clicked", enLogType.DEBUG);
       }

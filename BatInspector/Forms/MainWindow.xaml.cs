@@ -652,6 +652,9 @@ namespace BatInspector.Forms
         {
           App.Model.View.StartIdx--;
           wavName = App.Model.View.VisibleFiles[App.Model.View.StartIdx];
+          ctlWavFile ctl = _spSpectrums.Children[_spSpectrums.Children.Count - 1] as ctlWavFile;
+          ctl.release();
+          _spSpectrums.Children.RemoveAt(_spSpectrums.Children.Count - 1);
           append = true;
         }
       }

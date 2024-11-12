@@ -32,6 +32,7 @@ namespace BatInspector
       _changed = false;
       Row = call.ReportRow;
       Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
+      Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
       StartTime = call.getString(Cols.START_TIME);
       SpeciesAuto = call.getString(Cols.SPECIES);
       Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
@@ -57,10 +58,10 @@ namespace BatInspector
     public string FreqMax { get; set; }
     public string FreqMaxAmp { get; set; }
     public string Duration { get; set; }
+    public string Snr { get; set; }
     public string SpeciesAuto { get; set; }
     public string SpeciesMan { get; set; }
     public string Probability { get; set; }
-    //  public string Snr { get; set; }
 
     public string Latitude { get; set; }
     public string Longitude { get; set; }
@@ -97,7 +98,7 @@ namespace BatInspector
   {
     List<ReportItemBd2> _report = new List<ReportItemBd2>();
     List<string> _showWavFiles = new List<string>();
-    Pool<Sonogram> _sonograms = new Pool<Sonogram>(AppParams.CNT_WAV_CONTROLS);
+    Pool<Sonogram> _sonograms = new Pool<Sonogram>(AppParams.CNT_WAV_CONTROLS + 2);
 
     public List<ReportItemBd2> ListView { get { return _report; } }
     public List<string> VisibleFiles { get { return _showWavFiles; } }
@@ -221,6 +222,7 @@ namespace BatInspector
         item.Latitude = csv.getCell(row, Cols.LAT);
         item.FreqMax = csv.getCell(row, Cols.F_MAX);
         item.FreqMin = csv.getCell(row, Cols.F_MIN);
+        item.Snr = csv.getCell(row, Cols.SNR);
         item.Duration = csv.getCell(row, Cols.DURATION);
         item.CallNr = csv.getCell(row, Cols.NR);
         item.FileName = csv.getCell(row, Cols.NAME);

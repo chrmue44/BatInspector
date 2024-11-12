@@ -2,7 +2,6 @@ TODO
 - training of model
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man species
-- calculate SNR for each detected call
 - markieren von manuell geänderten Rufen
 - more flexible import: 
   - parsing date/time form different file names
@@ -14,7 +13,7 @@ V0.9.3.0
 - show loaction on OSM
 - SNR calculation and display in zoom view
 - bugfix: GradientRange for Sonogram now in real dB
-- bugfix: update settings form, when settigns change (GradientRange)
+- bugfix: update settings form, when settings change (GradientRange)
 - bugfix: entering comments in prj view works again 
 - improved memory management (pooling of image controls)
 

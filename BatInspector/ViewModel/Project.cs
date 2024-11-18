@@ -1215,22 +1215,27 @@ namespace BatInspector
         string fullName = Path.Combine(_selectedDir, _wavSubDir, record.File);
         if (File.Exists(fullName))
         {
-          if (!msgBoxShown && File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))
+          if (File.Exists(fullName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)))
           {
-            MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.ProjectmsgReplaceInfo, 
-                                                   BatInspector.Properties.MyResources.msgQuestion, 
-                                                   MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (res == MessageBoxResult.Yes)
+            if (!msgBoxShown)
             {
-              replaceAll = true;
-              DebugLog.log("replacing existing xml files...", enLogType.INFO);
-              create = true;
-            }
-            else
-              DebugLog.log("copy existing xml files...", enLogType.INFO);
+              MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.ProjectmsgReplaceInfo,
+                                                   BatInspector.Properties.MyResources.msgQuestion,
+                                                   MessageBoxButton.YesNo, MessageBoxImage.Question);
+              if (res == MessageBoxResult.Yes)
+              {
+                replaceAll = true;
+                DebugLog.log("replacing existing xml files...", enLogType.INFO);
+                create = true;
+              }
+              else
+                DebugLog.log("copy existing xml files...", enLogType.INFO);
 
-            msgBoxShown = true;
+              msgBoxShown = true;
+            }
           }
+          else
+            create = true;
           if (create)
           {
             DateTime time = ElekonInfoFile.getDateTimeFromFileName(fullName);

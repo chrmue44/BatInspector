@@ -137,8 +137,6 @@ namespace BatInspector
       _batSpecRegions = BatSpeciesRegions.loadFrom(AppParams.Inst.BatInfoPath);
       _proc = new ProcessRunner();
       _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
-      //   _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));     // why here???
-      //   _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
       _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();
       Status = new ModelState();
@@ -164,7 +162,7 @@ namespace BatInspector
       foreach (SpeciesInfos info in _speciesInfos)
         species.Add(info.Abbreviation);
       species.Add("?");
-      species.Add("Social");
+//      species.Add("Social");
 
       _filter = new Filter(species);
       initFilter();

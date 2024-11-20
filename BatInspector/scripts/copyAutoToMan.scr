@@ -1,6 +1,6 @@
 # intelligent transfer of automatically recognized species to SpeciesMan
 
-#step 1: kick out all files overdriven calls
+#step 1: kick out all files with overdriven calls
 #take over all unambiguously automatically recognized species
 SET NrFiles =(getPrjFileCount())
 SET Count 0
@@ -16,6 +16,7 @@ FOR FileNr 0 NrFiles
           SET ovrAuto =("??OVR[" + replace(specAuto,"(","]("))
           =(setCallInfo(FileNr, i, "SPEC_AUTO", ovrAuto))
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+          =(setCallInfo(FileNr, i, "CALL_TYPE_MAN", "UNKNOWN"))
   	      SET fileName =(getFileInfo(FileNr, "NAME"))
           SET Count =(Count + 1)
           LOG =("file:" + fileName + ", overdriven call:" + (i + 1) + " set to '?'")		  
@@ -42,25 +43,28 @@ FOR FileNr 0 NrFiles
         SET Rank2Spec =(getRankSpecies(FileNr, 2))
         SET Rank2Cnt =(getRankCount(FileNr, 2))
         IF =((Rank2Cnt < 2) && (Rank1Cnt > 3))
-	      SET Replace 1
-	    END
-  	  ELSE
-	    SET Replace 1
+          SET Replace 1
+        END
+      ELSE
+        SET Replace 1
       END
-	  IF =(Replace == 1)
-	    SET Count =(Count + 1)
+      IF =(Replace == 1)
+        SET Count =(Count + 1)
         FOR i 0 NrCalls
-	      SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
-		  SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
-		  IF =(toupper(specMan) == "TODO")
-		    IF =(specAuto == Rank1Spec)
+        SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))
+        SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+          IF =(toupper(specMan) == "TODO")
+            SET callType =(getCallInfo(FileNr, i, "CALL_TYPE_AUTO"))
+            IF =(specAuto == Rank1Spec)
               =(setCallInfo(FileNr, i, "SPEC_MAN", Rank1Spec))
-		    ELSE
+              =(setCallInfo(FileNr, i, "CALL_TYPE_MAN", callType))
+            ELSE
               =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+              =(setCallInfo(FileNr, i, "CALL_TYPE_MAN", "UNKNOWN"))
             END
-		  END
-	    END
-	  END
+          END
+        END
+      END
     END
   END
 END
@@ -82,6 +86,7 @@ FOR FileNr 0 NrFiles
 	    IF =(substr(specAuto, 0, 1) != "?")
 		  IF =(!occursAtLocation(specAuto, lat, lon))
             =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+            =(setCallInfo(FileNr, i, "CALL_TYPE_MAN", "UNKNOWN"))
 	  	    SET newAuto =("??REG[" + replace(specAuto,"(","]("))
             =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
             SET region =(getRegion(lat, lon))
@@ -109,9 +114,12 @@ FOR FileNr 0 NrFiles
 	  IF =(toupper(specMan) == "TODO")
 	    SET Replace 1
 	    IF =(prob > 0.5)
+		  SET callType =(getCallInfo("CALL_TYPE_AUTO"))
           =(setCallInfo(FileNr, i, "SPEC_MAN", specAuto))
+          =(setCallInfo(FileNr, i, "CALL_TYPE_MAN", callType))
 	    ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+          =(setCallInfo(FileNr, i, "CALL_TYPE_MAN", "UNKNOWN"))
 	    END
 	  END
     END

@@ -35,6 +35,16 @@ namespace BatInspector
       Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
       StartTime = call.getString(Cols.START_TIME);
       SpeciesAuto = call.getString(Cols.SPECIES);
+      bool ok = Enum.TryParse<enCallType>(call.getString(Cols.CALL_TYPE), out enCallType callType);
+      if (ok)
+        CallTAuto = AppParams.getCallType((int)callType);
+      else
+        CallTAuto = "?";
+      ok = Enum.TryParse<enCallType>(call.getString(Cols.CALL_TYPE_MAN), out callType);
+      if (ok)
+        CallTMan = AppParams.getCallType((int)callType);
+      else
+        CallTMan = "?";
       Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
       Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
       Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
@@ -60,7 +70,10 @@ namespace BatInspector
     public string Duration { get; set; }
     public string Snr { get; set; }
     public string SpeciesAuto { get; set; }
+    
+    public string CallTAuto { get; set; } 
     public string SpeciesMan { get; set; }
+    public string CallTMan { get; set; }
     public string Probability { get; set; }
 
     public string Latitude { get; set; }

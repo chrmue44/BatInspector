@@ -25,11 +25,19 @@ if not errorlevel 1 (
 ) 
 :model_bd2
 
-rem install missing python libraries
-@echo ******************************************************
-@echo * installing AI model. This may take several minutes *
-@echo * Be patient! Ooohmm....                             *
-@echo ******************************************************
+@echo  ###   ##### ####  #   # #      ####     ##
+@echo #   #  #     #   # #   # #      #   #    ##
+@echo #      #     #   # #   # #      #   #    ##
+@echo # ###  ###   #   # #   # #      #   #    ## 
+@echo #   #  #     #   # #   # #      #   #   
+@echo #   #  #     #   # #   # #      #   #    ##
+@echo  ###   ##### ####   ###  ###### ####     ##
+
+@echo Die Installation der KI-Modelle dauert mehrere Minuten
+@echo Fenster nicht vorzeitig schließen!
+@echo
+@echo
+
 @echo install batdetect2
 cd ..
 cd %OUT_DIR%

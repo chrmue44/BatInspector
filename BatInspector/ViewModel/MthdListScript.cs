@@ -811,7 +811,9 @@ namespace BatInspector
       F_MIN,
       F_MAX,
       F_MAX_AMP,
-      DURATION
+      DURATION,
+      CALL_TYPE_AUTO,
+      CALL_TYPE_MAN
     }
 
     static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
@@ -862,6 +864,12 @@ namespace BatInspector
                     break;
                   case enCallInfo.DURATION:
                     result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.DURATION));
+                    break;
+                  case enCallInfo.CALL_TYPE_AUTO:
+                    result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.CALL_TYPE));
+                    break;
+                  case enCallInfo.CALL_TYPE_MAN:
+                    result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getString(Cols.CALL_TYPE_MAN));
                     break;
                 }
               }
@@ -914,6 +922,32 @@ namespace BatInspector
                   case enCallInfo.SPEC_MAN:
                     argv[3].changeType(AnyType.tType.RT_STR);
                     App.Model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.SPECIES_MAN, argv[3].getString());
+                    break;
+                  case enCallInfo.CALL_TYPE_MAN:
+                    {
+                      argv[3].changeType(AnyType.tType.RT_STR);
+                      ok = Enum.TryParse<enCallType>(argv[3].getString(), out enCallType callType);
+                      if (ok)
+                        App.Model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.CALL_TYPE_MAN, argv[3].getString());
+                      else
+                      {
+                        DebugLog.log($"Call type {callType.ToString()} not supported", enLogType.ERROR);
+                        err = tParseError.ARG3_OUT_OF_RANGE;
+                      }
+                    }
+                    break;
+                  case enCallInfo.CALL_TYPE_AUTO:
+                    {
+                      argv[3].changeType(AnyType.tType.RT_STR);
+                      ok = Enum.TryParse<enCallType>(argv[3].getString(), out enCallType callType);
+                      if (ok)
+                        App.Model.Prj.Analysis.Files[idxF].Calls[idxC].setString(Cols.CALL_TYPE, argv[3].getString());
+                      else
+                      {
+                        DebugLog.log($"Call type {callType.ToString()} not supported", enLogType.ERROR);
+                        err = tParseError.ARG3_OUT_OF_RANGE;
+                      }
+                    }
                     break;
                 }
               }

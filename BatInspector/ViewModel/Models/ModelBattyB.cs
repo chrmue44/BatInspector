@@ -194,6 +194,7 @@ namespace BatInspector
                 double duration = endTime - startTime;
                 report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
                 string latin = csvAnn.getCell(row, "Scientific name");
+                string callType = enCallType.ECHO.ToString();
 
                 double prob = csvAnn.getCellAsDouble(row, "Confidence");
                 report.setCell(repRow, Cols.PROBABILITY, prob);
@@ -208,7 +209,9 @@ namespace BatInspector
                 if (prob < minProb)
                   abbr += "]";
                 report.setCell(repRow, Cols.SPECIES, abbr);
+                report.setCell(repRow, Cols.CALL_TYPE, callType);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
+                report.setCell(repRow, Cols.CALL_TYPE_MAN, enCallType.UNKNOWN.ToString());
                 report.setCell(repRow, Cols.REMARKS, "");
               }
             }

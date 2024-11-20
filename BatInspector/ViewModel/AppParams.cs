@@ -22,6 +22,8 @@ using System.Configuration.Install;
 using NAudio.SoundFont;
 using System.Deployment.Application;
 using System.Reflection;
+using System.Resources;
+using System.Globalization;
 
 namespace BatInspector
 {
@@ -186,11 +188,25 @@ namespace BatInspector
     public const int NR_OF_TICKS = 9;         // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
     public const int CNT_WAV_CONTROLS = 16;   // max. number of wav file controls
     static AppParams _inst = null;
-
+    
     bool _isInitialized = false;
     ScriptInventory _scriptInventory = null;
     static public  bool IsInitialized { get { return Inst._isInitialized; } }
-   
+
+    public static string[] CallTypes = new string[] { MyResources.Echo, MyResources.Social, MyResources.Feed, "?" };
+    
+    public static string getCallType(int idx)
+    {
+      if (idx == 0)
+        return MyResources.ResourceManager.GetString(nameof(MyResources.Echo), CultureInfo.InvariantCulture);
+      else if (idx == 1)
+        return MyResources.ResourceManager.GetString(nameof(MyResources.Social), CultureInfo.InvariantCulture);
+      else if (idx == 2)
+        return MyResources.ResourceManager.GetString(nameof(MyResources.Feed), CultureInfo.InvariantCulture);
+      else
+        return "?";
+    }
+
     public static string AppVersion 
     {
       get

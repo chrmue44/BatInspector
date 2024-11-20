@@ -15,10 +15,7 @@ using System.Windows.Controls;
 using BatInspector.Properties;
 using System.IO;
 using libScripter;
-using System.Drawing;
 using System.Windows.Media;
-using Microsoft.Web.WebView2.Core;
-using System.Windows.Media.Media3D;
 
 namespace BatInspector.Controls
 {
@@ -35,8 +32,8 @@ namespace BatInspector.Controls
     enModel _modelType;
     Sonogram _sonogram = null;
     dlgRelease _dlgRelease = null;
-
-    public string WavFilePath {  get { return _wavFilePath; } }
+    GridLength _infoWidth;
+  public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
     public AnalysisFile Analysis { get { return _analysis; } }
     public string WavName { get { return _record.File; } }
@@ -51,15 +48,9 @@ namespace BatInspector.Controls
         _btnCopy.Visibility = value ? Visibility.Visible : Visibility.Hidden;
         _btnTools.Visibility = value ? Visibility.Visible : Visibility.Hidden;
         if (!value)
-        {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
-//          _grid.ColumnDefinitions[2].Width = new GridLength(0);
-        }
         else
-        {
-          _grid.ColumnDefinitions[1].Width = new GridLength(360);
-  //        _grid.ColumnDefinitions[2].Width = new GridLength(160);
-        }
+          _grid.ColumnDefinitions[1].Width = _infoWidth;
       }
     }
 
@@ -114,6 +105,12 @@ namespace BatInspector.Controls
       _cbSel.Focusable = true;
       _cbSel.IsChecked = record.Selected;
       Visibility = Visibility.Visible;
+      _grpInfoAuto.Width = 220;
+      _btnCopy.Width = _grpInfoAuto.Width - 5;
+      _grpInfoMan.Width = 225;
+      _btnTools.Width = _grpInfoMan.Width - 5;
+      _infoWidth = new GridLength(_grpInfoAuto.Width + _grpInfoMan.Width + 20.0);
+      _grid.ColumnDefinitions[1].Width = _infoWidth;
     }
 
 
@@ -126,8 +123,8 @@ namespace BatInspector.Controls
       List<string> spec = new List<string>();
       if (_spDataMan.Children.Count > 0)
       {
-        ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
-        spec = ctl.getItems();
+        ctlCallItem ctl = _spDataMan.Children[0] as ctlCallItem;
+        spec = ctl.getSpecItems();
       }
       initCallInformations(spec);
       _cbSel.IsChecked = rec.Selected;
@@ -170,7 +167,7 @@ namespace BatInspector.Controls
     {
       if (_analysis != null)
       {
-        int wLbl = 55;
+        int wLbl = 50;
         int callNr = 1;
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();
@@ -181,14 +178,26 @@ namespace BatInspector.Controls
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
           it.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
-          it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
+          string specAuto = call.getString(Cols.SPECIES) +
+                            "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)" +
+                            " {" + call.getString(Cols.CALL_TYPE) + "}";
+          it.setValue(specAuto);
           _spDataAuto.Children.Add(it);
 
-          ctlSelectItem im = new ctlSelectItem();
-          im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
+          ctlCallItem im = new ctlCallItem();
+          im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, 60, selItemChanged, clickCallLabel,
                 MyResources.ctlWavToolTipCall);
-          im.setItems(spec.ToArray());
+          im.setItemsSpec(spec.ToArray());
+          im.setItemsType(AppParams.CallTypes);
           im.setValue(call.getString(Cols.SPECIES_MAN));
+          bool ok = Enum.TryParse<enCallType>(call.getString(Cols.CALL_TYPE_MAN), out enCallType callType); 
+          if(ok)
+            im.setCallType(callType);
+          else
+          {
+            im.setCallType(enCallType.UNKNOWN);
+            DebugLog.log($"unable to parse call type: {call.getString(Cols.CALL_TYPE_MAN)}", enLogType.ERROR);
+          }
           if (call.Changed)
             im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
           _spDataMan.Children.Add(im);
@@ -216,12 +225,15 @@ namespace BatInspector.Controls
         DebugLog.log("Zoom not possible, file '" + _record.File + "' does not exist", enLogType.ERROR);
     }
 
-    private void selItemChanged(int index, string val)
+    private void selItemChanged(int index, string val, enCallType callType)
     {
       if (_analysis != null)
       {
         if ((index >= 0) && (index < _analysis.Calls.Count))
+        {
           _analysis.Calls[index].setString(Cols.SPECIES_MAN, val);
+          _analysis.Calls[index].setString(Cols.CALL_TYPE_MAN, callType.ToString());
+        }
         else
           DebugLog.log("ctlWavFile.selItemChanged(): index error", enLogType.ERROR);
       }

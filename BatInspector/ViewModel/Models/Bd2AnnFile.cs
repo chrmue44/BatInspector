@@ -18,6 +18,10 @@ namespace BatInspector
   {
     [DataMember(Name = "class")]
     public string Class { get; set; } = "";
+
+    [DataMember]
+    public double class_prob { get; set; } = 0.0;
+
     [DataMember]
     public double end_time { get; set; } = 1;
     [DataMember(Name = "event")]

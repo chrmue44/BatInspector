@@ -1096,6 +1096,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Echo.
+        /// </summary>
+        public static string Echo {
+            get {
+                return ResourceManager.GetString("Echo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
@@ -1227,6 +1236,15 @@ namespace BatInspector.Properties {
         public static string FactorySettings {
             get {
                 return ResourceManager.GetString("FactorySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed.
+        /// </summary>
+        public static string Feed {
+            get {
+                return ResourceManager.GetString("Feed", resourceCulture);
             }
         }
         
@@ -4116,6 +4134,15 @@ namespace BatInspector.Properties {
         public static string Snr {
             get {
                 return ResourceManager.GetString("Snr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Social.
+        /// </summary>
+        public static string Social {
+            get {
+                return ResourceManager.GetString("Social", resourceCulture);
             }
         }
         

@@ -8,6 +8,9 @@ TODO
   - real "inplace" import
 - export zoom view: set default file name: call_nr_species_filename.wav
 
+# V0.9.4.0
+- new property call type for auto and man. detected species 
+
 # V0.9.3.1 14.11.24
 - bugfix: import from WAV-Files did not create xml files anymore (bug introduced in 0.9.3) 
           -> recognition of recording date failed

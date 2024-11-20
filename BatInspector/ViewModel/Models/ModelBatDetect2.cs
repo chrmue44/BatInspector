@@ -164,9 +164,11 @@ namespace BatInspector
                 double.TryParse(info.Humidity, out humidity);
               }
 
-              // read annontation for one wav file
-              Csv csvAnn = new Csv();
-              csvAnn.read(file, ",", true);
+              // read annontation for one wav filenn
+              string annFile = file.ToLower().Replace("wav.csv", "wav.json");
+              Bd2AnnFile bd2AnnFile = Bd2AnnFile.loadFrom(annFile);
+              //Csv csvAnn = new Csv();
+              //csvAnn.read(file, ",", true);
               string fileFeat = file.ToLower().Replace("wav.csv", "wav_spec_features.csv");
               Csv csvFeat = null;
               if (File.Exists(fileFeat))
@@ -174,8 +176,8 @@ namespace BatInspector
                 csvFeat = new Csv();
                 csvFeat.read(fileFeat, ",", true);
               }
-              int rowcnt = csvAnn.RowCnt;
-              for (int row = 2; row <= rowcnt; row++)
+              int annCnt = bd2AnnFile.Annatations.Length;
+              for (int ann = 0; ann < annCnt; ann++)
               {
                 report.addRow();
                 int repRow = report.RowCnt;
@@ -187,34 +189,33 @@ namespace BatInspector
                 report.setCell(repRow, Cols.LON, lon);
                 report.setCell(repRow, Cols.TEMPERATURE, temperature);
                 report.setCell(repRow, Cols.HUMIDITY, humidity);
-                int id = csvAnn.getCellAsInt(row, "id");
-                report.setCell(repRow, Cols.NR, id + 1);
-                double startTime = csvAnn.getCellAsDouble(row, "start_time");
+                report.setCell(repRow, Cols.NR, ann + 1);
+                double startTime = bd2AnnFile.Annatations[ann].start_time;
                 report.setCell(repRow, Cols.START_TIME, startTime, 3);
-                double fMin = csvAnn.getCellAsDouble(row, "low_freq");
+                double fMin = bd2AnnFile.Annatations[ann].low_freq;
                 report.setCell(repRow, Cols.F_MIN, fMin, 1);
-                double fMax = csvAnn.getCellAsDouble(row, "high_freq");
+                double fMax = bd2AnnFile.Annatations[ann].high_freq;
                 report.setCell(repRow, Cols.F_MAX, fMax, 1);
                 double duration = -1;
                 double callInterval = -0.001;
                 double bandwidth;
                 if (csvFeat != null)
                 {
-                  double fMaxAmp = csvFeat.getCellAsDouble(row, "max_power_bb");
+                  double fMaxAmp = csvFeat.getCellAsDouble(ann + 2, "max_power_bb");
                   report.setCell(repRow, Cols.F_MAX_AMP, fMaxAmp);
-                  duration = csvFeat.getCellAsDouble(row, "duration");
-                  callInterval = csvFeat.getCellAsDouble(row, "call_interval");
+                  duration = csvFeat.getCellAsDouble(ann + 2, "duration");
+                  callInterval = csvFeat.getCellAsDouble(ann + 2, "call_interval");
                   if (callInterval < 0)
                     callInterval = -0.001;
-                  bandwidth = csvFeat.getCellAsDouble(row, "bandwidth");
-                  fMin = csvFeat.getCellAsDouble(row, "low_freq_bb");
+                  bandwidth = csvFeat.getCellAsDouble(ann + 2, "bandwidth");
+                  fMin = csvFeat.getCellAsDouble(ann + 2, "low_freq_bb");
                   report.setCell(repRow, Cols.F_MIN, fMin, 1);
-                  fMax = csvFeat.getCellAsDouble(row, "high_freq_bb");
+                  fMax = csvFeat.getCellAsDouble(ann + 2, "high_freq_bb");
                   report.setCell(repRow, Cols.F_MAX, fMax, 1);
                 }
                 else
                 {
-                  double endTime = csvAnn.getCellAsDouble(row, "end_time");
+                  double endTime = bd2AnnFile.Annatations[ann].end_time;
                   duration = (endTime - startTime);
                   bandwidth = fMax - fMin;
                 }
@@ -223,9 +224,9 @@ namespace BatInspector
                 report.setCell(repRow, Cols.DURATION, duration * 1000, 1);
                 double snr = res == 0 ? wav.calcSnr(startTime, startTime + duration) : -1;
                 report.setCell(repRow, Cols.SNR, snr);
-                string latin = translate(csvAnn.getCell(row, "class"));
+                string latin = translate(bd2AnnFile.Annatations[ann].Class);
 
-                double prob = csvAnn.getCellAsDouble(row, "class_prob");
+                double prob = bd2AnnFile.Annatations[ann].class_prob;
                 report.setCell(repRow, Cols.PROBABILITY, prob);
                 string abbr = "";
                 if (prob < minProb)
@@ -237,8 +238,12 @@ namespace BatInspector
                   abbr += latin;
                 if (prob < minProb)
                   abbr += "]";
+
+                string callType = translateCallType(bd2AnnFile.Annatations[ann].Event);
                 report.setCell(repRow, Cols.SPECIES, abbr);
+                report.setCell(repRow, Cols.CALL_TYPE, callType);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
+                report.setCell(repRow, Cols.CALL_TYPE_MAN, enCallType.UNKNOWN.ToString());
                 report.setCell(repRow, Cols.REMARKS, "");
 
                 cnt++;
@@ -294,7 +299,9 @@ namespace BatInspector
         Cols.HUMIDITY,
         Cols.NR,
         colSpecies,
+        Cols.CALL_TYPE,
         Cols.SPECIES_MAN,
+        Cols.CALL_TYPE_MAN,
         Cols.SAMPLERATE,
         Cols.FILE_LEN,
         Cols.F_MAX_AMP,
@@ -312,6 +319,21 @@ namespace BatInspector
       csv.initColNames(header, true);
       return csv;
     }
+
+    private string translateCallType(string callType)
+    {
+      if (string.IsNullOrEmpty(callType))
+        return enCallType.UNKNOWN.ToString();
+      else if (callType == "Echolocation")
+        return enCallType.ECHO.ToString();
+      else if (callType == "Social")
+        return enCallType.SOCIAL.ToString();
+      else if (callType == "Feeding")
+        return enCallType.FEED.ToString();
+      else
+        return enCallType.UNKNOWN.ToString();
+    }
+
 
     private void outputDataHandler(object sender, DataReceivedEventArgs ev)
     {

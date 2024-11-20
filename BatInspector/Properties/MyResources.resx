@@ -1656,4 +1656,13 @@
   <data name="MainToolExport" xml:space="preserve">
     <value>Export files (with filtering) to another directory</value>
   </data>
+  <data name="Feed" xml:space="preserve">
+    <value>Feed</value>
+  </data>
+  <data name="Social" xml:space="preserve">
+    <value>Social</value>
+  </data>
+  <data name="Echo" xml:space="preserve">
+    <value>Echo</value>
+  </data>
 </root>

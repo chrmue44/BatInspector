@@ -19,8 +19,15 @@ using libScripter;
 
 namespace BatInspector
 {
+  public enum enCallType
+  {
+    ECHO = 0,
+    SOCIAL = 1,
+    FEED = 2,
+    UNKNOWN = 3
+  }
 
-   public class Cols
+  public class Cols
    {
     public const string NAME = "name";
     public const string NR = "nr";
@@ -34,7 +41,9 @@ namespace BatInspector
     public const string START_TIME = "start";
     public const string SNR = "snr";
     public const string SPECIES = "Species";
+    public const string CALL_TYPE = "CallType";
     public const string SPECIES_MAN = "SpeciesMan";
+    public const string CALL_TYPE_MAN = "CallTypeMan";
     public const string PROBABILITY = "prob";
     public const string REMARKS = "remarks";
     public const string BANDWIDTH = "bandwidth";
@@ -301,9 +310,21 @@ namespace BatInspector
             _csv.insertCol(colnr + 1, "", Cols.HUMIDITY);
             _csv.save();
           }
+          if (_csv.getColNr(Cols.CALL_TYPE) < 1)
+          {
+            int colnr = _csv.getColNr(Cols.SPECIES) + 1;
+            _csv.insertCol(colnr, enCallType.ECHO.ToString(), Cols.CALL_TYPE);
+            _csv.save();
+          }
+          if (_csv.getColNr(Cols.CALL_TYPE_MAN) < 1)
+          {
+            int colnr = _csv.getColNr(Cols.SPECIES_MAN) + 1;
+            _csv.insertCol(colnr, enCallType.ECHO.ToString(), Cols.CALL_TYPE_MAN);
+            _csv.save();
+          }
         }
 
-        for(int i = 0; i < modelParams.Length; i++)
+        for (int i = 0; i < modelParams.Length; i++)
         {
           if(fileName.IndexOf(modelParams[i].Name) >= 0)
           {

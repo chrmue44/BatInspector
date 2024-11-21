@@ -80,7 +80,7 @@ namespace BatInspector.Controls
           if (res == true)
           {
             _left[iLeft].Text = frm.FilterExpression;
-            _left[iLeft].DataType = AnyType.tType.RT_BOOL;
+            _left[iLeft].DataType = enVarType.BOOLEAN;
             _left[iLeft].Type = enExpType.EXPRESSION;
             _cbLeft.Items[iLeft] = frm.FilterExpression;
             _cbLeft.SelectedIndex = iLeft;
@@ -96,14 +96,14 @@ namespace BatInspector.Controls
         _cbOperator.Items.Clear();
         foreach (ExpressionItem item in _op)
           _cbOperator.Items.Add(item.Text + " [" + item.HelpText + "]");
-        if (AnyType.isNum(_left[iLeft].DataType))
+        if (_left[iLeft].DataType == enVarType.NUMERICAL)
         {
           _lblTodo.Visibility = Visibility.Visible;
           _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodoNr;
           _tbFreeTxt.Visibility = Visibility.Visible;
           _cbRight.SelectedIndex = 0;
         }
-        if (AnyType.isStr(_left[iLeft].DataType))
+        if (isStr(_left[iLeft].DataType))
         {
           _lblTodo.Visibility = Visibility.Hidden;
           _tbFreeTxt.Visibility = Visibility.Hidden;
@@ -152,7 +152,7 @@ namespace BatInspector.Controls
           if (res == true)
           {
             _right[iRight].Text = frm.FilterExpression;
-            _right[iRight].DataType = AnyType.tType.RT_BOOL;
+            _right[iRight].DataType = enVarType.BOOLEAN;
             _right[iRight].Type = enExpType.EXPRESSION;
             _cbRight.Items[iRight] = frm.FilterExpression;
             _cbRight.SelectedIndex = iRight;
@@ -160,7 +160,7 @@ namespace BatInspector.Controls
         }
         else
         {
-          if ((_cbRight.SelectedIndex == 0) && (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_STR))
+          if ((_cbRight.SelectedIndex == 0) && (_left[_cbLeft.SelectedIndex].DataType == enVarType.STRING))
           {
             _lblTodo.Visibility = Visibility.Visible;
             _lblTodo.Content = "Bitte String eingeben";
@@ -204,7 +204,7 @@ namespace BatInspector.Controls
       {
         f += _left[_cbLeft.SelectedIndex].Text + " ";
         f += _op[_cbOperator.SelectedIndex].Text + " ";
-        if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
+        if (isStr(_left[_cbLeft.SelectedIndex].DataType))
         {
           if ((string)_cbRight.SelectedItem == BatInspector.Properties.MyResources.ExpGenUserString) 
             f += "\"" + _tbFreeTxt.Text + "\"";
@@ -238,6 +238,11 @@ namespace BatInspector.Controls
         _prefix = _tbExpression.getValue() + " " + _append[_cbAppend.SelectedIndex - 1].Text + " ";
         init();
       }
+    }
+
+    private bool isStr(enVarType type)
+    {
+      return ((type == enVarType.STRING) || (type == enVarType.BAT) || (type == enVarType.CALL_TYPE));
     }
 
     private void init(bool fromCbLeft = false)

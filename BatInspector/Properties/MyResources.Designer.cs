@@ -1285,6 +1285,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call type auto (ECHO, SOCIAL, FEED, UNKNOWN).
+        /// </summary>
+        public static string FilterVarHelpCallTypeAuto {
+            get {
+                return ResourceManager.GetString("FilterVarHelpCallTypeAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call type manually (ECHO, SOCIAL, FEED, UNKNOWN).
+        /// </summary>
+        public static string FilterVarHelpCallTypeMan {
+            get {
+                return ResourceManager.GetString("FilterVarHelpCallTypeMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration of call [ms].
         /// </summary>
         public static string FilterVarHelpDuration {

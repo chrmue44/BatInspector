@@ -1665,4 +1665,10 @@
   <data name="Echo" xml:space="preserve">
     <value>Echo</value>
   </data>
+  <data name="FilterVarHelpCallTypeMan" xml:space="preserve">
+    <value>Call type manually (ECHO, SOCIAL, FEED, UNKNOWN)</value>
+  </data>
+  <data name="FilterVarHelpCallTypeAuto" xml:space="preserve">
+    <value>Call type auto (ECHO, SOCIAL, FEED, UNKNOWN)</value>
+  </data>
 </root>

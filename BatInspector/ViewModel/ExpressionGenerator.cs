@@ -43,6 +43,16 @@ namespace BatInspector
     RIGHT
   }
 
+  public enum enVarType
+  {
+    NUMERICAL,
+    STRING,
+    BAT,
+    CALL_TYPE,
+    BOOLEAN,
+    TIME
+  }
+
   public delegate List<FilterVarItem> dlgGetVarList();
 
   public class ExpressionItem
@@ -51,7 +61,7 @@ namespace BatInspector
     public ExpressionItem Left { get; set; }
     public enOperator Operator { get; set; }
     public ExpressionItem Right { get; set; }
-    public AnyType.tType DataType { get; set; }
+    public enVarType DataType { get; set; }
     public string Text { get; set; }
     public string HelpText { get; set; }
 
@@ -62,11 +72,11 @@ namespace BatInspector
       Operator = op;
       Right = null;
       Text = text;
-      DataType = AnyType.tType.RT_STR;
+      DataType = enVarType.STRING;
       HelpText = helpText;
     }
 
-    public ExpressionItem(enExpType type, string text, AnyType.tType dataType)
+    public ExpressionItem(enExpType type, string text, enVarType dataType)
     {
       Type = type;
       Operator = enOperator.LESS;
@@ -76,7 +86,7 @@ namespace BatInspector
       Text = text;
     }
 
-    public ExpressionItem(enExpType type, string text, AnyType.tType dataType, string help)
+    public ExpressionItem(enExpType type, string text, enVarType dataType, string help)
     {
       Type = type;
       Operator = enOperator.LESS;
@@ -102,27 +112,43 @@ namespace BatInspector
       _species = species;
     }
 
-    public List<ExpressionItem> getAvailableOptions(enField field, AnyType.tType type = AnyType.tType.RT_HEXVAL)
+    public List<ExpressionItem> getAvailableOptions(enField field,  enVarType type = enVarType.NUMERICAL)
     {
       List<ExpressionItem> retVal = new List<ExpressionItem>();
       switch(field) 
       {
         case enField.LEFT:
           retVal = getVariables();
-          retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));
+          retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, enVarType.NUMERICAL));
           break;
 
         case enField.RIGHT:
-          if (AnyType.isNum(type))
-            retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_Nr, AnyType.tType.RT_FLOAT));
-          else if (AnyType.isStr(type))
+          switch (type)
           {
-            retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGenUserString, AnyType.tType.RT_STR));
-            foreach (string bat in _species)
-              retVal.Add(new ExpressionItem(enExpType.CONST, bat, AnyType.tType.RT_STR));
+            case enVarType.NUMERICAL:
+              retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_Nr, enVarType.NUMERICAL));
+              break;
+
+            case enVarType.STRING:
+              retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGenUserString, enVarType.STRING));
+              break;
+
+            case enVarType.BAT:
+              foreach (string bat in _species)
+                retVal.Add(new ExpressionItem(enExpType.CONST, bat, enVarType.BAT));
+              break;
+
+            case enVarType.CALL_TYPE:
+              retVal.Add(new ExpressionItem(enExpType.CONST, enCallType.ECHO.ToString(), enVarType.CALL_TYPE));
+              retVal.Add(new ExpressionItem(enExpType.CONST, enCallType.SOCIAL.ToString(), enVarType.CALL_TYPE));
+              retVal.Add(new ExpressionItem(enExpType.CONST, enCallType.FEED.ToString(), enVarType.CALL_TYPE));
+              retVal.Add(new ExpressionItem(enExpType.CONST, enCallType.UNKNOWN.ToString(), enVarType.CALL_TYPE));
+              break;
+          
+            case enVarType.BOOLEAN:
+              retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, enVarType.BOOLEAN));
+              break;
           }
-          else if (AnyType.isBool(type))
-            retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));
           break;
 
         case enField.OPERATOR:
@@ -143,31 +169,31 @@ namespace BatInspector
       return retVal;
     }
 
-    private List<ExpressionItem> getOperators(AnyType.tType type)
+    private List<ExpressionItem> getOperators(enVarType type)
     {
       List<ExpressionItem> retVal = new List<ExpressionItem>();
-      if (AnyType.isNum(type))
+      if (type == enVarType.NUMERICAL)
       {
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.LESS, "<",BatInspector.Properties.MyResources.ExpGen_LT));
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.LESS_OR_EQUAL, "<=",BatInspector.Properties.MyResources.ExpGen_LTE));
       }
-      if (AnyType.isNum(type) || AnyType.isStr(type) || AnyType.isBool(type))
+      if (type == enVarType.NUMERICAL || (type == enVarType.STRING) || (type == enVarType.BAT) || (type == enVarType.CALL_TYPE) || (type == enVarType.BOOLEAN))
       {
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.EQUAL, "==", BatInspector.Properties.MyResources.ExpGen_EQ));
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.UNEQUAL, "!=", BatInspector.Properties.MyResources.ExpGen_NE));
       }
-      if (AnyType.isNum(type))
+      if (type == enVarType.NUMERICAL)
       {
 
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.GREATER, ">", BatInspector.Properties.MyResources.ExpGen_GT));
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.GREATER_OR_EQUAL, ">=",BatInspector.Properties.MyResources.ExpGen_GTE));
       }
-      if (AnyType.isBool(type))
+      if (type == enVarType.BOOLEAN)
       {
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.OR, "||", BatInspector.Properties.MyResources.ExpGen_OR));
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.AND, "&&", BatInspector.Properties.MyResources.ExpGen_AND));
       }
-      if(AnyType.isStr(type))
+      if((type == enVarType.STRING) || (type == enVarType.CALL_TYPE) || (type == enVarType.BAT))
       {
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.CONTAINS, "", BatInspector.Properties.MyResources.ExpGen_CONTAINS));
         retVal.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.CONTAINS_NOT, "", BatInspector.Properties.MyResources.ExpGen_CONTAINS_NOT));

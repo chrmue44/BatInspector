@@ -19,14 +19,14 @@ namespace BatInspector
     public bool AvailableFile { get; set; } 
     public bool AvailableCall { get;set; }
     public bool AvailableSumReport { get; set; }
-    public AnyType.tType Type { get; set; }
+    public enVarType Type { get; set; }
     public string Help { get; set; }
 
     public FilterVarItem()
     {
 
     }
-    public FilterVarItem(string varName, AnyType.tType type, bool availableFile, bool availableCall,
+    public FilterVarItem(string varName, enVarType type, bool availableFile, bool availableCall,
                          bool availableSumReport, string help)
     {
       VarName = varName;
@@ -70,6 +70,9 @@ namespace BatInspector
     const string VAR_REMARKS = "Remarks";
     const string VAR_TIME = "RecTime";
     const string VAR_SNR = "SNR";
+    const string VAR_CALL_TYPE_MAN = "CallTypeMan";
+    const string VAR_CALL_TYPE_AUTO = "CallTypeAuto";
+
 
     ExpressionGenerator _gen;
     List<FilterItem> _list;
@@ -88,17 +91,19 @@ namespace BatInspector
       _expression = new Expression(null);
       _vars = new List<FilterVarItem>
       {
-        new FilterVarItem (VAR_NR_CALLS, AnyType.tType.RT_INT64, true, false, false, MyResources.FilterHelpVarNrCalls),
-        new FilterVarItem (VAR_SPECIES_AUTO, AnyType.tType.RT_STR, true, true, false , MyResources.FilterHelpVarSpeciesAuto),
-        new FilterVarItem (VAR_SPECIES_MAN, AnyType.tType.RT_STR, true, true, true, MyResources.FilterHelpVarSpeciesMan),
-        new FilterVarItem (VAR_FREQ_MIN, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpFmin ),
-        new FilterVarItem (VAR_FREQ_MAX, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpFmax ),
-        new FilterVarItem (VAR_FREQ_MAX_AMP, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpFmaxAmp ),
-        new FilterVarItem (VAR_DURATION, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpDuration ),
-        new FilterVarItem (VAR_PROBABILITY, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpProb ),
-        new FilterVarItem (VAR_REMARKS, AnyType.tType.RT_STR, true, true, false , MyResources.FilterVarHelpRecording),
-        new FilterVarItem (VAR_TIME, AnyType.tType.RT_TIME, true, false, false, MyResources.FilterVarHelpTime),
-        new FilterVarItem (VAR_SNR, AnyType.tType.RT_FLOAT, true, true, false, MyResources.Snr)
+        new FilterVarItem (VAR_NR_CALLS, enVarType.NUMERICAL, true, false, false, MyResources.FilterHelpVarNrCalls),
+        new FilterVarItem (VAR_SPECIES_AUTO, enVarType.BAT, true, true, false , MyResources.FilterHelpVarSpeciesAuto),
+        new FilterVarItem (VAR_SPECIES_MAN, enVarType.BAT, true, true, true, MyResources.FilterHelpVarSpeciesMan),
+        new FilterVarItem (VAR_FREQ_MIN, enVarType.NUMERICAL, true, true, false, MyResources.FilterVarHelpFmin ),
+        new FilterVarItem (VAR_FREQ_MAX, enVarType.NUMERICAL, true, true, false, MyResources.FilterVarHelpFmax ),
+        new FilterVarItem (VAR_FREQ_MAX_AMP, enVarType.NUMERICAL, true, true, false, MyResources.FilterVarHelpFmaxAmp ),
+        new FilterVarItem (VAR_DURATION, enVarType.NUMERICAL, true, true, false, MyResources.FilterVarHelpDuration ),
+        new FilterVarItem (VAR_PROBABILITY, enVarType.NUMERICAL, true, true, false, MyResources.FilterVarHelpProb ),
+        new FilterVarItem (VAR_REMARKS, enVarType.STRING, true, true, false , MyResources.FilterVarHelpRecording),
+        new FilterVarItem (VAR_TIME, enVarType.TIME, true, false, false, MyResources.FilterVarHelpTime),
+        new FilterVarItem (VAR_SNR, enVarType.NUMERICAL, true, true, false, MyResources.Snr),
+        new FilterVarItem (VAR_CALL_TYPE_AUTO, enVarType.CALL_TYPE, true, true, false, MyResources.FilterVarHelpCallTypeAuto),
+        new FilterVarItem (VAR_CALL_TYPE_MAN, enVarType.CALL_TYPE, true, true, false, MyResources.FilterVarHelpCallTypeMan),
       };
 
       _expression.Variables.set(VAR_NR_CALLS, 0);
@@ -112,6 +117,8 @@ namespace BatInspector
       _expression.Variables.set(VAR_REMARKS, "");
       _expression.Variables.set(VAR_TIME, 0);
       _expression.Variables.set(VAR_SNR, 0);
+      _expression.Variables.set(VAR_CALL_TYPE_AUTO, "");
+      _expression.Variables.set(VAR_CALL_TYPE_MAN, "");
 
       _gen = new ExpressionGenerator(getVariables, species);
     }
@@ -170,6 +177,9 @@ namespace BatInspector
       _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
       _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
       _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
+      _expression.setVariable(VAR_CALL_TYPE_MAN, call.getString(Cols.CALL_TYPE_MAN));
+      _expression.setVariable(VAR_CALL_TYPE_AUTO, call.getString(Cols.CALL_TYPE));
+
       AnyType res = _expression.parse(filter.Expression);
       
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())

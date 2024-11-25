@@ -1,6 +1,10 @@
-﻿using BatInspector.Controls;
-using BatInspector.Forms;
-using BatInspector.Properties;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2024-06-01                                       
+ *   Copyright (C) 2023: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
 using libParser;
 using libScripter;
 using System;
@@ -8,14 +12,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 namespace BatInspector
 {
-
-
   public class ReportItemBd2
   {
     string _remarks;
@@ -286,6 +287,7 @@ namespace BatInspector
 
     public BitmapImage Image { get { return _bImg; } }
 
+    public string Id { get; set; }
     public void setCallBack(dlgRelease dlg)
     {
        _dlgRelease = dlg;

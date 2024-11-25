@@ -16,6 +16,7 @@ namespace BatInspector
   {
     void setCallBack(dlgRelease dlg);
     void release();
+    string Id { get; set; }
   }
 
   public class Pool<T> where T : class, IPool, new()
@@ -44,12 +45,13 @@ namespace BatInspector
 
     public T get(string id = "")
     {
-      T retVal = default(T);
+      T retVal = null;
       if (_free.Count > 0)
       {
         int free = _free[0];
         _free.RemoveAt(0);
         retVal = _list[free];
+        retVal.Id = id;
         _allocated[free] = $"{id}:{free}";
       }
       else
@@ -59,10 +61,21 @@ namespace BatInspector
       return retVal;
     }
 
+    public T find(string id = "")
+    {
+      foreach(T t in _list) 
+      {
+        if(t.Id == id)
+          return t;
+      }
+      return null;
+    }
+
 
     private void release(T obj)
     {
       bool found = false;
+      obj.Id = "";
       for (int i = 0; i < _list.Length; i++)
       {
         if (_list[i] == obj)

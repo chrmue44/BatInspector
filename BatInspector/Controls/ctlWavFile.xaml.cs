@@ -33,13 +33,14 @@ namespace BatInspector.Controls
     Sonogram _sonogram = null;
     dlgRelease _dlgRelease = null;
     GridLength _infoWidth;
-  public string WavFilePath {  get { return _wavFilePath; } }
+    public string WavFilePath { get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
     public AnalysisFile Analysis { get { return _analysis; } }
     public string WavName { get { return _record.File; } }
 
+    public string Id { get; set; }
     public bool InfoVisible
-    {
+    { 
       get { return _grpInfoAuto.Visibility == Visibility.Visible; }
       set
       {

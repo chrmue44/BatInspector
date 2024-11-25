@@ -658,13 +658,15 @@ namespace BatInspector.Forms
           append = true;
         }
       }
+      Stopwatch sw = new Stopwatch();
       if (append)
       {
+        sw.Start();
         PrjRecord rec = App.Model.CurrentlyOpen.findRecord(wavName);
         AnalysisFile analysisFile = null;
         if (App.Model.CurrentlyOpen.Analysis != null)
           analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
-        ctlWavFile ctl = _wavCtls.get("wavCtl append"); 
+        ctlWavFile ctl = _wavCtls.get(wavName); 
         ctl.setup(analysisFile, rec, this, true);
         if (up)
           _spSpectrums.Children.Add(ctl);
@@ -672,6 +674,7 @@ namespace BatInspector.Forms
           _spSpectrums.Children.Insert(0, ctl);
         bool isQuery = App.Model.Query != null;
         initCtlWav(ctl, rec, isQuery);
+        sw.Stop();
       }
       setPrjHeader(App.Model.View.StartIdx);
     }
@@ -711,7 +714,7 @@ namespace BatInspector.Forms
                 AnalysisFile analysisFile = null;
                 if ((analysis != null) && (rec != null))
                   analysisFile = analysis.find(rec.File);
-                ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
+                ctlWavFile ctl = _wavCtls.get(wavName);
                 ctl.setup(analysisFile, rec, this, true);
                 DockPanel.SetDock(ctl, Dock.Bottom);
                 _spSpectrums.Children.Add(ctl);

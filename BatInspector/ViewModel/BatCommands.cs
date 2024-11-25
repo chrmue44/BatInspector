@@ -9,6 +9,7 @@
 using BatInspector.Forms;
 using libParser;
 using libScripter;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,6 +35,7 @@ namespace BatInspector
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
+        new OptItem("SplitFilesInProject", "split files and annotations in Project <prjDir> <maxFileLen>",2, fctSplitFilesInPrj),
       });
 
       _options = new Options(_features, false);
@@ -138,6 +140,23 @@ namespace BatInspector
       {
         retVal = 1;
         ErrText = "unable to read 2nd parameter as double";
+      }
+      return retVal;
+    }
+
+    int fctSplitFilesInPrj(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string prjDir = pars[0];
+      double fileLength;
+      bool ok = double.TryParse(pars[1], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out fileLength);
+      if (ok)
+        retVal = Project.splitFilesInProject(prjDir, fileLength);
+      else
+      {
+        retVal = 1;
+        ErrText = $"SplitFilesInProject: '{pars[1]}' is not a valid double value";
       }
       return retVal;
     }

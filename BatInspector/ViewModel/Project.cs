@@ -425,6 +425,28 @@ namespace BatInspector
         DebugLog.log("could not find target directory " + outputDir, enLogType.ERROR);
     }
 
+
+    static public int splitFilesInProject(string prjDir, double fileLength)
+    {
+      int retVal = 0;
+      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, 
+                                App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)], 
+                                App.Model.DefaultModelParams.Length, AppParams.DIR_WAVS);
+      if (prj == null)
+      {
+        DebugLog.log($"unable to find project {prjDir}", enLogType.ERROR);
+        return 1;
+      }
+
+      string prjFile = Path.Combine(prjDir, Path.GetFileName(prjDir) + AppParams.EXT_BATSPY);
+      PrjInfo info = new PrjInfo();
+      info.MaxFileLenSec = fileLength;
+      info.Notes = "";
+      splitFiles(prj, info);
+
+      return retVal;
+    }
+
     /// <summary>
     /// returns the selected files according to search pattern and file creation time
     /// </summary>

@@ -44,7 +44,7 @@ namespace BatInspector.Forms
         DateTime end = (DateTime)_ctlReport._dtEnd.SelectedDate;
         //        enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
         enPeriod period = enPeriod.DAILY;
-        if (_ctlReport._cbCsvFile.IsChecked == true)
+        if (_ctlReport._rbCsvFile.IsChecked == true)
         {
           App.Model.SumReport.createCsvReportAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),
                                       _ctlReport._ctlDestDir.getValue(),
@@ -52,7 +52,7 @@ namespace BatInspector.Forms
                                       _ctlReport.FilterExpression,
                                       App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
         }
-        if (_ctlReport._cbWebPage.IsChecked == true)
+        if (_ctlReport._rbWebPage.IsChecked == true)
         {
           SumReportJson rep = App.Model.SumReport.createWebReport(start, end, period,
                                       _ctlReport._ctlRootDir.getValue(),
@@ -71,7 +71,7 @@ namespace BatInspector.Forms
                       Path.Combine(_ctlReport._ctlDestDir.getValue(), 
                       _ctlReport._ctlWebReportName.getValue()));
         }
-        if(_ctlReport._cbActivityDiagram.IsChecked == true)
+        if(_ctlReport._rbActivityDiagram.IsChecked == true)
         {
         
           App.Model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),

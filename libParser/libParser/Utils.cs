@@ -176,14 +176,18 @@ namespace libParser
     /// </summary>
     /// <param name="strIn"></param>
     /// <returns></returns>
-    public static string removeNonNumerics(string strIn, bool withDecimalPoint = false)
+    public static string removeNonNumerics(string strIn, bool withDecimalPoint = false, bool withSigns = false)
     {
       string retVal = "";
       for(int i = 0; i < strIn.Length; i++)
       {
         char c = strIn[i];
         if (isNum(c, withDecimalPoint))
-          retVal += c;
+        {
+          if(withSigns || (!withSigns && (c != '+') && (c != '-')))
+            retVal += c;
+
+        }
       }
       return retVal;
     }

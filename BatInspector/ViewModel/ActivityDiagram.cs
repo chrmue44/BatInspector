@@ -9,7 +9,6 @@
 using BatInspector.Controls;
 using libParser;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 

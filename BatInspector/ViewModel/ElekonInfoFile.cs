@@ -98,9 +98,24 @@ namespace BatInspector
       return retVal;
     }
 
-    public static DateTime getDateTimeFromFileName(string fileName)
+    public static bool checkDateTimeInFileName(string fileName)
     {
-      DateTime creationTime = System.IO.File.GetLastWriteTime(fileName);
+      DateTime? res = getDateTimeFromFileNameInternal(fileName);
+      return (res != null);
+    }
+
+    public static DateTime getDateTimeFromFileName(string fileName)
+    {  
+      DateTime? res = getDateTimeFromFileNameInternal(fileName);
+      if (res != null)
+        return (DateTime)res;
+      else
+       return System.IO.File.GetLastWriteTime(fileName);
+    }
+
+    private static DateTime? getDateTimeFromFileNameInternal(string fileName)
+    {
+      DateTime? retVal = null;
 
       string baseName = Path.GetFileNameWithoutExtension(fileName);
       string[] token = baseName.Split('_');
@@ -134,11 +149,12 @@ namespace BatInspector
         if ((dateStr.Length > 1) && (timeStr.Length > 1))
         {
           dateStr += " " + timeStr;
-          creationTime = DateTime.ParseExact(dateStr, "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
+          retVal = DateTime.ParseExact(dateStr, "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
         }
       }
-      return creationTime;
+      return retVal;
     }
+
 
     public static string getDateString(DateTime date)
     {

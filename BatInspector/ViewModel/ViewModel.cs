@@ -840,7 +840,12 @@ namespace BatInspector
 
     public void createProject(PrjInfo info, bool inspect, bool cli)
     {
-      Project.createPrjFromWavs(info, Regions, SpeciesInfos, info.ModelParams, DefaultModelParams);
+      bool ok = Project.createPrjFromWavs(info, Regions, SpeciesInfos, info.ModelParams, DefaultModelParams);
+      if (!ok)
+      {
+        App.Model.Status.State = enAppState.IDLE;
+        return;
+      }
       string prjPath = Path.Combine(info.DstDir, info.Name);
       DirectoryInfo dir = new DirectoryInfo(prjPath);
       initProject(dir, false);

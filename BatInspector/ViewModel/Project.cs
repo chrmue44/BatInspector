@@ -555,17 +555,18 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static void createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, ModelParams modelParams, ModelParams[] defaultParams)
+    public static bool createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, ModelParams modelParams, ModelParams[] defaultParams)
     {
       if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
       {
         DebugLog.log("error creating project, maxFiles or maxFileLen == 0", enLogType.ERROR);
-        return;
+        return false;
       }
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        
+        string[] files = getSelectedFiles(info, "*.wav");
+
         // in case of project folder get infos from project
         if (info.IsProjectFolder)
         {
@@ -579,8 +580,22 @@ namespace BatInspector
           info.StartTime = new DateTime(1900, 1, 1);
           info.EndTime = new DateTime(2100, 1, 1);
         }
+        else
+        {
+          if (files.Length > 0)
+          {
+            bool ok = ElekonInfoFile.checkDateTimeInFileName(files[0]);
+            if (!ok)
+            {
+              MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDatTimeError,
+                                                     BatInspector.Properties.MyResources.msgQuestion,
+                                                     MessageBoxButton.OKCancel, MessageBoxImage.Question);
+              if (res != MessageBoxResult.OK)
+                return false;
+            }
+          }
+        }
 
-        string[] files = getSelectedFiles(info, "*.wav");
         if (files.Length > 0)
         {
           // copy files to a single project at destination and create project
@@ -651,7 +666,7 @@ namespace BatInspector
       {
         DebugLog.log("error creating Project " + info.Name + " " + e.ToString(), enLogType.ERROR);
       }
-      return;
+      return true;
     }
 
     /// <summary>

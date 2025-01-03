@@ -47,15 +47,15 @@
             </GroupBox.Header>
             <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,30,5,5" >
-            <CheckBox Content="{x:Static res:MyResources.CtlSumReport_CSVFile}" x:Name="_cbCsvFile" Width="180" />
+            <RadioButton Content="{x:Static res:MyResources.CtlSumReport_CSVFile}" x:Name="_rbCsvFile" Width="180" Click="_rbCsvFile_Click"/>
             <local:ctlDataItem x:Name="_ctlCsvReportName" Width="355" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-            <CheckBox Content="{x:Static res:MyResources.ctlReportWebPage}" Name="_cbWebPage" Width="180"/>
+            <RadioButton Content="{x:Static res:MyResources.ctlReportWebPage}" Name="_rbWebPage" Width="180" Click="_rbWebPage_Click"/>
             <local:ctlDataItem x:Name="_ctlWebReportName" Width="355"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-            <CheckBox Content="{x:Static res:MyResources.ActivityDiagram}" Name="_cbActivityDiagram" Width="180"/>
+            <RadioButton Content="{x:Static res:MyResources.ActivityDiagram}" Name="_rbActivityDiagram" Width="180" Click="_rbActivityDiagram_Click"/>
             <local:ctlDataItem x:Name="_ctlActivityDiagName" Width="355"/>
         </StackPanel>
             </StackPanel>

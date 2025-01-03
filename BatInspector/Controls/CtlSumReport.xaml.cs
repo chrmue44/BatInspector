@@ -88,5 +88,23 @@ namespace BatInspector.Controls
           _filterExpression = "";
       }
     }
+
+    private void _rbCsvFile_Click(object sender, RoutedEventArgs e)
+    {
+      _rbActivityDiagram.IsChecked = false;
+      _rbWebPage.IsChecked = false;
+    }
+
+    private void _rbWebPage_Click(object sender, RoutedEventArgs e)
+    {
+      _rbActivityDiagram.IsChecked = false;
+      _rbCsvFile.IsChecked = false;
+    }
+
+    private void _rbActivityDiagram_Click(object sender, RoutedEventArgs e)
+    {
+      _rbCsvFile.IsChecked = false;
+      _rbWebPage.IsChecked = false;
+    }
   }
 }

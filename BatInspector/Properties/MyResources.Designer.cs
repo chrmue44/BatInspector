@@ -3454,6 +3454,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date and time could not be extracted from the file name.\n If you continue the date of file creation will be chosen (may not be the same as recording time!) \n Continue?.
+        /// </summary>
+        public static string MsgDatTimeError {
+            get {
+                return ResourceManager.GetString("MsgDatTimeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete all selected files?.
         /// </summary>
         public static string msgDeleteFiles {

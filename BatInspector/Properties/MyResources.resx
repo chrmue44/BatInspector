@@ -1656,4 +1656,7 @@
   <data name="MainToolExport" xml:space="preserve">
     <value>Export files (with filtering) to another directory</value>
   </data>
+  <data name="MsgDatTimeError" xml:space="preserve">
+    <value>Date and time could not be extracted from the file name.\n If you continue the date of file creation will be chosen (may not be the same as recording time!) \n Continue?</value>
+  </data>
 </root>

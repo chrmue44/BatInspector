@@ -1656,4 +1656,7 @@
   <data name="MainToolExport" xml:space="preserve">
     <value>Exportiere Dateien (mit Filterung) in ein anderes Verzeichnis</value>
   </data>
+  <data name="MsgDatTimeError" xml:space="preserve">
+    <value>Datum und Uhrzeit konnten nicht aus den Dateinamen extrahiert werden.\n Wird fortgefahren, wird das Erstelldatum der Datei gewählt (muss nicht der Aufnahmezeitpunkt sein!) \n Fortfahren?</value>
+  </data>
 </root>

@@ -58,6 +58,9 @@
   <PropertyGroup>
     <ApplicationIcon>kopf64.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.2895.0, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>

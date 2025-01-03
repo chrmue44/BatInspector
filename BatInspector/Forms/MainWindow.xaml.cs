@@ -1360,6 +1360,7 @@ namespace BatInspector.Forms
           else
             populateControls((int)_scrollPrj.Value);
           _scrollBarPrjPos = _scrollPrj.Value;
+          DebugLog.log($"New scrollbar position: {_scrollBarPrjPos}", enLogType.DEBUG);
         }
       }
       catch (Exception ex)
@@ -1693,7 +1694,7 @@ namespace BatInspector.Forms
       else if (idx < 0)
       { 
         if (_scrollPrj.Value > idx)
-          _scrollPrj.Value -= idx;
+          _scrollPrj.Value += idx;
         else
           _scrollPrj.Value = 0;
       }

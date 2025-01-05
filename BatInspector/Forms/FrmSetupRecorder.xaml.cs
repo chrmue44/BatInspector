@@ -11,8 +11,9 @@ using System.Windows;
 using System.Windows.Interop;
 using BatInspector.Controls;
 using libParser;
-using libScripter;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace BatInspector.Forms
 {
@@ -30,11 +31,14 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _rec = recorder;
+      int wl = 90;
       _tbStatus.Foreground = System.Windows.Media.Brushes.Red;
-      _ctlSwVersion.setup(BatInspector.Properties.MyResources.FrmRecSoftwareVersion, enDataType.STRING, 0, 130);
+      _ctlSwVersion.setup(BatInspector.Properties.MyResources.FrmRecSoftwareVersion, enDataType.STRING, 0, wl);
       _ctlSwVersion.setValue("");
-      _ctlSerial.setup(BatInspector.Properties.MyResources.FrmRecSerialNr, enDataType.STRING, 0, 130);
+      _ctlSerial.setup(BatInspector.Properties.MyResources.FrmRecSerialNr, enDataType.STRING, 0, wl);
       _ctlSerial.setValue("");
+      _ctlMicInfo.setup(Properties.MyResources.Microphone, enDataType.STRING, 0, wl);
+      _ctlMicInfo.setValue("");
       initParameterTab(150, 140);
       initStatusTab(180, 150);
       initSystemTab(130, 150);
@@ -56,12 +60,14 @@ namespace BatInspector.Forms
       _btnSet.IsEnabled = on;
     }
 
+
     private void timer_Tick(object sender, EventArgs e)
     {
-      if(_rec.IsConnected && !_firmwareUpdate)
+      if (_rec.IsConnected && !_firmwareUpdate)
         updateStatusControls();
       _tickCnt++;
     }
+
 
     private void initParameterControls()
     {
@@ -102,7 +108,7 @@ namespace BatInspector.Forms
       _ctlRecMode.setItems(_rec.Control.Mode.Items);
       _ctlRecMode.SelectIndex = (int)_rec.Control.Mode.Value;
       _ctlRecMode.IsEnabled = true;
-      _ctlTrigType.setItems(_rec.Trigger.Type.Items); 
+      _ctlTrigType.setItems(_rec.Trigger.Type.Items);
       _ctlTrigType.SelectIndex = (int)_rec.Trigger.Type.Value;
       _ctlTrigType.IsEnabled = true;
       _ctlLanguage.setItems(_rec.General.Language.Items);
@@ -116,12 +122,13 @@ namespace BatInspector.Forms
       _ctlPosMode.setItems(_rec.General.PositionMode.Items);
       _ctlPosMode.IsEnabled = true;
       _ctlPosMode.SelectIndex = _rec.General.PositionMode.Value;
-      _ctlLat.setValue(Utils.LatitudeToString( _rec.General.Latitude.Value));
+      _ctlLat.setValue(Utils.LatitudeToString(_rec.General.Latitude.Value));
       _ctlLat.IsEnabled = true;
       _ctlLon.setValue(Utils.LongitudeToString(_rec.General.Longitude.Value));
       _ctlLon.IsEnabled = true;
       enableButtons(true);
     }
+
 
     private void initSystemTab(int wl, int wt)
     {
@@ -131,7 +138,14 @@ namespace BatInspector.Forms
       _ctlSetSerial.setValue("");
       _ctlSetVoltFact.setup("Set Voltage", enDataType.DOUBLE, 3, wl);
       _ctlSetVoltFact.setValue(0.0);
+      _ctlMicComment.setup("Comment", enDataType.STRING, 0, wl);
+      _ctlMicId.setup("Id", enDataType.STRING, 0, wl);
+      _ctlMicType.setup("Type", enDataType.STRING, 0, wl);
+      _ctlMicFreqFile.setup(Properties.MyResources.FrequencyResponse, wl, false, "Text files(*.txt)|*.txt", showMicFreqResponse);
+      _ctlMicFreqFile.IsEnabled = false;
+      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width);
     }
+
 
     private void initParameterTab(int wl, int wt)
     {
@@ -286,7 +300,7 @@ namespace BatInspector.Forms
     private void setGain(int index, string val)
     {
       _rec.Acquisition.Gain.Value = _ctlGain.getSelectedIndex();
-;
+      ;
     }
 
     private void initStatusTab(int wl, int wt)
@@ -304,7 +318,7 @@ namespace BatInspector.Forms
       _ctlAudioLoadAvg.setup(BatInspector.Properties.MyResources.FrmRecAudioLoadAvg, enDataType.DOUBLE, 2, wl, false);
       _ctlAudioLoadAvg.setValue(0.0);
       _ctlAudioLoadMax.setup(BatInspector.Properties.MyResources.frmRecAudioLoadMax, enDataType.DOUBLE, 2, wl, false);
-      _ctlAudioLoadMax.setValue(0.0); 
+      _ctlAudioLoadMax.setValue(0.0);
       _ctlDiskFree.setup(BatInspector.Properties.MyResources.frmRecFreeDiskSpaceMB, enDataType.DOUBLE, 1, wl, false);
       _ctlDiskFree.setValue(0.0);
       _ctlLocation.setup(BatInspector.Properties.MyResources.FrmCreatePrjLLocation, enDataType.STRING, 0, wl, false);
@@ -319,7 +333,7 @@ namespace BatInspector.Forms
       _ctlMainLoop.setValue(0);
       _ctlRecCount.setup(BatInspector.Properties.MyResources.frmRecNrRecordings, enDataType.INT, 0, wl, false);
       _ctlRecCount.setValue(0);
-      _ctlRecState.setup(BatInspector.Properties.MyResources.Status, 0,wl, wt,null, null,"", false);
+      _ctlRecState.setup(BatInspector.Properties.MyResources.Status, 0, wl, wt, null, null, "", false);
       _ctlDate.setup(BatInspector.Properties.MyResources.Date, enDataType.STRING, 0, wl, false);
       _ctlDate.setValue("");
       _ctlTime.setup(BatInspector.Properties.MyResources.Time, enDataType.STRING, 0, wl, false);
@@ -332,6 +346,12 @@ namespace BatInspector.Forms
       _ctlSetVoltFact.IsEnabled = true;
       _ctlSetSerial.IsEnabled = true;
       _ctlSetSerial.setValue(serial);
+      _ctlMicFreqFile.IsEnabled = true;
+      _ctlMicId.IsEnabled = true;
+      _ctlMicInfo.IsEnabled = true;
+      _ctlMicType.IsEnabled = true;
+      _ctlMicComment.IsEnabled = true;
+      readFreqResponse();
     }
 
     void initStatusControls()
@@ -363,7 +383,7 @@ namespace BatInspector.Forms
       _ctlRecState.SelectIndex = _rec.Status.RecordingStatus.Value;
       _ctlGpsStatus.SelectIndex = _rec.Status.Gps.Value;
 
-      if(_cbUpdateFft.IsChecked == true)
+      if (_cbUpdateFft.IsChecked == true)
         _img.Source = _rec.Status.getLiveFft();
     }
 
@@ -390,8 +410,13 @@ namespace BatInspector.Forms
       bool res = _rec.connect(out string version, out string serialNr);
       if (res)
       {
+        _rec.getMicInfos(out string id, out string type, out string comment);
         _ctlSwVersion.setValue(version);
         _ctlSerial.setValue(serialNr);
+        _ctlMicInfo.setValue(id);
+        _ctlMicId.setValue(id);
+        _ctlMicType.setValue(type);
+        _ctlMicComment.setValue(comment);
         _tbStatus.Text = BatInspector.Properties.MyResources.FrmRecConnected;
         _tbStatus.Foreground = System.Windows.Media.Brushes.Green;
         initParameterControls();
@@ -412,7 +437,7 @@ namespace BatInspector.Forms
       string filter = "firmware files(*.hex)|*.hex";
       dlg.Filter = filter;
       System.Windows.Forms.DialogResult res = dlg.ShowDialog();
-      if(res == System.Windows.Forms.DialogResult.OK)
+      if (res == System.Windows.Forms.DialogResult.OK)
       {
         _firmwareUpdate = true;
         BatSpy.uploadFirmware(dlg.FileName);
@@ -427,7 +452,8 @@ namespace BatInspector.Forms
       {
         string result = BatSpy.ExecuteCommand(cmd);
         _cLog.addTextLine(cmd, Brushes.Blue);
-        _cLog.addTextLine(result.Replace("\n", " ").Replace("\r",""), Brushes.Black);
+        _cLog.addTextLine(result.Replace("\n", " ").Replace("\r", ""), Brushes.Black);
+        _cLog.activateCmd();
       }
     }
 
@@ -441,9 +467,54 @@ namespace BatInspector.Forms
       string passWd = _ctlPassWd.getValue();
       string newSerial = _ctlSetSerial.getValue();
       double voltage = _ctlSetVoltFact.getDoubleValue();
-      bool ok = BatSpy.setSystemSettings(passWd, newSerial, voltage);
+      bool ok = _rec.setSystemSettings(passWd, newSerial, voltage);
+
+      string id = _ctlMicId.getValue();
+      string type = _ctlMicType.getValue();
+      string comment = _ctlMicComment.getValue();
+      string freqRespFile = _ctlMicFreqFile.getValue();
+
+      ok = _rec.setMicSettings(passWd, id, type, comment, freqRespFile);
       if (!ok)
         DebugLog.log("unable to set system parameters", enLogType.ERROR);
+    }
+
+    private void createFreqResponseGraph(Canvas c, double h, double w)
+    {
+      c.Children.Clear();
+      GraphHelper.createRulerY(c, 20, 5, h-20, -10, 10, 4);
+      double[] ticksY = { -5, 0, 5, 10 };
+      GraphHelper.createGridY(c, 20, 5, w, h - 20,  -10, 10, ticksY);
+      double[] ticksX = { 100, 1000, 10000, 100000 };
+      GraphHelper.createRulerLogX(c, 20, h-20, w, 80, 200000, ticksX);
+      GraphHelper.createText(c, -13, h - 40, "[dB]", Brushes.Black);
+      double[] ticksGridX = { 100, 200, 300, 400, 500,600, 700, 800, 900,
+                             1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000,
+                             20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 200000 };
+      GraphHelper.createGridLogX(c, 20, 5, w, h - 20, 80, 200000, ticksGridX);
+      GraphHelper.createText(c, 50, h - 5, "[Hz]", Brushes.Black);
+    }
+
+
+    private void showMicFreqResponse()
+    {
+      string fileName = _ctlMicFreqFile.getValue();
+      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width);
+      List<MicFreqItem> l = _rec.readFreqResponseFromFile(fileName);
+      Point[] points = new Point[l.Count];
+      for(int i = 0; i <  l.Count; i++) 
+        points[i] = new Point(l[i].Frequency, l[i].Amplitude);
+      GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, -10, 10, points);
+    }
+
+    private void readFreqResponse()
+    {
+      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width);
+      List<MicFreqItem> l = _rec.readFreqResponseFromMic();
+      Point[] points = new Point[l.Count];
+      for (int i = 0; i < l.Count; i++)
+        points[i] = new Point(l[i].Frequency, l[i].Amplitude);
+      GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, -10, 10, points);
     }
   }
 }

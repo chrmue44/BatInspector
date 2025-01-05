@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using libScripter;
 using System.IO;
+using System.Windows.Documents;
 
 namespace BatInspector
 {
@@ -214,27 +215,6 @@ namespace BatInspector
     static public string ExecuteCommand(string cmd)
     {
       return _inst.execCommand(cmd);
-    }
-
-    static public bool setSystemSettings(string passWd, string serial, double voltage)
-    {
-      bool retVal = false;
-      if (_inst._isConnected)
-      {
-        string res = _inst.execCommand("Y" + passWd);
-        if (res == "0")
-        {
-          res = _inst.execCommand("Z" + serial);
-          if (res == "0")
-          {
-            res = _inst.execCommand("Pf" + voltage.ToString("#.###", CultureInfo.InvariantCulture));
-            if (res == "0")
-              retVal = true;
-            _inst.execCommand("Y ");  //lock system
-          }
-        }
-      }
-      return retVal;
     }
 
     private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)

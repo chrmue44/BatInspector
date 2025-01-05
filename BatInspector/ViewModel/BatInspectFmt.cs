@@ -14,6 +14,7 @@ using libParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
 
 
@@ -179,20 +180,48 @@ public partial class BatExplorerProjectFile
     }
   }
 
-  /// <remarks/>
- /* [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string Type
-  {
-    get
-    {
-      return this.typeField;
-    }
-    set
-    {
-      this.typeField = value;
-    }
-  }*/
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public MicRecord Microphone { get; set; }
 }
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public class MicRecord
+{
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  string Id { get; set; }
+  
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  string Type { get; set; }
+  
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  string Comment { get; set; }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  [System.Xml.Serialization.XmlArrayItemAttribute("Points", typeof(FreqResponseRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
+  public FreqResponseRecord[] FrequencyResponse { get; set; }
+
+}
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public class FreqResponseRecord
+{
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  public double Frequency { get; set; }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlAttributeAttribute()]
+  public double Amplitude { get; set; }
+}
+
 
 
 /// <remarks/>
@@ -234,7 +263,6 @@ public partial class PrjRecord : IComparable<PrjRecord>
       this.fileField = value;
     }
   }
-
   
   /// <remarks/>
   [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -257,32 +285,5 @@ public partial class PrjRecord : IComparable<PrjRecord>
   public int CompareTo(PrjRecord obj)
   { 
     return string.Compare(File, obj.File); 
-  }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-public partial class NewDataSet
-{
-
-  private BatExplorerProjectFile[] itemsField;
-
-  /// <remarks/>
-  [System.Xml.Serialization.XmlElementAttribute("BatExplorerProjectFile")]
-  public BatExplorerProjectFile[] Items
-  {
-    get
-    {
-      return this.itemsField;
-    }
-    set
-    {
-      this.itemsField = value;
-    }
   }
 }

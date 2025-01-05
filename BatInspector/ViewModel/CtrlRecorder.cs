@@ -7,11 +7,23 @@
  ********************************************************************************/
 
 
+using libParser;
+using OxyPlot.Series;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
 namespace BatInspector
 {
+
+  public class MicFreqItem
+  {
+    public double Frequency { get; set; } = 0;
+    public double Amplitude { get; set; } = 0;
+  }
 
   public class Trigger
   {
@@ -270,6 +282,145 @@ namespace BatInspector
     {
       return BatSpy.load();
     }
+
+    public bool setSystemSettings(string passWd, string serial, double voltage)
+    {
+      bool retVal = false;
+      if (BatSpy.IsConnected)
+      {
+        string res = BatSpy.ExecuteCommand("Y" + passWd);
+        if (res == "0")
+        {
+          res = BatSpy.ExecuteCommand("Z" + serial);
+          if (res == "0")
+          {
+            res = BatSpy.ExecuteCommand("Pf" + voltage.ToString("#.###", CultureInfo.InvariantCulture));
+            if (res == "0")
+              retVal = true;
+            BatSpy.ExecuteCommand("Y ");  //lock system
+          }
+        }
+      }
+      return retVal;
+    }
+
+    public bool getMicInfos(out string id, out string type, out string comment)
+    {
+      bool retVal = false;
+      id = ""; type = "";comment = "";
+      if (BatSpy.IsConnected)
+      {
+        string res = BatSpy.ExecuteCommand("ie");
+        if (res != "0")
+          id = "not found";
+        else
+        {
+          retVal = BatSpy.getStringValue("ii", out id);
+          retVal &= BatSpy.getStringValue("it", out type);
+          retVal &= BatSpy.getStringValue("ic", out comment);
+        }
+      }
+      return retVal;
+    }
+
+    public List<MicFreqItem> readFreqResponseFromMic()
+    {
+      List<MicFreqItem> retVal = new List<MicFreqItem> ();
+      bool ok = BatSpy.getDoubleValue("in", out double val);
+      if(ok)
+      {
+        int cnt = (int)val;
+        for (int i = 0; i < cnt; i++)
+        {
+          string vals = BatSpy.ExecuteCommand($"if{i}");
+          string[] items = vals.Split(',');
+          if(items.Length == 3)
+          {
+            MicFreqItem f = new MicFreqItem();
+            double.TryParse(items[1], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
+            f.Frequency = val;
+            double.TryParse(items[2], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
+            f.Amplitude= val;
+            retVal.Add(f);
+          }
+        }
+      }
+      return retVal;
+    }
+
+    public List<MicFreqItem> readFreqResponseFromFile(string fileName)
+    {
+      List<MicFreqItem> retVal = new List<MicFreqItem>();
+      try
+      {
+        string[] lines = File.ReadAllLines(fileName);
+        for (int i = 0; i < lines.Length; i++)
+        {
+          string[] items = lines[i].Split(',');
+          if (items.Length == 2)
+          {
+            MicFreqItem f = new MicFreqItem();
+            double.TryParse(items[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double val);
+            f.Frequency = val;
+            double.TryParse(items[1], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
+            f.Amplitude = val;
+            retVal.Add(f);
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"unable to read file: {fileName}: {ex.ToString()}", enLogType.ERROR);
+      }
+      return retVal;
+    }
+
+
+    public bool setMicSettings(string passWd, string id, string type, string comment, string freqRespFile)
+    {
+      bool retVal = false;
+      List<MicFreqItem> freqResponse = readFreqResponseFromFile(freqRespFile);
+      if (BatSpy.IsConnected)
+      {
+        string res = BatSpy.ExecuteCommand("Y" + passWd);
+        if (res != "0")
+          return false;
+        res = BatSpy.ExecuteCommand("Ii" + id);
+        if (res == "0")
+        {
+          res = BatSpy.ExecuteCommand("It" + type);
+          if (res == "0")
+          {
+            res = BatSpy.ExecuteCommand("Ic" + comment);
+            if ((res == "0") && (freqResponse != null))
+            {
+              res = BatSpy.ExecuteCommand($"In{freqResponse.Count}");
+              if (res == "0")
+              {
+                for (int i = 0; i < freqResponse.Count; i++)
+                {
+                  string cmd = $"If{i}," +
+                  freqResponse[i].Frequency.ToString("0.0", CultureInfo.InvariantCulture) + "," +
+                  freqResponse[i].Amplitude.ToString("0.0", CultureInfo.InvariantCulture);
+                  res = BatSpy.ExecuteCommand(cmd);
+                  if (res != "0")
+                    break;
+                }
+                if (res == "0")
+                {
+                  res = BatSpy.ExecuteCommand("Ie");
+                  if (res == "0")
+                    retVal = true;
+                }
+              }
+            }
+          }
+        }
+        BatSpy.ExecuteCommand("Y ");  //lock system
+      }
+      return retVal;
+    }
+
 
     public bool IsConnected { get { return _connected; } }
     public Trigger Trigger { get { return _trigger; } }

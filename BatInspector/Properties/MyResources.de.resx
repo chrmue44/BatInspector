@@ -1659,4 +1659,10 @@
   <data name="MsgDatTimeError" xml:space="preserve">
     <value>Datum und Uhrzeit konnten nicht aus den Dateinamen extrahiert werden.\n Wird fortgefahren, wird das Erstelldatum der Datei gewählt (muss nicht der Aufnahmezeitpunkt sein!) \n Fortfahren?</value>
   </data>
+  <data name="Microphone" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="FrequencyResponse" xml:space="preserve">
+    <value>Frequenzgang</value>
+  </data>
 </root>

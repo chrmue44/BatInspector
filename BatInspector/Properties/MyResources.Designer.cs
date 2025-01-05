@@ -1384,6 +1384,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frequency Response.
+        /// </summary>
+        public static string FrequencyResponse {
+            get {
+                return ResourceManager.GetString("FrequencyResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grid lines.
         /// </summary>
         public static string frmActivityGridLines {
@@ -3423,6 +3432,15 @@ namespace BatInspector.Properties {
         public static string Mean {
             get {
                 return ResourceManager.GetString("Mean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microphone.
+        /// </summary>
+        public static string Microphone {
+            get {
+                return ResourceManager.GetString("Microphone", resourceCulture);
             }
         }
         

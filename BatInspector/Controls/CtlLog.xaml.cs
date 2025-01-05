@@ -118,7 +118,7 @@ namespace BatInspector.Controls
       _spEntries.Children.Clear();
     }
 
-    private void activateCmd()
+    public void activateCmd()
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {

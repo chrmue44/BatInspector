@@ -8,12 +8,15 @@ TODO
   - real "inplace" import
 - export zoom view: set default file name: call_nr_species_filename.wav
 
+ 
+
 # V0.9.3.2 
 - bugfix: import of file names in format <name>-<date>_<time> works 
 - bugfix: replaced checkboxes with radio buttons in create sum report 
           form to prevent activation of more than one item
 - import from wavs: error message when date/time cannot be parsed
 - bugfix: mouse wheel works now in both directions (not only up)
+- read/write microphone info from BatSpy if mic with one-wire chip is connected
 
 # V0.9.3.1 14.11.24
 - bugfix: import from WAV-Files did not create xml files anymore (bug introduced in 0.9.3) 

@@ -71,46 +71,6 @@ namespace BatInspector.Forms
 
     private void initParameterControls()
     {
-      _ctlDeadTime.setValue(_rec.Control.DeadTime.Value);
-      _ctlDeadTime.IsEnabled = true;
-      _ctlGain.setItems(_rec.Acquisition.Gain.Items);
-      _ctlGain.IsEnabled = true;
-      _ctlGain.SelectIndex = (int)_rec.Acquisition.Gain.Value;
-      _ctlPreTrigger.setValue(_rec.Acquisition.PreTrigger.Value);
-      _ctlPreTrigger.IsEnabled = true;
-      _ctlRecStartH.setValue((int)_rec.Control.StartH.Value);
-      _ctlRecStartH.IsEnabled = true;
-      _ctlRecStartMin.setValue((int)_rec.Control.StartMin.Value);
-      _ctlRecStartMin.IsEnabled = true;
-      _ctlRecStopH.setValue((int)_rec.Control.StopH.Value);
-      _ctlRecStopH.IsEnabled = true;
-      _ctlRecStopMin.setValue((int)_rec.Control.StopMin.Value);
-      _ctlRecStopMin.IsEnabled = true;
-      _ctlSampleRate.setItems(_rec.Acquisition.SampleRate.Items);
-      _ctlSampleRate.SelectIndex = (int)_rec.Acquisition.SampleRate.Value;
-      _ctlSampleRate.IsEnabled = true;
-      _ctlTrigFiltType.setItems(_rec.Trigger.Filter.Items);
-      _ctlTrigFiltType.SelectIndex = _rec.Trigger.Filter.Value;
-      _ctlTrigFiltType.IsEnabled = true;
-      _ctlTrigFreq.setValue(_rec.Trigger.Frequency.Value);
-      _ctlTrigFreq.IsEnabled = true;
-      _ctlTrigLength.setValue(_rec.Trigger.EventLength.Value);
-      _ctlTrigLength.IsEnabled = true;
-      _ctlTrigLevel.setValue(_rec.Trigger.Level.Value);
-      _ctlTrigLevel.IsEnabled = true;
-      _ctlRecordingTime.setValue(_rec.Control.RecTime.Value);
-      _ctlRecordingTime.IsEnabled = true;
-      _ctlRecFilterFreq.setValue(_rec.Acquisition.RecordingFilter.Value);
-      _ctlRecFilterFreq.IsEnabled = true;
-      _ctlRecFilterType.setItems(_rec.Acquisition.RecFiltType.Items);
-      _ctlRecFilterType.SelectIndex = _rec.Acquisition.RecFiltType.Value;
-      _ctlRecFilterType.IsEnabled = true;
-      _ctlRecMode.setItems(_rec.Control.Mode.Items);
-      _ctlRecMode.SelectIndex = (int)_rec.Control.Mode.Value;
-      _ctlRecMode.IsEnabled = true;
-      _ctlTrigType.setItems(_rec.Trigger.Type.Items);
-      _ctlTrigType.SelectIndex = (int)_rec.Trigger.Type.Value;
-      _ctlTrigType.IsEnabled = true;
       _ctlLanguage.setItems(_rec.General.Language.Items);
       _ctlLanguage.IsEnabled = true;
       _ctlLanguage.SelectIndex = _rec.General.Language.Value;
@@ -126,6 +86,80 @@ namespace BatInspector.Forms
       _ctlLat.IsEnabled = true;
       _ctlLon.setValue(Utils.LongitudeToString(_rec.General.Longitude.Value));
       _ctlLon.IsEnabled = true;
+      _ctlRecMode.setItems(_rec.Control.Mode.Items);
+      _ctlRecMode.SelectIndex = (int)_rec.Control.Mode.Value;
+      _ctlRecMode.IsEnabled = true;
+
+      _ctlRecStartH.setValue((int)_rec.Control.StartH.Value);
+      _ctlRecStartH.IsEnabled = true;
+      _ctlRecStartMin.setValue((int)_rec.Control.StartMin.Value);
+      _ctlRecStartMin.IsEnabled = true;
+      _ctlRecStopH.setValue((int)_rec.Control.StopH.Value);
+      _ctlRecStopH.IsEnabled = true;
+      _ctlRecStopMin.setValue((int)_rec.Control.StopMin.Value);
+      _ctlRecStopMin.IsEnabled = true;
+
+      _ctlDeadTimeBat.setValue(_rec.AcquisitionBat.DeadTime.Value);
+      _ctlDeadTimeBat.IsEnabled = true;
+      _ctlGainBat.setItems(_rec.AcquisitionBat.Gain.Items);
+      _ctlGainBat.IsEnabled = true;
+      _ctlGainBat.SelectIndex = (int)_rec.AcquisitionBat.Gain.Value;
+      _ctlPreTriggerBat.setValue(_rec.AcquisitionBat.PreTrigger.Value);
+      _ctlPreTriggerBat.IsEnabled = true;
+      _ctlSampleRateBat.setItems(_rec.AcquisitionBat.SampleRate.Items);
+      _ctlSampleRateBat.SelectIndex = (int)_rec.AcquisitionBat.SampleRate.Value;
+      _ctlSampleRateBat.IsEnabled = true;
+      _ctlTrigFiltTypeBat.setItems(_rec.TriggerBat.Filter.Items);
+      _ctlTrigFiltTypeBat.SelectIndex = _rec.TriggerBat.Filter.Value;
+      _ctlTrigFiltTypeBat.IsEnabled = true;
+      _ctlTrigFreqBat.setValue(_rec.TriggerBat.Frequency.Value);
+      _ctlTrigFreqBat.IsEnabled = true;
+      _ctlTrigLengthBat.setValue(_rec.TriggerBat.EventLength.Value);
+      _ctlTrigLengthBat.IsEnabled = true;
+      _ctlTrigLevelBat.setValue(_rec.TriggerBat.Level.Value);
+      _ctlTrigLevelBat.IsEnabled = true;
+      _ctlRecordingTimeBat.setValue(_rec.AcquisitionBat.RecTime.Value);
+      _ctlRecordingTimeBat.IsEnabled = true;
+      _ctlRecFilterFreqBat.setValue(_rec.AcquisitionBat.RecordingFilter.Value);
+      _ctlRecFilterFreqBat.IsEnabled = true;
+      _ctlRecFilterTypeBat.setItems(_rec.AcquisitionBat.RecFiltType.Items);
+      _ctlRecFilterTypeBat.SelectIndex = _rec.AcquisitionBat.RecFiltType.Value;
+      _ctlRecFilterTypeBat.IsEnabled = true;
+      _ctlTrigTypeBat.setItems(_rec.TriggerBat.Type.Items);
+      _ctlTrigTypeBat.SelectIndex = (int)_rec.TriggerBat.Type.Value;
+      _ctlTrigTypeBat.IsEnabled = true;
+
+      _ctlDeadTimeBird.setValue(_rec.AcquisitionBird.DeadTime.Value);
+      _ctlDeadTimeBird.IsEnabled = true;
+      _ctlGainBird.setItems(_rec.AcquisitionBird.Gain.Items);
+      _ctlGainBird.IsEnabled = true;
+      _ctlGainBird.SelectIndex = (int)_rec.AcquisitionBird.Gain.Value;
+      _ctlPreTriggerBird.setValue(_rec.AcquisitionBird.PreTrigger.Value);
+      _ctlPreTriggerBird.IsEnabled = true;
+      _ctlSampleRateBird.setItems(_rec.AcquisitionBird.SampleRate.Items);
+      _ctlSampleRateBird.SelectIndex = (int)_rec.AcquisitionBird.SampleRate.Value;
+      _ctlSampleRateBird.IsEnabled = true;
+      _ctlTrigFiltTypeBird.setItems(_rec.TriggerBird.Filter.Items);
+      _ctlTrigFiltTypeBird.SelectIndex = _rec.TriggerBird.Filter.Value;
+      _ctlTrigFiltTypeBird.IsEnabled = true;
+      _ctlTrigFreqBird.setValue(_rec.TriggerBird.Frequency.Value);
+      _ctlTrigFreqBird.IsEnabled = true;
+      _ctlTrigLengthBird.setValue(_rec.TriggerBird.EventLength.Value);
+      _ctlTrigLengthBird.IsEnabled = true;
+      _ctlTrigLevelBird.setValue(_rec.TriggerBird.Level.Value);
+      _ctlTrigLevelBird.IsEnabled = true;
+
+      _ctlRecordingTimeBird.setValue(_rec.AcquisitionBird.RecTime.Value);
+      _ctlRecordingTimeBird.IsEnabled = true;
+      _ctlRecFilterFreqBird.setValue(_rec.AcquisitionBird.RecordingFilter.Value);
+      _ctlRecFilterFreqBird.IsEnabled = true;
+      _ctlRecFilterTypeBird.setItems(_rec.AcquisitionBird.RecFiltType.Items);
+      _ctlRecFilterTypeBird.SelectIndex = _rec.AcquisitionBird.RecFiltType.Value;
+      _ctlRecFilterTypeBird.IsEnabled = true;
+      _ctlTrigTypeBird.setItems(_rec.TriggerBird.Type.Items);
+      _ctlTrigTypeBird.SelectIndex = (int)_rec.TriggerBird.Type.Value;
+      _ctlTrigTypeBird.IsEnabled = true;
+
       enableButtons(true);
     }
 
@@ -149,29 +183,45 @@ namespace BatInspector.Forms
 
     private void initParameterTab(int wl, int wt)
     {
-      _ctlDeadTime.setup(BatInspector.Properties.MyResources.DeadTime, enDataType.DOUBLE, 2, wl, false, setDeadTime);
-      _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, 1, wl, wt, setGain, null, "", false);
-      _ctlPreTrigger.setup("Pre Trigger" + " [ms]", enDataType.DOUBLE, 2, wl, false, setPreTrigger);
       _ctlRecStartH.setup(BatInspector.Properties.MyResources.frmRecStartingTimeH, enDataType.INT, 0, wl, false, setStartH);
       _ctlRecStartMin.setup(BatInspector.Properties.MyResources.frmRecStartingTimeMin, enDataType.INT, 0, wl, false, setStartMin);
       _ctlRecStopH.setup(BatInspector.Properties.MyResources.frmRecStopTimeH, enDataType.INT, 0, wl, false, setStopH);
       _ctlRecStopMin.setup(BatInspector.Properties.MyResources.frmRecStopTimeMin, enDataType.INT, 0, wl, false, setStopMin);
-      _ctlSampleRate.setup(BatInspector.Properties.MyResources.SamplingRate, 2, wl, wt, setSampleRate);
-      _ctlTrigFreq.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setTrigFrequency);
-      _ctlTrigFiltType.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setFilterType, null, "", false);
-      _ctlTrigLength.setup(BatInspector.Properties.MyResources.FrmRecMinEventLength + " [ms]", enDataType.DOUBLE, 1, wl, false, setTrigLength);
-      _ctlTrigLevel.setup(BatInspector.Properties.MyResources.frmRecLevel + " [dB]", enDataType.DOUBLE, 1, wl, false, setTrigLevel);
-      _ctlRecordingTime.setup(BatInspector.Properties.MyResources.frmRecRecordingTime, enDataType.DOUBLE, 1, wl, false, setRecTime);
-      _ctlRecFilterType.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setRecFilterType, null, "", false);
-      _ctlRecFilterFreq.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setRecFrequency);
       _ctlRecMode.setup(BatInspector.Properties.MyResources.FrmRecRecordingMode, 3, wl, wt, setRecMode, null, "", false);
-      _ctlTrigType.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigType, null, "", false);
+
       _ctlLanguage.setup(BatInspector.Properties.MyResources.Language, 0, wl, wt, setLanguage, null, "", false);
       _ctlBackLight.setup(BatInspector.Properties.MyResources.FrmRecBacklightTime, enDataType.INT, 0, wl, true, setBacklightTime);
       _ctlDisplayMode.setup(BatInspector.Properties.MyResources.FrmSetupRecorderBrightness, 0, wl, wt, setDisplayMode);
       _ctlPosMode.setup(BatInspector.Properties.MyResources.FrmRecModePosition, 0, wl, wt, setPositionMode, null, "", false);
       _ctlLat.setup(BatInspector.Properties.MyResources.Latitude, enDataType.STRING, 5, wl, false, setLat);
       _ctlLon.setup(BatInspector.Properties.MyResources.Longitude, enDataType.STRING, 5, wl, false, setLon);
+
+      _ctlDeadTimeBat.setup(BatInspector.Properties.MyResources.DeadTime, enDataType.DOUBLE, 2, wl, false, setDeadTimeBat);
+      _ctlGainBat.setup(BatInspector.Properties.MyResources.CtlZoomGain, 1, wl, wt, setGainBat, null, "", false);
+      _ctlPreTriggerBat.setup("Pre Trigger" + " [ms]", enDataType.DOUBLE, 2, wl, false, setPreTriggerBat);
+      _ctlSampleRateBat.setup(BatInspector.Properties.MyResources.SamplingRate, 2, wl, wt, setSampleRateBat);
+      _ctlTrigFreqBat.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setTrigFrequencyBat);
+      _ctlTrigFiltTypeBat.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setFilterTypeBat, null, "", false);
+      _ctlTrigLengthBat.setup(BatInspector.Properties.MyResources.FrmRecMinEventLength + " [ms]", enDataType.DOUBLE, 1, wl, false, setTrigLengthBat);
+      _ctlTrigLevelBat.setup(BatInspector.Properties.MyResources.frmRecLevel + " [dB]", enDataType.DOUBLE, 1, wl, false, setTrigLevelBat);
+      _ctlRecordingTimeBat.setup(BatInspector.Properties.MyResources.frmRecRecordingTime, enDataType.DOUBLE, 1, wl, false, setRecTimeBat);
+      _ctlRecFilterTypeBat.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setRecFilterTypeBat, null, "", false);
+      _ctlRecFilterFreqBat.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setRecFrequencyBat);
+      _ctlTrigTypeBat.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigTypeBat, null, "", false);
+
+      _ctlDeadTimeBird.setup(BatInspector.Properties.MyResources.DeadTime, enDataType.DOUBLE, 2, wl, false, setDeadTimeBird);
+      _ctlGainBird.setup(BatInspector.Properties.MyResources.CtlZoomGain, 1, wl, wt, setGainBird, null, "", false);
+      _ctlPreTriggerBird.setup("Pre Trigger" + " [ms]", enDataType.DOUBLE, 2, wl, false, setPreTriggerBird);
+      _ctlSampleRateBird.setup(BatInspector.Properties.MyResources.SamplingRate, 2, wl, wt, setSampleRateBird);
+      _ctlTrigFreqBird.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setTrigFrequencyBird);
+      _ctlTrigFiltTypeBird.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setFilterTypeBird
+      , null, "", false);
+      _ctlTrigLengthBird.setup(BatInspector.Properties.MyResources.FrmRecMinEventLength + " [ms]", enDataType.DOUBLE, 1, wl, false, setTrigLengthBird);
+      _ctlTrigLevelBird.setup(BatInspector.Properties.MyResources.frmRecLevel + " [dB]", enDataType.DOUBLE, 1, wl, false, setTrigLevelBird);
+      _ctlRecordingTimeBird.setup(BatInspector.Properties.MyResources.frmRecRecordingTime, enDataType.DOUBLE, 1, wl, false, setRecTimeBird);
+      _ctlRecFilterTypeBird.setup(BatInspector.Properties.MyResources.frmRecFilterType, 0, wl, wt, setRecFilterTypeBird, null, "", false);
+      _ctlRecFilterFreqBird.setup(BatInspector.Properties.MyResources.Frequency + " [kHz]", enDataType.DOUBLE, 1, wl, false, setRecFrequencyBird);
+      _ctlTrigTypeBird.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigTypeBird, null, "", false);
     }
 
     private void setStopMin(enDataType type, object val)
@@ -213,16 +263,6 @@ namespace BatInspector.Forms
       _rec.General.PositionMode.Value = _ctlPosMode.getSelectedIndex();
     }
 
-    private void setFilterType(int index, string val)
-    {
-      _rec.Trigger.Filter.Value = _ctlTrigFiltType.getSelectedIndex();
-    }
-
-    private void setRecFilterType(int index, string val)
-    {
-      _rec.Acquisition.RecFiltType.Value = _ctlRecFilterType.getSelectedIndex();
-    }
-
     private void setLon(enDataType type, object val)
     {
       double lon;
@@ -247,60 +287,129 @@ namespace BatInspector.Forms
                   MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
-    private void setTrigType(int index, string val)
-    {
-      _rec.Trigger.Type.Value = _ctlTrigType.getSelectedIndex();
-    }
 
     private void setRecMode(int index, string val)
     {
       _rec.Control.Mode.Value = _ctlRecMode.getSelectedIndex();
     }
 
-    private void setRecTime(enDataType type, object val)
+    private void setFilterTypeBat(int index, string val)
     {
-      _rec.Control.RecTime.Value = _ctlRecordingTime.getDoubleValue();
+      _rec.TriggerBat.Filter.Value = _ctlTrigFiltTypeBat.getSelectedIndex();
     }
 
-    private void setTrigLevel(enDataType type, object val)
+    private void setRecFilterTypeBat(int index, string val)
     {
-      _rec.Trigger.Level.Value = _ctlTrigLevel.getDoubleValue();
+      _rec.AcquisitionBat.RecFiltType.Value = _ctlRecFilterTypeBat.getSelectedIndex();
     }
 
-    private void setTrigLength(enDataType type, object val)
+    private void setTrigTypeBat(int index, string val)
     {
-      _rec.Trigger.EventLength.Value = _ctlTrigLength.getDoubleValue();
+      _rec.TriggerBat.Type.Value = _ctlTrigTypeBat.getSelectedIndex();
     }
 
-    private void setTrigFrequency(enDataType type, object val)
+    private void setRecTimeBat(enDataType type, object val)
     {
-      _rec.Trigger.Frequency.Value = _ctlTrigFreq.getDoubleValue();
+      _rec.AcquisitionBat.RecTime.Value = _ctlRecordingTimeBat.getDoubleValue();
     }
 
-    private void setRecFrequency(enDataType type, object val)
+    private void setTrigLevelBat(enDataType type, object val)
     {
-      _rec.Acquisition.RecordingFilter.Value = _ctlRecFilterFreq.getDoubleValue();
+      _rec.TriggerBat.Level.Value = _ctlTrigLevelBat.getDoubleValue();
     }
 
-    private void setSampleRate(int index, string val)
+    private void setTrigLengthBat(enDataType type, object val)
     {
-      _rec.Acquisition.SampleRate.Value = _ctlSampleRate.getSelectedIndex();
+      _rec.TriggerBat.EventLength.Value = _ctlTrigLengthBat.getDoubleValue();
     }
 
-    private void setPreTrigger(enDataType type, object val)
+    private void setTrigFrequencyBat(enDataType type, object val)
     {
-      _rec.Acquisition.PreTrigger.Value = _ctlPreTrigger.getDoubleValue();
+      _rec.TriggerBat.Frequency.Value = _ctlTrigFreqBat.getDoubleValue();
     }
 
-    private void setDeadTime(enDataType type, object val)
+    private void setRecFrequencyBat(enDataType type, object val)
     {
-      _rec.Control.DeadTime.Value = _ctlDeadTime.getDoubleValue();
+      _rec.AcquisitionBat.RecordingFilter.Value = _ctlRecFilterFreqBat.getDoubleValue();
     }
 
-    private void setGain(int index, string val)
+    private void setSampleRateBat(int index, string val)
     {
-      _rec.Acquisition.Gain.Value = _ctlGain.getSelectedIndex();
-      ;
+      _rec.AcquisitionBat.SampleRate.Value = _ctlSampleRateBat.getSelectedIndex();
+    }
+
+    private void setPreTriggerBat(enDataType type, object val)
+    {
+      _rec.AcquisitionBat.PreTrigger.Value = _ctlPreTriggerBat.getDoubleValue();
+    }
+
+    private void setDeadTimeBat(enDataType type, object val)
+    {
+      _rec.AcquisitionBat.DeadTime.Value = _ctlDeadTimeBat.getDoubleValue();
+    }
+
+    private void setGainBat(int index, string val)
+    {
+      _rec.AcquisitionBat.Gain.Value = _ctlGainBat.getSelectedIndex();
+    }
+
+    private void setFilterTypeBird(int index, string val)
+    {
+      _rec.TriggerBird.Filter.Value = _ctlTrigFiltTypeBird.getSelectedIndex();
+    }
+
+    private void setRecFilterTypeBird(int index, string val)
+    {
+      _rec.AcquisitionBird.RecFiltType.Value = _ctlRecFilterTypeBird.getSelectedIndex();
+    }
+    private void setTrigTypeBird(int index, string val)
+    {
+      _rec.TriggerBird.Type.Value = _ctlTrigTypeBird.getSelectedIndex();
+    }
+
+    private void setRecTimeBird(enDataType type, object val)
+    {
+      _rec.AcquisitionBird.RecTime.Value = _ctlRecordingTimeBird.getDoubleValue();
+    }
+
+    private void setTrigLevelBird(enDataType type, object val)
+    {
+      _rec.TriggerBird.Level.Value = _ctlTrigLevelBird.getDoubleValue();
+    }
+
+    private void setTrigLengthBird(enDataType type, object val)
+    {
+      _rec.TriggerBird.EventLength.Value = _ctlTrigLengthBird.getDoubleValue();
+    }
+
+    private void setTrigFrequencyBird(enDataType type, object val)
+    {
+      _rec.TriggerBird.Frequency.Value = _ctlTrigFreqBird.getDoubleValue();
+    }
+
+    private void setRecFrequencyBird(enDataType type, object val)
+    {
+      _rec.AcquisitionBird.RecordingFilter.Value = _ctlRecFilterFreqBird.getDoubleValue();
+    }
+
+    private void setSampleRateBird(int index, string val)
+    {
+      _rec.AcquisitionBird.SampleRate.Value = _ctlSampleRateBird.getSelectedIndex();
+    }
+
+    private void setPreTriggerBird(enDataType type, object val)
+    {
+      _rec.AcquisitionBird.PreTrigger.Value = _ctlPreTriggerBird.getDoubleValue();
+    }
+
+    private void setDeadTimeBird(enDataType type, object val)
+    {
+      _rec.AcquisitionBird.DeadTime.Value = _ctlDeadTimeBird.getDoubleValue();
+    }
+
+    private void setGainBird(int index, string val)
+    {
+      _rec.AcquisitionBird.Gain.Value = _ctlGainBird.getSelectedIndex();
     }
 
     private void initStatusTab(int wl, int wt)
@@ -506,6 +615,7 @@ namespace BatInspector.Forms
         points[i] = new Point(l[i].Frequency, l[i].Amplitude);
       GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, -10, 10, points);
     }
+
 
     private void readFreqResponse()
     {

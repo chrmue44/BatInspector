@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Xml.Linq;
 using libParser;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -19,6 +20,14 @@ namespace BatInspector
 {
   //https://www.codeguru.com/dotnet/making-sounds-with-waves-using-c/
   //https://isip.piconepress.com/projects/speech/software/tutorials/production/fundamentals/v1.0/section_02/s02_01_p05.html
+
+  public class RawImportParams
+  {
+    public uint SampleRate { get; set; }
+    public ushort Channels { get; set; } = 1;
+    public ushort BitsPerSample { get; set; } = 16;
+
+  }
 
   public class WaveHeader
   {
@@ -106,6 +115,17 @@ namespace BatInspector
       FormatTag = 1;       // MS PCM (Uncompressed wave file)
       Channels = chans;        // Default to stereo
       Frequency = freq;   // Default to 44100hz
+      BitsPerSample = 16;  // Default to 16bits
+      RecalcBlockSizes();
+    }
+
+    public FormatChunk()
+    {
+      ChunkId = CHUNK_ID;
+      ChunkSize = 16;
+      FormatTag = 1;       // MS PCM (Uncompressed wave file)
+      Channels = 1;        // Default to stereo
+      Frequency = 41000;   // Default to 44100hz
       BitsPerSample = 16;  // Default to 16bits
       RecalcBlockSizes();
     }
@@ -393,6 +413,9 @@ namespace BatInspector
     {
       _isOpen = false;
       _fName = "";
+      _format = new FormatChunk();
+      _data = new DataChunk();
+      _header = new WaveHeader();
     }
 
     private byte[] partArray(byte[]list, int startIdx, int len)
@@ -526,6 +549,31 @@ namespace BatInspector
       {
         DebugLog.log("error writing WAV file to memory stream: " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+    public int importRaw(string file, RawImportParams pars)
+    {
+      if (!File.Exists(file))
+      {
+        DebugLog.log($"import raw failed, file {file} doesn't exist", enLogType.ERROR);
+        return 1;
+      }
+
+      if(pars.Channels > 1)
+      {
+        DebugLog.log($"import raw failed for file {file}: more than one channel currently not supported", enLogType.ERROR);
+        return 2;
+      }
+      _format.Frequency = pars.SampleRate;
+      _format.Channels = pars.Channels;
+      _format.BitsPerSample = pars.BitsPerSample;
+
+      _rawData = File.ReadAllBytes(file);
+
+      int cnt = _rawData.Length / (_format.BitsPerSample / 8 / _format.Channels);
+      _data.AddSampleData(_rawData, 0, cnt, _format.BitsPerSample, _format.Channels);
+      _isOpen = true;
+      return 0;
     }
 
     public static void splitWav(string name, double splitLength, bool removeOriginal)

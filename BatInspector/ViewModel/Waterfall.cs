@@ -113,17 +113,17 @@ namespace BatInspector
         for (int i = 0; i < max; i++)
           _spec.Add(null);
 
-        Parallel.For(0, max, i =>
-   //     for(int i = 0; i < max; i++)
+   //     Parallel.For(0, max, i =>
+        for(int i = 0; i < max; i++)
         {
           int idx = idxStart + i * step;
-          if (idx >= 0)
+          if (idx >= 0) 
           {
             double[] sp = generateFft(idx, fftSize, AppParams.FFT_WIDTH, AppParams.Inst.FftWindow);
             _spec[i] = sp;
           }
         }
-        );
+    //    );
     //    denoise(fftSize/2);
         sw.Stop();
       }
@@ -206,8 +206,7 @@ namespace BatInspector
     public double[] generateFft(int idx, int length, int fftWidth, enWIN_TYPE window = enWIN_TYPE.HANN)
     {
       bool logarithmic = AppParams.Inst.WaterfallLogarithmic;
-      int zeroPadding = 0; // NOTE: Zero Padding
-      if(idx + length > _audio.Samples.Length)
+      if (idx + length > _audio.Samples.Length)
         length = _audio.Samples.Length - idx - 1;
 
       if (length <= 0)
@@ -215,9 +214,14 @@ namespace BatInspector
         DebugLog.log("unable to generate FFT with length " + length.ToString(), enLogType.ERROR);
         return new double[1];
       }
-      zeroPadding = fftWidth - length;
-      double[] inputSignal = new double[length];
+      int zeroPadding = fftWidth - length;
+      double[] inputSignal = new double[fftWidth];
       Array.Copy(_audio.Samples, idx, inputSignal, 0, length);
+      if(zeroPadding > 0) 
+      {
+        for (int i = length; i < fftWidth; i++)
+          inputSignal[i] = 0;
+      }  
       double[] lmSpectrum;
       double wScaleFactor = 1.0;
 
@@ -268,22 +272,27 @@ namespace BatInspector
         for (int x = 0; x < width; x++)
         {
           int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
-          for (int y = 0; y < fftBinCnt; y++)
+          if (idxSpec < _spec.Count)
           {
-            if (_spec.Count > 0)
+            for (int y = 0; y < fftBinCnt; y++)
             {
-              double f = (fMax - fMin) * y / fftBinCnt + fMin;
-              int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftBinCnt);
-              if (_spec[idxSpec] != null)
+              if (_spec.Count > 0)
               {
-                if (idxFreq >= _spec[idxSpec].Length)
-                  idxFreq = _spec[idxSpec].Length - 1;
-                double val = _spec[idxSpec][idxFreq];
-                System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
-                bmp.setPixel(x, fftBinCnt - 1 - y, col);
+                double f = (fMax - fMin) * y / fftBinCnt + fMin;
+                int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftBinCnt);
+                if (_spec[idxSpec] != null)
+                {
+                  if (idxFreq >= _spec[idxSpec].Length)
+                    idxFreq = _spec[idxSpec].Length - 1;
+                  double val = _spec[idxSpec][idxFreq];
+                  System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
+                  bmp.setPixel(x, fftBinCnt - 1 - y, col);
+                }
               }
             }
           }
+          else
+            DebugLog.log($"index error create Bitmap: {idxSpec}, nr of specs: {_spec.Count}", enLogType.ERROR);
         }
         return bmp.Bmp;
       }

@@ -338,7 +338,7 @@ namespace BatInspector
 
     static public bool getDoubleValue(string cmd, out double val)
     {
-      string str = cmd.ToLower();
+      string str = cmd.Substring(0,1).ToLower() + cmd.Substring(1);
       string res = _inst.execCommand(str);
       bool ok = double.TryParse(res, NumberStyles.Any, CultureInfo.InvariantCulture, out val);
       if (!ok)
@@ -351,7 +351,7 @@ namespace BatInspector
 
     static public bool getStringValue(string cmd, out string val)
     {
-      string str = cmd.ToLower();
+      string str = cmd.Substring(0,1).ToLower() + cmd.Substring(1);
       string res = _inst.execCommand(str);
 
       bool ok = (res != "?");
@@ -361,7 +361,7 @@ namespace BatInspector
 
     static public bool getEnumIndex(string cmd, out int val)
     {
-      string str = cmd.ToLower();
+      string str = cmd.Substring(0,1).ToLower() + cmd.Substring(1);
       string res = _inst.execCommand(str);
       bool ok = int.TryParse(res, NumberStyles.Any, CultureInfo.InvariantCulture, out val);
       if (!ok)

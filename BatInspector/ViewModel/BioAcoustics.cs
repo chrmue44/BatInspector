@@ -222,17 +222,22 @@ namespace BatInspector
     {
       int size = getFftSize(handle);
       double[] retVal = new double[size / 2];
-      try
-      { 
-        IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size / 2 + 100);
-        calcFftDouble(handle,samples, ref buffer);
-        Marshal.Copy(buffer, retVal, 0, size / 2);
-        Marshal.FreeCoTaskMem(buffer);
-      }
-      catch (Exception ex)
+      if (size > 2)
       {
-        DebugLog.log("calculateFft: " + ex.ToString(), enLogType.ERROR);
+        try
+        {
+          IntPtr buffer = Marshal.AllocCoTaskMem(Marshal.SizeOf(retVal[0]) * size / 2 + 100);
+          calcFftDouble(handle, samples, ref buffer);
+          Marshal.Copy(buffer, retVal, 0, size / 2);
+          Marshal.FreeCoTaskMem(buffer);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("calculateFft: " + ex.ToString(), enLogType.ERROR);
+        }
       }
+      else
+        DebugLog.log($"calculateFft: size < 2, handle: {handle}", enLogType.ERROR);
       return retVal;
     }
 

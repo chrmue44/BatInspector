@@ -239,8 +239,16 @@ namespace BatInspector.Forms
           _info.Notes = _ctlPrjNotes.getValue();
           _info.GpxFile = (_rbGpxFile.IsChecked == true) || (_rbKmlFile.IsChecked == true)
             || (_rbTxtFile.IsChecked == true) ? _ctlGpxFile.getValue() : "";
-          _info.StartTime = _dtStart.DateTime;
-          _info.EndTime = _dtEnd.DateTime;
+          if (_cbTimeFilter.IsChecked == true)
+          {
+            _info.StartTime = _dtStart.DateTime;
+            _info.EndTime = _dtEnd.DateTime;
+          }
+          else
+          {
+            _info.StartTime = DateTime.MinValue;
+            _info.EndTime = DateTime.MaxValue;
+          }
         }
         thr.Start();
         this.Visibility = Visibility.Hidden;

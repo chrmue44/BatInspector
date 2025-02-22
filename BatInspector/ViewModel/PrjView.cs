@@ -316,15 +316,18 @@ namespace BatInspector
       var bitmapImage = new BitmapImage();
       try
       {
-        _memory.Position = 0;
-        _memory.SetLength(0);
-        bitmap.Save(_memory, System.Drawing.Imaging.ImageFormat.Png);
-        bitmapImage.BeginInit();
-        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-        bitmapImage.StreamSource = _memory;
+        lock (_memory)
+        {
+          _memory.Position = 0;
+          _memory.SetLength(0);
+          bitmap.Save(_memory, System.Drawing.Imaging.ImageFormat.Png);
+          bitmapImage.BeginInit();
+          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+          bitmapImage.StreamSource = _memory;
           //        bitmapImage.CacheOption = BitmapCacheOption.None;
-        bitmapImage.EndInit();
-        bitmapImage.Freeze();
+          bitmapImage.EndInit();
+          bitmapImage.Freeze();
+        }
       }
       catch (Exception ex)
       {

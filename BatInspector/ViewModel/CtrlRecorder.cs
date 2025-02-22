@@ -25,7 +25,7 @@ namespace BatInspector
     public double Amplitude { get; set; } = 0;
   }
 
-  public class Trigger
+  public class TriggerBat
   {
     
     NumType _level = new NumType("Prh");
@@ -50,7 +50,32 @@ namespace BatInspector
     }
   }
 
-  public class Acquisition
+  public class TriggerBird
+  {
+
+    NumType _level = new NumType("PRh");
+    NumType _freq = new NumType("PRf");
+    NumType _length = new NumType("PRm");
+    EnumType _filter = new EnumType("PRy");
+    EnumType _type = new EnumType("PRr");
+
+    public NumType Level { get { return _level; } }
+    public NumType Frequency { get { return _freq; } }
+    public NumType EventLength { get { return _length; } }
+    public EnumType Type { get { return _type; } }
+    public EnumType Filter { get { return _filter; } }
+
+    public void init()
+    {
+      _level.init();
+      _freq.init();
+      _length.init();
+      _filter.init();
+      _type.init();
+    }
+  }
+
+  public class AcquisitionBat
   {
 
     EnumType _sampleRate = new EnumType("Prs");
@@ -58,8 +83,11 @@ namespace BatInspector
     NumType _preTrig = new NumType("Prp");
     NumType _recFilter = new NumType("Pru");
     EnumType _recFiltType = new EnumType("Prv");
+    NumType _recTime = new NumType("Prt");
+    NumType _deadTime = new NumType("Prd");
 
-    public Acquisition()
+
+    public AcquisitionBat()
     {
     }
 
@@ -69,6 +97,8 @@ namespace BatInspector
 
     public NumType RecordingFilter { get { return _recFilter; } }
     public EnumType RecFiltType { get { return _recFiltType; } }
+    public NumType RecTime { get { return _recTime; } }
+    public NumType DeadTime { get { return _deadTime; } }
 
     public void init()
     {
@@ -77,6 +107,44 @@ namespace BatInspector
       _preTrig.init();
       _recFilter.init();
       _recFiltType.init();
+      _recTime.init();
+      _deadTime.init();
+    }
+  }
+
+  public class AcquisitionBird
+  {
+
+    EnumType _sampleRate = new EnumType("PRs");
+    EnumType _gain = new EnumType("PRg");
+    NumType _preTrig = new NumType("PRp");
+    NumType _recFilter = new NumType("PRu");
+    EnumType _recFiltType = new EnumType("PRv");
+    NumType _recTime = new NumType("PRt");
+    NumType _deadTime = new NumType("PRd");
+
+    public AcquisitionBird()
+    {
+    }
+
+    public EnumType SampleRate { get { return _sampleRate; } }
+    public EnumType Gain { get { return _gain; } }
+    public NumType PreTrigger { get { return _preTrig; } }
+
+    public NumType RecordingFilter { get { return _recFilter; } }
+    public EnumType RecFiltType { get { return _recFiltType; } }
+    public NumType RecTime { get { return _recTime; } }
+    public NumType DeadTime { get { return _deadTime; } }
+
+    public void init()
+    {
+      _sampleRate.init();
+      _gain.init();
+      _preTrig.init();
+      _recFilter.init();
+      _recFiltType.init();
+      _recTime .init();
+      _deadTime .init();
     }
   }
 
@@ -87,8 +155,6 @@ namespace BatInspector
     NumType _startMin = new NumType("Pam");
     NumType _stopH = new NumType("Pai");
     NumType _stopMin = new NumType("Pan");
-    NumType _recTime = new NumType("Prt");
-    NumType _deadTime = new NumType("Prd");
 
 
     public EnumType Mode { get { return _recMode; } }
@@ -96,9 +162,6 @@ namespace BatInspector
     public NumType StartMin { get { return _startMin; } }
     public NumType StopH { get { return _stopH; } }
     public NumType StopMin { get { return _stopMin; } }
-
-    public NumType RecTime { get { return _recTime; } }  
-    public NumType DeadTime { get { return _deadTime; } }
 
     public ControlRec() { }
 
@@ -109,8 +172,6 @@ namespace BatInspector
       _startMin.init();
       _stopH.init();
       _stopMin.init();
-      _recTime.init();
-      _deadTime.init();
     }
   }
 
@@ -244,16 +305,20 @@ namespace BatInspector
 
   public class CtrlRecorder
   {
-    Trigger _trigger;
-    Acquisition _acq;
+    TriggerBat _triggerBat;
+    TriggerBird _triggerBird;
+    AcquisitionBat _acqBat;
+    AcquisitionBird _acqBird;
     ControlRec _ctrl;
     GeneralRec _gen;
     RecStatus _status;
     bool _connected = false;
     public CtrlRecorder(ColorTable colTable)
     {
-      _trigger = new Trigger();
-      _acq = new Acquisition();
+      _triggerBat = new TriggerBat();
+      _triggerBird = new TriggerBird();
+      _acqBat = new AcquisitionBat();
+      _acqBird = new AcquisitionBird();
       _ctrl = new ControlRec();
       _gen = new GeneralRec();
       _status = new RecStatus(colTable);
@@ -423,15 +488,19 @@ namespace BatInspector
 
 
     public bool IsConnected { get { return _connected; } }
-    public Trigger Trigger { get { return _trigger; } }
-    public Acquisition Acquisition { get { return _acq;} }
+    public TriggerBat TriggerBat { get { return _triggerBat; } }
+    public TriggerBird TriggerBird { get { return _triggerBird; } }
+    public AcquisitionBat AcquisitionBat { get { return _acqBat;} }
+    public AcquisitionBird AcquisitionBird { get { return _acqBird; } }
     public ControlRec Control { get { return _ctrl; } }
     public GeneralRec General { get { return _gen; } }
     public RecStatus Status { get { return _status; } }
     public void init()
     {
-      _trigger.init();
-      _acq.init();  
+      _triggerBat.init();
+      _triggerBird.init();
+      _acqBat.init();
+      _acqBird.init();
       _ctrl.init();
       _gen.init();
       _status.init(); 

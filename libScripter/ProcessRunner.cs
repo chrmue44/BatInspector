@@ -18,10 +18,14 @@ namespace libScripter
     private Process _pr;
     public bool IsRunning { get { return checkIsRunning(); } }
     private bool _logOutput = false;
+    private string[] _errData;
+    private int _errDataIdx = 0;
 
     public ProcessRunner()
     {
+      _errData = new string[10];
     }
+
 
     public int launchCommandLineApp(string exePath, DataReceivedEventHandler handler = null, string workDir = "", bool wait = false,
                                     string args = "", bool newWindow = false, bool logOutput = false, EventHandler exitHandler = null)
@@ -40,15 +44,15 @@ namespace libScripter
         _pr.StartInfo.RedirectStandardOutput = true;
         _pr.StartInfo.RedirectStandardError = true;
         _pr.EnableRaisingEvents = true;
+        _pr.ErrorDataReceived += errDataHandler;
         if (handler != null)
         {
           _pr.OutputDataReceived += handler;
-          _pr.ErrorDataReceived += handler;
         }
         else
         {
           _pr.OutputDataReceived += outputDataHandler;
-          _pr.ErrorDataReceived += outputDataHandler;
+//          _pr.ErrorDataReceived += outputDataHandler;
         }
       }
       if (workDir != "")
@@ -116,6 +120,27 @@ namespace libScripter
     {
       if (_logOutput)
         DebugLog.log(ev.Data, enLogType.INFO);
+    }
+
+    private void errDataHandler(object sender, DataReceivedEventArgs ev)
+    {
+      _errData[_errDataIdx] = ev.Data;
+      _errDataIdx++;
+      if (_errDataIdx >= _errData.Length)
+        _errDataIdx = 0;
+    }
+
+    public string ErrData 
+    {
+      get
+      {
+        string s = "";
+        for (int i = _errDataIdx; i < _errData.Length; i++)
+          s += _errData[i];
+        for (int i = 0; i < _errDataIdx; i++)
+          s += _errData[i];
+        return s;
+      }
     }
 
     private void LogMsg(string text, enLogType type)

@@ -721,7 +721,7 @@
     <value>Fledermausbestimmung, Teil 1</value>
   </data>
   <data name="MainToolCreatePrj" xml:space="preserve">
-    <value>Importiere WAV Datei(en) oder Elekon-Projekt</value>
+    <value>Importiere Audio-Datei(en) oder Elekon-Projekt</value>
   </data>
   <data name="Latitude" xml:space="preserve">
     <value>geographische Breite</value>
@@ -730,10 +730,10 @@
     <value>geografische Länge</value>
   </data>
   <data name="frmCreatePrjInfo" xml:space="preserve">
-    <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus WAV-Dateien ergänzen</value>
+    <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus Audio-Dateien ergänzen</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Importiere WAV Datei(en), BatSpy- oder Elekon-Projekt</value>
+    <value>Importiere WAV, RAW Datei(en), BatSpy- oder Elekon-Projekt</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Formatfehler Geografische Breite: </value>
@@ -760,7 +760,7 @@
     <value>Angezeigten Bereich als WAV-Datei speichern</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Quellverzeichnis (*.wav, *.bpr)</value>
+    <value>Quellverzeichnis (*.wav, *.raw, *.bpr)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Zielverzeichnis für Projekt</value>
@@ -1227,8 +1227,8 @@
   <data name="frmRecStopTimeH" xml:space="preserve">
     <value>Stoppzeit, Stunde</value>
   </data>
-  <data name="DataAcquisition" xml:space="preserve">
-    <value>Datenerfassung</value>
+  <data name="DataAcquisitionBat" xml:space="preserve">
+    <value>Datenerfassung Fledermäuse</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Allgemein</value>
@@ -1664,5 +1664,17 @@
   </data>
   <data name="FrequencyResponse" xml:space="preserve">
     <value>Frequenzgang</value>
+  </data>
+  <data name="FrmRecTriggerBat" xml:space="preserve">
+    <value>Trigger Fledermäuse</value>
+  </data>
+  <data name="DataAcquisitionBird" xml:space="preserve">
+    <value>Datenerfassung Vögel</value>
+  </data>
+  <data name="FrmRecTriggerBird" xml:space="preserve">
+    <value>Trigger Vögel</value>
+  </data>
+  <data name="MsgErrorBd2" xml:space="preserve">
+    <value>Es ist ein Fehler aufgetreten, die Auswertung ist nicht gültig. Der Fehler muss manuell behoben werden!</value>
   </data>
 </root>

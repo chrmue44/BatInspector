@@ -549,6 +549,49 @@ namespace BatInspector
       return retVal;
     }
 
+
+    private static string[] findSoundFiles(PrjInfo info, out string extension)
+    {
+      extension = "*.wav";
+      string[] retVal = getSelectedFiles(info, extension);
+      if(retVal.Length == 0)
+      {
+        extension = "*.raw";
+        retVal = getSelectedFiles(info, extension);
+      }
+      return retVal;
+    }
+
+    private static void importRawFiles(string[] files, string wavDir, PrjInfo info)
+    {
+      RawImportParams pars = new RawImportParams()
+      {
+        SampleRate = 500000,
+        Channels = 1,
+        BitsPerSample = 16
+      };
+
+      foreach (string file in files)
+      {
+        string name = Path.GetFileName(file);
+        string dest = Path.Combine(wavDir, name);
+        dest = dest.Replace(".raw", AppParams.EXT_WAV);
+        WavFile wavFile = new WavFile();
+        wavFile.importRaw(file, pars);
+        if (wavFile.AudioSamples.Length > 2048)
+        {
+          wavFile.saveFileAs(dest);
+          DateTime time = ElekonInfoFile.getDateTimeFromFileName(file);
+          double[] pos = new double[2];
+          pos[0] = info.Latitude;
+          pos[1] = info.Longitude;
+          ElekonInfoFile.create(dest, pos[0], pos[1], time);
+        }
+        else
+          DebugLog.log($"file {name} not imported because it is too short", enLogType.INFO);
+      }
+    }
+
     /// <summary>
     /// create one or multiple projects from a directory containing WAV files
     /// </summary>
@@ -565,7 +608,7 @@ namespace BatInspector
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        string[] files = getSelectedFiles(info, "*.wav");
+        string[] files = findSoundFiles(info, out string soundFileExtension);
 
         // in case of project folder get infos from project
         if (info.IsProjectFolder)
@@ -602,7 +645,10 @@ namespace BatInspector
           DebugLog.log("copy wav files...", enLogType.INFO);
           string fullDir = Path.Combine(info.DstDir, info.Name);
           createPrjDirStructure(fullDir, out string wavDir, info.WavSubDir);
-          Utils.copyFiles(files, wavDir, info.RemoveSource);
+          if (soundFileExtension == "*.wav")
+            Utils.copyFiles(files, wavDir, info.RemoveSource);
+          else
+            importRawFiles(files, wavDir, info);
           string[] xmlFiles = getSelectedFiles(info, "*.xml");
           DebugLog.log("copy xml files...", enLogType.INFO);
           Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
@@ -622,7 +668,8 @@ namespace BatInspector
           string[] txtFiles = Directory.GetFiles(info.SrcDir, "*.txt");
           Utils.copyFiles(txtFiles, prj.PrjDir, info.RemoveSource);
 
-          if (!info.IsProjectFolder)
+          // for raws info files get created in importRawFiles()
+          if (!info.IsProjectFolder &&  (soundFileExtension == "*.wav"))
             prj.createXmlInfoFiles(info);
 
           // replace gpx locations

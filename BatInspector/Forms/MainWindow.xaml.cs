@@ -325,6 +325,9 @@ namespace BatInspector.Forms
         DebugLog.log("start to open query", enLogType.DEBUG);
         showMsg(BatInspector.Properties.MyResources.msgInformation, MyResources.MainWindowMsgOpenQuery);
         checkSavePrj();
+        setStatus("");
+        _workerStartup = null;
+        _tbPrj.Focus();
       }
     }
 
@@ -706,17 +709,29 @@ namespace BatInspector.Forms
             {
               string wavName = App.Model.View.VisibleFiles[i + startIdx];
               PrjRecord rec = App.Model.CurrentlyOpen.findRecord(wavName);
-              lock (rec)
+              if (rec != null)
               {
-                AnalysisFile analysisFile = null;
-                if ((analysis != null) && (rec != null))
-                  analysisFile = analysis.find(rec.File);
-                ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
-                ctl.setup(analysisFile, rec, this, true);
-                DockPanel.SetDock(ctl, Dock.Bottom);
-                _spSpectrums.Children.Add(ctl);
-                initCtlWav(ctl, rec, isQuery);
+                lock (rec)
+                {
+                  AnalysisFile analysisFile = null;
+                  if ((analysis != null) && (rec != null))
+                    analysisFile = analysis.find(rec.File);
+                  ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
+                  if (ctl != null)
+                  {
+                    ctl.setup(analysisFile, rec, this, true);
+                    DockPanel.SetDock(ctl, Dock.Bottom);
+                    _spSpectrums.Children.Add(ctl);
+                    initCtlWav(ctl, rec, isQuery);
+                  }
+                  else
+                  {
+                    DebugLog.log("no more WAV controls in pool available", enLogType.ERROR);
+                  }
+                }
               }
+              else
+                DebugLog.log($"could not find file {wavName}", enLogType.ERROR);
             }
           }
         }

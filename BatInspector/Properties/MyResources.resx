@@ -721,10 +721,10 @@
     <value>Bat Species Determination, part 1</value>
   </data>
   <data name="MainToolCreatePrj" xml:space="preserve">
-    <value>Create project(s) from a collection of WAV files or another project</value>
+    <value>Create project(s) from a collection of audio files or another project</value>
   </data>
   <data name="frmCreatePrjInfo" xml:space="preserve">
-    <value>Please enter missing information to create a project from a selection of WAV files</value>
+    <value>Please enter missing information to create a project from a selection of audio files</value>
   </data>
   <data name="Latitude" xml:space="preserve">
     <value>Latitude</value>
@@ -733,7 +733,7 @@
     <value>Longitude</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Import WAV files, BatSpy- or Elekon Project</value>
+    <value>Import WAV, RAW files, BatSpy- or Elekon Project</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Latitude format error: </value>
@@ -760,7 +760,7 @@
     <value>save displayed range as WAV file</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Source Folder(*.wav, *.bpr)</value>
+    <value>Source Folder(*.wav, *.raw, *.bpr)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Destination Folder for Project</value>
@@ -1227,8 +1227,8 @@
   <data name="frmRecStopTimeH" xml:space="preserve">
     <value>Stop Time, Hour</value>
   </data>
-  <data name="DataAcquisition" xml:space="preserve">
-    <value>Data Acquisition</value>
+  <data name="DataAcquisitionBat" xml:space="preserve">
+    <value>Data Acquisition Bats</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
@@ -1664,5 +1664,17 @@
   </data>
   <data name="FrequencyResponse" xml:space="preserve">
     <value>Frequency Response</value>
+  </data>
+  <data name="FrmRecTriggerBat" xml:space="preserve">
+    <value>Trigger Bats</value>
+  </data>
+  <data name="DataAcquisitionBird" xml:space="preserve">
+    <value>Data Acquisition Birds</value>
+  </data>
+  <data name="FrmRecTriggerBird" xml:space="preserve">
+    <value>Trigger Birds</value>
+  </data>
+  <data name="MsgErrorBd2" xml:space="preserve">
+    <value>An error occurred. The evaluation is not valid. The error has to fixed manually!</value>
   </data>
 </root>

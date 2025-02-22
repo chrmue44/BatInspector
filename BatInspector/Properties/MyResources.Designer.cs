@@ -997,11 +997,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Acquisition.
+        ///   Looks up a localized string similar to Data Acquisition Bats.
         /// </summary>
-        public static string DataAcquisition {
+        public static string DataAcquisitionBat {
             get {
-                return ResourceManager.GetString("DataAcquisition", resourceCulture);
+                return ResourceManager.GetString("DataAcquisitionBat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Acquisition Birds.
+        /// </summary>
+        public static string DataAcquisitionBird {
+            get {
+                return ResourceManager.GetString("DataAcquisitionBird", resourceCulture);
             }
         }
         
@@ -1564,7 +1573,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter missing information to create a project from a selection of WAV files.
+        ///   Looks up a localized string similar to Please enter missing information to create a project from a selection of audio files.
         /// </summary>
         public static string frmCreatePrjInfo {
             get {
@@ -1672,7 +1681,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source Folder(*.wav, *.bpr).
+        ///   Looks up a localized string similar to Source Folder(*.wav, *.raw, *.bpr).
         /// </summary>
         public static string frmCreatePrjSrcFolder {
             get {
@@ -1681,7 +1690,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import WAV files, BatSpy- or Elekon Project.
+        ///   Looks up a localized string similar to Import WAV, RAW files, BatSpy- or Elekon Project.
         /// </summary>
         public static string frmCreatePrjTitle {
             get {
@@ -2307,6 +2316,24 @@ namespace BatInspector.Properties {
         public static string FrmRecTemperature {
             get {
                 return ResourceManager.GetString("FrmRecTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger Bats.
+        /// </summary>
+        public static string FrmRecTriggerBat {
+            get {
+                return ResourceManager.GetString("FrmRecTriggerBat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger Birds.
+        /// </summary>
+        public static string FrmRecTriggerBird {
+            get {
+                return ResourceManager.GetString("FrmRecTriggerBird", resourceCulture);
             }
         }
         
@@ -3067,7 +3094,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create project(s) from a collection of WAV files or another project.
+        ///   Looks up a localized string similar to Create project(s) from a collection of audio files or another project.
         /// </summary>
         public static string MainToolCreatePrj {
             get {
@@ -3495,6 +3522,15 @@ namespace BatInspector.Properties {
         public static string msgDeleteIntermediate {
             get {
                 return ResourceManager.GetString("msgDeleteIntermediate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred. The evaluation is not valid. The error has to fixed manually!.
+        /// </summary>
+        public static string MsgErrorBd2 {
+            get {
+                return ResourceManager.GetString("MsgErrorBd2", resourceCulture);
             }
         }
         

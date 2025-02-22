@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Icon="../images/kopf64.png"
-        Title="Recorder" Height="700" MinHeight="700" Width="900" MinWidth="900" Loaded="Window_Loaded">
+        Title="Recorder" Height="700" MinHeight="700" Width="1000" MinWidth="900" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -36,37 +36,58 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Header="{x:Static res:MyResources.DataAcquisition}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Grid.ColumnSpan="2" >
+                    <GroupBox Header="{x:Static res:MyResources.DataAcquisitionBat}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="1" Grid.Column="1" Margin="5,5,5,5"  >
                         <StackPanel Margin="5">
-                            <local:ctlSelectItem x:Name="_ctlGain"/>
-                            <local:ctlSelectItem x:Name="_ctlSampleRate"/>
-                            <local:ctlDataItem x:Name="_ctlPreTrigger" />
-                            <local:ctlDataItem x:Name="_ctlRecordingTime" />
-                            <local:ctlSelectItem x:Name="_ctlRecFilterType" />
-                            <local:ctlDataItem x:Name="_ctlRecFilterFreq" />
+                            <local:ctlSelectItem x:Name="_ctlGainBat"/>
+                            <local:ctlSelectItem x:Name="_ctlSampleRateBat"/>
+                            <local:ctlDataItem x:Name="_ctlPreTriggerBat" />
+                            <local:ctlDataItem x:Name="_ctlRecordingTimeBat" />
+                            <local:ctlDataItem x:Name="_ctlDeadTimeBat" />
+                            <local:ctlSelectItem x:Name="_ctlRecFilterTypeBat" />
+                            <local:ctlDataItem x:Name="_ctlRecFilterFreqBat" />
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Trigger" Template="{DynamicResource GroupBoxCmu}" Grid.Row="0" Grid.Column="2" Margin="0,5,5,5" Grid.ColumnSpan="2">
+                    <GroupBox Header="{x:Static res:MyResources.DataAcquisitionBird}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="1" Grid.Column="2" Margin="5,5,5,5"  >
                         <StackPanel Margin="5">
-                            <local:ctlSelectItem x:Name="_ctlTrigType" />
-                            <local:ctlDataItem x:Name="_ctlTrigLevel"/>
-                            <local:ctlSelectItem x:Name="_ctlTrigFiltType" />
-                            <local:ctlDataItem x:Name="_ctlTrigFreq" />
-                            <local:ctlDataItem x:Name="_ctlTrigLength" />
+                            <local:ctlSelectItem x:Name="_ctlGainBird"/>
+                            <local:ctlSelectItem x:Name="_ctlSampleRateBird"/>
+                            <local:ctlDataItem x:Name="_ctlPreTriggerBird" />
+                            <local:ctlDataItem x:Name="_ctlRecordingTimeBird" />
+                            <local:ctlDataItem x:Name="_ctlDeadTimeBird" />
+                            <local:ctlSelectItem x:Name="_ctlRecFilterTypeBird" />
+                            <local:ctlDataItem x:Name="_ctlRecFilterFreqBird" />
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="{x:Static res:MyResources.FrmRecControl}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="0"  Margin="5,185,5,5" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <GroupBox Header="{x:Static res:MyResources.FrmRecTriggerBat}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="0" Grid.Column="1" Margin="0,5,5,5" >
+                        <StackPanel Margin="5">
+                            <local:ctlSelectItem x:Name="_ctlTrigTypeBat" />
+                            <local:ctlDataItem x:Name="_ctlTrigLevelBat"/>
+                            <local:ctlSelectItem x:Name="_ctlTrigFiltTypeBat" />
+                            <local:ctlDataItem x:Name="_ctlTrigFreqBat" />
+                            <local:ctlDataItem x:Name="_ctlTrigLengthBat" />
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="{x:Static res:MyResources.FrmRecTriggerBird}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="0" Grid.Column="2" Margin="0,5,5,5" >
+                        <StackPanel Margin="5">
+                            <local:ctlSelectItem x:Name="_ctlTrigTypeBird" />
+                            <local:ctlDataItem x:Name="_ctlTrigLevelBird"/>
+                            <local:ctlSelectItem x:Name="_ctlTrigFiltTypeBird" />
+                            <local:ctlDataItem x:Name="_ctlTrigFreqBird" />
+                            <local:ctlDataItem x:Name="_ctlTrigLengthBird" />
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="{x:Static res:MyResources.FrmRecControl}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="1" Grid.Column="0"  Margin="5,5,5,5" >
                         <StackPanel Margin="5">
                             <local:ctlSelectItem x:Name="_ctlRecMode"/>
                             <local:ctlDataItem x:Name="_ctlRecStartH"/>
                             <local:ctlDataItem x:Name="_ctlRecStartMin"/>
                             <local:ctlDataItem x:Name="_ctlRecStopH"/>
                             <local:ctlDataItem x:Name="_ctlRecStopMin"/>
-                            <local:ctlDataItem x:Name="_ctlDeadTime" />
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="{x:Static res:MyResources.General}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="1"  Margin="0,185,5,5" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                    <GroupBox Header="{x:Static res:MyResources.General}" Template="{DynamicResource GroupBoxCmu}" Grid.Row="0" Grid.Column="0"  Margin="5,5,5,5">
 
                         <StackPanel Margin="5" >
                             <local:ctlSelectItem x:Name="_ctlLanguage" />
@@ -78,7 +99,7 @@
                         </StackPanel>
                     </GroupBox>
                     <Button x:Name="_btnFwUpdate" Width="180" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Content="{x:Static res:MyResources.FrmRecFwUpdate}" Click="_btnFwUpdate_Click" Margin="5,5,0,5"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2"  Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="2">
 
                         <Button x:Name="_btnRead" Width="180"  Content="{x:Static res:MyResources.FrmRecReadFromRecorder}" Click="_btnRead_Click" Margin="5,5,0,5"/>
                         <Button x:Name="_btnWrite" Width="180"  Content="{x:Static res:MyResources.FrmRecWriteToRecorder}" Click="_btnWrite_Click" Margin="5,5,7,5"/>

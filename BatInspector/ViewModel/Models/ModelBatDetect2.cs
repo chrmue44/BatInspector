@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 
 
 namespace BatInspector
@@ -30,6 +31,7 @@ namespace BatInspector
     const string PAR_DETECTION_THRESHOLD = "Detection Threshold";
     public const string BD2_DEFAULT_MODEL = "Net2DFast_UK_same.pth.tar";
     Project _prj;
+    string _listOfFiles;
     
     public ModelBatDetect2(int index) : 
       base(index, enModel.BAT_DETECT2, MODEL_NAME)
@@ -55,6 +57,7 @@ namespace BatInspector
         string wrkDir = Path.Combine(modPath, prj.AvailableModelParams[this.Index].SubDir);
         string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {detTrsh} {pars.DataSet}";
         string cmd = Path.Combine(wrkDir, prj.AvailableModelParams[this.Index].Script);
+        _listOfFiles = "";
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
@@ -68,6 +71,13 @@ namespace BatInspector
           }
           else
             retVal = 2;
+        }
+        else
+        {
+          string logName = wrkDir + "/files.txt";
+          File.WriteAllText(logName, _listOfFiles);
+          MessageBox.Show(BatInspector.Properties.MyResources.MsgErrorBd2, BatInspector.Properties.MyResources.Error, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+          DebugLog.log(_proc.ErrData, enLogType.ERROR);
         }
       }
       catch 
@@ -324,6 +334,8 @@ namespace BatInspector
           if (int.TryParse(intStr, out int val) && (_prj != null) && _prj.Ok)
           {
             val++;
+            _listOfFiles += ev.Data + "\n";
+            DebugLog.log(ev.Data, enLogType.INFO);
             string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
             if (_cli)
               DebugLog.log(msg, enLogType.INFO);
@@ -332,7 +344,7 @@ namespace BatInspector
           }
         }
       }
-      else if ((ev.Data?.ToLower().IndexOf("error") > 0) && (ev.Data?.ToLower().IndexOf("error.") < 0))
+      else if (((ev.Data?.ToLower().IndexOf("error") > 0) || (ev.Data?.ToLower().IndexOf("Error") > 0)) && (ev.Data?.ToLower().IndexOf("error.") < 0))
         DebugLog.log(ev.Data, enLogType.ERROR);
     }
 

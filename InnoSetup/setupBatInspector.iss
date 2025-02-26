@@ -12,7 +12,7 @@
 #define PythonInstaller "python-3.11.0-amd64.exe"
 #define PythonInstFolder "python311"
 #define ReqPythonVersion "Python 3.11"
-#define BatDetectVersion "1.0.8"
+#define BatDetectVersion "1.1.1"
 #define BbnetVersion "b8b9cd8a89980d7e71d4bce74d304c2ebbc20433"
 
 [Setup]

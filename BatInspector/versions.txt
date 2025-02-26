@@ -18,6 +18,7 @@ TODO
 - bugfix: mouse wheel works now in both directions (not only up)
 - read/write microphone info from BatSpy if mic with one-wire chip is connected
 - import RAW audio files (fixed format: 500kS, 16 bit, 1 channel)
+- new batdetect2 version 1.1.1
 
 # V0.9.3.1 14.11.24
 - bugfix: import from WAV-Files did not create xml files anymore (bug introduced in 0.9.3) 

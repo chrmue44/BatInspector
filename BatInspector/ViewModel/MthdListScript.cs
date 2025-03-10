@@ -332,6 +332,8 @@ namespace BatInspector
           LocSourceTxt = false,
           OverwriteLocation = false,
           RemoveSource = false,
+          StartTime = DateTime.MinValue,
+          EndTime = DateTime.MaxValue
         };
         ModelParams modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
         if (argv.Count > 4)

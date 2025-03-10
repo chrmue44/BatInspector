@@ -15,6 +15,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
@@ -600,6 +601,7 @@ namespace BatInspector
     /// <param name="speciesInfo"></param>
     public static bool createPrjFromWavs(PrjInfo info, BatSpeciesRegions regions, List<SpeciesInfos> speciesInfo, ModelParams modelParams, ModelParams[] defaultParams)
     {
+      bool retVal = true;
       if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
       {
         DebugLog.log("error creating project, maxFiles or maxFileLen == 0", enLogType.ERROR);
@@ -608,23 +610,23 @@ namespace BatInspector
       try
       {
         DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
-        string[] files = findSoundFiles(info, out string soundFileExtension);
+        string[] files;
+        string soundFileExtension = "";
 
         // in case of project folder get infos from project
         if (info.IsProjectFolder)
         {
           string wavDir = Path.Combine(info.SrcDir, info.WavSubDir);
-
           Project prjSrc = new Project(regions, speciesInfo, false, modelParams, defaultParams.Length, info.WavSubDir);
           prjSrc.readPrjFile(info.SrcDir, defaultParams);
 
           info.SrcDir = Path.Combine(info.SrcDir, prjSrc.WavSubDir);
           info.Notes = prjSrc.Notes;
-          info.StartTime = new DateTime(1900, 1, 1);
-          info.EndTime = new DateTime(2100, 1, 1);
+          files = findSoundFiles(info, out soundFileExtension);
         }
         else
         {
+          files = findSoundFiles(info, out soundFileExtension);
           if (files.Length > 0)
           {
             bool ok = ElekonInfoFile.checkDateTimeInFileName(files[0]);
@@ -712,8 +714,9 @@ namespace BatInspector
       catch (Exception e)
       {
         DebugLog.log("error creating Project " + info.Name + " " + e.ToString(), enLogType.ERROR);
+        retVal = false; 
       }
-      return true;
+      return retVal;
     }
 
     /// <summary>

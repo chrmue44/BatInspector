@@ -217,7 +217,7 @@ namespace BatInspector.Forms
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
           }
-          else
+          else if(!_isProjectFolder)
           {
             ok = File.Exists(_ctlGpxFile.getValue());
             if (!ok)
@@ -249,6 +249,11 @@ namespace BatInspector.Forms
             _info.StartTime = DateTime.MinValue;
             _info.EndTime = DateTime.MaxValue;
           }
+        }
+        else
+        {
+          _info.StartTime = DateTime.MinValue;
+          _info.EndTime = DateTime.MaxValue;
         }
         thr.Start();
         this.Visibility = Visibility.Hidden;

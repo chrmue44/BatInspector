@@ -36,7 +36,8 @@ namespace BatInspector
     rnn6aModel,
     resNet34Model,
     BAT_DETECT2,
-    BATTY_BIRD_NET
+    BATTY_BIRD_NET,
+    BIRDNET
   };
 
   public enum enZoomType

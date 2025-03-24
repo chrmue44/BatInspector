@@ -67,6 +67,8 @@ namespace BatInspector
           return new ModelBatDetect2(index) as BaseModel;
         case enModel.BATTY_BIRD_NET:
           return new ModelBattyB(index) as BaseModel;
+        case enModel.BIRDNET:
+          return new ModelBirdnet(index) as BaseModel;
 
         default:
           return null;  

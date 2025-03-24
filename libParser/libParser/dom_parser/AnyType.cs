@@ -1332,6 +1332,8 @@ namespace libParser
     {
       DateTime date = new DateTime();
       bool ok = false;
+      if (string.IsNullOrEmpty(str))
+        return DateTime.MinValue;
       try
       {
         if (str[1] == 'd')

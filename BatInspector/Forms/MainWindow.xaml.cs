@@ -867,7 +867,7 @@ namespace BatInspector.Forms
     {
       _dgData.EnableColumnVirtualization = true;
       _dgData.ItemsSource = null;
-      _dgData.ItemsSource =  App.Model.View.ListView;
+      _dgData.ItemsSource = App.Model.View.getListSource();
 
       for (int i = 0; i < _dgData.Columns.Count; i++)
       {

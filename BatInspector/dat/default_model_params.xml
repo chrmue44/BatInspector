@@ -51,4 +51,30 @@
       <Decimals>2</Decimals>
     </Parameters>
   </Models>
+  <Models>
+    <Name>BirdNET</Name>
+    <DataSet></DataSet>
+    <Type>BIRDNET</Type>
+    <Enabled>false</Enabled>
+	<SubDir>birdnet</SubDir>
+	<Script>run.bat</Script>
+    <Parameters>
+      <Name>minimal Probability</Name>
+      <Type>DOUBLE</Type>
+      <Value>0.5</Value>
+      <Decimals>2</Decimals>
+    </Parameters>
+    <Parameters>
+      <Name>Sensitivity</Name>
+      <Type>DOUBLE</Type>
+      <Value>1.0</Value>
+      <Decimals>2</Decimals>
+    </Parameters>
+    <Parameters>
+      <Name>Locale Species Names</Name>
+      <Type>STRING</Type>
+      <Value>de</Value>
+      <Decimals>0</Decimals>
+    </Parameters>
+  </Models>
 </DefModelParamFile>

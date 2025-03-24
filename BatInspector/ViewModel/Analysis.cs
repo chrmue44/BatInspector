@@ -34,6 +34,7 @@ namespace BatInspector
     public const string START_TIME = "start";
     public const string SNR = "snr";
     public const string SPECIES = "Species";
+    public const string SPEC_LOCAL = "Species Local";
     public const string SPECIES_MAN = "SpeciesMan";
     public const string PROBABILITY = "prob";
     public const string REMARKS = "remarks";

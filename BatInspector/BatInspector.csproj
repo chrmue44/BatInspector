@@ -335,6 +335,7 @@
     <Compile Include="ViewModel\kmlPart.cs" />
     <Compile Include="ViewModel\LocFileTxt.cs" />
     <Compile Include="ViewModel\Models\ModelBatDetect2.cs" />
+    <Compile Include="ViewModel\Models\ModelBirdnet.cs" />
     <Compile Include="ViewModel\Models\ModelBattyB.cs" />
     <Compile Include="ViewModel\Models\ModelCmuTsa.cs" />
     <Compile Include="ViewModel\MthdListScript.cs" />

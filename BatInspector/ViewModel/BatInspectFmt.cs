@@ -68,6 +68,30 @@ public class ModelParams
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public ModelParItem[] Parameters { get; set; } = new ModelParItem[5];
 
+
+  public ModelParams getCopy()
+  {
+    ModelParams retVal = new ModelParams();
+
+    retVal.Name = Name;
+    retVal.Script = Script;
+    retVal.Enabled = Enabled;
+    retVal.DataSet = DataSet;
+    retVal.SubDir = SubDir;
+    retVal.Type = Type;
+    retVal.Parameters = new ModelParItem[Parameters.Length];
+    for(int i = 0; i < Parameters.Length; i++)
+    {
+      retVal.Parameters[i] = new ModelParItem();
+      retVal.Parameters[i].Name = Parameters[i].Name;
+      retVal.Parameters[i].Value = Parameters[i].Value;
+      retVal.Parameters[i].Type = Parameters[i].Type;
+      retVal.Parameters[i].Decimals = Parameters[i].Decimals;
+    }
+    
+    return retVal;
+  }
+
   public string getPar(string name)
   {
     foreach(ModelParItem p in Parameters)
@@ -102,6 +126,8 @@ public partial class BatExplorerProjectFile
   private PrjRecord[] _records;
 
   private string _fileVersion;
+
+  private string _prjType;
   
   public BatExplorerProjectFile()
   {
@@ -145,6 +171,10 @@ public partial class BatExplorerProjectFile
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string AutoProcess { get {return _autoProcess;} set {_autoProcess = value;} }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string PrjType { get { return _prjType; } set { _prjType = value; } }
 
 
   /// <remarks/>

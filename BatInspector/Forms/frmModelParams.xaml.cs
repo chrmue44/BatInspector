@@ -33,6 +33,7 @@ namespace BatInspector.Forms
     private void setup()
     {
       ModelParams[] mp = _prj.AvailableModelParams;
+      _sp.Children.Clear();
       for(int i = 0; i < mp.Length; i++) 
       {
         ctlModParItem ctl = new ctlModParItem();
@@ -74,9 +75,22 @@ namespace BatInspector.Forms
       }
     }
 
+
     private void _btnUpdate_Click(object sender, RoutedEventArgs e)
     {
-
+      if( App.Model.DefaultModelParams.Length > _prj.AvailableModelParams.Length)
+      {
+        ModelParams[] mp = new ModelParams[App.Model.DefaultModelParams.Length];
+        for (int i = 0; i < mp.Length; i++)
+        {
+          if(i < _prj.AvailableModelParams.Length)
+            mp[i] = _prj.AvailableModelParams[i];
+          else
+            mp[i] = App.Model.DefaultModelParams[i].getCopy();
+        }
+        _prj.assignNewModelParams( mp);
+        this.Close();
+      }
     }
   }
 }

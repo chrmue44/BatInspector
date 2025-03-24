@@ -206,6 +206,7 @@ namespace BatInspector
         _selectedDir = dir.FullName;
         _view.Prj = new Project(_batSpecRegions, _speciesInfos, updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
         _view.Prj.readPrjFile(_selectedDir, DefaultModelParams);
+        _view.initReport();
         if (File.Exists(Prj.ReportName))
         {
           _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams);

@@ -87,7 +87,7 @@ namespace BatInspector
       {
         DebugLog.log("executing confidence test prediction", enLogType.INFO);
         prj.Analysis.read(reportName, App.Model.DefaultModelParams);
-        prj.Analysis.checkConfidence(prj.SpeciesInfos);
+        prj.Analysis.checkConfidence(App.Model.SpeciesInfos);
         prj.Analysis.save(reportName, prj.Notes, prj.SummaryName);
         prj.Analysis.read(reportName, App.Model.DefaultModelParams);
       }

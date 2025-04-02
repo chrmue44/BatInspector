@@ -298,8 +298,7 @@ namespace BatInspector
       {
         ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
 
-        Project.createPrjFromWavs(info, App.Model.Regions, App.Model.SpeciesInfos,
-                                  modelParams, App.Model.DefaultModelParams);
+        Project.createPrjFromWavs(info, modelParams, App.Model.DefaultModelParams);
       }
       result.assignInt64((long)err);
       return err;
@@ -1399,7 +1398,7 @@ namespace BatInspector
           double lon = argv[2].getFloat();
           if ((lon >= -180) && (lon <= 180))
           {
-            bool occurs = App.Model.Regions.occursAtLocation(spec, lat, lon);
+            bool occurs = App.Model.CurrentlyOpen.IsBirdPrj ||  App.Model.Regions.occursAtLocation(spec, lat, lon);
             result.assignBool(occurs);
           }
           else

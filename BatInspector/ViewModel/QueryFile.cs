@@ -41,6 +41,8 @@ namespace BatInspector
 
     private string _reportFile;
 
+    private string _prjType = "Bats";
+
     private PrjRecord[] _records;
 
     public QueryFile()
@@ -66,6 +68,10 @@ namespace BatInspector
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string ReportFile { get { return _reportFile; } set {_reportFile = value; } }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string ProjectType { get { return _prjType; } set { _prjType = value; } }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]

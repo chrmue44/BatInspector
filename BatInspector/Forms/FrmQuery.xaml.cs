@@ -55,7 +55,7 @@ namespace BatInspector.Forms
     {
        ModelParams modelParams = App.Model.DefaultModelParams[_ctlModel.getSelectedIndex()];
       App.Model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(),
-                               _tbQuery.Text, App.Model.SpeciesInfos, App.Model.Regions, modelParams, App.Model.DefaultModelParams.Length);
+                               _tbQuery.Text, modelParams, App.Model.DefaultModelParams.Length);
       this.Visibility = Visibility.Hidden;
       if (_frmHelp != null)
         _frmHelp.Close();

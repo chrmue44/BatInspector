@@ -83,13 +83,13 @@ namespace BatInspector
       List<Project> prjs = new List<Project>();
       for (int i = 2; i < pars.Count; i++)
       {
-        Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false,
+        Project prj = new Project(false,
         App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)],
         App.Model.DefaultModelParams.Length);
         string prjDir = Path.Combine(dir, pars[i]);
         if (Project.containsProject(prjDir) != "")
         {
-          prj.readPrjFile(prjDir, App.Model.DefaultModelParams);
+          prj.readPrjFile(prjDir);
           if (File.Exists(prj.ReportName))
             prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams);
           prjs.Add(prj);
@@ -146,11 +146,22 @@ namespace BatInspector
     {
       int retVal = 0;
       ErrText = "";
-      string fileName = pars[0];
-      ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
-      DirectoryInfo dir = new DirectoryInfo(fileName);
-      prj.fillFromDirectory(dir, AppParams.DIR_WAVS);
+      if (pars.Count > 0)
+      {
+        string fileName = pars[0];
+        bool isBirdPrj = false;
+        if (pars.Count > 1)
+          isBirdPrj = pars[1] == "Birds";
+        ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+        Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
+        DirectoryInfo dir = new DirectoryInfo(fileName);
+        prj.fillFromDirectory(dir, AppParams.DIR_WAVS);
+      }
+      else
+      {
+        retVal = 1;
+        ErrText = "parameter 1 missing";
+      }
       return retVal;
     }
 
@@ -160,8 +171,7 @@ namespace BatInspector
       ErrText = "";
       string prjDir = pars[0];
       ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
-      prj.readPrjFile(prjDir, App.Model.DefaultModelParams);
+      Project prj = Project.createFrom(prjDir);
       retVal = App.Model.createReport(prj);
       return retVal;
     }

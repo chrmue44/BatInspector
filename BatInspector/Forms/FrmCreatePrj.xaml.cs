@@ -104,6 +104,12 @@ namespace BatInspector.Forms
           _info.Name = Path.GetFileNameWithoutExtension(files[0]);
           _ctlPrjName.setValue(_info.Name);
           _cbTimeFilter.IsEnabled = false;
+          Project prj = Project.createFrom(_ctlSrcFolder.getValue());
+          prj.SelectDefaultModel();
+          _ctlModel.SelectIndex = prj.SelectedModelIndex;
+          string[] dataSetItems = App.Model.DefaultModelParams[prj.SelectedModelIndex].AvailableDataSets;
+          _ctlDataSet.setItems(dataSetItems);
+          _ctlDataSet.setValue(prj.SelectedModelParams.DataSet); 
         }
         else
         {

@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.RightsManagement;
 using System.Xml.Serialization;
 
 
@@ -102,6 +103,20 @@ public class ModelParams
     DebugLog.log($"Model Parameter with name {name} not found", enLogType.ERROR);
     return "";
   }
+
+  public static ModelParams GetModelParams(string name, ModelParams[] modelParams)
+  {
+    ModelParams retVal = null;
+    foreach (ModelParams p in modelParams)
+    {
+      if (p.Name == name)
+      {
+        retVal = p;
+        break;
+      }
+    }
+    return retVal;
+  }
 }
 
 
@@ -131,7 +146,10 @@ public partial class BatExplorerProjectFile
   
   public BatExplorerProjectFile()
   {
-    
+    _notes = "";
+    _created = "";
+    _autoProcess = "true";
+    _prjType = "Bats";
   }
 
   public BatExplorerProjectFile(string name, int fileCount)
@@ -140,11 +158,10 @@ public partial class BatExplorerProjectFile
     _records = new PrjRecord[fileCount];
     for (int i = 0; i < _records.Length; i++)
       _records[i] = new PrjRecord();
-      _notes = "";
+    _notes = "";
     _created = "";
     _autoProcess = "true";
-    //typeField = "";
-    //originatorField = "";
+    _prjType = "Bats";
   }
 
   public BatExplorerProjectFile(string name, List<PrjRecord> records)
@@ -154,6 +171,7 @@ public partial class BatExplorerProjectFile
     _notes = "";
     _created = "";
     _autoProcess = "true";
+    _prjType = "Bats";
   }
 
   /// <remarks/>
@@ -174,7 +192,7 @@ public partial class BatExplorerProjectFile
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  public string PrjType { get { return _prjType; } set { _prjType = value; } }
+  public string ProjectType { get { return _prjType; } set { _prjType = value; } }
 
 
   /// <remarks/>

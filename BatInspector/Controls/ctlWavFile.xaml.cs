@@ -35,6 +35,8 @@ namespace BatInspector.Controls
     enModel _modelType;
     Sonogram _sonogram = null;
     dlgRelease _dlgRelease = null;
+    int _infoWidth = 360;
+    bool _isBirdPrj = false;
 
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
@@ -53,12 +55,10 @@ namespace BatInspector.Controls
         if (!value)
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
-//          _grid.ColumnDefinitions[2].Width = new GridLength(0);
         }
         else
         {
-          _grid.ColumnDefinitions[1].Width = new GridLength(360);
-  //        _grid.ColumnDefinitions[2].Width = new GridLength(160);
+          _grid.ColumnDefinitions[1].Width = new GridLength(_infoWidth);
         }
       }
     }
@@ -95,11 +95,11 @@ namespace BatInspector.Controls
         _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
         //Force render
         _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
-        _img.Arrange(new Rect(_img.DesiredSize));;
+        _img.Arrange(new Rect(_img.DesiredSize));
       }
     }
 
-    public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons)
+    public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons, bool isBird)
     {
       _parent = parent;
       InitializeComponent();
@@ -114,7 +114,9 @@ namespace BatInspector.Controls
       _cbSel.Focusable = true;
       _cbSel.IsChecked = record.Selected;
       Visibility = Visibility.Visible;
-    }
+      _infoWidth = isBird ? AppParams.CTLWAV_WIDTH_BIRDS : AppParams.CTLWAV_WIDTH_BATS;
+      _isBirdPrj = isBird;
+     }
 
 
     public void updateCallInformations(AnalysisFile analysis, PrjRecord rec)
@@ -126,10 +128,13 @@ namespace BatInspector.Controls
       List<string> spec = new List<string>();
       if (_spDataMan.Children.Count > 0)
       {
-        ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
-        spec = ctl.getItems();
+        if (!_isBirdPrj)
+        {
+          ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
+          spec = ctl.getItems();
+        }
+        initCallInformations(spec);
       }
-      initCallInformations(spec);
       _cbSel.IsChecked = rec.Selected;
     }
 
@@ -184,14 +189,26 @@ namespace BatInspector.Controls
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
 
-          ctlSelectItem im = new ctlSelectItem();
-          im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
-                MyResources.ctlWavToolTipCall);
-          im.setItems(spec.ToArray());
-          im.setValue(call.getString(Cols.SPECIES_MAN));
-          if (call.Changed)
-            im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
-          _spDataMan.Children.Add(im);
+          if (_isBirdPrj)
+          {
+            ctlDataItem im = new ctlDataItem();
+            im.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl, true);
+            im.setValue(call.getString(Cols.SPECIES_MAN));
+            if (call.Changed)
+              im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+            _spDataMan.Children.Add(im);
+          }
+          else
+          {
+            ctlSelectItem im = new ctlSelectItem();
+            im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
+                  MyResources.ctlWavToolTipCall);
+            im.setItems(spec.ToArray());
+            im.setValue(call.getString(Cols.SPECIES_MAN));
+            if (call.Changed)
+              im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+            _spDataMan.Children.Add(im);
+          }
           callNr++;
         }
       }

@@ -34,7 +34,7 @@ namespace BatInspector
     public const string START_TIME = "start";
     public const string SNR = "snr";
     public const string SPECIES = "Species";
-    public const string SPEC_LOCAL = "Species Local";
+    public const string SPEC_LATIN = "Species Latin";
     public const string SPECIES_MAN = "SpeciesMan";
     public const string PROBABILITY = "prob";
     public const string REMARKS = "remarks";
@@ -76,7 +76,7 @@ namespace BatInspector
     public const string LANDSCAPE = "Landscape";
 
     public const string DAYS = "Days";
-    public const string T18H = "18:00";
+    public const string T00H = "00:00";
   }
 
   [DataContract]
@@ -103,12 +103,12 @@ namespace BatInspector
     {
       Species = species;
       Count = count;
-      CountTime = new int[13];
+      CountTime = new int[24];
       TempMin = 100;
       TempMax = -100;
       HumidityMax = 0;
       HumidityMin = 100;
-      for(int i = 0; i < 13; i++)
+      for(int i = 0; i < 24; i++)
         CountTime[i] = 0;
     }
 
@@ -144,19 +144,30 @@ namespace BatInspector
     public double TempMax { get { return _item.TempMax; } }
     public double HumidityMin { get { return _item.HumidityMin; } }
     public double HumidityMax { get { return _item.HumidityMax; } }
-    public int _18h { get { return _item.CountTime[0]; } }
-    public int _19h { get { return _item.CountTime[1]; } }
-    public int _20h { get { return _item.CountTime[2]; } }
-    public int _21h { get { return _item.CountTime[3]; } }
-    public int _22h { get { return _item.CountTime[4]; } }
-    public int _23h { get { return _item.CountTime[5]; } }
-    public int _00h { get { return _item.CountTime[6]; } }
-    public int _01h { get { return _item.CountTime[7]; } }
-    public int _02h { get { return _item.CountTime[8]; } }
-    public int _03h { get { return _item.CountTime[9]; } }
-    public int _04h { get { return _item.CountTime[10]; } }
-    public int _05h { get { return _item.CountTime[11]; } }
-    public int _06h { get { return _item.CountTime[12]; } }
+    public int _00h { get { return _item.CountTime[0]; } }
+    public int _01h { get { return _item.CountTime[1]; } }
+    public int _02h { get { return _item.CountTime[2]; } }
+    public int _03h { get { return _item.CountTime[3]; } }
+    public int _04h { get { return _item.CountTime[4]; } }
+    public int _05h { get { return _item.CountTime[5]; } }
+    public int _06h { get { return _item.CountTime[6]; } }
+    public int _07h { get { return _item.CountTime[7]; } }
+    public int _08h { get { return _item.CountTime[8]; } }
+    public int _09h { get { return _item.CountTime[9]; } }
+    public int _10h { get { return _item.CountTime[10]; } }
+    public int _11h { get { return _item.CountTime[11]; } }
+    public int _12h { get { return _item.CountTime[12]; } }
+    public int _13h { get { return _item.CountTime[13]; } }
+    public int _14h { get { return _item.CountTime[14]; } }
+    public int _15h { get { return _item.CountTime[15]; } }
+    public int _16h { get { return _item.CountTime[16]; } }
+    public int _17h { get { return _item.CountTime[17]; } }
+    public int _18h { get { return _item.CountTime[18]; } }
+    public int _19h { get { return _item.CountTime[19]; } }
+    public int _20h { get { return _item.CountTime[20]; } }
+    public int _21h { get { return _item.CountTime[21]; } }
+    public int _22h { get { return _item.CountTime[22]; } }
+    public int _23h { get { return _item.CountTime[23]; } }
   }
 
   public class Analysis
@@ -167,7 +178,6 @@ namespace BatInspector
     private List<AnalysisFile> _list;
     private Csv _csv;
     private List<SumItem> _summary;
-    private List<SpeciesInfos> _speciesInfos;
     private enModel _modelType;
     private bool _updateCtls = false;
 
@@ -198,10 +208,10 @@ namespace BatInspector
       } 
     }
 
-    public Analysis(List<SpeciesInfos> specInfos, bool updateCtls, enModel modelType)
+    public Analysis(bool updateCtls, enModel modelType)
     {
       _updateCtls = updateCtls;
-      init(specInfos);
+      init();
       _modelType = modelType;
     }
 
@@ -250,18 +260,17 @@ namespace BatInspector
       }
     }
 
-    public void init(List<SpeciesInfos> specInfos)
+    public void init()
     {
       _list = new List<AnalysisFile>();
       _cols = new Cols();
       _csv = ModelBatDetect2.createReport(Cols.SPECIES);
-      _speciesInfos = specInfos;
       _summary = new List<SumItem>();
     }
 
     public void read(string fileName, ModelParams[] modelParams)
     {
-      init(_speciesInfos);
+      init();
       lock (_fileLock)
       {
         _csv = new Csv();
@@ -343,7 +352,7 @@ namespace BatInspector
             call.DistToPrev = (startTime - oldStartTime)*1000;
             oldStartTime = startTime;
           }
-          bool isInList = SpeciesInfos.isInList(_speciesInfos, call.getString(Cols.SPECIES));
+          bool isInList = SpeciesInfos.isInList(App.Model.SpeciesInfos, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
           callNr++;
@@ -545,23 +554,34 @@ namespace BatInspector
         Csv sum = new Csv();
         sum.read(fileName, ";", true);
         _summary.Clear();
-        for(int row = 2; row < sum.RowCnt; row++)
+        int startCol = sum.getColNr(Cols.T00H);
+        if (startCol < 0)
         {
-          string species = sum.getCell(row, Cols.SPECIES_MAN);
-          int count = sum.getCellAsInt(row, "Count");
-          SumItem it = new SumItem(species, count);
-          int startCol = sum.getColNr(Cols.T18H);
-          int idx = 0;
-          it.TempMin = sum.getCellAsDouble(row, Cols.TEMP_MIN, true);
-          it.TempMax = sum.getCellAsDouble(row, Cols.TEMP_MAX, true);
-          it.HumidityMin = sum.getCellAsDouble(row, Cols.HUMID_MIN, true);
-          it.HumidityMax = sum.getCellAsDouble(row, Cols.HUMID_MAX, true);
-          for(int c = startCol; c < startCol + 13; c++)
+          string bakFile = fileName + ".old";
+          File.Copy(fileName, bakFile);
+          File.Delete(fileName);
+          createSummary(fileName, notes);
+          DebugLog.log("found summary in old format, created a new one", enLogType.INFO);
+        }
+        else
+        {
+          for (int row = 2; row < sum.RowCnt; row++)
           {
-            it.CountTime[idx] = sum.getCellAsInt(row, c);
-            idx++;
+            string species = sum.getCell(row, Cols.SPECIES_MAN);
+            int count = sum.getCellAsInt(row, "Count");
+            SumItem it = new SumItem(species, count);
+            int idx = 0;
+            it.TempMin = sum.getCellAsDouble(row, Cols.TEMP_MIN, true);
+            it.TempMax = sum.getCellAsDouble(row, Cols.TEMP_MAX, true);
+            it.HumidityMin = sum.getCellAsDouble(row, Cols.HUMID_MIN, true);
+            it.HumidityMax = sum.getCellAsDouble(row, Cols.HUMID_MAX, true);
+            for (int c = startCol; c < startCol + it.CountTime.Length; c++)
+            {
+              it.CountTime[idx] = sum.getCellAsInt(row, c);
+              idx++;
+            }
+            _summary.Add(it);
           }
-          _summary.Add(it);
         }
       }
     }
@@ -605,7 +625,7 @@ namespace BatInspector
     public void updateSpeciesCount()
     {
       foreach(AnalysisFile f in Files)
-        f.updateFoundSpecies(_speciesInfos);
+        f.updateFoundSpecies(App.Model.SpeciesInfos);
     }
 
     void updateRowNumbers()
@@ -650,7 +670,7 @@ namespace BatInspector
               _summary.Add(it);
             }
             int h = f.RecTime.TimeOfDay.Hours;
-            h = (h < 18) ? h + 6 : h - 18;
+         //   h = (h < 18) ? h + 6 : h - 18;
             if ((h >= 0) && (h < it.CountTime.Length))
               it.CountTime[h]++;
           }
@@ -659,7 +679,8 @@ namespace BatInspector
         // create csv file
         Csv sum = new Csv();
         sum.addRow();
-        string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX, Cols.SPECIES_MAN, Cols.COUNT, Cols.T18H, "19:00", "20:00", "21:00", "22:00", "23:00", "0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00" };
+        string[] header = { Cols.DATE, Cols.LAT, Cols.LON, Cols.WEATHER, Cols.LANDSCAPE, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX, Cols.SPECIES_MAN, Cols.COUNT, Cols.T00H, "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
+                            "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" };
         sum.initColNames(header, true);
         sum.addRow();
         int row = 2;
@@ -672,7 +693,7 @@ namespace BatInspector
         if (note.Length > 1)
           sum.setCell(row, Cols.LANDSCAPE, note[1].Replace("\n",""));
 
-        int startTimeCol = sum.findInRow(1, Cols.T18H);
+        int startTimeCol = sum.findInRow(1, Cols.T00H);
         if (startTimeCol > 0)
         {
           foreach (SumItem it in _summary)

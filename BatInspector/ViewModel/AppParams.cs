@@ -177,6 +177,9 @@ namespace BatInspector
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
     public const string CMD_REDUCE_NOISE = "reduce_noise.bat"; //command to reduce the background noise in WAV file
 
+    public const int CTLWAV_WIDTH_BIRDS = 500;            // ctlWav with of info section for bird projects
+    public const int CTLWAV_WIDTH_BATS = 360;             // ctlWav with of info section for bat projects
+
     const string FILE_NAME_SETTINGS = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;

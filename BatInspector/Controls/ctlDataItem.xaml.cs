@@ -9,6 +9,7 @@
 using libParser;
 using System.Globalization;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 
 namespace BatInspector.Controls
@@ -129,7 +130,11 @@ namespace BatInspector.Controls
     }
 
 
-
+    public void setBgColor(SolidColorBrush color)
+    {
+      _tb.Background = color;
+      _lbl.Background = color;
+    }
     private void _tb_LostFocus(object sender, System.Windows.RoutedEventArgs e)
     {
       if (_textChanged)

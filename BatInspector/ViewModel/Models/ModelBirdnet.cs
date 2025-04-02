@@ -47,7 +47,7 @@ namespace BatInspector
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
-          bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
+          bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
           if (ok)
           {
             //        cleanup(prj);
@@ -77,7 +77,7 @@ namespace BatInspector
       int retVal = 0;
       string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
       string annDir = prj.getAnnotationDir();
-      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
+      bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
       if (ok)
       {
         //        cleanup(prj.PrjDir);
@@ -105,7 +105,7 @@ namespace BatInspector
         Cols.HUMIDITY,
         Cols.NR,
         Cols.SPECIES,
-        Cols.SPEC_LOCAL,
+        Cols.SPEC_LATIN,
         Cols.SPECIES_MAN,
         Cols.SAMPLERATE,
         Cols.FILE_LEN,
@@ -139,7 +139,7 @@ namespace BatInspector
         }
         if (!Directory.Exists(annDir))
         {
-          DebugLog.log("Not a single bat call found!", enLogType.WARNING);
+          DebugLog.log("Not a single bird call found!", enLogType.WARNING);
           retVal = false;
         }
         else
@@ -147,7 +147,7 @@ namespace BatInspector
           string[] files = Directory.GetFiles(annDir, "*.BirdNET.results.csv", SearchOption.AllDirectories);
           if (files.Length == 0)
           {
-            DebugLog.log("Not a single bat call found!", enLogType.WARNING);
+            DebugLog.log("Not a single bird call found!", enLogType.WARNING);
             retVal = false;
           }
           else
@@ -155,8 +155,8 @@ namespace BatInspector
             foreach (string file in files)
             {
               // read infoFile
-              string wavName = Path.GetFileName(file).ToLower().Replace(".BirdNET.results.csv", ".wav");
-              string infoName = wavDir + "/" + Path.GetFileName(file).ToLower().Replace(".BirdNET.results.csv", ".xml");
+              string wavName = Path.GetFileName(file).ToLower().Replace(".birdnet.results.csv", ".wav");
+              string infoName = wavDir + "/" + Path.GetFileName(file).ToLower().Replace(".birdnet.results.csv", ".xml");
               string sampleRate = "?";
               string fileLen = "?";
               string recTime = "?";
@@ -205,11 +205,11 @@ namespace BatInspector
                 string abbr = "";
                 if (prob < minProb)
                   abbr = "??PRO[";
-                  abbr += latin;
+                  abbr += localName;
                 if (prob < minProb)
                   abbr += "]";
                 report.setCell(repRow, Cols.SPECIES, abbr);
-                report.setCell(repRow, Cols.SPEC_LOCAL, localName);
+                report.setCell(repRow, Cols.SPEC_LATIN, latin);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
                 report.setCell(repRow, Cols.REMARKS, "");
               }

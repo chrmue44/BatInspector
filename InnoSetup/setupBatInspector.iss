@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0932"
+#define MyInstallerName "SetupBatInspector_0940"
 #define MyAppVersion "0.9.3.2"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
@@ -14,6 +14,7 @@
 #define ReqPythonVersion "Python 3.11"
 #define BatDetectVersion "1.1.1"
 #define BbnetVersion "b8b9cd8a89980d7e71d4bce74d304c2ebbc20433"
+#define BirdnetVersion "0b70738ae838cd0b62d06b81ea467789a0132741"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -82,7 +83,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" {#BatDetectVersion} {#BbnetVersion}"; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" {#BatDetectVersion} {#BbnetVersion} {#BirdnetVersion}"; Flags:runasoriginaluser
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]

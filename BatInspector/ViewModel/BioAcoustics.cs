@@ -319,9 +319,15 @@ namespace BatInspector
     }
 
     [HandleProcessCorruptedStateExceptions]
-    public static int createPngFromWav(string name, double tStart, double tEnd, double fMin, double fMax, int width, int height, double gradientRange)
+    public static int createPngFromWavPart(string name, double tStart, double tEnd, double fMin, double fMax, int width, int height, double gradientRange)
     {
-      return createPng(name, tStart, tEnd, fMin, fMax, width, height, gradientRange);
+      return makePngFromWavPart(name, tStart, tEnd, fMin, fMax, width, height, gradientRange);
+    }
+
+    [HandleProcessCorruptedStateExceptions]
+    public static int createPngFromWav(string name, int width, int height, double gradientRange)
+    {
+      return makePngFromWav(name, width, height, gradientRange);
     }
 
     [HandleProcessCorruptedStateExceptions]
@@ -406,7 +412,10 @@ namespace BatInspector
 
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
-    static public extern int createPng(string fileName, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange);
+    static public extern int makePngFromWavPart(string fileName, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange);
+    
+    [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
+    static public extern int makePngFromWav(string fileName, int width, int height, double gradientRange);
 
     [DllImport("libBioAcoustics.dll", CallingConvention = CallingConvention.Cdecl)]
     static public extern void  setColorGradient(int[] colorTable);

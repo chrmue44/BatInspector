@@ -53,11 +53,12 @@
   </Models>
   <Models>
     <Name>BirdNET</Name>
-    <DataSet></DataSet>
+    <DataSet>WorldWide</DataSet>
     <Type>BIRDNET</Type>
     <Enabled>false</Enabled>
 	<SubDir>birdnet</SubDir>
 	<Script>run.bat</Script>
+    <AvailableDataSets>WorldWide</AvailableDataSets>
     <Parameters>
       <Name>minimal Probability</Name>
       <Type>DOUBLE</Type>

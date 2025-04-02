@@ -384,7 +384,7 @@ namespace BatInspector
         EndTime = new DateTime(2022,7,14),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, App.Model.Regions, App.Model.SpeciesInfos, App.Model.DefaultModelParams[0],App.Model.DefaultModelParams);
+      Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0],App.Model.DefaultModelParams);
     }
 
     private void testReportModelBatdetect2()
@@ -396,8 +396,8 @@ namespace BatInspector
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
       model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
       ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Project prj = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
-      Analysis a = new Analysis(prj.SpeciesInfos, false, enModel.BAT_DETECT2);
+      Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
+      Analysis a = new Analysis(false, enModel.BAT_DETECT2);
       a.read(reportName, App.Model.DefaultModelParams);
       a.save(reportName, prj.Notes, prj.SummaryName);
     }
@@ -409,8 +409,8 @@ namespace BatInspector
       string name = "test";
       string query = "(FreqMin > 18000) && (FreqMin < 21000) && (SpeciesAuto == \"NLEI\")";
       ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-      Query qry = new Query(name, srcDir, dstDir, query, App.Model.SpeciesInfos, 
-                            App.Model.Regions, modelParams, App.Model.DefaultModelParams.Length);
+      Query qry = new Query(name, srcDir, dstDir, query,  
+                            modelParams, App.Model.DefaultModelParams.Length);
       qry.evaluate();      
     }
 
@@ -424,8 +424,8 @@ namespace BatInspector
         if (repName != "")
         {
           ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-          Project p = new Project(App.Model.Regions, App.Model.SpeciesInfos, false, modelParams, App.Model.DefaultModelParams.Length);
-          Analysis a = new Analysis(p.SpeciesInfos, false, enModel.BAT_DETECT2);
+          Project p = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
+          Analysis a = new Analysis(false, enModel.BAT_DETECT2);
           a.read(repName, App.Model.DefaultModelParams);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
           a.createSummary(sumName, p.Notes);
@@ -495,7 +495,7 @@ namespace BatInspector
       string file = "20220906_0005.wav";
       w.readFile(Path.Combine(prjDir, "Records", file));
       string report = Path.Combine(prjDir, "bd2", "report_BatDetect2_GermanBats.pth.tar.csv");
-      Analysis a = new Analysis(App.Model.SpeciesInfos, false, enModel.BAT_DETECT2);
+      Analysis a = new Analysis(false, enModel.BAT_DETECT2);
       a.read(report, App.Model.DefaultModelParams);
       AnalysisFile f = a.find(file);
       assert("open test data", f != null);
@@ -902,7 +902,7 @@ namespace BatInspector
       BioAcoustics.setColorTable();
       Stopwatch sw = new Stopwatch();
       sw.Start();
-      BioAcoustics.createPngFromWav(wavName, 0, 2, 0, 150, 512, 512, 30);
+      BioAcoustics.createPngFromWav(wavName, 512, 512, 30);
       sw.Stop();
     }
 

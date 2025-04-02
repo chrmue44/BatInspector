@@ -60,7 +60,6 @@ namespace BatInspector.Forms
     frmSpeciesData _frmSpecies = null;
     Thread _workerPredict = null;
     Thread _workerStartup = null;
-    Thread _pngThread = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
@@ -356,11 +355,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void createPngImages()
-    {
-      App.Model.View.createPngFiles(App.Model.ColorTable);
-      DebugLog.log("generation of PNGs finished", enLogType.INFO);
-    }
+   
 
     private void initProjectAsync()
     {
@@ -385,14 +380,8 @@ namespace BatInspector.Forms
             _ctlScatter.initPrj();
             _switchTabToPrj = true;
             buildWavFileList(false);
-            if ((_pngThread != null) && (_pngThread.IsAlive))
-            {
-              DebugLog.log("abort background generation of PNGs", enLogType.INFO);
-              _pngThread.Abort();
-            }
-            _pngThread = new Thread(createPngImages);
-            _pngThread.Start();
-
+            App.Model.View.stopCreatingPngFiles();
+            App.Model.View.startCreatingPngFiles();
           }
         }
         catch(Exception ex)
@@ -667,8 +656,8 @@ namespace BatInspector.Forms
         AnalysisFile analysisFile = null;
         if (App.Model.CurrentlyOpen.Analysis != null)
           analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
-        ctlWavFile ctl = _wavCtls.get("wavCtl append"); 
-        ctl.setup(analysisFile, rec, this, true);
+        ctlWavFile ctl = _wavCtls.get("wavCtl append");
+        ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj);
         if (up)
           _spSpectrums.Children.Add(ctl);
         else
@@ -719,7 +708,7 @@ namespace BatInspector.Forms
                   ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
                   if (ctl != null)
                   {
-                    ctl.setup(analysisFile, rec, this, true);
+                    ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj);
                     DockPanel.SetDock(ctl, Dock.Bottom);
                     _spSpectrums.Children.Add(ctl);
                     initCtlWav(ctl, rec, isQuery);

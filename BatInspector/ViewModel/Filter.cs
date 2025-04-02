@@ -164,10 +164,13 @@ namespace BatInspector
 
       _expression.setVariable(VAR_SPECIES_AUTO, call.getString(Cols.SPECIES));
       _expression.setVariable(VAR_SPECIES_MAN, call.getString(Cols.SPECIES_MAN));
-      _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
-      _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
-      _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
-      _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
+      if (!App.Model.CurrentlyOpen?.IsBirdPrj == true)
+      {
+        _expression.setVariable(VAR_FREQ_MIN, call.getDouble(Cols.F_MIN));
+        _expression.setVariable(VAR_FREQ_MAX, call.getDouble(Cols.F_MAX));
+        _expression.setVariable(VAR_FREQ_MAX_AMP, call.getDouble(Cols.F_MAX_AMP));
+        _expression.setVariable(VAR_DURATION, call.getDouble(Cols.DURATION));
+      }
       _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
       _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
       AnyType res = _expression.parse(filter.Expression);

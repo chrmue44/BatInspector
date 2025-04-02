@@ -282,10 +282,16 @@ namespace libBioAcoustics
 
   ColorTable colorTable;
 
-  DLL_API int createPng(const char* name, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange)
+  DLL_API int makePngFromWavPart(const char* name, double startTime, double endTime, double fMin, double fMax, int width, int height, double gradientRange)
   {
     FtDiagram d;
-    return d.createPng(name, startTime, endTime, fMin, fMax, width, height, gradientRange, &colorTable);
+    return d.createPngFromWavPart(name, startTime, endTime, fMin, fMax, width, height, gradientRange, &colorTable);
+  }
+
+  DLL_API int makePngFromWav(const char* name, int width, int height, double gradientRange)
+  {
+    FtDiagram d;
+    return d.createPngFromWav(name, width, height, gradientRange, &colorTable);
   }
 
 

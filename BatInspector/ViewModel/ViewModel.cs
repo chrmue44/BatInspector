@@ -6,18 +6,13 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using BatInspector.Controls;
-using BatInspector.Forms;
 using libParser;
 using libScripter;
-using System;
 using System.Collections.Generic;
-using System.Deployment.Application;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Threading;
-using System.Windows;
-using System.Windows.Media.Imaging;
+
 
 
 namespace BatInspector
@@ -157,7 +152,7 @@ namespace BatInspector
         _models.Add(BaseModel.Create(index, m.Type));
         index++;
       }
-      _view.Prj = new Project(_batSpecRegions, _speciesInfos, true,
+      _view.Prj = new Project(true,
                  DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
 
       List<string> species = new List<string>();
@@ -200,12 +195,13 @@ namespace BatInspector
 
     public void initProject(DirectoryInfo dir, bool updateCtls)
     {
+      App.Model.View.stopCreatingPngFiles();
       if (Project.containsProject(dir) != "")
       {
         _view.Query = null;
         _selectedDir = dir.FullName;
-        _view.Prj = new Project(_batSpecRegions, _speciesInfos, updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
-        _view.Prj.readPrjFile(_selectedDir, DefaultModelParams);
+        _view.Prj = new Project(updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
+        _view.Prj.readPrjFile(_selectedDir);
         _view.initReport();
         if (File.Exists(Prj.ReportName))
         {
@@ -218,14 +214,14 @@ namespace BatInspector
           }
         }
         else
-          _view.Prj.Analysis.init(_view.Prj.SpeciesInfos);
+          _view.Prj.Analysis.init();
 //        if (_prj.Ok && _prj.Analysis.Report != null)
 //          checkProject();
         initScripter();
       }
       else if (Project.containsWavs(dir))
       {
-        _view.Prj = new Project(_batSpecRegions, _speciesInfos, updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
+        _view.Prj = new Project(updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
         _view.Prj.fillFromDirectory(dir);
         _selectedDir = dir.FullName;
         initScripter();
@@ -298,6 +294,7 @@ namespace BatInspector
       AppParams.Inst.save();
     }
 
+    /*
     public void createPngIfMissing(PrjRecord rec, bool fromQuery)
     {
       string fullName = fromQuery ? Path.Combine(_selectedDir, rec.File) : Path.Combine(_selectedDir, _view.Prj.WavSubDir, rec.File);
@@ -307,7 +304,7 @@ namespace BatInspector
         createPng(fullName, pngName,AppParams.FFT_WIDTH, _colorTable);
       }
     }
-
+    */
 
     public static void createPng(string wavName, string pngName, int fftWidth, ColorTable colorTable)
     {
@@ -664,8 +661,7 @@ namespace BatInspector
         }
         if (delAnn)
         {
-          Project prj = new Project(Regions, SpeciesInfos, false, DefaultModelParams[0], DefaultModelParams.Length);
-          prj.readPrjFile(dir.FullName, DefaultModelParams);
+          Project prj = Project.createFrom(dir.FullName);
           string annDir = prj.getAnnotationDir();
           if (Directory.Exists(annDir))
           {
@@ -715,8 +711,7 @@ namespace BatInspector
           foreach (FileInfo file in d.GetFiles())
             origSpace += (int)(file.Length / 1024);
         }
-        Project prj = new Project(Regions, SpeciesInfos, false, DefaultModelParams[0], DefaultModelParams.Length);
-        prj.readPrjFile(dir.FullName, DefaultModelParams);
+        Project prj = Project.createFrom(dir.FullName);
         string annDir = prj.getAnnotationDir();
         if (Directory.Exists(annDir))
         {
@@ -841,7 +836,11 @@ namespace BatInspector
 
     public void createProject(PrjInfo info, bool inspect, bool cli)
     {
-      bool ok = Project.createPrjFromWavs(info, Regions, SpeciesInfos, info.ModelParams, DefaultModelParams);
+      bool ok = false;
+      if (info.IsProjectFolder)
+        ok = Project.copyFromBatspy(info, info.ModelParams, DefaultModelParams);
+      else
+        ok = Project.createPrjFromWavs(info, info.ModelParams, DefaultModelParams);
       if (!ok)
       {
         App.Model.Status.State = enAppState.IDLE;

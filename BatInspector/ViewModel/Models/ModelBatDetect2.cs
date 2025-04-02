@@ -61,7 +61,7 @@ namespace BatInspector
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
-          bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
+          bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
           if (ok)
           {
     //        cleanup(prj);
@@ -102,7 +102,7 @@ namespace BatInspector
       int retVal = 0;
       string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
       string annDir = Path.Combine(prj.PrjDir, prj.SelectedModelParams.SubDir, AppParams.ANNOTATION_SUBDIR);
-      bool ok = createReportFromAnnotations(0.5, prj.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
+      bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
       if (ok)
       {
         //        cleanup(prj.PrjDir);

@@ -128,7 +128,8 @@ namespace BatInspector
                                             new ParLocation(49.995876,9.010885)}
 
 
-      }; Regions.Add(r);
+      };
+      Regions.Add(r);
 
       r = new ParRegion()
       {
@@ -238,6 +239,24 @@ namespace BatInspector
       }
       return retVal;
     }
+
+
+    public bool IsGermany(double lat, double lon)
+    {
+      bool retVal = false;
+      ParLocation l = new ParLocation(lat, lon);
+      foreach (ParRegion r in Regions)
+      {
+        if((r.Name == "Deutschland") && inside(l, r.Location))
+        {
+          retVal = true;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+
 
     // Is p0 inside p?  Polygon 
     public static bool inside(ParLocation p0, List<ParLocation> p)

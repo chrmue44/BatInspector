@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Media.Imaging;
 
 namespace BatInspector
@@ -29,9 +30,8 @@ namespace BatInspector
     public string Snr { get; set; }
     public string SpeciesAuto { get; set; }
     public string SpeciesMan { get; set; }
-    public string SpeciesLocal { get; set; }
+    public string SpeciesLatin { get; set; }
     public string Probability { get; set; }
-
     public string Latitude { get; set; }
     public string Longitude { get; set; }
     public string Temperature { get; set; }
@@ -59,7 +59,7 @@ namespace BatInspector
       Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
       StartTime = call.getString(Cols.START_TIME);
       SpeciesAuto = call.getString(Cols.SPECIES);
-      SpeciesLocal = call.getString(Cols.SPEC_LOCAL);
+      SpeciesLatin = call.getString(Cols.SPEC_LATIN);
       Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
       Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
       Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
@@ -69,6 +69,58 @@ namespace BatInspector
       SpeciesMan = call.getString(Cols.SPECIES_MAN);
     }
   }
+
+  public class ReportItemBattyBirdNet
+  {
+    string _remarks;
+    bool _changed = false;
+    public int Row { get; set; }
+    public string FileName { get; set; }
+    public string CallNr { get; set; }
+    public string StartTime { get; set; }
+    public string Duration { get; set; }
+    public string Snr { get; set; }
+    public string SpeciesAuto { get; set; }
+    public string SpeciesMan { get; set; }
+    public string Probability { get; set; }
+    public string Latitude { get; set; }
+    public string Longitude { get; set; }
+    public string Temperature { get; set; }
+    public string Humidity { get; set; }
+    public string Remarks
+    {
+      get { return _remarks; }
+      set
+      {
+        _remarks = value;
+        _changed = true;
+      }
+    }
+
+    public ReportItemBattyBirdNet(AnalysisFile file, AnalysisCall call)
+    {
+      FileName = file.Name;
+      int callNr = call.getInt(Cols.NR);
+      CallNr = callNr.ToString();
+      if (callNr < 2)
+        Remarks = file.getString(Cols.REMARKS);
+      _changed = false;
+      Row = call.ReportRow;
+      Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
+      Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
+      StartTime = call.getString(Cols.START_TIME);
+      SpeciesAuto = call.getString(Cols.SPECIES);
+      Probability = call.getDouble(Cols.PROBABILITY).ToString("0.###", CultureInfo.InvariantCulture);
+      Latitude = call.getDouble(Cols.LAT).ToString("0.#######", CultureInfo.InvariantCulture);
+      Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
+      Temperature = call.getDouble(Cols.TEMPERATURE).ToString("0.#", CultureInfo.InvariantCulture);
+      Humidity = call.getDouble(Cols.HUMIDITY).ToString("0.#", CultureInfo.InvariantCulture);
+      //  Snr = call.getDouble(Cols.SNR).ToString();
+      SpeciesMan = call.getString(Cols.SPECIES_MAN);
+    }
+  }
+
+
   public class ReportItemBd2
   {
     string _remarks;
@@ -131,6 +183,8 @@ namespace BatInspector
     enModel _modelType = enModel.BAT_DETECT2;
     List<ReportItemBd2> _reportBd2 = null;
     List<ReportItemBirdNet> _reportBirdNet = null;
+    List<ReportItemBattyBirdNet> _reportBattyBirdNet = null;
+    Thread _pngThread = null;
 
     public PrjView()
     {
@@ -147,6 +201,8 @@ namespace BatInspector
           _reportBd2 = new List<ReportItemBd2>();
           break;
         case enModel.BATTY_BIRD_NET:
+          _reportBattyBirdNet = new List<ReportItemBattyBirdNet>();
+          break;
         case enModel.BIRDNET:
           _reportBirdNet = new List<ReportItemBirdNet>();
           break;
@@ -155,6 +211,7 @@ namespace BatInspector
 
     List<string> _showWavFiles = new List<string>();
     Pool<Sonogram> _sonograms = new Pool<Sonogram>(AppParams.CNT_WAV_CONTROLS + 2);
+    bool _stopCreatingPngs = false;
 
     public List<string> VisibleFiles { get { return _showWavFiles; } }
 
@@ -162,7 +219,7 @@ namespace BatInspector
 
     public Query Query { get; set; }
     public int StartIdx { get; set; } = 0;
-   
+
 
     public IEnumerable getListSource()
     {
@@ -175,6 +232,9 @@ namespace BatInspector
           retVal = _reportBd2 as IEnumerable;
           break;
         case enModel.BATTY_BIRD_NET:
+          retVal = _reportBattyBirdNet as IEnumerable;
+          break;
+
         case enModel.BIRDNET:
           retVal = _reportBirdNet as IEnumerable;
           break;
@@ -219,7 +279,11 @@ namespace BatInspector
           case enModel.resNet34Model:
             _reportBd2.Clear();
             break;
-          case enModel.BATTY_BIRD_NET:
+          
+            case enModel.BATTY_BIRD_NET:
+          _reportBattyBirdNet.Clear();
+            break;
+
           case enModel.BIRDNET:
           _reportBirdNet.Clear();
             break;
@@ -246,8 +310,12 @@ namespace BatInspector
                     ReportItemBd2 it = new ReportItemBd2(f, f.Calls[c]);
                     _reportBd2.Add(it);
                     break;
-                  case enModel.BIRDNET:
                   case enModel.BATTY_BIRD_NET:
+                    ReportItemBattyBirdNet itbb = new ReportItemBattyBirdNet(f, f.Calls[c]);
+                    _reportBattyBirdNet.Add(itbb);
+                    break;
+
+                  case enModel.BIRDNET:
                     ReportItemBirdNet itb = new ReportItemBirdNet(f, f.Calls[c]);
                     _reportBirdNet.Add(itb);
                     break;
@@ -273,8 +341,15 @@ namespace BatInspector
             _reportBd2.Add(item);
           }
           break;
-        case enModel.BIRDNET:
         case enModel.BATTY_BIRD_NET:
+          if (_reportBattyBirdNet != null)
+          {
+            ReportItemBattyBirdNet item = new ReportItemBattyBirdNet(file, call);
+            _reportBattyBirdNet.Add(item);
+          }
+          break;
+
+        case enModel.BIRDNET:
           if (_reportBirdNet != null)
           {
             ReportItemBirdNet item = new ReportItemBirdNet(file, call);
@@ -300,13 +375,40 @@ namespace BatInspector
       tmp.release();
     }
 
+    public void startCreatingPngFiles()
+    {
+      _pngThread = new Thread(createPngImages);
+      DebugLog.log("generation of missing pngs started", enLogType.INFO);
+      _pngThread.Start();
+    }
 
-    public void createPngFiles(ColorTable colorTable)
+    public void stopCreatingPngFiles()
+    {
+      if ((_pngThread != null) && (_pngThread.IsAlive))
+      {
+        _stopCreatingPngs = true;
+        DebugLog.log("abort background generation of PNGs", enLogType.INFO);
+        _pngThread.Join();
+      }
+    }
+
+    private void createPngImages()
+    {
+      App.Model.View.createPngFiles(App.Model.ColorTable);
+      DebugLog.log("generation of PNGs finished", enLogType.INFO);
+    }
+
+    private void createPngFiles(ColorTable colorTable)
     {
       if ((Prj != null))
       {
         foreach (PrjRecord rec in Prj.Records)
         {
+          if(_stopCreatingPngs)
+          {
+            _stopCreatingPngs = false;
+            break;
+          }
           string pngName = Path.Combine(Prj.PrjDir, Prj.WavSubDir, Path.GetFileNameWithoutExtension(rec.File) + AppParams.EXT_IMG);
           if (!File.Exists(pngName))
           {
@@ -444,8 +546,24 @@ namespace BatInspector
     }
 
 
+
     public void createFtImageFromWavFile(string wavName, int fftWidth, ColorTable colorTable)
     {
+/*
+      string pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+      try
+      {
+        if(!File.Exists(pngName) && File.Exists(wavName))
+          BioAcoustics.createPngFromWav(wavName, (int)AppParams.Inst.WaterfallWidth, 512, AppParams.Inst.GradientRange);
+        _bmp = new Bitmap(pngName);
+        if (_bmp != null)
+          _bImg = Convert(_bmp);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"error creating png form {wavName} : {ex.ToString()}", enLogType.ERROR);
+      } */
+    
       string pngName = "";
       try
       {

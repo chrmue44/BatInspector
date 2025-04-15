@@ -298,7 +298,7 @@ namespace BatInspector
       {
         ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
 
-        Project.createPrjFromWavs(info, modelParams, App.Model.DefaultModelParams);
+        Project.createPrjFromWavs(info, modelParams);
       }
       result.assignInt64((long)err);
       return err;
@@ -332,7 +332,8 @@ namespace BatInspector
           OverwriteLocation = false,
           RemoveSource = false,
           StartTime = DateTime.MinValue,
-          EndTime = DateTime.MaxValue
+          EndTime = DateTime.MaxValue,
+          ModelParams = null
         };
         ModelParams modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
         if (argv.Count > 4)
@@ -352,6 +353,7 @@ namespace BatInspector
             else
               DebugLog.log($"Model '{dataSet}' not found!", enLogType.ERROR);
           }
+          info.ModelParams = modPars;
         }
         else
           DebugLog.log("import project with default model: " + AppParams.Inst.DefaultModel, enLogType.INFO);

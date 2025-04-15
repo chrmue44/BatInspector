@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+//using System.Windows.Forms;
 using System.Xml.Serialization;
 
 
@@ -634,7 +635,10 @@ namespace BatInspector
       }
     }
 
-    public static bool copyFromBatspy(PrjInfo info, ModelParams modelParams, ModelParams[] defaultParams)
+
+
+
+    public static bool copyFromBatspy(PrjInfo info, ModelParams modelParams)
     {
       bool retVal = false;
       try
@@ -660,7 +664,10 @@ namespace BatInspector
           }
 
           Project prj = Project.createFrom(fullDir);
-          prj._modelParams = modelParams;
+          if (modelParams != null)
+            prj._modelParams = modelParams;
+          else
+            prj.SelectDefaultModel();
           prj.writePrjFile();
 
           splitFiles(Path.Combine(info.DstDir, info.Name, info.WavSubDir), info);
@@ -682,7 +689,7 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static bool createPrjFromWavs(PrjInfo info, ModelParams modelParams, ModelParams[] defaultParams)
+    public static bool createPrjFromWavs(PrjInfo info, ModelParams modelParams)
     {
       bool retVal = true;
       if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
@@ -725,7 +732,7 @@ namespace BatInspector
           Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
 
           // create project
-          Project prj = new Project(false, modelParams, defaultParams.Length);
+          Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           DebugLog.log("creating project...", enLogType.INFO);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes);
@@ -1163,15 +1170,18 @@ namespace BatInspector
           DebugLog.log("delete file " + name, enLogType.DEBUG);
           try
           {
-            if (File.Exists(name))
-              File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
-            name = name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-            if (File.Exists(name))
-              File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
-            name = name.Replace(AppParams.EXT_INFO, AppParams.EXT_IMG);
-            if (File.Exists(name))
-              File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
-            _changed = true;
+            lock (rec)
+            {
+              if (File.Exists(name))
+                File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
+              name = name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+              if (File.Exists(name))
+                File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
+              name = name.Replace(AppParams.EXT_INFO, AppParams.EXT_IMG);
+              if (File.Exists(name))
+                File.Move(name, Path.Combine(destDir, Path.GetFileName(name)));
+              _changed = true;
+            }
           }
           catch (Exception ex)
           {

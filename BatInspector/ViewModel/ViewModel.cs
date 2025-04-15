@@ -838,9 +838,9 @@ namespace BatInspector
     {
       bool ok = false;
       if (info.IsProjectFolder)
-        ok = Project.copyFromBatspy(info, info.ModelParams, DefaultModelParams);
+        ok = Project.copyFromBatspy(info, info.ModelParams);
       else
-        ok = Project.createPrjFromWavs(info, info.ModelParams, DefaultModelParams);
+        ok = Project.createPrjFromWavs(info, info.ModelParams);
       if (!ok)
       {
         App.Model.Status.State = enAppState.IDLE;

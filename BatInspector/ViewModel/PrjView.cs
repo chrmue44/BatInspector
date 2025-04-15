@@ -388,7 +388,7 @@ namespace BatInspector
       {
         _stopCreatingPngs = true;
         DebugLog.log("abort background generation of PNGs", enLogType.INFO);
-        _pngThread.Join();
+        _pngThread.Join(300);
       }
     }
 

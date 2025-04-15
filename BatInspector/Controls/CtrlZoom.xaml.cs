@@ -1165,7 +1165,7 @@ namespace BatInspector.Controls
       if (idx < App.Model.ZoomView.Analysis.Calls.Count)
       {
         AnalysisCall call = App.Model.ZoomView.Analysis.Calls[idx];
-        if (_modelType != enModel.BATTY_BIRD_NET)
+        if ((_modelType != enModel.BATTY_BIRD_NET) && (_modelType != enModel.BIRDNET))
         {
           _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
           _ctlFMax.setValue(call.getDouble(Cols.F_MAX) / 1000);

@@ -834,6 +834,7 @@ namespace BatInspector.Forms
             MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
           {
+            App.Model.View.stopCreatingPngFiles();
             App.Model.Status.State = enAppState.AI_ANALYZE;
             _workerPredict = new Thread(new ThreadStart(workerPrediction));
             _workerPredict.Start();

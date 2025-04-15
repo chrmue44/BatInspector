@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Xml.Linq;
 
 namespace BatInspector
 {
@@ -384,7 +383,7 @@ namespace BatInspector
         EndTime = new DateTime(2022,7,14),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0],App.Model.DefaultModelParams);
+      Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0]);
     }
 
     private void testReportModelBatdetect2()
@@ -739,21 +738,21 @@ namespace BatInspector
     {
       DirectoryInfo subDir = new DirectoryInfo(prjName);
       
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
-        if (repName != "")
+      string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
+      if (repName != "")
+      {
+        App.Model.initProject(subDir, false);
+        foreach (AnalysisFile f in App.Model.Prj.Analysis.Files)
         {
-          App.Model.initProject(subDir, false);
-          foreach (AnalysisFile f in App.Model.Prj.Analysis.Files)
-          {
-            string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
-            BatRecord rec = ElekonInfoFile.read(info);
-            foreach (AnalysisCall c in f.Calls)
-              c.setString(Cols.REC_TIME, rec.DateTime);
-          }
-          App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
+          string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
+          BatRecord rec = ElekonInfoFile.read(info);
+          foreach (AnalysisCall c in f.Calls)
+            c.setString(Cols.REC_TIME, rec.DateTime);
         }
-      
+        App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
+      }
     }
+
 
     struct stSpecLoc
     {

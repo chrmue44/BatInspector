@@ -26,6 +26,8 @@ namespace BatInspector.Forms
     System.Windows.Threading.DispatcherTimer _timer;
     int _tickCnt = 0;
     bool _firmwareUpdate = false;
+    const double DB_MIN = -20;
+    const double DB_MAX = 30;
 
     public FrmSetupRecorder(CtrlRecorder recorder)
     {
@@ -591,9 +593,9 @@ namespace BatInspector.Forms
     private void createFreqResponseGraph(Canvas c, double h, double w)
     {
       c.Children.Clear();
-      GraphHelper.createRulerY(c, 20, 5, h-20, -10, 10, 4);
-      double[] ticksY = { -5, 0, 5, 10 };
-      GraphHelper.createGridY(c, 20, 5, w, h - 20,  -10, 10, ticksY);
+      GraphHelper.createRulerY(c, 20, 5, h-20, DB_MIN, DB_MAX, 4);
+      double[] ticksY = { -10, 0, 10, 20 };
+      GraphHelper.createGridY(c, 20, 5, w, h - 20,  DB_MIN, DB_MAX, ticksY);
       double[] ticksX = { 100, 1000, 10000, 100000 };
       GraphHelper.createRulerLogX(c, 20, h-20, w, 80, 200000, ticksX);
       GraphHelper.createText(c, -13, h - 40, "[dB]", Brushes.Black);
@@ -613,7 +615,7 @@ namespace BatInspector.Forms
       Point[] points = new Point[l.Count];
       for(int i = 0; i <  l.Count; i++) 
         points[i] = new Point(l[i].Frequency, l[i].Amplitude);
-      GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, -10, 10, points);
+      GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, DB_MIN, DB_MAX, points);
     }
 
 
@@ -624,7 +626,7 @@ namespace BatInspector.Forms
       Point[] points = new Point[l.Count];
       for (int i = 0; i < l.Count; i++)
         points[i] = new Point(l[i].Frequency, l[i].Amplitude);
-      GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, -10, 10, points);
+      GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, DB_MIN, DB_MAX, points);
     }
   }
 }

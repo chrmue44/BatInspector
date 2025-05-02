@@ -684,18 +684,20 @@ namespace BatInspector
         DebugLog.log("try to load:" + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
-          file = new FileStream(fPath, FileMode.Open, FileAccess.Read);
-          DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
-          retVal = (AppParams)ser.ReadObject(file);
-          if (retVal == null)
-            DebugLog.log("settings file not well formed!", enLogType.ERROR);
-          if (retVal.ColorGradientBlue == null)
-            retVal.initColorGradient();
-//          if (retVal.Models == null)
-//            retVal.initModels();
-          DebugLog.log("successfully loaded", enLogType.DEBUG);
-          retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
-          retVal.updateFromOlderVersions();
+          using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
+            retVal = (AppParams)ser.ReadObject(file);
+            if (retVal == null)
+              DebugLog.log("settings file not well formed!", enLogType.ERROR);
+            if (retVal.ColorGradientBlue == null)
+              retVal.initColorGradient();
+            //          if (retVal.Models == null)
+            //            retVal.initModels();
+            DebugLog.log("successfully loaded", enLogType.DEBUG);
+            retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
+            retVal.updateFromOlderVersions();
+          }
         }
         else
         {

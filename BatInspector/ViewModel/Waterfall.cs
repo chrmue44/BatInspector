@@ -229,9 +229,10 @@ namespace BatInspector
       lmSpectrum = BioAcoustics.calculateFft(handle, inputSignal);
 
       double s = 0;
-    /*  for (int i = 0; i < lmSpectrum.Length; i++)
-        s += lmSpectrum[i];
-      s /= lmSpectrum.Length; //does not work really well*/
+      /*  for (int i = 0; i < lmSpectrum.Length; i++)
+          s += lmSpectrum[i];
+        s /= lmSpectrum.Length; //does not work really well*/
+      _maxAmplitude = -3.0;
       for (int i = 0; i < lmSpectrum.Length; i++)
       {
         if (lmSpectrum[i] > s)

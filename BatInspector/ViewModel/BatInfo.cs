@@ -241,11 +241,13 @@ namespace BatInspector
         DebugLog.log("try loading BatInfo: " + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
-          file = new FileStream(fPath, FileMode.Open, FileAccess.Read);
-          DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatInfo));
-          retVal = (BatInfo)ser.ReadObject(file);
-          if (retVal == null)
-            DebugLog.log("settings file not well formed!", enLogType.ERROR);
+          using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatInfo));
+            retVal = (BatInfo)ser.ReadObject(file);
+            if (retVal == null)
+              DebugLog.log("settings file not well formed!", enLogType.ERROR);
+          }
         }
         else
         {

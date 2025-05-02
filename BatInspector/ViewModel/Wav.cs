@@ -378,7 +378,7 @@ namespace BatInspector
     FormatChunk _format;
     DataChunk _data;
     string _fName;
-    bool _isOpen;
+    bool _isInitialized;
     WaveOutEvent _outputDevice = null;
     MemoryStream _memStream = null;
     RawSourceWaveStream _rawStream = null;
@@ -411,7 +411,7 @@ namespace BatInspector
 
     public WavFile()
     {
-      _isOpen = false;
+      _isInitialized = false;
       _fName = "";
       _format = new FormatChunk();
       _data = new DataChunk();
@@ -449,7 +449,7 @@ namespace BatInspector
         pos += 8;
         _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels);
         _fName = name;
-        _isOpen = true;
+        _isInitialized = true;
       }
       catch 
       {
@@ -481,7 +481,7 @@ namespace BatInspector
         pos += 8;
         _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels, ref samples);
         _fName = name;
-        _isOpen = true;
+        _isInitialized = true;
       }
       catch (Exception ex)
       {
@@ -503,26 +503,27 @@ namespace BatInspector
       int retVal = 0;
       try
       {
-        if (_isOpen)
+        if (_isInitialized)
         {
           if(File.Exists(_fName))
             File.Delete(_fName);
           _format.BitsPerSample = 16;
-          FileStream f = File.OpenWrite(_fName);
-          List<Byte> tempBytes = new List<byte>();
-          _header.FileLength = 4 + _format.Length() + _data.Length();
-          tempBytes.AddRange(_header.GetBytes());
-          tempBytes.AddRange(_format.GetBytes());
-          if(_format.ChunkSize > 16)
+          using (FileStream f = File.OpenWrite(_fName))
           {
-            byte[] dummy = new byte[_format.ChunkSize - 16];
-            tempBytes.AddRange(dummy);
+            List<Byte> tempBytes = new List<byte>();
+            _header.FileLength = 4 + _format.Length() + _data.Length();
+            tempBytes.AddRange(_header.GetBytes());
+            tempBytes.AddRange(_format.GetBytes());
+            if (_format.ChunkSize > 16)
+            {
+              byte[] dummy = new byte[_format.ChunkSize - 16];
+              tempBytes.AddRange(dummy);
+            }
+            tempBytes.AddRange(_data.GetBytes());
+            _rawData = tempBytes.ToArray();
+            foreach (byte b in _rawData)
+              f.WriteByte(b);
           }
-          tempBytes.AddRange(_data.GetBytes());
-          _rawData = tempBytes.ToArray();
-          foreach (byte b in _rawData)
-            f.WriteByte(b);
-          f.Close();
         }
       }
       catch (Exception ex)
@@ -572,7 +573,7 @@ namespace BatInspector
 
       int cnt = _rawData.Length / (_format.BitsPerSample / 8 / _format.Channels);
       _data.AddSampleData(_rawData, 0, cnt, _format.BitsPerSample, _format.Channels);
-      _isOpen = true;
+      _isInitialized = true;
       return 0;
     }
 
@@ -612,7 +613,7 @@ namespace BatInspector
       tempBytes.AddRange(_format.GetBytes());
       tempBytes.AddRange(_data.GetBytes());
       _rawData = tempBytes.ToArray();
-      _isOpen = true;
+      _isInitialized = true;
     }
 
     public void createFile(int sampleRate, int idxStart, int idxEnd, short[] left)
@@ -628,7 +629,7 @@ namespace BatInspector
       tempBytes.AddRange(_format.GetBytes());
       tempBytes.AddRange(_data.GetBytes());
       _rawData = tempBytes.ToArray();
-      _isOpen = true;
+      _isInitialized = true;
     }
 
     public void createSineWave(double freqHz, int sampleRate, double amplitude, double offs)

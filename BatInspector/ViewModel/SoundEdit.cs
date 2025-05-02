@@ -110,6 +110,117 @@ namespace BatInspector
       _samples = s;
     }
 
+    /// <summary>
+    /// divide by the transferred frequency response to linearize the recording
+    /// </summary>
+    /// <param name="freqResponse"></param>
+    public void applyFreqResponse(FreqResponseRecord[] freqResponse)
+    {
+      FftForward();
+      for (int i = 0; i < _spectrum.Length/2; i++)
+      {
+        double f = (double) i / _spectrum.Length * _samplingRate;
+        double a = getAmplitude(f, freqResponse);
+        double fact = Math.Pow(10.0, a / 10.0);
+        _spectrum[i] /= fact;
+        _spectrum[_spectrum.Length - i - 1] /= fact;
+      }
+      FftBackward();
+    }
+
+
+    public FreqResponseRecord[] createMicSpectrumFromNoiseFile()
+    {
+      FreqResponseRecord[] retVal = initFreqResponse();
+      FftForward();
+      int idxSpec = 0;
+      int idxResp = 0;
+      int avgCnt = 50;
+      while (idxSpec < _spectrum.Length / 2)
+      {
+        double f = (double)idxSpec / _spectrum.Length * _samplingRate;
+        if (f >= retVal[idxResp].Frequency)
+        {
+          double sum = 0.0;
+          for (int i = 0; i < avgCnt; i++)
+          {
+            sum += Math.Abs(Spectrum[idxSpec - avgCnt/2]);
+            idxSpec++;
+          }
+          sum /= avgCnt;
+          retVal[idxResp].Amplitude = 10.0 * Math.Log(sum);
+          idxResp++;
+        }
+        idxSpec++;
+        if (idxResp >= retVal.Length)
+          break;
+      }
+
+      //find 0db
+      int idx10k = 0;
+      for (int i = 0; i < retVal.Length; i++)
+      {
+        if (Math.Abs(retVal[i].Frequency - 10000.0) < 1)
+        {
+          idx10k = i;
+          break;
+        }
+      }
+
+      // relative to 10 kHz
+      double db = retVal[idx10k].Amplitude;
+      for (int i = 0; i < retVal.Length; i++)
+        retVal[i].Amplitude -= db;
+      retVal[retVal.Length - 1].Amplitude = 0;
+      retVal[retVal.Length - 2].Amplitude = 0;
+
+
+      return retVal;
+    }
+
+    private FreqResponseRecord[] initFreqResponse()
+    {
+      int pb = 4; // power of 10 begin
+      int pe = 4; // power of ten end
+      int nrAdd = 2; // number of additional values after pe
+      double[] steps = { 1.0, 1.1, 1.2,1.3, 1.5,1.6, 1.8,2.0, 2.2,2.4, 2.7, 3.0, 3.3, 3.6, 3.9,
+                         4.7, 5.1, 5.6, 6.2, 6.8,7.5, 8.2, 9.1 };
+      FreqResponseRecord[] retVal = new FreqResponseRecord[(pe - pb + 1) * steps.Length + nrAdd];
+      for (int d = pb; d <= pe; d++)
+      {
+        for (int s = 0; s < steps.Length; s++)
+        {
+          FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * Math.Pow(10, d), Amplitude = 0.0 };
+          retVal[s + (d - pb) * steps.Length] = r;
+        }
+      }
+      for (int s = 0; s < nrAdd; s++)
+      {
+        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * Math.Pow(10, pe + 1), Amplitude = 0.0 };
+        retVal[s + (pe - pb + 1) * steps.Length] = r;
+      }
+      return retVal;
+    }
+
+    private double getAmplitude(double f, FreqResponseRecord[] freqResponse)
+    {
+      double retVal = 0.0;
+      if (f > 15000)
+        f = f + 1; //@@@
+      for(int i = 1; i < freqResponse.Length; i++)
+      {
+        if(freqResponse[i].Frequency >= f)
+        {
+          double m = (freqResponse[i].Amplitude - freqResponse[i - 1].Amplitude) /
+          (freqResponse[i].Frequency - freqResponse[i - 1].Frequency);
+          double b = freqResponse[i].Amplitude - m * freqResponse[i].Frequency;
+          retVal = m * f + b;
+          break;
+        }
+      }
+      return retVal;
+    }
+
     public bool findOverdrive(double tMin, double tMax)
     {
       _overdrive.Clear();
@@ -189,7 +300,7 @@ namespace BatInspector
       _size = samples.Length; 
       for (int i = 0; i < samples.Length; i++)
       {
-        _samples[i] = samples[i];
+        _samples[i] = samples[i] / 32768.0;
         _originalSamples[i] = samples[i];
       }
     }

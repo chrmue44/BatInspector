@@ -309,11 +309,13 @@ namespace BatInspector
         DebugLog.log("try to load:" + name, enLogType.DEBUG);
         if (File.Exists(name))
         {
-          file = new FileStream(name, FileMode.Open, FileAccess.Read);
-          DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
-          retVal = (WebReportDataJson)ser.ReadObject(file);
-          if (retVal == null)
-            DebugLog.log("web report entry file not well formed!", enLogType.ERROR);
+          using (file = new FileStream(name, FileMode.Open, FileAccess.Read))
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
+            retVal = (WebReportDataJson)ser.ReadObject(file);
+            if (retVal == null)
+              DebugLog.log("web report entry file not well formed!", enLogType.ERROR);
+          }
         }
         else
         {

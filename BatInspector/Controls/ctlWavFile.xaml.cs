@@ -86,16 +86,19 @@ namespace BatInspector.Controls
     public void createNewPng()
     {
       string wavName = Path.Combine(_wavFilePath, WavName);
-      _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
-      if ((_sonogram.Image == null) && (App.Model.Prj != null))
-        DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
-      else
+      if (_sonogram != null)
       {
-        _img.Source = _sonogram.Image;
-        _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
-        //Force render
-        _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
-        _img.Arrange(new Rect(_img.DesiredSize));
+        _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
+        if ((_sonogram.Image == null) && (App.Model.Prj != null))
+          DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
+        else
+        {
+          _img.Source = _sonogram.Image;
+          _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
+          //Force render
+          _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
+          _img.Arrange(new Rect(_img.DesiredSize));
+        }
       }
     }
 

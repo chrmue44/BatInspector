@@ -250,7 +250,7 @@ public class MicRecord
 
   /// <remarks/>
   [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-  [System.Xml.Serialization.XmlArrayItemAttribute("Points", typeof(FreqResponseRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
+  [System.Xml.Serialization.XmlArrayItemAttribute("Point", typeof(FreqResponseRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
   public FreqResponseRecord[] FrequencyResponse { get; set; }
 
 }

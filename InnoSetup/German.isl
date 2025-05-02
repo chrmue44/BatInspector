@@ -60,7 +60,7 @@ ConfirmTitle=Bestätigen
 ErrorTitle=Fehler
 
 ; *** SetupLdr messages
-SetupLdrStartupMessage=%1 wird jetzt installiert. Möchten Sie fortfahren?
+SetupLdrStartupMessage=%1 wird jetzt installiert. Die Software benötigt ca. 6 GB Festplattenspeicher, möchten Sie fortfahren?
 LdrCannotCreateTemp=Es konnte keine temporäre Datei erstellt werden. Das Setup wurde abgebrochen
 LdrCannotExecTemp=Die Datei konnte nicht im temporären Ordner ausgeführt werden. Das Setup wurde abgebrochen
 HelpTextNote=
@@ -403,4 +403,6 @@ AssocingFileExtension=%1 wird mit der %2-Dateierweiterung registriert...
 AutoStartProgramGroupDescription=Beginn des Setups:
 AutoStartProgram=Starte automatisch%1
 AddonHostProgramNotFound=%1 konnte im ausgewählten Ordner nicht gefunden werden.%n%nMöchten Sie dennoch fortfahren?
-
+msgInstFull=Vollinstallation: Analysetools Fledermäuse & Vögel
+msgInstBats=Teilinstallation: Analysetools nur Fledermäuse
+msgInstBirds=Teilinstallation: Analysetools nur Vögel

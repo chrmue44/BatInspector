@@ -39,7 +39,7 @@ ConfirmTitle=Confirm
 ErrorTitle=Error
 
 ; *** SetupLdr messages
-SetupLdrStartupMessage=This will install %1. Do you wish to continue?
+SetupLdrStartupMessage=This will install %1. The software occupies around 6 GB disk space. Do you wish to continue?
 LdrCannotCreateTemp=Unable to create a temporary file. Setup aborted
 LdrCannotExecTemp=Unable to execute file in the temporary directory. Setup aborted
 HelpTextNote=
@@ -382,3 +382,6 @@ AssocingFileExtension=Associating %1 with the %2 file extension...
 AutoStartProgramGroupDescription=Startup:
 AutoStartProgram=Automatically start %1
 AddonHostProgramNotFound=%1 could not be located in the folder you selected.%n%nDo you want to continue anyway?
+msgInstFull=Full installation: bats & birds
+msgInstBats=Installation for bats only
+msgInstBirds=Installation for birds only

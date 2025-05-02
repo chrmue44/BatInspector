@@ -172,7 +172,10 @@ namespace BatInspector
       string prjDir = pars[0];
       ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
       Project prj = Project.createFrom(prjDir);
-      retVal = App.Model.createReport(prj);
+      if (prj.Ok)
+        retVal = App.Model.createReport(prj);
+      else
+        retVal = 1;
       return retVal;
     }
 

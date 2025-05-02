@@ -109,14 +109,16 @@ namespace BatInspector
         DebugLog.log("try to load:" + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
-          file = new FileStream(fPath, FileMode.Open, FileAccess.Read);
-          DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Bd2AnnFile));
-          retVal = (Bd2AnnFile)ser.ReadObject(file);
-          if (retVal == null)
-            DebugLog.log("annotation file not well formed!", enLogType.ERROR);
-          else
-            retVal._fileName = fPath;
-          DebugLog.log("successfully loaded", enLogType.DEBUG);
+          using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Bd2AnnFile));
+            retVal = (Bd2AnnFile)ser.ReadObject(file);
+            if (retVal == null)
+              DebugLog.log("annotation file not well formed!", enLogType.ERROR);
+            else
+              retVal._fileName = fPath;
+            DebugLog.log("successfully loaded", enLogType.DEBUG);
+          }
         }
         else
         {

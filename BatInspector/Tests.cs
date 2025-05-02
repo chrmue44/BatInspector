@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace BatInspector
 {
@@ -115,6 +116,8 @@ namespace BatInspector
       //testSplitWavs();
       testCalcSnr();
       testCreatePngCpp();
+      //      testSoundEditApplyFreqResponse();
+      testCreateMicSpectrumFromNoiseFile();
 
       //checkIfWavFilesExist(); // not a test, a one time function
       //fixAnnotationIds(); // not a test, a one time function
@@ -485,6 +488,51 @@ namespace BatInspector
       result.FftBackward();
       string newName = file.ToLower().Replace(".wav", "_edit.wav");
       result.saveAs(newName, "Records");
+    }
+
+    private void testSoundEditApplyFreqResponse()
+    {
+      WavFile w = new WavFile();
+      string prjDir = "F:\\bat\\2025\\SJ\\Gutenbergstrasse\\20250428_BAT";
+      string wavDir = prjDir + "\\Records";
+      string file = wavDir + "\\20250428_205931.wav";
+      string newFile = wavDir + "\\20250428_205931_new.wav";
+      string prjFile = prjDir + "\\20250428_BAT.batspy";
+      w.readFile(file);
+      SoundEdit result = new SoundEdit((int)w.FormatChunk.Frequency, w.AudioSamples.Length);
+      result.copySamples(w.AudioSamples);
+
+      string xml = File.ReadAllText(prjFile);
+      TextReader reader = new StringReader(xml);
+      XmlSerializer ser = new XmlSerializer(typeof(BatExplorerProjectFile));
+      BatExplorerProjectFile batExplorerPrj = (BatExplorerProjectFile)ser.Deserialize(reader);
+
+      result.applyFreqResponse(batExplorerPrj.Microphone.FrequencyResponse);
+      
+      WavFile outFile = new WavFile();
+      outFile.createFile(1, (int)w.FormatChunk.Frequency, 0, result.Samples.Length - 1, result.Samples);
+      outFile.saveFileAs(newFile);
+    }
+
+    private void testCreateMicSpectrumFromNoiseFile()
+    {
+      WavFile w = new WavFile();
+      string prjDir = "F:\\prj\\BatInspector\\TestData\\wavTest";
+      string wavDir = prjDir ;
+      string file = wavDir + "\\20250428_noise.wav";
+      string prjFile = prjDir + "\\20250428_BAT.batspy";
+      w.readFile(file);
+      SoundEdit result = new SoundEdit((int)w.FormatChunk.Frequency, w.AudioSamples.Length);
+      result.copySamples(w.AudioSamples);
+
+      FreqResponseRecord[] r=  result.createMicSpectrumFromNoiseFile();
+      string xml = File.ReadAllText(prjFile);
+      TextReader reader = new StringReader(xml);
+      XmlSerializer ser = new XmlSerializer(typeof(BatExplorerProjectFile));
+      BatExplorerProjectFile batExplorerPrj = (BatExplorerProjectFile)ser.Deserialize(reader);
+      batExplorerPrj.Microphone.FrequencyResponse = r;
+
+
     }
 
     private void testCalcSnr()

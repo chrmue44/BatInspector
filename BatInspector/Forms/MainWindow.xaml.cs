@@ -238,6 +238,8 @@ namespace BatInspector.Forms
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
       _sw.Restart();
+      foreach(ctlWavFile ctl in _spSpectrums.Children)
+        ctl.release();
       _spSpectrums.Children.Clear();
       if ((dir != null) && (Project.containsProject(dir) != ""))
       {
@@ -370,6 +372,7 @@ namespace BatInspector.Forms
           App.Model.initProject(_projectDir, true);
           if ((App.Model.Prj != null) && App.Model.Prj.Ok)
           {
+            _wavCtls.reinitializePool();
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = App.Model.Prj.Records.Length - 1;

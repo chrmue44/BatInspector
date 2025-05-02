@@ -28,11 +28,16 @@ namespace BatInspector
 
     public Pool(int Size)
     {
-      _list = new T[Size];
-      _allocated = new string[Size];
-      _free = new List<int>();
       _size = Size;
-      for (int i = 0; i < Size; i++)
+      reinitializePool();
+    }
+
+    public void reinitializePool()
+    {      
+      _list = new T[_size];
+      _allocated = new string[_size];
+      _free = new List<int>();
+      for (int i = 0; i < _size; i++)
       {
         _free.Add(i);
         _list[i] = new T();
@@ -58,6 +63,7 @@ namespace BatInspector
       }
       return retVal;
     }
+
 
 
     private void release(T obj)

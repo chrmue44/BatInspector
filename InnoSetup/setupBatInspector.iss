@@ -11,7 +11,6 @@
 #define SourceFolder "F:\prj\BatInspector"
 #define PythonInstaller "python-3.11.0-amd64.exe"
 #define PythonInstFolder "python311"
-#define ReqPythonVersion "Python 3.11"
 #define BatDetectVersion "1.1.1"
 #define BbnetVersion "b8b9cd8a89980d7e71d4bce74d304c2ebbc20433"
 #define BirdnetVersion "0b70738ae838cd0b62d06b81ea467789a0132741"
@@ -43,6 +42,16 @@ WizardStyle=modern
 SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 
+[Types]
+Name: "full"; Description: "{cm:msgInstFull}"
+Name: "bats"; Description: "{cm:msgInstBats}"
+Name: "birds"; Description: "{cm:msgInstBirds}"
+
+[Components]
+Name: "modbd2"; Description: "AI model BatDetect2"; Types: full bats; ExtraDiskSpaceRequired:19327352832 
+Name: "modbatty"; Description: "AI model Batty BirnNET"; Types: full bats; ExtraDiskSpaceRequired:19327352832
+Name: "modbnet"; Description: "AI model BirdNET"; Types: full birds; ExtraDiskSpaceRequired:3865470566
+
 [Languages]
 Name: "en"; MessagesFile: "English.isl"
 Name: "de"; MessagesFile: "German.isl"
@@ -70,6 +79,7 @@ source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\s
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2";
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\";
 source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet";
+source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet";
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 
@@ -83,7 +93,10 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_tools.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" {#BatDetectVersion} {#BbnetVersion} {#BirdnetVersion}"; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BatDetectVersion}"; Flags:runasoriginaluser; Components: modbd2
+Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BbnetVersion}"; Flags:runasoriginaluser; Components: modbatty
+Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BirdnetVersion}"; Flags:runasoriginaluser; Components: modbnet
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]
@@ -103,5 +116,5 @@ en.CreateStartIcon="create entry in start menu"
 en.MsgInstModell="Installing AI model. This will take several minutes, be patient!..."
 
 [UninstallRun]
-Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#ReqPythonVersion}"" ""{#MyAppDataFolder}\setup"""; RunOnceId: "DelService"
+Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"{#PythonInstaller}"; RunOnceId: "DelService"
 

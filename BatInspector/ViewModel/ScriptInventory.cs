@@ -104,15 +104,16 @@ namespace BatInspector
         if (File.Exists(fileName))
         {
           inventoryExists = true;
-          file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-          DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ScriptInventory));
-          retVal = (ScriptInventory)ser.ReadObject(file);
-          if (retVal == null)
-            DebugLog.log("settings file not well formed!", enLogType.ERROR);
-          else if (retVal.Scripts == null)
-            retVal.initScripts();
-          DebugLog.log("successfully loaded", enLogType.DEBUG);
-          file.Close();
+          using (file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ScriptInventory));
+            retVal = (ScriptInventory)ser.ReadObject(file);
+            if (retVal == null)
+              DebugLog.log("settings file not well formed!", enLogType.ERROR);
+            else if (retVal.Scripts == null)
+              retVal.initScripts();
+            DebugLog.log("successfully loaded", enLogType.DEBUG);
+          }
           file = null;
         }
         else

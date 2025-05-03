@@ -34,6 +34,7 @@ namespace BatInspector
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
+        new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
       });
 
       _options = new Options(_features, false);
@@ -201,5 +202,24 @@ namespace BatInspector
       }
       return retVal;
     }
+
+    int fctMicCorrection(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      double softening = 0.0;
+      ErrText = "";
+      double.TryParse(pars[0], NumberStyles.Any, CultureInfo.InvariantCulture, out softening);
+      if (App.Model.Prj?.Ok == true)
+      {
+        App.Model.Prj.applyMicCorrection(softening);
+      }
+      else
+      {
+        ErrText = "open project first";
+        retVal = 1;
+      }
+      return retVal;
+    }
+
   }
 }

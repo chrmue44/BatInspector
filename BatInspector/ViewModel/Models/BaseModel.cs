@@ -10,6 +10,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.UI.WebControls;
 using System.Xml.Serialization;
 
@@ -87,12 +88,23 @@ namespace BatInspector
 
     public static ModelParams[] readDefaultModelParams()
     {
+      ModelParams[] retVal = null;
       if (!File.Exists(AppParams.Inst.ModelDefaultParamsFile))
         DebugLog.log("Default model params not found: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       string xml = File.ReadAllText(AppParams.Inst.ModelDefaultParamsFile);
       TextReader reader = new StringReader(xml);
       DefModelParamFile f = (DefModelParamFile)ModParSerializer.Deserialize(reader);
-      ModelParams[] retVal = f.Models;
+      if (f != null && (f.Models != null))
+      {
+        List<ModelParams> l = new List<ModelParams>();
+        foreach (ModelParams p in f.Models)
+        {
+          string path = Path.Combine(AppParams.Inst.ModelRootPath, p.SubDir);
+          if (Directory.Exists(path))
+            l.Add(p);
+        }
+        retVal = l.ToArray();
+      }
       if (retVal == null)
         DebugLog.log("Serialization failed: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       return retVal;

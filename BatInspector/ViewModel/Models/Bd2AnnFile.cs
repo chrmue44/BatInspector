@@ -78,16 +78,20 @@ namespace BatInspector
     {
       try
       {
-        StreamWriter file = new StreamWriter(fName);
-        MemoryStream stream = new MemoryStream();
-        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Bd2AnnFile));
-        ser.WriteObject(stream, this);
-        StreamReader sr = new StreamReader(stream);
-        stream.Seek(0, SeekOrigin.Begin);
-        string str = sr.ReadToEnd();
-        file.Write(JsonHelper.FormatJson(str));
-        file.Close();
-        DebugLog.log("settings saved to '" + fName + "'", enLogType.INFO);
+        using (StreamWriter file = new StreamWriter(fName))
+        {
+          using (MemoryStream stream = new MemoryStream())
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Bd2AnnFile));
+            ser.WriteObject(stream, this);
+            StreamReader sr = new StreamReader(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            string str = sr.ReadToEnd();
+            file.Write(JsonHelper.FormatJson(str));
+            file.Close();
+            DebugLog.log("settings saved to '" + fName + "'", enLogType.INFO);
+          }
+        }
       }
       catch (Exception e)
       {

@@ -26,6 +26,7 @@
                         <local:CtlDateTime x:Name="_dtEnd" Margin="10,0"/>
                     </StackPanel>
                     <CheckBox x:Name="_cbDelSrc" Content="{x:Static res:MyResources.FrmCreatePrjDelSrc}"/>
+                    <CheckBox x:Name="_cbCorrectMic" Content="{x:Static res:MyResources.FrmCreatePrjCorrectMic}"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Template="{DynamicResource GroupBoxCmu}">

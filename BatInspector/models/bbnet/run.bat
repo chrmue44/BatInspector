@@ -8,7 +8,7 @@ SET MODEL=%6
 @echo *   Starting AI model BattyBirdNET ...  *
 @echo *****************************************
 call %BIN_PATH%/_venv/Scripts/activate
-@echo python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%
-python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%
+@echo python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%.tflite
+python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%.tflite
 call %BIN_PATH%/_venv/Scripts/deactivate
 rem pause

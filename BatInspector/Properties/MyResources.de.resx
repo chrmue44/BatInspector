@@ -133,13 +133,13 @@
     <value>Warnung</value>
   </data>
   <data name="AboutHistory" xml:space="preserve">
-    <value>Versionsverlauf</value>
+    <value>Versionen</value>
   </data>
   <data name="CallInformation" xml:space="preserve">
     <value>Parameter des Rufes</value>
   </data>
   <data name="Licenses" xml:space="preserve">
-    <value>Lizenzen</value>
+    <value>Lizenzen &amp; Beiträge</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Einstellungen</value>
@@ -1676,5 +1676,8 @@
   </data>
   <data name="MsgErrorBd2" xml:space="preserve">
     <value>Es ist ein Fehler aufgetreten, die Auswertung ist nicht gültig. Der Fehler muss manuell behoben werden!</value>
+  </data>
+  <data name="FrmCreatePrjCorrectMic" xml:space="preserve">
+    <value>Frequenzgang Mikrofon kompensieren</value>
   </data>
 </root>

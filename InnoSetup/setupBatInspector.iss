@@ -3,7 +3,7 @@
 
 #define MyAppName "BatInspector"
 #define MyInstallerName "SetupBatInspector_0940"
-#define MyAppVersion "0.9.3.2"
+#define MyAppVersion "0.9.4.0"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"
@@ -44,13 +44,15 @@ UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 
 [Types]
 Name: "full"; Description: "{cm:msgInstFull}"
+Name: "batsBirds"; Description: "{cm:msgBatsBirds}"
 Name: "bats"; Description: "{cm:msgInstBats}"
+Name: "batsOnlyBd2"; Description: "{cm:msgInstBatBd2}"
 Name: "birds"; Description: "{cm:msgInstBirds}"
 
 [Components]
-Name: "modbd2"; Description: "AI model BatDetect2"; Types: full bats; ExtraDiskSpaceRequired:19327352832 
+Name: "modbd2"; Description: "AI model BatDetect2"; Types: full bats batsBirds batsOnlyBd2; ExtraDiskSpaceRequired:19327352832 
 Name: "modbatty"; Description: "AI model Batty BirnNET"; Types: full bats; ExtraDiskSpaceRequired:19327352832
-Name: "modbnet"; Description: "AI model BirdNET"; Types: full birds; ExtraDiskSpaceRequired:3865470566
+Name: "modbnet"; Description: "AI model BirdNET"; Types: full batsBirds birds; ExtraDiskSpaceRequired:3865470566
 
 [Languages]
 Name: "en"; MessagesFile: "English.isl"
@@ -76,10 +78,10 @@ source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\d
 source: "{#SourceFolder}\{#MyAppName}\dat\batInfo.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
-source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2";
-source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\";
-source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet";
-source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet";
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2"; Components: modbd2
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\"; Components: modbd2
+source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet"; Components: modbatty
+source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet"; Components: modbnet
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 

@@ -211,15 +211,19 @@ namespace BatInspector
       string fPath = Path.Combine(fDir, _fName);
       try
       {
-        StreamWriter file = new StreamWriter(fPath);
-        MemoryStream stream = new MemoryStream();
-        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatSpeciesRegions));
-        ser.WriteObject(stream, this);
-        StreamReader sr = new StreamReader(stream);
-        stream.Seek(0, SeekOrigin.Begin);
-        string str = sr.ReadToEnd();
-        file.Write(JsonHelper.FormatJson(str));
-        file.Close();
+        using (StreamWriter file = new StreamWriter(fPath))
+        {
+          using (MemoryStream stream = new MemoryStream())
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatSpeciesRegions));
+            ser.WriteObject(stream, this);
+            StreamReader sr = new StreamReader(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            string str = sr.ReadToEnd();
+            file.Write(JsonHelper.FormatJson(str));
+            file.Close();
+          }
+        }
       }
       catch (Exception e)
       {

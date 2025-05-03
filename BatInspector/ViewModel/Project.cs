@@ -17,6 +17,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
+
 //using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -32,7 +34,8 @@ namespace BatInspector
     public double MaxFileLenSec { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public string Notes { get; set; } 
+    public string Notes { get; set; }
+    public bool CorrectMic { get; set; } = false;
     public string GpxFile { get; set; }
     public bool LocSourceGpx { get; set; }
     public bool LocSourceKml { get; set; }
@@ -1256,6 +1259,39 @@ namespace BatInspector
       if(_analysis[SelectedModelIndex]?.IsEmpty == false)
         _analysis[SelectedModelIndex]?.save(ReportName, Notes, SummaryName);
       _reloadInGui = true;
+    }
+
+    public void applyMicCorrection(double softening)
+    {
+      if (_batExplorerPrj.MicCorrected == false)
+      {
+        DebugLog.log("applying mic correction...", enLogType.INFO);
+        foreach (PrjRecord record in _batExplorerPrj.Records)
+        {
+          string path = Path.Combine(_selectedDir, _wavSubDir, record.File);
+          applyMicCorrection(path, softening);
+        }
+        _batExplorerPrj.MicCorrected = true;
+        writePrjFile();
+      }
+      else
+        DebugLog.log("mic correction already applied", enLogType.INFO);
+    }
+
+
+    private void applyMicCorrection(string wavFile, double softening)
+    {
+      try
+      {
+        SoundEdit result = new SoundEdit();
+        result.readWav(wavFile);
+        result.applyFreqResponse(_batExplorerPrj.Microphone.FrequencyResponse, softening);
+        result.saveAs(wavFile, WavSubDir);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"error applying mic correction to {wavFile}, {ex.ToString()}", enLogType.ERROR);
+      }
     }
 
 

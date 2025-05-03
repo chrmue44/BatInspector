@@ -100,6 +100,7 @@ namespace BatInspector.Forms
         _cbTimeFilter.IsChecked = false;
         if (files != null && files.Length > 0)
         {
+          _cbCorrectMic.IsEnabled = true;
           _isProjectFolder = true;
           _info.Name = Path.GetFileNameWithoutExtension(files[0]);
           _ctlPrjName.setValue(_info.Name);
@@ -109,10 +110,11 @@ namespace BatInspector.Forms
           _ctlModel.SelectIndex = prj.SelectedModelIndex;
           string[] dataSetItems = App.Model.DefaultModelParams[prj.SelectedModelIndex].AvailableDataSets;
           _ctlDataSet.setItems(dataSetItems);
-          _ctlDataSet.setValue(prj.SelectedModelParams.DataSet); 
+          _ctlDataSet.setValue(prj.SelectedModelParams.DataSet);
         }
         else
         {
+          _cbCorrectMic.IsEnabled = false;
           _isProjectFolder = false;
           string[] kmlFiles = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.kml");
           string[] gpxFiles = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.gpx");
@@ -185,6 +187,7 @@ namespace BatInspector.Forms
         _info.MaxFileLenSec = _ctlMaxFileLen.getDoubleValue();
         _info.OverwriteLocation = _cbOverwriteLoc.IsChecked == true;
         _info.RemoveSource = _cbDelSrc.IsChecked == true;
+        _info.CorrectMic = _cbCorrectMic.IsChecked == true;
         _info.GpxFile = (_rbGpxFile.IsChecked == true) || (_rbKmlFile.IsChecked == true)  || 
                         (_rbTxtFile.IsChecked == true) ? _ctlGpxFile.getValue() : "";
         _info.LocSourceGpx = _rbGpxFile.IsChecked == true;

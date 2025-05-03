@@ -45,7 +45,9 @@ curl -L %BBNET_ARCH%%BBNET_HASH%.zip --output bbnet.zip
 tar -xf bbnet.zip
 del bbnet.zip
 xcopy /E /H /C BirdNET-Analyzer-%BBNET_HASH%
+pause
 rmdir /s /q BirdNET-Analyzer-%BBNET_HASH%
+pause
 %PYTHON% -m venv %VENV%
 call %VENV%/Scripts/activate
 @echo pip install -r requirements.txt

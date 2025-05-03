@@ -70,7 +70,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version History.
+        ///   Looks up a localized string similar to Versions.
         /// </summary>
         public static string AboutHistory {
             get {
@@ -1510,6 +1510,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compensate frequency response microphone.
+        /// </summary>
+        public static string FrmCreatePrjCorrectMic {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjCorrectMic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete source files after import.
         /// </summary>
         public static string FrmCreatePrjDelSrc {
@@ -2833,7 +2842,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Licenses.
+        ///   Looks up a localized string similar to Licenses &amp; Contributions.
         /// </summary>
         public static string Licenses {
             get {

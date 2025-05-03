@@ -133,13 +133,13 @@
     <value>Warning</value>
   </data>
   <data name="AboutHistory" xml:space="preserve">
-    <value>Version History</value>
+    <value>Versions</value>
   </data>
   <data name="CallInformation" xml:space="preserve">
     <value>Call Information</value>
   </data>
   <data name="Licenses" xml:space="preserve">
-    <value>Licenses</value>
+    <value>Licenses &amp; Contributions</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
@@ -1676,5 +1676,8 @@
   </data>
   <data name="MsgErrorBd2" xml:space="preserve">
     <value>An error occurred. The evaluation is not valid. The error has to fixed manually!</value>
+  </data>
+  <data name="FrmCreatePrjCorrectMic" xml:space="preserve">
+    <value>Compensate frequency response microphone</value>
   </data>
 </root>

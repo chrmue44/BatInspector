@@ -114,14 +114,16 @@ namespace BatInspector
     /// divide by the transferred frequency response to linearize the recording
     /// </summary>
     /// <param name="freqResponse"></param>
-    public void applyFreqResponse(FreqResponseRecord[] freqResponse)
+    /// <param name="softening">"softens" the application of freq. response: 1.0 apply fully
+    /// 0.0: don't apply freq response at all </param>
+    public void applyFreqResponse(FreqResponseRecord[] freqResponse, double softening)
     {
       FftForward();
       for (int i = 0; i < _spectrum.Length/2; i++)
       {
         double f = (double) i / _spectrum.Length * _samplingRate;
         double a = getAmplitude(f, freqResponse);
-        double fact = Math.Pow(10.0, a / 10.0);
+        double fact = Math.Pow(10.0, a * softening / 20.0);
         _spectrum[i] /= fact;
         _spectrum[_spectrum.Length - i - 1] /= fact;
       }
@@ -134,8 +136,11 @@ namespace BatInspector
       FreqResponseRecord[] retVal = initFreqResponse();
       FftForward();
       int idxSpec = 0;
-      int idxResp = 0;
-      int avgCnt = 50;
+      int idxResp = 1;
+      double freqBandWidth = 100.0;
+      int avgCnt = (int)(freqBandWidth * (double)_samples.Length / _samplingRate);
+      while ((avgCnt % 2) != 0)
+        avgCnt++;
       while (idxSpec < _spectrum.Length / 2)
       {
         double f = (double)idxSpec / _spectrum.Length * _samplingRate;
@@ -170,34 +175,39 @@ namespace BatInspector
       // relative to 10 kHz
       double db = retVal[idx10k].Amplitude;
       for (int i = 0; i < retVal.Length; i++)
-        retVal[i].Amplitude -= db;
+      {
+        double amp = retVal[i].Amplitude - db;
+        retVal[i].Amplitude = amp;
+      }
+
+      retVal[0].Amplitude = 0;
       retVal[retVal.Length - 1].Amplitude = 0;
       retVal[retVal.Length - 2].Amplitude = 0;
-
-
       return retVal;
     }
 
     private FreqResponseRecord[] initFreqResponse()
     {
-      int pb = 4; // power of 10 begin
-      int pe = 4; // power of ten end
-      int nrAdd = 2; // number of additional values after pe
-      double[] steps = { 1.0, 1.1, 1.2,1.3, 1.5,1.6, 1.8,2.0, 2.2,2.4, 2.7, 3.0, 3.3, 3.6, 3.9,
-                         4.7, 5.1, 5.6, 6.2, 6.8,7.5, 8.2, 9.1 };
-      FreqResponseRecord[] retVal = new FreqResponseRecord[(pe - pb + 1) * steps.Length + nrAdd];
-      for (int d = pb; d <= pe; d++)
+      int stepCnt = 33;
+
+      double[] steps = new double[stepCnt];
+      for(int i = 0; i < stepCnt; i++)
+        steps[i] = Math.Pow(10, (double)i/(double)stepCnt);
+      FreqResponseRecord[] retVal = new FreqResponseRecord[ steps.Length *6 / 5];
+      retVal[0] = new FreqResponseRecord() { Amplitude = 0.0, Frequency = 0.0 };
+      
+      for (int s = 0; s < steps.Length; s++)
       {
-        for (int s = 0; s < steps.Length; s++)
-        {
-          FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * Math.Pow(10, d), Amplitude = 0.0 };
-          retVal[s + (d - pb) * steps.Length] = r;
-        }
+        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * 10000.0, Amplitude = 0.0 };
+        retVal[1 + s] = r;
       }
-      for (int s = 0; s < nrAdd; s++)
+
+      for (int s = 0; s < steps.Length; s++)
       {
-        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * Math.Pow(10, pe + 1), Amplitude = 0.0 };
-        retVal[s + (pe - pb + 1) * steps.Length] = r;
+        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * 100000.0, Amplitude = 0.0 };
+        if ((1 + s + steps.Length) >= retVal.Length)
+          break;
+        retVal[1 + s + steps.Length] = r;
       }
       return retVal;
     }

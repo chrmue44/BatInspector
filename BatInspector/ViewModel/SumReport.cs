@@ -284,16 +284,20 @@ namespace BatInspector
     {
       try
       {
-        StreamWriter file = new StreamWriter(name);
-        MemoryStream stream = new MemoryStream();
-        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
-        ser.WriteObject(stream, this);
-        StreamReader sr = new StreamReader(stream);
-        stream.Seek(0, SeekOrigin.Begin);
-        string str = sr.ReadToEnd();
-        file.Write(JsonHelper.FormatJson(str));
-        file.Close();
-        DebugLog.log("Web report entries saved to '" + name + "'", enLogType.INFO);
+        using (StreamWriter file = new StreamWriter(name))
+        {
+          using (MemoryStream stream = new MemoryStream())
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
+            ser.WriteObject(stream, this);
+            StreamReader sr = new StreamReader(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            string str = sr.ReadToEnd();
+            file.Write(JsonHelper.FormatJson(str));
+            file.Close();
+            DebugLog.log("Web report entries saved to '" + name + "'", enLogType.INFO);
+          }
+        }
       }
       catch (Exception e)
       {

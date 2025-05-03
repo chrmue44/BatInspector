@@ -476,7 +476,6 @@ namespace BatInspector
   {
     BitmapImage _bImg = null;
     dlgRelease _dlgRelease;
-    MemoryStream _memory = new MemoryStream();
 
     public BitmapImage Image { get { return _bImg; } }
 
@@ -523,14 +522,14 @@ namespace BatInspector
       var bitmapImage = new BitmapImage();
       try
       {
-        lock (_memory)
+        using (MemoryStream memory = new MemoryStream())
         {
-          _memory.Position = 0;
-          _memory.SetLength(0);
-          bitmap.Save(_memory, System.Drawing.Imaging.ImageFormat.Png);
+          memory.Position = 0;
+          memory.SetLength(0);
+          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
           bitmapImage.BeginInit();
           bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-          bitmapImage.StreamSource = _memory;
+          bitmapImage.StreamSource = memory;
           //        bitmapImage.CacheOption = BitmapCacheOption.None;
           bitmapImage.EndInit();
           bitmapImage.Freeze();

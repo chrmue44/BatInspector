@@ -129,21 +129,15 @@ public class ModelParams
 [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
 public partial class BatExplorerProjectFile
 {
-
   private string _name;
-
   private string _created;
-
   private string _notes;
-
   private string _autoProcess;
-
   private PrjRecord[] _records;
-
   private string _fileVersion;
-
   private string _prjType;
-  
+  private bool _micCorrected = false;
+
   public BatExplorerProjectFile()
   {
     _notes = "";
@@ -194,6 +188,9 @@ public partial class BatExplorerProjectFile
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string ProjectType { get { return _prjType; } set { _prjType = value; } }
 
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public bool MicCorrected { get { return _micCorrected; } set { _micCorrected = value; } }
 
   /// <remarks/>
   [XmlIgnoreAttribute]

@@ -179,7 +179,7 @@ namespace BatInspector.Forms
       _ctlMicType.setup("Type", enDataType.STRING, 0, wl);
       _ctlMicFreqFile.setup(Properties.MyResources.FrequencyResponse, wl, false, "Text files(*.txt)|*.txt", showMicFreqResponse);
       _ctlMicFreqFile.IsEnabled = false;
-      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width);
+      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width -20);
     }
 
 
@@ -610,7 +610,7 @@ namespace BatInspector.Forms
     private void showMicFreqResponse()
     {
       string fileName = _ctlMicFreqFile.getValue();
-      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width);
+      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width - 20);
       List<MicFreqItem> l = _rec.readFreqResponseFromFile(fileName);
       Point[] points = new Point[l.Count];
       for(int i = 0; i <  l.Count; i++) 
@@ -621,7 +621,7 @@ namespace BatInspector.Forms
 
     private void readFreqResponse()
     {
-      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width);
+      createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width  - 20);
       List<MicFreqItem> l = _rec.readFreqResponseFromMic();
       Point[] points = new Point[l.Count];
       for (int i = 0; i < l.Count; i++)

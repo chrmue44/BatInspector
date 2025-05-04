@@ -14,6 +14,7 @@ using System.Globalization;
 using System;
 using Pen = System.Drawing.Pen;
 using Graphics = System.Drawing.Graphics;
+using libParser;
 
 namespace BatInspector.Controls
 {
@@ -175,15 +176,23 @@ namespace BatInspector.Controls
 
     public static void showGraphLog(Canvas can, double x, double y, double w, double h, double xmin, double xmax, double ymin, double ymax, Point[] points)
     {
-      double minLog = Math.Log10(xmin);
-      double maxLog = Math.Log10(xmax);
-      for (int i = 1; i < points.Length; i++)
+      try
       {
-        double yp1 = y + h * (1 - (points[i - 1].Y - ymin) / (ymax - ymin));
-        double xp1 = x + w * (Math.Log10(points[i - 1].X) - minLog) / (maxLog - minLog);
-        double yp2 = y + h * (1 - (points[i].Y - ymin) / (ymax - ymin));
-        double xp2 = x + w * (Math.Log10(points[i].X) - minLog) / (maxLog - minLog);
-        GraphHelper.createLine(can, xp1, yp1, xp2, yp2, Brushes.Blue, 2);
+        double minLog = Math.Log10(xmin);
+        double maxLog = Math.Log10(xmax);
+        double dx = 0; 
+        for (int i = 1; i < points.Length; i++)
+        {
+          double yp1 = y + h * (1 - (points[i - 1].Y - ymin) / (ymax - ymin));
+          double xp1 = x + dx + w * (Math.Log10(Math.Max(points[i - 1].X, xmin)) - minLog) / (maxLog - minLog);
+          double yp2 = y + h * (1 - (points[i].Y - ymin) / (ymax - ymin));
+          double xp2 = x + dx + w * (Math.Log10(Math.Max(points[i].X, xmin)) - minLog) / (maxLog - minLog);
+          GraphHelper.createLine(can, xp1, yp1, xp2, yp2, Brushes.Blue, 2);
+        }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log($"error creating mic frequency response {ex.ToString()}", enLogType.ERROR);
       }
     }
 

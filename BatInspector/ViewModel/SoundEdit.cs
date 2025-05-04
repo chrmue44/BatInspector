@@ -194,7 +194,7 @@ namespace BatInspector
       for(int i = 0; i < stepCnt; i++)
         steps[i] = Math.Pow(10, (double)i/(double)stepCnt);
       FreqResponseRecord[] retVal = new FreqResponseRecord[ steps.Length *6 / 5];
-      retVal[0] = new FreqResponseRecord() { Amplitude = 0.0, Frequency = 0.0 };
+      retVal[0] = new FreqResponseRecord() { Amplitude = 0.0, Frequency = 100.0 };
       
       for (int s = 0; s < steps.Length; s++)
       {

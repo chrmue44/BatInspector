@@ -473,7 +473,7 @@ namespace BatInspector
                 }
                 if (res == "0")
                 {
-                  res = BatSpy.ExecuteCommand("Ie");
+                  res = BatSpy.ExecuteCommand("Ie", 3000);
                   if (res == "0")
                     retVal = true;
                 }

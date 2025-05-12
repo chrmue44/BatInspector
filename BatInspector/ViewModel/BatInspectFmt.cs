@@ -229,6 +229,7 @@ public partial class BatExplorerProjectFile
   public MicRecord Microphone { get; set; }
 }
 
+
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -236,14 +237,14 @@ public partial class BatExplorerProjectFile
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public class MicRecord
 {
-  [System.Xml.Serialization.XmlAttributeAttribute()]
-  string Id { get; set; }
-  
-  [System.Xml.Serialization.XmlAttributeAttribute()]
-  string Type { get; set; }
-  
-  [System.Xml.Serialization.XmlAttributeAttribute()]
-  string Comment { get; set; }
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Id { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Type { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Comment { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]

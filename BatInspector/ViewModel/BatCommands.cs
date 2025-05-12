@@ -6,16 +6,12 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Forms;
 using libParser;
 using libScripter;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Markup;
 
 namespace BatInspector
 {
@@ -35,6 +31,7 @@ namespace BatInspector
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
         new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
+        new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
       });
 
       _options = new Options(_features, false);
@@ -221,5 +218,28 @@ namespace BatInspector
       return retVal;
     }
 
+    int fctCreateMicResponse(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string wavFile = pars[0];
+      string micFile = pars[1];
+      if (File.Exists(wavFile))
+      {
+        SoundEdit wav = new SoundEdit();
+        wav.readWav(wavFile);
+        FreqResponseRecord[] r = wav.createMicSpectrumFromNoiseFile();
+        string text = "";
+        foreach (FreqResponseRecord rec in r)
+        {
+          text += $"{rec.Frequency.ToString("0.0", CultureInfo.InvariantCulture)}, {rec.Amplitude.ToString("0.0", CultureInfo.InvariantCulture)}\n".ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+        File.WriteAllText(micFile, text);
+      }
+      else
+        ErrText = $"error: {wavFile} not existing";
+
+      return retVal;  
+    }
   }
 }

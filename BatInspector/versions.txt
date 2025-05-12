@@ -1,7 +1,7 @@
 TODO
 - training of model
 - new flag <modified> in XML-file
-- simplification of script to copy auto to man species
+- simplification of script to copy auto to man specie
 - markieren von manuell geänderten Rufen
 - more flexible import: 
   - parsing date/time form different file names
@@ -13,6 +13,7 @@ TODO
 - experimental support of BirdNET for birdsong detection
 - read/write microphone info from BatSpy if mic with one-wire chip is connected
 - automatic correction of microphone frequency response for BatSpy recordings
+- new console commands CreateMicFreqResponse, ApplyMicCorrection
 - import RAW audio files from EcoObs (fixed format: 500kS, 16 bit, 1 channel)
 - import from wavs: error message when date/time cannot be parsed
 - error message, when AI model evaluation crashes

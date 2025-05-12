@@ -212,9 +212,9 @@ namespace BatInspector
       return _inst.writeCommand("L");
     }
 
-    static public string ExecuteCommand(string cmd)
+    static public string ExecuteCommand(string cmd, int timeout = 1000)
     {
-      return _inst.execCommand(cmd);
+      return _inst.execCommand(cmd, timeout);
     }
 
     private void _port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
@@ -260,7 +260,7 @@ namespace BatInspector
       return (res == "0");
     }
 
-    private string execCommand(string cmd)
+    private string execCommand(string cmd, int timeout = 1000)
     {
       string retVal = "";
       try
@@ -272,7 +272,7 @@ namespace BatInspector
         _port.ReadExisting();
         _port.Write(str);
         DebugLog.log("BatSpy CMD: " + cmd, enLogType.DEBUG);
-        _port.ReadTimeout = 1000;
+        _port.ReadTimeout = timeout;
         Stopwatch w = new Stopwatch();
         w.Start();
         while (!_answerReceived && !_receiveError && (w.ElapsedMilliseconds < _port.ReadTimeout))

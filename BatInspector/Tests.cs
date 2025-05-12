@@ -524,7 +524,7 @@ namespace BatInspector
     {
       WavFile w = new WavFile();
       string prjDir = "F:\\prj\\BatInspector\\TestData\\wavTest";
-      string wavDir = prjDir ;
+      string wavDir = prjDir;
       string file = wavDir + "\\20250428_noise.wav";
       string prjFile = prjDir + "\\20250428_BAT.batspy";
       string micFile = prjDir + "\\testMicResponse.txt";

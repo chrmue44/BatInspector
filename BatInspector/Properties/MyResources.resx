@@ -1680,4 +1680,16 @@
   <data name="FrmCreatePrjCorrectMic" xml:space="preserve">
     <value>Compensate frequency response microphone</value>
   </data>
+  <data name="ToolTipMicCorrection" xml:space="preserve">
+    <value>Compensation of microphone frequeny response</value>
+  </data>
+  <data name="msgNoMicInformation" xml:space="preserve">
+    <value>No action because no microphone information available.</value>
+  </data>
+  <data name="msgWrongModelType" xml:space="preserve">
+    <value>Selected AI model type does not match project type (Bat/Bird). Please select matching model first!</value>
+  </data>
+  <data name="msgNoMicSetup" xml:space="preserve">
+    <value>Microphone frequenncy response file not present, microphone setup not executed!</value>
+  </data>
 </root>

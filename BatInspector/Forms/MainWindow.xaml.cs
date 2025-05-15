@@ -829,19 +829,25 @@ namespace BatInspector.Forms
       {
         if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
         {
-          MessageBoxResult res = MessageBoxResult.Yes;
-          DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
-          if (App.Model.CurrentlyOpen?.Analysis.IsEmpty == false)
-            res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
-            BatInspector.Properties.MyResources.msgQuestion,
-            MessageBoxButton.YesNo, MessageBoxImage.Question);
-          if (res == MessageBoxResult.Yes)
+          if (App.Model.Prj.checkModelType())
           {
-            App.Model.View.stopCreatingPngFiles();
-            App.Model.Status.State = enAppState.AI_ANALYZE;
-            _workerPredict = new Thread(new ThreadStart(workerPrediction));
-            _workerPredict.Start();
+            MessageBoxResult res = MessageBoxResult.Yes;
+            DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
+            if (App.Model.CurrentlyOpen?.Analysis.IsEmpty == false)
+              res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
+              BatInspector.Properties.MyResources.msgQuestion,
+              MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (res == MessageBoxResult.Yes)
+            {
+              App.Model.View.stopCreatingPngFiles();
+              App.Model.Status.State = enAppState.AI_ANALYZE;
+              _workerPredict = new Thread(new ThreadStart(workerPrediction));
+              _workerPredict.Start();
+            }
           }
+          else
+            MessageBox.Show(BatInspector.Properties.MyResources.msgWrongModelType, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
         }
         else
         {

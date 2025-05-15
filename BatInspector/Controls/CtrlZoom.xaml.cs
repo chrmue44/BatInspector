@@ -1384,6 +1384,20 @@ namespace BatInspector.Controls
       createZoomImg();
     }
 
+    private void _btnCorrMic_Click(object sender, RoutedEventArgs e)
+    {
+      DebugLog.log("Zoom:Btn 'apply mic correction' clicked", enLogType.DEBUG);
+      if (App.Model.ZoomView.applyMicCorrection())
+      {
+        saveChanges();
+        createZoomImg();
+      }
+      else
+      {
+        MessageBox.Show(MyResources.msgNoMicInformation, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Information);
+      }
+    }
+
     private void _btnCutOut_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -1498,5 +1512,6 @@ namespace BatInspector.Controls
       drawGrid();
     }
 
+ 
   }
 }

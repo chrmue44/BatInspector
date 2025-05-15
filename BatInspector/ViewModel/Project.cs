@@ -14,6 +14,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -179,11 +181,22 @@ namespace BatInspector
 
     public ModelParams[] AvailableModelParams { get { return _batExplorerPrj.Models; } }
 
-    public string ReportName { get { return getReportName(SelectedModelIndex); } } 
+    public string ReportName { get { return getReportName(SelectedModelIndex); } }
 
-    public string SummaryName { get { return getSummaryName(SelectedModelIndex); } } 
+    public string SummaryName { get { return getSummaryName(SelectedModelIndex); } }
 
     public bool ReloadInGui { get { return _reloadInGui; } set { _reloadInGui = value; } }
+
+    public FreqResponseRecord[] MicFreqResponse
+    {
+      get
+      {
+        if ((_batExplorerPrj != null) && (_batExplorerPrj.Microphone != null))
+          return _batExplorerPrj.Microphone.FrequencyResponse;
+        else
+          return null;
+      }
+    }
 
     public Project(bool updateCtls, ModelParams modelParams, int modelCount, string wavSubDir = "")
     : base(updateCtls, modelParams, modelCount)
@@ -431,6 +444,13 @@ namespace BatInspector
         DebugLog.log("could not find target directory " + outputDir, enLogType.ERROR);
     }
 
+
+    public bool checkModelType()
+    {
+      bool retVal = (_batExplorerPrj.ProjectType == "Birds") && (AvailableModelParams[SelectedModelIndex].Type == enModel.BIRDNET) ||
+                    (_batExplorerPrj.ProjectType != "Birds") && (AvailableModelParams[SelectedModelIndex].Type != enModel.BIRDNET);
+      return retVal;
+    }
 
     /// <summary>
     /// select the default model according to project type and location

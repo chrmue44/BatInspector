@@ -647,6 +647,7 @@
     <Resource Include="images\icons8-save_plain-48.png" />
     <Resource Include="images\icons8-offener-ordner-64.png" />
     <Resource Include="images\Bandpass.png" />
+    <Resource Include="images\micCorr.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

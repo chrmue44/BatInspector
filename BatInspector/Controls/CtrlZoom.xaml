@@ -76,6 +76,10 @@
                 <Button x:Name="_btnNormalize"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnNormalize_Click" ToolTip="{x:Static res:MyResources.ToolTipNormalizeVol}">
                     <Image Source="../images/volume.png"></Image>
                 </Button>
+                <Button x:Name="_btnCorrMic"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnCorrMic_Click" ToolTip="{x:Static res:MyResources.ToolTipMicCorrection}">
+                    <Image Source="../images/miccorr.png"></Image>
+
+                </Button>
                 <Button x:Name="_btnUndo"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnUndo_Click" ToolTip="{x:Static res:MyResources.ToolTipUndo}">
                     <Image Source="../images/Undo_icon-icons.com_73701.png"></Image>
                 </Button>

@@ -659,6 +659,11 @@ namespace BatInspector
                 it.TempMin = t;
               if(it.TempMax < t)
                 it.TempMax = t;
+              double hu = c.getDouble(Cols.HUMIDITY);
+              if (it.HumidityMin > hu)
+                it.HumidityMin = hu;
+              if (it.HumidityMax < hu)
+                it.HumidityMax = hu;
             }
             else
             {

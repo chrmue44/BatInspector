@@ -3562,6 +3562,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No action because no microphone information available..
+        /// </summary>
+        public static string msgNoMicInformation {
+            get {
+                return ResourceManager.GetString("msgNoMicInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microphone frequenncy response file not present, microphone setup not executed!.
+        /// </summary>
+        public static string msgNoMicSetup {
+            get {
+                return ResourceManager.GetString("msgNoMicSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please open project first!.
         /// </summary>
         public static string msgPleaseOpenProjectFirst {
@@ -3594,6 +3612,15 @@ namespace BatInspector.Properties {
         public static string MsgSpecifyScript {
             get {
                 return ResourceManager.GetString("MsgSpecifyScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected AI model type does not match project type (Bat/Bird). Please select matching model first!.
+        /// </summary>
+        public static string msgWrongModelType {
+            get {
+                return ResourceManager.GetString("msgWrongModelType", resourceCulture);
             }
         }
         
@@ -4512,6 +4539,15 @@ namespace BatInspector.Properties {
         public static string ToolTipIncRange {
             get {
                 return ResourceManager.GetString("ToolTipIncRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compensation of microphone frequeny response.
+        /// </summary>
+        public static string ToolTipMicCorrection {
+            get {
+                return ResourceManager.GetString("ToolTipMicCorrection", resourceCulture);
             }
         }
         

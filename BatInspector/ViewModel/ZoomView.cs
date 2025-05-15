@@ -265,6 +265,19 @@ namespace BatInspector
       _wf.Audio.FftBackward();
     }
 
+
+    public bool applyMicCorrection()
+    {
+      bool retVal = false;
+      if ((App.Model.Prj != null) && (App.Model.Prj.MicFreqResponse != null))
+      {        
+        _wf.Audio.applyFreqResponse(App.Model.Prj.MicFreqResponse, 0.7);
+        retVal = true;
+      }
+      return retVal;
+    }
+
+
     /// <summary>
     /// removes a section of a wav file. Start and end times of affected calls in analysis are adjusted
     /// </summary>
@@ -350,6 +363,8 @@ namespace BatInspector
         onExitNoiseReduction(null, null);
       }
     }
+
+    
 
     private bool overLap(double t1Min, double t1Max, double t2Min, double t2Max)
     {

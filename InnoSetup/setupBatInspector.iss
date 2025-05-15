@@ -99,7 +99,7 @@ Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#P
 Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BatDetectVersion}"; Flags:runasoriginaluser; Components: modbd2
 Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BbnetVersion}"; Flags:runasoriginaluser; Components: modbatty
 Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BirdnetVersion}"; Flags:runasoriginaluser; Components: modbnet
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
+; Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]
 Type: files; Name: "{app}\{#MyAppExeName}";

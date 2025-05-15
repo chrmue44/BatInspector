@@ -14,6 +14,8 @@ using libParser;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.IO;
+using BatInspector.Properties;
 
 namespace BatInspector.Forms
 {
@@ -462,6 +464,9 @@ namespace BatInspector.Forms
       _ctlMicInfo.IsEnabled = true;
       _ctlMicType.IsEnabled = true;
       _ctlMicComment.IsEnabled = true;
+      double voltage = _rec.Status.BattVoltage.Value;
+      _ctlSetVoltFact.setValue(voltage);
+
       readFreqResponse();
     }
 
@@ -585,9 +590,14 @@ namespace BatInspector.Forms
       string comment = _ctlMicComment.getValue();
       string freqRespFile = _ctlMicFreqFile.getValue();
 
-      ok = _rec.setMicSettings(passWd, id, type, comment, freqRespFile);
-      if (!ok)
-        DebugLog.log("unable to set system parameters", enLogType.ERROR);
+      if (File.Exists(freqRespFile))
+      {
+        ok = _rec.setMicSettings(passWd, id, type, comment, freqRespFile);
+        if (!ok)
+          DebugLog.log("unable to set microphone parameters", enLogType.ERROR);
+      }
+      else
+        MessageBox.Show(MyResources.msgNoMicSetup, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
     }
 
     private void createFreqResponseGraph(Canvas c, double h, double w)

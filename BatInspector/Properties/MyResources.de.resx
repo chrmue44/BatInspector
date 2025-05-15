@@ -1680,4 +1680,16 @@
   <data name="FrmCreatePrjCorrectMic" xml:space="preserve">
     <value>Frequenzgang Mikrofon kompensieren</value>
   </data>
+  <data name="ToolTipMicCorrection" xml:space="preserve">
+    <value>Kompensation des Mikrofonfrequenzgangs</value>
+  </data>
+  <data name="msgNoMicInformation" xml:space="preserve">
+    <value>Keine Aktion, da keine  Mikrofoninformationen verfügbar.</value>
+  </data>
+  <data name="msgWrongModelType" xml:space="preserve">
+    <value>Gewähltes KI-Modell passt nicht zum Projekt (Vögel/Fledermäuse). Bitte passendes Modell auswählen!</value>
+  </data>
+  <data name="msgNoMicSetup" xml:space="preserve">
+    <value>Microfon-Frequenzgang-Datei nicht vorhanden, es wurde kein Mikrofon-Setup durchgeführt!</value>
+  </data>
 </root>

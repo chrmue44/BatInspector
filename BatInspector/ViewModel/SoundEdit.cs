@@ -215,8 +215,6 @@ namespace BatInspector
     private double getAmplitude(double f, FreqResponseRecord[] freqResponse)
     {
       double retVal = 0.0;
-      if (f > 15000)
-        f = f + 1; //@@@
       for(int i = 1; i < freqResponse.Length; i++)
       {
         if(freqResponse[i].Frequency >= f)

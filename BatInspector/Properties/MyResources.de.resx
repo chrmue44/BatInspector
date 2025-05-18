@@ -1692,4 +1692,7 @@
   <data name="msgNoMicSetup" xml:space="preserve">
     <value>Microfon-Frequenzgang-Datei nicht vorhanden, es wurde kein Mikrofon-Setup durchgeführt!</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
 </root>

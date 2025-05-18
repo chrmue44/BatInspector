@@ -162,8 +162,12 @@
             </TabItem>
             <TabItem Header="System">
                 <StackPanel Margin="10" >
-                    <local:ctlDataItem x:Name="_ctlPassWd" Margin="15,0,0,0"/>
-                        <GroupBox Header="{x:Static res:MyResources.Device}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="1"  Margin="0,0,5,5" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Name="_lbPassword"  Width="100" Content="{x:Static res:MyResources.Password}"></Label>
+                        <PasswordBox Name="_tbPassword"  Width="150" Height="20"></PasswordBox>
+                    </StackPanel>
+
+                    <GroupBox Header="{x:Static res:MyResources.Device}" Template="{DynamicResource GroupBoxCmu}" Grid.Column="1"  Margin="0,0,5,5" Grid.Row="1">
 
                             <StackPanel Margin="10" >
                             <local:ctlDataItem x:Name="_ctlSetSerial" />

@@ -170,14 +170,14 @@ namespace BatInspector.Forms
 
     private void initSystemTab(int wl, int wt)
     {
-      _ctlPassWd.setup("Password", enDataType.STRING, 0, wl);
-      _ctlPassWd.setValue("");
-      _ctlSetSerial.setup("Set Serial Number", enDataType.STRING, 0, wl);
+      _tbPassword.Password = "";
+      _lbPassword.Width = wl + 20;
+      _ctlSetSerial.setup("Serial Number", enDataType.STRING, 0, wl);
       _ctlSetSerial.setValue("");
-      _ctlSetVoltFact.setup("Set Voltage", enDataType.DOUBLE, 3, wl);
+      _ctlSetVoltFact.setup("Battery Voltage", enDataType.DOUBLE, 3, wl);
       _ctlSetVoltFact.setValue(0.0);
       _ctlMicComment.setup("Comment", enDataType.STRING, 0, wl);
-      _ctlMicId.setup("Id", enDataType.STRING, 0, wl);
+      _ctlMicId.setup("Serial Number", enDataType.STRING, 0, wl);
       _ctlMicType.setup("Type", enDataType.STRING, 0, wl);
       _ctlMicFreqFile.setup(Properties.MyResources.FrequencyResponse, wl, false, "Text files(*.txt)|*.txt", showMicFreqResponse);
       _ctlMicFreqFile.IsEnabled = false;
@@ -455,7 +455,7 @@ namespace BatInspector.Forms
 
     void initSystemControls(string serial)
     {
-      _ctlPassWd.IsEnabled = true;
+      _tbPassword.IsEnabled = true;
       _ctlSetVoltFact.IsEnabled = true;
       _ctlSetSerial.IsEnabled = true;
       _ctlSetSerial.setValue(serial);
@@ -580,7 +580,7 @@ namespace BatInspector.Forms
 
     private void btnSet_Clicked(object sender, RoutedEventArgs e)
     {
-      string passWd = _ctlPassWd.getValue();
+      string passWd = _tbPassword.Password;
       string newSerial = _ctlSetSerial.getValue();
       double voltage = _ctlSetVoltFact.getDoubleValue();
       bool ok = _rec.setSystemSettings(passWd, newSerial, voltage);

@@ -1692,4 +1692,7 @@
   <data name="msgNoMicSetup" xml:space="preserve">
     <value>Microphone frequenncy response file not present, microphone setup not executed!</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
 </root>

@@ -3670,6 +3670,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Point in Time.
         /// </summary>
         public static string PointInTime {

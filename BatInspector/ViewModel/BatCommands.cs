@@ -32,6 +32,7 @@ namespace BatInspector
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
         new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
         new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
+        new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
       });
 
       _options = new Options(_features, false);
@@ -239,7 +240,31 @@ namespace BatInspector
       else
         ErrText = $"error: {wavFile} not existing";
 
-      return retVal;  
+      return retVal;
+    }
+
+    int fctCheckModelPerformance(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      double threshhold = 0.5;
+      if (pars.Count > 0)
+        double.TryParse(pars[0], NumberStyles.Any, CultureInfo.InvariantCulture, out threshhold);
+
+      if (App.Model.Prj.Ok)
+      {
+        string modelName = App.Model.Prj.AvailableModelParams[App.Model.Prj.SelectedModelIndex].Name + 
+                           App.Model.Prj.AvailableModelParams[App.Model.Prj.SelectedModelIndex].DataSet;
+        string perf = Path.Combine(App.Model.Prj.PrjDir, "performance" + modelName + ".csv");
+        string annDir = Path.Combine(App.Model.Prj.PrjDir, "Annotations");
+        BaseModel.checkModelPerformance(App.Model.Prj, annDir, perf, threshhold);
+      }
+      else
+      {
+        ErrText = "CheckModelPerformance: open project first";
+      }
+      retVal = ErrText == "" ? 0 : 1;
+      return retVal;
     }
   }
 }

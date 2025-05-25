@@ -118,11 +118,11 @@ namespace BatInspector
       //testSplitWavs();
       testCalcSnr();
       testCreatePngCpp();
-      testCreateMicSpectrumFromNoiseFile();
-      double soft = 1.0;
-      testSoundEditApplyFreqResponse("20250428_210228", soft);
-      testSoundEditApplyFreqResponse("20250428_210836", soft);
-      testSoundEditApplyFreqResponse("20250428_noise", soft);
+      //testCreateMicSpectrumFromNoiseFile();
+      //double soft = 1.0;
+      // testSoundEditApplyFreqResponse("20250428_210228", soft);
+      // testSoundEditApplyFreqResponse("20250428_210836", soft);
+      // testSoundEditApplyFreqResponse("20250428_noise", soft);
 
       //checkIfWavFilesExist(); // not a test, a one time function
       //fixAnnotationIds(); // not a test, a one time function

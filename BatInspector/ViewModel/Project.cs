@@ -497,7 +497,8 @@ namespace BatInspector
     /// <returns>a list of file names</returns>
     private static string[] getSelectedFiles(PrjInfo prjInfo, string searchPattern)
     {
-      string[] files = Directory.GetFiles(Path.Combine(prjInfo.SrcDir, prjInfo.WavSubDir), searchPattern);
+      string wavDir = prjInfo.IsProjectFolder ? Path.Combine(prjInfo.SrcDir, prjInfo.WavSubDir) : prjInfo.SrcDir;
+      string[] files = Directory.GetFiles(wavDir, searchPattern);
       List<string> strings = new List<string>();
       foreach (string file in files)
       {

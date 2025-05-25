@@ -526,5 +526,25 @@ namespace libParser
       return retVal;
     }
 
+    /// <summary>
+    /// check if two time spans overlap
+    /// </summary>
+    /// <param name="t1Min"></param>
+    /// <param name="t1Max"></param>
+    /// <param name="t2Min"></param>
+    /// <param name="t2Max"></param>
+    /// <returns></returns>
+    public static bool overLap(double t1Min, double t1Max, double t2Min, double t2Max)
+    {
+      if ((t1Min > t2Min) && (t1Min < t2Max))
+        return true;
+      if ((t2Min > t1Min) && (t2Min < t1Max))
+        return true;
+      if ((t2Max > t1Min) && (t2Max < t1Max))
+        return true;
+      if ((t1Max > t2Min) && (t1Max < t2Max))
+        return true;
+      return false;
+    }
   }
 }

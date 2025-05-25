@@ -305,7 +305,7 @@ namespace BatInspector
           retVal = true;
           inc = false;
         }
-        if (overLap(tMin, tMax, tStart, tStart + duration/1000))
+        if (Utils.overLap(tMin, tMax, tStart, tStart + duration/1000))
         {
           if (tMin < tStart)
           {
@@ -366,18 +366,7 @@ namespace BatInspector
 
     
 
-    private bool overLap(double t1Min, double t1Max, double t2Min, double t2Max)
-    {
-      if ((t1Min > t2Min) && (t1Min < t2Max))
-        return true;
-      if ((t2Min > t1Min) && (t2Min < t1Max))
-        return true;
-      if ((t2Max > t1Min) && (t2Max < t1Max))
-        return true;
-      if ((t1Max > t2Min) && (t1Max < t2Max))
-        return true;
-      return false;
-    }
+
 
     private void onExitNoiseReduction(object sender, EventArgs e)
     {

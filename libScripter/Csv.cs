@@ -47,7 +47,8 @@ namespace libScripter
     {
       _id = _idGen++;
       _cells = new List<List<string>>();
-      string[] cols = header.Split(separator); 
+      string[] cols = header.Split(separator);
+      _colCnt = cols.Length;
       _cells.Add(cols.ToList());
 
       _cols = new Dictionary<string, int>();
@@ -484,6 +485,20 @@ namespace libScripter
       return retVal;
     }
 
+
+    public void insertRow(int row)
+    {
+      if ((row >= 1) && (row <= RowCnt))
+      {
+        List<string> insRow = new List<string>();
+        for (int i = 0; i < ColCnt; i++)
+          insRow.Add("");
+          _cells.Insert(row - 1, insRow);
+        _changed = true;
+      }
+      else
+        log($"could not insert row in row {row}, file has only {RowCnt} rows", enLogType.ERROR);
+    }
     
     /// <summary>
     /// insert a column at a given position

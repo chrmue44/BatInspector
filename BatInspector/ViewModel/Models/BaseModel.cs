@@ -10,8 +10,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web.UI.WebControls;
+using System.Management.Instrumentation;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -60,10 +59,10 @@ namespace BatInspector
 
     public static BaseModel Create(int index, enModel type)
     {
-      switch (type) 
+      switch (type)
       {
         case enModel.rnn6aModel:
-           return new ModelCmuTsa(index) as BaseModel;
+          return new ModelCmuTsa(index) as BaseModel;
         case enModel.BAT_DETECT2:
           return new ModelBatDetect2(index) as BaseModel;
         case enModel.BATTY_BIRD_NET:
@@ -72,8 +71,8 @@ namespace BatInspector
           return new ModelBirdnet(index) as BaseModel;
 
         default:
-          return null;  
-      }    
+          return null;
+      }
     }
 
     public static void writeModelParams(ModelParams[] modelParams, string fileName)
@@ -109,6 +108,47 @@ namespace BatInspector
         DebugLog.log("Serialization failed: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       return retVal;
     }
+
+    /// <summary>
+    /// check the performance of the classification result of a model
+    /// </summary>
+    /// <param name="prj">project with evaluation results</param>
+    /// <param name="annotationDir">directory containing manually generated annotations related to prj</param>
+    /// <param name="output">output file in csv format containing the evaluation results</param>
+    /// <param name="thresh">threshhold value for probability that counts as false positive</param>
+    public static void checkModelPerformance(Project prj, string annotationDir, string output, double thresh)
+    {
+      if (!Directory.Exists(annotationDir))
+      {
+        DebugLog.log($"checkModelPerformance: directory {annotationDir} does not exist", enLogType.ERROR);
+        return;
+      }
+      string[] files = Directory.GetFiles(annotationDir, "*.json");
+      if (files.Length == 0)
+      {
+        DebugLog.log($"checkModelPerformance: directory {annotationDir} does not contain annotation files", enLogType.ERROR);
+        return;
+      }
+      Csv perfResult = createPerfResult(output);
+
+      foreach (string file in files)
+        evaluateAnnFile(prj, file, ref perfResult);
+
+      summarizePerformance(ref perfResult, thresh);
+
+      perfResult.insertRow(1);
+      perfResult.insertRow(1);
+      perfResult.insertRow(1);
+      perfResult.setCell(1, 1, "Model Performance");
+      perfResult.setCell(1, 4, "Reference Project:");
+      perfResult.setCell(1, 5, prj.PrjDir);
+      perfResult.setCell(2, 1, "Classifier:" );
+      perfResult.setCell(2, 2, prj.AvailableModelParams[prj.SelectedModelIndex].Name);
+      perfResult.setCell(2, 3, "Model");
+      perfResult.setCell(2, 4, prj.AvailableModelParams[prj.SelectedModelIndex].DataSet);
+      perfResult.save();
+    }
+
 
     public void stopClassification()
     {
@@ -151,6 +191,182 @@ namespace BatInspector
       {
         DebugLog.log("problems deleting dir: " + dir + ", " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+    private static Csv createPerfResult(string name)
+    {
+      string header = Cols.PERF_ANN_FILE + ";" + Cols.NR + ";" + Cols.START_TIME + ";" + Cols.SPECIES_MAN + ";" 
+                     + Cols.SPECIES + ";" + Cols.PROBABILITY +";" + Cols.PERF_DETECTED + ";" + Cols.PERF_CORRECT;
+      Csv retVal = new Csv(header);
+      retVal.saveAs(name);
+      return retVal;
+    }
+
+    private static void evaluateAnnFile(Project prj, string file, ref Csv perfResult)
+    {
+      Bd2AnnFile annFile = Bd2AnnFile.loadFrom(file);
+      int callNr = 0;
+      foreach(Bd2Annatation ann in annFile.Annatations)
+      {
+        callNr++;
+        perfResult.addRow();
+        int row = perfResult.RowCnt;
+        perfResult.setCell(row, Cols.PERF_ANN_FILE, file);
+        perfResult.setCell(row, Cols.NR, callNr);
+        perfResult.setCell(row, Cols.START_TIME, ann.start_time);
+        perfResult.setCell(row, Cols.SPECIES_MAN, ann.Class);
+        string wavFile = Path.GetFileName(file.Replace(".json", ""));
+        AnalysisFile analysis = prj.Analysis.find(wavFile);
+        bool found = false;
+        if (analysis != null)
+        {
+          foreach(AnalysisCall call in analysis.Calls)
+          {
+            double ts = call.getDouble(Cols.START_TIME);
+            if (Utils.overLap(ts, ts + call.getDouble(Cols.DURATION)/1000, ann.start_time, ann.end_time))
+            {
+              perfResult.setCell(row, Cols.PERF_DETECTED, 1);
+              perfResult.setCell(row, Cols.PROBABILITY, call.getDouble(Cols.PROBABILITY));
+              found = true;
+              string spec =  extractSpecies(call.getString(Cols.SPECIES));
+              perfResult.setCell(row, Cols.SPECIES, spec);
+              string latinName = getLatinName(spec);
+              if(latinName == ann.Class)
+                perfResult.setCell(row, Cols.PERF_CORRECT, 1);
+              else
+                perfResult.setCell(row, Cols.PERF_CORRECT, 0);
+            }
+          }
+        }
+        if(!found)
+        {
+          perfResult.setCell(row, Cols.PERF_DETECTED, 0);
+          perfResult.setCell(row, Cols.PERF_CORRECT, 0);
+        }
+      }
+    }
+
+    private static string getLatinName(string abbr)
+    {
+      string retVal;
+      SpeciesInfos specInfo = SpeciesInfos.findAbbreviation(abbr, App.Model.SpeciesInfos);
+      if (specInfo != null)
+        retVal = specInfo.Latin;
+      else
+        retVal = abbr;
+      return retVal;
+    }
+
+    private static string extractSpecies(string spec)
+    {
+      string retVal = spec;
+      int pos = spec.IndexOf('[');
+      if ((pos >= 0) && (pos < spec.Length))
+      {
+        int pos2 = spec.IndexOf(']');
+        retVal = spec.Substring(pos + 1, pos2 - pos - 1);
+      }
+      return retVal;
+    }
+
+    private static void summarizePerformance(ref Csv perfResult, double thresh)
+    {
+      // build sums
+      List<SumSpec> list = new List<SumSpec>();
+      int row = 2;
+      for (; row <= perfResult.RowCnt; row++)
+      {
+        string name = perfResult.getCell(row, Cols.SPECIES_MAN);
+        SumSpec spec = SumSpec.find(name, list);
+        if (spec == null)
+        {
+          spec = new SumSpec(name);
+          list.Add(spec);
+        }
+        spec.Total++;
+        int corr = perfResult.getCellAsInt(row, Cols.PERF_CORRECT);
+        int det = perfResult.getCellAsInt(row, Cols.PERF_DETECTED);
+        double prob = perfResult.getCellAsDouble(row,Cols.PROBABILITY);
+        spec.Correct += corr;
+        spec.Detected += det;
+
+        if((corr == 0) && (det == 1))
+        {
+          string latin = getLatinName(perfResult.getCell(row, Cols.SPECIES));
+          if (!string.IsNullOrEmpty(latin))
+          {
+            spec = SumSpec.find(latin, list);
+            if (spec == null)
+            {
+              spec = new SumSpec(latin);
+              list.Add(spec);
+            }
+            spec.FalsePositive++;
+            if (prob > thresh)
+              spec.FalsePositiveThresh++;
+          }
+        }
+      }
+
+      perfResult.addRow();
+      perfResult.addRow();
+      row += 2;
+
+      //print sums
+      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "FalsePositive", "FalsePositiveThresh","Recall","Precision","PrecisionThresh" };
+      perfResult.addRow(h);
+    
+      foreach (SumSpec s in list)
+      {
+        row++;
+        perfResult.addRow();
+        perfResult.setCell(row, 1, s.Name);
+        perfResult.setCell(row, 2, s.Total);
+        perfResult.setCell(row, 3, s.Detected);
+        perfResult.setCell(row, 4, s.Correct);
+        perfResult.setCell(row, 5, s.FalsePositive);
+        perfResult.setCell(row, 6, s.FalsePositiveThresh);
+        double recall = s.Total > 0 ? (double)s.Correct / (double)s.Total : 0.0;
+        double precision = (s.Correct + s.FalsePositive) > 0 ? (double)s.Correct / (double)(s.Correct + s.FalsePositive) : 0.0;
+        double precisionThresh = (s.Correct + s.FalsePositiveThresh) > 0 ? (double)s.Correct / (double)(s.Correct + s.FalsePositiveThresh) : 0.0;
+        perfResult.setCell(row, 7, recall);
+        perfResult.setCell(row, 8, precision);
+        perfResult.setCell(row, 9, precisionThresh);
+      }
+    }
+  }
+
+  class SumSpec
+  {
+    public string Name;
+    public int Total;
+    public int Detected;
+    public int Correct;
+    public int FalsePositive;
+    public int FalsePositiveThresh;
+
+    public SumSpec(string name)
+    { 
+      Name = name;
+      Total = 0;
+      Detected = 0;
+      Correct = 0;
+      FalsePositive = 0;
+      FalsePositiveThresh = 0;
+    }
+
+    public static SumSpec find(string name, List<SumSpec> list)
+    {
+      SumSpec retVal = null;
+      foreach (SumSpec s in list)
+      {
+        if(s.Name == name)
+        {
+          retVal = s; 
+          break; 
+        }
+      }
+      return retVal;
     }
   }
 }

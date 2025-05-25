@@ -647,10 +647,13 @@ namespace BatInspector.Forms
         {
           App.Model.View.StartIdx--;
           wavName = App.Model.View.VisibleFiles[App.Model.View.StartIdx];
-          ctlWavFile ctl = _spSpectrums.Children[_spSpectrums.Children.Count - 1] as ctlWavFile;
-          ctl.release();
-          _spSpectrums.Children.RemoveAt(_spSpectrums.Children.Count - 1);
-          append = true;
+          if (_spSpectrums.Children.Count > 0)
+          {
+            ctlWavFile ctl = _spSpectrums.Children[_spSpectrums.Children.Count - 1] as ctlWavFile;
+            ctl.release();
+            _spSpectrums.Children.RemoveAt(_spSpectrums.Children.Count - 1);
+            append = true;
+          }
         }
       }
       if (append)
@@ -1700,18 +1703,19 @@ namespace BatInspector.Forms
       int idx = -e.Delta / 100;
       if (idx > 0)
       {
-        if (_scrollPrj.Value < _scrollPrj.Maximum + idx - 1)
+        if (_scrollPrj.Value + idx  <= _scrollPrj.Maximum)
           _scrollPrj.Value += idx;
         else
-          _scrollPrj.Value += _scrollPrj.Maximum;
+          _scrollPrj.Value = _scrollPrj.Maximum;
       }
       else if (idx < 0)
       { 
-        if (_scrollPrj.Value > idx)
+        if (_scrollPrj.Value + idx >= 0)
           _scrollPrj.Value += idx;
         else
           _scrollPrj.Value = 0;
       }
+      _mouseIsDownOnScrollPrj = false;
     }
 
     private void Window_KeyDown(object sender, KeyEventArgs e)

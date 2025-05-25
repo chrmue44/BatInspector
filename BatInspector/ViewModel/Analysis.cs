@@ -77,6 +77,10 @@ namespace BatInspector
 
     public const string DAYS = "Days";
     public const string T00H = "00:00";
+
+    public const string PERF_ANN_FILE = "annFile";  //performance result: annotation file
+    public const string PERF_DETECTED = "detected";  //performance result: bat call detected
+    public const string PERF_CORRECT = "correct";  //performance result: bat call correctly detected
   }
 
   [DataContract]

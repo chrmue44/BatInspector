@@ -1,0 +1,13 @@
+SET NrFiles =(getPrjFileCount())
+SET Count 0
+FOR FileNr 0 NrFiles
+  IF =(getFileInfo(FileNr, "SELECT"))
+    SET NrCalls =(getCallCount(FileNr))
+    FOR i 0 NrCalls
+      SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+      IF =((toupper(specMan) == "PAUR") || (toupper(specMan) == "PAUS")) 
+        =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))
+      END
+    END
+  END
+END

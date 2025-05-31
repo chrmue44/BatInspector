@@ -38,6 +38,7 @@ OutputBaseFilename={#MyInstallerName}
 Compression=lzma
 SolidCompression=yes
 AlwaysShowDirOnReadyPage=yes
+AlwaysShowComponentsList=yes
 WizardStyle=modern
 SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
 UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
@@ -48,11 +49,13 @@ Name: "batsBirds"; Description: "{cm:msgBatsBirds}"
 Name: "bats"; Description: "{cm:msgInstBats}"
 Name: "batsOnlyBd2"; Description: "{cm:msgInstBatBd2}"
 Name: "birds"; Description: "{cm:msgInstBirds}"
+Name: "custom"; Description: "{cm:msgInstCustom}"; Flags: iscustom
 
 [Components]
-Name: "modbd2"; Description: "AI model BatDetect2"; Types: full bats batsBirds batsOnlyBd2; ExtraDiskSpaceRequired:19327352832 
-Name: "modbatty"; Description: "AI model Batty BirnNET"; Types: full bats; ExtraDiskSpaceRequired:19327352832
-Name: "modbnet"; Description: "AI model BirdNET"; Types: full batsBirds birds; ExtraDiskSpaceRequired:3865470566
+Name: "modbd2"; Description: "{cm:cmpBd2}"; Types: full bats batsBirds batsOnlyBd2; ExtraDiskSpaceRequired:5986975744;  Flags: dontinheritcheck
+Name: "modbatty"; Description: "{cm:cmpBbnet}"; Types: full bats; ExtraDiskSpaceRequired: 4960681984;  Flags: dontinheritcheck
+Name: "modbnet"; Description: "{cm:cmpBirdNet}"; Types: full batsBirds birds; ExtraDiskSpaceRequired: 6827147264;  Flags: dontinheritcheck
+Name: "python"; Description: "{cm:cmpPython}"; Types: full bats batsBirds batsOnlyBd2 birds; ExtraDiskSpaceRequired:97954967;  Flags: dontinheritcheck
 
 [Languages]
 Name: "en"; MessagesFile: "English.isl"
@@ -82,7 +85,7 @@ source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\"; Components: modbd2
 source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet"; Components: modbatty
 source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet"; Components: modbnet
-source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
+source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full; Components: python
 source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
 
 [Dirs]
@@ -95,7 +98,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Flags:runasoriginaluser
+Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Flags:runasoriginaluser; Components: python
 Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BatDetectVersion}"; Flags:runasoriginaluser; Components: modbd2
 Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BbnetVersion}"; Flags:runasoriginaluser; Components: modbatty
 Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BirdnetVersion}"; Flags:runasoriginaluser; Components: modbnet
@@ -118,5 +121,5 @@ en.CreateStartIcon="create entry in start menu"
 en.MsgInstModell="Installing AI model. This will take several minutes, be patient!..."
 
 [UninstallRun]
-Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"{#PythonInstaller}"; RunOnceId: "DelService"
+Filename: "{#MyAppDataFolder}\setup\uninstall_python.bat"; Parameters:"{#PythonInstaller}"; RunOnceId: "DelService"; Components: python
 

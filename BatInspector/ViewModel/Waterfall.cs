@@ -9,13 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Numerics;
-using DSPLib;
 using libParser;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using NAudio.Wave;
-using BatInspector.Controls;
 
 namespace BatInspector
 {

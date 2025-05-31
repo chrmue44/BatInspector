@@ -478,10 +478,12 @@ namespace BatInspector
         _modelParams = ModelParams.GetModelParams(App.Model.getClassifier(enModel.BAT_DETECT2).Name,
                                    App.Model.DefaultModelParams);
         SelectedModelIndex = App.Model.getModelIndex(enModel.BAT_DETECT2);
-        if (App.Model.Regions.IsGermany(lat, lon))
-          _modelParams.DataSet = "GermanBats.pth.tar";
+        if (App.Model.Regions.IsInRegion(lat, lon, "Deutschland"))
+          _modelParams.DataSet = BaseModel.BD2_MODEL_GERMAN;
+        else if (App.Model.Regions.IsInRegion(lat, lon, "United Kingdom"))
+          _modelParams.DataSet = BaseModel.BD2_MODEL_UK;
         else
-          _modelParams.DataSet = "Net2DFast_UK_same.pth.tar";
+          _modelParams.DataSet = BaseModel.BD2_MODEL_GERMAN;
       }
       foreach (ModelParams m in AvailableModelParams)
         m.Enabled = false;

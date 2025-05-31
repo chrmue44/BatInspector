@@ -1306,6 +1306,23 @@ namespace BatInspector.Controls
       try
       {
         System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
+        if (((App.Model.Prj != null) && (App.Model.Prj.Ok)) || App.Model.Query != null)
+        {
+          if (App.Model.ZoomView.Analysis != null)
+          {
+            int callIdx = App.Model.ZoomView.SelectedCallIdx;
+            if ((callIdx >= 0) && (callIdx < App.Model.ZoomView.Analysis.Calls.Count))
+            {
+              string fileName = System.IO.Path.GetFileNameWithoutExtension(App.Model.ZoomView.Waterfall.WavName) + $"_Call_{callIdx + 1}";
+              string spec = App.Model.ZoomView.Analysis.Calls[callIdx].getString(Cols.SPECIES_MAN);
+              if (spec.IndexOf('?') < 0)
+                fileName += "_" + spec;
+              fileName += ".wav";
+              dlg.FileName = fileName;
+            }
+          }
+        }
+
         dlg.Filter = "WAV files (*.wav)|*.wav";
         System.Windows.Forms.DialogResult res = dlg.ShowDialog();
         if (res == System.Windows.Forms.DialogResult.OK)

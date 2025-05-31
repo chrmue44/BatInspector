@@ -33,7 +33,9 @@ namespace BatInspector
         new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
         new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
         new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
-      });
+        new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
+        new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
+        });
 
       _options = new Options(_features, false);
     }
@@ -264,6 +266,26 @@ namespace BatInspector
         ErrText = "CheckModelPerformance: open project first";
       }
       retVal = ErrText == "" ? 0 : 1;
+      return retVal;
+    }
+
+    int fctFindMissingFilesInTrainingData(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string wavPath = pars[0];
+      string annPath = pars[1];
+      BaseModel.findMissingFilesInTrainingData(wavPath, annPath);
+      return retVal;
+    }
+
+    int fctCountCallsInTrainingData(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string annPath = pars[0];
+      string csvFile = pars[1];
+      BaseModel.countCallsInTrainingData(annPath, csvFile);
       return retVal;
     }
   }

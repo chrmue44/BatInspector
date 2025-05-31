@@ -10,7 +10,6 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Management.Instrumentation;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -30,6 +29,10 @@ namespace BatInspector
 
   public abstract class BaseModel
   {
+
+    public const string BD2_MODEL_GERMAN = "GermanBats_0.8.pth.tar";
+    public const string BD2_MODEL_UK = "Net2DFast_UK_same.pth.tar";
+
     static protected readonly XmlSerializer ModParSerializer = new XmlSerializer(typeof(DefModelParamFile));
 
     int _index = 0;
@@ -149,6 +152,76 @@ namespace BatInspector
       perfResult.save();
     }
 
+    /// <summary>
+    /// check if annotation files match with wav files
+    /// </summary>
+    public static void findMissingFilesInTrainingData(string pathWav, string pathAnn)
+    {
+      string[] wavFiles = Directory.GetFiles(pathWav, "*.wav");
+      string[] annFiles = Directory.GetFiles(pathAnn, "*.json");
+
+      foreach (string wav in wavFiles)
+      {
+        string wavFile = Path.GetFileName(wav);
+        bool found = false;
+        foreach (string ann in annFiles)
+        {
+          string annFile = Path.GetFileName(ann);
+          if (annFile.Contains(wavFile))
+          {
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+          DebugLog.log($"missing annotation: {wav}", enLogType.ERROR);
+      }
+
+      foreach (string ann in annFiles)
+      {
+        bool found = false;
+        string annFile = Path.GetFileName(ann);
+        foreach (string wav in wavFiles)
+        {
+          string wavFile = Path.GetFileName(wav);
+          if (annFile.Contains(wavFile))
+          {
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+          DebugLog.log($"missing wav: {ann}", enLogType.ERROR);
+      }
+      DebugLog.log("check of training data complete", enLogType.INFO);
+    }
+
+    public static void countCallsInTrainingData(string pathAnn, string csvName)
+    {
+      Csv csv = new Csv();
+      csv.read(csvName, ";", true);
+      int maxRow = csv.RowCnt;
+      for (int row = 2; row <= maxRow; row++)
+      {
+        string annFileName = csv.getCell(row, "FileName") + ".json";
+        string spec = csv.getCell(row, "Species");
+        annFileName = Path.Combine(pathAnn, annFileName);
+        Bd2AnnFile annFile = Bd2AnnFile.loadFrom(annFileName, false);
+        if (annFile != null)
+        {
+          int count = 0;
+          foreach (Bd2Annatation ann in annFile.Annatations)
+          {
+            if ((ann != null) && (ann.Class != "Bat") && (ann.Class != "Not Bat") && (ann.Class != "Unknown"))
+              count++;
+          }
+          csv.setCell(row, spec, count);
+        }
+        else
+          csv.setCell(row, spec, 1);
+      }
+      csv.save();
+    }
 
     public void stopClassification()
     {
@@ -157,6 +230,14 @@ namespace BatInspector
         _proc.Stop();
         _isBusy = false;
       }
+    }
+
+    public void cleanUpAnnotations(Project prj)
+    {
+      string annDir = prj.getAnnotationDir();
+      DirectoryInfo dir = new DirectoryInfo(annDir);
+      if(dir.Exists)
+         dir.Delete(true);
     }
 
     protected void createDir(string rootDir, string subDir, bool delete)
@@ -287,6 +368,8 @@ namespace BatInspector
         int corr = perfResult.getCellAsInt(row, Cols.PERF_CORRECT);
         int det = perfResult.getCellAsInt(row, Cols.PERF_DETECTED);
         double prob = perfResult.getCellAsDouble(row,Cols.PROBABILITY);
+        if (prob >= thresh)
+          spec.CorrectThresh += corr;
         spec.Correct += corr;
         spec.Detected += det;
 
@@ -313,9 +396,10 @@ namespace BatInspector
       row += 2;
 
       //print sums
-      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "FalsePositive", "FalsePositiveThresh","Recall","Precision","PrecisionThresh" };
+      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "CorrectThresh", "FalsePositive", "FalsePositiveThresh","Recall", "RecallThresh", "Precision","PrecisionThresh" };
       perfResult.addRow(h);
-    
+
+      list.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
       foreach (SumSpec s in list)
       {
         row++;
@@ -324,14 +408,17 @@ namespace BatInspector
         perfResult.setCell(row, 2, s.Total);
         perfResult.setCell(row, 3, s.Detected);
         perfResult.setCell(row, 4, s.Correct);
-        perfResult.setCell(row, 5, s.FalsePositive);
-        perfResult.setCell(row, 6, s.FalsePositiveThresh);
+        perfResult.setCell(row, 5, s.CorrectThresh);
+        perfResult.setCell(row, 6, s.FalsePositive);
+        perfResult.setCell(row, 7, s.FalsePositiveThresh);
         double recall = s.Total > 0 ? (double)s.Correct / (double)s.Total : 0.0;
+        double recallThresh = s.Total > 0 ? (double)s.CorrectThresh / (double)s.Total : 0.0;
         double precision = (s.Correct + s.FalsePositive) > 0 ? (double)s.Correct / (double)(s.Correct + s.FalsePositive) : 0.0;
         double precisionThresh = (s.Correct + s.FalsePositiveThresh) > 0 ? (double)s.Correct / (double)(s.Correct + s.FalsePositiveThresh) : 0.0;
-        perfResult.setCell(row, 7, recall);
-        perfResult.setCell(row, 8, precision);
-        perfResult.setCell(row, 9, precisionThresh);
+        perfResult.setCell(row, 8, recall);
+        perfResult.setCell(row, 9, recallThresh);
+        perfResult.setCell(row, 10, precision);
+        perfResult.setCell(row, 11, precisionThresh);
       }
     }
   }
@@ -342,6 +429,7 @@ namespace BatInspector
     public int Total;
     public int Detected;
     public int Correct;
+    public int CorrectThresh;
     public int FalsePositive;
     public int FalsePositiveThresh;
 

@@ -189,6 +189,8 @@ namespace BatInspector
     public const int FFT_WIDTH = 1024;
     public const int NR_OF_TICKS = 9;         // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
     public const int CNT_WAV_CONTROLS = 16;   // max. number of wav file controls
+
+
     static AppParams _inst = null;
 
     bool _isInitialized = false;
@@ -393,7 +395,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRangeZoomWin")]
-    public double GradientRange { get; set; } = 15;
+    public double GradientRange { get; set; } = 90;
 
     [DataMember]
     [Category("Filter")]
@@ -601,7 +603,7 @@ namespace BatInspector
       FrequencyHET = 40000;
       MainWindowPosX = 0;
       MainWindowPosY = 0;
-      GradientRange = 12;
+      GradientRange = 90;
       HideInfos = false;
       WaterfallLogarithmic = true;
       Culture = enCulture.de_DE;

@@ -48,6 +48,7 @@ namespace BatInspector.Controls
       get { return _grpInfoAuto.Visibility == Visibility.Visible; }
       set
       {
+        bool updateFlag = (_grpInfoAuto.Visibility != Visibility.Visible) && value;
         _grpInfoAuto.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _grpInfoMan.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         _btnCopy.Visibility = value ? Visibility.Visible : Visibility.Hidden;
@@ -60,6 +61,9 @@ namespace BatInspector.Controls
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(_infoWidth);
         }
+        if(updateFlag)
+          update();
+
       }
     }
 
@@ -102,7 +106,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons, bool isBird)
+    public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons, bool isBird, bool infoVisible)
     {
       _parent = parent;
       InitializeComponent();
@@ -117,6 +121,7 @@ namespace BatInspector.Controls
       _cbSel.Focusable = true;
       _cbSel.IsChecked = record.Selected;
       Visibility = Visibility.Visible;
+      InfoVisible = infoVisible;
       _infoWidth = isBird ? AppParams.CTLWAV_WIDTH_BIRDS : AppParams.CTLWAV_WIDTH_BATS;
       _isBirdPrj = isBird;
      }
@@ -126,17 +131,19 @@ namespace BatInspector.Controls
     {
       if (rec == null)
         return;
-
       _analysis = analysis;
       List<string> spec = new List<string>();
       if (_spDataMan.Children.Count > 0)
       {
-        if (!_isBirdPrj)
+        if (InfoVisible)
         {
-          ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
-          spec = ctl.getItems();
+          if (!_isBirdPrj)
+          {
+            ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
+            spec = ctl.getItems();
+          }
+          initCallInformations(spec);
         }
-        initCallInformations(spec);
       }
       _cbSel.IsChecked = rec.Selected;
     }
@@ -150,7 +157,8 @@ namespace BatInspector.Controls
       _btnWavFile.Content = _record.File.Replace("_", "__");  //hack, because single '_' shows as underlined char
       //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
-      initCallInformations(spec);
+      if(InfoVisible)
+        initCallInformations(spec);
       _initialized = true;
       setHeight(height);
     }

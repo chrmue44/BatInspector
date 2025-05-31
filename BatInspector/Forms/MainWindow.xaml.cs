@@ -73,6 +73,9 @@ namespace BatInspector.Forms
     double _scrollBarListPos = 0;
     bool _mouseIsDownOnScrollList = false;
     bool _treeViewCollaped = false;
+    bool _infoVisible = true;
+    
+    
     public MainWindow()
     {
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
@@ -432,8 +435,9 @@ namespace BatInspector.Forms
 
     public void toggleCallInfo()
     {
+      _infoVisible = !_infoVisible;
       foreach (ctlWavFile ctl in _spSpectrums.Children)
-        ctl.InfoVisible = !ctl.InfoVisible;
+        ctl.InfoVisible = _infoVisible;
       if (_spSpectrums.Children.Count > 0)
       {
         ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
@@ -630,15 +634,18 @@ namespace BatInspector.Forms
         if (App.Model.View.StartIdx < (App.Model.View.VisibleFiles.Count - 1))
         {
           App.Model.View.StartIdx++;
-          ctlWavFile ctl = _spSpectrums.Children[0] as ctlWavFile;
-          ctl.release();
-          _spSpectrums.Children.RemoveAt(0);
+          if (_spSpectrums.Children.Count > 0)
+          {
+            ctlWavFile ctl = _spSpectrums.Children[0] as ctlWavFile;
+            ctl.release();
+            _spSpectrums.Children.RemoveAt(0);
+          }
           if ((App.Model.View.StartIdx + _spSpectrums.Children.Count) <
              (App.Model.View.VisibleFiles.Count - 1))
           {
             wavName = App.Model.View.VisibleFiles[App.Model.View.StartIdx + _spSpectrums.Children.Count + 1];
-            append = true;
           }
+          append = true;
         }
       }
       else
@@ -652,8 +659,8 @@ namespace BatInspector.Forms
             ctlWavFile ctl = _spSpectrums.Children[_spSpectrums.Children.Count - 1] as ctlWavFile;
             ctl.release();
             _spSpectrums.Children.RemoveAt(_spSpectrums.Children.Count - 1);
-            append = true;
           }
+          append = true;
         }
       }
       if (append)
@@ -663,7 +670,7 @@ namespace BatInspector.Forms
         if (App.Model.CurrentlyOpen.Analysis != null)
           analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
         ctlWavFile ctl = _wavCtls.get("wavCtl append");
-        ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj);
+        ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
         if (up)
           _spSpectrums.Children.Add(ctl);
         else
@@ -714,7 +721,7 @@ namespace BatInspector.Forms
                   ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
                   if (ctl != null)
                   {
-                    ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj);
+                    ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
                     DockPanel.SetDock(ctl, Dock.Bottom);
                     _spSpectrums.Children.Add(ctl);
                     initCtlWav(ctl, rec, isQuery);
@@ -837,7 +844,7 @@ namespace BatInspector.Forms
             MessageBoxResult res = MessageBoxResult.Yes;
             DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
             if (App.Model.CurrentlyOpen?.Analysis.IsEmpty == false)
-              res = MessageBox.Show(BatInspector.Properties.MyResources.MainWinMsgOverwriteReport,
+              res = MessageBox.Show(BatInspector.Properties.MyResources.msgMainWinMsgOverwriteReport,
               BatInspector.Properties.MyResources.msgQuestion,
               MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res == MessageBoxResult.Yes)

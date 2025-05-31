@@ -104,7 +104,7 @@ namespace BatInspector
       saveAs(_fileName);
     }
 
-    public static Bd2AnnFile loadFrom(string fPath)
+    public static Bd2AnnFile loadFrom(string fPath, bool createIfMissing = true)
     {
       Bd2AnnFile retVal = null;
       FileStream file = null;
@@ -124,13 +124,14 @@ namespace BatInspector
             DebugLog.log("successfully loaded", enLogType.DEBUG);
           }
         }
-        else
+        else 
         {
           DebugLog.log("load failed", enLogType.DEBUG);
           retVal = new Bd2AnnFile();
           retVal._fileName = fPath;
           retVal.init();
-          retVal.save();
+          if(createIfMissing)
+            retVal.save();
         }
       }
       catch (Exception e)

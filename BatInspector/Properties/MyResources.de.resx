@@ -1158,7 +1158,7 @@
   <data name="ModelBatDetect2msgProcessing" xml:space="preserve">
     <value>KI analysiert Datei </value>
   </data>
-  <data name="MainWinMsgOverwriteReport" xml:space="preserve">
+  <data name="msgMainWinMsgOverwriteReport" xml:space="preserve">
     <value>Bereits bestehende Auswertung überschreiben?</value>
   </data>
   <data name="CtrlZoomFileInfos" xml:space="preserve">

@@ -477,6 +477,7 @@ namespace BatInspector
           {
             if ((i < _models.Count) && (Prj.AvailableModelParams[i].Enabled == true))
             {
+              _models[i].cleanUpAnnotations(Prj);
               retVal = _models[i].classify(Prj, false, cli);
             }
           }
@@ -490,6 +491,7 @@ namespace BatInspector
             if (File.Exists(report))
               removeEmptyFiles = false;
           }
+          _models[Prj.SelectedModelIndex].cleanUpAnnotations(Prj);
           retVal = _models[Prj.SelectedModelIndex].classify(Prj, removeEmptyFiles, cli);
         }
         _view.Prj.writePrjFile();

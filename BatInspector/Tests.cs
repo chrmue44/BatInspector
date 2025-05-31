@@ -12,9 +12,11 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
@@ -126,9 +128,9 @@ namespace BatInspector
 
       //checkIfWavFilesExist(); // not a test, a one time function
       //fixAnnotationIds(); // not a test, a one time function
-      //testWriteModParams(); not a test, a one time function
-      //adjustJsonIds(); not a test, a one time function
-      //adjustJsonAnnotationCallsAtBorder(); not a test, a one time function
+      //testWriteModParams(); //not a test, a one time function
+      //adjustJsonIds(); //not a test, a one time function
+      //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
 
       if (_errors == 0)
       {
@@ -852,6 +854,9 @@ namespace BatInspector
       }
     }
 
+
+
+    
 
     private void testActivityDiagr()
     {

@@ -247,13 +247,13 @@ namespace BatInspector
     }
 
 
-    public bool IsGermany(double lat, double lon)
+    public bool IsInRegion(double lat, double lon, string regionName)
     {
       bool retVal = false;
       ParLocation l = new ParLocation(lat, lon);
       foreach (ParRegion r in Regions)
       {
-        if((r.Name == "Deutschland") && inside(l, r.Location))
+        if ((r.Name == regionName) && inside(l, r.Location))
         {
           retVal = true;
           break;

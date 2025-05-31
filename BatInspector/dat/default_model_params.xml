@@ -9,6 +9,7 @@
 	<Script>run.bat</Script>
     <AvailableDataSets>Net2DFast_UK_same.pth.tar</AvailableDataSets>
     <AvailableDataSets>GermanBats.pth.tar</AvailableDataSets>
+    <AvailableDataSets>GermanBats_0.8.pth.tar</AvailableDataSets>
     <Parameters>
       <Name>Detection Threshold</Name>
       <Type>DOUBLE</Type>

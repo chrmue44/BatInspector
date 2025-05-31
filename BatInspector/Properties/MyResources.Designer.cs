@@ -3427,15 +3427,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overwrite already existing report?.
-        /// </summary>
-        public static string MainWinMsgOverwriteReport {
-            get {
-                return ResourceManager.GetString("MainWinMsgOverwriteReport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Project.
         /// </summary>
         public static string MainWinProjectView {
@@ -3558,6 +3549,15 @@ namespace BatInspector.Properties {
         public static string msgInformation {
             get {
                 return ResourceManager.GetString("msgInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overwrite already existing report?.
+        /// </summary>
+        public static string msgMainWinMsgOverwriteReport {
+            get {
+                return ResourceManager.GetString("msgMainWinMsgOverwriteReport", resourceCulture);
             }
         }
         

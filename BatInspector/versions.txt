@@ -1,15 +1,14 @@
 TODO
-- training of model
 - new flag <modified> in XML-file
 - simplification of script to copy auto to man specie
 - markieren von manuell geänderten Rufen
 - more flexible import: 
   - parsing date/time form different file names
   - real "inplace" import
-- export zoom view: set default file name: call_nr_species_filename.wav
 
-
-# V0.9.4.0
+# V0.9.4.0 31.05.25
+- enhanced version of AI model GermanBats (version 0.8)
+- new script to replace Species PAUS, PAUR with Plecotus for all selected files in project 
 - experimental support of BirdNET for birdsong detection
 - read/write microphone info from BatSpy if mic with one-wire chip is connected
 - automatic correction of microphone frequency response for BatSpy recordings
@@ -18,12 +17,16 @@ TODO
 - import RAW audio files from EcoObs (fixed format: 500kS, 16 bit, 1 channel)
 - import from wavs: error message when date/time cannot be parsed
 - error message, when AI model evaluation crashes
+- new batdetect2 version 1.1.1
+- faster scrolling with hidden call informations
+- export zoom view: set default file name: filename_call_nr_species.wav
+- installer allows to choose what models to install
 - bugfix: import of file names in format <name>-<date>_<time> works 
-- bugfix: replaced checkboxes with radio buttons in create sum report 
-          form to prevent activation of more than one item
+- bugfix: replaced checkboxes with radio buttons in create sum report form 
+          to prevent activation of more than one item at a time
 - bugfix: mouse wheel works now in both directions (not only up)
 - bugfix: min/max humidity in summary
-- new batdetect2 version 1.1.1
+
 
 # V0.9.3.1 14.11.24
 - bugfix: import from WAV-Files did not create xml files anymore (bug introduced in 0.9.3) 

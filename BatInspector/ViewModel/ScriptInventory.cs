@@ -231,12 +231,13 @@ namespace BatInspector
                                                                                         {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
                                                                                          new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
                                                                                          new ParamItem("Quelldateien löschen", enParamType.BOOL,"PAR3") }),
-        new ScriptItem(7, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
-        new ScriptItem(8, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(9, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(10, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(11, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(12, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, new List<ParamItem>())
+        new ScriptItem(7, "replace_plecotus.scr", "Alle selektierten PAUR, PAUS im Projekt mit Plecotus ersetzen", false, new List<ParamItem>()),
+        new ScriptItem(8, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
+        new ScriptItem(9, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(10, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(11, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(12, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(13, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, new List<ParamItem>())
       };
     }
 
@@ -258,10 +259,13 @@ namespace BatInspector
       FileInfo[] files = dir.GetFiles("*.scr");
       string [] fileNames = new string[files.Length];
       for (int i = 0; i < files.Length; i++)
+      {
         fileNames[i] = files[i].FullName;
-        
+        DebugLog.log($"copy script {fileNames[i]} to {_scriptPath}", enLogType.INFO);
+      }
+
       Utils.copyFiles(fileNames, _scriptPath, false, true);
-        DebugLog.log("initialized script folder", enLogType.INFO);
+      DebugLog.log("initialized script folder", enLogType.INFO);
 
     }
 

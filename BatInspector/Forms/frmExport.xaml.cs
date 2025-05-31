@@ -29,6 +29,15 @@ namespace BatInspector.Forms
       _cbIncPng.IsChecked = true;
       _cbIncXML.IsChecked = true;
       _cbTimeStretch.IsChecked = true;
+      if (App.Model.Prj.Ok)
+      {
+        int call = App.Model.ZoomView.SelectedCallIdx;
+        if ((call >= 0) && (call <= App.Model.ZoomView.Analysis.Calls.Count))
+        {          
+          string pref = App.Model.ZoomView.Analysis.Calls[call].getString(Cols.SPECIES_MAN);
+          _ctlPrefix.setValue(pref);
+        }
+      }
     }
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)

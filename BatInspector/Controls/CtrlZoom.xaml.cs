@@ -341,7 +341,9 @@ namespace BatInspector.Controls
 
     public void updateManSpecies()
     {
-      _ctlSpecMan.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+      if((App.Model.ZoomView.SelectedCallIdx >= 0) &&
+         (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
+        _ctlSpecMan.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
     }
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
@@ -615,11 +617,11 @@ namespace BatInspector.Controls
     {
       try
       {
+        DebugLog.log("ZoomBtn: 'zoom total' clicked", enLogType.DEBUG);
         App.Model.ZoomView.RulerDataF.setRange(0, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
         App.Model.ZoomView.RulerDataT.setRange(0, App.Model.ZoomView.Waterfall.Duration);
         hideCursors();
         createZoomImg();
-        DebugLog.log("ZoomBtn: 'zoom total' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
       {
@@ -1508,13 +1510,18 @@ namespace BatInspector.Controls
     {
       try
       {
-        FrmLocationView frm = new FrmLocationView();
-        frm.navigate(App.Model.ZoomView.FileInfo.FileName, App.Model.ZoomView.FileInfo.GPS.Position, 17);
-        frm.Show();
+        string[] loc = App.Model.ZoomView.FileInfo.GPS.Position.Split(' ');
+        int zoom = 17;
+        if (loc.Length > 1)
+        {
+          //string url = Utils.BingMapUrl(location, title, zoom);
+          string url = Utils.OsmMapUrl(loc[0], loc[1], "", zoom);
+          Process.Start(url);
+        }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
-        DebugLog.log("unable to display location", enLogType.ERROR);
+        DebugLog.log($"unable to display location: {ex.ToString()}", enLogType.ERROR);
       }
     }
 

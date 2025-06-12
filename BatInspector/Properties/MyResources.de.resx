@@ -724,10 +724,10 @@
     <value>Importiere Audio-Datei(en) oder Elekon-Projekt</value>
   </data>
   <data name="Latitude" xml:space="preserve">
-    <value>geographische Breite</value>
+    <value>geogr. Breite (z.B.: 49.7532 oder 49° N 33.275)</value>
   </data>
   <data name="Longitude" xml:space="preserve">
-    <value>geografische Länge</value>
+    <value>geogr. Länge (z.B.: 8.4563 oder 8° E 22.654)</value>
   </data>
   <data name="frmCreatePrjInfo" xml:space="preserve">
     <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus Audio-Dateien ergänzen</value>
@@ -760,7 +760,7 @@
     <value>Angezeigten Bereich als WAV-Datei speichern</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Quellverzeichnis (*.wav, *.raw, *.bpr)</value>
+    <value>Quellverzeichnis (*.batspy, *.wav, *.raw)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Zielverzeichnis für Projekt</value>

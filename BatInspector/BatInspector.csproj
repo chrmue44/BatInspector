@@ -62,15 +62,6 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.2895.0, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.2895.0, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\lib\net462\Microsoft.Web.WebView2.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.2895.0, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\lib\net462\Microsoft.Web.WebView2.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
@@ -243,9 +234,6 @@
     </Compile>
     <Compile Include="Forms\frmInstall.xaml.cs">
       <DependentUpon>frmInstall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FrmLocationView.xaml.cs">
-      <DependentUpon>FrmLocationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmMessage.xaml.cs">
       <DependentUpon>FrmMessage.xaml</DependentUpon>
@@ -520,10 +508,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\FrmLocationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Forms\FrmMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -648,6 +632,9 @@
     <Resource Include="images\icons8-offener-ordner-64.png" />
     <Resource Include="images\Bandpass.png" />
     <Resource Include="images\micCorr.png" />
+    <Content Include="dat\default_model_params.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -661,19 +648,27 @@
       <LastGenOutput>MyResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="dat\Bbar_13.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="dat\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav" />
+    <Content Include="dat\Bbar_13.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Eser_Ski0113_S2_From2329314ms_To2354627ms.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="dat\Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav" />
-    <None Include="dat\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav" />
-    <None Include="dat\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav" />
-    <Content Include="dat\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav" />
-    <Content Include="dat\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav" />
-    <None Include="dat\batinfo.json" />
-    <None Include="dat\BatSpeciesRegions.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="dat\Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav" />
+    <Content Include="dat\Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav" />
+    <Content Include="dat\Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\batinfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dat\BatSpeciesRegions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="doc\Bestimmung-Fledermausrufe-Teil1.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -854,11 +849,4 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\build\Microsoft.Web.WebView2.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.2895-prerelease\build\Microsoft.Web.WebView2.targets'))" />
-  </Target>
 </Project>

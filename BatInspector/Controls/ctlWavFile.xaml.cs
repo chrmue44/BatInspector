@@ -15,10 +15,7 @@ using System.Windows.Controls;
 using BatInspector.Properties;
 using System.IO;
 using libScripter;
-using System.Drawing;
 using System.Windows.Media;
-using Microsoft.Web.WebView2.Core;
-using System.Windows.Media.Media3D;
 
 namespace BatInspector.Controls
 {

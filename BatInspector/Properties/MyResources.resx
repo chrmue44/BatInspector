@@ -727,10 +727,10 @@
     <value>Please enter missing information to create a project from a selection of audio files</value>
   </data>
   <data name="Latitude" xml:space="preserve">
-    <value>Latitude</value>
+    <value>Latitude (e.g.: 49.7532 or 49° N 33.275)</value>
   </data>
   <data name="Longitude" xml:space="preserve">
-    <value>Longitude</value>
+    <value>Longitude (e.g.: 8.4563 or 8° E 22.654)</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
     <value>Import WAV, RAW files, BatSpy- or Elekon Project</value>
@@ -760,7 +760,7 @@
     <value>save displayed range as WAV file</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Source Folder(*.wav, *.raw, *.bpr)</value>
+    <value>Source Folder(*.batspy, *.wav, *.raw)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Destination Folder for Project</value>

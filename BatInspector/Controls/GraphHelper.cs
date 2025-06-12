@@ -230,7 +230,7 @@ namespace BatInspector.Controls
       GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
     }
 
-    public static void createRulerX(Canvas can, double x, double y, double max, double width, double[] tTicks, string nrFmt = "0.#")
+    public static void createRulerX(Canvas can, double x, double y, double width, double max,  double[] tTicks, string nrFmt = "0.#")
     {
       GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
       for (int i = 0; i < tTicks.Length; i++)

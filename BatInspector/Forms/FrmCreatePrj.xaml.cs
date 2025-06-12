@@ -32,7 +32,7 @@ namespace BatInspector.Forms
     {
       InitializeComponent();
       _info = new PrjInfo();
-      _widthLbl = 200;
+      _widthLbl = 260;
       _dtStart._lbl.Text = MyResources.CtlSumReportStartDate;
       _dtEnd._lbl.Text = MyResources.CtlSumReportEndDate;
 

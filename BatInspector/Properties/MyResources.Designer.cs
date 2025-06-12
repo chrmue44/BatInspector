@@ -1690,7 +1690,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source Folder(*.wav, *.raw, *.bpr).
+        ///   Looks up a localized string similar to Source Folder(*.batspy, *.wav, *.raw).
         /// </summary>
         public static string frmCreatePrjSrcFolder {
             get {
@@ -2824,7 +2824,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Latitude.
+        ///   Looks up a localized string similar to Latitude (e.g.: 49.7532 or 49° N 33.275).
         /// </summary>
         public static string Latitude {
             get {
@@ -2851,7 +2851,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Longitude.
+        ///   Looks up a localized string similar to Longitude (e.g.: 8.4563 or 8° E 22.654).
         /// </summary>
         public static string Longitude {
             get {

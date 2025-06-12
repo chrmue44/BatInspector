@@ -8,9 +8,9 @@ namespace BatInspector
 { 
   public class Statistic
   {
-    const int CLASSES_PER_HOUR = 4;
-    public const int HOURS_PER_NIGHT = 11;
-    const int TIME_CLASSES = CLASSES_PER_HOUR * HOURS_PER_NIGHT;
+    const int CLASSES_PER_HOUR = 2;
+//    public const int HOURS_PER_NIGHT = 11;
+    const int TIME_CLASSES = CLASSES_PER_HOUR * 24;
     Histogram _fmin;
     Histogram _fmax;
     Histogram _fmaxAmp;
@@ -88,11 +88,7 @@ namespace BatInspector
     {
       int h = f.RecTime.Hour;
       int m = f.RecTime.Minute;
-      int hClass;
-      if (h >= 20)
-        hClass = (h - 20) * CLASSES_PER_HOUR;
-      else
-        hClass = (h + 4) * CLASSES_PER_HOUR;
+      int hClass = h * CLASSES_PER_HOUR;
       hClass += m * CLASSES_PER_HOUR / 60;
       return hClass;
     }

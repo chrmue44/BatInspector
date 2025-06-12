@@ -5,6 +5,8 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using libParser;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
@@ -130,19 +132,32 @@ namespace BatInspector.Controls
 
     private void _lbl_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      if (_dlgClickLabel != null)
-        _dlgClickLabel(_index);
+      try
+      {
+        if (_dlgClickLabel != null)
+          _dlgClickLabel(_index);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"_lbl_MouseDown: {ex.ToString()}", enLogType.ERROR);
+      }
     }
 
     private void _cb_DropDownClosed(object sender, System.EventArgs e)
     {
-      if (IsVisible && (_cb.SelectedIndex >= 0))
+      try
       {
-        _valString = _cb.Items[_cb.SelectedIndex].ToString();
-        if (_dlgValChange != null)
-          _dlgValChange(_index, _valString);
+        if (IsVisible && (_cb.SelectedIndex >= 0))
+        {
+          _valString = _cb.Items[_cb.SelectedIndex].ToString();
+          if (_dlgValChange != null)
+            _dlgValChange(_index, _valString);
+        }
       }
-
+      catch(Exception ex)
+      {
+        DebugLog.log($"_cb_DropDownClosed: {ex.ToString()}", enLogType.ERROR);
+      }
     }
   }
 

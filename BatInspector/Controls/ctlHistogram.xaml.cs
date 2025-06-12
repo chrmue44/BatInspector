@@ -28,11 +28,13 @@ namespace BatInspector.Controls
       _ctlCnt.setup(BatInspector.Properties.MyResources.Count, enDataType.INT,2,lblW);
     }
 
-    public void initHistogram(Histogram histogram, string title, double[] ticks = null)
+    public void initHistogram(Histogram histogram, string title, double[] ticks = null, bool hideStat = false)
     {
       _hdrTextBlock.Text = title;
       _histogram = histogram;
       _ticksX = ticks;
+      _ctlMean.Visibility = hideStat ? Visibility.Hidden : Visibility.Visible;
+      _ctlStdDev.Visibility = hideStat ? Visibility.Hidden : Visibility.Visible;
     }
 
     public void createHistogram()
@@ -53,7 +55,7 @@ namespace BatInspector.Controls
         if(_ticksX == null)
           GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.Min, _histogram.Max);
         else
-          GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.Max, _ticksX);
+          GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, 24, _ticksX);
 
         for (int i = 0; i < _histogram.Classes.Count; i++)
         {

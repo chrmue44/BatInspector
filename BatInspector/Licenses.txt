@@ -1,4 +1,4 @@
-﻿BatInspector © 2022 .. 2024 by Christian Müller is licensed under CC BY-NC 4.0
+﻿BatInspector © 2022 .. 2025 by Christian Müller is licensed under CC BY-NC 4.0
 
 The components taken from other sources are listed below
 
@@ -6,18 +6,22 @@ The components taken from other sources are listed below
 * AI models       *
 *******************
 
-AI model to detect bat species:
+AI models to detect bat and bird species:
 
 Model 1:
 https://github.com/macaodha/batdetect2
 Model 2:
 https://github.com/rdz-oss/BattyBirdNET-Analyzer
+Model 3:
+https://github.com/birdnet-team/BirdNET-Analyzer
+
 
 *******************
 * Training Data   *
 *******************
 www.tierstimmenarchiv.de
 https://github.com/rdz-oss/BattyBirdNET-Analyzer (download link in readme)
+Holger Körber, AK-Fledermausschutz Aachen, Düren, Euskirchen (NABU / BUND / LNU)
 Rudolf Böhm
 Christian Müller
 

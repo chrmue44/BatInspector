@@ -22,6 +22,7 @@ https://github.com/birdnet-team/BirdNET-Analyzer
 www.tierstimmenarchiv.de
 https://github.com/rdz-oss/BattyBirdNET-Analyzer (download link in readme)
 Holger Körber, AK-Fledermausschutz Aachen, Düren, Euskirchen (NABU / BUND / LNU)
+Klaus Schnippengerd
 Rudolf Böhm
 Christian Müller
 

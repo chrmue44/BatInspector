@@ -118,14 +118,14 @@ namespace BatInspector
       DateTime? retVal = null;
 
       string baseName = Path.GetFileNameWithoutExtension(fileName);
-      string[] token = baseName.Split('_');
+      char[] splitter = new char[] { '_', '-' };
+      string[] token = baseName.Split(splitter);
       if(token.Length > 1)
       {
         string dateStr = "";
         string timeStr = "";
         foreach (string t in token)
         {
-
           string str = Utils.removeNonNumerics(t);
           if(str.Length == 8)
           {

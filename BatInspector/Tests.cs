@@ -103,6 +103,7 @@ namespace BatInspector
       testGpx();
       testKml();
       testLocfileTxt();
+      testGetDateFromFilename();
       //testSignalForm();
       testSimCall();
       //testReportModelBatdetect2();
@@ -1012,6 +1013,25 @@ namespace BatInspector
           DebugLog.log("erroneous annotation File: {fileName}", enLogType.ERROR);
         }
       }
+    }
+
+    private void testGetDateFromFilename()
+    {
+      string name1 = "BLA_20250512_225803.wav";
+      DateTime t = ElekonInfoFile.getDateTimeFromFileName(name1);
+      assert($"date {name1}", t == new DateTime(2025, 5, 12, 22, 58, 03));
+      string name2 = "BLA-20250612_125803.wav";
+      t = ElekonInfoFile.getDateTimeFromFileName(name2);
+      assert($"date {name2}", t == new DateTime(2025, 6, 12, 12, 58, 03));
+      string name3 = "BLA-BLA-20240613_025803.wav";
+      t = ElekonInfoFile.getDateTimeFromFileName(name3);
+      assert($"date {name3}", t == new DateTime(2024, 6, 13, 2, 58, 03));
+      string name4 = "B1 - N - 20211213_095008.wav";
+      t = ElekonInfoFile.getDateTimeFromFileName(name4);
+      assert($"date {name3}", t == new DateTime(2021, 12, 13, 9, 50, 08));
+      string name5 = "20210413_115008.wav";
+      t = ElekonInfoFile.getDateTimeFromFileName(name5);
+      assert($"date {name3}", t == new DateTime(2021, 04, 13, 11, 50, 08));
     }
 
 

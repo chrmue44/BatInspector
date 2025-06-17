@@ -6,6 +6,9 @@ TODO
   - parsing date/time form different file names
   - real "inplace" import
 
+# V0.9.4.1 17.06.25
+- enhancement: read date/time from file name during WAV import now also accepts numbers in name prefixes
+
 # V0.9.4.0 31.05.25
 - enhanced version of AI model GermanBats (version 0.8)
 - new script to replace Species PAUS, PAUR with Plecotus for all selected files in project 

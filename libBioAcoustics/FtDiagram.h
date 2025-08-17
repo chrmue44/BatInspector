@@ -12,7 +12,7 @@ class FtDiagram
  public:
    FtDiagram() {}
    virtual ~FtDiagram();
-   int createPngFromWavPart(const char* name, double startTime, double EndTime, double fMin, double fMax, 
+   int createPngFromWavPart(const char* wavName, const char* pngName, double startTime, double EndTime, double fMin, double fMax, 
                  int32_t width, int32_t height, double gradientRange, ColorTable* pColorTable);
    int createPngFromWav(const char* name, int32_t width, int32_t height, double gradientRange, ColorTable* pColorTable);
 

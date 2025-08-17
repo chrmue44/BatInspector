@@ -40,28 +40,26 @@ int FtDiagram::createPngFromWav(const char* name, int32_t width, int32_t height,
   double fMin = 0.0;
   double fMax = (double)_wav.getSampleRate() / 2000;
 
-  createImage(startTime, EndTime, width, height, gradientRange);
+//  createImage(startTime, EndTime, width, height, gradientRange);
   std::string pngName = name;
   replace(pngName, ".wav", ".png");
   replace(pngName, ".WAV", ".png");
-  saveToPng(pngName.c_str(), pColTable, width, height, startTime, EndTime, fMin, fMax);
+  createPngFromWavPart(name, pngName.c_str(), startTime, EndTime, fMin, fMax, width, height, gradientRange, pColTable);
+//    saveToPng(pngName.c_str(), pColTable, width, height, startTime, EndTime, fMin, fMax);
   return retVal;
 }
 
 
-int FtDiagram::createPngFromWavPart(const char* name, double startTime, double EndTime, double fMin, double fMax, 
+int FtDiagram::createPngFromWavPart(const char* wavName, const char* pngName, double startTime, double EndTime, double fMin, double fMax, 
                          int32_t width, int32_t height, 
                          double gradientRange, ColorTable* pColTable)
 {
-  int retVal = _wav.readFile(name);
+  int retVal = _wav.readFile(wavName);
   if (retVal != 0)
     return retVal;
 
   createImage(startTime, EndTime, width, height, gradientRange);
-  std::string pngName = name;
-  replace(pngName, ".wav", ".png");
-  replace(pngName, ".WAV", ".png");
-  saveToPng(pngName.c_str(), pColTable, width, height, startTime, EndTime, fMin, fMax);
+  saveToPng(pngName, pColTable, width, height, startTime, EndTime, fMin, fMax);
   return retVal;
 }
 

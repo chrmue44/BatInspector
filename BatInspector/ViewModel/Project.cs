@@ -10,6 +10,7 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -718,6 +719,8 @@ namespace BatInspector
     /// <param name="speciesInfo"></param>
     public static bool createPrjFromWavs(PrjInfo info, ModelParams modelParams)
     {
+      Stopwatch t = new Stopwatch();
+      t.Start();
       bool retVal = true;
       if ((info.MaxFileCnt == 0) || info.MaxFileLenSec == 0)
       {
@@ -726,7 +729,7 @@ namespace BatInspector
       }
       try
       {
-        DebugLog.log("start creating project(s): " + info.Name, enLogType.INFO);
+        DebugLog.log($"start creating project(s): {info.Name} at {t.Elapsed}", enLogType.INFO);
         string[] files;
         string soundFileExtension = "";
            
@@ -736,9 +739,11 @@ namespace BatInspector
           bool ok = ElekonInfoFile.checkDateTimeInFileName(files[0]);
           if (!ok)
           {
+            t.Stop();
             MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDatTimeError,
                                                    BatInspector.Properties.MyResources.msgQuestion,
                                                    MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            t.Start();
             if (res != MessageBoxResult.OK)
               return false;
           }
@@ -747,7 +752,7 @@ namespace BatInspector
         if (files.Length > 0)
         {
           // copy files to a single project at destination and create project
-          DebugLog.log("copy wav files...", enLogType.INFO);
+          DebugLog.log($"copy wav files... at {t.Elapsed}", enLogType.INFO);
           string fullDir = Path.Combine(info.DstDir, info.Name);
           createPrjDirStructure(fullDir, out string wavDir, info.WavSubDir);
           if (soundFileExtension == "*.wav")
@@ -755,17 +760,17 @@ namespace BatInspector
           else
             importRawFiles(files, wavDir, info);
           string[] xmlFiles = getSelectedFiles(info, "*.xml");
-          DebugLog.log("copy xml files...", enLogType.INFO);
+          DebugLog.log($"copy xml files... at {t.Elapsed}", enLogType.INFO);
           Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
 
           // create project
           Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
-          DebugLog.log("creating project...", enLogType.INFO);
+          DebugLog.log($"creating project... at {t.Elapsed}", enLogType.INFO);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes);
 
           // copy location files is present
-          DebugLog.log("copy location files...", enLogType.INFO);
+          DebugLog.log($"copy location files... at {t.Elapsed}", enLogType.INFO);
           string[] gpxFiles = Directory.GetFiles(info.SrcDir, "*.gpx");
           Utils.copyFiles(gpxFiles, prj.PrjDir, info.RemoveSource);
           string[] kmlFiles = Directory.GetFiles(info.SrcDir, "*.kml");
@@ -774,13 +779,16 @@ namespace BatInspector
           Utils.copyFiles(txtFiles, prj.PrjDir, info.RemoveSource);
 
           // for raws info files get created in importRawFiles()
-          if (!info.IsProjectFolder &&  (soundFileExtension == "*.wav"))
+          if (!info.IsProjectFolder && (soundFileExtension == "*.wav"))
+          {
+            DebugLog.log($"create xml info files... at {t.Elapsed}", enLogType.INFO);
             prj.createXmlInfoFiles(info);
-
+          }
           // replace gpx locations
           xmlFiles = Directory.GetFiles(wavDir, "*.xml");
           if (info.OverwriteLocation && info.LocSourceGpx)
           {
+            DebugLog.log($"replace locations from gpx file... at {t.Elapsed}", enLogType.INFO);
             bool ok = readGpxFile(info, out gpx gpxFile);
             if (ok)
               replaceLocations(xmlFiles, wavDir, gpxFile);
@@ -789,6 +797,7 @@ namespace BatInspector
           }
           else if (info.OverwriteLocation && info.LocSourceKml)
           {
+            DebugLog.log($"replace locations from kml file... at {t.Elapsed}", enLogType.INFO);
             bool ok = readKmlFile(info, out kml kmlFile);
             if (ok)
               replaceLocations(xmlFiles, wavDir, kmlFile);
@@ -797,6 +806,7 @@ namespace BatInspector
           }
           else if (info.OverwriteLocation && info.LocSourceTxt)
           {
+            DebugLog.log($"replace locations from txt file... at {t.Elapsed}", enLogType.INFO);
             bool ok = readLoctxtFile(info, AppParams.Inst.LocFileSettings, out LocFileTxt txtFile);
             if (ok)
               replaceLocations(xmlFiles, wavDir, txtFile);
@@ -804,15 +814,18 @@ namespace BatInspector
               DebugLog.log("error reading TXT file, could not generate location information", enLogType.ERROR);
           }
           else if (info.OverwriteLocation)
+          {
+            DebugLog.log($"replace locations with fixed location... at {t.Elapsed}", enLogType.INFO);
             replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
-
+          }
           splitFiles(prj, info);
         }
         else
           DebugLog.log("No WAV files in directory " + info.SrcDir, enLogType.ERROR);
         // remove src project
-        if(info.RemoveSource && (info.SrcDir != Path.Combine(info.DstDir, info.Name)))
+        if (info.RemoveSource && (info.SrcDir != Path.Combine(info.DstDir, info.Name)))
           Directory.Delete(info.SrcDir, true);
+        DebugLog.log($"creation of project done at {t.Elapsed}", enLogType.INFO);
       }
       catch (Exception e)
       {

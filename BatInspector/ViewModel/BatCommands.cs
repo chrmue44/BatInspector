@@ -26,6 +26,7 @@ namespace BatInspector
         new OptItem("CombineProjects", "combine multiple projects <DirName> <PrjOut> <Prj1> < Prj2> ...",4 , fctCombineProjects ),
         new OptItem("CreatePrjFile", "create project file in directory <dirName>",1, fctCreatePrjFile),
         new OptItem("CreateReport", "create report from annotations <prjDirName>",1, ftcCreateReport ),
+        new OptItem("CreateTrainingReport", "create report of training annotations <srcDir> <reportName>", 2, fctTrainReport),
         new OptItem("ExportFiles", "export files from project <FilterExpression> <outDir> <allCalls",3, ftcExportFiles ),
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
@@ -179,6 +180,19 @@ namespace BatInspector
         retVal = 1;
       return retVal;
     }
+
+    int fctTrainReport(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string rootDir = pars[0];
+      string report = pars[1];
+      retVal = SumAnnotations.createReport(rootDir, report);
+      if (retVal != 0)
+        ErrText = "error creating training data report";
+      return retVal;
+    }
+
 
     int ftcExportFiles(List<string> pars, out string ErrText)
     {

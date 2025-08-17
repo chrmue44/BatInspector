@@ -29,7 +29,7 @@ namespace BatInspector.Forms
       _cbIncPng.IsChecked = true;
       _cbIncXML.IsChecked = true;
       _cbTimeStretch.IsChecked = true;
-      if (App.Model.Prj.Ok)
+      if (((App.Model.Prj != null) && App.Model.Prj.Ok) || (App.Model.Query != null))
       {
         int call = App.Model.ZoomView.SelectedCallIdx;
         if ((call >= 0) && (call <= App.Model.ZoomView.Analysis.Calls.Count))

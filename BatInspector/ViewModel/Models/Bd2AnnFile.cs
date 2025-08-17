@@ -1,4 +1,6 @@
-﻿using libParser;
+﻿using BatInspector.Forms;
+using libParser;
+using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -221,6 +223,111 @@ namespace BatInspector
           DebugLog.log($"fixed id: {name}", enLogType.INFO);
         }
       }
+    }
+  }
+
+
+  public class AnnReportItem
+  {
+    public string Name { get; set; } = "";
+    public int Count { get; set; } = 0;
+
+    public static AnnReportItem find(string name, List<AnnReportItem> list)
+    {
+      AnnReportItem retVal = null;
+      foreach (AnnReportItem item in list)
+      {
+        if (name == item.Name)
+        {
+          retVal = item;
+          break;
+        }
+      }
+      return retVal;
+    }
+  }
+
+  public class SumAnnotations
+  {
+    string _dir;
+    string _report;
+    List<AnnReportItem> _list; 
+
+    public static int createReport(string rootDir, string report)
+    {
+      SumAnnotations sum = new SumAnnotations(rootDir, report);
+      DirectoryInfo dir = new DirectoryInfo (rootDir);
+      bool ok = sum.crawl(dir);
+      if (ok)
+        return sum.writeToCsv();
+      else
+        return 2;
+    }
+
+    private SumAnnotations(string rootDir, string report)
+    {
+      _dir = rootDir;
+      _report = report;
+      _list = new List<AnnReportItem>();
+    }
+
+    private bool evaluateAnns(FileInfo[] files)
+    {
+      bool retVal = true;
+      foreach (FileInfo file in files)
+      {
+        Bd2AnnFile annFile = Bd2AnnFile.loadFrom(file.FullName);
+        if (annFile != null)
+        {
+          foreach(Bd2Annatation ann in annFile.Annatations)
+          {
+            AnnReportItem rItem = AnnReportItem.find(ann.Class, _list);
+            if (rItem != null)
+              rItem.Count++;
+            else
+            {
+              rItem = new AnnReportItem();
+              rItem.Name = ann.Class;
+              rItem.Count = 1;
+              _list.Add(rItem);
+            }
+          }
+        }
+      }
+      return retVal;
+    }
+
+    // CreateTrainingReport F:\bat\trainingBd2\ann F:\bat\trainingBd2\sumalls.csv
+    private bool crawl(DirectoryInfo dir)
+    {
+      DirectoryInfo[] dirs = dir.GetDirectories();
+      bool ok = true;
+      foreach (DirectoryInfo d in dirs)
+      {
+          ok = crawl(d);
+        if (!ok)
+          break;
+      }
+
+      FileInfo[] files = dir.GetFiles("*.json");
+      if ((files != null) && (files.Length > 0))
+        ok = evaluateAnns(files);
+      return ok;
+    }
+
+    private int writeToCsv()
+    {
+      Csv csv = new Csv();
+      csv.addRow();
+      csv.setCell(1, 1, "Species");
+      csv.setCell(1, 2, "Count");
+      foreach (AnnReportItem rItem in _list)
+      {
+        csv.addRow();
+        csv.setCell(csv.RowCnt, 1, rItem.Name);
+        csv.setCell(csv.RowCnt, 2, rItem.Count);
+      }
+      return csv.saveAs(_report);
     }
   }
 }

@@ -971,7 +971,9 @@ namespace BatInspector
       BioAcoustics.setColorTable();
       Stopwatch sw = new Stopwatch();
       sw.Start();
-      BioAcoustics.createPngFromWav(wavName, 512, 512, 30);
+      BioAcoustics.createPngFromWav(wavName, 1024, 512, 70);
+      string pngName = path + "/Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms_part.png";
+      BioAcoustics.createPngFromWavPart(wavName, pngName, 1, 1.5, 0, 200, 1024, 512, 70);
       sw.Stop();
     }
 

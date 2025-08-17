@@ -9,6 +9,7 @@ using libParser;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -367,8 +368,8 @@ namespace BatInspector
       Sonogram tmp = _sonograms.get(rec.Name);
       if (tmp != null)
       {
-        tmp.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, colorTable);
-        if ((tmp.Image == null) && (Prj != null))
+        string imgName = tmp.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, colorTable);
+        if (string.IsNullOrEmpty(imgName) && (Prj != null))
           DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
         tmp.release();
       }
@@ -474,10 +475,12 @@ namespace BatInspector
 
   public class Sonogram : IPool
   {
-    BitmapImage _bImg = null;
+    BitmapImage _bImgXt = null;
+    BitmapImage _bImgFt = null;
     dlgRelease _dlgRelease;
 
-    public BitmapImage Image { get { return _bImg; } }
+    public BitmapImage ImageXt { get { return _bImgXt; } }
+    public BitmapImage ImageFt { get { return _bImgFt; } }
 
     public void setCallBack(dlgRelease dlg)
     {
@@ -544,28 +547,27 @@ namespace BatInspector
 
 
 
-    public void createFtImageFromWavFile(string wavName, int fftWidth, ColorTable colorTable)
+    public string createFtImageFromWavFile(string wavName, int fftWidth, ColorTable colorTable)
     {
-/*
       string pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-      try
+      bool fromDll = false;
+      if (fromDll)
       {
-        if(!File.Exists(pngName) && File.Exists(wavName))
-          BioAcoustics.createPngFromWav(wavName, (int)AppParams.Inst.WaterfallWidth, 512, AppParams.Inst.GradientRange);
-        _bmp = new Bitmap(pngName);
-        if (_bmp != null)
-          _bImg = Convert(_bmp);
+        try
+        {
+          if (!File.Exists(pngName) && File.Exists(wavName))
+            BioAcoustics.createPngFromWav(wavName, (int)AppParams.Inst.WaterfallWidth, 512, AppParams.Inst.GradientRange);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log($"error creating png from {wavName} : {ex.ToString()}", enLogType.ERROR);
+        }
       }
-      catch (Exception ex)
+      else
       {
-        DebugLog.log($"error creating png form {wavName} : {ex.ToString()}", enLogType.ERROR);
-      } */
-    
-      string pngName = "";
-      try
-      {
-        Bitmap bmp = null;
-          pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        try
+        {
+          Bitmap bmp = null;
           if (File.Exists(pngName))
             bmp = new Bitmap(pngName);
           else
@@ -580,13 +582,14 @@ namespace BatInspector
             else
               DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
           }
-          if (bmp != null)
-            _bImg = Convert(bmp);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
+          pngName = "";
+        }
       }
-      catch (Exception ex)
-      {
-        DebugLog.log("error creating png " + pngName + ": " + ex.ToString(), enLogType.ERROR);
-      }
+      return pngName;
     }
 
 
@@ -595,10 +598,10 @@ namespace BatInspector
       using (Bitmap bmp = App.Model.ZoomView.Waterfall.generateFtPicture(tStart, tEnd, fMin, fMax))
       {
         if (bmp != null)
-          _bImg = Convert(bmp);
+          _bImgFt = Convert(bmp);
         else
         {
-          _bImg = null;
+          _bImgFt = null;
           DebugLog.log("error creating zoom view", enLogType.ERROR);
         }
       }
@@ -609,10 +612,10 @@ namespace BatInspector
       using (Bitmap bmp = App.Model.ZoomView.Waterfall.generateXtPicture(aMin, aMax, tStart, tEnd))
       {
         if (bmp != null)
-          _bImg = Convert(bmp);
+          _bImgXt = Convert(bmp);
         else
         {
-          _bImg = null;
+          _bImgXt = null;
           DebugLog.log("error creating zoom view", enLogType.ERROR);
         }
       }

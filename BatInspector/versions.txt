@@ -5,6 +5,13 @@ TODO
 - more flexible import: 
   - parsing date/time form different file names
   - real "inplace" import
+- improve import speed
+
+# V0.9.5.0 
+-new command line command "CreateTrainingReport"
+
+# V0.9.4.2 22.07.25
+- bugfix: fixed: open BatInspector, then open Query, click a wav to open zoom view, then button exp --> crash
 
 # V0.9.4.1 17.06.25
 - enhancement: read date/time from file name during WAV import now also accepts numbers in name prefixes

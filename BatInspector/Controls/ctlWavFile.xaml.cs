@@ -16,6 +16,7 @@ using BatInspector.Properties;
 using System.IO;
 using libScripter;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace BatInspector.Controls
 {
@@ -89,12 +90,12 @@ namespace BatInspector.Controls
       string wavName = Path.Combine(_wavFilePath, WavName);
       if (_sonogram != null)
       {
-        _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
-        if ((_sonogram.Image == null) && (App.Model.Prj != null))
+        string image = _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
+        if (string.IsNullOrEmpty(image) && (App.Model.Prj != null))
           DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
         else
         {
-          _img.Source = _sonogram.Image;
+          _img.Source = new BitmapImage(new Uri(image));
           _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
           //Force render
           _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));

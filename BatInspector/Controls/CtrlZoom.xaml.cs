@@ -865,8 +865,8 @@ namespace BatInspector.Controls
     {      
       _sonogramFt.createZoomViewFt(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max,
                                    App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max);
-      if(_sonogramFt.Image != null)
-        _imgFt.Source = _sonogramFt.Image;
+      if(_sonogramFt.ImageFt != null)
+        _imgFt.Source = _sonogramFt.ImageFt;
 
       updateXtImage();
       drawGrid();
@@ -875,10 +875,10 @@ namespace BatInspector.Controls
 
     private void updateXtImage()
     {
-      _sonogramXt.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
+       _sonogramXt.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
                                    App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
-      if (_sonogramXt.Image != null)
-        _imgXt.Source = _sonogramXt.Image;
+      if (_sonogramXt.ImageXt != null)
+        _imgXt.Source = _sonogramXt.ImageXt;
     }
 
     private void _btnPlay_1_Click(object sender, RoutedEventArgs e)

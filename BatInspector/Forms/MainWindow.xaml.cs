@@ -1215,6 +1215,7 @@ namespace BatInspector.Forms
           }
           else if(!_workerStartup.IsAlive)
           {
+            _ctlPrjBtn._cbFilter.SelectedIndex = 0;
             App.Model.Busy = false;
             if (_btnCreatePrj.IsEnabled)
               _btnCreatePrj.IsEnabled = false;

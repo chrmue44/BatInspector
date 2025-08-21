@@ -8,9 +8,14 @@ TODO
 - improve import speed
 
 # V0.9.5.0 
--new command line command "CreateTrainingReport"
 
-# V0.9.4.2 22.07.25
+# V0.9.4.3 20.08.25
+- new intaller that installs dependencies if missing
+
+# V0.9.4.2 19.08.25
+- time measurements in import project to improve importing speed
+- changed PNG creation: creates BitmapImage from file instead of bmp conversion in memory stream
+- new command line command "CreateTrainingReport"
 - bugfix: fixed: open BatInspector, then open Query, click a wav to open zoom view, then button exp --> crash
 
 # V0.9.4.1 17.06.25

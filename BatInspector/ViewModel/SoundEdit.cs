@@ -384,9 +384,9 @@ namespace BatInspector
         outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
         outFile.saveFileAs(name);
       }
-      catch
+      catch (Exception ex)
       {
-        DebugLog.log("unable to save file: " + name, enLogType.ERROR);
+        DebugLog.log($"unable to save file: {name}  {ex.ToString()}", enLogType.ERROR);
       }
     }
 

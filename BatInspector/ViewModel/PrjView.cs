@@ -533,9 +533,11 @@ namespace BatInspector
           bitmapImage.BeginInit();
           bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
           bitmapImage.StreamSource = memory;
+          bitmapImage.StreamSource.Flush();
           //        bitmapImage.CacheOption = BitmapCacheOption.None;
           bitmapImage.EndInit();
           bitmapImage.Freeze();
+          bitmapImage.StreamSource.Dispose();
         }
       }
       catch (Exception ex)
@@ -567,20 +569,19 @@ namespace BatInspector
       {
         try
         {
-          Bitmap bmp = null;
-          if (File.Exists(pngName))
-            bmp = new Bitmap(pngName);
-          else
+          if (!File.Exists(pngName))
           {
             Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
             if (wf.Ok)
             {
               wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-              bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000);
-              bmp.Save(pngName);
+              using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000))
+              {
+                bmp.Save(pngName);
+              }
             }
             else
-              DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
+             DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
           }
         }
         catch (Exception ex)

@@ -198,7 +198,7 @@ namespace libScripter
     public int save(bool withBackup = true)
     {
       int retVal = 0;
-      if ((_fileName != null) && _changed)
+      if (!string.IsNullOrEmpty(_fileName) && _changed)
       {
           if (withBackup && File.Exists(_fileName))
           {
@@ -218,7 +218,7 @@ namespace libScripter
         }
         catch
         {
-          log("could not save file " + _fileName, enLogType.ERROR);
+          log("  could not save file " + _fileName, enLogType.ERROR);
         }
 
         _changed = false;

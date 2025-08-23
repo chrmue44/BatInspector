@@ -254,8 +254,10 @@ namespace BatInspector
         File.WriteAllText(micFile, text);
       }
       else
+      {
         ErrText = $"error: {wavFile} not existing";
-
+        retVal = 1;
+      }
       return retVal;
     }
 

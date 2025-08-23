@@ -85,6 +85,44 @@ namespace BatInspector.Controls
         _dlgRelease(this);
     }
 
+
+
+
+    public BitmapImage createBitmapImageFromFile(string imgName)
+    {
+
+      if (!string.IsNullOrEmpty(imgName))
+      {
+        imgName = imgName.ToLower();
+        try
+        {
+          BitmapImage bi = null;
+          using (var fstream = new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read))
+          {
+            bi = new BitmapImage();
+            bi.BeginInit();
+            bi.CacheOption = BitmapCacheOption.OnLoad;
+            bi.StreamSource = fstream;
+            bi.StreamSource.Flush();
+            bi.EndInit();
+            bi.Freeze();
+            bi.StreamSource.Dispose();
+          }
+          return bi;
+        }
+        catch
+        {
+        }
+        return null;
+      }
+      //if (val != null)
+      //    CachedBitmapImages.Add(val, null);
+      return null;
+    }
+
+
+
+
     public void createNewPng()
     {
       string wavName = Path.Combine(_wavFilePath, WavName);
@@ -95,7 +133,7 @@ namespace BatInspector.Controls
           DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
         else
         {
-          _img.Source = new BitmapImage(new Uri(image));
+          _img.Source = createBitmapImageFromFile(image);
           _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
           //Force render
           _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));

@@ -969,7 +969,8 @@ namespace BatInspector
 
     public void saveCsv()
     {
-      _csv.save();
+      if(_calls.Count > 0)
+        _csv.save();
     }
 
     public AnalysisFile(Csv csv, string name, int startRow, DateTime recTime)

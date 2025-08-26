@@ -242,6 +242,11 @@ namespace BatInspector
       return retVal;
     }
 
+    public void initSonogramPool()
+    {
+      _sonograms.reinitializePool();
+    }
+
     public Sonogram createSonogram(string id)
     {
       return _sonograms.get(id);

@@ -16,7 +16,7 @@
             <local:CtlSelectFile x:Name="_ctlRootDir" Margin="5"/>
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Label Content="Filter" HorizontalContentAlignment="Right" Width="150"/>
-             <ComboBox Name="_cbFilter" Width="150" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened" ></ComboBox>
+             <ComboBox Name="_cbFilter" Width="150" DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened" SelectionChanged="_cbFilter_SelectionChanged" ></ComboBox>
          </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
                     <Label Content="{x:Static res:MyResources.SetCatModel}" HorizontalContentAlignment="Right" Width="150"/>

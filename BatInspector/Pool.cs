@@ -87,8 +87,10 @@ namespace BatInspector
           DebugLog.log("Pool element released twice!! (should NEVER happen", enLogType.ERROR);
       }
 
-      if (!found || (_free.Count > _size))
-        DebugLog.log("pool error release", enLogType.ERROR);
+      if (!found )
+        DebugLog.log("pool error release: object not found", enLogType.ERROR);
+      if(_free.Count > _size)
+        DebugLog.log("pool error release: too much objects released", enLogType.ERROR);
     }
 
     private void releaseSelf(object o)

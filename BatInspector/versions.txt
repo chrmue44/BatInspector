@@ -5,9 +5,15 @@ TODO
 - more flexible import: 
   - parsing date/time form different file names
   - real "inplace" import
-- improve import speed
+- SQL data base 
 
-# V0.9.5.0 
+# V0.9.4.4  
+- bugfix: write error of AnalysisFile removed (in projects without AI report)
+- bugfix: PNG files not released after creation of image --> edit in zoomview did not work in some cases
+- improved error message in cmd CreateMicResponse
+- bugfix: report over several projects. Filter expression did not reset properly, when additional reports were generated
+- bugfix: Pool Error should no longer occur
+
 
 # V0.9.4.3 20.08.25
 - new intaller that installs dependencies if missing

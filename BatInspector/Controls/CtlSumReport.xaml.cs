@@ -78,14 +78,14 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
       CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter);
+      if (resetFilter)
+        _filterExpression = "";
       if (apply)
       {
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
                     App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
           _filterExpression = filter.Expression;
-        if (resetFilter)
-          _filterExpression = "";
       }
     }
 
@@ -105,6 +105,12 @@ namespace BatInspector.Controls
     {
       _rbCsvFile.IsChecked = false;
       _rbWebPage.IsChecked = false;
+    }
+
+    private void _cbFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      if (_cbFilter.SelectedIndex <= 0)
+        _filterExpression = "";
     }
   }
 }

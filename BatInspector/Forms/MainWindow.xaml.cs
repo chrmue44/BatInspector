@@ -376,6 +376,8 @@ namespace BatInspector.Forms
           if ((App.Model.Prj != null) && App.Model.Prj.Ok)
           {
             _wavCtls.reinitializePool();
+            App.Model.View.initSonogramPool();
+            _spSpectrums.Children.Clear();
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = App.Model.Prj.Records.Length - 1;

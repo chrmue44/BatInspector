@@ -33,8 +33,6 @@ namespace BatInspector
 
   public enum enModel
   {
-    rnn6aModel,
-    resNet34Model,
     BAT_DETECT2,
     BATTY_BIRD_NET,
     BIRDNET
@@ -403,6 +401,9 @@ namespace BatInspector
     [Browsable(false)]
     public List<FilterParams> Filter { get; set; }
 
+    [DataMember]
+    [LocalizedDescription("SetDescMySqlConnect")]
+    public string MySqlConnectString { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -467,56 +468,9 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatPrediction"),
-    LocalizedDescription("SpecDescIdentify")]
-    [Browsable(false)]
-    public bool PredIdentifyCalls { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
     LocalizedDescription("SpecDescCutCalls")]
     [Browsable(false)]
-    public bool PredCutCalls { get; set; }
 
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
-    LocalizedDescription("SpecDescPrepData")]
-    [Browsable(false)]
-    public bool PredPrepData { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
-    LocalizedDescription("SpecDescPredict")]
-    [Browsable(false)]
-    public bool PredPredict1 { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
-    LocalizedDescription("SpecDescPredict")]
-    [Browsable(false)]
-    public bool PredPredict2 { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
-     LocalizedDescription("SpecDescPredict")]
-    [Browsable(false)]
-    public bool PredPredict3 { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
-     LocalizedDescription("SpecDescConfTest")]
-    [Browsable(false)]
-    public bool PredConfTest { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatPrediction"),
-     LocalizedDescription("SpecDescDelTemp")]
-    [Browsable(false)]
-    public bool PredDelTemp { get; set; }
-
-    [DataMember]
-    [LocalizedCategory("SetCatLog"),
-     LocalizedDescription("SpecDescShowError")]
-    [Browsable(false)]
     public bool LogShowError { get; set; }
 
     [DataMember]
@@ -612,7 +566,7 @@ namespace BatInspector
       ModelRootPath = Path.Combine(AppDataPath, "models");
       ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
       DefaultModel = enModel.BAT_DETECT2;
-
+      MySqlConnectString = "server=127.0.0.1;uid=root;pwd=root;database=bat_calls";
     //  initModels();
     SamplingRate = 312500;
       ScriptCopyAutoToMan = "copyAutoToMan.scr";
@@ -621,14 +575,6 @@ namespace BatInspector
       LogShowInfo = true;
       LogShowDebug = false;
 
-      PredIdentifyCalls = true;
-      PredCutCalls = true;
-      PredPrepData = true;
-      PredPredict1 = true;
-      PredPredict2 = false;
-      PredPredict3 = false;
-      PredConfTest = false;
-      PredDelTemp = true;
       ShowOnlyFilteredDirs = false;
       DirFilter = new List<string>();
       for (int i = 0; i < 5; i++)

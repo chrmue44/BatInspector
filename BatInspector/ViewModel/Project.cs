@@ -50,6 +50,9 @@ namespace BatInspector
     public bool RemoveSource { get; set; }
     public string WavSubDir { get; set; } = AppParams.DIR_WAVS;
     public ModelParams ModelParams { get; set; }
+
+    public string Location { get; set; }
+    public string Creator { get; set; }
   }
 
 
@@ -177,7 +180,46 @@ namespace BatInspector
         else
           return "";
       }
-      set { _batExplorerPrj.Created = value; } }
+      set 
+      {
+        if (_batExplorerPrj != null)
+          _batExplorerPrj.Created = value;
+      } 
+    }
+
+    public string CreateBy
+    {
+      get
+      {
+        if (_batExplorerPrj != null)
+          return _batExplorerPrj.CreatedBy;
+        else
+          return "";
+      }
+      set 
+      {
+        if (_batExplorerPrj != null)
+          _batExplorerPrj.CreatedBy = value; 
+      }
+    }
+
+    public string Location
+    {
+      get
+      {
+        if (_batExplorerPrj != null)
+          return _batExplorerPrj.Location;
+        else
+          return "";
+      }
+      set
+      {
+        if (_batExplorerPrj != null)
+          _batExplorerPrj.Location = value;
+      }
+    }
+
+
     public string PrjDir { get { return _selectedDir; } }
 
     public ModelParams[] AvailableModelParams { get { return _batExplorerPrj.Models; } }
@@ -187,6 +229,55 @@ namespace BatInspector
     public string SummaryName { get { return getSummaryName(SelectedModelIndex); } }
 
     public bool ReloadInGui { get { return _reloadInGui; } set { _reloadInGui = value; } }
+
+    public string PrjId 
+    {
+      get 
+      {
+        string retVal = "";
+        if ((Analysis !=  null) && (Analysis.Files != null) && (Analysis.Files.Count  > 0))
+        {
+            string xmlName = Path.Combine(PrjDir,WavSubDir,
+                                   Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
+          BatRecord r = ElekonInfoFile.read(xmlName);
+          bool ok = DateTime.TryParse(r.DateTime, out DateTime t);
+          if (ok)
+            retVal = $"{r.SN}_{t.Year}{t.Month.ToString("00")}{t.Day.ToString("00")}";
+        }
+        return retVal;
+      } 
+    }
+
+
+
+    public string DeviceId
+    {
+      get
+      {
+        string retVal = "";
+        if ((Analysis != null) && (Analysis.Files != null) && (Analysis.Files.Count > 0))
+        {
+          string xmlName = Path.Combine(PrjDir, WavSubDir,
+                                 Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
+          BatRecord r = ElekonInfoFile.read(xmlName);
+          retVal = r.SN;
+        }
+        return retVal;
+      }
+    }
+
+    public string MicId
+    {
+      get
+      {
+        if ((_batExplorerPrj != null) && (_batExplorerPrj.Microphone != null))
+          return _batExplorerPrj.Microphone.Id;
+        else
+          return null;
+
+      }
+    }
+
 
     public FreqResponseRecord[] MicFreqResponse
     {
@@ -692,6 +783,9 @@ namespace BatInspector
           }
 
           Project prj = Project.createFrom(fullDir);
+          prj.Location = info.Location;
+          prj.CreateBy = info.Creator;
+          prj.Notes = info.Notes;
           if (modelParams != null)
             prj._modelParams = modelParams;
           else
@@ -1116,6 +1210,8 @@ namespace BatInspector
             _batExplorerPrj.Created = "";
           if (_batExplorerPrj.Notes == null)
             _batExplorerPrj.Notes = "";
+          if (string.IsNullOrEmpty(_batExplorerPrj.CreatedBy))
+            _batExplorerPrj.CreatedBy = "insert name of person";
           if (_batExplorerPrj.Models == null)
             _batExplorerPrj.Models = App.Model.DefaultModelParams;  
           if (Directory.Exists(Path.Combine(_selectedDir, AppParams.DIR_WAVS)))

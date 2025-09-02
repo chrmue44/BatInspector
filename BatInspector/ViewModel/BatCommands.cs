@@ -36,6 +36,7 @@ namespace BatInspector
         new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
         new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
         new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
+        new OptItem("AddProjectToDb", "add currently open project to DB", 0, ftcAddPrjToDb),
         });
 
       _options = new Options(_features, false);
@@ -271,7 +272,7 @@ namespace BatInspector
 
       if (App.Model.Prj.Ok)
       {
-        string modelName = App.Model.Prj.AvailableModelParams[App.Model.Prj.SelectedModelIndex].Name + 
+        string modelName = App.Model.Prj.AvailableModelParams[App.Model.Prj.SelectedModelIndex].Name +
                            App.Model.Prj.AvailableModelParams[App.Model.Prj.SelectedModelIndex].DataSet;
         string perf = Path.Combine(App.Model.Prj.PrjDir, "performance" + modelName + ".csv");
         string annDir = Path.Combine(App.Model.Prj.PrjDir, "Annotations");
@@ -302,6 +303,30 @@ namespace BatInspector
       string annPath = pars[0];
       string csvFile = pars[1];
       BaseModel.countCallsInTrainingData(annPath, csvFile);
+      return retVal;
+    }
+
+    int ftcAddPrjToDb(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      {
+        DataBase db = new DataBase();
+        string connstr = AppParams.Inst.MySqlConnectString;
+        retVal = db.connect(connstr);
+        if (retVal == 0)
+        {
+          retVal = db.addProjectToDb(App.Model.Prj);
+          if (retVal != 0)
+            ErrText = "error adding project to MySQL database";
+        }
+        else
+          ErrText = "could not connect to MySQL data base";
+      }
+      else
+        ErrText = "project not open or erroneous";
+      retVal = string.IsNullOrEmpty(ErrText) ? 0 : 1;
       return retVal;
     }
   }

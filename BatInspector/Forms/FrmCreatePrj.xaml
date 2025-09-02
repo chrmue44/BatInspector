@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         Title="{x:Static res:MyResources.frmCreatePrjTitle}" MinHeight="750" Height="750" MinWidth="800" Width="800" Loaded="Window_Loaded"
         Icon="../images/kopf64.png">
-    <Grid>
+    <Grid Margin="0,0,0,-32">
         <StackPanel Margin="10,10,10,-11">
             <Label Content="{x:Static res:MyResources.frmCreatePrjInfo}"></Label>
             <GroupBox Template="{DynamicResource GroupBoxCmu}">
@@ -37,6 +37,8 @@
         <StackPanel Margin="5">
                     <local:ctlDataItem x:Name="_ctlMaxFiles" Margin=" 0,0,0,0"/>
                     <local:ctlDataItem x:Name="_ctlMaxFileLen" Margin=" 0,0,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlCreator" Margin=" 0,0,0,0"/>
+                    <local:ctlDataItem x:Name="_ctlLocation" Margin=" 0,0,0,0"/>
                     <local:ctlDataItem x:Name="_ctlPrjNotes" Margin=" 0,0,0,0"/>
                 </StackPanel>
             </GroupBox>

@@ -1,4 +1,5 @@
 ﻿using BatInspector.Controls;
+using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,10 @@ namespace BatInspector.Forms
   public partial class frmModelParams : Window
   {
     Project _prj;
+    ctlDataItem _ctlCr;
+    ctlDataItem _ctlLoc;
+    int _nrOfPrjParams;
+
     public frmModelParams(Project prj)
     {
       InitializeComponent();
@@ -34,6 +39,16 @@ namespace BatInspector.Forms
     {
       ModelParams[] mp = _prj.AvailableModelParams;
       _sp.Children.Clear();
+      _ctlCr = new ctlDataItem();
+      _ctlCr.setup(MyResources.frmModParsCreator, enDataType.STRING, 0, 140, true);
+      _ctlCr.setValue(_prj.CreateBy);
+      _sp.Children.Add(_ctlCr);
+      _ctlLoc = new ctlDataItem();
+      _ctlLoc.setup(MyResources.frmModParsLocation, enDataType.STRING, 0, 140, true);
+      _ctlLoc.setValue(_prj.Location);
+      _sp.Children.Add(_ctlLoc);
+      _nrOfPrjParams = 2;
+
       for(int i = 0; i < mp.Length; i++) 
       {
         ctlModParItem ctl = new ctlModParItem();
@@ -55,17 +70,20 @@ namespace BatInspector.Forms
       {
         ModelParams[] mp = _prj.AvailableModelParams;
 
-        for (int i = 0; i < _sp.Children.Count; i++)
+        for (int i = _nrOfPrjParams; i < _sp.Children.Count; i++)
         {
+          int mIdx = i - _nrOfPrjParams;
           ctlModParItem ctl = _sp.Children[i] as ctlModParItem;
-          mp[i].Enabled = ctl._cbEnabled.IsChecked == true;
-          mp[i].DataSet = ctl._ctlDataSet.getValue();
-          for (int p = 0; p < mp[i].Parameters.Length; p++)
+          mp[mIdx].Enabled = ctl._cbEnabled.IsChecked == true;
+          mp[mIdx].DataSet = ctl._ctlDataSet.getValue();
+          for (int p = 0; p < mp[i - _nrOfPrjParams].Parameters.Length; p++)
           {
             ctlDataItem dat = ctl._spPars.Children[p] as ctlDataItem;
-            mp[i].Parameters[p].Value = dat.getValue();
+            mp[mIdx].Parameters[p].Value = dat.getValue();
           }
         }
+        _prj.CreateBy = _ctlCr.getValue();
+        _prj.Location = _ctlLoc.getValue();
         this.DialogResult = true;
         this.Close();
       }
@@ -81,12 +99,13 @@ namespace BatInspector.Forms
       if( App.Model.DefaultModelParams.Length > _prj.AvailableModelParams.Length)
       {
         ModelParams[] mp = new ModelParams[App.Model.DefaultModelParams.Length];
-        for (int i = 0; i < mp.Length; i++)
+        for (int i = _nrOfPrjParams; i < mp.Length; i++)
         {
-          if(i < _prj.AvailableModelParams.Length)
-            mp[i] = _prj.AvailableModelParams[i];
+          int mIdx = i - _nrOfPrjParams;
+          if (i < _prj.AvailableModelParams.Length)
+            mp[mIdx] = _prj.AvailableModelParams[mIdx];
           else
-            mp[i] = App.Model.DefaultModelParams[i].getCopy();
+            mp[mIdx] = App.Model.DefaultModelParams[mIdx].getCopy();
         }
         _prj.assignNewModelParams( mp);
         this.Close();

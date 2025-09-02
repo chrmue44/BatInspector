@@ -1609,7 +1609,7 @@
     <value>Name of the AI model</value>
   </data>
   <data name="frmModParsTitle" xml:space="preserve">
-    <value>AI-Model Parameter</value>
+    <value>Project &amp; AI Model Parameter</value>
   </data>
   <data name="ctlModParItemModellparameter" xml:space="preserve">
     <value>Model Parameter</value>
@@ -1694,5 +1694,23 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="frmModParsCreator" xml:space="preserve">
+    <value>Creator of Project</value>
+  </data>
+  <data name="frmModParsLocation" xml:space="preserve">
+    <value>Name of recording location</value>
+  </data>
+  <data name="frmCreatePrjCreator" xml:space="preserve">
+    <value>Creator of the project</value>
+  </data>
+  <data name="frmCreatePrjLocation" xml:space="preserve">
+    <value>Recording Location</value>
+  </data>
+  <data name="SetDescMySqlConnect" xml:space="preserve">
+    <value>connection string to establish connection to MySQL database</value>
+  </data>
+  <data name="Rows" xml:space="preserve">
+    <value>Rows</value>
   </data>
 </root>

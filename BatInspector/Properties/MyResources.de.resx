@@ -1609,7 +1609,7 @@
     <value>Name des KI-Modells</value>
   </data>
   <data name="frmModParsTitle" xml:space="preserve">
-    <value>KI-Modell-Parameter</value>
+    <value>Projekt- &amp; KI-Modell-Parameter</value>
   </data>
   <data name="ctlModParItemModellparameter" xml:space="preserve">
     <value>Modellparameter</value>
@@ -1694,5 +1694,23 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Passwort</value>
+  </data>
+  <data name="frmModParsCreator" xml:space="preserve">
+    <value>Ersteller des Projekts</value>
+  </data>
+  <data name="frmModParsLocation" xml:space="preserve">
+    <value>Name des Aufnahmeorts</value>
+  </data>
+  <data name="frmCreatePrjCreator" xml:space="preserve">
+    <value>Ersteller des Projekts</value>
+  </data>
+  <data name="frmCreatePrjLocation" xml:space="preserve">
+    <value>Aufnahmeort</value>
+  </data>
+  <data name="SetDescMySqlConnect" xml:space="preserve">
+    <value>conection string zur Herstellung der Verbindung zur MySQL Datenbank</value>
+  </data>
+  <data name="Rows" xml:space="preserve">
+    <value>Zeilen</value>
   </data>
 </root>

@@ -10,8 +10,10 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms;
@@ -34,16 +36,27 @@ namespace BatInspector
     TIME      = 1
   }
 
+  [TypeConverter(typeof(ExpandableObjectConverter))]
+  [DataContract]
   public class LocFileSettings
   {
+    [DataMember]
     public int ColFilename { get; set; }
+    [DataMember]
     public int ColNS { get; set; }
+    [DataMember]
     public int ColWE { get; set; }
+    [DataMember]
     public int ColLatitude { get; set; }
+    [DataMember]
     public int ColLongititude { get; set; }
+    [DataMember]
     public int ColTime { get; set; }
+    [DataMember]
     public int ColDate { get; set; }
+    [DataMember]
     public enLocFileMode Mode { get; set; }
+    [DataMember]
     public char Delimiter { get; set; }
     public LocFileSettings()
     {

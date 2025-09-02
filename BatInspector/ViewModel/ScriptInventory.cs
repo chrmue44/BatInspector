@@ -226,7 +226,10 @@ namespace BatInspector
                            new ParamItem("Skalierfaktor", enParamType.MICSCELLANOUS,"PAR2")}),
         new ScriptItem(5, "bulk_import_batspy.scr", "mehrere BatSpy-Projekte importieren und auswerten", false, new List<ParamItem>()
                                                                                         {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
-                                                                                         new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2") }),
+                                                                                         new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
+                                                                                         new ParamItem("Aufnahmeort", enParamType.MICSCELLANOUS, "PAR3"),
+                                                                                         new ParamItem("Ersteller des Projekts", enParamType.MICSCELLANOUS, "PAR4"),
+                                                                                         new ParamItem("Bemerkungen", enParamType.MICSCELLANOUS,"PAR5")}),
         new ScriptItem(6, "bulk_import_wav.scr", "mehrere Verz. mit WAV Dateien importieren und auswerten", false, new List<ParamItem>()
                                                                                         {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
                                                                                          new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
@@ -300,6 +303,14 @@ namespace BatInspector
         {
           Scripts.Add(s);
           save = true;
+        }
+        else
+        {
+          if (i.Parameter.Count != s.Parameter.Count)
+          {
+            i.Parameter = s.Parameter;
+            DebugLog.log($"updated parameter definition in script inventory for script {s.Name}", enLogType.INFO);
+          }
         }
       }
       if (save)

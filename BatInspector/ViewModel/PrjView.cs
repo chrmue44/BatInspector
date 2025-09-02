@@ -227,8 +227,6 @@ namespace BatInspector
       switch (_modelType)
       {
         case enModel.BAT_DETECT2:
-        case enModel.rnn6aModel:
-        case enModel.resNet34Model:
           retVal = _reportBd2 as IEnumerable;
           break;
         case enModel.BATTY_BIRD_NET:
@@ -280,8 +278,6 @@ namespace BatInspector
         switch (_modelType)
         {
           case enModel.BAT_DETECT2:
-          case enModel.rnn6aModel:
-          case enModel.resNet34Model:
             _reportBd2.Clear();
             break;
           
@@ -310,8 +306,6 @@ namespace BatInspector
                 switch (_modelType)
                 {
                   case enModel.BAT_DETECT2:
-                  case enModel.resNet34Model:
-                  case enModel.rnn6aModel:
                     ReportItemBd2 it = new ReportItemBd2(f, f.Calls[c]);
                     _reportBd2.Add(it);
                     break;
@@ -338,8 +332,6 @@ namespace BatInspector
       switch (_modelType)
       {
         case enModel.BAT_DETECT2:
-        case enModel.resNet34Model:
-        case enModel.rnn6aModel:
           if (_reportBd2 != null)
           {
             ReportItemBd2 item = new ReportItemBd2(file, call);

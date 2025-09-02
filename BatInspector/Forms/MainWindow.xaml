@@ -284,7 +284,7 @@
                                     <DataGrid x:Name="_dgData"  Grid.Row="1"  MouseDoubleClick="_dgData_MouseDoubleClick" />
                                 </Grid>
                             </TabItem>
-                            <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0" >
+                            <TabItem Name="_tbSum" Header="{x:Static res:MyResources.MainSummaryProject}" Margin="0,0,0,0"  >
                                 <Grid >
                                     <DataGrid x:Name="_dgSum" Margin="0,0,0,0" />
                                 </Grid>
@@ -294,6 +294,9 @@
                             </TabItem>
                             <TabItem Name="_tbStatistic" Header="{x:Static res:MyResources.Statistic}" Margin="0,0,0,0" GotFocus="_tbStatistic_GotFocus" >
                                 <controls:ctlStatistic x:Name="_ctlStatistic" />
+                            </TabItem>
+                            <TabItem Name="_tbMySql" Header="MySQL">
+                                <controls:CtlMySql  />
                             </TabItem>
                         </TabControl>
                     </Grid>

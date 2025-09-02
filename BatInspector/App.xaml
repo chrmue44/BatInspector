@@ -142,7 +142,7 @@
       <Setter Property="Background" Value="#FFF7F9FE"/>
     </Style>
     <Style TargetType="{x:Type TabItem}">
-      <Setter Property="Width" Value="170"/>
+      <Setter Property="Width" Value="140"/>
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type TabItem}">

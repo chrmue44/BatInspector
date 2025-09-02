@@ -7,6 +7,17 @@ TODO
   - real "inplace" import
 - SQL data base 
 
+# V0.9.5.0
+- added project parameters "CreatedBy", "Location" 
+  to project (to document the name of the person who created the project 
+  and the name of the recording location)
+- new command AddProjectToDb
+- added parameters and changed order to script function "importPrj"
+- added more parameters to script "bulk_import_batspy.scr"
+- better adaption of script inventory (change of parameter count) in cae of update
+- cleanup: removed unused models
+
+
 # V0.9.4.4  
 - bugfix: write error of AnalysisFile removed (in projects without AI report)
 - bugfix: PNG files not released after creation of image --> edit in zoomview did not work in some cases

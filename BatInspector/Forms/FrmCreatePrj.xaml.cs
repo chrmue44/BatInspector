@@ -49,6 +49,10 @@ namespace BatInspector.Forms
       _ctlMaxFileLen.setValue(5.0);
       _ctlPrjNotes.setup(MyResources.ctlPrjInfoNotes, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlPrjNotes.setValue("");
+      _ctlCreator.setup(MyResources.frmCreatePrjCreator, enDataType.STRING, 0, _widthLbl, true);
+      _ctlCreator.setValue("");
+      _ctlLocation.setup(MyResources.frmCreatePrjLocation, enDataType.STRING, 0, _widthLbl, true);
+      _ctlLocation.setValue("");
       _ctlGpxFile.setup(MyResources.frmCreatePrjSelectGpxFile, _widthLbl, false, "gpx Files (*.gpx)|*.gpx|All files(*.*)|*.*");
       _ctlGpxFile.IsEnabled = false;
       _rbGpxFile.IsChecked = false;
@@ -168,7 +172,7 @@ namespace BatInspector.Forms
     private void enableGuiElements()
     {
       _ctlPrjName.IsEnabled = !_isProjectFolder;
-      _ctlPrjNotes.Visibility = !_isProjectFolder ? Visibility.Visible : Visibility.Hidden;
+      _ctlPrjNotes.Visibility = Visibility.Visible;
       setVisibilityTimeFilter();
       _cbOverwriteLoc.Visibility = _isProjectFolder ? Visibility.Visible : Visibility.Hidden;
       _cbOverwriteLoc.IsChecked = !_isProjectFolder;
@@ -193,6 +197,9 @@ namespace BatInspector.Forms
         _info.LocSourceGpx = _rbGpxFile.IsChecked == true;
         _info.LocSourceKml = _rbKmlFile.IsChecked == true;
         _info.LocSourceTxt = _rbTxtFile.IsChecked == true;
+        _info.Location = _ctlLocation.getValue();
+        _info.Creator = _ctlCreator.getValue();
+        _info.Notes = _ctlPrjNotes.getValue();
         _inspect = _cbEvalPrj.IsChecked == true;
         _info.IsProjectFolder = _isProjectFolder;
         _info.ModelParams = App.Model.DefaultModelParams[_ctlModel.SelectIndex];

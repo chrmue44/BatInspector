@@ -68,34 +68,6 @@ namespace BatInspector
     static object _locker = new object();
     static object _pngLocker = new object();
 
-    [HandleProcessCorruptedStateExceptions]
-   // [SecurityCritical]
-    public static void analyzeFiles(string reportName, string path)
-    {
-      string[] files = Directory.GetFiles(path, "*.wav");
-      Csv csv = ModelCmuTsa.createReport();
-      foreach (string fName in files)
-      {
-        ThresholdDetectItem[] items = analyzeCalls(fName, out int sampleRate, out double duration);
-        if (items.Length == 0)
-        {
-          File.Delete(fName);
-          string png = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-          if (File.Exists(png))
-            File.Delete(png);
-          string xml = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-          if (File.Exists(xml))
-            File.Delete(xml);
-          DebugLog.log(fName + " deleted, no calls", enLogType.INFO);
-        }
-        else
-        {
-          addToReport(csv, fName, sampleRate, duration, items);
-          DebugLog.log(fName + ": " + items.Length.ToString() + " calls", enLogType.INFO);
-        }
-      }
-      csv.saveAs(reportName);
-    }
 
     [HandleProcessCorruptedStateExceptions]
    // [SecurityCritical]

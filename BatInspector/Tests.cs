@@ -132,7 +132,7 @@ namespace BatInspector
       //testWriteModParams(); //not a test, a one time function
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
-
+      // testMySql();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -975,6 +975,44 @@ namespace BatInspector
       string pngName = path + "/Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms_part.png";
       BioAcoustics.createPngFromWavPart(wavName, pngName, 1, 1.5, 0, 200, 1024, 512, 70);
       sw.Stop();
+    }
+
+    private void testMySql()
+    {
+      string connstr = "server=127.0.0.1;uid=root;pwd=root;database=bat_calls";
+      string prjPath = "F:\\bat\\2025\\D\\DA\\GehabornerHof1\\20250703_BAT";
+      string analysisFile = Path.Combine(prjPath, "bd2", "report.csv");
+      string deviceName = "BS40_E_0001";
+      string fileId = "BS40_E_0001_20250703_215826";
+      string callId = "BS40_E_0001_20250703_215826_1";
+      DataBase db = new DataBase();
+      int res =db.connect(connstr);
+      assert("testMySql: connect", res == 0);
+      Project prj = new Project(false, App.Model.DefaultModelParams[0], App.Model.DefaultModelParams.Length, AppParams.DIR_WAVS);
+      prj.readPrjFile(prjPath);
+      prj.Analysis.read(analysisFile, prj.AvailableModelParams);
+      res = db.addPrjToTableProjects(prj);
+      assert("testMySql: addPrj", res == 0);
+
+      res = db.addFile(deviceName, prj.PrjId, prj.Analysis.Files[0]);
+      assert("testMySql: addFile", res == 0);
+
+      res = db.addCall(fileId, prj.Analysis.Files[0].Calls[0]);
+      assert("testMySql: addCall", res == 0);
+
+      res = db.deleteRow("calls", $"id = '{callId}'");
+      assert("testMySql: deletRow from calls", res == 0);
+
+      res = db.deleteRow("files", $"id = '{fileId}'");
+      assert("testMySql: deletRow from files", res == 0);
+
+      res = db.deleteRow("projects", $"id = '{prj.PrjId}'");
+      assert("testMySql: deletRow from prj", res == 0);
+
+//      res = db.addProjectToDb(prj);
+//      assert("testMySql: addProjectToDb", res == 0);
+
+      db.disconnect();
     }
 
     private void fixAnnotationIds()

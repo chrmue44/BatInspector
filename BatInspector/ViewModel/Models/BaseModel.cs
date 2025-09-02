@@ -64,8 +64,6 @@ namespace BatInspector
     {
       switch (type)
       {
-        case enModel.rnn6aModel:
-          return new ModelCmuTsa(index) as BaseModel;
         case enModel.BAT_DETECT2:
           return new ModelBatDetect2(index) as BaseModel;
         case enModel.BATTY_BIRD_NET:

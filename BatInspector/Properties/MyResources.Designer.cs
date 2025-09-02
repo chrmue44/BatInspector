@@ -1519,6 +1519,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creator of the project.
+        /// </summary>
+        public static string frmCreatePrjCreator {
+            get {
+                return ResourceManager.GetString("frmCreatePrjCreator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete source files after import.
         /// </summary>
         public static string FrmCreatePrjDelSrc {
@@ -1596,6 +1605,15 @@ namespace BatInspector.Properties {
         public static string FrmCreatePrjLLocation {
             get {
                 return ResourceManager.GetString("FrmCreatePrjLLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording Location.
+        /// </summary>
+        public static string frmCreatePrjLocation {
+            get {
+                return ResourceManager.GetString("frmCreatePrjLocation", resourceCulture);
             }
         }
         
@@ -1960,7 +1978,25 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AI-Model Parameter.
+        ///   Looks up a localized string similar to Creator of Project.
+        /// </summary>
+        public static string frmModParsCreator {
+            get {
+                return ResourceManager.GetString("frmModParsCreator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of recording location.
+        /// </summary>
+        public static string frmModParsLocation {
+            get {
+                return ResourceManager.GetString("frmModParsLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project &amp; AI Model Parameter.
         /// </summary>
         public static string frmModParsTitle {
             get {
@@ -3724,6 +3760,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rows.
+        /// </summary>
+        public static string Rows {
+            get {
+                return ResourceManager.GetString("Rows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sampling Rate [kHz].
         /// </summary>
         public static string SamplingRate {
@@ -4071,6 +4116,15 @@ namespace BatInspector.Properties {
         public static string SetDescMultiModel {
             get {
                 return ResourceManager.GetString("SetDescMultiModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to connection string to establish connection to MySQL database.
+        /// </summary>
+        public static string SetDescMySqlConnect {
+            get {
+                return ResourceManager.GetString("SetDescMySqlConnect", resourceCulture);
             }
         }
         

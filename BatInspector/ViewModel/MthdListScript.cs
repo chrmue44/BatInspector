@@ -116,7 +116,7 @@ namespace BatInspector
       addMethod(new FuncTabItem("importPrj", importPrj));
       _scriptHelpTab.Add(new HelpTabItem("importPrj", "import an Elekon or BatSpy project",
                       new List<string> { "1:source folder containing project","2:destination folder","3: max files per project (int)",
-                                         "4: max length of WAV file [s] (float)" },
+                                         "4: max length of WAV file [s] (float)", "5:Location (string)",  "6: creating person (string)", "7: remarks (string)" },
                       new List<string> { "1: 0" }));
       addMethod(new FuncTabItem("openPrj", openPrj));
       _scriptHelpTab.Add(new HelpTabItem("openPrj", "open a project",
@@ -314,6 +314,24 @@ namespace BatInspector
         argv[1].changeType(AnyType.tType.RT_STR);
         argv[2].changeType(AnyType.tType.RT_INT64);
         argv[3].changeType(AnyType.tType.RT_FLOAT);
+        string loc = "";
+        if (argv.Count >= 5)
+        {
+          argv[4].changeType(AnyType.tType.RT_STR);
+          loc = argv[4].getString();
+        }
+        string creator = "";
+        if (argv.Count >= 6)
+        {
+          argv[5].changeType(AnyType.tType.RT_STR);
+          creator = argv[5].getString();
+        }
+        string remarks = "";
+        if (argv.Count >= 7)
+        {
+          argv[6].changeType(AnyType.tType.RT_STR);
+          remarks = argv[6].getString();
+        }
         PrjInfo info = new PrjInfo
         {
           Name = Path.GetFileNameWithoutExtension(argv[0].getString()),
@@ -324,7 +342,7 @@ namespace BatInspector
           Latitude = 0.0,
           Longitude = 0.0,
           GpxFile = "",
-          Notes = "",
+          Notes = remarks,
           IsProjectFolder = true,
           LocSourceGpx = false,
           LocSourceKml = false,
@@ -333,15 +351,17 @@ namespace BatInspector
           RemoveSource = false,
           StartTime = DateTime.MinValue,
           EndTime = DateTime.MaxValue,
-          ModelParams = null
+          ModelParams = null,
+          Location = loc,
+          Creator = creator
         };
         ModelParams modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-        if (argv.Count > 4)
+        if (argv.Count >= 8)
         {
-          modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(argv[4].getString())];
-          if (argv.Count > 5)
+          modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(argv[7].getString())];
+          if (argv.Count >= 9)
           {
-            string dataSet = argv[5].getString();
+            string dataSet = argv[8].getString();
             bool found = false;
             foreach (string s in modPars.AvailableDataSets)
             {

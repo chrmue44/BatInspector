@@ -35,6 +35,14 @@ public partial class BatRecord
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string SN { get; set; }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string Firmware { get; set; }
+
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string Samplerate { get; set; }
 
   /// <remarks/>

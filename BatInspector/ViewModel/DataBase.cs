@@ -19,6 +19,7 @@ namespace BatInspector
     VARCHAR = 0,
     INT = 1,
     FLOAT = 2,
+    DATE = 3,
   }
   
   public class sqlField
@@ -50,6 +51,7 @@ namespace BatInspector
     float _valFloat;
     int _valInt32;
     string _valString;
+    DateTime _date;
 
     object getValue()
     {
@@ -59,6 +61,8 @@ namespace BatInspector
           return _valFloat;
         case enSqlType.INT:
           return _valInt32;
+        case enSqlType.DATE:
+          return _date;
         default:
         case enSqlType.VARCHAR:
           return _valString;
@@ -66,6 +70,21 @@ namespace BatInspector
       return null;
     }
 
+    public override string ToString()
+    {
+      switch (FieldType)
+      {
+        case enSqlType.FLOAT:
+          return _valFloat.ToString(CultureInfo.InvariantCulture);
+        case enSqlType.INT:
+          return _valInt32.ToString(CultureInfo.InvariantCulture);
+        case enSqlType.DATE:
+          return _date.ToString(CultureInfo.InvariantCulture);
+        default:
+        case enSqlType.VARCHAR:
+          return _valString;
+      }
+    }
     public void setInt32(int val)
     {
     _valInt32 = val;
@@ -80,6 +99,31 @@ namespace BatInspector
     {
       _valString = val;
     }
+    public void setDate(DateTime val)
+    {
+      _date = val;
+    }
+
+    public string getDateAsString()
+    {
+      string mo = _date.Month.ToString("00");
+      string day = _date.Day.ToString("00");
+      return $"{_date.Year}-{mo}-{day}";
+    }
+    public int getInt32()
+    {
+      return _valInt32;
+    }
+
+    public string getString()
+    {
+      return _valString;
+    }
+
+    public float getFloat()
+    {
+      return _valFloat;
+    }
 
     void setValue(enSqlType type, object value)
     {
@@ -90,6 +134,9 @@ namespace BatInspector
           break;
         case enSqlType.INT:
           _valInt32 = (int)value;
+          break;
+        case enSqlType.DATE:
+          _date = (DateTime)value;
           break;
         default:
         case enSqlType.VARCHAR:
@@ -133,7 +180,7 @@ namespace BatInspector
 
   public class SqlQueryBuilder
   {
-    public string Command { get { return _str.ToString(); } }
+    public string Command { get { return _str.ToString() +";"; } }
 
     StringBuilder _str;
     bool _select = false;
@@ -169,6 +216,11 @@ namespace BatInspector
     public void addOrderStatement(string expr)
     {
       addStatement("ORDER BY", ref _order, expr);
+    }
+    public void addLimitStatement(int rows)
+    {
+      if(rows > 0)
+        addStatement("LIMIT", ref _order, rows.ToString());
     }
 
     private void addStatement(string key, ref bool on, string expr)
@@ -244,52 +296,63 @@ namespace BatInspector
     public List<sqlRow> execQuery(string cmd)
     {
       List<sqlRow> retVal = new List<sqlRow>();
-      if (_isOpen)
+      int count = 0;
+      try
       {
-        using (MySqlCommand sqlCmd = new MySqlCommand())
+        if (_isOpen)
         {
-          sqlCmd.Connection = _connection;
-          sqlCmd.CommandText = cmd;
-          sqlCmd.CommandType = System.Data.CommandType.Text;
-          using (var myReader = sqlCmd.ExecuteReader())
+          using (MySqlCommand sqlCmd = new MySqlCommand())
           {
-            sqlRow row = new sqlRow();
-            for (int i = 0; i < myReader.FieldCount; i++)
+            sqlCmd.Connection = _connection;
+            sqlCmd.CommandText = cmd;
+            sqlCmd.CommandType = System.Data.CommandType.Text;
+            using (var myReader = sqlCmd.ExecuteReader())
             {
-              string name = myReader.GetName(i);
-              string dtType = myReader.GetDataTypeName(i);
-              bool ok = Enum.TryParse(dtType, out enSqlType t);
-              if (!ok)
-              {
-                DebugLog.log($"unsupported data type in query: {dtType}", enLogType.ERROR);
-                t = enSqlType.VARCHAR;
-              }
-              row.addField(t, name);
-            }
-
-            while (myReader.Read())
-            {
-              sqlRow newRow = new sqlRow(row);
+              sqlRow row = new sqlRow();
               for (int i = 0; i < myReader.FieldCount; i++)
               {
-                switch (newRow.Fields[i].FieldType)
+                string name = myReader.GetName(i);
+                string dtType = myReader.GetDataTypeName(i);
+                bool ok = Enum.TryParse(dtType, out enSqlType t);
+                if (!ok)
                 {
-                  case enSqlType.FLOAT:
-                    newRow.Fields[i].setFloat(myReader.GetFloat(i));
-                    break;
-                  case enSqlType.INT:
-                    newRow.Fields[i].setInt32(myReader.GetInt32(i));
-                    break;
-                  default:
-                  case enSqlType.VARCHAR:
-                    newRow.Fields[i].setString(myReader.GetString(i));
-                    break;
+                  DebugLog.log($"unsupported data type in query: {dtType}", enLogType.ERROR);
+                  t = enSqlType.VARCHAR;
+                }
+                row.addField(t, name);
+              }
+
+              while (myReader.Read())
+              {
+                sqlRow newRow = new sqlRow(row);
+                for (int fIdx = 0; fIdx < myReader.FieldCount; fIdx++)
+                {
+                  switch (newRow.Fields[fIdx].FieldType)
+                  {
+                    case enSqlType.FLOAT:
+                      newRow.Fields[fIdx].setFloat(myReader.GetFloat(fIdx));
+                      break;
+                    case enSqlType.INT:
+                      newRow.Fields[fIdx].setInt32(myReader.GetInt32(fIdx));
+                      break;
+                    case enSqlType.DATE:
+                      newRow.Fields[fIdx].setDate(myReader.GetDateTime(fIdx));
+                      break;
+                    default:
+                    case enSqlType.VARCHAR:
+                      newRow.Fields[fIdx].setString(myReader.GetString(fIdx));
+                      break;
+                  }
                 }
                 retVal.Add(newRow);
               }
             }
           }
         }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log($"MySQL Query failed: {ex.ToString()}", enLogType.ERROR);
       }
       return retVal;
     }
@@ -405,7 +468,7 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO projects\n");
-      sqlCmd.Append("(id,date,recording_device,sw_version,recording_person,path_to_wavs,microphone_id,classifier,model)\n");
+      sqlCmd.Append("(id,date,recording_device,sw_version,recording_person,path_to_wavs,microphone_id,classifier,model,location,notes)\n");
       sqlCmd.Append("VALUES\n");
 
 
@@ -416,8 +479,10 @@ namespace BatInspector
       string clsf = prj.AvailableModelParams[prj.SelectedModelIndex].Name;
       string model = prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
       string person = prj.CreateBy;
-      sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}',\n");
-      sqlCmd.Append($"'{clsf}','{model}');\n");
+      string location = prj.Location;
+      string notes = prj.Notes;
+      sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}', ");
+      sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}');\n");
       return execNonQuery(sqlCmd.ToString());
     }
 
@@ -486,7 +551,7 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO calls\n");
-      sqlCmd.Append("(id,file_id,nr,freq_min,freq_max,freq_char,duration,");
+      sqlCmd.Append("(id,file_id,call_nr,freq_min,freq_max,freq_char,duration,");
       sqlCmd.Append("start_time,call_interval,bandwidth,snr,spec_auto,probability,spec_man,remarks)\n");
       sqlCmd.Append("VALUES\n");
       string fmin = call.getDouble(Cols.F_MIN).ToString(CultureInfo.InvariantCulture);

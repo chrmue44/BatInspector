@@ -9,12 +9,12 @@
     <Grid x:Name="_grid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="180"/>
             <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="420"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Horizontal">
@@ -26,18 +26,40 @@
             <ComboBox Name="_cbFilter" Width="150" Height="25"/>
             <Separator Width="5" Margin="10,2,10,2" />
             <Label Content="Limit" Margin="0,5,0,0"/>
-            <ComboBox Name="_cbLimit" Width="100" Height="25" />
+            <ComboBox Name="_cbLimit" Width="100" Height="25" SelectionChanged="_cbLimit_SelectionChanged"  />
             <Separator Width="5" Margin="10,2,10,2" />
             <Button Content="export Query" Width ="100" Margin="0,5,10,5"/>
         </StackPanel>
         <Label Content="MySQL" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label Content="Query"  HorizontalAlignment="Right" Width="57" VerticalAlignment="Center"/>
-            <Button Name="_btnCollapse" Content="&lt;" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Click="_btnCollapse_Click"/>
 
         </StackPanel>
         <TextBox Name="_tbQuery" Grid.Row="1" Grid.Column="1" AcceptsReturn="True"/>
         <Button  Name="_btnApply" Content="Apply MySQL Query" Width="200" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,5,5" Click="_btnApply_Click"/>
         <DataGrid Name="_dg" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" MouseDoubleClick="_dg_MouseDoubleClick"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Name="_btnCollapse" Grid.Column="1"  Content="&lt;" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Click="_btnCollapse_Click"/>
+            <Label Content="Query" Width="57" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <GroupBox Grid.Row="1" Header="Datenfelder" Template="{DynamicResource GroupBoxCmu}">
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Name="_sp1" Grid.Column="0" Orientation="Vertical"/>
+                    <StackPanel Name ="_sp2" Grid.Column="1" Orientation="Vertical"/>
+                    <StackPanel Name ="_sp3" Grid.Column="2" Orientation="Vertical"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
     </Grid>
 </UserControl> 

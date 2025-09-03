@@ -67,9 +67,10 @@ namespace BatInspector
     PrjView _view;
     ModelParams[] _defaultModelParams;
     dlgVoid _callBackEnd = null;
-
+    DataBase _mySql;
     public PrjView View { get{ return _view; } }
 
+    public DataBase MySQL { get { return _mySql; } }
     public string SelectedDir { get { return _selectedDir; } }
 
     public ScriptRunner Scripter { get { return _scripter; } }
@@ -143,6 +144,7 @@ namespace BatInspector
       _sumReport = new SumReport();
       _models = new List<BaseModel>();
       _view = new PrjView();
+      _mySql = new DataBase();
       _view.Query = null;
       int index = 0;
 

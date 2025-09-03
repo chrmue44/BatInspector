@@ -136,6 +136,9 @@ namespace BatInspector
       addMethod(new FuncTabItem("getPrjInfo", getPrjInfo));
       _scriptHelpTab.Add(new HelpTabItem("getPrjInfo", "get project info",
                       new List<string> { "1: type of info"}, new List<string> { "1: result" }));
+      addMethod(new FuncTabItem("setPrjInfo", setPrjInfo));
+      _scriptHelpTab.Add(new HelpTabItem("setPrjInfo", "set specific data for currently open project",
+                      new List<string> { "1: type of info", "2: data", }, new List<string> { "" }));
       addMethod(new FuncTabItem("countDirs", countDirs));
       _scriptHelpTab.Add(new HelpTabItem("countDirs", "count sub directories in a directory",
                       new List<string> { "1: path", "2: filter" }, new List<string> { "1: nr of sub directories" }));
@@ -494,6 +497,10 @@ namespace BatInspector
     {
       ROOT,
       OK,
+      NOTES,
+      CREATOR,
+      LOCATION,
+      PRJID
     }
 
     static tParseError setFileInfo(List<AnyType> argv, out AnyType result)
@@ -584,9 +591,20 @@ namespace BatInspector
               case enPrjInfo.ROOT:
                 result.assign(App.Model.Prj.PrjDir);
                 break;
-
               case enPrjInfo.OK:
                 result.assignBool(App.Model.Prj.Ok);
+                break;
+              case enPrjInfo.PRJID:
+                result.assign(App.Model.Prj.PrjId);
+                break;
+              case enPrjInfo.LOCATION:
+                result.assign(App.Model.Prj.Location);
+                break;
+              case enPrjInfo.NOTES:
+                result.assign(App.Model.Prj.Notes);
+                break;
+              case enPrjInfo.CREATOR:
+                result.assign(App.Model.Prj.Notes);
                 break;
             }
           }
@@ -598,6 +616,46 @@ namespace BatInspector
       }
       else
         err = tParseError.RESSOURCE;
+      return err;
+    }
+
+    static tParseError setPrjInfo(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      {
+        if (argv.Count >= 2)
+        {
+          argv[0].changeType(AnyType.tType.RT_STR);
+          argv[1].changeType(AnyType.tType.RT_STR);
+          enPrjInfo prjInfo;
+          string val = argv[1].getString();
+          bool ok = Enum.TryParse(argv[0].getString(), out prjInfo);
+          if (ok)
+          {
+            switch (prjInfo)
+            {
+              case enPrjInfo.LOCATION:
+                App.Model.Prj.Location = val;
+                break;
+              case enPrjInfo.NOTES:
+                App.Model.Prj.Notes = val;
+                break;
+              case enPrjInfo.CREATOR:
+                App.Model.Prj.Notes= val;
+                break;
+            }
+          }
+          else
+            err = tParseError.ARG1_OUT_OF_RANGE;
+        }
+        else
+          err = tParseError.NR_OF_ARGUMENTS;
+      }
+      else
+        err = tParseError.RESSOURCE;
+      result.assign((int)err);
       return err;
     }
 

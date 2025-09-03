@@ -128,7 +128,6 @@ namespace BatInspector
 
     public ReportItemBd2(AnalysisFile file, AnalysisCall call)
     {
-
       FileName = file.Name;
       int callNr = call.getInt(Cols.NR);
       CallNr = callNr.ToString();
@@ -145,8 +144,10 @@ namespace BatInspector
       Longitude = call.getDouble(Cols.LON).ToString("0.#######", CultureInfo.InvariantCulture);
       Temperature = call.getDouble(Cols.TEMPERATURE).ToString("0.#", CultureInfo.InvariantCulture);
       Humidity = call.getDouble(Cols.HUMIDITY).ToString("0.#", CultureInfo.InvariantCulture);
-      //  Snr = call.getDouble(Cols.SNR).ToString();
       SpeciesMan = call.getString(Cols.SPECIES_MAN);
+      FreqMin = call.getDouble(Cols.F_MIN).ToString("0,#", CultureInfo.InvariantCulture);
+      FreqMax = call.getDouble(Cols.F_MAX).ToString("0,#", CultureInfo.InvariantCulture);
+      FreqMaxAmp = call.getDouble(Cols.F_MAX_AMP).ToString("0,#", CultureInfo.InvariantCulture);
     }
 
     public int Row { get; set; }

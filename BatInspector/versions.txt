@@ -16,6 +16,10 @@ TODO
 - added more parameters to script "bulk_import_batspy.scr"
 - better adaption of script inventory (change of parameter count) in cae of update
 - cleanup: removed unused models
+- more info types in script function getPrjInfo
+- new script function setPrjInfo
+- added project upload to MySQL server
+- added MySQL dashboard to create simple queries
 
 
 # V0.9.4.4  

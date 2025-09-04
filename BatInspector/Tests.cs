@@ -92,6 +92,7 @@ namespace BatInspector
       //testDenoising();
       //testActivityDiagr();
       testNextStepDown();
+      testFindMatchingBrace();
       testIf(wrkDir);
       testWhile(wrkDir);
       testFor(wrkDir);
@@ -103,6 +104,7 @@ namespace BatInspector
       testGpx();
       testKml();
       testLocfileTxt();
+      testTranslateFilter();
       testGetDateFromFilename();
       //testSignalForm();
       testSimCall();
@@ -856,8 +858,23 @@ namespace BatInspector
     }
 
 
+    private void testFindMatchingBrace()
+    {
+      int pos = Utils.findMatchingClosingBrace("hello(1,2,3,(4+5),6)",6);
+      assert("findMatchingBrace 1:", pos == 19);
+      pos = Utils.findMatchingClosingBrace("hello(\")1\",2,3,(4+5),6)", 6);
+      assert("findMatchingBrace 1:", pos == 22);
+    }
 
-    
+    private void testTranslateFilter()
+    {
+      string expr = "(SpeciesMan == \"BBAR\") &&  (indexOf(SpeciesAuto,\"?\") >= 0)";
+      string res = DataBase.translateFilterExpressionToMySQL(expr);
+      assert("testTranslateFilter, 1", res == "(SpeciesMan = 'BBAR') &&  (INSTR(SpeciesAuto,'?') > 0)");
+      expr = "(indexOf(SpeciesAuto,\"?\") < 0) && (SpeciesMan == \"BBAR\")";
+      res = DataBase.translateFilterExpressionToMySQL(expr);
+      assert("testTranslateFilter, 1", res == "(INSTR(SpeciesAuto,'?') = 0) && (SpeciesMan = 'BBAR')");
+    }
 
     private void testActivityDiagr()
     {

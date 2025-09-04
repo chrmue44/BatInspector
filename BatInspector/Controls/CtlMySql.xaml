@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties" 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
     <Grid x:Name="_grid" >
@@ -12,43 +13,47 @@
             <RowDefinition Height="180"/>
             <RowDefinition Height="35"/>
             <RowDefinition/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="420"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Horizontal">
-            <Button Content="add Project" Width ="100" Margin="0,5,10,5"/>
-            <Button Content="check Project" Width ="100" Margin="0,5,10,5"/>
-            <Button Content="update Project" Width ="100" Margin="0,5,10,5"/>
+            <Button Content="add Project" Width ="100" Margin="5,5,5,5"/>
+            <Button Content="check Project" Width ="100" Margin="0,5,5,5"/>
+            <Button Content="update Project" Width ="100" Margin="0,5,5,5"/>
             <Separator Width="5" Margin="10,2,10,2" />
             <Label Content="Filter" Margin="0,5,0,0"/>
-            <ComboBox Name="_cbFilter" Width="150" Height="25"/>
+            <ComboBox Name="_cbFilter" Width="150" Height="25" DropDownOpened="_cbFilter_DropDownOpened" DropDownClosed="_cbFilter_DropDownClosed"/>
             <Separator Width="5" Margin="10,2,10,2" />
             <Label Content="Limit" Margin="0,5,0,0"/>
             <ComboBox Name="_cbLimit" Width="100" Height="25" SelectionChanged="_cbLimit_SelectionChanged"  />
             <Separator Width="5" Margin="10,2,10,2" />
             <Button Content="export Query" Width ="100" Margin="0,5,10,5"/>
         </StackPanel>
-        <Label Content="MySQL" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-
+        <Label Content="MySQL Dashboard" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2"> 
+            <Label Content="Status: "/>
+            <TextBlock Name="_tbStatus" IsEnabled="False"/>
         </StackPanel>
         <TextBox Name="_tbQuery" Grid.Row="1" Grid.Column="1" AcceptsReturn="True"/>
-        <Button  Name="_btnApply" Content="Apply MySQL Query" Width="200" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,5,5" Click="_btnApply_Click"/>
+        <Button  Name="_btnApply" Content="{x:Static res:MyResources.CtlMySqlApplyMySQLQuery}" Width="200" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,5,5" Click="_btnApply_Click"/>
         <DataGrid Name="_dg" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" MouseDoubleClick="_dg_MouseDoubleClick"/>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
                 <ColumnDefinition Width="20"/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Name="_btnCollapse" Grid.Column="1"  Content="&lt;" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Click="_btnCollapse_Click"/>
-            <Label Content="Query" Width="57" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            <GroupBox Grid.Row="1" Header="Datenfelder" Template="{DynamicResource GroupBoxCmu}">
+            <Button Name="_btnCollapse" Style="{DynamicResource SharpCornerButton}" Grid.Column="0"  Content="&lt;" Width="20" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Click="_btnCollapse_Click"/>
+            <StackPanel Name="_spQuery" Grid.Column="1">
+                <Label Content="Query"  Width="57" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            </StackPanel>
+            <GroupBox Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="2" Header="{x:Static res:MyResources.CtlMySqlFields}" Template="{DynamicResource GroupBoxCmu}" Margin="3">
                 <Grid Margin="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

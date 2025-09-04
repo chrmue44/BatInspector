@@ -61,7 +61,7 @@ namespace BatInspector.Controls
       _append = new List<ExpressionItem>();
       _append.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.OR, "||", "oder"));
       _append.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.AND, "&&", "und"));
-      _cbAppend.Items.Add("erweitern...");
+      _cbAppend.Items.Add(MyResources.Expand + " ...");
       foreach (ExpressionItem item in _append)
         _cbAppend.Items.Add(item.Text + " [" + item.HelpText + "]");
       
@@ -209,7 +209,7 @@ namespace BatInspector.Controls
           if ((string)_cbRight.SelectedItem == BatInspector.Properties.MyResources.ExpGenUserString) 
             f += "\"" + _tbFreeTxt.Text + "\"";
           else
-            f += "\"" + _right[_cbRight.SelectedIndex].Text + "\"";
+            f += _right[_cbRight.SelectedIndex].Text;
         }
         else if (_right[_cbRight.SelectedIndex].Type == enExpType.EXPRESSION)
           f += " " + _right[_cbRight.SelectedIndex].Text;

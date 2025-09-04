@@ -114,12 +114,19 @@ namespace BatInspector
 
         case enField.RIGHT:
           if (AnyType.isNum(type))
+          {
             retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_Nr, AnyType.tType.RT_FLOAT));
+          }
           else if (AnyType.isStr(type))
           {
             retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGenUserString, AnyType.tType.RT_STR));
             foreach (string bat in _species)
-              retVal.Add(new ExpressionItem(enExpType.CONST, bat, AnyType.tType.RT_STR));
+              retVal.Add(new ExpressionItem(enExpType.CONST, "\""+bat+"\"", AnyType.tType.RT_STR));
+            foreach (FilterVarItem f in _dlgGetVars())
+            {
+              if (AnyType.isStr(f.Type))
+                retVal.Add(new ExpressionItem(enExpType.CONST, f.VarName, f.Type));
+            }
           }
           else if (AnyType.isBool(type))
             retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));

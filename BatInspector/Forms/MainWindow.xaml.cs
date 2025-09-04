@@ -282,6 +282,7 @@ namespace BatInspector.Forms
     {
       Filter.populateFilterComboBox(_ctlPrjBtn._cbFilter);
       Filter.populateFilterComboBox(_ctlListBtn._cbFilter);
+      Filter.populateFilterComboBox(_ctlMySQL._cbFilter);
       _ctlScatter.populateComboBoxes();
       _ctlStatistic.populateComboBoxes();
     }
@@ -1695,6 +1696,7 @@ namespace BatInspector.Forms
 
     private void _tbStatistic_GotFocus(object sender, RoutedEventArgs e)
     {
+      App.Model.MySQL.disconnect();
       _ctlStatistic.createPlot();
     }
 
@@ -1835,6 +1837,32 @@ namespace BatInspector.Forms
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void _tbMySql_GotFocus(object sender, RoutedEventArgs e)
+    {
+      App.Model.MySQL.connect(AppParams.Inst.MySqlConnectString);
+      collapseTreeView(true);
+    }
+
+    private void _tbScatter_GotFocus(object sender, RoutedEventArgs e)
+    {
+      App.Model.MySQL.disconnect();
+    }
+
+    private void _tbSum_GotFocus(object sender, RoutedEventArgs e)
+    {
+      App.Model.MySQL.disconnect();
+    }
+
+    private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
+    {
+      App.Model.MySQL.disconnect();
+    }
+
+    private void _tbPrj_GotFocus(object sender, RoutedEventArgs e)
+    {
+      App.Model.MySQL.disconnect();
     }
   }
 

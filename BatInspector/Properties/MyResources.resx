@@ -1713,4 +1713,13 @@
   <data name="Rows" xml:space="preserve">
     <value>Rows</value>
   </data>
+  <data name="CtlMySqlFields" xml:space="preserve">
+    <value>Selection of Fields</value>
+  </data>
+  <data name="CtlMySqlApplyMySQLQuery" xml:space="preserve">
+    <value>Apply MySQL Query</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>expand</value>
+  </data>
 </root>

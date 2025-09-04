@@ -257,22 +257,25 @@ namespace BatInspector
     public int connect(string connectStr)
     {
       int retVal = -1;
+      if (_isOpen)
+        return retVal;
+      
       _connection = new MySqlConnection();
       _connection.ConnectionString = connectStr;
-      if (_isOpen)
-        return -1;
       try
       {
         _connection.Open();
         _isOpen = true;
+        DebugLog.log("connected succesfully to MySQL database", enLogType.INFO);
         retVal = 0;
       }
-      catch (Exception ex)  
+      catch (Exception ex)
       {
         _isOpen = false;
         DebugLog.log($"error connecting to MySql data base: '{connectStr}; {ex.ToString()}", enLogType.ERROR);
         retVal = -2;
       }
+      
       return retVal;
     }
 
@@ -286,8 +289,9 @@ namespace BatInspector
       _connection.Close();
       _connection.Dispose();
       _isOpen = false;
+      DebugLog.log("disconnected from MySQL database", enLogType.INFO);
     }
-    
+
     /// <summary>
     /// execute query (with reply)
     /// </summary>
@@ -384,6 +388,54 @@ namespace BatInspector
       return retVal;
     }
 
+    /// <summary>
+    /// translates BatInspector filter expressions to MySQL WHERE expressions
+    /// </summary>
+    /// <param name="exp"></param>
+    /// <returns></returns>
+    public static string translateFilterExpressionToMySQL(string exp)
+    {
+      string retVal = exp.Replace("indexOf", "INSTR");
+      int pos = 0;
+
+      // replace indexOf() with INSTR()
+      while ((pos >= 0) && (pos < retVal.Length))
+      {
+        pos = retVal.IndexOf("INSTR", pos);
+        if (pos >= 0)
+        {
+          pos += 6;
+          pos = Utils.findMatchingClosingBrace(retVal, pos);
+          if (pos < 0)
+            break;
+          int pos1 = retVal.IndexOf(">=", pos);
+          if (pos1 >= 0)
+          {
+            retVal = retVal.Remove(pos1, 2);
+            retVal = retVal.Insert(pos1, ">");
+            pos = pos1;
+          }
+          else
+          {
+            pos1 = retVal.IndexOf("<", pos);
+            if (pos1 >= 0)
+            {
+              retVal = retVal.Remove(pos1, 1);
+              retVal = retVal.Insert(pos1, "=");
+              pos = pos1;
+            }
+          }
+        }
+      }
+      // replace string delimiters
+      retVal = retVal.Replace('\"', '\'');
+
+      // replace operators
+      retVal = retVal.Replace("!=", "<>");
+      retVal = retVal.Replace("==", "=");
+      return retVal;
+    }
+
 
     /// <summary>
     /// add complete project with project infomramtion, files and calls to tables
@@ -468,7 +520,7 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO projects\n");
-      sqlCmd.Append("(id,date,recording_device,sw_version,recording_person,path_to_wavs,microphone_id,classifier,model,location,notes)\n");
+      sqlCmd.Append("(id,Date,RecordingDevice,SwVersion,PrjCreator,PathToWavs,MicrophoneId,Classifier,Model,Location,Notes)\n");
       sqlCmd.Append("VALUES\n");
 
 
@@ -517,8 +569,8 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO files\n");
-      sqlCmd.Append("(id,wav_name,lat,lon,project_id,temperature,humidity,");
-      sqlCmd.Append("sampling_rate,file_length)\n");
+      sqlCmd.Append("(id,WavFileName,Latitude,Longitude,ProjectId,Temperature,Humidity,");
+      sqlCmd.Append("SamplingRate,FileLength)\n");
       sqlCmd.Append("VALUES\n");
       id = id.Replace(".wav", "");
       id = id.Replace(".WAV", "");
@@ -551,8 +603,8 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO calls\n");
-      sqlCmd.Append("(id,file_id,call_nr,freq_min,freq_max,freq_char,duration,");
-      sqlCmd.Append("start_time,call_interval,bandwidth,snr,spec_auto,probability,spec_man,remarks)\n");
+      sqlCmd.Append("(id,FileId,CallNr,FreqMin,FreqMax,FreqMaxAmp,DurationCall,");
+      sqlCmd.Append("StartTime,CallInterval,bandwidth,SNR,SpeciesAuto,Probability,SpeciesMan,Remarks)\n");
       sqlCmd.Append("VALUES\n");
       string fmin = call.getDouble(Cols.F_MIN).ToString(CultureInfo.InvariantCulture);
       string fmax = call.getDouble(Cols.F_MAX).ToString(CultureInfo.InvariantCulture);

@@ -493,6 +493,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply MySQL Query.
+        /// </summary>
+        public static string CtlMySqlApplyMySQLQuery {
+            get {
+                return ResourceManager.GetString("CtlMySqlApplyMySQLQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection of Fields.
+        /// </summary>
+        public static string CtlMySqlFields {
+            get {
+                return ResourceManager.GetString("CtlMySqlFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created.
         /// </summary>
         public static string ctlPrjInfoCreated {
@@ -1110,6 +1128,15 @@ namespace BatInspector.Properties {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to expand.
+        /// </summary>
+        public static string Expand {
+            get {
+                return ResourceManager.GetString("Expand", resourceCulture);
             }
         }
         

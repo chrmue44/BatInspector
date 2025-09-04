@@ -131,7 +131,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
 
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterStatistic);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterStatistic, true);
       createPlot();
     }
 

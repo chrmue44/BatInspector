@@ -41,7 +41,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ComboBox cbFilter)
+    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ComboBox cbFilter, bool showAllCallsBtn)
     {
       applyFilter = false;
       resetFilter = false;
@@ -55,7 +55,7 @@ namespace BatInspector.Controls
         {
           if (cbFilter.SelectedIndex == 1)
           {
-            frmExpression frm = new frmExpression(App.Model.Filter.ExpGenerator, true);
+            frmExpression frm = new frmExpression(App.Model.Filter.ExpGenerator, showAllCallsBtn);
             bool? res = frm.ShowDialog();
             if (res == true)
             {
@@ -118,7 +118,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
 
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterScatter);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterScatter, true);
       createPlot();
     }
   }

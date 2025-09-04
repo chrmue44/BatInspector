@@ -7,6 +7,7 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -260,9 +261,10 @@ namespace libParser
     }
     /// <summary>
     /// find the matching closing brace . The search begins after opening brace
+    /// ingnores braces inside of "..."
     /// </summary>
     /// <param name="str">string to search</param>
-    /// <param name="startPos"></param>
+    /// <param name="startPos">first character behind opeing brace</param>
     /// <returns>position of the matching closing brace, or -1 if not found</returns>
     public static int findMatchingClosingBrace(string str, int startPos)
     {
@@ -270,12 +272,16 @@ namespace libParser
       char close = ')';
       int count = 1;
       int retVal = -1;
+      bool inString = false;
       for (int i = startPos; i < str.Length; i++)
       {
-        if (str[i] == open)
+        char c = str[i];
+        if ((c == open)  && !inString)
           count++;
-        else if (str[i] == close)
+        else if ((c == close) && !inString)
           count--;
+        else if (c == '"')
+          inString = !inString;
         if (count == 0)
         {
           retVal = i;

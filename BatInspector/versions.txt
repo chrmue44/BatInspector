@@ -5,9 +5,10 @@ TODO
 - more flexible import: 
   - parsing date/time form different file names
   - real "inplace" import
-- SQL data base 
+  
 
 # V0.9.5.0
+- added project upload to MySQL server
 - added project parameters "CreatedBy", "Location" 
   to project (to document the name of the person who created the project 
   and the name of the recording location)
@@ -18,7 +19,6 @@ TODO
 - cleanup: removed unused models
 - more info types in script function getPrjInfo
 - new script function setPrjInfo
-- added project upload to MySQL server
 - added MySQL dashboard to create simple queries
 
 

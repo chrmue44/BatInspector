@@ -502,11 +502,47 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Data ....
+        /// </summary>
+        public static string CtlMySqlExportData {
+            get {
+                return ResourceManager.GetString("CtlMySqlExportData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selection of Fields.
         /// </summary>
         public static string CtlMySqlFields {
             get {
                 return ResourceManager.GetString("CtlMySqlFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export result of query to CSV file.
+        /// </summary>
+        public static string CtlMySqlToolTipExport {
+            get {
+                return ResourceManager.GetString("CtlMySqlToolTipExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define logic expression to filter data.
+        /// </summary>
+        public static string CtlMySqlToolTipFilter {
+            get {
+                return ResourceManager.GetString("CtlMySqlToolTipFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define a maximum for the number of returned lines of the query.
+        /// </summary>
+        public static string CtlMySqlToolTipLimit {
+            get {
+                return ResourceManager.GetString("CtlMySqlToolTipLimit", resourceCulture);
             }
         }
         

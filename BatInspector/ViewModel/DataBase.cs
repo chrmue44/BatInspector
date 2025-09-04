@@ -1,4 +1,5 @@
 ﻿using libParser;
+using libScripter;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.CRUD;
 using System;
@@ -631,6 +632,48 @@ namespace BatInspector
       sqlCmd.Append($"DELETE FROM {table}\n");
       sqlCmd.Append($"WHERE {condition};");
       return execNonQuery(sqlCmd.ToString());
+    }
+
+    public void exportQuery(List<sqlRow> query, string fileName)
+    {
+      try
+      {
+        Csv csv = new Csv();
+        csv.addRow();
+        for (int i = 0; i < query[0].Fields.Count; i++)
+          csv.setCell(1, i + 1, query[0].Fields[i].Name);
+
+        for (int i = 0; i < query.Count; i++)
+        {
+          int row = i + 2;
+          csv.addRow();
+          for (int j = 0; j < query[i].Fields.Count; j++)
+          {
+            int col = j + 1;
+            sqlField fi = query[i].Fields[j];
+            switch (fi.FieldType)
+            {
+              case enSqlType.VARCHAR:
+                csv.setCell(row, col, fi.getString());
+                break;
+              case enSqlType.INT:
+                csv.setCell(row, col, fi.getInt32());
+                break;
+              case enSqlType.FLOAT:
+                csv.setCell(row, col, (double)fi.getFloat());
+                break;
+              case enSqlType.DATE:
+                csv.setCell(row, col, fi.getDateAsString());
+                break;
+            }
+          }
+        }
+        csv.saveAs(fileName);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"Error export query: {ex.ToString()}", enLogType.ERROR);
+      }
     }
 
     bool checkIfOpen(string cmd)

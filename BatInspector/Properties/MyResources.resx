@@ -1722,4 +1722,16 @@
   <data name="Expand" xml:space="preserve">
     <value>expand</value>
   </data>
+  <data name="CtlMySqlExportData" xml:space="preserve">
+    <value>Export Data ...</value>
+  </data>
+  <data name="CtlMySqlToolTipExport" xml:space="preserve">
+    <value>Export result of query to CSV file</value>
+  </data>
+  <data name="CtlMySqlToolTipFilter" xml:space="preserve">
+    <value>Define logic expression to filter data</value>
+  </data>
+  <data name="CtlMySqlToolTipLimit" xml:space="preserve">
+    <value>Define a maximum for the number of returned lines of the query</value>
+  </data>
 </root>

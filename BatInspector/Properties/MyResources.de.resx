@@ -1722,4 +1722,16 @@
   <data name="Expand" xml:space="preserve">
     <value>erweitern</value>
   </data>
+  <data name="CtlMySqlExportData" xml:space="preserve">
+    <value>Datenexport ...</value>
+  </data>
+  <data name="CtlMySqlToolTipExport" xml:space="preserve">
+    <value>Exportiert das Ergebnis der Abfrage in eine CSV-Datei</value>
+  </data>
+  <data name="CtlMySqlToolTipFilter" xml:space="preserve">
+    <value>Definiere Bedingungen zum Filtern der Daten</value>
+  </data>
+  <data name="CtlMySqlToolTipLimit" xml:space="preserve">
+    <value>Legt das Maximum für die Anzahl zurückgegebener Zeilen in der Abfrage fest</value>
+  </data>
 </root>

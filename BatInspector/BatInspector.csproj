@@ -196,6 +196,9 @@
     <Compile Include="Controls\CtlMySql.xaml.cs">
       <DependentUpon>CtlMySql.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CtlMySqlFieldSelect.xaml.cs">
+      <DependentUpon>CtlMySqlFieldSelect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlNumericUpDown.xaml.cs">
       <DependentUpon>ctlNumericUpDown.xaml</DependentUpon>
     </Compile>
@@ -431,6 +434,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CtlMySql.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CtlMySqlFieldSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,13 +10,13 @@
     <Grid x:Name="_grid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="180"/>
+            <RowDefinition Height="300"/>
             <RowDefinition Height="35"/>
             <RowDefinition/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="550"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Horizontal">
@@ -37,7 +37,7 @@
             <Label Content="Status: "/>
             <TextBlock Name="_tbStatus" IsEnabled="False"/>
         </StackPanel>
-        <TextBox Name="_tbQuery" Grid.Row="1" Grid.Column="1" AcceptsReturn="True"/>
+        <TextBox Name="_tbQuery" Grid.Row="1" Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap"/>
         <Button  Name="_btnApply" Content="{x:Static res:MyResources.CtlMySqlApplyMySQLQuery}" Width="200" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,5,5" Click="_btnApply_Click"/>
         <DataGrid Name="_dg" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" MouseDoubleClick="_dg_MouseDoubleClick"/>
         <Grid Grid.Row="1" Grid.Column="0">
@@ -55,14 +55,19 @@
             </StackPanel>
             <GroupBox Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="2" Header="{x:Static res:MyResources.CtlMySqlFields}" Template="{DynamicResource GroupBoxCmu}" Margin="3">
                 <Grid Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Name="_sp1" Grid.Column="0" Orientation="Vertical"/>
-                    <StackPanel Name ="_sp2" Grid.Column="1" Orientation="Vertical"/>
-                    <StackPanel Name ="_sp3" Grid.Column="2" Orientation="Vertical"/>
+                    <local:ctlSelectItem x:Name="_ctlPreSelect" Grid.Column="0" Grid.ColumnSpan="3"/>
+                    <StackPanel Name="_sp1" Grid.Row="1" Grid.Column="0" Orientation="Vertical"/>
+                    <StackPanel Name ="_sp2" Grid.Row="1" Grid.Column="1" Orientation="Vertical"/>
+                    <StackPanel Name ="_sp3" Grid.Row="1" Grid.Column="2" Orientation="Vertical"/>
                 </Grid>
             </GroupBox>
         </Grid>

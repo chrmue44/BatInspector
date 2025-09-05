@@ -493,6 +493,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom.
+        /// </summary>
+        public static string CtlMySql_Custom {
+            get {
+                return ResourceManager.GetString("CtlMySql_Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to for inspectio with BatIspector.
+        /// </summary>
+        public static string CtlMySql_InspectWithBatIspector {
+            get {
+                return ResourceManager.GetString("CtlMySql_InspectWithBatIspector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply MySQL Query.
         /// </summary>
         public static string CtlMySqlApplyMySQLQuery {
@@ -516,6 +534,33 @@ namespace BatInspector.Properties {
         public static string CtlMySqlFields {
             get {
                 return ResourceManager.GetString("CtlMySqlFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to define sorting rank to order query by clicking button.
+        /// </summary>
+        public static string CtlMySqlFieldSelect_TooltipOrder {
+            get {
+                return ResourceManager.GetString("CtlMySqlFieldSelect_TooltipOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select for descending order.
+        /// </summary>
+        public static string CtlMySqlFieldSelect_TooltipReverse {
+            get {
+                return ResourceManager.GetString("CtlMySqlFieldSelect_TooltipReverse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select to include field in query.
+        /// </summary>
+        public static string CtlMySqlFieldSelect_TooltipSelect {
+            get {
+                return ResourceManager.GetString("CtlMySqlFieldSelect_TooltipSelect", resourceCulture);
             }
         }
         
@@ -3783,6 +3828,15 @@ namespace BatInspector.Properties {
         public static string PointInTime {
             get {
                 return ResourceManager.GetString("PointInTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preselection.
+        /// </summary>
+        public static string Preselection {
+            get {
+                return ResourceManager.GetString("Preselection", resourceCulture);
             }
         }
         

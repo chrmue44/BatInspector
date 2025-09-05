@@ -1734,4 +1734,22 @@
   <data name="CtlMySqlToolTipLimit" xml:space="preserve">
     <value>Define a maximum for the number of returned lines of the query</value>
   </data>
+  <data name="Preselection" xml:space="preserve">
+    <value>Preselection</value>
+  </data>
+  <data name="CtlMySql_InspectWithBatIspector" xml:space="preserve">
+    <value>for inspectio with BatIspector</value>
+  </data>
+  <data name="CtlMySql_Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="CtlMySqlFieldSelect_TooltipSelect" xml:space="preserve">
+    <value>select to include field in query</value>
+  </data>
+  <data name="CtlMySqlFieldSelect_TooltipOrder" xml:space="preserve">
+    <value>define sorting rank to order query by clicking button</value>
+  </data>
+  <data name="CtlMySqlFieldSelect_TooltipReverse" xml:space="preserve">
+    <value>select for descending order</value>
+  </data>
 </root>

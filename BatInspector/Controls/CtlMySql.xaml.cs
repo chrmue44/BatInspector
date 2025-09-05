@@ -25,6 +25,8 @@ namespace BatInspector.Controls
     public string Latitude { get; set; }
     public string Longitude { get; set; }
     public string WavFileName { get; set; }
+
+    public string RecordingTime { get; set; }
     public string Temperature { get; set; }
     public string Humidity { get; set; }
     public int CallNr { get; set; }
@@ -64,6 +66,8 @@ namespace BatInspector.Controls
           Longitude = f.getFloat().ToString("0.000000", CultureInfo.InvariantCulture);
         else if (f.Name == "WavFileName")
           WavFileName = f.getString();
+        else if (f.Name == "RecordingTime")
+          RecordingTime = f.getDateTimeAsString();
         else if (f.Name == "SNR")
           SNR = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
         else if (f.Name == "SpeciesMan")
@@ -102,11 +106,17 @@ namespace BatInspector.Controls
   public partial class CtlMySql : UserControl
   {
     bool _queryCollapsed = false;
-    List<CheckBox> _listCb = new List<CheckBox>();
+    List<CtlMySqlFieldSelect> _listCb = new List<CtlMySqlFieldSelect>();
     string _columnsList;
     int _limitRows =1000;
     string _filterExpression = "";
     List<sqlRow> _query = null;
+    string[] _order = new string[5];
+
+    const int IDX_NONE = 0;
+    const int IDX_ALL = 1;
+    const int IDX_BATINPECTOR = 2;
+    const int IDX_CUSTOM = 3;
     public CtlMySql()
     {
       InitializeComponent();
@@ -115,7 +125,13 @@ namespace BatInspector.Controls
       _cbLimit.Items.Add("100 " + MyResources.Rows);
       _cbLimit.Items.Add("1000 " + MyResources.Rows);
       _cbLimit.Items.Add("10000 " + MyResources.Rows);
-      _cbLimit.Items.Add("no limit");
+      _cbLimit.Items.Add("50000 " + MyResources.Rows);
+      //      _cbLimit.Items.Add("no limit");
+
+      _ctlPreSelect.setup(MyResources.Preselection, 0, 100,220, setPreSelection);
+      string[] items = { MyResources.MainBtnNone, MyResources.MainBtnAll,
+                         MyResources.CtlMySql_InspectWithBatIspector, MyResources.CtlMySql_Custom};
+      _ctlPreSelect.setItems(items);
 
       _listCb.Clear();
       _sp1.Children.Clear();
@@ -132,6 +148,7 @@ namespace BatInspector.Controls
       addCheckBox("Latitude", 2);
       addCheckBox("Longitude", 2);
       addCheckBox("WavFileName", 2);
+      addCheckBox("RecordingTime", 2);
       addCheckBox("Temperature", 2);
       addCheckBox("Humidity", 2);
       addCheckBox("CallNr", 2);
@@ -150,10 +167,106 @@ namespace BatInspector.Controls
 
     public void init()
     {
+      for (int i = 0; i < _order.Length; i++)
+        _order[i] = "";
       _filterExpression = "";
       _cbLimit.SelectedIndex = 2;
       _limitRows = 1000;
       _cbFilter.SelectedIndex = 0;
+    }
+
+
+    private void setPreSelection(int index, string val)
+    {
+      switch(_ctlPreSelect.SelectIndex)
+      {
+        case IDX_NONE:
+          setFieldSelector("Date", false, 0, false);
+          setFieldSelector("Location", false, 0, false);
+          setFieldSelector("PrjCreator", false, 0, false);
+          setFieldSelector("projects.Notes", false, 0, false);
+          setFieldSelector("RecordingDevice", false, 0, false);
+          setFieldSelector("MicrophoneId", false, 0, false);
+          setFieldSelector("Classifier", false, 0, false);
+          setFieldSelector("Model", false, 0, false); 
+          setFieldSelector("Latitude", false, 0, false); 
+          setFieldSelector("Longitude", false, 0, false);
+          setFieldSelector("WavFileName", false, 0, false);
+          setFieldSelector("RecordingTime", false, 0, false);
+          setFieldSelector("Temperature", false, 0, false);
+          setFieldSelector("Humidity", false, 0, false);
+          setFieldSelector("CallNr", false, 0, false);
+          setFieldSelector("SNR", false, 0, false);
+          setFieldSelector("SpeciesMan", false, 0, false);
+          setFieldSelector("SpeciesAuto", false, 0, false);
+          setFieldSelector("Probability", false, 0, false);
+          setFieldSelector("FreqMin", false, 0, false);
+          setFieldSelector("FreqMax", false, 0, false);
+          setFieldSelector("FreqMaxAmp", false, 0, false);
+          setFieldSelector("DurationCall", false, 0, false);
+          setFieldSelector("CallInterval", false, 0, false);
+          setFieldSelector("calls.Remarks", false, 0, false);
+          _tbQuery.Text = "";
+          break;
+        case IDX_ALL:
+          setFieldSelector("Date", true, 0, false);
+          setFieldSelector("Location", true, 0, false);
+          setFieldSelector("PrjCreator", true, 0, false);
+          setFieldSelector("projects.Notes", true, 0, false);
+          setFieldSelector("RecordingDevice", true, 0, false);
+          setFieldSelector("MicrophoneId", true, 0, false);
+          setFieldSelector("Classifier", true, 0, false);
+          setFieldSelector("Model", true, 0, false);
+          setFieldSelector("Latitude", true, 0, false);
+          setFieldSelector("Longitude", true, 0, false);
+          setFieldSelector("WavFileName", true, 0, false);
+          setFieldSelector("RecordingTime", true, 0, false);
+          setFieldSelector("Temperature", true, 0, false);
+          setFieldSelector("Humidity", true, 0, false);
+          setFieldSelector("CallNr", true, 0, false);
+          setFieldSelector("SNR", true, 0, false);
+          setFieldSelector("SpeciesMan", true, 0, false);
+          setFieldSelector("SpeciesAuto", true, 0, false);
+          setFieldSelector("Probability", true, 0, false);
+          setFieldSelector("FreqMin", true, 0, false);
+          setFieldSelector("FreqMax", true, 0, false);
+          setFieldSelector("FreqMaxAmp", true, 0, false);
+          setFieldSelector("DurationCall", true, 0, false);
+          setFieldSelector("CallInterval", true, 0, false);
+          setFieldSelector("calls.Remarks", true, 0, false);
+          break;
+        case IDX_BATINPECTOR:
+          setFieldSelector("Date", false, 0, false);
+          setFieldSelector("Location", false, 0, false);
+          setFieldSelector("PrjCreator", false, 0, false);
+          setFieldSelector("projects.Notes", false, 0, false);
+          setFieldSelector("RecordingDevice", true, 0, false);
+          setFieldSelector("MicrophoneId", true, 0, false);
+          setFieldSelector("Classifier", false, 0, false);
+          setFieldSelector("Model", false, 0, false);
+          setFieldSelector("Latitude", true, 0, false);
+          setFieldSelector("Longitude", true, 0, false);
+          setFieldSelector("WavFileName", true, 1, false);
+          setFieldSelector("RecordingTime", true, 0, false);
+          setFieldSelector("Temperature", true, 0, false);
+          setFieldSelector("Humidity", true, 0, false);
+          setFieldSelector("CallNr", true, 2, false);
+          setFieldSelector("SNR", true, 0, false);
+          setFieldSelector("SpeciesMan", true, 0, false);
+          setFieldSelector("SpeciesAuto", true, 0, false);
+          setFieldSelector("Probability", true, 0, false);
+          setFieldSelector("FreqMin", true, 0, false);
+          setFieldSelector("FreqMax", true, 0, false);
+          setFieldSelector("FreqMaxAmp", true, 0, false);
+          setFieldSelector("DurationCall", true, 0, false);
+          setFieldSelector("CallInterval", true, 0, false);
+          setFieldSelector("calls.Remarks", true, 0, false);
+          break;
+        default:
+          break;
+
+      }
+      _cb_Click(this, null);
     }
 
     private void _dg_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -179,7 +292,7 @@ namespace BatInspector.Controls
       }
       else
       {
-        _grid.RowDefinitions[1].Height = new GridLength(180);
+        _grid.RowDefinitions[1].Height = new GridLength(300);
         _grid.RowDefinitions[2].Height = new GridLength(35);
         _queryCollapsed = false;
         _btnCollapse.Content = "<";
@@ -202,9 +315,21 @@ namespace BatInspector.Controls
         return;
       SqlQueryBuilder b = new SqlQueryBuilder();
       b.init();
-      b.addSelectStatement($"{_columnsList} FROM projects \nJOIN files ON projects.id = files.ProjectId \nJOIN calls ON files.id = FileId");
+      b.addSelectStatement($"\n{_columnsList}\nFROM projects \nJOIN files ON projects.id = files.ProjectId \nJOIN calls ON files.id = FileId");
       if (!string.IsNullOrEmpty(_filterExpression))
         b.addWhereStatement(_filterExpression);
+      string order = "";
+      for (int i = 0; i < _order.Length; i++)
+      {
+        if (_order[i] != "")
+        {
+          if (order != "")
+            order += ",";
+          order += _order[i];
+        }
+      }
+      if(order != "")
+        b.addOrderStatement(order);
       b.addLimitStatement(_limitRows);
       _tbQuery.Text = b.Command;
     }
@@ -255,26 +380,71 @@ namespace BatInspector.Controls
       collapse(false);
     }
 
+    private void setFieldSelector(string name, bool select, int order, bool reverse)
+    {
+      CtlMySqlFieldSelect ctl = null;
+      foreach(CtlMySqlFieldSelect c in _listCb)
+      {
+        if(name == c.FieldName)
+        {
+          ctl = c;
+          break;
+        }
+      }
+      if(ctl != null)
+      {
+        ctl.Selected = select;
+        ctl.Order = order;
+        ctl.Reverse = reverse;
+      }
+
+    }
+
     private void _cb_Click(object sender, RoutedEventArgs e)
     {
       _columnsList = "";
-      foreach (CheckBox cb in _listCb)
+      int colsPerLine = 0;
+      foreach (CtlMySqlFieldSelect cb in _listCb)
       {
-        if (cb.IsChecked == true)
+        if (cb.Selected)
         {
+          colsPerLine++;
           if (_columnsList != "")
+          {
             _columnsList += ",";
-          _columnsList += convertNameWPFtoSQL((string)cb.Content);
+            if (colsPerLine > 5)
+            {
+              colsPerLine = 0;
+              _columnsList += "\n";
+            }
+          }
+          _columnsList += convertNameWPFtoSQL(cb.FieldName);
+        }
+        if (cb.Order > 0)
+        {
+          _order[cb.Order - 1] = cb.FieldName;
+          if (cb.Reverse)
+            _order[cb.Order - 1] += " DESC";
+        }
+        else
+        {
+          for (int i = 0; i < _order.Length; i++)
+          {
+            if (_order[i] == cb.FieldName)
+              _order[i] = "";
+          }
         }
       }
+      if(sender != this)
+        _ctlPreSelect.SelectIndex = IDX_CUSTOM;
       createQuery();
     }
 
     private void addCheckBox(string name, int col)
     {
-      CheckBox c = new CheckBox();
-      c.Content = convertNameSQLtoWPF(name);
-      c.Click += _cb_Click;
+      CtlMySqlFieldSelect c = new CtlMySqlFieldSelect();
+      c.setup(name, _cb_Click);
+
       _listCb.Add(c);
       if (col == 1)
         _sp1.Children.Add(c);
@@ -335,8 +505,7 @@ namespace BatInspector.Controls
         case 3:
           _limitRows = 10000; break;
         case 4:
-          _limitRows = 0; break;
-          
+          _limitRows = 50000; break;
       }
       collapse(false);
       createQuery();

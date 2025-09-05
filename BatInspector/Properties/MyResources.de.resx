@@ -1734,4 +1734,22 @@
   <data name="CtlMySqlToolTipLimit" xml:space="preserve">
     <value>Legt das Maximum für die Anzahl zurückgegebener Zeilen in der Abfrage fest</value>
   </data>
+  <data name="Preselection" xml:space="preserve">
+    <value>Vorauswahl</value>
+  </data>
+  <data name="CtlMySql_InspectWithBatIspector" xml:space="preserve">
+    <value>zur Auswertung mit BatInspector</value>
+  </data>
+  <data name="CtlMySql_Custom" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="CtlMySqlFieldSelect_TooltipSelect" xml:space="preserve">
+    <value>Auswählen, um das Feld in die Abfrage aufzunehmen</value>
+  </data>
+  <data name="CtlMySqlFieldSelect_TooltipOrder" xml:space="preserve">
+    <value>Bestimmen der Rangfolge für die Sortierung durch Klicken des Buttons</value>
+  </data>
+  <data name="CtlMySqlFieldSelect_TooltipReverse" xml:space="preserve">
+    <value>Anwählen für absteigende Sortierung</value>
+  </data>
 </root>

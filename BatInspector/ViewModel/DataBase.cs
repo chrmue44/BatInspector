@@ -21,6 +21,7 @@ namespace BatInspector
     INT = 1,
     FLOAT = 2,
     DATE = 3,
+    DATETIME = 4
   }
   
   public class sqlField
@@ -63,6 +64,7 @@ namespace BatInspector
         case enSqlType.INT:
           return _valInt32;
         case enSqlType.DATE:
+        case enSqlType.DATETIME:
           return _date;
         default:
         case enSqlType.VARCHAR:
@@ -80,7 +82,9 @@ namespace BatInspector
         case enSqlType.INT:
           return _valInt32.ToString(CultureInfo.InvariantCulture);
         case enSqlType.DATE:
-          return _date.ToString(CultureInfo.InvariantCulture);
+          return _date.ToString("dd.MM.yyyy");
+        case enSqlType.DATETIME:
+          return _date.ToString("dd.MM.yyyy HH:mm:ss");
         default:
         case enSqlType.VARCHAR:
           return _valString;
@@ -107,9 +111,12 @@ namespace BatInspector
 
     public string getDateAsString()
     {
-      string mo = _date.Month.ToString("00");
-      string day = _date.Day.ToString("00");
-      return $"{_date.Year}-{mo}-{day}";
+      return _date.ToString("dd.MM.yyyy");
+    }
+
+    public string getDateTimeAsString()
+    {
+      return _date.ToString("dd.MM.yyyy HH:mm:ss");
     }
     public int getInt32()
     {
@@ -137,6 +144,7 @@ namespace BatInspector
           _valInt32 = (int)value;
           break;
         case enSqlType.DATE:
+        case enSqlType.DATETIME:
           _date = (DateTime)value;
           break;
         default:
@@ -188,6 +196,7 @@ namespace BatInspector
     bool _from = false;
     bool _where = false;
     bool _order = false;
+    bool _limit = false;
     public SqlQueryBuilder()
     {
       _str = new StringBuilder();
@@ -200,6 +209,7 @@ namespace BatInspector
       _from = false;
       _where = false;
       _order = false;
+      _limit = false;
     }
 
     public void addSelectStatement(string expr)
@@ -221,7 +231,7 @@ namespace BatInspector
     public void addLimitStatement(int rows)
     {
       if(rows > 0)
-        addStatement("LIMIT", ref _order, rows.ToString());
+        addStatement("LIMIT", ref _limit, rows.ToString());
     }
 
     private void addStatement(string key, ref bool on, string expr)
@@ -341,7 +351,9 @@ namespace BatInspector
                       newRow.Fields[fIdx].setInt32(myReader.GetInt32(fIdx));
                       break;
                     case enSqlType.DATE:
-                      newRow.Fields[fIdx].setDate(myReader.GetDateTime(fIdx));
+                    case enSqlType.DATETIME:
+                      if(!myReader.IsDBNull(fIdx))
+                        newRow.Fields[fIdx].setDate(myReader.GetDateTime(fIdx));
                       break;
                     default:
                     case enSqlType.VARCHAR:
@@ -570,18 +582,20 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO files\n");
-      sqlCmd.Append("(id,WavFileName,Latitude,Longitude,ProjectId,Temperature,Humidity,");
+      sqlCmd.Append("(id,ProjectId,WavFileName,RecordingTime,Latitude,Longitude,Temperature,Humidity,");
       sqlCmd.Append("SamplingRate,FileLength)\n");
       sqlCmd.Append("VALUES\n");
       id = id.Replace(".wav", "");
       id = id.Replace(".WAV", "");
       string lat = file.getDouble(Cols.LAT).ToString(CultureInfo.InvariantCulture);
+      DateTime time = AnyType.getDate(file.getString(Cols.REC_TIME));
+      string timeStr = time.ToString("yyyy-MM-dd HH:mm:ss"); 
       string lon = file.getDouble(Cols.LON).ToString(CultureInfo.InvariantCulture);
       string temp = file.getDouble(Cols.TEMPERATURE).ToString(CultureInfo.InvariantCulture);
       string hum = file.getDouble(Cols.HUMIDITY).ToString(CultureInfo.InvariantCulture);
       string sr = file.getInt(Cols.SAMPLERATE).ToString(CultureInfo.InvariantCulture);
       string fLen = file.getDouble(Cols.FILE_LEN).ToString(CultureInfo.InvariantCulture);
-      sqlCmd.Append($"('{id}','{wav_name}',{lat}, {lon}, '{prjId}', {temp}, {hum},");
+      sqlCmd.Append($"('{id}','{prjId}','{wav_name}','{timeStr}',{lat}, {lon}, {temp}, {hum},");
       sqlCmd.Append($"{sr}, {fLen});\n");
       return execNonQuery(sqlCmd.ToString());
     }
@@ -664,6 +678,9 @@ namespace BatInspector
                 break;
               case enSqlType.DATE:
                 csv.setCell(row, col, fi.getDateAsString());
+                break;
+              case enSqlType.DATETIME:
+                csv.setCell(row, col, fi.getDateTimeAsString());
                 break;
             }
           }

@@ -1752,4 +1752,28 @@
   <data name="CtlMySqlFieldSelect_TooltipReverse" xml:space="preserve">
     <value>Anwählen für absteigende Sortierung</value>
   </data>
+  <data name="CtlMySql_ConnectToDB" xml:space="preserve">
+    <value>Verbinde mit DB</value>
+  </data>
+  <data name="CtlMySql_UpdateDBFromProject" xml:space="preserve">
+    <value>Aktualisiere DB aus Projekt</value>
+  </data>
+  <data name="DataBaseDisconnected" xml:space="preserve">
+    <value>nicht mit Datenbank verbunden</value>
+  </data>
+  <data name="DatabaseConnecteed" xml:space="preserve">
+    <value>mit Datenbank verbunden</value>
+  </data>
+  <data name="FrmConnectMysql_Bats" xml:space="preserve">
+    <value>Fledermäuse</value>
+  </data>
+  <data name="FrmConnectMysql_Birds" xml:space="preserve">
+    <value>Vögel</value>
+  </data>
+  <data name="DataBaseRows" xml:space="preserve">
+    <value>Datensätze</value>
+  </data>
+  <data name="CtrlMySql_DisconnectFromDB" xml:space="preserve">
+    <value>Datenbankverbindung trennen</value>
+  </data>
 </root>

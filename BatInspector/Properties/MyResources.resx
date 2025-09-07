@@ -1752,4 +1752,28 @@
   <data name="CtlMySqlFieldSelect_TooltipReverse" xml:space="preserve">
     <value>select for descending order</value>
   </data>
+  <data name="CtlMySql_ConnectToDB" xml:space="preserve">
+    <value>connect to DB</value>
+  </data>
+  <data name="CtlMySql_UpdateDBFromProject" xml:space="preserve">
+    <value>update DB from Project</value>
+  </data>
+  <data name="DataBaseDisconnected" xml:space="preserve">
+    <value>disconnected from database</value>
+  </data>
+  <data name="DatabaseConnecteed" xml:space="preserve">
+    <value>connecteed to datbase</value>
+  </data>
+  <data name="FrmConnectMysql_Bats" xml:space="preserve">
+    <value>Bats</value>
+  </data>
+  <data name="FrmConnectMysql_Birds" xml:space="preserve">
+    <value>Birds</value>
+  </data>
+  <data name="DataBaseRows" xml:space="preserve">
+    <value>rows</value>
+  </data>
+  <data name="CtrlMySql_DisconnectFromDB" xml:space="preserve">
+    <value>disconnect from DB</value>
+  </data>
 </root>

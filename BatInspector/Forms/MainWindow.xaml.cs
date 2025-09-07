@@ -1841,28 +1841,23 @@ namespace BatInspector.Forms
 
     private void _tbMySql_GotFocus(object sender, RoutedEventArgs e)
     {
-      App.Model.MySQL.connect(AppParams.Inst.MySqlConnectString);
       collapseTreeView(true);
     }
 
     private void _tbScatter_GotFocus(object sender, RoutedEventArgs e)
     {
-      App.Model.MySQL.disconnect();
     }
 
     private void _tbSum_GotFocus(object sender, RoutedEventArgs e)
     {
-      App.Model.MySQL.disconnect();
     }
 
     private void _tbReport_GotFocus(object sender, RoutedEventArgs e)
     {
-      App.Model.MySQL.disconnect();
     }
 
     private void _tbPrj_GotFocus(object sender, RoutedEventArgs e)
     {
-      App.Model.MySQL.disconnect();
     }
   }
 

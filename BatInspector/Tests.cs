@@ -996,25 +996,24 @@ namespace BatInspector
 
     private void testMySql()
     {
-      string connstr = "server=127.0.0.1;uid=root;pwd=root;database=bat_calls";
       string prjPath = "F:\\bat\\2025\\D\\DA\\GehabornerHof1\\20250703_BAT";
       string analysisFile = Path.Combine(prjPath, "bd2", "report.csv");
       string deviceName = "BS40_E_0001";
       string fileId = "BS40_E_0001_20250703_215826";
       string callId = "BS40_E_0001_20250703_215826_1";
       DataBase db = new DataBase();
-      int res =db.connect(connstr);
+      int res =db.connect("localhost", "playground", "root", "root");
       assert("testMySql: connect", res == 0);
       Project prj = new Project(false, App.Model.DefaultModelParams[0], App.Model.DefaultModelParams.Length, AppParams.DIR_WAVS);
       prj.readPrjFile(prjPath);
       prj.Analysis.read(analysisFile, prj.AvailableModelParams);
-      res = db.addPrjToTableProjects(prj);
+      res = db.DbBats.addPrjToTableProjects(prj);
       assert("testMySql: addPrj", res == 0);
 
-      res = db.addFile(deviceName, prj.PrjId, prj.Analysis.Files[0]);
+      res = db.DbBats.addFile(deviceName, prj.PrjId, prj.Analysis.Files[0]);
       assert("testMySql: addFile", res == 0);
 
-      res = db.addCall(fileId, prj.Analysis.Files[0].Calls[0]);
+      res = db.DbBats.addCall(fileId, prj.Analysis.Files[0].Calls[0]);
       assert("testMySql: addCall", res == 0);
 
       res = db.deleteRow("calls", $"id = '{callId}'");

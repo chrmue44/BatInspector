@@ -1,4 +1,5 @@
-﻿using BatInspector.Properties;
+﻿using BatInspector.Forms;
+using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
@@ -11,95 +12,7 @@ using System.Windows.Media;
 
 namespace BatInspector.Controls
 {
-  class QueryItem
-  {
-    public int line { get; set; }
-    public string Date {  get; set; }
-    public string Location { get; set; }
-    public string RecordingDevice { get; set; }
-    public string MicrophoneId { get; set; }
-    public string PrjCreator { get; set; }
-    public string projects___Notes {get;set;}
-    public string Classifier { get; set; }
-    public string Model { get; set; }
-    public string Latitude { get; set; }
-    public string Longitude { get; set; }
-    public string WavFileName { get; set; }
-
-    public string RecordingTime { get; set; }
-    public string Temperature { get; set; }
-    public string Humidity { get; set; }
-    public int CallNr { get; set; }
-    public string SNR { get; set; }
-
-    public string SpeciesMan { get; set; }
-    public string SpeciesAuto { get; set; }
-    public string Probability { get; set; }
-    public string FreqMin { get; set; }
-    public string FreqMax { get; set; }
-    public string FreqMaxAmp { get; set; }
-    public string DurationCall { get; set; }
-    public string CallInterval { get; set; }
-
-    public string calls___Remarks { get; set; }
-    public void setValues(sqlRow row)
-    {
-      foreach (sqlField f in row.Fields)
-      {
-        if (f.Name == "Date")
-          Date = f.getDateAsString();
-        else if (f.Name == "Location")
-          Location = f.getString();
-        else if (f.Name == "PrjCreator")
-          PrjCreator = f.getString();
-        else if (f.Name == "Classifier")
-          Classifier = f.getString();
-        else if (f.Name == "RecordingDevice")
-          RecordingDevice = f.getString();
-        else if (f.Name == "MicrophoneId")
-          MicrophoneId = f.getString();
-        else if (f.Name == "Model")
-          Model = f.getString();
-        else if (f.Name == "Latitude")
-          Latitude = f.getFloat().ToString("0.000000", CultureInfo.InvariantCulture);
-        else if (f.Name == "Longitude")
-          Longitude = f.getFloat().ToString("0.000000", CultureInfo.InvariantCulture);
-        else if (f.Name == "WavFileName")
-          WavFileName = f.getString();
-        else if (f.Name == "RecordingTime")
-          RecordingTime = f.getDateTimeAsString();
-        else if (f.Name == "SNR")
-          SNR = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "SpeciesMan")
-          SpeciesMan = f.getString();
-        else if (f.Name == "SpeciesAuto")
-          SpeciesAuto = f.getString();
-        else if (f.Name == "Probability")
-          Probability = f.getFloat().ToString("0.00", CultureInfo.InvariantCulture);
-        else if (f.Name == "FreqMin")
-          FreqMin = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "FreqMax")
-          FreqMax = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "FreqMaxAmp")
-          FreqMaxAmp = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "DurationCall")
-          DurationCall = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "CallInterval")
-          CallInterval = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "CallNr")
-          CallNr = f.getInt32();
-        else if (f.Name == "Temperature")
-          Temperature = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "Humidity")
-          Humidity = f.getFloat().ToString("0.0", CultureInfo.InvariantCulture);
-        else if (f.Name == "Notes")
-          projects___Notes = f.getString();
-        else if (f.Name == "Remarks")
-          calls___Remarks = f.getString();
-      }
-    }
-
-  }
+ 
   /// <summary>
   /// Interaction logic for CtlMySql.xaml
   /// </summary>
@@ -138,30 +51,34 @@ namespace BatInspector.Controls
       _sp2.Children.Clear();
 
       addCheckBox("Date", 1);
-      addCheckBox("Location", 1);
+      addCheckBox(DBBAT.LOC, 1);
       addCheckBox("PrjCreator", 1);
-      addCheckBox("projects.Notes", 1);
+      addCheckBox(DBBAT.PRJ_NOTES, 1);
       addCheckBox("RecordingDevice", 1);
       addCheckBox("MicrophoneId", 1);
       addCheckBox("Classifier", 1);
       addCheckBox("Model", 1);
-      addCheckBox("Latitude", 2);
-      addCheckBox("Longitude", 2);
-      addCheckBox("WavFileName", 2);
-      addCheckBox("RecordingTime", 2);
-      addCheckBox("Temperature", 2);
-      addCheckBox("Humidity", 2);
-      addCheckBox("CallNr", 2);
-      addCheckBox("SNR", 2);
-      addCheckBox("SpeciesMan", 2);
-      addCheckBox("SpeciesAuto", 3);
-      addCheckBox("Probability", 3);
-      addCheckBox("FreqMin", 3);
-      addCheckBox("FreqMax", 3);
-      addCheckBox("FreqMaxAmp", 3);
-      addCheckBox("DurationCall", 3);
-      addCheckBox("CallInterval", 3);
-      addCheckBox("calls.Remarks", 3);
+      addCheckBox(DBBAT.PATH_TO_WAV, 1);
+      addCheckBox(DBBAT.LAT, 2);
+      addCheckBox(DBBAT.LON, 2);
+      addCheckBox(DBBAT.WAV_FILE_NAME, 2);
+      addCheckBox(DBBAT.SAMPLE_RATE, 2);
+      addCheckBox(DBBAT.FILE_LENGTH, 2);
+      addCheckBox(DBBAT.RECORDING_TIME, 2);
+      addCheckBox(DBBAT.TEMP, 2);
+      addCheckBox(DBBAT.HUMI, 2);
+      addCheckBox(DBBAT.CALLNR, 2);
+      addCheckBox(DBBAT.SNR, 2);
+      addCheckBox(DBBAT.START_TIME, 3);
+      addCheckBox(DBBAT.SPEC_MAN, 3);
+      addCheckBox(DBBAT.SPEC_AUTO, 3);
+      addCheckBox(DBBAT.PROB, 3);
+      addCheckBox(DBBAT.FMIN, 3);
+      addCheckBox(DBBAT.FMAX, 3);
+      addCheckBox(DBBAT.FMAXAMP, 3);
+      addCheckBox(DBBAT.CALL_LEN, 3);
+      addCheckBox(DBBAT.CALL_DST, 3);
+      addCheckBox($"calls.{DBBAT.REM}", 3);
       init();
     }
 
@@ -178,89 +95,101 @@ namespace BatInspector.Controls
 
     private void setPreSelection(int index, string val)
     {
-      switch(_ctlPreSelect.SelectIndex)
+      switch (_ctlPreSelect.SelectIndex)
       {
         case IDX_NONE:
           setFieldSelector("Date", false, 0, false);
-          setFieldSelector("Location", false, 0, false);
+          setFieldSelector(DBBAT.LOC, false, 0, false);
           setFieldSelector("PrjCreator", false, 0, false);
-          setFieldSelector("projects.Notes", false, 0, false);
+          setFieldSelector($"projects.{DBBAT.PRJ_NOTES}", false, 0, false);
           setFieldSelector("RecordingDevice", false, 0, false);
           setFieldSelector("MicrophoneId", false, 0, false);
           setFieldSelector("Classifier", false, 0, false);
-          setFieldSelector("Model", false, 0, false); 
-          setFieldSelector("Latitude", false, 0, false); 
-          setFieldSelector("Longitude", false, 0, false);
-          setFieldSelector("WavFileName", false, 0, false);
-          setFieldSelector("RecordingTime", false, 0, false);
-          setFieldSelector("Temperature", false, 0, false);
-          setFieldSelector("Humidity", false, 0, false);
-          setFieldSelector("CallNr", false, 0, false);
-          setFieldSelector("SNR", false, 0, false);
-          setFieldSelector("SpeciesMan", false, 0, false);
-          setFieldSelector("SpeciesAuto", false, 0, false);
-          setFieldSelector("Probability", false, 0, false);
-          setFieldSelector("FreqMin", false, 0, false);
-          setFieldSelector("FreqMax", false, 0, false);
-          setFieldSelector("FreqMaxAmp", false, 0, false);
-          setFieldSelector("DurationCall", false, 0, false);
-          setFieldSelector("CallInterval", false, 0, false);
+          setFieldSelector("Model", false, 0, false);
+          setFieldSelector(DBBAT.PATH_TO_WAV, false, 0, false);
+          setFieldSelector(DBBAT.LAT, false, 0, false); 
+          setFieldSelector(DBBAT.LON, false, 0, false);
+          setFieldSelector(DBBAT.WAV_FILE_NAME, false, 0, false);
+          setFieldSelector(DBBAT.SAMPLE_RATE, false, 0, false);
+          setFieldSelector(DBBAT.FILE_LENGTH, false, 0, false);
+          setFieldSelector(DBBAT.RECORDING_TIME, false, 0, false);
+          setFieldSelector(DBBAT.TEMP, false, 0, false);
+          setFieldSelector(DBBAT.HUMI, false, 0, false);
+          setFieldSelector(DBBAT.CALLNR, false, 0, false);
+          setFieldSelector(DBBAT.SNR, false, 0, false);
+          setFieldSelector(DBBAT.START_TIME, false, 0, false);
+          setFieldSelector(DBBAT.SPEC_MAN, false, 0, false);
+          setFieldSelector(DBBAT.SPEC_AUTO, false, 0, false);
+          setFieldSelector(DBBAT.PROB, false, 0, false);
+          setFieldSelector(DBBAT.FMIN, false, 0, false);
+          setFieldSelector(DBBAT.FMAX, false, 0, false);
+          setFieldSelector(DBBAT.FMAXAMP, false, 0, false);
+          setFieldSelector(DBBAT.CALL_LEN, false, 0, false);
+          setFieldSelector(DBBAT.CALL_DST, false, 0, false);
           setFieldSelector("calls.Remarks", false, 0, false);
           _tbQuery.Text = "";
           break;
         case IDX_ALL:
           setFieldSelector("Date", true, 0, false);
-          setFieldSelector("Location", true, 0, false);
+          setFieldSelector(DBBAT.LOC, true, 0, false);
           setFieldSelector("PrjCreator", true, 0, false);
-          setFieldSelector("projects.Notes", true, 0, false);
+          setFieldSelector($"projects.{DBBAT.PRJ_NOTES}", true, 0, false);
           setFieldSelector("RecordingDevice", true, 0, false);
           setFieldSelector("MicrophoneId", true, 0, false);
           setFieldSelector("Classifier", true, 0, false);
           setFieldSelector("Model", true, 0, false);
-          setFieldSelector("Latitude", true, 0, false);
-          setFieldSelector("Longitude", true, 0, false);
-          setFieldSelector("WavFileName", true, 0, false);
-          setFieldSelector("RecordingTime", true, 0, false);
-          setFieldSelector("Temperature", true, 0, false);
-          setFieldSelector("Humidity", true, 0, false);
-          setFieldSelector("CallNr", true, 0, false);
-          setFieldSelector("SNR", true, 0, false);
-          setFieldSelector("SpeciesMan", true, 0, false);
-          setFieldSelector("SpeciesAuto", true, 0, false);
-          setFieldSelector("Probability", true, 0, false);
-          setFieldSelector("FreqMin", true, 0, false);
-          setFieldSelector("FreqMax", true, 0, false);
-          setFieldSelector("FreqMaxAmp", true, 0, false);
-          setFieldSelector("DurationCall", true, 0, false);
-          setFieldSelector("CallInterval", true, 0, false);
-          setFieldSelector("calls.Remarks", true, 0, false);
+          setFieldSelector(DBBAT.PATH_TO_WAV, true, 0, false);
+          setFieldSelector(DBBAT.LAT, true, 0, false);
+          setFieldSelector(DBBAT.LON, true, 0, false);
+          setFieldSelector(DBBAT.WAV_FILE_NAME, true, 0, false);
+          setFieldSelector(DBBAT.FILE_LENGTH, true, 0, false);
+          setFieldSelector(DBBAT.SAMPLE_RATE, true, 0, false);
+          setFieldSelector(DBBAT.RECORDING_TIME, true, 0, false);
+          setFieldSelector(DBBAT.TEMP, true, 0, false);
+          setFieldSelector(DBBAT.HUMI, true, 0, false);
+          setFieldSelector(DBBAT.CALLNR, true, 0, false);
+          setFieldSelector(DBBAT.SNR, true, 0, false);
+          setFieldSelector(DBBAT.START_TIME, true, 0, false);
+          setFieldSelector(DBBAT.SPEC_MAN, true, 0, false);
+          setFieldSelector(DBBAT.SPEC_AUTO, true, 0, false);
+          setFieldSelector(DBBAT.PROB, true, 0, false);
+          setFieldSelector(DBBAT.FMIN, true, 0, false);
+          setFieldSelector(DBBAT.FMAX, true, 0, false);
+          setFieldSelector(DBBAT.FMAXAMP, true, 0, false);
+          setFieldSelector(DBBAT.CALL_LEN, true, 0, false);
+          setFieldSelector(DBBAT.CALL_DST, true, 0, false);
+          setFieldSelector($"calls.{DBBAT.REM}", true, 0, false);
           break;
         case IDX_BATINPECTOR:
           setFieldSelector("Date", false, 0, false);
-          setFieldSelector("Location", false, 0, false);
+          setFieldSelector(DBBAT.LOC, false, 0, false);
           setFieldSelector("PrjCreator", false, 0, false);
-          setFieldSelector("projects.Notes", false, 0, false);
+          setFieldSelector($"projects.{DBBAT.PRJ_NOTES}", false, 0, false);
           setFieldSelector("RecordingDevice", true, 0, false);
           setFieldSelector("MicrophoneId", true, 0, false);
           setFieldSelector("Classifier", false, 0, false);
           setFieldSelector("Model", false, 0, false);
-          setFieldSelector("Latitude", true, 0, false);
-          setFieldSelector("Longitude", true, 0, false);
-          setFieldSelector("WavFileName", true, 1, false);
-          setFieldSelector("RecordingTime", true, 0, false);
-          setFieldSelector("Temperature", true, 0, false);
-          setFieldSelector("Humidity", true, 0, false);
-          setFieldSelector("CallNr", true, 2, false);
-          setFieldSelector("SNR", true, 0, false);
-          setFieldSelector("SpeciesMan", true, 0, false);
-          setFieldSelector("SpeciesAuto", true, 0, false);
-          setFieldSelector("Probability", true, 0, false);
-          setFieldSelector("FreqMin", true, 0, false);
-          setFieldSelector("FreqMax", true, 0, false);
-          setFieldSelector("FreqMaxAmp", true, 0, false);
-          setFieldSelector("DurationCall", true, 0, false);
-          setFieldSelector("CallInterval", true, 0, false);
-          setFieldSelector("calls.Remarks", true, 0, false);
+          setFieldSelector(DBBAT.PATH_TO_WAV, true, 0, false);
+          setFieldSelector(DBBAT.LAT, true, 0, false);
+          setFieldSelector(DBBAT.LON, true, 0, false);
+          setFieldSelector(DBBAT.WAV_FILE_NAME, true, 1, false);
+          setFieldSelector(DBBAT.SAMPLE_RATE, true, 0, false);
+          setFieldSelector(DBBAT.FILE_LENGTH, true, 0, false);
+          setFieldSelector(DBBAT.RECORDING_TIME, true, 0, false);
+          setFieldSelector(DBBAT.TEMP, true, 0, false);
+          setFieldSelector(DBBAT.HUMI, true, 0, false);
+          setFieldSelector(DBBAT.CALLNR, true, 2, false);
+          setFieldSelector(DBBAT.SNR, true, 0, false);
+          setFieldSelector(DBBAT.START_TIME, true, 0, false);
+          setFieldSelector(DBBAT.SPEC_MAN, true, 0, false);
+          setFieldSelector(DBBAT.SPEC_AUTO, true, 0, false);
+          setFieldSelector(DBBAT.PROB, true, 0, false);
+          setFieldSelector(DBBAT.FMIN, true, 0, false);
+          setFieldSelector(DBBAT.FMAX, true, 0, false);
+          setFieldSelector(DBBAT.FMAXAMP, true, 0, false);
+          setFieldSelector(DBBAT.CALL_LEN, true, 0, false);
+          setFieldSelector(DBBAT.CALL_DST, true, 0, false);
+          setFieldSelector($"calls.{DBBAT.REM}", true, 0, false);
           break;
         default:
           break;
@@ -271,7 +200,45 @@ namespace BatInspector.Controls
 
     private void _dg_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-    
+      try
+      {
+        // https://blog.scottlogic.com/2008/12/02/wpf-datagrid-detecting-clicked-cell-and-row.html
+
+        DependencyObject dep = (DependencyObject)e.OriginalSource;
+
+        // iteratively traverse the visual tree
+        while ((dep != null) && !(dep is DataGridCell))
+          dep = VisualTreeHelper.GetParent(dep);
+
+        if (dep == null)
+          return;
+
+        QueryItem it = null;
+        if (dep is DataGridCell)
+        {
+          DataGridCell cell = dep as DataGridCell;
+          // navigate further up the tree
+          while ((dep != null) && !(dep is DataGridRow))
+            dep = VisualTreeHelper.GetParent(dep);
+
+          DataGridRow row = dep as DataGridRow;
+          it = row.DataContext as QueryItem;
+        }
+
+        if (it != null)
+        {
+          AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it);
+          App.MainWin.setZoom(it.WavFileName, f, it.PathToWavs, null, enModel.BAT_DETECT2);
+          int callIdx = f.findCallIdx(it.CallNr);
+          if(callIdx >= 0) 
+            App.MainWin.changeCallInZoom(callIdx);
+        }
+        DebugLog.log("MySql:Query double click", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("MySql:Query double click failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnCollapse_Click(object sender, RoutedEventArgs e)
@@ -292,7 +259,7 @@ namespace BatInspector.Controls
       }
       else
       {
-        _grid.RowDefinitions[1].Height = new GridLength(300);
+        _grid.RowDefinitions[1].Height = new GridLength(320);
         _grid.RowDefinitions[2].Height = new GridLength(35);
         _queryCollapsed = false;
         _btnCollapse.Content = "<";
@@ -306,6 +273,11 @@ namespace BatInspector.Controls
     {
       collapse(true);
       _query = App.Model.MySQL.execQuery(_tbQuery.Text);
+      if (App.Model.MySQL.DbBats.IsOpen)
+        App.Model.MySQL.DbBats.QueryResult = _query;
+      if (App.Model.MySQL.DbBirds.IsOpen)
+        App.Model.MySQL.DbBirds.QueryResult = _query;
+
       initDataSource(_query);
     }
 
@@ -476,7 +448,10 @@ namespace BatInspector.Controls
         _dg.ItemsSource = list;
 
         for (int i = 1; i < _dg.Columns.Count; i++)
+        {
           _dg.Columns[i].Visibility = Visibility.Collapsed;
+          _dg.Columns[i].IsReadOnly = true;
+        }
         for(int j = 0; j < dat[0].Fields.Count; j++)
         {
           for (int i = 1; i < _dg.Columns.Count; i++)
@@ -527,5 +502,54 @@ namespace BatInspector.Controls
       else
         DebugLog.log("Export data: nothing to export, query is empty", enLogType.INFO);
     }
-  }
+
+    private void _btnConnect_Click(object sender, RoutedEventArgs e)
+    {
+      FrmConnectMysql frm = new FrmConnectMysql();
+      if (!App.Model.MySQL.IsConnected)
+      {
+        bool? res = frm.ShowDialog();
+        if (res == true)
+        {
+          App.Model.MySQL.connect(frm.Server, frm.DataBase, frm.User, frm.PassWord);
+          if (App.Model.MySQL.IsConnected)
+          {
+            AppParams.Inst.MySqlServer = frm.Server;
+            if (frm.IsBat)
+            {
+              AppParams.Inst.MySqlDbBats = frm.DataBase;
+              App.Model.MySQL.DbBats.setIsOpen(true);
+            }
+            if (frm.IsBird)
+            {
+              AppParams.Inst.MySqlDbBirds = frm.DataBase;
+              App.Model.MySQL.DbBirds.setIsOpen(true);
+            }
+            AppParams.Inst.MySqlUser = frm.User;
+            AppParams.Inst.save();
+            _tbStatus.Content = App.Model.MySQL.getStatus();
+            _btnConnect.Content = BatInspector.Properties.MyResources.CtrlMySql_DisconnectFromDB;
+          }
+          if (App.Model.MySQL.IsConnected)
+            _lblStatus.Background = new SolidColorBrush(Colors.Green);
+          else
+            _lblStatus.Background = new SolidColorBrush(Colors.Red);
+        }
+      }
+      else
+      {
+        App.Model.MySQL.disconnect();
+        if (!App.Model.MySQL.IsConnected)
+        {
+          _btnConnect.Content = MyResources.CtlMySql_ConnectToDB;
+          _lblStatus.Background = new SolidColorBrush(Colors.Red);
+        }
+      }
+    }
+
+    private void _btnUpdateDb_Click(object sender, RoutedEventArgs e)
+    {
+
+        }
+    }
 }

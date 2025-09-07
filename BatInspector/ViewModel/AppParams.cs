@@ -403,7 +403,23 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedDescription("SetDescMySqlConnect")]
-    public string MySqlConnectString { get; set; }
+    public string MySqlConnectStringBats { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SetDescMySqlConnect")]
+    public string MySqlUser { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SetDescMySqlConnect")]
+    public string MySqlServer { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SetDescMySqlConnect")]
+    public string MySqlDbBats { get; set; }
+
+    [DataMember]
+    [LocalizedDescription("SetDescMySqlConnect")]
+    public string MySqlDbBirds { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -566,9 +582,12 @@ namespace BatInspector
       ModelRootPath = Path.Combine(AppDataPath, "models");
       ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
       DefaultModel = enModel.BAT_DETECT2;
-      MySqlConnectString = "server=127.0.0.1;uid=root;pwd=root;database=bat_calls";
-    //  initModels();
-    SamplingRate = 312500;
+      MySqlServer = "127.0.0.1";
+      MySqlUser = "root";
+      MySqlDbBats = "bat_calls";
+      MySqlDbBirds = "birds";
+      //  initModels();
+      SamplingRate = 312500;
       ScriptCopyAutoToMan = "copyAutoToMan.scr";
       LogShowError = true;
       LogShowWarning = true;

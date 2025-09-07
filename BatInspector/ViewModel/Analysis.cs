@@ -1104,6 +1104,19 @@ namespace BatInspector
         c.Changed = false;
     }
 
+    public int findCallIdx(int callNr)
+    {
+      int retVal = -1;
+      for(int i = 0; i < _calls.Count; i++)
+      {
+        if(_calls[i].getInt(Cols.NR) == callNr)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
 
     static public AnalysisFile find(List<AnalysisFile> list, string fName)
     {

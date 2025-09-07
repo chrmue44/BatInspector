@@ -289,6 +289,7 @@ namespace BatInspector
       else
         return spec;
     }
+
     public static Csv createReport(string colSpecies)
     {
       Csv csv = new Csv();

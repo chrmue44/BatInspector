@@ -493,6 +493,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to connect to DB.
+        /// </summary>
+        public static string CtlMySql_ConnectToDB {
+            get {
+                return ResourceManager.GetString("CtlMySql_ConnectToDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
         public static string CtlMySql_Custom {
@@ -507,6 +516,15 @@ namespace BatInspector.Properties {
         public static string CtlMySql_InspectWithBatIspector {
             get {
                 return ResourceManager.GetString("CtlMySql_InspectWithBatIspector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update DB from Project.
+        /// </summary>
+        public static string CtlMySql_UpdateDBFromProject {
+            get {
+                return ResourceManager.GetString("CtlMySql_UpdateDBFromProject", resourceCulture);
             }
         }
         
@@ -1033,6 +1051,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to disconnect from DB.
+        /// </summary>
+        public static string CtrlMySql_DisconnectFromDB {
+            get {
+                return ResourceManager.GetString("CtrlMySql_DisconnectFromDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to only values in the range following range allowed:.
         /// </summary>
         public static string CtrlRecorderErrMsgRange {
@@ -1110,6 +1137,33 @@ namespace BatInspector.Properties {
         public static string DataAcquisitionBird {
             get {
                 return ResourceManager.GetString("DataAcquisitionBird", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to connecteed to datbase.
+        /// </summary>
+        public static string DatabaseConnecteed {
+            get {
+                return ResourceManager.GetString("DatabaseConnecteed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to disconnected from database.
+        /// </summary>
+        public static string DataBaseDisconnected {
+            get {
+                return ResourceManager.GetString("DataBaseDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rows.
+        /// </summary>
+        public static string DataBaseRows {
+            get {
+                return ResourceManager.GetString("DataBaseRows", resourceCulture);
             }
         }
         
@@ -1587,6 +1641,24 @@ namespace BatInspector.Properties {
         public static string frmCleanupTitle {
             get {
                 return ResourceManager.GetString("frmCleanupTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bats.
+        /// </summary>
+        public static string FrmConnectMysql_Bats {
+            get {
+                return ResourceManager.GetString("FrmConnectMysql_Bats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Birds.
+        /// </summary>
+        public static string FrmConnectMysql_Birds {
+            get {
+                return ResourceManager.GetString("FrmConnectMysql_Birds", resourceCulture);
             }
         }
         

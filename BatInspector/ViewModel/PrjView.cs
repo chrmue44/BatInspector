@@ -523,19 +523,22 @@ namespace BatInspector
       var bitmapImage = new BitmapImage();
       try
       {
-        using (MemoryStream memory = new MemoryStream())
+        lock (App.Model.View.Prj)
         {
-          memory.Position = 0;
-          memory.SetLength(0);
-          bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-          bitmapImage.BeginInit();
-          bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-          bitmapImage.StreamSource = memory;
-          bitmapImage.StreamSource.Flush();
-          //        bitmapImage.CacheOption = BitmapCacheOption.None;
-          bitmapImage.EndInit();
-          bitmapImage.Freeze();
-          bitmapImage.StreamSource.Dispose();
+          using (MemoryStream memory = new MemoryStream())
+          {
+            memory.Position = 0;
+            memory.SetLength(0);
+            bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = memory;
+            bitmapImage.StreamSource.Flush();
+            //        bitmapImage.CacheOption = BitmapCacheOption.None;
+            bitmapImage.EndInit();
+            bitmapImage.Freeze();
+            bitmapImage.StreamSource.Dispose();
+          }
         }
       }
       catch (Exception ex)

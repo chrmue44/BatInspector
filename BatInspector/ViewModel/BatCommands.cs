@@ -6,8 +6,10 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Forms;
 using libParser;
 using libScripter;
+using OxyPlot;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -312,17 +314,20 @@ namespace BatInspector
       ErrText = "";
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        DataBase db = new DataBase();
-        string connstr = AppParams.Inst.MySqlConnectString;
-        retVal = db.connect(connstr);
-        if (retVal == 0)
+        if (App.Model.MySQL.IsConnected)
         {
-          retVal = db.addProjectToDb(App.Model.Prj);
+          FrmConnectMysql f = new FrmConnectMysql();
+          if(f.ShowDialog() == true)
+            App.Model.MySQL.connect(f.Server, f.DataBase, f.User, f.PassWord);
+        }
+        if (App.Model.MySQL.IsConnected)
+        {
+          retVal = App.Model.MySQL.DbBats.addProjectToDb(App.Model.Prj);
           if (retVal != 0)
             ErrText = "error adding project to MySQL database";
         }
         else
-          ErrText = "could not connect to MySQL data base";
+          ErrText = "Databese is not connected!";
       }
       else
         ErrText = "project not open or erroneous";

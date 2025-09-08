@@ -346,7 +346,7 @@ namespace BatInspector
           }
          
           AnalysisCall call = new AnalysisCall(_csv, row, _updateCtls);
-          if(callNr == 1)
+         /* if(callNr == 1)
           {
             oldStartTime = 0;
             call.DistToPrev = 0;
@@ -355,7 +355,7 @@ namespace BatInspector
           {
             call.DistToPrev = (startTime - oldStartTime)*1000;
             oldStartTime = startTime;
-          }
+          }*/
           bool isInList = SpeciesInfos.isInList(App.Model.SpeciesInfos, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
@@ -774,7 +774,7 @@ namespace BatInspector
     /// <summary>
     /// distance to previous call [ms]
     /// </summary>
-    public double DistToPrev { get; set; }
+ //   public double DistToPrev { get; set; }
 
     public bool Changed { get; set; } = false;
 
@@ -928,7 +928,7 @@ namespace BatInspector
     private string _backup = null;
 
     public string Name { get { return _name; } set { _name = value; } }
-    public DateTime RecTime { get { return _recTime; } set { _recTime = value; } }
+    public DateTime RecTime { get { return _recTime; } }
 
     Dictionary<string, int> _specFound;
 

@@ -1,5 +1,6 @@
 ﻿using libParser;
 using libScripter;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
 namespace BatInspector
@@ -72,6 +74,35 @@ namespace BatInspector
       return retVal;
     }
 
+
+    public int deleteProjectFromDb(string prjId)
+    {
+      if (!_db.checkIfOpen("delPrj"))
+        return 1;
+      int res = 0;
+      string cmd = $"SELECT {DBBAT.ID} from files WHERE {DBBAT.PRJID} = '{prjId}';";
+      List<sqlRow> q=_db.execQuery(cmd);
+      int count = q.Count;
+      int fCount = 0;
+      foreach(sqlRow row in q)
+      {
+        string fileId = row.Fields[0].getString();
+        res = _db.deleteRow("calls", $"{DBBAT.FILEID} = '{fileId}'");
+        if (res != 0)
+          break;
+        if((fCount % 10) == 1)
+          DebugLog.log($"deleting calls of file {fCount} / {count} ...", enLogType.INFO);
+        fCount++;
+      }
+      if(res == 0)
+      { 
+        res = _db.deleteRow("files", $"{DBBAT.PRJID} = '{prjId}'");
+        if (res == 0)
+          res = deletePrjFromTable(prjId);
+      }
+      return res;
+    }
+
     /// <summary>
     /// add project information to table 'projects'
     /// </summary>
@@ -96,6 +127,7 @@ namespace BatInspector
                                     prj.Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)
                                     );
       BatRecord r = ElekonInfoFile.read(xmlName);
+      string trigSettings = r.Trigger.getTriggerSettings();
       string date = prj.Analysis.Files[0].getString(Cols.REC_TIME);
       bool ok = DateTime.TryParse(date, out DateTime t);
       date = $"{t.Year}-{t.Month.ToString("00")}-{t.Day.ToString("00")}";
@@ -111,7 +143,9 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO projects\n");
-      sqlCmd.Append($"(id,Date,RecordingDevice,SwVersion,PrjCreator,{DBBAT.PATH_TO_WAV},MicrophoneId,Classifier,Model,{DBBAT.LOC},{DBBAT.PRJ_NOTES})\n");
+      sqlCmd.Append($"({DBBAT.ID},{DBBAT.DATE},{DBBAT.RECDEV},{DBBAT.SWVER},{DBBAT.PRJCREATOR},");
+      sqlCmd.Append($"{DBBAT.PATH_TO_WAV},{DBBAT.MICID},{DBBAT.CLASSI},{DBBAT.MODEL},{DBBAT.LOC},");
+      sqlCmd.Append($"{DBBAT.PRJ_NOTES}, {DBBAT.TRIG_SET})\n");
       sqlCmd.Append("VALUES\n");
 
 
@@ -125,9 +159,58 @@ namespace BatInspector
       string location = prj.Location;
       string notes = prj.Notes;
       sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}', ");
-      sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}');\n");
+      sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}', '{trigSettings});\n");
       return _db.execNonQuery(sqlCmd.ToString());
     }
+
+    
+
+    public int deletePrjFromTable(string prjId)
+    {
+      return  _db.deleteRow("projects", $"id = '{prjId}'");
+    }
+
+    public int updateTableProjects(Project prj, string altWavPath = "")
+    {
+
+      if (!_db.checkIfOpen("addPrj"))
+        return 1;
+      if ((prj.Analysis == null) || (prj.Analysis.Files == null) || (prj.Analysis.Files.Count == 0))
+      {
+        DebugLog.log($"project {prj.Name} doesn't contain analysis data", enLogType.ERROR);
+        return 2;
+      }
+
+      //check if record already exists
+      string xmlName = Path.Combine(prj.PrjDir,
+                                    prj.WavSubDir,
+                                    prj.Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)
+                                    );
+      BatRecord r = ElekonInfoFile.read(xmlName);
+      string date = prj.Analysis.Files[0].getString(Cols.REC_TIME);
+      bool ok = DateTime.TryParse(date, out DateTime t);
+      date = $"{t.Year}-{t.Month.ToString("00")}-{t.Day.ToString("00")}";
+      string recDev = r.SN;
+      string id = prj.PrjId; 
+      
+      string sw = r.Firmware;
+      string pwav = string.IsNullOrEmpty(altWavPath) ? Path.Combine(prj.PrjDir, prj.WavSubDir) : altWavPath;
+      pwav = pwav.Replace('\\', '/');
+      string mic = prj.MicId;
+      string clsf = prj.AvailableModelParams[prj.SelectedModelIndex].Name;
+      string model = prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
+      string person = prj.CreateBy;
+      string location = prj.Location;
+      string notes = prj.Notes;
+      StringBuilder sqlCmd = new StringBuilder();
+      sqlCmd.Append("UPDATE projects SET\n");
+      sqlCmd.Append($"{DBBAT.RECDEV}='{recDev}',{DBBAT.SWVER}='{sw}', {DBBAT.PRJCREATOR}='{person}'");
+      sqlCmd.Append($"{DBBAT.PATH_TO_WAV}='{pwav}',{DBBAT.MICID}='{mic}', {DBBAT.CLASSI}={clsf}','");
+      sqlCmd.Append($"{DBBAT.MODEL}={model}',{DBBAT.LOC}='{location}', {DBBAT.PRJ_NOTES}='{notes}'\n");
+      sqlCmd.Append($"WHERE {DBBAT.ID}={id};");
+      return _db.execNonQuery(sqlCmd.ToString());
+    }
+
 
     public static string createFileId(string devName, string wavName)
     {
@@ -160,7 +243,7 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO files\n");
-      sqlCmd.Append($"(id,ProjectId,{DBBAT.WAV_FILE_NAME},{DBBAT.RECORDING_TIME},{DBBAT.LAT},{DBBAT.LAT},{DBBAT.TEMP},{DBBAT.HUMI},");
+      sqlCmd.Append($"(id,{DBBAT.PRJID},{DBBAT.WAV_FILE_NAME},{DBBAT.RECORDING_TIME},{DBBAT.LAT},{DBBAT.LON},{DBBAT.TEMP},{DBBAT.HUMI},");
       sqlCmd.Append($"{DBBAT.SAMPLE_RATE},{DBBAT.FILE_LENGTH})\n");
       sqlCmd.Append("VALUES\n");
       id = id.Replace(".wav", "");
@@ -175,6 +258,38 @@ namespace BatInspector
       string fLen = file.getDouble(Cols.FILE_LEN).ToString(CultureInfo.InvariantCulture);
       sqlCmd.Append($"('{id}','{prjId}','{wav_name}','{timeStr}',{lat}, {lon}, {temp}, {hum},");
       sqlCmd.Append($"{sr}, {fLen});\n");
+      return _db.execNonQuery(sqlCmd.ToString());
+    }
+
+    public int deleteFileFromTable(string fileId)
+    {
+      return _db.deleteRow("files", $"{DBBAT.ID} = '{fileId}'");
+    }
+
+    public int updateFile(string deviceName, AnalysisFile file)
+    {
+      if (!_db.checkIfOpen("addFile"))
+        return 1;
+
+      string wav_name = file.Name;
+      string id = createFileId(deviceName, wav_name);
+
+      StringBuilder sqlCmd = new StringBuilder();
+      id = id.Replace(".wav", "");
+      id = id.Replace(".WAV", "");
+      string lat = file.getDouble(Cols.LAT).ToString(CultureInfo.InvariantCulture);
+      DateTime time = AnyType.getDate(file.getString(Cols.REC_TIME));
+      string timeStr = time.ToString("yyyy-MM-dd HH:mm:ss");
+      string lon = file.getDouble(Cols.LON).ToString(CultureInfo.InvariantCulture);
+      string temp = file.getDouble(Cols.TEMPERATURE).ToString(CultureInfo.InvariantCulture);
+      string hum = file.getDouble(Cols.HUMIDITY).ToString(CultureInfo.InvariantCulture);
+      string sr = file.getInt(Cols.SAMPLERATE).ToString(CultureInfo.InvariantCulture);
+      string fLen = file.getDouble(Cols.FILE_LEN).ToString(CultureInfo.InvariantCulture);
+      sqlCmd.Append("UPDATE files SET\n");
+      sqlCmd.Append($"{DBBAT.WAV_FILE_NAME}='{wav_name}',{DBBAT.RECORDING_TIME}='{timeStr}',");
+      sqlCmd.Append($"{DBBAT.LAT}={lat}, {DBBAT.LON}={lon}, {DBBAT.TEMP}={temp},{DBBAT.HUMI}={hum},");
+      sqlCmd.Append($"{DBBAT.SAMPLE_RATE}={sr}, {DBBAT.FILE_LENGTH}={fLen}\n");
+      sqlCmd.Append($"WHERE {DBBAT.ID}='{id}';");
       return _db.execNonQuery(sqlCmd.ToString());
     }
 
@@ -196,8 +311,9 @@ namespace BatInspector
 
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("INSERT INTO calls\n");
-      sqlCmd.Append($"(id,FileId,{DBBAT.CALLNR},{DBBAT.FMIN},{DBBAT.FMAX},{DBBAT.FMAXAMP},{DBBAT.CALL_LEN},");
-      sqlCmd.Append($"{DBBAT.START_TIME},{DBBAT.CALL_DST},{DBBAT.BWIDTH},SNR,{DBBAT.SPEC_AUTO},{DBBAT.PROB},{DBBAT.SPEC_MAN},{DBBAT.REM})\n");
+      sqlCmd.Append($"({DBBAT.ID},{DBBAT.FILEID},{DBBAT.CALLNR},{DBBAT.FMIN},{DBBAT.FMAX},{DBBAT.FMAXAMP},{DBBAT.CALL_LEN},");
+      sqlCmd.Append($"{DBBAT.START_TIME},{DBBAT.CALL_DST},{DBBAT.BWIDTH},{DBBAT.SNR},{DBBAT.SPEC_AUTO},");
+      sqlCmd.Append($"{DBBAT.PROB},{DBBAT.SPEC_MAN},{DBBAT.REM})\n");
       sqlCmd.Append("VALUES\n");
       string fmin = call.getDouble(Cols.F_MIN).ToString(CultureInfo.InvariantCulture);
       string fmax = call.getDouble(Cols.F_MAX).ToString(CultureInfo.InvariantCulture);
@@ -215,6 +331,43 @@ namespace BatInspector
       sqlCmd.Append($"{ts}, {cint}, {bw}, {snr}, '{spa}', '{prob}', '{spm}', '{rem}');");
       return _db.execNonQuery(sqlCmd.ToString());
     }
+
+    public int updateCall(string fileId, AnalysisCall call)
+    {
+      if (!_db.checkIfOpen("addCall"))
+        return 1;
+
+      // check if call already in db
+      string nr = call.getInt(Cols.NR).ToString("000");
+      string id = fileId + "_" + nr;
+      string fmin = call.getDouble(Cols.F_MIN).ToString(CultureInfo.InvariantCulture);
+      string fmax = call.getDouble(Cols.F_MAX).ToString(CultureInfo.InvariantCulture);
+      string fchar = call.getDouble(Cols.F_MAX_AMP).ToString(CultureInfo.InvariantCulture);
+      string dur = call.getDouble(Cols.DURATION).ToString(CultureInfo.InvariantCulture);
+      string ts = call.getDouble(Cols.START_TIME).ToString(CultureInfo.InvariantCulture);
+      string cint = call.getDouble(Cols.CALL_INTERVALL).ToString(CultureInfo.InvariantCulture);
+      string bw = call.getDouble(Cols.BANDWIDTH).ToString(CultureInfo.InvariantCulture);
+      string snr = call.getDouble(Cols.SNR).ToString(CultureInfo.InvariantCulture);
+      string spa = call.getString(Cols.SPECIES);
+      string spm = call.getString(Cols.SPECIES_MAN);
+      string rem = call.getString(Cols.REMARKS);
+      string prob = call.getDouble(Cols.PROBABILITY).ToString(CultureInfo.InvariantCulture);
+
+      StringBuilder sqlCmd = new StringBuilder();
+      sqlCmd.Append("UPDATE calls SET\n");
+      sqlCmd.Append($"{DBBAT.CALLNR}={nr},{DBBAT.FMIN}={fmin},{DBBAT.FMAX}={fmax},{DBBAT.FMAXAMP}={fchar},");
+      sqlCmd.Append($"{DBBAT.CALL_LEN}={dur},{DBBAT.START_TIME}={ts},{DBBAT.CALL_DST}={cint},");
+      sqlCmd.Append($"{DBBAT.BWIDTH}={bw},{DBBAT.SNR}={snr},{DBBAT.SPEC_AUTO}='{spa}',{DBBAT.PROB}={prob},");
+      sqlCmd.Append($"{DBBAT.SPEC_MAN}='{spm}',{DBBAT.REM}='{rem}'\n");
+      sqlCmd.Append($"WHERE {DBBAT.ID}='{id}';");
+      return _db.execNonQuery(sqlCmd.ToString());
+    }
+
+    public int deleteCall(string callId)
+    {
+      return _db.deleteRow("calls", $"{DBBAT.ID} = '{callId}'");
+    }
+
 
     public AnalysisFile fillAnalysisFromQuery(QueryItem item)
     {
@@ -266,7 +419,7 @@ namespace BatInspector
         }
       }
 
-      while ((_queryResult[idx].Fields[colWavFile].getString() == item.WavFileName) && (idx < _queryResult.Count))
+      while ((idx < _queryResult.Count) && (_queryResult[idx].Fields[colWavFile].getString() == item.WavFileName))
       {
         report.addRow();
         int repRow = report.RowCnt;
@@ -295,7 +448,7 @@ namespace BatInspector
         report.setCell(repRow, Cols.REMARKS, _queryResult[idx].Fields[colRem].getString()); 
         idx++;
       }
-//      report.saveAs(csvName);
+      report.saveAs(csvName);
       DateTime recTime = DateTime.Parse(item.RecordingTime);
       AnalysisFile file = new AnalysisFile(report, item.WavFileName,  2, recTime);
       for(int r = 2; r < report.RowCnt; r++)

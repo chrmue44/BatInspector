@@ -39,6 +39,7 @@ namespace BatInspector
         new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
         new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
         new OptItem("AddProjectToDb", "add currently open project to DB", 0, ftcAddPrjToDb),
+        new OptItem("DelProjectFromDb", "delete currently open project from DB", 0, ftcDelPrjFromDb),
         });
 
       _options = new Options(_features, false);
@@ -314,12 +315,13 @@ namespace BatInspector
       ErrText = "";
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        if (App.Model.MySQL.IsConnected)
+        /*
+        if (!App.Model.MySQL.IsConnected)
         {
           FrmConnectMysql f = new FrmConnectMysql();
           if(f.ShowDialog() == true)
             App.Model.MySQL.connect(f.Server, f.DataBase, f.User, f.PassWord);
-        }
+        }*/
         if (App.Model.MySQL.IsConnected)
         {
           retVal = App.Model.MySQL.DbBats.addProjectToDb(App.Model.Prj);
@@ -334,5 +336,33 @@ namespace BatInspector
       retVal = string.IsNullOrEmpty(ErrText) ? 0 : 1;
       return retVal;
     }
+
+    int ftcDelPrjFromDb(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      {
+    /*    if (!App.Model.MySQL.IsConnected)
+        {
+          FrmConnectMysql f = new FrmConnectMysql();
+          if (f.ShowDialog() == true)
+            App.Model.MySQL.connect(f.Server, f.DataBase, f.User, f.PassWord);
+        }  */
+        if (App.Model.MySQL.IsConnected)
+        {
+          retVal = App.Model.MySQL.DbBats.deleteProjectFromDb(App.Model.Prj.PrjId);
+          if (retVal != 0)
+            ErrText = "error deleting project from MySQL database";
+        }
+        else
+          ErrText = "Databese is not connected!";
+      }
+      else
+        ErrText = "project not open or erroneous";
+      retVal = string.IsNullOrEmpty(ErrText) ? 0 : 1;
+      return retVal;
+    }
+
   }
 }

@@ -86,10 +86,16 @@ public partial class BatRecord
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class BatRecordTrigger
 {
+  /// <remarks/>
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string TriggerType { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string Level { get; set; }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string EventLength { get; set; }
 
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -98,6 +104,11 @@ public partial class BatRecordTrigger
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string Frequency { get; set; }
+
+  public string getTriggerSettings()
+  {
+    return $"TriggerType:{TriggerType}, Level:{Level}, Eventlength;{EventLength}, Filter:{Filter}, Frequency:{Frequency}";
+  }
 }
 
 /// <remarks/>

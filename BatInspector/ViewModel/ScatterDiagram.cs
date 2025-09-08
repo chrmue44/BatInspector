@@ -173,7 +173,7 @@ namespace BatInspector
           retVal = call.getDouble(Cols.DURATION);
           break;
         case enScatterAxis.DistToPrev:
-          retVal = call.DistToPrev;
+          retVal = call.getDouble(Cols.CALL_INTERVALL);
           break;
 //        case enScatterAxis.Fc:
 //          retVal = call.getDouble(Cols.FC);

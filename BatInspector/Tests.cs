@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
@@ -123,6 +124,7 @@ namespace BatInspector
       //testSplitWavs();
       testCalcSnr();
       testCreatePngCpp();
+      testMySql();
       //testCreateMicSpectrumFromNoiseFile();
       //double soft = 1.0;
       // testSoundEditApplyFreqResponse("20250428_210228", soft);
@@ -134,7 +136,6 @@ namespace BatInspector
       //testWriteModParams(); //not a test, a one time function
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
-      // testMySql();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -1000,7 +1001,7 @@ namespace BatInspector
       string analysisFile = Path.Combine(prjPath, "bd2", "report.csv");
       string deviceName = "BS40_E_0001";
       string fileId = "BS40_E_0001_20250703_215826";
-      string callId = "BS40_E_0001_20250703_215826_1";
+      string callId = "BS40_E_0001_20250703_215826_001";
       DataBase db = new DataBase();
       int res =db.connect("localhost", "playground", "root", "root");
       assert("testMySql: connect", res == 0);
@@ -1013,16 +1014,28 @@ namespace BatInspector
       res = db.DbBats.addFile(deviceName, prj.PrjId, prj.Analysis.Files[0]);
       assert("testMySql: addFile", res == 0);
 
+      List<sqlRow> q = db.execQuery($"SELECT * FROM files WHERE id='{fileId}';");
+      assert("testMySql: query file", q[0].Fields[1].getString() == prj.PrjId);
+
+      res = db.DbBats.updateFile(deviceName, prj.Analysis.Files[0]);
+      assert("testMySql: updateFile", res == 0);
+
+//      q = db.execQuery($"SELECT * FROM files WHERE id='{fileId}';");
+//      assert("testMySql: query file", q[0].Fields[1].getString() == "AAA");
+
       res = db.DbBats.addCall(fileId, prj.Analysis.Files[0].Calls[0]);
       assert("testMySql: addCall", res == 0);
 
-      res = db.deleteRow("calls", $"id = '{callId}'");
+      res = db.DbBats.updateCall(callId, prj.Analysis.Files[0].Calls[0]);
+      assert("testMySql: updateFile", res == 0);
+
+      res = db.DbBats.deleteCall(callId);
       assert("testMySql: deletRow from calls", res == 0);
 
-      res = db.deleteRow("files", $"id = '{fileId}'");
+      res = db.DbBats.deleteFileFromTable(fileId);
       assert("testMySql: deletRow from files", res == 0);
 
-      res = db.deleteRow("projects", $"id = '{prj.PrjId}'");
+      res = db.DbBats.deletePrjFromTable(prj.PrjId);
       assert("testMySql: deletRow from prj", res == 0);
 
 //      res = db.addProjectToDb(prj);
@@ -1031,6 +1044,7 @@ namespace BatInspector
       db.disconnect();
     }
 
+   
     private void fixAnnotationIds()
     {
       //      string[] dirs = { "Bbar", "Enil", "Eser", "Hsav", "Malc", "Mbec", "Mbra", "Mdas","Mdau","Mema", "Mmyo", "Mmys", "Mnat","Nlei",

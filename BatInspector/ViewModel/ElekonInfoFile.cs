@@ -195,6 +195,7 @@ namespace BatInspector
       return retVal;
     }
 
+
     //TODO: very ugly: find a better way to do this
     private static void initUninitializedValues(ref BatRecord rec)
     {
@@ -229,5 +230,7 @@ namespace BatInspector
       if (rec.Humidity == null)
         rec.Humidity = "";
     }
+
+
   }
 }

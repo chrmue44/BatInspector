@@ -100,12 +100,12 @@ namespace BatInspector.Controls
         case IDX_NONE:
           setFieldSelector("Date", false, 0, false);
           setFieldSelector(DBBAT.LOC, false, 0, false);
-          setFieldSelector("PrjCreator", false, 0, false);
-          setFieldSelector($"projects.{DBBAT.PRJ_NOTES}", false, 0, false);
-          setFieldSelector("RecordingDevice", false, 0, false);
-          setFieldSelector("MicrophoneId", false, 0, false);
-          setFieldSelector("Classifier", false, 0, false);
-          setFieldSelector("Model", false, 0, false);
+          setFieldSelector(DBBAT.PRJCREATOR, false, 0, false);
+          setFieldSelector(DBBAT.RECDEV, false, 0, false);
+          setFieldSelector(DBBAT.MICID, false, 0, false);
+          setFieldSelector(DBBAT.CLASSI, false, 0, false);
+          setFieldSelector(DBBAT.MODEL, false, 0, false);
+          setFieldSelector(DBBAT.PRJ_NOTES,false, 0, false);
           setFieldSelector(DBBAT.PATH_TO_WAV, false, 0, false);
           setFieldSelector(DBBAT.LAT, false, 0, false); 
           setFieldSelector(DBBAT.LON, false, 0, false);
@@ -133,7 +133,7 @@ namespace BatInspector.Controls
           setFieldSelector("Date", true, 0, false);
           setFieldSelector(DBBAT.LOC, true, 0, false);
           setFieldSelector("PrjCreator", true, 0, false);
-          setFieldSelector($"projects.{DBBAT.PRJ_NOTES}", true, 0, false);
+          setFieldSelector(DBBAT.PRJ_NOTES, true, 0, false);
           setFieldSelector("RecordingDevice", true, 0, false);
           setFieldSelector("MicrophoneId", true, 0, false);
           setFieldSelector("Classifier", true, 0, false);
@@ -164,7 +164,7 @@ namespace BatInspector.Controls
           setFieldSelector("Date", false, 0, false);
           setFieldSelector(DBBAT.LOC, false, 0, false);
           setFieldSelector("PrjCreator", false, 0, false);
-          setFieldSelector($"projects.{DBBAT.PRJ_NOTES}", false, 0, false);
+          setFieldSelector(DBBAT.PRJ_NOTES, false, 0, false);
           setFieldSelector("RecordingDevice", true, 0, false);
           setFieldSelector("MicrophoneId", true, 0, false);
           setFieldSelector("Classifier", false, 0, false);
@@ -227,8 +227,11 @@ namespace BatInspector.Controls
 
         if (it != null)
         {
+          double.TryParse(it.Latitude, NumberStyles.Any, CultureInfo.InvariantCulture, out double lat);
+          double.TryParse(it.Longitude, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon);
+          List<string> species = Project.createSpeciesList(lat, lon);
           AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it);
-          App.MainWin.setZoom(it.WavFileName, f, it.PathToWavs, null, enModel.BAT_DETECT2);
+          App.MainWin.setZoom(it.WavFileName, f, it.PathToWavs, null, enModel.BAT_DETECT2, species);
           int callIdx = f.findCallIdx(it.CallNr);
           if(callIdx >= 0) 
             App.MainWin.changeCallInZoom(callIdx);

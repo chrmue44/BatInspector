@@ -29,6 +29,7 @@ namespace BatInspector.Forms
       _ctlDataBase.setup("Database", enDataType.STRING, 0, offs, true);
       _ctlUser.setup("User Name", enDataType.STRING, 0, offs, true);
       _ctlPassWord.setup("Password", enDataType.STRING, 0, offs, true);
+      _ctlPassWord._tb.Foreground = _ctlPassWord._tb.Background;
     }
 
     /*

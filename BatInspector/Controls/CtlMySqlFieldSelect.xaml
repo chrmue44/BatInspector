@@ -11,12 +11,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="23"/>
+            <ColumnDefinition Width="27"/>
         </Grid.ColumnDefinitions>
         <Label Name="_lbl" Grid.Column="0" Content="XXX" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,-4,0,0"/>
         <CheckBox Name="_select" Grid.Column="1" Click="_select_Click" ToolTip="{x:Static res:MyResources.CtlMySqlFieldSelect_TooltipSelect}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Button Name="_order" Grid.Column="2" Height="18" Content ="2" Click="_order_Click" ToolTip="{x:Static res:MyResources.CtlMySqlFieldSelect_TooltipOrder}"/>
-        <CheckBox Name="_reverse" Grid.Column="3" Click="_reverse_Click" ToolTip="{x:Static res:MyResources.CtlMySqlFieldSelect_TooltipReverse}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Button Name="_reverse" Grid.Column="3" Width="24" Click="_reverse_Click" Content="^" ToolTip="{x:Static res:MyResources.CtlMySqlFieldSelect_TooltipReverse}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

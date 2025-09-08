@@ -1127,6 +1127,7 @@ namespace BatInspector.Controls
       createZoomImg();
       _cbZoomAmpl_Click(null, null);
     }
+
     public void calcMeanValues(int idx, object val)
     {
       int.TryParse(_ctlMeanCallMin.getValue(), out int min);
@@ -1151,7 +1152,7 @@ namespace BatInspector.Controls
             fMax += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX) / count;
             fMaxAmpl += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
             duration += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.DURATION) / count;
-            callDist += App.Model.ZoomView.Analysis.Calls[i].DistToPrev / countDistPrev;
+            callDist += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.CALL_INTERVALL) / countDistPrev;
           }
           _ctlMeanDist.setValue(callDist);
           _ctlMeanFMax.setValue(fMax / 1000);
@@ -1174,7 +1175,7 @@ namespace BatInspector.Controls
           _ctlFMaxAmpl.setValue(call.getDouble(Cols.F_MAX_AMP) / 1000);
         }
         _ctlDuration.setValue(call.getDouble(Cols.DURATION));
-        _ctlDist.setValue(call.DistToPrev);
+        _ctlDist.setValue(call.getDouble(Cols.CALL_INTERVALL));
         _ctlSnr.setValue(call.getDouble(Cols.SNR));
         _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));
         _ctlProbability.setValue(call.getDouble(Cols.PROBABILITY));

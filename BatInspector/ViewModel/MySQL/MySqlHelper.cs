@@ -20,8 +20,19 @@ namespace BatInspector
   }
   public class DBBAT
   {
+    public const string ID = "id";
+    public const string PRJID = "ProjectId";
+    public const string SWVER = "SwVersion";
+    public const string MODEL = "Model";
+    public const string CLASSI = "Classifier";
+    public const string MICID = "MicrophoneId";
+    public const string PRJCREATOR = "PrjCreator";
+    public const string RECDEV = "RecordingDevice";
+    public const string DATE = "Date";
+    public const string FILEID = "FileId";
     public const string LOC = "Location";
     public const string PRJ_NOTES = "Notes";
+    public const string TRIG_SET = "TriggerSettings";
     public const string WAV_FILE_NAME = "WavFileName";
     public const string FILE_LENGTH = "FileLength";
     public const string RECORDING_TIME = "RecordingTime";

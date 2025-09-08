@@ -26,6 +26,7 @@ namespace BatInspector.Controls
   {
     dlgCbClick _dlg = null;
     int _rank = 0;
+    bool _isReverse = false;
 
     public int Order 
     { 
@@ -38,12 +39,15 @@ namespace BatInspector.Controls
         if (_rank > 0)
         {
           _order.Content = _rank.ToString();
-          _reverse.IsEnabled = true;
+          //          _reverse.IsEnabled = true;
+          _reverse.Visibility = Visibility.Visible;
         }
         else
         {
+        _order.Content = "-";
           _order.Content = "-";
-          _reverse.IsEnabled = false;
+          //_reverse.IsEnabled = false;
+          _reverse.Visibility = Visibility.Hidden;
         }
 
       }
@@ -55,14 +59,33 @@ namespace BatInspector.Controls
       set
       {
         _select.IsChecked = value;
-        _order.IsEnabled = value;
+        //   _order.IsEnabled = value;
+        if (value == true)
+        {
+          _order.Visibility = Visibility.Visible;
+        }
+        else
+        {
+          _order.Visibility = Visibility.Hidden;
+          _reverse.Visibility = Visibility.Hidden;
+          _rank = 0;
+        }
       }
     }
-    public bool Reverse {  get { return _reverse.IsChecked == true; } set { _reverse.IsChecked = value; } }
+    public bool Reverse
+    {
+      get { return _isReverse; }
+      set
+      {
+        _isReverse = value;
+        setReverseContent();
+      }
+    }
     public string FieldName { get { return (string)_lbl.Content; } }
     public CtlMySqlFieldSelect()
     {
       InitializeComponent();
+      setReverseContent();
     }
 
     public void setup(string text, dlgCbClick dlg)
@@ -70,20 +93,30 @@ namespace BatInspector.Controls
       _dlg = dlg;
       _lbl.Content = text;
       _order.Content = "-";
-      _order.IsEnabled = false;
-      _reverse.IsEnabled = false;
+//      _order.IsEnabled = false;
+      _order.Visibility = Visibility.Hidden;
+      //      _reverse.IsEnabled = false;
+      _reverse.Visibility = Visibility.Hidden;
+    }
+
+    private void setReverseContent()
+    {
+      _reverse.Content = _isReverse ? "▼" : "▲";
     }
 
     private void _select_Click(object sender, RoutedEventArgs e)
     {
       if (_select.IsChecked == true)
       {
-        _order.IsEnabled = true;
+        //        _order.IsEnabled = true;
+        _order.Visibility = Visibility.Visible;
       }
       else
       {
-        _order.IsEnabled = false;
-        _reverse.IsEnabled = false; 
+        //        _order.IsEnabled = false;
+        _order.Visibility = Visibility.Hidden;
+        //        _reverse.IsEnabled = false; 
+        _reverse.Visibility = Visibility.Hidden;
         _order.Content = "-";
         _rank = 0;
       }
@@ -93,6 +126,9 @@ namespace BatInspector.Controls
 
     private void _reverse_Click(object sender, RoutedEventArgs e)
     {
+      _isReverse = !_isReverse;
+      setReverseContent();
+
       if (_dlg != null)
         _dlg(this, null);
     }
@@ -111,12 +147,13 @@ namespace BatInspector.Controls
       if (_rank == 0)
       {
         _order.Content = "-";
-        _reverse.IsEnabled = false;
-        _reverse.IsChecked = false;
+//        _reverse.IsEnabled = false;
+        _reverse.Visibility = Visibility.Hidden;
       }
       else
       {
-        _reverse.IsEnabled = true;
+        //        _reverse.IsEnabled = true;
+        _reverse.Visibility = Visibility.Visible;
         _order.Content = _rank.ToString();
       }
       if (_dlg != null)

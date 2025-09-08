@@ -33,9 +33,9 @@ namespace BatInspector
 
   public enum enModel
   {
-    BAT_DETECT2,
-    BATTY_BIRD_NET,
-    BIRDNET
+    BAT_DETECT2 = 3,
+    BATTY_BIRD_NET = 4,
+    BIRDNET = 5
   };
 
   public enum enZoomType

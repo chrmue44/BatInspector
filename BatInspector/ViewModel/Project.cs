@@ -111,25 +111,30 @@ namespace BatInspector
         string fName = getFullFilePath(records[0].File);
         fName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
         BatRecord info = ElekonInfoFile.read(fName);
-        ElekonInfoFile.parsePosition(info, out double lat, out double lon);
-        ParRegion reg = App.Model.Regions.findRegion(lat, lon);
-        _speciesList = new List<string>();
-        if (reg != null)
-        {
-          foreach (string sp in reg.Species)
-            _speciesList.Add(sp);
-        }
-        else
-        {
-          foreach (SpeciesInfos sp in App.Model.SpeciesInfos)
-            _speciesList.Add(sp.Abbreviation);
-        }
-        _speciesList.Add("?");
-        _speciesList.Add("Social");
-        _speciesList.Add("todo");
+        ElekonInfoFile.parsePosition(info, out double lat, out double lon);        
+        _speciesList = createSpeciesList(lat,lon);
       }
     }
 
+    public static List<string> createSpeciesList(double lat, double lon)
+    {
+      List<string> speciesList = new List<string>();
+      ParRegion reg = App.Model.Regions.findRegion(lat, lon);
+      if (reg != null)
+      {
+        foreach (string sp in reg.Species)
+          speciesList.Add(sp);
+      }
+      else
+      {
+        foreach (SpeciesInfos sp in App.Model.SpeciesInfos)
+          speciesList.Add(sp.Abbreviation);
+      }
+      speciesList.Add("?");
+      speciesList.Add("Social");
+      speciesList.Add("todo");
+      return speciesList;
+    }
   }
 
   public class Project : PrjBase

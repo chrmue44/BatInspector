@@ -83,10 +83,12 @@ namespace BatInspector
       string retVal = "";
       if (_isOpen)
       {
-        retVal = MyResources.DatabaseConnecteed;
+        string dbCon = DbBats.IsOpen ? AppParams.Inst.MySqlDbBats : AppParams.Inst.MySqlDbBirds;
+        retVal = $"{MyResources.DatabaseConnecteed}: DB:{dbCon}  "
+        ;
         string cmd = "SHOW TABLE STATUS;";
         List<sqlRow> res = execQuery(cmd);
-        retVal += $":  {res[0].Fields[0].getString()}: {res[0].Fields[4].getInt32()} {MyResources.DataBaseRows}  ---  ";
+        retVal += $"TABLES:  {res[0].Fields[0].getString()}: {res[0].Fields[4].getInt32()} {MyResources.DataBaseRows}  ---  ";
         retVal += $"{res[1].Fields[0].getString()}: {res[1].Fields[4].getInt32()} {MyResources.DataBaseRows}  ---  ";
         retVal += $"{res[2].Fields[0].getString()}: {res[2].Fields[4].getInt32()} {MyResources.DataBaseRows}";
       }

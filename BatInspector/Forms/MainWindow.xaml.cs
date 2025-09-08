@@ -524,7 +524,7 @@ namespace BatInspector.Forms
 
 
 
-    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav, enModel modelType)
+    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav, enModel modelType, List<string> species = null)
     {
       DebugLog.log("activate zoom view of: " + name, enLogType.DEBUG);
       if (AppParams.Inst.ZoomSeparateWin)
@@ -540,7 +540,7 @@ namespace BatInspector.Forms
         if (App.Model.CurrentlyOpen != null)
           _ctlZoom.setup(analysis, wavFilePath, App.Model.CurrentlyOpen.Species, ctlWav, openExportWindow, modelType);
         else
-          _ctlZoom.setup(analysis, wavFilePath, null, null, openExportWindow, modelType);
+          _ctlZoom.setup(analysis, wavFilePath, species, null, openExportWindow, modelType);
         _tbZoom.Header = "Zoom: " + Path.GetFileName(name);
         _tbZoom.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol

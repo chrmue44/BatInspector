@@ -1776,4 +1776,13 @@
   <data name="CtrlMySql_DisconnectFromDB" xml:space="preserve">
     <value>Datenbankverbindung trennen</value>
   </data>
+  <data name="FilterVarHelpSnr" xml:space="preserve">
+    <value>Geräuschabstand [dB]</value>
+  </data>
+  <data name="ExpGen_TIME" xml:space="preserve">
+    <value>Zeitangabe</value>
+  </data>
+  <data name="ctlExpressionEditorTodoDate" xml:space="preserve">
+    <value>Bitte Datum &amp; Uhrzeit angeben</value>
+  </data>
 </root>

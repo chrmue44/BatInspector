@@ -421,6 +421,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter date % time.
+        /// </summary>
+        public static string ctlExpressionEditorTodoDate {
+            get {
+                return ResourceManager.GetString("ctlExpressionEditorTodoDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter number.
         /// </summary>
         public static string ctlExpressionEditorTodoNr {
@@ -1375,6 +1384,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to time.
+        /// </summary>
+        public static string ExpGen_TIME {
+            get {
+                return ResourceManager.GetString("ExpGen_TIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nested expression.
         /// </summary>
         public static string ExpGenNested {
@@ -1488,6 +1506,15 @@ namespace BatInspector.Properties {
         public static string FilterVarHelpRecording {
             get {
                 return ResourceManager.GetString("FilterVarHelpRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bitte.
+        /// </summary>
+        public static string FilterVarHelpSnr {
+            get {
+                return ResourceManager.GetString("FilterVarHelpSnr", resourceCulture);
             }
         }
         

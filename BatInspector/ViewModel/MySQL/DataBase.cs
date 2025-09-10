@@ -47,6 +47,7 @@ namespace BatInspector
 
       _connection = new MySqlConnection();
       _connection.ConnectionString = connectStr;
+      _connection.InfoMessage += infoMsgHandler;
       try
       {
         _connection.Open();
@@ -138,7 +139,7 @@ namespace BatInspector
                   switch (newRow.Fields[fIdx].FieldType)
                   {
                     case enSqlType.FLOAT:
-                      if(!myReader.IsDBNull(fIdx))
+                      if (!myReader.IsDBNull(fIdx))
                         newRow.Fields[fIdx].setFloat(myReader.GetFloat(fIdx));
                       break;
                     case enSqlType.INT:
@@ -151,7 +152,7 @@ namespace BatInspector
                       break;
                     case enSqlType.DATE:
                     case enSqlType.DATETIME:
-                      if(!myReader.IsDBNull(fIdx))
+                      if (!myReader.IsDBNull(fIdx))
                         newRow.Fields[fIdx].setDate(myReader.GetDateTime(fIdx));
                       break;
                     case enSqlType.TIMESTAMP:
@@ -170,10 +171,14 @@ namespace BatInspector
             }
           }
         }
+        else
+        {
+          DebugLog.log("could not execute query, connect to database first!", enLogType.ERROR);
+        }
       }
       catch(Exception ex)
       {
-        DebugLog.log($"MySQL Query failed: {ex.ToString()}", enLogType.ERROR);
+        DebugLog.log($"MySQL Query failed: {ex.Message}", enLogType.ERROR);
       }
       return retVal;
     }
@@ -200,7 +205,7 @@ namespace BatInspector
       }
       catch (Exception ex)
       {
-        DebugLog.log($"MySql command failed: {ex.ToString()}", enLogType.ERROR);
+        DebugLog.log($"MySql command failed: {ex.Message}", enLogType.ERROR);
       }
       return retVal;
     }
@@ -250,11 +255,40 @@ namespace BatInspector
       // replace operators
       retVal = retVal.Replace("!=", "<>");
       retVal = retVal.Replace("==", "=");
+      retVal = retVal.Replace("&&", "AND");
+      retVal = retVal.Replace("||", "OR");
+
+      //replace timeStrings
+      pos = 0;
+      while ((pos >= 0) && (pos < retVal.Length))
+      {
+        pos = findTimeString(retVal, pos);
+        if(pos >= 0 )
+          retVal =  retVal.Substring(0,pos) + "20" + retVal.Substring(pos + 2, 8) + " " + retVal.Substring(pos + 11);
+      }
       return retVal;
     }
 
 
-   
+    static int findTimeString(string str, int pos = 0)
+    {
+      int retVal = -1;
+      int idx = pos;
+      while ((idx >= 0) && (idx < str.Length))
+      {
+        idx = str.IndexOf("'0d", idx);
+        if (idx < 0)
+          return retVal;
+        idx++;  // for '''
+        bool ok = AnyType.checkTimeString(str.Substring(idx));
+        if (ok)
+          return idx;
+        idx++;
+      }
+      return retVal;
+    }
+
+
 
     public int deleteRow(string table, string condition)
     {
@@ -312,7 +346,7 @@ namespace BatInspector
         csv.saveAs(fileName);
       }
       catch (Exception ex)
-      {
+      { 
         DebugLog.log($"Error export query: {ex.ToString()}", enLogType.ERROR);
       }
     }
@@ -322,6 +356,14 @@ namespace BatInspector
       if (!_isOpen)
         DebugLog.log($"{cmd}: data base not open, connect first", enLogType.ERROR);
       return _isOpen;
+    }
+
+    private void infoMsgHandler(object sender, MySqlInfoMessageEventArgs args)
+    {
+      foreach (MySqlError err in args.errors)
+      {
+        DebugLog.log($"MySql Info: {err.Message}", enLogType.INFO);
+      }
     }
   }
 }

@@ -57,6 +57,7 @@ namespace BatInspector.Controls
       _right = _gen.getAvailableOptions(enField.RIGHT);
       foreach (ExpressionItem item in _right)
         _cbRight.Items.Add(item.Text);
+      _cltDateTime.init(DateTime.Now, true, "",100,dateChanged);
 
       _append = new List<ExpressionItem>();
       _append.Add(new ExpressionItem(enExpType.OPERATOR, enOperator.OR, "||", "oder"));
@@ -96,17 +97,27 @@ namespace BatInspector.Controls
         _cbOperator.Items.Clear();
         foreach (ExpressionItem item in _op)
           _cbOperator.Items.Add(item.Text + " [" + item.HelpText + "]");
-        if (AnyType.isNum(_left[iLeft].DataType))
+        if (_left[iLeft].DataType == AnyType.tType.RT_TIME)
+        {
+          _lblTodo.Visibility = Visibility.Visible;
+          _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodoDate;
+          _cltDateTime.Visibility = Visibility.Visible;
+          _tbFreeTxt.Visibility = Visibility.Collapsed;
+          _cbRight.SelectedIndex = 0;
+        }
+        else if (AnyType.isNum(_left[iLeft].DataType))
         {
           _lblTodo.Visibility = Visibility.Visible;
           _lblTodo.Content = BatInspector.Properties.MyResources.ctlExpressionEditorTodoNr;
           _tbFreeTxt.Visibility = Visibility.Visible;
+          _cltDateTime.Visibility = Visibility.Collapsed;
           _cbRight.SelectedIndex = 0;
         }
-        if (AnyType.isStr(_left[iLeft].DataType))
+        else if (AnyType.isStr(_left[iLeft].DataType))
         {
           _lblTodo.Visibility = Visibility.Hidden;
-          _tbFreeTxt.Visibility = Visibility.Hidden;
+          _tbFreeTxt.Visibility = Visibility.Collapsed;
+          _cltDateTime.Visibility = Visibility.Collapsed;
         }
 
         _cbOperator.IsEnabled = true;
@@ -169,7 +180,7 @@ namespace BatInspector.Controls
           else
           {
             _lblTodo.Visibility = Visibility.Hidden;
-            _tbFreeTxt.Visibility = Visibility.Hidden;
+            _tbFreeTxt.Visibility = Visibility.Collapsed;
           }
         }
         if ((_cbLeft.SelectedIndex >= 0) && (_cbRight.SelectedIndex >= 0) && (_cbOperator.SelectedIndex >= 0))
@@ -185,7 +196,10 @@ namespace BatInspector.Controls
 
     private void generateFormula()
     {
-        string f = _prefix + "(";
+      if (_cbOperator.SelectedIndex < 0)
+        return;
+
+      string f = _prefix + "(";
       if ((_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS) ||
          (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
       {
@@ -204,9 +218,13 @@ namespace BatInspector.Controls
       {
         f += _left[_cbLeft.SelectedIndex].Text + " ";
         f += _op[_cbOperator.SelectedIndex].Text + " ";
-        if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
+        if (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_TIME)
         {
-          if ((string)_cbRight.SelectedItem == BatInspector.Properties.MyResources.ExpGenUserString) 
+          f += "\"" + AnyType.getTimeString(_cltDateTime.DateTime, false) + "\"";
+        }
+        else if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
+        {
+          if ((string)_cbRight.SelectedItem == BatInspector.Properties.MyResources.ExpGenUserString)
             f += "\"" + _tbFreeTxt.Text + "\"";
           else
             f += _right[_cbRight.SelectedIndex].Text;
@@ -230,6 +248,13 @@ namespace BatInspector.Controls
       }
     }
 
+
+    private void dateChanged(object sender, EventArgs e)
+    {
+      generateFormula();
+      _cbAppend.IsEnabled = true;
+      enableOk(true);
+    }
 
     private void _cbAppend_DropDownClosed(object sender, EventArgs e)
     {

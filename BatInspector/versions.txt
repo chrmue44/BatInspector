@@ -20,6 +20,7 @@ TODO
 - more info types in script function getPrjInfo
 - new script function setPrjInfo
 - added MySQL dashboard to create simple queries
+- added option 'RecordingTime' to filter expression
 
 
 # V0.9.4.4  

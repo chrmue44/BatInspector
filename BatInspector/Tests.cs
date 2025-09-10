@@ -16,6 +16,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -124,7 +125,8 @@ namespace BatInspector
       //testSplitWavs();
       testCalcSnr();
       testCreatePngCpp();
-      testMySql();
+      //    testMySql();
+
       //testCreateMicSpectrumFromNoiseFile();
       //double soft = 1.0;
       // testSoundEditApplyFreqResponse("20250428_210228", soft);
@@ -136,6 +138,7 @@ namespace BatInspector
       //testWriteModParams(); //not a test, a one time function
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
+      //updatePrjsInMySqlDb();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -871,10 +874,13 @@ namespace BatInspector
     {
       string expr = "(SpeciesMan == \"BBAR\") &&  (indexOf(SpeciesAuto,\"?\") >= 0)";
       string res = DataBase.translateFilterExpressionToMySQL(expr);
-      assert("testTranslateFilter, 1", res == "(SpeciesMan = 'BBAR') &&  (INSTR(SpeciesAuto,'?') > 0)");
+      assert("testTranslateFilter, 1", res == "(SpeciesMan = 'BBAR') AND  (INSTR(SpeciesAuto,'?') > 0)");
       expr = "(indexOf(SpeciesAuto,\"?\") < 0) && (SpeciesMan == \"BBAR\")";
       res = DataBase.translateFilterExpressionToMySQL(expr);
-      assert("testTranslateFilter, 1", res == "(INSTR(SpeciesAuto,'?') = 0) && (SpeciesMan = 'BBAR')");
+      assert("testTranslateFilter, 1", res == "(INSTR(SpeciesAuto,'?') = 0) AND (SpeciesMan = 'BBAR')");
+      expr = "(RecTime > \"0d25-04-22T18:00:02\") && (RecTime < \"0d25-04-23T06:10:00\")";
+      res = DataBase.translateFilterExpressionToMySQL(expr);
+      assert("testTranslateFilter, 1", res == "(RecTime > '2025-04-22 18:00:02') AND (RecTime < '2025-04-23 06:10:00')");
     }
 
     private void testActivityDiagr()
@@ -993,6 +999,49 @@ namespace BatInspector
       string pngName = path + "/Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms_part.png";
       BioAcoustics.createPngFromWavPart(wavName, pngName, 1, 1.5, 0, 200, 1024, 512, 70);
       sw.Stop();
+    }
+
+    private void crawlDir(string dir, int sel, string loc, string prjCreator)
+    {
+      DirectoryInfo dInfo = new DirectoryInfo(dir);
+      DirectoryInfo[] dirs = dInfo.GetDirectories();
+      foreach (DirectoryInfo d in dirs)
+        crawlDir(d.FullName, sel, loc, prjCreator);
+
+      FileInfo[] fileInfo = dInfo.GetFiles("*.batspy");
+      if (fileInfo.Length == 0)
+        fileInfo = dInfo.GetFiles("*.bpr");
+      if (fileInfo.Length > 0)
+      {
+        ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+        Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
+        prj.readPrjFile(dir);
+        prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams);
+        switch (sel)
+        {
+          case 0:
+            App.Model.MySQL.DbBats.addProjectToDb(prj);
+            DebugLog.log($"adding project: {prj.PrjDir}", enLogType.INFO);
+            break;
+          case 1:
+            App.Model.MySQL.DbBats.updateTableProjects(prj);
+            DebugLog.log($"updating project: {prj.PrjDir}", enLogType.INFO);
+            break;
+          case 2:
+            prj.Location = loc;
+            prj.CreateBy = prjCreator;
+            prj.writePrjFile();
+            DebugLog.log($"write prj: {dir}", enLogType.INFO);
+            _errors = 1;
+            break;
+        }
+      }
+    }
+    public void updatePrjsInMySqlDb()
+    {
+      App.Model.MySQL.connect("localhost", "bat_calls", "root", "root");
+      string startDir = "F:\\bat\\2024";
+      crawlDir(startDir,0,"", "");
     }
 
     private void testMySql()

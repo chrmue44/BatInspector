@@ -10,7 +10,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="180"/>
             <ColumnDefinition />
             <ColumnDefinition Width="130"/>
         </Grid.ColumnDefinitions>
@@ -32,7 +32,8 @@
         </StackPanel>
          <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical">
           <ComboBox Name="_cbRight"  Height="25" DropDownClosed="_cbRight_DropDownClosed"/>
-          <TextBox Name="_tbFreeTxt" Height="25" Visibility="Hidden" TextChanged="_tbFreeTxt_TextChanged" />
+          <TextBox Name="_tbFreeTxt" Height="25" Visibility="Collapsed" TextChanged="_tbFreeTxt_TextChanged" />
+            <local:CtlDateTime x:Name="_cltDateTime" Height="30" Visibility="Collapsed"/>
         </StackPanel>
         <ComboBox Name="_cbAppend" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" Height="25" DropDownClosed="_cbAppend_DropDownClosed" />
         <local:ctlDataItem x:Name="_tbExpression" Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="3"/>

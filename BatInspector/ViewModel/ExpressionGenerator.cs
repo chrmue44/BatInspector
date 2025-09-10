@@ -113,7 +113,11 @@ namespace BatInspector
           break;
 
         case enField.RIGHT:
-          if (AnyType.isNum(type))
+          if(type == AnyType.tType.RT_TIME)
+          {
+            retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_TIME, AnyType.tType.RT_TIME));
+          }
+          else if (AnyType.isNum(type))
           {
             retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_Nr, AnyType.tType.RT_FLOAT));
           }

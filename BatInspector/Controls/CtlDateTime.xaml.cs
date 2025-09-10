@@ -10,11 +10,14 @@ using System.Windows.Controls;
 
 namespace BatInspector.Controls
 {
+  public delegate void dlgDateChanged(object sender, EventArgs e);
   /// <summary>
   /// Interaction logic for CtlDateTime.xaml
   /// </summary>
   public partial class CtlDateTime : UserControl
   {
+    dlgDateChanged _dlg = null;
+
     public CtlDateTime()
     {
       InitializeComponent();
@@ -34,7 +37,7 @@ namespace BatInspector.Controls
       return retVal;
     }
 
-    public void init(DateTime time, bool dateVisible = true, string label = "", int width = 80 )
+    public void init(DateTime time, bool dateVisible = true, string label = "", int width = 80, dlgDateChanged dlg = null )
     {
       _dp.Visibility = dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
       _lbl.Visibility = !dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
@@ -44,6 +47,7 @@ namespace BatInspector.Controls
       _dp.Text = _dp.DisplayDate.ToString();
       _hour.Text = time.Hour.ToString(); 
       _min.Text = time.Minute.ToString();
+      _dlg = dlg;
     }
 
     int limit(int v, int min, int max)
@@ -71,6 +75,24 @@ namespace BatInspector.Controls
     internal void init(DateTime dateTime, bool v, string frmRecStartingTime, int wl, object setRecStart)
     {
       throw new NotImplementedException();
+    }
+
+    private void _dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+    {
+      if (_dlg != null)
+        _dlg(sender, e);
+    }
+
+    private void _hour_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      if (_dlg != null)
+        _dlg(sender, e);
+    }
+
+    private void _min_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      if (_dlg != null)
+        _dlg(sender, e);
     }
   }
 }

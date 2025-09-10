@@ -68,14 +68,21 @@ namespace libParser
       _varList.set(name, value, _methods, index);
     }
 
+
     public void setVariable(string name, double value, int index = 0)
     {
       _varList.set(name, value, _methods, index) ;
     }
 
+
     public void setVariable(string name, int value, int index = 0)
     {
       _varList.set(name, value, _methods, index);
+    }
+
+    public void setVariable(string  name, DateTime value, int index = 0)
+    {
+      _varList.set(name, AnyType.getTimeString(value), _methods, index);
     }
 
 

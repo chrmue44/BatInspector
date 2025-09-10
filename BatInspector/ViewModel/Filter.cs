@@ -8,6 +8,7 @@
 using BatInspector.Properties;
 using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
@@ -68,7 +69,7 @@ namespace BatInspector
     const string VAR_DURATION = "DurationCall";
     const string VAR_PROBABILITY = "Probability";
     const string VAR_REMARKS = "Remarks";
-    const string VAR_TIME = "RecTime";
+    const string VAR_TIME = "RecordingTime";
     const string VAR_SNR = "SNR";
 
     ExpressionGenerator _gen;
@@ -97,8 +98,8 @@ namespace BatInspector
         new FilterVarItem (VAR_DURATION, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpDuration ),
         new FilterVarItem (VAR_PROBABILITY, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpProb ),
         new FilterVarItem (VAR_REMARKS, AnyType.tType.RT_STR, true, true, false , MyResources.FilterVarHelpRecording),
-        new FilterVarItem (VAR_TIME, AnyType.tType.RT_TIME, true, false, false, MyResources.FilterVarHelpTime),
-        new FilterVarItem (VAR_SNR, AnyType.tType.RT_FLOAT, true, true, false, MyResources.Snr)
+        new FilterVarItem (VAR_TIME, AnyType.tType.RT_TIME, true, true, false, MyResources.FilterVarHelpTime),
+        new FilterVarItem (VAR_SNR, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpSnr)
       };
 
       _expression.Variables.set(VAR_NR_CALLS, 0);
@@ -173,6 +174,8 @@ namespace BatInspector
       }
       _expression.setVariable(VAR_PROBABILITY, call.getDouble(Cols.PROBABILITY));
       _expression.setVariable(VAR_SNR, call.getDouble(Cols.SNR));
+      DateTime trec = call.getDateTime(Cols.REC_TIME);
+      _expression.setVariable(VAR_TIME, trec);
       AnyType res = _expression.parse(filter.Expression);
       
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())

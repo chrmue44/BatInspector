@@ -159,7 +159,7 @@ namespace BatInspector
       string location = prj.Location;
       string notes = prj.Notes;
       sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}', ");
-      sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}', '{trigSettings});\n");
+      sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}', '{trigSettings}');\n");
       return _db.execNonQuery(sqlCmd.ToString());
     }
 
@@ -191,6 +191,7 @@ namespace BatInspector
       bool ok = DateTime.TryParse(date, out DateTime t);
       date = $"{t.Year}-{t.Month.ToString("00")}-{t.Day.ToString("00")}";
       string recDev = r.SN;
+      string trigSet = r.Trigger.getTriggerSettings();
       string id = prj.PrjId; 
       
       string sw = r.Firmware;
@@ -204,10 +205,11 @@ namespace BatInspector
       string notes = prj.Notes;
       StringBuilder sqlCmd = new StringBuilder();
       sqlCmd.Append("UPDATE projects SET\n");
-      sqlCmd.Append($"{DBBAT.RECDEV}='{recDev}',{DBBAT.SWVER}='{sw}', {DBBAT.PRJCREATOR}='{person}'");
-      sqlCmd.Append($"{DBBAT.PATH_TO_WAV}='{pwav}',{DBBAT.MICID}='{mic}', {DBBAT.CLASSI}={clsf}','");
-      sqlCmd.Append($"{DBBAT.MODEL}={model}',{DBBAT.LOC}='{location}', {DBBAT.PRJ_NOTES}='{notes}'\n");
-      sqlCmd.Append($"WHERE {DBBAT.ID}={id};");
+      sqlCmd.Append($"{DBBAT.RECDEV}='{recDev}',{DBBAT.SWVER}='{sw}', {DBBAT.PRJCREATOR}='{person}',");
+      sqlCmd.Append($"{DBBAT.PATH_TO_WAV}='{pwav}',{DBBAT.MICID}='{mic}', {DBBAT.CLASSI}='{clsf}',");
+      sqlCmd.Append($"{DBBAT.MODEL}='{model}',{DBBAT.LOC}='{location}', {DBBAT.PRJ_NOTES}='{notes}',");
+      sqlCmd.Append($"{DBBAT.TRIG_SET}='{trigSet}'\n");
+      sqlCmd.Append($"WHERE {DBBAT.ID}='{id}';");
       return _db.execNonQuery(sqlCmd.ToString());
     }
 

@@ -188,8 +188,11 @@ namespace BatInspector
       set 
       {
         if (_batExplorerPrj != null)
+        { 
           _batExplorerPrj.Created = value;
-      } 
+          _changed = true;
+        }
+      }
     }
 
     public string CreateBy
@@ -204,7 +207,10 @@ namespace BatInspector
       set 
       {
         if (_batExplorerPrj != null)
-          _batExplorerPrj.CreatedBy = value; 
+        {     
+          _batExplorerPrj.CreatedBy = value;
+          _changed = true;
+        }
       }
     }
 
@@ -220,7 +226,10 @@ namespace BatInspector
       set
       {
         if (_batExplorerPrj != null)
+        {
           _batExplorerPrj.Location = value;
+          _changed = true;
+        }
       }
     }
 

@@ -802,6 +802,11 @@ namespace BatInspector
       return _csv.getCellAsDouble(_row, key, disableErrorMsg);
     }
 
+    public DateTime getDateTime(string key, bool disableErrorMsg = false)
+    {
+      return _csv.getCellAsDate(_row, key);
+    }
+
     public void setDouble(string key , double val)
     {
       _csv.setCell(_row, key, val);

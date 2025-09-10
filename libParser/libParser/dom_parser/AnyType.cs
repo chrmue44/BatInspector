@@ -11,6 +11,7 @@
  ********************************************************************************/
 using System;
 using System.Globalization;
+using System.Xml.Linq;
 
 namespace libParser
 {
@@ -178,7 +179,11 @@ namespace libParser
         case tType.RT_TIME:
           Result = (a1.m_Val.Double < a2.getFloat());
           break;
+
         case tType.RT_STR:
+          Result = compareLt(a1.m_Val.String, a2.m_Val.String);
+          break;
+
         case tType.RT_COMMENT:
         case tType.RT_BOOL:
         case tType.RT_COMPLEX:
@@ -187,6 +192,44 @@ namespace libParser
           break;
       }
       return Result;
+    }
+
+    private static bool compareLt(string s1, string s2)
+    {
+      if (s1.Length < s2.Length)
+        return true;
+      else if (s1.Length > s2.Length)
+        return false;
+      else
+      {
+        for(int i = 0;  i < s1.Length; i++)
+        {
+          if(s1[i] > s2[i])
+            return false;
+          if (s1[i] < s2[i])
+            return true;
+        }
+      }
+      return false;
+    }
+
+    private static bool compareGt(string s1, string s2)
+    {
+      if (s1.Length > s2.Length)
+        return true;
+      else if (s1.Length < s2.Length)
+        return false;
+      else
+      {
+        for (int i = 0; i < s1.Length; i++)
+        {
+          if (s1[i] < s2[i])
+            return false;
+          if (s1[i] > s2[i])
+            return true;
+        }
+      }
+      return false;
     }
 
     public static bool operator <=(AnyType a1, AnyType a2)
@@ -221,6 +264,9 @@ namespace libParser
           Result = (a1.m_Val.Double > a2.getFloat());
           break;
         case tType.RT_STR:
+          Result = compareGt(a1.m_Val.String, a2.m_Val.String);
+          break;
+
         case tType.RT_COMMENT:
         case tType.RT_BOOL:
         case tType.RT_COMPLEX:
@@ -1389,6 +1435,25 @@ namespace libParser
 	  }
       return retVal;
     }
+
+
+    public static bool checkTimeString(string str)
+    {
+      if (str.Substring(0, 2) != "0d")
+        return false;
+      if (str.Substring(4, 1) != "-")
+        return false;
+      if (str.Substring(7, 1) != "-")
+        return false;
+      if (str.Substring(10, 1) != "T")
+        return false;
+      if (str.Substring(13, 1) != ":")
+        return false;
+      if (str.Substring(16, 1) != ":")
+        return false;
+      return true;
+    }
+
 
     // Datentyp
     tType m_Type;

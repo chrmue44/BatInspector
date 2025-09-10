@@ -8,9 +8,9 @@
              d:DesignHeight="25" d:DesignWidth="190">
     <StackPanel Orientation="Horizontal" Height="25">
     <TextBlock Name="_lbl" Text="lbl1" Margin="0,5,5,0" TextAlignment="Right" HorizontalAlignment="Right" Background="{DynamicResource colorBackGround}"/>
-    <DatePicker Name="_dp" Width="120"></DatePicker>
-    <TextBox Name="_hour" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1" Width="25" Margin="10,0,0,0">00</TextBox>
+    <DatePicker Name="_dp" Width="120" SelectedDateChanged="_dp_SelectedDateChanged"></DatePicker>
+    <TextBox Name="_hour" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1" Width="25" Margin="10,0,0,0 " TextChanged="_hour_TextChanged">00</TextBox>
     <Label>:</Label>
-    <TextBox Name="_min" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1" Width="25">00</TextBox>
+    <TextBox Name="_min" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" BorderThickness="1" Width="25" TextChanged="_min_TextChanged">00</TextBox>
   </StackPanel>
 </UserControl>

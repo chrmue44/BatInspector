@@ -1776,4 +1776,13 @@
   <data name="CtrlMySql_DisconnectFromDB" xml:space="preserve">
     <value>disconnect from DB</value>
   </data>
+  <data name="FilterVarHelpSnr" xml:space="preserve">
+    <value>Bitte</value>
+  </data>
+  <data name="ExpGen_TIME" xml:space="preserve">
+    <value>time</value>
+  </data>
+  <data name="ctlExpressionEditorTodoDate" xml:space="preserve">
+    <value>Please enter date % time</value>
+  </data>
 </root>

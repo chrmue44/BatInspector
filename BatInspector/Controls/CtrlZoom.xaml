@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="44"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="165"></RowDefinition>
+            <RowDefinition Height="110"></RowDefinition>
         </Grid.RowDefinitions>
         <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" VerticalAlignment="Top">
             <ToolBar x:Name="_tb"  HorizontalAlignment="Left" Height="44" VerticalAlignment="Top">
@@ -213,7 +213,7 @@
                     <local:ctlDataItem x:Name="_ctlTimeMax"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}"   >
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="380"   >
                 <GroupBox.Header>
                     <TextBlock Text="{x:Static res:MyResources.CallInformation}" FontWeight="Bold" />
                 </GroupBox.Header>
@@ -223,16 +223,25 @@
                         <local:ctlSelectItem x:Name="_ctlSelectCall" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                         <Button x:Name="_btnNext" Width="30" HorizontalAlignment="Left" Margin="5,0,0,0" Click="_btnNext_Click" Content="-&gt;"/>
                     </StackPanel>
-                    <local:ctlDataItem x:Name="_ctlFMin"/>
-                    <local:ctlDataItem x:Name="_ctlFMax"/>
-                    <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
-                    <local:ctlDataItem x:Name="_ctlDuration"/>
-                    <local:ctlDataItem x:Name="_ctlDist"/>
-                    <local:ctlDataItem x:Name="_ctlSnr"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <local:ctlDataItem x:Name="_ctlFMin"/>
+                            <local:ctlDataItem x:Name="_ctlFMax"/>
+                            <local:ctlDataItem x:Name="_ctlFMaxAmpl"/>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <local:ctlDataItem x:Name="_ctlDuration"/>
+                            <local:ctlDataItem x:Name="_ctlDist"/>
+                            <local:ctlDataItem x:Name="_ctlSnr"/>
+
+                        </StackPanel>
+                    </StackPanel>
+
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Name="_gbMean" Template="{DynamicResource GroupBoxCmu}" >
+         <!--   <GroupBox Name="_gbMean" Template="{DynamicResource GroupBoxCmu}" >
                 <GroupBox.Header>
                     <TextBlock Text="{x:Static res:MyResources.CtrlZoomMeanValues}" FontWeight="Bold" />
                 </GroupBox.Header>
@@ -247,7 +256,7 @@
                     <local:ctlDataItem x:Name="_ctlMeanDuration"/>
                     <local:ctlDataItem x:Name="_ctlMeanDist"/>
                 </StackPanel>
-            </GroupBox>
+            </GroupBox> -->
             <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="180">
                 <GroupBox.Header>
                     <TextBlock Text="{x:Static res:MyResources.CtlZoomRecInfo}" FontWeight="Bold" />
@@ -255,11 +264,11 @@
                 <StackPanel>
                     <local:ctlDataItem x:Name="_ctlDateTime" />
                     <local:ctlDataItem x:Name="_ctlGpsPos" />
-                    <Button x:Name="_btnShowLoc" Height="22" Width="75" HorizontalAlignment="Right" Content="{x:Static res:MyResources.CtlZoomBtnShowPlace}" Click="_btnShowLoc_Click"/>
-                    <local:ctlDataItem x:Name="_ctlGain" />
+                    <Button x:Name="_btnShowLoc" Height="22" Width="75" HorizontalAlignment="Right" Content="{x:Static res:MyResources.CtlZoomBtnShowPlace}" Click="_btnShowLoc_Click" Margin="5"/>
+             <!--       <local:ctlDataItem x:Name="_ctlGain" />
                     <local:ctlDataItem x:Name="_ctlTrigLevel" />
                     <local:ctlDataItem x:Name="_ctlTrigFilter" />
-                    <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />
+                    <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />  -->
                 </StackPanel>
             </GroupBox>
             <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpData" Margin="5" Padding="2" MinWidth="200">

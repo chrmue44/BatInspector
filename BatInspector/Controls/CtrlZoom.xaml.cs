@@ -157,8 +157,6 @@ namespace BatInspector.Controls
       App.Model.ZoomView.initWaterfallDiagram(wavName);
       _duration.setValue(App.Model.ZoomView.Waterfall.Duration);
       _sampleRate.setValue((double)App.Model.ZoomView.Waterfall.SamplingRate / 1000);
-      //_ctlRange.setup(MyResources.CtlZoomRange + " [dB]:", enDataType.DOUBLE, 0, 100, 80, true, rangeChanged);
-      //_ctlRange.setValue(AppParams.Inst.GradientRange);
       SizeChanged += ctrlZoom_SizeChanged;
       MouseDown += ctrlZoomMouseDown;
 
@@ -195,31 +193,12 @@ namespace BatInspector.Controls
       if(species != null)
         _ctlSpecMan.setItems(species.ToArray());
       _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
-      _gbMean.Visibility = Visibility.Collapsed;
-      _ctlMeanCallMin.setup(MyResources.CtrlZoomFirst, 1, 40, 40, calcMeanValues);
-      _ctlMeanCallMax.setup(MyResources.CtrlZoomLast, 1, 40, 40, calcMeanValues);
-      _ctlMeanDist.setup(MyResources.CtlZoomDistToPrev, enDataType.DOUBLE, 1, 130);
-      _ctlMeanDuration.setup(MyResources.Duration + " [ms]: ", enDataType.DOUBLE, 1, 130);
-      _ctlMeanFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, 130);
-      _ctlMeanFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, 130);
-      _ctlMeanFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, 130);
-
       int wt = 140;
-      //int wv = 130;
       _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt);
       DateTime t = AnyType.getDate(App.Model.ZoomView.FileInfo.DateTime);
       _ctlDateTime.setValue(AnyType.getTimeString(t, true));
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
       _ctlGpsPos.setValue(ElekonInfoFile.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
-      _ctlGain.setup(BatInspector.Properties.MyResources.CtlZoomGain, enDataType.STRING, 0, wt);
-      _ctlGain.setValue(App.Model.ZoomView.FileInfo.Gain);
-      _ctlTrigLevel.setup(BatInspector.Properties.MyResources.CtlZoomTrigLevel, enDataType.STRING, 0, wt);
-      _ctlTrigLevel.setValue(App.Model.ZoomView.FileInfo.Trigger.Level);
-      _ctlTrigFilter.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilt, enDataType.STRING, 0, wt);
-      _ctlTrigFilter.setValue(App.Model.ZoomView.FileInfo.Trigger.Filter);
-      _ctlTrigFiltFreq.setup(BatInspector.Properties.MyResources.CtlZoomTrigFilttFreq, enDataType.STRING, 0, wt);
-      _ctlTrigFiltFreq.setValue(App.Model.ZoomView.FileInfo.Trigger.Frequency);
-
       _ctlSpectrum.init(App.Model.ZoomView.Spectrum, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
 
 
@@ -263,20 +242,13 @@ namespace BatInspector.Controls
     {
       if (App.Model.ZoomView.Analysis.Calls.Count > 0)
       {
-        Stopwatch sw = new Stopwatch(); //@@@
         setVisabilityCallData(true);
         string[] items = new string[App.Model.ZoomView.Analysis.Calls.Count];
         for (int i = 0; i < App.Model.ZoomView.Analysis.Calls.Count; i++)
           items[i] = App.Model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
         _ctlSelectCall.setItems(items);
         _ctlSelectCall2.setItems(items);
-        _ctlMeanCallMin.setItems(items);
-        _ctlMeanCallMax.setItems(items);
         setupCallData(0);
-        _ctlMeanCallMin.setValue("1");
-        _ctlMeanCallMax.setValue(App.Model.ZoomView.Analysis.Calls.Count.ToString());
-        if(_modelType != enModel.BATTY_BIRD_NET)
-          calcMeanValues(0, 0);
       }
       else
       {
@@ -910,12 +882,7 @@ namespace BatInspector.Controls
       }
     }
 
-    /*
-    private void _btnPause_Click(object sender, RoutedEventArgs e)
-    {
-      App.Model.ZoomView.Waterfall.pause();
-    }
-    */
+
     private void play(int stretch)
     {
       _stretch = stretch;
@@ -1128,40 +1095,6 @@ namespace BatInspector.Controls
       _cbZoomAmpl_Click(null, null);
     }
 
-    public void calcMeanValues(int idx, object val)
-    {
-      int.TryParse(_ctlMeanCallMin.getValue(), out int min);
-      min--;
-      int.TryParse(_ctlMeanCallMax.getValue(), out int max);
-      max--;
-      if ((min >= 0) && (max < App.Model.ZoomView.Analysis.Calls.Count))
-      {
-        double fMin = 0;
-        double fMax = 0;
-        double fMaxAmpl = 0;
-        double duration = 0;
-        double callDist = 0;
-        int count = max - min + 1;
-        int countDistPrev = count;
-        if (min == 0)
-          countDistPrev = count - 1;
-        {
-          for (int i = min; i <= max; i++)
-          {
-            fMin += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MIN) / count;
-            fMax += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX) / count;
-            fMaxAmpl += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.F_MAX_AMP) / count;
-            duration += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.DURATION) / count;
-            callDist += App.Model.ZoomView.Analysis.Calls[i].getDouble(Cols.CALL_INTERVALL) / countDistPrev;
-          }
-          _ctlMeanDist.setValue(callDist);
-          _ctlMeanFMax.setValue(fMax / 1000);
-          _ctlMeanFMin.setValue(fMin / 1000);
-          _ctlMeanFMaxAmpl.setValue(fMaxAmpl / 1000);
-          _ctlMeanDuration.setValue(duration);
-        }
-      }
-    }
 
     private void setupCallData(int idx)
     {
@@ -1535,8 +1468,6 @@ namespace BatInspector.Controls
     private void _cbGrid_Click(object sender, RoutedEventArgs e)
     {
       drawGrid();
-    }
-
- 
+    } 
   }
 }

@@ -279,15 +279,15 @@ namespace BatInspector
         switch (_modelType)
         {
           case enModel.BAT_DETECT2:
-            _reportBd2.Clear();
+            _reportBd2?.Clear();
             break;
           
             case enModel.BATTY_BIRD_NET:
-          _reportBattyBirdNet.Clear();
+          _reportBattyBirdNet?.Clear();
             break;
 
           case enModel.BIRDNET:
-          _reportBirdNet.Clear();
+          _reportBirdNet?.Clear();
             break;
         }
 
@@ -476,9 +476,15 @@ namespace BatInspector
     BitmapImage _bImgXt = null;
     BitmapImage _bImgFt = null;
     dlgRelease _dlgRelease;
+    MemoryStream _memory;
 
     public BitmapImage ImageXt { get { return _bImgXt; } }
     public BitmapImage ImageFt { get { return _bImgFt; } }
+
+    public Sonogram()
+    {
+      _memory = new MemoryStream();
+    }
 
     public void setCallBack(dlgRelease dlg)
     {
@@ -523,22 +529,19 @@ namespace BatInspector
       var bitmapImage = new BitmapImage();
       try
       {
-        lock (App.Model.View.Prj)
+        lock (this)
         {
-          using (MemoryStream memory = new MemoryStream())
-          {
-            memory.Position = 0;
-            memory.SetLength(0);
-            bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+            _memory.Position = 0;
+            _memory.SetLength(0);
+            bitmap.Save(_memory, System.Drawing.Imaging.ImageFormat.Png);
             bitmapImage.BeginInit();
             bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.StreamSource = memory;
+            bitmapImage.StreamSource = _memory;
             bitmapImage.StreamSource.Flush();
             //        bitmapImage.CacheOption = BitmapCacheOption.None;
             bitmapImage.EndInit();
             bitmapImage.Freeze();
-            bitmapImage.StreamSource.Dispose();
-          }
+//            bitmapImage.StreamSource.Dispose();
         }
       }
       catch (Exception ex)

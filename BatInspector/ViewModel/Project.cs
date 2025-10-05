@@ -260,7 +260,41 @@ namespace BatInspector
         }
         return retVal;
       } 
+
     }
+
+    public string TriggerSettings
+    {
+      get
+      {
+        string retVal = "";
+        if ((Analysis != null) && (Analysis.Files != null) && (Analysis.Files.Count > 0))
+        {
+          string xmlName = Path.Combine(PrjDir, WavSubDir,
+                                 Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
+          BatRecord r = ElekonInfoFile.read(xmlName);
+          retVal = r.Trigger.getTriggerSettings();
+        }
+        return retVal;
+      }
+    }
+
+    public string AmpSettings
+    {
+      get
+      {
+        string retVal = "";
+        if ((Analysis != null) && (Analysis.Files != null) && (Analysis.Files.Count > 0))
+        {
+          string xmlName = Path.Combine(PrjDir, WavSubDir,
+                                 Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
+          BatRecord r = ElekonInfoFile.read(xmlName);
+          retVal = $"Gain: {r.Gain}; InputFilter:{r.InputFilter}";
+        }
+        return retVal;
+      }
+    }
+
 
 
 

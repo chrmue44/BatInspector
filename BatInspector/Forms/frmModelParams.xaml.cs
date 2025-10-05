@@ -26,6 +26,9 @@ namespace BatInspector.Forms
     Project _prj;
     ctlDataItem _ctlCr;
     ctlDataItem _ctlLoc;
+    ctlDataItem _ctlTrigSet;
+    ctlDataItem _ctlAmpSet;
+
     int _nrOfPrjParams;
 
     public frmModelParams(Project prj)
@@ -47,7 +50,15 @@ namespace BatInspector.Forms
       _ctlLoc.setup(MyResources.frmModParsLocation, enDataType.STRING, 0, 140, true);
       _ctlLoc.setValue(_prj.Location);
       _sp.Children.Add(_ctlLoc);
-      _nrOfPrjParams = 2;
+      _ctlTrigSet = new ctlDataItem();
+      _ctlTrigSet.setup(MyResources.frmModTrigSettings, enDataType.STRING, 0, 140, false);
+      _ctlTrigSet.setValue(_prj.TriggerSettings);
+      _sp.Children.Add(_ctlTrigSet);
+      _ctlAmpSet = new ctlDataItem();
+      _ctlAmpSet.setup(MyResources.frmModAmpSettings, enDataType.STRING, 0, 140, false);
+      _ctlAmpSet.setValue(_prj.AmpSettings);
+      _sp.Children.Add(_ctlAmpSet);
+      _nrOfPrjParams = 4;
 
       for(int i = 0; i < mp.Length; i++) 
       {

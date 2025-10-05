@@ -2176,6 +2176,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amplifier Settings.
+        /// </summary>
+        public static string frmModAmpSettings {
+            get {
+                return ResourceManager.GetString("frmModAmpSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Available Models.
         /// </summary>
         public static string frmModelParamsUpdate {
@@ -2208,6 +2217,15 @@ namespace BatInspector.Properties {
         public static string frmModParsTitle {
             get {
                 return ResourceManager.GetString("frmModParsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger settings.
+        /// </summary>
+        public static string frmModTrigSettings {
+            get {
+                return ResourceManager.GetString("frmModTrigSettings", resourceCulture);
             }
         }
         

@@ -1785,4 +1785,10 @@
   <data name="ctlExpressionEditorTodoDate" xml:space="preserve">
     <value>Bitte Datum &amp; Uhrzeit angeben</value>
   </data>
+  <data name="frmModTrigSettings" xml:space="preserve">
+    <value>Einstellung Triggerung</value>
+  </data>
+  <data name="frmModAmpSettings" xml:space="preserve">
+    <value>Einstellung Vorverstärker</value>
+  </data>
 </root>

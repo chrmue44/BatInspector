@@ -263,6 +263,7 @@ namespace BatInspector.Forms
         {
           _ctlPrjBtn.initFileButton(true);
           _tbSum.Visibility = Visibility.Collapsed;
+          collapseTreeView(true);
           worker.DoWork += delegate (object s, DoWorkEventArgs args)
           {
             FileInfo f = (FileInfo)args.Argument;

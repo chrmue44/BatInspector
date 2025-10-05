@@ -77,6 +77,7 @@ namespace libScripter
     bool _executed;
     bool _debug;
     dlgFinishExecution _dlgFinish;
+    Expression _formula;
 
     //    string _codeSection;
     CodeBlock _currBlock;
@@ -103,6 +104,7 @@ namespace libScripter
         _vars = new Variables();
       else
         _vars = vars;
+      _formula = new Expression(_vars.VarList);
       _methods = new List<MethodList>();
       _debug = false;
       _dlgFinish = null;
@@ -215,6 +217,9 @@ namespace libScripter
     public void addMethodList(MethodList mthd)
     {
       _methods.Add(mthd);
+      _formula = new Expression(_vars.VarList);
+      foreach (MethodList m in _methods)
+        _formula.addMethodList(m);
     }
 
     public void restartForDbg(string fileName)
@@ -348,12 +353,9 @@ namespace libScripter
       {
         if (_debug && !string.IsNullOrEmpty(_breakPoints[_actLineNr]))
         {
-          Expression formula = new Expression(_vars.VarList);
-          foreach (MethodList m in _methods)
-            formula.addMethodList(m);
-          AnyType res = formula.parse(_breakPoints[_actLineNr]);
-          if (res.getBool() == true)
-            break;
+            AnyType res = _formula.parse(_breakPoints[_actLineNr]);
+            if (res.getBool() == true)
+              break;
         }
 
         interpretOneLine();
@@ -647,12 +649,9 @@ namespace libScripter
         return "0";
       if (_lastToken == enToken.FORMULA)
       {
-        Expression formula = new Expression(_vars.VarList);
-        foreach (MethodList m in _methods)
-          formula.addMethodList(m);
-        retVal = formula.parseToString(_actName);
+        retVal = _formula.parseToString(_actName);
         _executed = true;
-        if (formula.Errors > 0)
+        if (_formula.Errors > 0)
           DebugLog.log("Error parsing formula: '" + _actName + "', result:" + retVal, enLogType.ERROR);
         if (GetToken() != enToken.EOL)
           retVal = "commannds after formula not allowed";
@@ -671,13 +670,10 @@ namespace libScripter
             args.Add(_actName);
           else if (_lastToken == enToken.FORMULA)
           {
-            Expression formula = new Expression(_vars.VarList);
-            foreach (MethodList m in _methods)
-              formula.addMethodList(m);
-            string result = formula.parseToString(_actName);
-            if (formula.Errors > 0)
-              DebugLog.log("Error parsing formula: '" + _actName + "', result:" + result, enLogType.ERROR);
-            args.Add(result);
+              string result = _formula.parseToString(_actName);
+              if (_formula.Errors > 0)
+                DebugLog.log("Error parsing formula: '" + _actName + "', result:" + result, enLogType.ERROR);
+              args.Add(result);
           }
           else if (_lastToken == enToken.UNKNOWN)
           {

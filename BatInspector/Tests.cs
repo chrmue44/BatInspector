@@ -575,7 +575,7 @@ namespace BatInspector
       double tStart = f.Calls[0].getDouble(Cols.START_TIME);
       double tEnd = tStart + f.Calls[0].getDouble(Cols.DURATION) / 1000;
       double snr = w.calcSnr(tStart, tEnd);
-      assert("SNR call 1", Math.Abs(snr - 15.9) < 0.1);
+      assert("SNR call 1", Math.Abs(snr - 15.905) < 0.1);
 
       tStart = f.Calls[9].getDouble(Cols.START_TIME);
       tEnd = tStart + f.Calls[7].getDouble(Cols.DURATION) / 1000;

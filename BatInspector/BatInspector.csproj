@@ -264,6 +264,7 @@
     <Compile Include="Forms\FrmConnectMysql.xaml.cs">
       <DependentUpon>FrmConnectMysql.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>

@@ -8,6 +8,8 @@ TODO
   
 
 # V0.9.5.0
+- bugfix: fixed memory issue on script execution on large project (5000 files) with many (>100000) calls
+- bugfix: in rare cases report creation after AI analysis hangs in calcSnr()
 - added project upload to MySQL server
 - added project parameters "CreatedBy", "Location", "TriggerSettings", "AmplifierSettings" 
   to project (to document the name of the person who created the project 
@@ -22,7 +24,6 @@ TODO
 - added MySQL dashboard to create simple queries
 - added option 'RecordingTime' to filter expression
 - removed trigger information from zoom view: more space for sonogram
-- bugfix: fixed memory issue on script execution on large project (5000 files) with many (>100000) calls
 
 # V0.9.4.4  
 - bugfix: write error of AnalysisFile removed (in projects without AI report)

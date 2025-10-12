@@ -775,7 +775,7 @@ namespace BatInspector
       double retVal = 0;
       int idx = (int)(tStart * _format.Frequency);
       int wSlice = (int)(width * _format.Frequency);
-      double idxEnd = tEnd * _format.Frequency;
+      int idxEnd = (int)(tEnd * _format.Frequency);
       if (idxEnd >= _data.WaveData.Length)
         idxEnd = _data.WaveData.Length - 1;
       double max = 0;
@@ -788,9 +788,10 @@ namespace BatInspector
       }
       double min = max;
 
+      bool backW = idx > (_data.WaveData.Length / 2);
       while ((idx < (_data.WaveData.Length - wSlice)) && (idx > 6 * wSlice))
       {
-        if (idx > _data.WaveData.Length / 2)
+        if (backW)
           idx -= 6 * wSlice;
         double sum = calcSlicePower(ref idx, 3 * wSlice);
         if (sum < min)

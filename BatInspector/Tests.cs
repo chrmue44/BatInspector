@@ -436,7 +436,7 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
       {
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
+        string repName = Project.containsReport(subDir, enModel.BAT_DETECT2, App.Model.DefaultModelParams[0], out string summaryName);
         if (repName != "")
         {
           ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
@@ -742,7 +742,7 @@ namespace BatInspector
       DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
       {
-        string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
+        string repName = Project.containsReport(subDir, enModel.BAT_DETECT2, App.Model.DefaultModelParams[0], out string summaryName);
         if (repName != "")
         {
           App.Model.initProject(subDir, false);
@@ -811,7 +811,7 @@ namespace BatInspector
     {
       DirectoryInfo subDir = new DirectoryInfo(prjName);
       
-      string repName = Project.containsReport(subDir, AppParams.PRJ_REPORT, App.Model.DefaultModelParams[0]);
+      string repName = Project.containsReport(subDir, enModel.BAT_DETECT2, App.Model.DefaultModelParams[0], out string summaryName);
       if (repName != "")
       {
         App.Model.initProject(subDir, false);

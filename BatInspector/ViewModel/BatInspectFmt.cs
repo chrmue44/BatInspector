@@ -117,6 +117,21 @@ public class ModelParams
     }
     return retVal;
   }
+
+  public static ModelParams GetModelParams(enModel model, ModelParams[] modelParams)
+  {
+    ModelParams retVal = null;
+    foreach (ModelParams p in modelParams)
+    {
+      if (p.Type == model)
+      {
+        retVal = p;
+        break;
+      }
+    }
+    return retVal;
+  }
+
 }
 
 

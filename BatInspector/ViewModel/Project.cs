@@ -434,24 +434,18 @@ namespace BatInspector
     /// <param name="dir">directory info of directory to check</param>
     /// <param name="repName">naem of the report to search for</param>
     /// <returns></returns>
-    public static string containsReport(DirectoryInfo dir, string repName, ModelParams modelParams)
+    public static string containsReport(DirectoryInfo dir, enModel model, ModelParams modelParams, out string summaryName)
     {
-      string dirName = Path.Combine(dir.FullName, modelParams.SubDir); 
-      if (Directory.Exists(dirName))
+      string repName = "";
+      summaryName = "";
+      if (containsProject(dir) != "")
       {
-        try
-        {
-          string[] files = System.IO.Directory.GetFiles(dirName, "*" + AppParams.EXT_CSV,
-                           System.IO.SearchOption.TopDirectoryOnly);
-          foreach (string file in files)
-          {
-            if (file.IndexOf(repName) >= 0)
-              return file;
-          }
-        }
-        catch { }
+        Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
+        prj.readPrjFile(dir.FullName);
+        repName = prj.getReportName(prj.SelectedModelIndex);
+        summaryName = prj.getSummaryName(prj.SelectedModelIndex);
       }
-      return "";
+      return repName;
     }
 
     /// <summary>
@@ -1054,7 +1048,7 @@ namespace BatInspector
 
         Project dstprj = new Project(false, modelParams, modelCount);
         dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
-
+        dstprj.assignNewModelParams(prj.AvailableModelParams);
         copyAnalysisPart(prj, dstprj);
         retVal.Add(dirName);
       }

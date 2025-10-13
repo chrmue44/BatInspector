@@ -65,8 +65,14 @@ namespace BatInspector
       ErrText = "";
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        DebugLog.log("starting to split project..", enLogType.INFO);
         int maxFilesPerProject = 600;
+        if (pars.Count > 0)
+        {
+          bool ok = int.TryParse(pars[0], out int val);
+          if (ok)
+            maxFilesPerProject = val;
+        }
+        DebugLog.log("starting to split project..", enLogType.INFO);
         double prjCount = (double)App.Model.Prj.Records.Length / maxFilesPerProject + 1;
         if (prjCount > (int)prjCount)
           prjCount += 1;

@@ -486,7 +486,7 @@ namespace BatInspector
     public void createCsvReportSync()
     {
       DebugLog.log("start generation of sum report", enLogType.INFO);
-      initDirTree(_rootDir, "report");
+      initDirTree(_rootDir, enModel.BAT_DETECT2);
       _rep = new Csv(true);
       string[] header = { Cols.DATE, Cols.DAYS, Cols.LAT, Cols.LON, Cols.TEMP_MIN, Cols.TEMP_MAX, Cols.HUMID_MIN, Cols.HUMID_MAX };
       _rep.initColNames(header, true);
@@ -538,7 +538,7 @@ namespace BatInspector
     void createActivityDiagSync()
     {
       DebugLog.log("start creating activity diagram...", enLogType.INFO);
-      initDirTree(_rootDir, "report");
+      initDirTree(_rootDir, enModel.BAT_DETECT2);
 
       DateTime date = _start;
       int minsPerPoint = 5;
@@ -602,7 +602,7 @@ namespace BatInspector
     {
       SumReportJson retVal = new SumReportJson();
       _modelParams = modelPars;
-      initDirTree(rootDir, "report");
+      initDirTree(rootDir, enModel.BAT_DETECT2);
 
       DateTime date = start;
       while (date < end)
@@ -676,17 +676,17 @@ namespace BatInspector
     }
 
 
-    void crawlDirTree(DirectoryInfo dir, string reportName)
+    void crawlDirTree(DirectoryInfo dir, enModel model)
     {
       foreach (DirectoryInfo subDir in dir.GetDirectories())
       {
-        crawlDirTree(subDir, reportName);
-        string prjFile = Project.containsReport(subDir, reportName, _modelParams);
-        if (prjFile != "")
+        crawlDirTree(subDir, model);
+        string reportFile = Project.containsReport(subDir, model, _modelParams, out string summaryName);
+        if (reportFile != "")
         {
           Csv csv = new Csv();
-          csv.read(prjFile, AppParams.CSV_SEPARATOR, true);
-          string colName = (reportName.IndexOf("summary") >= 0) ? "Date" : Cols.REC_TIME; 
+          csv.read(reportFile, AppParams.CSV_SEPARATOR, true);
+          string colName = (reportFile.IndexOf("summary") >= 0) ? "Date" : Cols.REC_TIME; 
           findStartEnd(csv, colName, out string startDateStr, out string endDateStr);
           DateTime startDate = new DateTime();
           DateTime endDate = new DateTime();
@@ -711,12 +711,12 @@ namespace BatInspector
             ok_s = false;
           }
           if(!ok_s || !ok_e)
-            DebugLog.log($"unrecognized date format in {prjFile}:  {startDateStr} and/or {endDateStr}", enLogType.ERROR);
+            DebugLog.log($"unrecognized date format in {reportFile}:  {startDateStr} and/or {endDateStr}", enLogType.ERROR);
 
           ReportListItem rec = new ReportListItem
           {
-            ReportName = prjFile,
-            SummaryName = Path.Combine(Path.GetDirectoryName(prjFile), AppParams.PRJ_SUMMARY),
+            ReportName = reportFile,
+            SummaryName = summaryName,
             StartDate = startDate,
             EndDate = endDate
           };
@@ -811,12 +811,12 @@ namespace BatInspector
     }
 
 
-    void initDirTree(string rootDir, string reportName)
+    void initDirTree(string rootDir, enModel model)
     {
       _rootDir = rootDir;
       _dirInfo = new DirectoryInfo(rootDir);
       _reports.Clear();
-      crawlDirTree(_dirInfo, reportName);
+      crawlDirTree(_dirInfo, model);
     }
 
 

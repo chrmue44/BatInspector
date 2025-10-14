@@ -321,16 +321,12 @@ namespace BatInspector
       ErrText = "";
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        /*
-        if (!App.Model.MySQL.IsConnected)
-        {
-          FrmConnectMysql f = new FrmConnectMysql();
-          if(f.ShowDialog() == true)
-            App.Model.MySQL.connect(f.Server, f.DataBase, f.User, f.PassWord);
-        }*/
         if (App.Model.MySQL.IsConnected)
         {
-          retVal = App.Model.MySQL.DbBats.addProjectToDb(App.Model.Prj);
+          bool overRideWarning = false;
+          if ((pars.Count > 0) && (pars[0] == "1"))
+            overRideWarning = true;
+          retVal = App.Model.MySQL.DbBats.addProjectToDb(App.Model.Prj, overRideWarning);
           if (retVal != 0)
             ErrText = "error adding project to MySQL database";
         }

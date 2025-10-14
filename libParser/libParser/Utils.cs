@@ -552,5 +552,13 @@ namespace libParser
         return true;
       return false;
     }
+
+    public static string left(string s, int len)
+    {
+      if (s.Length <= len)
+        return s;
+      else
+        return s.Substring(0, len);
+    }
   }
 }

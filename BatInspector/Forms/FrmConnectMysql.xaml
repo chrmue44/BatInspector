@@ -17,7 +17,10 @@
             <local:ctlDataItem x:Name="_ctlServer"/>
             <local:ctlDataItem x:Name="_ctlDataBase"/>
             <local:ctlDataItem x:Name="_ctlUser"/>
-            <local:ctlDataItem x:Name="_ctlPassWord"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Name="_lbPassword"  Width="125" HorizontalContentAlignment="Right" Content="{x:Static res:MyResources.Password}"></Label>
+                <PasswordBox Name="_tbPassword"  Width="150" Height="20"></PasswordBox>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Width="120" Click="_btnCancel_Click"/>

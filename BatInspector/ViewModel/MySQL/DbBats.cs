@@ -37,7 +37,7 @@ namespace BatInspector
     /// <param name="prj"></param>
     /// <param name="altWavPath">alternative wav path if differing from project</param>
     /// <returns></returns>
-    public int addProjectToDb(Project prj, string altWavPath = "")
+    public int addProjectToDb(Project prj, bool overRideWarning, string altWavPath = "")
     {
       int retVal = -1;
       if (!prj.Ok)
@@ -50,7 +50,7 @@ namespace BatInspector
         DebugLog.log("addProjectToDb: project does not contain analysis data, aborted", enLogType.ERROR);
         return 2;
       }
-      retVal = addPrjToTableProjects(prj, altWavPath);
+      retVal = addPrjToTableProjects(prj, overRideWarning, altWavPath);
       if (retVal != 0)
         return retVal;
 
@@ -110,7 +110,7 @@ namespace BatInspector
     /// <param name="person"></param>
     /// <param name="altWavPath"></param>
     /// <returns></returns>
-    public int addPrjToTableProjects(Project prj, string altWavPath = "")
+    public int addPrjToTableProjects(Project prj, bool overRideWarning, string altWavPath = "")
     {
 
       if (!_db.checkIfOpen("addPrj"))
@@ -134,33 +134,42 @@ namespace BatInspector
       string recDev = r.SN;
       string id = prj.PrjId; // recDev + "_" + date;
       string sqlc = $"SELECT id FROM projects WHERE id ='{id}';";
+
       List<sqlRow> res = _db.execQuery(sqlc);
-      if (res.Count > 0)
+      if (!overRideWarning)
       {
-        DebugLog.log($"addProject not executed because project '{id}' already in db", enLogType.ERROR);
-        return 3;
+        if (res.Count > 0)
+        {
+          DebugLog.log($"addProject not executed because project '{id}' already in db", enLogType.ERROR);
+          return 3;
+        }
       }
 
-      StringBuilder sqlCmd = new StringBuilder();
-      sqlCmd.Append("INSERT INTO projects\n");
-      sqlCmd.Append($"({DBBAT.ID},{DBBAT.DATE},{DBBAT.RECDEV},{DBBAT.SWVER},{DBBAT.PRJCREATOR},");
-      sqlCmd.Append($"{DBBAT.PATH_TO_WAV},{DBBAT.MICID},{DBBAT.CLASSI},{DBBAT.MODEL},{DBBAT.LOC},");
-      sqlCmd.Append($"{DBBAT.PRJ_NOTES}, {DBBAT.TRIG_SET})\n");
-      sqlCmd.Append("VALUES\n");
+      if (res.Count == 0)
+      {
+        StringBuilder sqlCmd = new StringBuilder();
+        sqlCmd.Append("INSERT INTO projects\n");
+        sqlCmd.Append($"({DBBAT.ID},{DBBAT.DATE},{DBBAT.RECDEV},{DBBAT.SWVER},{DBBAT.PRJCREATOR},");
+        sqlCmd.Append($"{DBBAT.PATH_TO_WAV},{DBBAT.MICID},{DBBAT.CLASSI},{DBBAT.MODEL},{DBBAT.LOC},");
+        sqlCmd.Append($"{DBBAT.PRJ_NOTES}, {DBBAT.TRIG_SET})\n");
+        sqlCmd.Append("VALUES\n");
 
 
-      string sw = r.Firmware;
-      string pwav = string.IsNullOrEmpty(altWavPath) ? Path.Combine(prj.PrjDir, prj.WavSubDir) : altWavPath;
-      pwav = pwav.Replace('\\', '/');
-      string mic = prj.MicId;
-      string clsf = prj.AvailableModelParams[prj.SelectedModelIndex].Name;
-      string model = prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
-      string person = prj.CreateBy;
-      string location = prj.Location;
-      string notes = prj.Notes;
-      sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}', ");
-      sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}', '{trigSettings}');\n");
-      return _db.execNonQuery(sqlCmd.ToString());
+        string sw = r.Firmware;
+        string pwav = string.IsNullOrEmpty(altWavPath) ? Path.Combine(prj.PrjDir, prj.WavSubDir) : altWavPath;
+        pwav = pwav.Replace('\\', '/');
+        string mic = prj.MicId;
+        string clsf = prj.AvailableModelParams[prj.SelectedModelIndex].Name;
+        string model = prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
+        string person = prj.CreateBy;
+        string location = prj.Location;
+        string notes = prj.Notes;
+        sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}', ");
+        sqlCmd.Append($"'{clsf}','{model}','{location}', '{notes}', '{trigSettings}');\n");
+        return _db.execNonQuery(sqlCmd.ToString());
+      }
+      else
+        return 0;
     }
 
     
@@ -325,9 +334,9 @@ namespace BatInspector
       string cint = call.getDouble(Cols.CALL_INTERVALL).ToString(CultureInfo.InvariantCulture);
       string bw = call.getDouble(Cols.BANDWIDTH).ToString(CultureInfo.InvariantCulture);
       string snr = call.getDouble(Cols.SNR).ToString(CultureInfo.InvariantCulture);
-      string spa = call.getString(Cols.SPECIES);
-      string spm = call.getString(Cols.SPECIES_MAN);
-      string rem = call.getString(Cols.REMARKS);
+      string spa = Utils.left(call.getString(Cols.SPECIES), 34);
+      string spm = Utils.left(call.getString(Cols.SPECIES_MAN),19);
+      string rem = Utils.left(call.getString(Cols.REMARKS), 44);
       string prob = call.getDouble(Cols.PROBABILITY).ToString(CultureInfo.InvariantCulture);
       sqlCmd.Append($"('{id}','{fileId}', {nr}, {fmin}, {fmax}, {fchar}, {dur},");
       sqlCmd.Append($"{ts}, {cint}, {bw}, {snr}, '{spa}', '{prob}', '{spm}', '{rem}');");

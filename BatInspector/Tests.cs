@@ -1020,7 +1020,7 @@ namespace BatInspector
         switch (sel)
         {
           case 0:
-            App.Model.MySQL.DbBats.addProjectToDb(prj);
+            App.Model.MySQL.DbBats.addProjectToDb(prj, false);
             DebugLog.log($"adding project: {prj.PrjDir}", enLogType.INFO);
             break;
           case 1:
@@ -1057,7 +1057,7 @@ namespace BatInspector
       Project prj = new Project(false, App.Model.DefaultModelParams[0], App.Model.DefaultModelParams.Length, AppParams.DIR_WAVS);
       prj.readPrjFile(prjPath);
       prj.Analysis.read(analysisFile, prj.AvailableModelParams);
-      res = db.DbBats.addPrjToTableProjects(prj);
+      res = db.DbBats.addPrjToTableProjects(prj, false);
       assert("testMySql: addPrj", res == 0);
 
       res = db.DbBats.addFile(deviceName, prj.PrjId, prj.Analysis.Files[0]);

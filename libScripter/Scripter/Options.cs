@@ -96,7 +96,7 @@ namespace libScripter
           {
             found = true;
             OptItem optItem = new OptItem(feat);
-            if (feat.ParamCount > 0)
+  //          if (feat.ParamCount > 0)
             {
               while (i < args.Length)
               {

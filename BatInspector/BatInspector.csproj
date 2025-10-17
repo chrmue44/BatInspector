@@ -250,6 +250,9 @@
     <Compile Include="Controls\CtlSumReport.xaml.cs">
       <DependentUpon>CtlSumReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlUpDown.xaml.cs">
+      <DependentUpon>ctlUpDown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlVarTable.xaml.cs">
       <DependentUpon>ctlVarTable.xaml</DependentUpon>
     </Compile>
@@ -517,6 +520,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CtlSumReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

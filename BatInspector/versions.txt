@@ -7,10 +7,10 @@ TODO
   - real "inplace" import
   
 
-# V0.9.5.0
+# V0.9.5.0  15.10.25
 - bugfix: fixed memory issue on script execution on large project (5000 files) with many (>100000) calls
 - bugfix: in rare cases (odd nr. of samples) report creation after AI analysis hangs in calcSnr()
-- bugfix: sum report generation now works, when more than one report from diff. models is present
+- bugfix: sum report generation now works, when more than one report from diff. models are present
 - added project upload to MySQL server
 - added project parameters "CreatedBy", "Location", "TriggerSettings", "AmplifierSettings" 
   to project (to document the name of the person who created the project 
@@ -18,7 +18,7 @@ TODO
 - new command AddProjectToDb, DeleteProjectFromDb
 - added parameters and changed order to script function "importPrj"
 - added more parameters to script "bulk_import_batspy.scr"
-- better adaption of script inventory (change of parameter count) in cae of update
+- better adaption of script inventory (change of parameter count) in case of update
 - cleanup: removed unused models
 - more info types in script function getPrjInfo
 - new script function setPrjInfo

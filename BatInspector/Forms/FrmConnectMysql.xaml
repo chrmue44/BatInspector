@@ -18,7 +18,7 @@
             <local:ctlDataItem x:Name="_ctlDataBase"/>
             <local:ctlDataItem x:Name="_ctlUser"/>
             <StackPanel Orientation="Horizontal">
-                <Label Name="_lbPassword"  Width="125" HorizontalContentAlignment="Right" Content="{x:Static res:MyResources.Password}"></Label>
+                <Label Name="_lbPassword"  Width="125" HorizontalContentAlignment  ="Right" Content="{x:Static res:MyResources.Password}"></Label>
                 <PasswordBox Name="_tbPassword"  Width="150" Height="20"></PasswordBox>
             </StackPanel>
         </StackPanel>

@@ -291,19 +291,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public void rangeChanged(enDataType type, object val)
-    {
-      if (type == enDataType.DOUBLE)
-      {
-        double range = (double)val;
-        App.Model.ZoomView.Waterfall.Range = range;
-        updateRuler();
-        updateImage();
-      }
-      else
-        DebugLog.log("wrong data type for 'Range'", enLogType.ERROR);
-    }
-
+  
 
     public void setTimeLimits(double tMin, double tMax)
     {
@@ -1468,6 +1456,32 @@ namespace BatInspector.Controls
     private void _cbGrid_Click(object sender, RoutedEventArgs e)
     {
       drawGrid();
-    } 
+    }
+
+    private void _btnVerify_Click(object sender, RoutedEventArgs e)
+    {
+      frmVerifySpecies frm = new frmVerifySpecies();
+      if (App.Model.ZoomView.Cursor1.Visible && App.Model.ZoomView.Cursor2.Visible)
+      {
+        double tmin = Math.Min(App.Model.ZoomView.Cursor1.Time, App.Model.ZoomView.Cursor2.Time);
+        double tmax = Math.Max(App.Model.ZoomView.Cursor1.Time, App.Model.ZoomView.Cursor2.Time);
+        double fMin = Math.Min(App.Model.ZoomView.Cursor1.Freq, App.Model.ZoomView.Cursor2.Freq);
+        double fMax = Math.Max(App.Model.ZoomView.Cursor1.Freq, App.Model.ZoomView.Cursor2.Freq);
+        frm.setup(null, _sonogramFt, tmin,tmax,fMin,fMax); 
+      }
+      else
+      {
+        AnalysisCall analysis = App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx];
+        double tStart = analysis.getDouble(Cols.START_TIME) - 0.015;
+        if (tStart < 0)
+          tStart = 0;
+        double tEnd = analysis.getDouble(Cols.START_TIME) + analysis.getDouble(Cols.DURATION) / 1000.0 + 0.015;
+        double fMin = Math.Min(analysis.getDouble(Cols.F_MIN) / 1000.0 - 5.0, 10.0);
+        double fMax = Math.Max(analysis.getDouble(Cols.F_MAX) / 1000.0 + 60.0, 100.0);
+
+        frm.setup(analysis, _sonogramFt, tStart, tEnd, fMin, fMax);
+      }
+      frm.ShowDialog();
+    }
   }
 }

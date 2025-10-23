@@ -40,15 +40,20 @@ namespace BatInspector
     public int addProjectToDb(Project prj, bool overRideWarning, string altWavPath = "")
     {
       int retVal = -1;
+      if (prj == null)
+      {
+        DebugLog.log("addProjectToDb: no project open, aborted", enLogType.ERROR);
+        return 1;
+      }
       if (!prj.Ok)
       {
         DebugLog.log("addProjectToDb: project is not ok, aborted", enLogType.ERROR);
-        return 1;
+        return 2;
       }
       if ((prj.Analysis == null) || (prj.Analysis.Files.Count == 0))
       {
         DebugLog.log("addProjectToDb: project does not contain analysis data, aborted", enLogType.ERROR);
-        return 2;
+        return 3;
       }
       retVal = addPrjToTableProjects(prj, overRideWarning, altWavPath);
       if (retVal != 0)

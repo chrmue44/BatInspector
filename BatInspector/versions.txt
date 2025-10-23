@@ -6,6 +6,9 @@ TODO
   - parsing date/time form different file names
   - real "inplace" import
   
+# V0.9.5.1
+- new button "verify" in Zoom view: verifies call params according to Bayern paper
+- change of contrast in zoom view and frmVerify now independent from settings
 
 # V0.9.5.0  15.10.25
 - bugfix: fixed memory issue on script execution on large project (5000 files) with many (>100000) calls

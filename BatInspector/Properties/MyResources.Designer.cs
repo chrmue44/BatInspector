@@ -133,6 +133,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional features.
+        /// </summary>
+        public static string AdditionalFeatures {
+            get {
+                return ResourceManager.GetString("AdditionalFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add WAV file(s) to project.
         /// </summary>
         public static string AddWAVFileSToProject {
@@ -147,6 +156,51 @@ namespace BatInspector.Properties {
         public static string Bandwidth {
             get {
                 return ResourceManager.GetString("Bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to characteristic.
+        /// </summary>
+        public static string BatInfoChar {
+            get {
+                return ResourceManager.GetString("BatInfoChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lower limit.
+        /// </summary>
+        public static string BatInfoLowerLimit {
+            get {
+                return ResourceManager.GetString("BatInfoLowerLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to not idenfiable.
+        /// </summary>
+        public static string BatInfoNoIdent {
+            get {
+                return ResourceManager.GetString("BatInfoNoIdent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to partly idenfiable.
+        /// </summary>
+        public static string BatInfoPartly {
+            get {
+                return ResourceManager.GetString("BatInfoPartly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to upper limit.
+        /// </summary>
+        public static string BatInfoUpperLimit {
+            get {
+                return ResourceManager.GetString("BatInfoUpperLimit", resourceCulture);
             }
         }
         
@@ -709,7 +763,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Call Duration [ms].
+        ///   Looks up a localized string similar to Call Duration.
         /// </summary>
         public static string ctlStatDuration {
             get {
@@ -1254,6 +1308,15 @@ namespace BatInspector.Properties {
         public static string Disconnect {
             get {
                 return ResourceManager.GetString("Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t Care.
+        /// </summary>
+        public static string DonTCare {
+            get {
+                return ResourceManager.GetString("DonTCare", resourceCulture);
             }
         }
         
@@ -2950,6 +3013,204 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include section &apos;not determinable&apos;.
+        /// </summary>
+        public static string frmVerfify_IncludeSND {
+            get {
+                return ResourceManager.GetString("frmVerfify_IncludeSND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End frequency [kHz].
+        /// </summary>
+        public static string frmVerfy_fEnd {
+            get {
+                return ResourceManager.GetString("frmVerfy_fEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verbose result.
+        /// </summary>
+        public static string frmVerfy_VerboseResult {
+            get {
+                return ResourceManager.GetString("frmVerfy_VerboseResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call types A and B present.
+        /// </summary>
+        public static string frmVerify_CallAB {
+            get {
+                return ResourceManager.GetString("frmVerify_CallAB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No call changes in frequency.
+        /// </summary>
+        public static string frmVerify_CallChanges {
+            get {
+                return ResourceManager.GetString("frmVerify_CallChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call has strong harmonics.
+        /// </summary>
+        public static string frmVerify_CallHarmonics {
+            get {
+                return ResourceManager.GetString("frmVerify_CallHarmonics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calls are uniform.
+        /// </summary>
+        public static string frmVerify_CallsAreUniform {
+            get {
+                return ResourceManager.GetString("frmVerify_CallsAreUniform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic frequency [kHz].
+        /// </summary>
+        public static string frmVerify_fChar {
+            get {
+                return ResourceManager.GetString("frmVerify_fChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Myotis kink frequency [kHz].
+        /// </summary>
+        public static string frmVerify_fMk {
+            get {
+                return ResourceManager.GetString("frmVerify_fMk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start frequency [kHz].
+        /// </summary>
+        public static string frmVerify_Fstart {
+            get {
+                return ResourceManager.GetString("frmVerify_Fstart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Relevant for.
+        /// </summary>
+        public static string frmVerify_RelevantFor {
+            get {
+                return ResourceManager.GetString("frmVerify_RelevantFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call has clearly defined knee.
+        /// </summary>
+        public static string frmVerifyCallHasKnee {
+            get {
+                return ResourceManager.GetString("frmVerifyCallHasKnee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call charcteristic.
+        /// </summary>
+        public static string frmVerifySpecies_CallCharcteristic {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_CallCharcteristic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call has Myotis kink.
+        /// </summary>
+        public static string frmVerifySpecies_CallHasMyotisKink {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_CallHasMyotisKink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call has convex form.
+        /// </summary>
+        public static string frmVerifySpecies_Convex {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_Convex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call has upward hook at end.
+        /// </summary>
+        public static string frmVerifySpecies_HookAtEnd {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_HookAtEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to clear all  marks.
+        /// </summary>
+        public static string frmVerifySpecies_MsgClickClear {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_MsgClickClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to set end frequency.
+        /// </summary>
+        public static string frmVerifySpecies_MsgClickFend {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_MsgClickFend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to set f-mk.
+        /// </summary>
+        public static string frmVerifySpecies_MsgClickFmk {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_MsgClickFmk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to set start frequency.
+        /// </summary>
+        public static string frmVerifySpecies_MsgClickFstart {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_MsgClickFstart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string frmVerifySpecies_setup_No {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_setup_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string frmVerifySpecies_setup_Yes {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_setup_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -3787,6 +4048,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply changed display contrast to settings?.
+        /// </summary>
+        public static string MsgDisplayContrast {
+            get {
+                return ResourceManager.GetString("MsgDisplayContrast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred. The evaluation is not valid. The error has to fixed manually!.
         /// </summary>
         public static string MsgErrorBd2 {
@@ -3819,6 +4089,15 @@ namespace BatInspector.Properties {
         public static string msgMainWinMsgOverwriteReport {
             get {
                 return ResourceManager.GetString("msgMainWinMsgOverwriteReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to no matching criteria found.
+        /// </summary>
+        public static string msgNoMatchingCriteria {
+            get {
+                return ResourceManager.GetString("msgNoMatchingCriteria", resourceCulture);
             }
         }
         
@@ -3891,6 +4170,15 @@ namespace BatInspector.Properties {
         public static string msgZoomNotPossible {
             get {
                 return ResourceManager.GetString("msgZoomNotPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to not regional.
+        /// </summary>
+        public static string NotRegional {
+            get {
+                return ResourceManager.GetString("NotRegional", resourceCulture);
             }
         }
         
@@ -3990,6 +4278,15 @@ namespace BatInspector.Properties {
         public static string Recording {
             get {
                 return ResourceManager.GetString("Recording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result.
+        /// </summary>
+        public static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
             }
         }
         
@@ -5047,11 +5344,38 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to unambiguous.
+        /// </summary>
+        public static string Unambiguous {
+            get {
+                return ResourceManager.GetString("Unambiguous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
         public static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        public static string Verify {
+            get {
+                return ResourceManager.GetString("Verify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Bat Species.
+        /// </summary>
+        public static string VerifyBatSpecies {
+            get {
+                return ResourceManager.GetString("VerifyBatSpecies", resourceCulture);
             }
         }
         

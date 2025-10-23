@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace BatInspector.Controls
 {
- 
+
   /// <summary>
   /// Interaction logic for CtlMySql.xaml
   /// </summary>
@@ -21,7 +21,7 @@ namespace BatInspector.Controls
     bool _queryCollapsed = false;
     List<CtlMySqlFieldSelect> _listCb = new List<CtlMySqlFieldSelect>();
     string _columnsList;
-    int _limitRows =1000;
+    int _limitRows = 1000;
     string _filterExpression = "";
     List<sqlRow> _query = null;
     string[] _order = new string[5];
@@ -41,7 +41,7 @@ namespace BatInspector.Controls
       _cbLimit.Items.Add("50000 " + MyResources.Rows);
       //      _cbLimit.Items.Add("no limit");
 
-      _ctlPreSelect.setup(MyResources.Preselection, 0, 100,220, setPreSelection);
+      _ctlPreSelect.setup(MyResources.Preselection, 0, 100, 220, setPreSelection);
       string[] items = { MyResources.MainBtnNone, MyResources.MainBtnAll,
                          MyResources.CtlMySql_InspectWithBatIspector, MyResources.CtlMySql_Custom};
       _ctlPreSelect.setItems(items);
@@ -79,6 +79,7 @@ namespace BatInspector.Controls
       addCheckBox(DBBAT.CALL_LEN, 3);
       addCheckBox(DBBAT.CALL_DST, 3);
       addCheckBox($"calls.{DBBAT.REM}", 3);
+      _lblStatus.Background = new SolidColorBrush(Colors.Red);
       init();
     }
 
@@ -105,9 +106,9 @@ namespace BatInspector.Controls
           setFieldSelector(DBBAT.MICID, false, 0, false);
           setFieldSelector(DBBAT.CLASSI, false, 0, false);
           setFieldSelector(DBBAT.MODEL, false, 0, false);
-          setFieldSelector(DBBAT.PRJ_NOTES,false, 0, false);
+          setFieldSelector(DBBAT.PRJ_NOTES, false, 0, false);
           setFieldSelector(DBBAT.PATH_TO_WAV, false, 0, false);
-          setFieldSelector(DBBAT.LAT, false, 0, false); 
+          setFieldSelector(DBBAT.LAT, false, 0, false);
           setFieldSelector(DBBAT.LON, false, 0, false);
           setFieldSelector(DBBAT.WAV_FILE_NAME, false, 0, false);
           setFieldSelector(DBBAT.SAMPLE_RATE, false, 0, false);
@@ -233,7 +234,7 @@ namespace BatInspector.Controls
           AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it);
           App.MainWin.setZoom(it.WavFileName, f, it.PathToWavs, null, enModel.BAT_DETECT2, species);
           int callIdx = f.findCallIdx(it.CallNr);
-          if(callIdx >= 0) 
+          if (callIdx >= 0)
             App.MainWin.changeCallInZoom(callIdx);
         }
         DebugLog.log("MySql:Query double click", enLogType.DEBUG);
@@ -303,7 +304,7 @@ namespace BatInspector.Controls
           order += _order[i];
         }
       }
-      if(order != "")
+      if (order != "")
         b.addOrderStatement(order);
       b.addLimitStatement(_limitRows);
       _tbQuery.Text = b.Command;
@@ -321,13 +322,13 @@ namespace BatInspector.Controls
     /// <param name="name"></param>
     /// <returns></returns>
     private string convertNameSQLtoWPF(string name)
-    { 
-      return name.Replace("_", "__").Replace(".","___");
+    {
+      return name.Replace("_", "__").Replace(".", "___");
     }
 
     private string convertNameWPFtoSQL(string name)
-    { 
-     return name.Replace("___",".").Replace("__","_");
+    {
+      return name.Replace("___", ".").Replace("__", "_");
     }
 
     private void _cbFilter_DropDownOpened(object sender, EventArgs e)
@@ -346,7 +347,7 @@ namespace BatInspector.Controls
       {
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
                     App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
-        if(filter != null)
+        if (filter != null)
           _filterExpression = DataBase.translateFilterExpressionToMySQL(filter.Expression);
       }
       if (resetFilter)
@@ -358,15 +359,15 @@ namespace BatInspector.Controls
     private void setFieldSelector(string name, bool select, int order, bool reverse)
     {
       CtlMySqlFieldSelect ctl = null;
-      foreach(CtlMySqlFieldSelect c in _listCb)
+      foreach (CtlMySqlFieldSelect c in _listCb)
       {
-        if(name == c.FieldName)
+        if (name == c.FieldName)
         {
           ctl = c;
           break;
         }
       }
-      if(ctl != null)
+      if (ctl != null)
       {
         ctl.Selected = select;
         ctl.Order = order;
@@ -410,7 +411,7 @@ namespace BatInspector.Controls
           }
         }
       }
-      if(sender != this)
+      if (sender != this)
         _ctlPreSelect.SelectIndex = IDX_CUSTOM;
       createQuery();
     }
@@ -455,7 +456,7 @@ namespace BatInspector.Controls
           _dg.Columns[i].Visibility = Visibility.Collapsed;
           _dg.Columns[i].IsReadOnly = true;
         }
-        for(int j = 0; j < dat[0].Fields.Count; j++)
+        for (int j = 0; j < dat[0].Fields.Count; j++)
         {
           for (int i = 1; i < _dg.Columns.Count; i++)
           {
@@ -472,7 +473,7 @@ namespace BatInspector.Controls
 
     private void _cbLimit_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      switch(_cbLimit.SelectedIndex)
+      switch (_cbLimit.SelectedIndex)
       {
         case 0:
           _limitRows = 10; break;
@@ -497,7 +498,7 @@ namespace BatInspector.Controls
         dlg.AddExtension = true;
         dlg.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
         if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-        { 
+        {
           string fName = dlg.FileName;
           App.Model.MySQL.exportQuery(_query, fName);
         }
@@ -531,7 +532,7 @@ namespace BatInspector.Controls
             AppParams.Inst.MySqlUser = frm.User;
             AppParams.Inst.save();
             _tbStatus.Content = App.Model.MySQL.getStatus();
-            _btnConnect.Content = BatInspector.Properties.MyResources.CtrlMySql_DisconnectFromDB;
+            _btnConnect.Content = MyResources.CtrlMySql_DisconnectFromDB;
           }
           if (App.Model.MySQL.IsConnected)
             _lblStatus.Background = new SolidColorBrush(Colors.Green);
@@ -544,6 +545,7 @@ namespace BatInspector.Controls
         App.Model.MySQL.disconnect();
         if (!App.Model.MySQL.IsConnected)
         {
+          _tbStatus.Content = App.Model.MySQL.getStatus();
           _btnConnect.Content = MyResources.CtlMySql_ConnectToDB;
           _lblStatus.Background = new SolidColorBrush(Colors.Red);
         }
@@ -552,7 +554,7 @@ namespace BatInspector.Controls
 
     private void _btnUpdateDb_Click(object sender, RoutedEventArgs e)
     {
-
-        }
+      App.Model.MySQL.DbBats.addProjectToDb(App.Model.Prj, false);
     }
+  }
 }

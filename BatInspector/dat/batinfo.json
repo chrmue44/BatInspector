@@ -4,8 +4,46 @@
       "Abbreviation": "BBAR",
       "CallDistMax": 75,
       "CallDistMin": 50,
-      "CharCalls": "2 Ruftypen A und B",
-      "ConfusionSpec": "Typ A: charakteristisch\r\nTyp B: MDAU (sozial)",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 2
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 30,
+            "Min": 27
+          },
+          "FreqMk": null,
+          "FreqStart": {
+            "Max": 42,
+            "Min": 33
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 5,
+          "Duration": {
+            "Max": 7,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 30,
+            "Min": 25
+          },
+          "FreqMk": null,
+          "FreqStart": {
+            "Max": 48,
+            "Min": 42
+          },
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 5,
       "DurationMin": 2,
       "FreqCharMax": 42,
@@ -14,10 +52,10 @@
       "FreqMaxMin": 38,
       "FreqMinMax": 30,
       "FreqMinMin": 25,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Barbastella barbastellus",
       "Local": "Mopsfledermaus",
-      "ProofSpecies": "mindestens eine Sequenz  mit unverwechselbaren Ortungslauten (Typ A und B)",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Bbar_13.wav"
     },
@@ -26,7 +64,54 @@
       "CallDistMax": 220,
       "CallDistMin": 120,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 25,
+            "Min": 10
+          },
+          "FreqChar": {
+            "Max": 30,
+            "Min": 25
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 19,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 33,
+            "Min": 26
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 7,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 35,
+            "Min": 26
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 19,
       "DurationMin": 8,
       "FreqCharMax": 31,
@@ -36,7 +121,7 @@
       "FreqMinMax": 29,
       "FreqMinMin": 26,
       "Habitat": null,
-      "Latin": "Eptesicus nilssoni",
+      "Latin": "Eptesicus nilsonii",
       "Local": "Nordfledermaus",
       "ProofSpecies": "TODO",
       "Show": true,
@@ -46,8 +131,70 @@
       "Abbreviation": "ESER",
       "CallDistMax": 180,
       "CallDistMin": 130,
-      "CharCalls": "Rufsequenzen mit fm und fm-qcf Rufen wenn keine Rufwechsel auftreten und die Rufe im Hinblick auf Form, Frequenz und Rufintervalle sehr uniform sind. Bei qcf-Rufen müssen die Rufabstände etwa 300 (200 - 400) ms und bei fm-qcf-Rufen zwischen 100 und 300 ms betragen. Bei letzteren müssen die Aufwärtshäkchen am Ende ausgeprägt sein. \r\nbei qcf-Rufen fMin 21 - 25 kHz; bei fm-qcf Rufen fMin < 26 kHz",
-      "ConfusionSpec": "qcf: VMUR, NLEI\r\nfm-qcf: VMUR, NLEI, NNOC, ENIL\r\nfm: VMUR, NLEI, NNOC, ENIL",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 18,
+            "Min": 10
+          },
+          "FreqChar": {
+            "Max": 26,
+            "Min": 21
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 18,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 26,
+            "Min": 22
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 18,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 31,
+            "Min": 26
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 2
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 7,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 34,
+            "Min": 25
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 18,
       "DurationMin": 10,
       "FreqCharMax": 25,
@@ -56,40 +203,131 @@
       "FreqMaxMin": 35,
       "FreqMinMax": 27,
       "FreqMinMin": 22,
-      "Habitat": "",
-      "Latin": "Eptesicus serotinus",
+      "Habitat": null,
+      "Latin": "Eptesicus Serotinus",
       "Local": "Breitflügelfledermaus",
-      "ProofSpecies": "mindesten 3 Sequenzen (> 20 Rufe)\r\nkeine Verwechslungsarten innerhalb 2 min.",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
     },
     {
       "Abbreviation": "HSAV",
-      "CallDistMax": 0,
-      "CallDistMin": 0,
-      "CharCalls": "Rufsequenzen mit fm und fm-qcf Rufen wenn keine Rufwechsel auftreten und die Rufe im Hinblick auf Form, Frequenz und Rufintervalle sehr uniform sind. Bei qcf-Rufen müssen die Rufabstände etwa 300 (200 - 400) ms und bei fm-qcf-Rufen zwischen 100 und 300 ms betragen. Bei letzteren müssen die Aufwärtshäkchen am Ende ausgeprägt sein. \r\nbei qcf-Rufen fMin 21 - 25 kHz; bei fm-qcf Rufen fMin < 26 kHz",
-      "ConfusionSpec": "PKUH, PNAT, MDAS",
-      "DurationMax": 8,
-      "DurationMin": 15,
-      "FreqCharMax": 30,
-      "FreqCharMin": 38,
-      "FreqMaxMax": 0,
-      "FreqMaxMin": 0,
-      "FreqMinMax": 0,
-      "FreqMinMin": 0,
-      "Habitat": "",
+      "CallDistMax": 370,
+      "CallDistMin": 180,
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 17,
+            "Min": 8
+          },
+          "FreqChar": {
+            "Max": 36,
+            "Min": 30
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 14,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 42,
+            "Min": 31
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 7,
+            "Min": 3
+          },
+          "FreqChar": {
+            "Max": 41,
+            "Min": 34
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
+      "DurationMax": 12,
+      "DurationMin": 6,
+      "FreqCharMax": 36,
+      "FreqCharMin": 31,
+      "FreqMaxMax": 50,
+      "FreqMaxMin": 35,
+      "FreqMinMax": 36,
+      "FreqMinMin": 31,
+      "Habitat": null,
       "Latin": "Hypsugo savii",
       "Local": "Alpenfledermaus",
-      "ProofSpecies": "qcf: Fchar <= 34 kHz\r\n fm-qcf: Fchar <= 35 kHz\r\nmindestens 3 Sequenzen (> 20 Rufe)\r\nkeine Verwechslungsarten innerhalb 2 min.\r\n",
+      "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": null  
+      "WavExample": null
     },
     {
       "Abbreviation": "MALC",
       "CallDistMax": 90,
       "CallDistMin": 50,
-      "CharCalls": "hoch endende Ortungsrufe mit geringem Frequenzumfang (< 87 kHz) und hoch liegendem Myotisknick unf Myotisknie",
-      "ConfusionSpec": "fm kurz (1.4 - 3.5 ms): MBRA, MMYS, PPIP\r\nfm mittel (3.5 - 5 ms): MBRA, MMYS, MEMA\r\n",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 1.4
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 52,
+            "Min": 35
+          },
+          "FreqMk": {
+            "Max": 56,
+            "Min": 43
+          },
+          "FreqStart": {
+            "Max": 135,
+            "Min": 93
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 5.5,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 48,
+            "Min": 36
+          },
+          "FreqMk": {
+            "Max": 52,
+            "Min": 43
+          },
+          "FreqStart": {
+            "Max": 123,
+            "Min": 88
+          },
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 4,
       "DurationMin": 2,
       "FreqCharMax": 65,
@@ -98,10 +336,10 @@
       "FreqMaxMin": 100,
       "FreqMinMax": 47,
       "FreqMinMin": 41,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Myotis alcathoe",
       "Local": "Nymphenfledermaus",
-      "ProofSpecies": "> 6 unverwechselbare Ortungsrufe \r\nFmax < 123 kHz, Fmin > 40 kHz\r\nMyotisknick > 45 kHz\r\nkeine Verwechslungsarten im Abstand von 2 min",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
     },
@@ -110,6 +348,71 @@
       "CallDistMax": 110,
       "CallDistMin": 90,
       "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 1.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 36,
+            "Min": 24
+          },
+          "FreqMk": {
+            "Max": 45,
+            "Min": 37
+          },
+          "FreqStart": {
+            "Max": 150,
+            "Min": 114
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 32,
+            "Min": 21
+          },
+          "FreqMk": {
+            "Max": 46,
+            "Min": 35
+          },
+          "FreqStart": {
+            "Max": 140,
+            "Min": 99
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 9.1,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 30,
+            "Min": 20
+          },
+          "FreqMk": {
+            "Max": 42,
+            "Min": 33
+          },
+          "FreqStart": {
+            "Max": 116,
+            "Min": 100
+          },
+          "Identifiable": 1
+        }
+      ],
       "ConfusionSpec": "",
       "DurationMax": 6,
       "DurationMin": 2.5,
@@ -119,7 +422,7 @@
       "FreqMaxMin": 80,
       "FreqMinMax": 40,
       "FreqMinMin": 25,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Myotis bechsteinii",
       "Local": "Bechsteinfledermaus",
       "ProofSpecies": "TODO",
@@ -131,7 +434,72 @@
       "CallDistMax": 110,
       "CallDistMin": 80,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 1.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 39,
+            "Min": 23
+          },
+          "FreqMk": {
+            "Max": 48,
+            "Min": 35
+          },
+          "FreqStart": {
+            "Max": 140,
+            "Min": 90
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 37,
+            "Min": 20
+          },
+          "FreqMk": {
+            "Max": 44,
+            "Min": 33
+          },
+          "FreqStart": {
+            "Max": 122,
+            "Min": 72
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 31,
+            "Min": 27
+          },
+          "FreqMk": {
+            "Max": 39,
+            "Min": 33
+          },
+          "FreqStart": {
+            "Max": 88,
+            "Min": 70
+          },
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 7,
       "DurationMin": 4,
       "FreqCharMax": 50,
@@ -152,7 +520,93 @@
       "CallDistMax": 120,
       "CallDistMin": 80,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 2.4
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 30,
+            "Min": 25
+          },
+          "FreqMk": {
+            "Max": 36,
+            "Min": 32
+          },
+          "FreqStart": {
+            "Max": 93,
+            "Min": 70
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 32,
+            "Min": 21
+          },
+          "FreqMk": {
+            "Max": 37,
+            "Min": 28
+          },
+          "FreqStart": {
+            "Max": 103,
+            "Min": 65
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 31,
+            "Min": 23
+          },
+          "FreqMk": {
+            "Max": 36,
+            "Min": 27
+          },
+          "FreqStart": {
+            "Max": 95,
+            "Min": 66
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 23,
+            "Min": 8
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 33,
+            "Min": 23
+          },
+          "FreqMk": {
+            "Max": 37,
+            "Min": 29
+          },
+          "FreqStart": {
+            "Max": 86,
+            "Min": 38
+          },
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 9,
       "DurationMin": 5,
       "FreqCharMax": 42,
@@ -172,8 +626,73 @@
       "Abbreviation": "MDAU",
       "CallDistMax": 95,
       "CallDistMin": 65,
-      "CharCalls": "Ruflänge < 3,5ms\r\nMyotisknick über 36 kHz\r\nStartfrequenz < 90 kHz\r\nBandbreite < 66 kHz\r\nKrückstockrufe sind ebenfall charakteristich",
-      "ConfusionSpec": "kurze Rufe ( < 3,5 ms) : MDAS, MMYS, MMYO\r\nmittellange Rufe (3,5 - 6 ms): MDAS, MBART, MBEC, MMYO",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 1.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 36,
+            "Min": 22
+          },
+          "FreqMk": {
+            "Max": 46,
+            "Min": 35
+          },
+          "FreqStart": {
+            "Max": 101,
+            "Min": 73
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 38,
+            "Min": 20
+          },
+          "FreqMk": {
+            "Max": 48,
+            "Min": 34
+          },
+          "FreqStart": {
+            "Max": 103,
+            "Min": 70
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 37,
+            "Min": 20
+          },
+          "FreqMk": {
+            "Max": 43,
+            "Min": 33
+          },
+          "FreqStart": {
+            "Max": 91,
+            "Min": 60
+          },
+          "Identifiable": 1
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 7,
       "DurationMin": 3,
       "FreqCharMax": 55,
@@ -182,10 +701,10 @@
       "FreqMaxMin": 55,
       "FreqMinMax": 40,
       "FreqMinMin": 25,
-      "Habitat": "Jagen bevorzgt an Stillgewässern und ruhigen Abschnitten von Fließgewässern",
+      "Habitat": null,
       "Latin": "Myotis daubentonii",
       "Local": "Wasserfledermaus",
-      "ProofSpecies": "mind 6 characteristische Rufe\r\nkeine Verwechslungsarten innerhalb 2 min",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
     },
@@ -193,8 +712,52 @@
       "Abbreviation": "MEMA",
       "CallDistMax": 90,
       "CallDistMin": 40,
-      "CharCalls": "mindestens 2 Rufsequenzen mit jeweils > 6 Rufen",
-      "ConfusionSpec": "kurz(1.8 - 3.5 ms): MBART, MBEC\r\nmittellang (3.5 - 6 ms): MALC, MBART, MBEC ",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 1.8
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 45,
+            "Min": 28
+          },
+          "FreqMk": {
+            "Max": 50,
+            "Min": 45
+          },
+          "FreqStart": {
+            "Max": 175,
+            "Min": 123
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 45,
+            "Min": 28
+          },
+          "FreqMk": {
+            "Max": 60,
+            "Min": 44
+          },
+          "FreqStart": {
+            "Max": 158,
+            "Min": 97
+          },
+          "Identifiable": 1
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 4,
       "DurationMin": 1.5,
       "FreqCharMax": 65,
@@ -203,10 +766,10 @@
       "FreqMaxMin": 90,
       "FreqMinMax": 40,
       "FreqMinMin": 30,
-      "Habitat": "sammelt in langsamem, wendigem Flug Insekten von Substrat oder Blättern ab",
+      "Habitat": null,
       "Latin": "Myotis emarginatus",
       "Local": "Wimperfledermaus",
-      "ProofSpecies": "kurze und mittellange Rufe mit einer Startfrequenz > 150 kHz, die linear abfallen und keinen Myotisknick aufweisen.\r\nAnleitung zur Abgrenzung von anderen Arten, siehe Teil 2",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
     },
@@ -214,8 +777,73 @@
       "Abbreviation": "MMYO",
       "CallDistMax": 160,
       "CallDistMin": 90,
-      "CharCalls": "Kurze Rufe < 3,5 ms linear abfallend\r\nStartfrequenz < 120 kHz und\/oder\r\nEndfrequenz > 23 kHz",
-      "ConfusionSpec": "kurze Rufe (2,5 - 3,5 ms): MDAU\r\nmittellange Rufe ^(3,5 - 6): MDAU, MDAS, MNAT",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 2.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 32,
+            "Min": 17
+          },
+          "FreqMk": {
+            "Max": -1,
+            "Min": -1
+          },
+          "FreqStart": {
+            "Max": 120,
+            "Min": 90
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 27,
+            "Min": 16
+          },
+          "FreqMk": {
+            "Max": 38,
+            "Min": 27
+          },
+          "FreqStart": {
+            "Max": 120,
+            "Min": 70
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 12,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 110,
+            "Min": 52
+          },
+          "FreqMk": {
+            "Max": 32,
+            "Min": 27
+          },
+          "FreqStart": {
+            "Max": 158,
+            "Min": 97
+          },
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 10,
       "DurationMin": 5,
       "FreqCharMax": 37,
@@ -224,10 +852,10 @@
       "FreqMaxMin": 50,
       "FreqMinMax": 26,
       "FreqMinMin": 21,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Myotis myotis",
       "Local": "Großes Mausohr",
-      "ProofSpecies": "_mindestens 2x 10 Rufsequenzen mit unverwechselbaren Rufen.\r\nKeine Verwechslungsarten innerhalb von 2 min",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
     },
@@ -235,8 +863,73 @@
       "Abbreviation": "MMYS",
       "CallDistMax": 90,
       "CallDistMin": 70,
-      "CharCalls": "Ruflänge < = 3,5ms\r\nMyotisknick 36 - 44 kHz, deutliches Knie muss erkennbar sein\r\nStartfrequenz >= 100 kHz\r\nBandbreite >= 75 kHz",
-      "ConfusionSpec": "MDAU, MDAS, MALC, MBEC, MEMA",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 1.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 39,
+            "Min": 23
+          },
+          "FreqMk": {
+            "Max": 48,
+            "Min": 35
+          },
+          "FreqStart": {
+            "Max": 140,
+            "Min": 90
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 37,
+            "Min": 20
+          },
+          "FreqMk": {
+            "Max": 44,
+            "Min": 33
+          },
+          "FreqStart": {
+            "Max": 122,
+            "Min": 72
+          },
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 31,
+            "Min": 27
+          },
+          "FreqMk": {
+            "Max": 39,
+            "Min": 33
+          },
+          "FreqStart": {
+            "Max": 88,
+            "Min": 70
+          },
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 6,
       "DurationMin": 3,
       "FreqCharMax": 57,
@@ -245,10 +938,10 @@
       "FreqMaxMin": 65,
       "FreqMinMax": 35,
       "FreqMinMin": 28,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Myotis mystacinus",
       "Local": "Kleine Bartfledermaus",
-      "ProofSpecies": "mind. 12 charakteristische Rufe\r\nkeine Verwechslungsarten innerhalb von 2 min.",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
     },
@@ -256,8 +949,73 @@
       "Abbreviation": "MNAT",
       "CallDistMax": 110,
       "CallDistMin": 75,
-      "CharCalls": "kurze (< 3,5ms) linear abfallende Rufe (ggf. leicht konvex)\r\nStartfrequenz > 120 kHz\r\nEndfrequenz bis nahe an 20 kHz",
-      "ConfusionSpec": "kurze Rufe (<3,5ms): keine\r\nmittellang: (3,5 -  6ms); MMYO\r\nlang: MBEC, MMYO",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 3.5,
+            "Min": 2
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 23,
+            "Min": 10
+          },
+          "FreqMk": {
+            "Max": -1,
+            "Min": -1
+          },
+          "FreqStart": {
+            "Max": 185,
+            "Min": 120
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3.5
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 27,
+            "Min": 14
+          },
+          "FreqMk": {
+            "Max": 41,
+            "Min": 23
+          },
+          "FreqStart": {
+            "Max": 135,
+            "Min": 102
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 6
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 27,
+            "Min": 14
+          },
+          "FreqMk": {
+            "Max": 44,
+            "Min": 25
+          },
+          "FreqStart": {
+            "Max": 131,
+            "Min": 100
+          },
+          "Identifiable": 1
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 5,
       "DurationMin": 2,
       "FreqCharMax": 53,
@@ -266,19 +1024,20 @@
       "FreqMaxMin": 80,
       "FreqMinMax": 25,
       "FreqMinMin": 12,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Myotis nattereri",
       "Local": "Fransenfledermaus",
-      "ProofSpecies": "eine Rufsequenz mit mindestens einem kurzen Ortungsruf",
+      "ProofSpecies": "TODO",
       "Show": true,
-      "WavExample": "dat\/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
+      "WavExample": null
     },
     {
       "Abbreviation": "MOXY",
       "CallDistMax": 160,
       "CallDistMin": 90,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": null,
+      "ConfusionSpec": "",
       "DurationMax": 10,
       "DurationMin": 5,
       "FreqCharMax": 40,
@@ -299,7 +1058,8 @@
       "CallDistMax": 140,
       "CallDistMin": 65,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": null,
+      "ConfusionSpec": "",
       "DurationMax": 15,
       "DurationMin": 6,
       "FreqCharMax": 55,
@@ -320,7 +1080,8 @@
       "CallDistMax": 820,
       "CallDistMin": 160,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": null,
+      "ConfusionSpec": "",
       "DurationMax": 28,
       "DurationMin": 12,
       "FreqCharMax": 23,
@@ -340,8 +1101,55 @@
       "Abbreviation": "NLEI",
       "CallDistMax": 400,
       "CallDistMin": 200,
-      "CharCalls": "Plip-Plop-Rufe mit qcf > 23 kHz\r\nPlip-Plop-Rufe 21 .. 23 kHz, WENN beide alternierenden Rufe echte qcf-Rufe sind",
-      "ConfusionSpec": "qcf: VMUR, NNOC\r\nfm-qcf: VMUR, NNOC, ESER (nicht bestimmbar)\r\nfm:  VMUR, NNOC, ESER, ENIL (nicht bestimmbar)",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 20,
+            "Min": 6
+          },
+          "FreqChar": {
+            "Max": 27,
+            "Min": 21
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 18,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 31,
+            "Min": 24
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 2
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 32,
+            "Min": 26
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 20,
       "DurationMin": 5,
       "FreqCharMax": 30,
@@ -350,10 +1158,10 @@
       "FreqMaxMin": 25,
       "FreqMinMax": 26,
       "FreqMinMin": 22,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Nyctalus leisleri",
       "Local": "Kleiner Abendsegler",
-      "ProofSpecies": "mindesten 3 Sequenzen Plip-Plop-Rufe mit regelmäßigen Rufwechseln (> 10 Rufe) \r\nkeine Verwechslungsarten innerhalb von 2 min.",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
     },
@@ -361,8 +1169,55 @@
       "Abbreviation": "NNOC",
       "CallDistMax": 300,
       "CallDistMin": 250,
-      "CharCalls": "Plip-Plop-Rufe mit qcf < 21 kHz\r\nPlip-Plop-Rufe 21 .. 23 kHz, WENN zumindest die höheren Rufe am Anfang frequenzmoduliert sind\r\n",
-      "ConfusionSpec": "qcf: VMUR, NNOC\r\nfm-qcf: VMUR, NNOC, ESER (teils bestimmbar)\r\nfm:  VMUR, NNOC, ESER, ENIL (nicht bestimmbar)",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 30,
+            "Min": 10
+          },
+          "FreqChar": {
+            "Max": 23,
+            "Min": 16
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 20,
+            "Min": 6
+          },
+          "FreqChar": {
+            "Max": 30,
+            "Min": 19
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 7,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 30,
+            "Min": 24
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 28,
       "DurationMin": 5,
       "FreqCharMax": 29,
@@ -371,10 +1226,10 @@
       "FreqMaxMin": 20,
       "FreqMinMax": 27,
       "FreqMinMin": 16,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Nyctalus noctula",
       "Local": "Großer Abendsegler",
-      "ProofSpecies": "es geügt wenn ein unverwechselbarer Ruf vorliegt\r\nbei alternierenden Rufen 21 .. 23 kHz müssen mindestens 3 Sequenzen mit Rufwechsel vorliegen und es dürfen innerhalb von 2 min keine Verwechslungsarten vorkommen\r\n",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Nyctalus_noctula_Rid_5953.wav"
     },
@@ -383,7 +1238,54 @@
       "CallDistMax": 130,
       "CallDistMin": 90,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 12,
+            "Min": 5
+          },
+          "FreqChar": {
+            "Max": 42,
+            "Min": 34
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 11,
+            "Min": 3
+          },
+          "FreqChar": {
+            "Max": 45,
+            "Min": 35
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 46,
+            "Min": 36
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 12,
       "DurationMin": 5,
       "FreqCharMax": 42,
@@ -403,8 +1305,55 @@
       "Abbreviation": "PNAT",
       "CallDistMax": 130,
       "CallDistMin": 100,
-      "CharCalls": "qcf-Rufe: charakteristische Frequenz 36 .. 40 kHz\r\nfm - qcf Rufe: Ruflänge >= 7 ms, charakteristische Frequenz 37 - 40 kHz",
-      "ConfusionSpec": "PKUH (Ortungsrufe identisch), PPIP, HSAV",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 12,
+            "Min": 5
+          },
+          "FreqChar": {
+            "Max": 42,
+            "Min": 34
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 11,
+            "Min": 3
+          },
+          "FreqChar": {
+            "Max": 45,
+            "Min": 35
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 46,
+            "Min": 36
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 11,
       "DurationMin": 4,
       "FreqCharMax": 42,
@@ -413,10 +1362,10 @@
       "FreqMaxMin": 36,
       "FreqMinMax": 41,
       "FreqMinMin": 35,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Pipistrellus nathusii",
       "Local": "Rauhautfledermaus",
-      "ProofSpecies": "mindestens eine Sequenz mit unverwechselbaren qcf- oder fm-qcf-Rufen ( > 5 Rufe)",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
     },
@@ -424,8 +1373,55 @@
       "Abbreviation": "PPIP",
       "CallDistMax": 130,
       "CallDistMin": 75,
-      "CharCalls": "qcf-Rufe: charakteristische Frequenz 42 .. 50 kHz\r\nfm - qcf Rufe: Ruflänge >= 4 ms, charakteristische Frequenz 43 - 50 kHz",
-      "ConfusionSpec": "PNAT, PKUH, PPYG",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 11,
+            "Min": 5
+          },
+          "FreqChar": {
+            "Max": 50,
+            "Min": 40.1
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 10,
+            "Min": 3
+          },
+          "FreqChar": {
+            "Max": 54,
+            "Min": 41
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 5,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 55,
+            "Min": 44
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 10,
       "DurationMin": 3,
       "FreqCharMax": 52,
@@ -434,10 +1430,10 @@
       "FreqMaxMin": 44,
       "FreqMinMax": 51,
       "FreqMinMin": 42,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Pipistrellus pipistrellus",
       "Local": "Zwergfledermaus",
-      "ProofSpecies": "mindestens eine Sequenz mit unverwechselbaren qcf- oder fm-qcf-Rufen ( > 3 Rufe)",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
     },
@@ -445,8 +1441,55 @@
       "Abbreviation": "PPYG",
       "CallDistMax": 95,
       "CallDistMin": 65,
-      "CharCalls": "qcf-Rufe: charakteristische Frequenz > 51 kHz\r\nfm - qcf Rufe: Ruflänge >= 4 ms, charakteristische Frequenz > 53 kHz",
-      "ConfusionSpec": "PPIP",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 10,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 60,
+            "Min": 50
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 10,
+            "Min": 3
+          },
+          "FreqChar": {
+            "Max": 68,
+            "Min": 50
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 7,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 68,
+            "Min": 56
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 10,
       "DurationMin": 3,
       "FreqCharMax": 64,
@@ -455,10 +1498,10 @@
       "FreqMaxMin": 60,
       "FreqMinMax": 56,
       "FreqMinMin": 51,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Pipistrellus pygmaeus",
       "Local": "Mückenfledermaus",
-      "ProofSpecies": "mindestens eine Sequenz mit unverwechselbaren qcf- oder fm-qcf-Rufen ( > 3 Rufe)",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Pipistrellus_pygmaeus_Rid_6162.wav"
     },
@@ -466,8 +1509,31 @@
       "Abbreviation": "PAUR",
       "CallDistMax": 120,
       "CallDistMin": 40,
-      "CharCalls": "fm: Fstart 35 - 60, meistens 40 kHz\r\nFmk: 20 - 35 kHz\r\nwellige charakteristische Form\r\n2. Oberwelle auffällig laut",
-      "ConfusionSpec": "BBAR, Nahordnung Nyctaloid",
+      "CharCalls": "TODO",
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 2
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": -1,
+            "Min": -1
+          },
+          "FreqMk": {
+            "Max": 35,
+            "Min": 20
+          },
+          "FreqStart": {
+            "Max": 60,
+            "Min": 35
+          },
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 5,
       "DurationMin": 2,
       "FreqCharMax": 40,
@@ -476,10 +1542,10 @@
       "FreqMaxMin": 45,
       "FreqMinMax": 23,
       "FreqMinMin": 18,
-      "Habitat": "",
+      "Habitat": null,
       "Latin": "Plecotus auritus",
       "Local": "Braunes Langohr",
-      "ProofSpecies": "mindestens eine Sequenz mit unverwechselbaren fm-Rufen (>3 Rufe)\r\nkeine Verwechslungsarten innerhalb 2 min.",
+      "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
     },
@@ -488,7 +1554,30 @@
       "CallDistMax": 150,
       "CallDistMin": 60,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 8,
+            "Min": 2
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": -1,
+            "Min": -1
+          },
+          "FreqMk": {
+            "Max": 35,
+            "Min": 20
+          },
+          "FreqStart": {
+            "Max": 60,
+            "Min": 35
+          },
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 6,
       "DurationMin": 2,
       "FreqCharMax": 32,
@@ -509,7 +1598,24 @@
       "CallDistMax": 120,
       "CallDistMin": 80,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 3,
+          "Duration": {
+            "Max": 75,
+            "Min": 16
+          },
+          "FreqChar": {
+            "Max": 86,
+            "Min": 77
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 75,
       "DurationMin": 35,
       "FreqCharMax": 86,
@@ -530,7 +1636,24 @@
       "CallDistMax": 100,
       "CallDistMin": 60,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 3,
+          "Duration": {
+            "Max": 75,
+            "Min": 16
+          },
+          "FreqChar": {
+            "Max": 116,
+            "Min": 100
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 75,
       "DurationMin": 16,
       "FreqCharMax": 116,
@@ -551,7 +1674,69 @@
       "CallDistMax": 130,
       "CallDistMin": 75,
       "CharCalls": "TODO",
-      "ConfusionSpec": null,
+      "CheckData": [
+        {
+          "CallCharacteristic": 0,
+          "Duration": {
+            "Max": 30,
+            "Min": 10
+          },
+          "FreqChar": {
+            "Max": 26,
+            "Min": 21
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 30,
+            "Min": 10
+          },
+          "FreqChar": {
+            "Max": 26,
+            "Min": 21
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 1
+        },
+        {
+          "CallCharacteristic": 2,
+          "Duration": {
+            "Max": 16,
+            "Min": 4
+          },
+          "FreqChar": {
+            "Max": 30,
+            "Min": 22
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 2
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 7,
+            "Min": 3
+          },
+          "FreqChar": null,
+          "FreqEnd": null,
+          "FreqMk": {
+            "Max": 30,
+            "Min": 23
+          },
+          "FreqStart": null,
+          "Identifiable": 2
+        }
+      ],
+      "ConfusionSpec": "",
       "DurationMax": 21,
       "DurationMin": 10,
       "FreqCharMax": 27,
@@ -566,111 +1751,6 @@
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Vespertilio_murinus_Ski0150_S2_From0877624ms_To0904583ms.wav"
-    },
-    {
-      "Abbreviation": "Eptesicus",
-      "CallDistMax": 0,
-      "CallDistMin": 0,
-      "CharCalls": "TODO",
-      "ConfusionSpec": null,
-      "DurationMax": 0,
-      "DurationMin": 0,
-      "FreqCharMax": 0,
-      "FreqCharMin": 0,
-      "FreqMaxMax": 0,
-      "FreqMaxMin": 0,
-      "FreqMinMax": 0,
-      "FreqMinMin": 0,
-      "Habitat": null,
-      "Latin": "Eptesicus",
-      "Local": "Breitflügelfledermäuse",
-      "ProofSpecies": "TODO",
-      "Show": false,
-      "WavExample": ""
-    },
-    {
-      "Abbreviation": "Myotis",
-      "CallDistMax": 0,
-      "CallDistMin": 0,
-      "CharCalls": "TODO",
-      "ConfusionSpec": null,
-      "DurationMax": 0,
-      "DurationMin": 0,
-      "FreqCharMax": 0,
-      "FreqCharMin": 0,
-      "FreqMaxMax": 0,
-      "FreqMaxMin": 0,
-      "FreqMinMax": 0,
-      "FreqMinMin": 0,
-      "Habitat": null,
-      "Latin": "Myotis",
-      "Local": "Mausohren",
-      "ProofSpecies": "TODO",
-      "Show": false,
-      "WavExample": ""
-    },
-    {
-      "Abbreviation": "Nyctalus",
-      "CallDistMax": 0,
-      "CallDistMin": 0,
-      "CharCalls": "TODO",
-      "ConfusionSpec": null,
-      "DurationMax": 0,
-      "DurationMin": 0,
-      "FreqCharMax": 0,
-      "FreqCharMin": 0,
-      "FreqMaxMax": 0,
-      "FreqMaxMin": 0,
-      "FreqMinMax": 0,
-      "FreqMinMin": 0,
-      "Habitat": null,
-      "Latin": "Nyctalus",
-      "Local": "Abendsegler",
-      "ProofSpecies": "TODO",
-      "Show": false,
-      "WavExample": ""
-    },
-    {
-      "Abbreviation": "Pipistrellus",
-      "CallDistMax": 0,
-      "CallDistMin": 0,
-      "CharCalls": "TODO",
-      "ConfusionSpec": null,
-      "DurationMax": 0,
-      "DurationMin": 0,
-      "FreqCharMax": 0,
-      "FreqCharMin": 0,
-      "FreqMaxMax": 0,
-      "FreqMaxMin": 0,
-      "FreqMinMax": 0,
-      "FreqMinMin": 0,
-      "Habitat": null,
-      "Latin": "Pipistrellus",
-      "Local": "Zwergfledermäuse",
-      "ProofSpecies": "TODO",
-      "Show": false,
-      "WavExample": ""
-    },
-    {
-      "Abbreviation": "Plecotus",
-      "CallDistMax": 0,
-      "CallDistMin": 0,
-      "CharCalls": "TODO",
-      "ConfusionSpec": null,
-      "DurationMax": 0,
-      "DurationMin": 0,
-      "FreqCharMax": 0,
-      "FreqCharMin": 0,
-      "FreqMaxMax": 0,
-      "FreqMaxMin": 0,
-      "FreqMinMax": 0,
-      "FreqMinMin": 0,
-      "Habitat": null,
-      "Latin": "Plecotus",
-      "Local": "Langohrfledermäuse",
-      "ProofSpecies": "TODO",
-      "Show": false,
-      "WavExample": ""
     }
   ]
 }

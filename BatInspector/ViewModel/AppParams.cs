@@ -703,7 +703,7 @@ namespace BatInspector
 
       if (firstLoadAfterInstall)
       {
-        string srcPath = Path.Combine(AppDataPath, "setup");
+        string srcPath = Path.Combine(AppDataPath, "dat");
         string dstPath = AppParams.Inst.BatInfoPath;
         BatInfo.copyInfoFileAfterSetup(srcPath, dstPath);
       }

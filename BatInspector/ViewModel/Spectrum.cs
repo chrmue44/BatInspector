@@ -144,9 +144,9 @@ namespace BatInspector
         if (max < a)
           max = a;
       }
-      if (logarithmic)
-        return Math.Pow(10, max / 10);
-      else
+    //  if (logarithmic)
+    //    return Math.Pow(10, max / 10);
+    //  else
         return max;
     }
 

@@ -267,6 +267,9 @@
     <Compile Include="Forms\FrmConnectMysql.xaml.cs">
       <DependentUpon>FrmConnectMysql.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmVerifySpecies.xaml.cs">
+      <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
@@ -640,6 +643,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\FrmTools.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\frmVerifySpecies.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

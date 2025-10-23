@@ -31,7 +31,7 @@ namespace BatInspector.Controls
       _stat1.initHistogram(App.Model.Statistic.Fmin, BatInspector.Properties.MyResources.ctlStatMinFreq);
       _stat2.initHistogram(App.Model.Statistic.Fmax, BatInspector.Properties.MyResources.ctlStatMaxFreq);
       _stat3.initHistogram(App.Model.Statistic.FmaxAmp, BatInspector.Properties.MyResources.ctlStatFreqMaxAmp);
-      _stat4.initHistogram(App.Model.Statistic.Duration, BatInspector.Properties.MyResources.ctlStatDuration);
+      _stat4.initHistogram(App.Model.Statistic.Duration, "${BatInspector.Properties.MyResources.ctlStatDuration} [ms]");
       _stat5.initHistogram(App.Model.Statistic.CallDist, BatInspector.Properties.MyResources.ctlStatCallInterval);
 //      double[] ticksX = { 0,2,4,6,8,10,12,14,16,18,20,22};
       double[] ticksX = { 0, 1,2,3, 4,5, 6,7, 8,9, 10,11, 12,13, 14,15, 16,17, 18,19, 20,21, 22, 23 };

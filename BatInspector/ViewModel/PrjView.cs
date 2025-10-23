@@ -575,7 +575,7 @@ namespace BatInspector
         {
           if (!File.Exists(pngName))
           {
-            Waterfall wf = new Waterfall(wavName, colorTable, fftWidth);
+            Waterfall wf = new Waterfall(wavName, colorTable, fftWidth, AppParams.Inst.GradientRange);
             if (wf.Ok)
             {
               wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);

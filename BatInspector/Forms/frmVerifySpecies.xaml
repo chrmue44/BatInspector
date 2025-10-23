@@ -1,0 +1,115 @@
+﻿<Window x:Class="BatInspector.Forms.frmVerifySpecies"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static res:MyResources.VerifyBatSpecies}" 
+        Height="768" Width="900"  SizeChanged="Window_SizeChanged">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="190"/>
+            <RowDefinition Height="210"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="430"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="20,5,20,5" Grid.ColumnSpan="2" TextWrapping="Wrap" TextAlignment="Center">
+            Grundlage der hier durchgeführten Bestimmung ist der Leitfaden 'Bestimmung von Fledermausrufaufnahmen und Kriterien für die Wertung von akustischen Artnachweisen' Teil 1 und Teil 2 des Bayrischen Landesamtes für Umwelt. Es werden die 24 in Deutschland vorkommenden Fledermausarten erkannt. 
+            Alle relevanten Felder müssen ausgefüllt werden!  
+        </TextBlock>
+        <GroupBox Header="{x:Static res:MyResources.CallInformation}" Grid.Row="1" Grid.Column="0">
+            <StackPanel >
+            <local:ctlSelectItem x:Name="_ctlCallType"/>
+            <local:ctlDataItem x:Name="_ctlFstart" />
+            <local:ctlDataItem x:Name="_ctlFMk"/>
+            <local:ctlDataItem x:Name="_ctlFChar"/>
+            <local:ctlDataItem x:Name="_ctlFend"/>
+            <local:ctlDataItem x:Name="_ctlDuration"/>
+            <local:ctlDataItem x:Name="_ctlCallInterval" />
+        </StackPanel>
+        </GroupBox>
+        <GroupBox Header="{x:Static res:MyResources.AdditionalFeatures}" Grid.Row="2" Grid.Column="0">
+            <StackPanel >
+                <Label Content="{x:Static res:MyResources.frmVerify_RelevantFor}" Margin="330,0,0,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <local:ctlSelectItem x:Name="_ctlHasStrongHarmonics" Margin="0,10,0,0"/>
+                    <Label x:Name="_lblHarmonic" Width="100" Margin="0,6,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <local:ctlSelectItem x:Name="_ctlHasMyotisKink" />
+                    <Label x:Name="_lblMyoK" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <local:ctlSelectItem x:Name="_ctlHasCallTypeAB" />
+                    <Label x:Name="_lblCallAB" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                        <local:ctlSelectItem x:Name="_ctlHasKneeClearly" />
+                    <Label x:Name="_lblKnee" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                            <local:ctlSelectItem x:Name="_ctlIsUniForm" />
+                    <Label x:Name="_lblUniform" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                                <local:ctlSelectItem x:Name="_ctlHasUpwardHookAtEnd" />
+                    <Label x:Name="_lblHook" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                                    <local:ctlSelectItem x:Name="_ctlHasNoCallChanges" />
+                    <Label x:Name="_lblNoChange" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                                        <local:ctlSelectItem x:Name="_ctlIsConvex" Margin="0,0,0,10"/>
+                    <Label x:Name="_lblConvex" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
+        <Button x:Name="_btnCheck" Margin="5,5,15,5" Height="30" Width="120" Content="{x:Static res:MyResources.Verify}" Click="_btnCheck_Click"/>
+            <StackPanel Margin="5">
+            <CheckBox x:Name="_cbNotDeterminable" Content="{x:Static res:MyResources.frmVerfify_IncludeSND}"/>
+            <CheckBox x:Name="_cbVerbose" Content="{x:Static res:MyResources.frmVerfy_VerboseResult}"/>
+            </StackPanel>
+        </StackPanel>
+        <GroupBox Header="{x:Static res:MyResources.Result}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+        <TextBox x:Name="_tbResult"/>
+        </GroupBox>
+        <GroupBox Header="{x:Static res:MyResources.CtlWavCall}" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,-4,0,4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" Margin="5,5,5,0" VerticalAlignment="Top">
+                    <ToolBar x:Name="_tb"  HorizontalAlignment="Left" Height="44" VerticalAlignment="Top">
+                        <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
+                            <Image Source="../images/icons8-plus-+-48.png"></Image>
+                        </Button>
+                        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
+                            <Image Source="../images/icons8-minus-48.png"></Image>
+                        </Button>
+                        <Label x:Name="_lblClick" Content="" Margin="20,5,5,10"/>
+                    </ToolBar>
+                </ToolBarTray>
+                <Image Name="_img" Grid.Row="2" Margin="5,0,5,5" Grid.Column="0" Stretch="Fill" MouseLeave="_img_MouseLeave" MouseMove="_img_MouseMove" MouseDown="_img_MouseDown"/>
+                <Popup Name="_ftToolTip" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=_img}">
+                    <TextBlock Name="_tbf" Margin="5"  Background="LightGray" Foreground="Black">Look At Me</TextBlock>
+                </Popup>
+                <Line Name="_cross1X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Orange" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross1Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Orange" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross2X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="GhostWhite" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross2Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="GhostWhite" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross3X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Magenta" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross3Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Magenta" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

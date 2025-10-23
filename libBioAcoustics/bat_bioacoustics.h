@@ -2,6 +2,35 @@
 #include <vector>
 #include "bb_extract.h"
 
+/*
+Feature 	Unit 	Description
+starting_time 	sec 	Location of the audio event in the recording
+duration 	ms 	Duration of the audio event
+freq_max_amp 	Hz 	Frequency of the maximum energy of the audio event
+freq_max 	Hz 	Highest frequency of the audio event
+freq_min 	Hz 	Lowest frequency of the audio event
+bandwidth 	Hz 	Difference between the highest (freq_max) and lowest (freq_min) frequencies
+freq_start 	Hz 	Frequency at the start of the audio event
+freq_center 	Hz 	Frequency at the half of the audio event
+freq_end 	Hz 	Frequency at the end of the audio event
+freq_knee 	Hz 	Frequency at which the slope is the steepest (knee)
+freq_c 	Hz 	Frequency at which the slope is the flatest (caracteristic frequency)
+freq_bw_knee_fc 	Hz 	Frequency bandwith between the knee and caracteristic frequency
+bin_max_energy 	Hz 	Frequency at the maximum of energy where the slope is the flatest
+pc_freq_max_amp 	Hz 	Location of the frequency with the maximum of energy
+pc_freq_min 	% 	Location of the minimum frequency
+pc_fmax 	% 	Location of the maximum frequency
+pc_knee 	% 	Location of the frequency at which the slope is the steepest
+temp_bw_knee_fc 	% 	Temporal bandwith between the knee and caracteristic frequency
+slope 	ms 	Raw slope estimate (frequency bandwith against duration)
+kalman_slope 	Hz / ms 	Smoothed slope estimate after Kalman filtering
+curve_pos_start 	Hz / ms 	Slope estimate at the begining of the audio event
+curve_pos_end 	Hz / ms 	Slope estimate at the end of the audio event
+curve_neg 	Hz / ms 	Slope negative antropy
+mid_offset 	dB 	Mid-offset
+snr 	dB 	Signal to noise ratio
+harmonic_distortion 	dB 	Level of harmonic distortion
+smoothness 		Time / frequency regularity*/
 struct stRetEvalData
 {
     double duration;

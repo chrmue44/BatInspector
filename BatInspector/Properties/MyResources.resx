@@ -1402,7 +1402,7 @@
     <value>Frequency for max. Intensity [kHz]</value>
   </data>
   <data name="ctlStatDuration" xml:space="preserve">
-    <value>Call Duration [ms]</value>
+    <value>Call Duration</value>
   </data>
   <data name="ctlStatCallInterval" xml:space="preserve">
     <value>Call Interval [ms]</value>
@@ -1790,5 +1790,113 @@
   </data>
   <data name="frmModAmpSettings" xml:space="preserve">
     <value>Amplifier Settings</value>
+  </data>
+  <data name="Unambiguous" xml:space="preserve">
+    <value>unambiguous</value>
+  </data>
+  <data name="frmVerify_Fstart" xml:space="preserve">
+    <value>Start frequency [kHz]</value>
+  </data>
+  <data name="frmVerfy_fEnd" xml:space="preserve">
+    <value>End frequency [kHz]</value>
+  </data>
+  <data name="frmVerify_fMk" xml:space="preserve">
+    <value>Myotis kink frequency [kHz]</value>
+  </data>
+  <data name="frmVerify_fChar" xml:space="preserve">
+    <value>Characteristic frequency [kHz]</value>
+  </data>
+  <data name="frmVerifySpecies_setup_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="frmVerifySpecies_setup_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DonTCare" xml:space="preserve">
+    <value>Don't Care</value>
+  </data>
+  <data name="frmVerify_CallHarmonics" xml:space="preserve">
+    <value>Call has strong harmonics</value>
+  </data>
+  <data name="frmVerify_CallAB" xml:space="preserve">
+    <value>Call types A and B present</value>
+  </data>
+  <data name="frmVerifyCallHasKnee" xml:space="preserve">
+    <value>Call has clearly defined knee</value>
+  </data>
+  <data name="frmVerify_CallsAreUniform" xml:space="preserve">
+    <value>Calls are uniform</value>
+  </data>
+  <data name="frmVerifySpecies_HookAtEnd" xml:space="preserve">
+    <value>Call has upward hook at end</value>
+  </data>
+  <data name="frmVerify_CallChanges" xml:space="preserve">
+    <value>No call changes in frequency</value>
+  </data>
+  <data name="frmVerifySpecies_Convex" xml:space="preserve">
+    <value>Call has convex form</value>
+  </data>
+  <data name="AdditionalFeatures" xml:space="preserve">
+    <value>Additional features</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="frmVerify_RelevantFor" xml:space="preserve">
+    <value>Relevant for</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFend" xml:space="preserve">
+    <value>Click to set end frequency</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFstart" xml:space="preserve">
+    <value>Click to set start frequency</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFmk" xml:space="preserve">
+    <value>Click to set f-mk</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickClear" xml:space="preserve">
+    <value>Click to clear all  marks</value>
+  </data>
+  <data name="msgNoMatchingCriteria" xml:space="preserve">
+    <value>no matching criteria found</value>
+  </data>
+  <data name="MsgDisplayContrast" xml:space="preserve">
+    <value>Apply changed display contrast to settings?</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="BatInfoChar" xml:space="preserve">
+    <value>characteristic</value>
+  </data>
+  <data name="BatInfoPartly" xml:space="preserve">
+    <value>partly idenfiable</value>
+  </data>
+  <data name="BatInfoNoIdent" xml:space="preserve">
+    <value>not idenfiable</value>
+  </data>
+  <data name="NotRegional" xml:space="preserve">
+    <value>not regional</value>
+  </data>
+  <data name="frmVerifySpecies_CallHasMyotisKink" xml:space="preserve">
+    <value>Call has Myotis kink</value>
+  </data>
+  <data name="frmVerifySpecies_CallCharcteristic" xml:space="preserve">
+    <value>Call charcteristic</value>
+  </data>
+  <data name="VerifyBatSpecies" xml:space="preserve">
+    <value>Verify Bat Species</value>
+  </data>
+  <data name="BatInfoLowerLimit" xml:space="preserve">
+    <value>lower limit</value>
+  </data>
+  <data name="BatInfoUpperLimit" xml:space="preserve">
+    <value>upper limit</value>
+  </data>
+  <data name="frmVerfify_IncludeSND" xml:space="preserve">
+    <value>Include section 'not determinable'</value>
+  </data>
+  <data name="frmVerfy_VerboseResult" xml:space="preserve">
+    <value>Verbose result</value>
   </data>
 </root>

@@ -1402,7 +1402,7 @@
     <value>Frequenz max. Intensität [kHz]</value>
   </data>
   <data name="ctlStatDuration" xml:space="preserve">
-    <value>Rufdauer [ms]</value>
+    <value>Rufdauer</value>
   </data>
   <data name="ctlStatCallInterval" xml:space="preserve">
     <value>Rufabstand [ms]</value>
@@ -1790,5 +1790,113 @@
   </data>
   <data name="frmModAmpSettings" xml:space="preserve">
     <value>Einstellung Vorverstärker</value>
+  </data>
+  <data name="Unambiguous" xml:space="preserve">
+    <value>eindeutig</value>
+  </data>
+  <data name="frmVerify_Fstart" xml:space="preserve">
+    <value>Startfrequenz [kHz]</value>
+  </data>
+  <data name="frmVerfy_fEnd" xml:space="preserve">
+    <value>Endfrequenz [kHz]</value>
+  </data>
+  <data name="frmVerify_fMk" xml:space="preserve">
+    <value>Myotis-Knickfrequenz [kHz]</value>
+  </data>
+  <data name="frmVerify_fChar" xml:space="preserve">
+    <value>Charakteristische Frequenz [kHz]</value>
+  </data>
+  <data name="frmVerifySpecies_setup_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="frmVerifySpecies_setup_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="DonTCare" xml:space="preserve">
+    <value>Egal</value>
+  </data>
+  <data name="frmVerify_CallHarmonics" xml:space="preserve">
+    <value>Ruf hat ausgeprägte Oberwellen</value>
+  </data>
+  <data name="frmVerify_CallAB" xml:space="preserve">
+    <value>Ruftypen A und B vorhanden</value>
+  </data>
+  <data name="frmVerifyCallHasKnee" xml:space="preserve">
+    <value>Ruf hat ausgeprägtes Knie</value>
+  </data>
+  <data name="frmVerify_CallsAreUniform" xml:space="preserve">
+    <value>Rufe sind gleichförmig</value>
+  </data>
+  <data name="frmVerifySpecies_HookAtEnd" xml:space="preserve">
+    <value>Ruf hat aufw. zeigenden Haken am Ende</value>
+  </data>
+  <data name="frmVerify_CallChanges" xml:space="preserve">
+    <value>Keine Rufwechsel</value>
+  </data>
+  <data name="frmVerifySpecies_Convex" xml:space="preserve">
+    <value>Ruf hat konvexe Form</value>
+  </data>
+  <data name="AdditionalFeatures" xml:space="preserve">
+    <value>Spezielle Eigenchaften</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Ergebnis</value>
+  </data>
+  <data name="frmVerify_RelevantFor" xml:space="preserve">
+    <value>Relevant für</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFend" xml:space="preserve">
+    <value>Klicke zum Setzen der Endfrequenz</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFstart" xml:space="preserve">
+    <value>Klicke zum Setzen der Startfrequenz</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFmk" xml:space="preserve">
+    <value>Klicke zum Setzen der Myotis-Knickfrequenz</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickClear" xml:space="preserve">
+    <value>Klicke zum Löschen der Markierungen</value>
+  </data>
+  <data name="msgNoMatchingCriteria" xml:space="preserve">
+    <value>keine passenden Kriterien gefunden</value>
+  </data>
+  <data name="MsgDisplayContrast" xml:space="preserve">
+    <value>Geänderten Anzeigekontrast in die Einstellungen übernehmen?</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Prüfen</value>
+  </data>
+  <data name="BatInfoChar" xml:space="preserve">
+    <value>charakteristisch</value>
+  </data>
+  <data name="BatInfoPartly" xml:space="preserve">
+    <value>teils bestimmbar</value>
+  </data>
+  <data name="BatInfoNoIdent" xml:space="preserve">
+    <value>nicht bestimmbar</value>
+  </data>
+  <data name="NotRegional" xml:space="preserve">
+    <value>nicht regional</value>
+  </data>
+  <data name="frmVerifySpecies_CallHasMyotisKink" xml:space="preserve">
+    <value>Ruf hat Myotis-Knick</value>
+  </data>
+  <data name="frmVerifySpecies_CallCharcteristic" xml:space="preserve">
+    <value>Ruf-Charakteristik</value>
+  </data>
+  <data name="VerifyBatSpecies" xml:space="preserve">
+    <value>Überprüfe Fledermausart</value>
+  </data>
+  <data name="BatInfoLowerLimit" xml:space="preserve">
+    <value>untere Grenze</value>
+  </data>
+  <data name="BatInfoUpperLimit" xml:space="preserve">
+    <value>obere Grenze</value>
+  </data>
+  <data name="frmVerfify_IncludeSND" xml:space="preserve">
+    <value>Abschnitt 'nicht bestimmbar'  berücksichtigen</value>
+  </data>
+  <data name="frmVerfy_VerboseResult" xml:space="preserve">
+    <value>Ausführliche Antwort</value>
   </data>
 </root>

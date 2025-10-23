@@ -27,7 +27,8 @@ namespace BatInspector
     double _maxAmplitude;
     double _minAmplitude;
     WavFile _wav = null;
-    
+    double _range;
+
     public double Duration 
     { 
       get
@@ -46,10 +47,10 @@ namespace BatInspector
 
     public double Range 
     {
-      get { return AppParams.Inst.GradientRange; }
+      get { return _range; }
       set
       {
-        AppParams.Inst.GradientRange = value;
+        _range = value;
         calcMinAmplitude();
       }
     }
@@ -63,13 +64,14 @@ namespace BatInspector
     {  
       get { return (_wav != null) ? _wav.PlayPosition : 0.0; } 
     }
-    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth)
+    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth, double gradientRange)
     {
       _wavName = wavName;
       _colorTable = colorTable;
       _spec = new List<double[]>();
       _maxAmplitude = _minAmplitude;
       _audio = new SoundEdit(384000, fftWidth);
+      _range = gradientRange;
       if (File.Exists(_wavName))
       {
         _ok = _audio.readWav(wavName) == 0;
@@ -409,9 +411,9 @@ namespace BatInspector
     void calcMinAmplitude()
     {
       if (AppParams.Inst.WaterfallLogarithmic)
-        _minAmplitude = _maxAmplitude - AppParams.Inst.GradientRange;
+        _minAmplitude = _maxAmplitude - _range;
       else
-        _minAmplitude = _maxAmplitude / Math.Pow(10, AppParams.Inst.GradientRange / 20);
+        _minAmplitude = _maxAmplitude / Math.Pow(10, _range / 20);
     }
   }
 }

@@ -8,23 +8,18 @@
 
 using BatInspector.Controls;
 using BatInspector.Forms;
+using BatInspector.Properties;
 using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace BatInspector
 {
-
   struct FormulaData
   {
     public FormulaData(int i, string f, string r, string e)
@@ -48,7 +43,7 @@ namespace BatInspector
     FormulaData[] _dataForm;
 
   public Tests()
-   {
+  {
       _proc = new ProcessRunner();
       _dataForm = new FormulaData[]
         {
@@ -125,6 +120,7 @@ namespace BatInspector
       //testSplitWavs();
       testCalcSnr();
       testCreatePngCpp();
+      testCheckSpecies();
       //    testMySql();
 
       //testCreateMicSpectrumFromNoiseFile();
@@ -1151,6 +1147,29 @@ namespace BatInspector
       string name5 = "20210413_115008.wav";
       t = ElekonInfoFile.getDateTimeFromFileName(name5);
       assert($"date {name3}", t == new DateTime(2021, 04, 13, 11, 50, 08));
+    }
+
+    private void testCheckSpecies()
+    {
+      //MDAU
+      double lat = 49.5;
+      double lon = 8.3;
+      CallData c = new CallData(83.0, 27.0, -1, 3, -1, 42, enCallChar.FM);
+      c.HasMyotisKink = enYesNoProperty.YES;
+      string res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      assert("MDAU", (res.IndexOf("MDAU") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+      //PPIP
+      c = new CallData(-1, -1, 51, 10, -1, -1, enCallChar.FM_QCF);
+      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      assert("PPIP1", (res.IndexOf("(PPIP") >= 0) && (res.IndexOf("(PPYG") >= 0));
+
+      c = new CallData(-1, -1, 48, 10, -1, -1, enCallChar.FM_QCF);
+      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      assert("PPIP2", (res.IndexOf("PPIP") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(-1, -1, 53.5, 10, -1, -1, enCallChar.FM_QCF);
+      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      assert("PPYG", (res.IndexOf("PPYG") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
     }
 
 

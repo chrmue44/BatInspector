@@ -102,6 +102,7 @@ namespace BatInspector.Forms
 
       _cbVerbose.IsChecked = true;
       _cbNotDeterminable.IsChecked = true;
+      _cbLocalNames.IsChecked = true;
 
       if (analysisCall != null)
       {
@@ -161,7 +162,8 @@ namespace BatInspector.Forms
 
       string res = BatInfo.checkBatSpecies(cd, App.Model.SpeciesInfos, _lat, _lon,
                                            _cbVerbose.IsChecked == true, 
-                                           _cbNotDeterminable.IsChecked == true);
+                                           _cbNotDeterminable.IsChecked == true,
+                                           _cbLocalNames.IsChecked == true);
 
       _tbResult.Text = res;
     }

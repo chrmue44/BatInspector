@@ -1899,4 +1899,7 @@
   <data name="frmVerfy_VerboseResult" xml:space="preserve">
     <value>Ausführliche Antwort</value>
   </data>
+  <data name="frmVerify_LocalNames" xml:space="preserve">
+    <value>Deutsche Artbezeichnungen</value>
+  </data>
 </root>

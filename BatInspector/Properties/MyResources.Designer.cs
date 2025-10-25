@@ -3103,6 +3103,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to English Species Names.
+        /// </summary>
+        public static string frmVerify_LocalNames {
+            get {
+                return ResourceManager.GetString("frmVerify_LocalNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Relevant for.
         /// </summary>
         public static string frmVerify_RelevantFor {

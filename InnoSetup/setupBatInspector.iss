@@ -43,8 +43,8 @@ SolidCompression=yes
 AlwaysShowDirOnReadyPage=yes
 AlwaysShowComponentsList=yes
 WizardStyle=modern
-SetupIconFile={#SourceFolder}\{#MyAppName}\images\kopf64.ico
-UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\images\kopf64.ico
+SetupIconFile={#SourceFolder}\{#MyAppName}\logo.ico
+UninstallDisplayIcon={#SourceFolder}\{#MyAppName}\logo.ico
 ArchitecturesInstallIn64BitMode=x64
 
 [Types]
@@ -84,13 +84,14 @@ source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\da
 source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\batInfo.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
+source: "{#SourceFolder}\{#MyAppName}\mysql\*"; DestDir: "#MyAppDataFolder}\mySql";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2"; Components: modbd2
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\"; Components: modbd2
 source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet"; Components: modbatty
 source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet"; Components: modbnet
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full; Components: python
-source: "{#SourceFolder}\BatInspector\images\kopf64.ico"; DestDir: "{app}";
+source: "{#SourceFolder}\BatInspector\logo.ico"; DestDir: "{app}";
 
 [Dirs]
 Name: "{#MyAppDataFolder}\log"; Permissions: everyone-full
@@ -98,8 +99,8 @@ Name: "{#MyAppDataFolder}\log"; Permissions: everyone-full
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico" ;
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\kopf64.ico"; Tasks: desktopicon starticon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo.ico" ;
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo.ico"; Tasks: desktopicon starticon
 
 [Run]
 Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Flags:runasoriginaluser; Components: python

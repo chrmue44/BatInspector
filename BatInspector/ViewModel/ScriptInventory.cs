@@ -264,7 +264,7 @@ namespace BatInspector
       for (int i = 0; i < files.Length; i++)
       {
         fileNames[i] = files[i].FullName;
-        DebugLog.log($"copy script {fileNames[i]} to {_scriptPath}", enLogType.INFO);
+//        DebugLog.log($"copy script {fileNames[i]} to {_scriptPath}", enLogType.INFO);
       }
 
       Utils.copyFiles(fileNames, _scriptPath, false, true);

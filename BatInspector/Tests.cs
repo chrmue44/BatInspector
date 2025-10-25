@@ -1156,19 +1156,19 @@ namespace BatInspector
       double lon = 8.3;
       CallData c = new CallData(83.0, 27.0, -1, 3, -1, 42, enCallChar.FM);
       c.HasMyotisKink = enYesNoProperty.YES;
-      string res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      string res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false);
       assert("MDAU", (res.IndexOf("MDAU") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
       //PPIP
       c = new CallData(-1, -1, 51, 10, -1, -1, enCallChar.FM_QCF);
-      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false);
       assert("PPIP1", (res.IndexOf("(PPIP") >= 0) && (res.IndexOf("(PPYG") >= 0));
 
       c = new CallData(-1, -1, 48, 10, -1, -1, enCallChar.FM_QCF);
-      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false);
       assert("PPIP2", (res.IndexOf("PPIP") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
 
       c = new CallData(-1, -1, 53.5, 10, -1, -1, enCallChar.FM_QCF);
-      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true);
+      res = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false);
       assert("PPYG", (res.IndexOf("PPYG") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
     }
 

@@ -13,7 +13,7 @@
             <RowDefinition Height="65"/>
             <RowDefinition Height="190"/>
             <RowDefinition Height="210"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -77,6 +77,7 @@
             <StackPanel Margin="5">
             <CheckBox x:Name="_cbNotDeterminable" Content="{x:Static res:MyResources.frmVerfify_IncludeSND}"/>
             <CheckBox x:Name="_cbVerbose" Content="{x:Static res:MyResources.frmVerfy_VerboseResult}"/>
+                <CheckBox x:Name="_cbLocalNames" Content="{x:Static res:MyResources.frmVerify_LocalNames}"/>
             </StackPanel>
         </StackPanel>
         <GroupBox Header="{x:Static res:MyResources.Result}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">

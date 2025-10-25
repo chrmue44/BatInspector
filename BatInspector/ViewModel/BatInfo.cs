@@ -816,7 +816,7 @@ namespace BatInspector
     }
 
 
-    static private string buildResults(List<CheckResult> results, double lat, double lon)
+    static private string buildResults(List<CheckResult> results, double lat, double lon, bool localNames)
     {
       string retVal = "";
       // sum up test results
@@ -835,11 +835,12 @@ namespace BatInspector
             id = MyResources.BatInfoNoIdent;
             break;
         }
-        string reg = App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon) ? "" : $"({MyResources.NotRegional})"; 
-        if(r.Unambiguous)
-          retVal += $"{r.Species.Abbreviation}: {reg} {MyResources.Unambiguous} {r.AdditionalInfo}\n";
+        string reg = App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon) ? "" : $"({MyResources.NotRegional})";
+        string spec = localNames ? r.Species.Local : r.Species.Abbreviation;
+        if (r.Unambiguous)
+          retVal += $"{spec}: {reg} {MyResources.Unambiguous} {r.AdditionalInfo}\n";
         else
-          retVal += $"({r.Species.Abbreviation}): {reg} {id}, {r.AdditionalInfo}\n";
+          retVal += $"({spec}): {reg} {id}, {r.AdditionalInfo}\n";
       }
 
       if (retVal == "")
@@ -850,14 +851,17 @@ namespace BatInspector
         if (results.Count > 1)
         {
           List<string> listGenus = new List<string>();
-          List<string> listSpecies = new List<string>();
+          List<SpeciesInfos> listSpecies = new List<SpeciesInfos>();
           retVal += "===>\n";
 
           // try to find similar species
           bool stop = false;
           if ((results.Count == 2) && (results[0].Species.Abbreviation == results[1].Species.NotDistinguishableFrom))
           {
-            retVal += results[0].Species.Abbreviation + "/" + results[1].Species.Abbreviation;
+            if(localNames)
+              retVal += results[0].Species.Local+ "/" + results[1].Species.Local;
+            else
+              retVal += results[0].Species.Abbreviation + "/" + results[1].Species.Abbreviation;
             stop = true;
           }
 
@@ -866,15 +870,20 @@ namespace BatInspector
           {
             foreach (CheckResult r in results)
             {
-              string f = listGenus.Find(x => x == r.Species.getGenus());
-              if ((f == null) && App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon))
+              string genus = listGenus.Find(x => x == r.Species.getGenus());
+              if ((genus == null) && App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon))
                 listGenus.Add(r.Species.getGenus());
-              f = listSpecies.Find(x => x == r.Species.Abbreviation);
-              if ((f == null) && App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon))
-                listSpecies.Add(r.Species.Abbreviation);
+              SpeciesInfos spec = listSpecies.Find(x => x.Abbreviation == r.Species.Abbreviation);
+              if ((spec == null) && App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon))
+                listSpecies.Add(r.Species);
             }
             if (listSpecies.Count == 1)
-              retVal += listSpecies[0];
+            {
+              if (localNames)
+                retVal += listSpecies[0].Local;
+              else
+                retVal += listSpecies[0].Abbreviation;
+            }
             else
             {
               if (listGenus.Count == 1)
@@ -937,9 +946,8 @@ namespace BatInspector
     }
 
 
-    static public string checkBatSpecies(CallData call, List<SpeciesInfos> species, double lat, double lon, bool verbose, bool includeUnidentifiable)
+    static public string checkBatSpecies(CallData call, List<SpeciesInfos> species, double lat, double lon, bool verbose, bool includeUnidentifiable, bool localNames)
     {
-
       List<CheckResult> results = new List<CheckResult>();
 
       foreach(SpeciesInfos s in species)
@@ -976,7 +984,7 @@ namespace BatInspector
           }
         }
       }
-      return buildResults(results, lat, lon);
+      return buildResults(results, lat, lon, localNames);
     }
       /*
       int checkBatSpecies(AnalysisFile analysis, string fileName, int callIdx)

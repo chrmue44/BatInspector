@@ -7,11 +7,14 @@
  ********************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Interop;
-using System.Windows;
-using System.Drawing;
+using System.Windows.Media;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace BatInspector
 {
@@ -25,10 +28,42 @@ namespace BatInspector
       SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
     }
 
+
+    public static string StringFromRichTextBox(System.Windows.Controls.RichTextBox rtb)
+    {
+      TextRange textRange = new TextRange(
+          // TextPointer to the start of content in the RichTextBox.
+          rtb.Document.ContentStart,
+          // TextPointer to the end of content in the RichTextBox.
+          rtb.Document.ContentEnd
+      );
+
+      // The Text property on a TextRange object returns a string
+      // representing the plain text content of the TextRange.
+      return textRange.Text;
+    }
+
+    public static void appendText(System.Windows.Controls.RichTextBox txt, string str, bool bold = false,  bool underlined = false, SolidColorBrush color = null)
+    {
+
+      TextPointer start = txt.Document.ContentEnd;
+      txt.AppendText(str);
+      txt.Selection.Select(start, txt.Document.ContentEnd);
+      if (bold)
+        txt.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
+      if(underlined)
+        txt.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+      if(color != null)
+        txt.Selection.ApplyPropertyValue(Inline.ForegroundProperty, color);
+    }
+
+
     [DllImport("user32.dll", SetLastError = true)]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+
 
   }
 

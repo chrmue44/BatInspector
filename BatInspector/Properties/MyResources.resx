@@ -1902,4 +1902,7 @@
   <data name="frmVerify_LocalNames" xml:space="preserve">
     <value>English Species Names</value>
   </data>
+  <data name="BatInfo_buildResults_See" xml:space="preserve">
+    <value>see</value>
+  </data>
 </root>

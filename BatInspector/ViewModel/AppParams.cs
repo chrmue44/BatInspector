@@ -263,6 +263,11 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescExeEditor")]
+    public string ExeAcrobat { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescWavTool")]
     public string WavTool { get; set; } = "";
 
@@ -394,6 +399,10 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRangeZoomWin")]
     public double GradientRange { get; set; } = 90;
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    public double BlackLevel { get; set; } = 0;
 
     [DataMember]
     [Category("Filter")]
@@ -537,6 +546,8 @@ namespace BatInspector
       {
         if (string.IsNullOrEmpty(ModelDefaultParamsFile))
           ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
+        if (string.IsNullOrEmpty(ExeAcrobat))
+          ExeAcrobat = "C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe";
       }
       int comparison = String.Compare(Version, "0.9.2.3", comparisonType: StringComparison.OrdinalIgnoreCase);
       if (string.IsNullOrEmpty(Version) || (comparison < 0))

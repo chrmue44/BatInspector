@@ -160,6 +160,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to see.
+        /// </summary>
+        public static string BatInfo_buildResults_See {
+            get {
+                return ResourceManager.GetString("BatInfo_buildResults_See", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to characteristic.
         /// </summary>
         public static string BatInfoChar {

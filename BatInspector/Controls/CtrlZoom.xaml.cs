@@ -38,6 +38,7 @@ namespace BatInspector.Controls
     enModel _modelType;
     Sonogram _sonogramFt;
     Sonogram _sonogramXt;
+
     public CtrlZoom()
     {
       InitializeComponent();
@@ -200,10 +201,10 @@ namespace BatInspector.Controls
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
       _ctlGpsPos.setValue(ElekonInfoFile.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
       _ctlSpectrum.init(App.Model.ZoomView.Spectrum, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
-
+      _ctlBlackLevel.setup(0,100,0,5, setBlackLevel);
 
       initCallSelectors();
-
+      
       update();
       _btnZoomTotal_Click(null, null);
 
@@ -219,7 +220,14 @@ namespace BatInspector.Controls
       _cbGrid.IsChecked = true;
     }
 
-    
+
+    void setBlackLevel(double val)
+    {
+      App.Model.ZoomView.Waterfall.BlackLevel = val;
+      updateImage();
+    }
+
+
     void setVisabilityCallData(bool on)
     {
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;

@@ -266,7 +266,7 @@ namespace BatInspector
         for(int h = 0; h< height; h++) 
         {
           double val = fft[w * height+ h];
-          System.Drawing.Color col = _colorTable.getColor(val, 0, 255);
+          System.Drawing.Color col = _colorTable.getColor(val, 0, 255, 0);
           bmp.setPixel(w, height - 1 - h, col);
         }
       }

@@ -2,9 +2,12 @@
 using BatInspector.Properties;
 using libParser;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace BatInspector.Forms
 {
@@ -101,7 +104,7 @@ namespace BatInspector.Forms
       _ctlCallType.setItems(items);
 
       _cbVerbose.IsChecked = true;
-      _cbNotDeterminable.IsChecked = true;
+      _cbNotDeterminable.IsChecked = false;
       _cbLocalNames.IsChecked = true;
 
       if (analysisCall != null)
@@ -127,7 +130,6 @@ namespace BatInspector.Forms
           _ctlCallType.SelectIndex = 4;
         else
           _ctlCallType.SelectIndex = 1;
-
       }
 
       App.Model.ZoomView.Waterfall.generateFtDiagram(tMin, tMax, AppParams.Inst.WaterfallWidth);
@@ -160,12 +162,39 @@ namespace BatInspector.Forms
       cd.IsConvex = (enYesNoProperty) _ctlIsConvex.SelectIndex;
       cd.IsUniformFormFreqInt = (enYesNoProperty)_ctlIsUniForm.SelectIndex;
 
-      string res = BatInfo.checkBatSpecies(cd, App.Model.SpeciesInfos, _lat, _lon,
+      _tbResult.Document = BatInfo.checkBatSpecies(cd, App.Model.SpeciesInfos, _lat, _lon,
                                            _cbVerbose.IsChecked == true, 
                                            _cbNotDeterminable.IsChecked == true,
-                                           _cbLocalNames.IsChecked == true);
+                                           _cbLocalNames.IsChecked == true,
+                                           HandleRequestNavigate
+                                           );
+    }
 
-      _tbResult.Text = res;
+    private void HandleRequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+        string navigateUri = e.Uri.AbsolutePath.Replace("%23","#");
+        string filePath = navigateUri.Substring(0, navigateUri.IndexOf('#'));
+        string pageNumber = navigateUri.Substring(navigateUri.IndexOf('#') + 1);
+        string arguments = $"/A \"{pageNumber}\" \"{filePath}\"";
+        
+        try
+        {
+          Process.Start(AppParams.Inst.ExeAcrobat, arguments);
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+          // If the Adobe Reader process fails, try another viewer or just open the file.
+          DebugLog.log("Could not find AcroRd32.exe. Attempting to use default handler.", enLogType.WARNING);
+          try
+          {
+            Process.Start(filePath);
+          }
+          catch (Exception ex)
+          {
+            Console.WriteLine($"Error: {ex.Message}");
+          }
+        }
+      e.Handled = true;
     }
 
     private void _img_MouseLeave(object sender, MouseEventArgs e)
@@ -259,6 +288,12 @@ namespace BatInspector.Forms
       setCrossPosition(_cross2X, _cross2Y, p);
       p = new Point(getXFromt(_tMk), getYFromF(_ctlFMk.getDoubleValue()));
       setCrossPosition(_cross3X, _cross3Y, p);
+    }
+
+    private void _tbResult_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+      Hyperlink hyperlink = (Hyperlink)sender;
+      Process.Start(hyperlink.NavigateUri.ToString());
     }
 
     private void _img_MouseDown(object sender, MouseButtonEventArgs e)

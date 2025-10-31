@@ -270,6 +270,7 @@
     <Compile Include="Forms\frmVerifySpecies.xaml.cs">
       <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\DocHelper.cs" />
     <Compile Include="ViewModel\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">

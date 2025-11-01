@@ -7,13 +7,13 @@
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
         Title="{x:Static res:MyResources.VerifyBatSpecies}" 
-        Height="768" Width="900"  SizeChanged="Window_SizeChanged">
+        Height="800" Width="1100"  SizeChanged="Window_SizeChanged">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition Height="190"/>
             <RowDefinition Height="210"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -24,7 +24,10 @@
             Grundlage der hier durchgeführten Bestimmung ist der Leitfaden 'Bestimmung von Fledermausrufaufnahmen und Kriterien für die Wertung von akustischen Artnachweisen' Teil 1 und Teil 2 des Bayrischen Landesamtes für Umwelt. Es werden die 24 in Deutschland vorkommenden Fledermausarten erkannt. 
             Alle relevanten Felder müssen ausgefüllt werden!  
         </TextBlock>
-        <GroupBox Header="{x:Static res:MyResources.CallInformation}" Grid.Row="1" Grid.Column="0">
+        <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="1" Grid.Column="0">
+            <GroupBox.Header>
+                <TextBlock Text="{x:Static res:MyResources.CallInformation}" FontWeight="Bold" />
+            </GroupBox.Header>
             <StackPanel >
             <local:ctlSelectItem x:Name="_ctlCallType"/>
             <local:ctlDataItem x:Name="_ctlFstart" />
@@ -35,7 +38,10 @@
             <local:ctlDataItem x:Name="_ctlCallInterval" />
         </StackPanel>
         </GroupBox>
-        <GroupBox Header="{x:Static res:MyResources.AdditionalFeatures}" Grid.Row="2" Grid.Column="0">
+        <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="2" Grid.Column="0">
+            <GroupBox.Header>
+                <TextBlock Text="{x:Static res:MyResources.AdditionalFeatures}" FontWeight="Bold" />
+            </GroupBox.Header>
             <StackPanel >
                 <Label Content="{x:Static res:MyResources.frmVerify_RelevantFor}" Margin="330,0,0,0"/>
                 <StackPanel Orientation="Horizontal">
@@ -77,10 +83,14 @@
             <StackPanel Margin="5">
             <CheckBox x:Name="_cbNotDeterminable" Content="{x:Static res:MyResources.frmVerfify_IncludeSND}"/>
             <CheckBox x:Name="_cbVerbose" Content="{x:Static res:MyResources.frmVerfy_VerboseResult}"/>
+                <CheckBox x:Name="_cbLocalNames" Content="{x:Static res:MyResources.frmVerify_LocalNames}"/>
             </StackPanel>
         </StackPanel>
-        <GroupBox Header="{x:Static res:MyResources.Result}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-        <TextBox x:Name="_tbResult"/>
+        <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+            <GroupBox.Header>
+                <TextBlock Text="{x:Static res:MyResources.Result}" FontWeight="Bold" />
+            </GroupBox.Header>
+            <RichTextBox x:Name="_tbResult" Block.LineHeight="1" IsReadOnly="True" IsDocumentEnabled="True"/>
         </GroupBox>
         <GroupBox Header="{x:Static res:MyResources.CtlWavCall}" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,-4,0,4">
             <Grid>

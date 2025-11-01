@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Windows;
 
 namespace BatInspector
 {
@@ -63,7 +65,7 @@ namespace BatInspector
   [DataContract]
   public class BatSpeciesRegions
   {
-    const string _fName = "BatSpeciesRegions.json";
+    const string _fName = AppParams.BATSPECIES_REGIONS;
     [DataMember]
     List<ParRegion> Regions { get; set; }
 
@@ -113,6 +115,31 @@ namespace BatInspector
       return retVal;
     }
 
+    public static void copyRegionsFileAfterSetup(string srcDir, string dstDir)
+    {
+      string srcFileName = Path.Combine(srcDir, _fName);
+      string dstFileName = Path.Combine(dstDir, _fName);
+      try
+      {
+        if (File.Exists(dstFileName))
+        {
+          if (File.GetLastWriteTime(dstFileName) < File.GetLastWriteTime(srcFileName))
+          {
+            MessageBoxResult res = MessageBox.Show(MyResources.msgNewVerBatRegions,
+               BatInspector.Properties.MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (res == MessageBoxResult.Yes)
+              File.Copy(srcFileName, dstFileName, true);
+          }
+        }
+        else
+          File.Copy(srcFileName, dstFileName, true);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"unable to copy {srcFileName} : {ex.ToString()}", enLogType.ERROR);
+      }
+    }
+
     public void init()
     {
       Regions = new List<ParRegion>();
@@ -121,7 +148,7 @@ namespace BatInspector
         Name = "Darmstadt-Dieburg",
         Species = new List<string>() { "MMYO", "MBEC", "MNAT", "MMYS", "MBRA", "MALC", "MDAU", "NNOC", "NLEI",
                     "ESER", "ENIL", "VMUR", "PPIP", "PPYG", "PNAT", "BBAR", "PAUR", "PAUS",
-                    "Eptesicus", "Nyctalus", "Myotis", "Vespertilio", "Pipistrellus" },
+                    "Eptesicus", "Nyctaloid", "Myotis", "Vespertilio", "Pipistrellus" },
         InformationSource = "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm",
         Location = new List<ParLocation>(){ new ParLocation(49.963175,8.563220),
                                             new ParLocation(49.727209,8.539645),
@@ -139,7 +166,7 @@ namespace BatInspector
         Species = new List<string>() { "BBAR", "ENIL", "ESER", "HSAV", "MSCH", "MALC", "MBEC", "MBRA",
           "MDAS", "MDAU", "MEMA", "MMYO", "MMYS", "MNAT", "NLAS", "NLEI",
           "NNOC", "PKUH", "PAUR", "PAUS", "RFER", "RHIP", "PNAT", "PPIP",
-          "PPYG", "TTEN", "VMUR", "Eptesicus", "Myotis", "Nyctalus",
+          "PPYG", "TTEN", "VMUR", "Eptesicus", "Myotis", "Nyctaloid",
           "Vespertilio", "Pipistrellus" },
         InformationSource = "https://de.wikipedia.org/wiki/Liste_von_Fledermausarten_in_Deutschland",
         Location = new List<ParLocation>() { new ParLocation(54.850456, 9.943414),
@@ -161,7 +188,7 @@ namespace BatInspector
       {
         Name = "Norway",
         Species = new List<string>() { "ENIL", "MBRA", "MDAU", "MMYS", "MNAT", "NNOC", "PNAT", "PPYG", "PAUR",
-          "VMUR", "Eptesicus", "Myotis", "Nyctalus", "Vespertilio", "Pipistrellus" },
+          "VMUR", "Eptesicus", "Myotis", "Nyctaloid", "Vespertilio", "Pipistrellus" },
         InformationSource = "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway",
         Location = new List<ParLocation>() { new ParLocation(58.03315047073381, 7.27678231645965),
                                              new ParLocation(59.64141461545502, 4.988287311243992),
@@ -180,7 +207,7 @@ namespace BatInspector
         Name = "Wales",
         Species = new List<string>() { "BBAR", "ESER", "MALC", "MBRA", "MDAU", "MNAT", "MMYS", "NLEI",
           "NNOC", "PAUR", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
-          "Eptesicus", "Myotis", "Nyctalus", "Pipistrellus" },
+          "Eptesicus", "Myotis", "Nyctaloid", "Pipistrellus" },
         InformationSource = "",
         Location = new List<ParLocation>() { new ParLocation(51.35333, -2.62814),
                                              new ParLocation(53.47805, -2.81731),
@@ -193,7 +220,7 @@ namespace BatInspector
         Name = "United Kingdom",
         Species = new List<string>() { "BBAR", "ESER", "MALC", "MBEC", "MBRA", "MDAU", "MMYS", "MNAT", "NLEI",
           "NNOC", "PAUR", "PAUS", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
-          "Eptesicus", "Myotis", "Nyctalus", "Vespertilio", "Pipistrellus" },
+          "Eptesicus", "Myotis", "Nyctaloid", "Vespertilio", "Pipistrellus" },
         InformationSource = "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats",
         Location = new List<ParLocation>() { new ParLocation(51.033539, 1.113506),
           new ParLocation(52.873203, 1.533058),

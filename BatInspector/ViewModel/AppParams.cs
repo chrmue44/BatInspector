@@ -174,6 +174,7 @@ namespace BatInspector
     public const string VAR_WRK_DIR = "WRK_DIR";            // variable name for work dir
     public const string VAR_DATA_PATH = "APP_DATA_PATH";    // variable name for application data path
     public const string CMD_REDUCE_NOISE = "reduce_noise.bat"; //command to reduce the background noise in WAV file
+    public const string BATSPECIES_REGIONS = "BatSpeciesRegions.json";   //name of the file containing region information
 
     public const int CTLWAV_WIDTH_BIRDS = 500;            // ctlWav with of info section for bird projects
     public const int CTLWAV_WIDTH_BATS = 360;             // ctlWav with of info section for bat projects
@@ -260,6 +261,11 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescExeEditor")]
     public string ExeEditor { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescExeEditor")]
+    public string ExeAcrobat { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -394,6 +400,10 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescRangeZoomWin")]
     public double GradientRange { get; set; } = 90;
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    public double BlackLevel { get; set; } = 0;
 
     [DataMember]
     [Category("Filter")]
@@ -537,6 +547,8 @@ namespace BatInspector
       {
         if (string.IsNullOrEmpty(ModelDefaultParamsFile))
           ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
+        if (string.IsNullOrEmpty(ExeAcrobat))
+          ExeAcrobat = "C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe";
       }
       int comparison = String.Compare(Version, "0.9.2.3", comparisonType: StringComparison.OrdinalIgnoreCase);
       if (string.IsNullOrEmpty(Version) || (comparison < 0))
@@ -593,7 +605,7 @@ namespace BatInspector
       LogShowWarning = true;
       LogShowInfo = true;
       LogShowDebug = false;
-
+      
       ShowOnlyFilteredDirs = false;
       DirFilter = new List<string>();
       for (int i = 0; i < 5; i++)
@@ -698,14 +710,19 @@ namespace BatInspector
         retVal.BatInfoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
                                          PROG_DAT_DIR, AppParams.DIR_BAT_INFO);
       }
+      if(string.IsNullOrEmpty(retVal.ExeAcrobat))
+      {
+        retVal.ExeAcrobat = "C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe";
+      }
 
       retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath, out bool firstLoadAfterInstall);
 
       if (firstLoadAfterInstall)
       {
-        string srcPath = Path.Combine(AppDataPath, "dat");
+        string srcPath = Path.Combine(AppDataPath, "setup");
         string dstPath = AppParams.Inst.BatInfoPath;
         BatInfo.copyInfoFileAfterSetup(srcPath, dstPath);
+        BatSpeciesRegions.copyRegionsFileAfterSetup(srcPath, dstPath);
       }
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
     //  retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);

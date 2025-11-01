@@ -125,7 +125,7 @@ namespace BatInspector
       for (int i = 0; i < 101; i++)
       {
         float y = Y_BT + bt + 2 * i;
-        SolidBrush col = new SolidBrush(_colorTable.getColor(100 - i, 0, 100));
+        SolidBrush col = new SolidBrush(_colorTable.getColor(100 - i, 0, 100, 0));
         GraphHelper.createRectangle(_graphics, x, y, barWidth, 2, col);
       }
       for (int i = 0; i < 5; i++)
@@ -217,7 +217,7 @@ namespace BatInspector
             case 0:
               if (tCountValue > 0)
               {
-                Color col = _colorTable.getColor((double)tCountValue, 0, _maxDispValue);
+                Color col = _colorTable.getColor((double)tCountValue, 0, _maxDispValue, 0);
                 System.Drawing.Brush b = new System.Drawing.SolidBrush(col);
                 GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), wBox, hBox, b);
               }

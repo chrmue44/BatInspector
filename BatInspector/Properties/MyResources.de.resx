@@ -1048,7 +1048,8 @@
     <value>Positionsangaben</value>
   </data>
   <data name="FrmCreatePrjCbOverwriteLoc" xml:space="preserve">
-    <value>Überschreibe Positionsangaben aus Quelldateien</value>
+    <value>erse
+übers</value>
   </data>
   <data name="MainToolTools" xml:space="preserve">
     <value>Benutzerdefinierte Werkzeuge ausführen</value>
@@ -1837,7 +1838,7 @@
     <value>Ruf hat konvexe Form</value>
   </data>
   <data name="AdditionalFeatures" xml:space="preserve">
-    <value>Spezielle Eigenchaften</value>
+    <value>Spezielle Eigenschaften</value>
   </data>
   <data name="Result" xml:space="preserve">
     <value>Ergebnis</value>
@@ -1867,7 +1868,7 @@
     <value>Prüfen</value>
   </data>
   <data name="BatInfoChar" xml:space="preserve">
-    <value>charakteristisch</value>
+    <value>bestimmbar</value>
   </data>
   <data name="BatInfoPartly" xml:space="preserve">
     <value>teils bestimmbar</value>
@@ -1898,5 +1899,23 @@
   </data>
   <data name="frmVerfy_VerboseResult" xml:space="preserve">
     <value>Ausführliche Antwort</value>
+  </data>
+  <data name="frmVerify_LocalNames" xml:space="preserve">
+    <value>Deutsche Artbezeichnungen</value>
+  </data>
+  <data name="BatInfo_buildResults_See" xml:space="preserve">
+    <value>siehe</value>
+  </data>
+  <data name="Attention" xml:space="preserve">
+    <value>Achtung</value>
+  </data>
+  <data name="MainWindow_MsgAcrobat" xml:space="preserve">
+    <value>Bitte tragen Sie den Pfad zur ausführbaren Programm AcrobatReader in den Einstellungen ein</value>
+  </data>
+  <data name="msgNewVerBatInfo" xml:space="preserve">
+    <value>Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatInfo.json' verfügbar. Soll die vorhandene überschrieben werden?</value>
+  </data>
+  <data name="msgNewVerBatRegions" xml:space="preserve">
+    <value>Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatRegions.json' verfügbar. Soll die vorhandene überschrieben werden?</value>
   </data>
 </root>

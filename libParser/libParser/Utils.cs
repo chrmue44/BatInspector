@@ -138,8 +138,11 @@ namespace libParser
           {
             if(copy)
               File.Copy(file, dest);
-            if(overWrite)
-              File.Copy(file, dest,overWrite);
+            if (overWrite)
+            {
+              File.Copy(file, dest, overWrite);
+              DebugLog.log($"replace file with newer version: {dest}", enLogType.INFO);
+            }
           }
           else
           {

@@ -325,6 +325,22 @@ namespace BatInspector
       }
     }
 
+    public void copySampleRange(double[] samples, int iStart, int iEnd)
+    {
+      _samples = new double[iEnd - iStart + 1];
+      _originalSamples = new double[_samples.Length];
+      _size = _samples.Length;
+      int iSource = iStart;
+      int i = 0;
+        for (; i < _samples.Length; i++)
+        {
+          _samples[i] = samples[iSource];
+          _originalSamples[i] = samples[iSource];
+          iSource++;
+        }
+      
+    }
+
     public void FftBackward()
     {
       int handle = initFft();  

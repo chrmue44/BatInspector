@@ -28,7 +28,7 @@ namespace BatInspector
     double _minAmplitude;
     WavFile _wav = null;
     double _range;
-
+    double _blackLevel;
     public double Duration 
     { 
       get
@@ -45,6 +45,8 @@ namespace BatInspector
     public List<double[]> Spec {  get { return _spec; } }
     public bool Ok { get { return _ok; } }
 
+    public double BlackLevel { get { return _blackLevel; }  set { _blackLevel = value; } }
+
     public double Range 
     {
       get { return _range; }
@@ -54,9 +56,8 @@ namespace BatInspector
         calcMinAmplitude();
       }
     }
-    public double MinAmplitude {  get { return _minAmplitude; } set { _minAmplitude = value; } }
-    public double MaxAmplitude { get { return _maxAmplitude; } set { _maxAmplitude = value; } }
 
+    
     public string WavName { get { return _wavName; } }
     public PlaybackState PlaybackState { get { return (_wav != null) ? _wav.PlaybackState : PlaybackState.Stopped; } }
 
@@ -64,7 +65,8 @@ namespace BatInspector
     {  
       get { return (_wav != null) ? _wav.PlayPosition : 0.0; } 
     }
-    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth, double gradientRange)
+
+    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth, double gradientRange, double blackLevel)
     {
       _wavName = wavName;
       _colorTable = colorTable;
@@ -72,6 +74,7 @@ namespace BatInspector
       _maxAmplitude = _minAmplitude;
       _audio = new SoundEdit(384000, fftWidth);
       _range = gradientRange;
+      _blackLevel = blackLevel;
       if (File.Exists(_wavName))
       {
         _ok = _audio.readWav(wavName) == 0;
@@ -284,7 +287,7 @@ namespace BatInspector
                   if (idxFreq >= _spec[idxSpec].Length)
                     idxFreq = _spec[idxSpec].Length - 1;
                   double val = _spec[idxSpec][idxFreq];
-                  System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude);
+                  System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude, _blackLevel);
                   bmp.setPixel(x, fftBinCnt - 1 - y, col);
                 }
               }

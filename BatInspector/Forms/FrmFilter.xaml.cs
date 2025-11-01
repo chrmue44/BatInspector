@@ -67,7 +67,9 @@ namespace BatInspector.Forms
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {      
       this.Visibility = Visibility.Hidden;
-      _dlgUpdate();
+      App.Model.saveSettings();
+      if (_dlgUpdate != null)
+         _dlgUpdate();
       if(_frmHelp != null)
       {
         _frmHelp.Close();

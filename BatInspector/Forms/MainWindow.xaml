@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400" MinWidth="1280" MinHeight="640"
-        Icon="../images/kopf64.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
+        Icon="../images/logo.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
     >
 <!--    PreviewKeyDown="Window_KeyDown" -->
     <WindowChrome.WindowChrome>
@@ -80,7 +80,7 @@
             <Grid Grid.Row="0" Height="25" Background="{DynamicResource colorBackGroundWindow}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <!--App icon-->
-                    <Image Source="/images/kopf64.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Image Source="/images/logo.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <TextBlock Name ="_windowTitle" Text="Batinspector" FontFamily="Arial" Foreground="White"  FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
                 </StackPanel>
 

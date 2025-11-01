@@ -151,11 +151,29 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attention.
+        /// </summary>
+        public static string Attention {
+            get {
+                return ResourceManager.GetString("Attention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bandwidth.
         /// </summary>
         public static string Bandwidth {
             get {
                 return ResourceManager.GetString("Bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to see.
+        /// </summary>
+        public static string BatInfo_buildResults_See {
+            get {
+                return ResourceManager.GetString("BatInfo_buildResults_See", resourceCulture);
             }
         }
         
@@ -3103,6 +3121,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to English Species Names.
+        /// </summary>
+        public static string frmVerify_LocalNames {
+            get {
+                return ResourceManager.GetString("frmVerify_LocalNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Relevant for.
         /// </summary>
         public static string frmVerify_RelevantFor {
@@ -3850,6 +3877,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please fill out path to executable Acrobat Reader in the settings.
+        /// </summary>
+        public static string MainWindow_MsgAcrobat {
+            get {
+                return ResourceManager.GetString("MainWindow_MsgAcrobat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to no report.
         /// </summary>
         public static string MainWindow_showStatus_NoReport {
@@ -4089,6 +4125,24 @@ namespace BatInspector.Properties {
         public static string msgMainWinMsgOverwriteReport {
             get {
                 return ResourceManager.GetString("msgMainWinMsgOverwriteReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Due to installation of a new version, a more current version of the file &apos;BatInfo.json&apos; is available. Overwrite the existing version?.
+        /// </summary>
+        public static string msgNewVerBatInfo {
+            get {
+                return ResourceManager.GetString("msgNewVerBatInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Due to installation of a new version, a more current version of the file &apos;BatRegions.json&apos; is available. Overwrite the existing version?.
+        /// </summary>
+        public static string msgNewVerBatRegions {
+            get {
+                return ResourceManager.GetString("msgNewVerBatRegions", resourceCulture);
             }
         }
         

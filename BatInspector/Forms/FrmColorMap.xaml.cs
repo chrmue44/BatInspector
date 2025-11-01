@@ -76,7 +76,7 @@ namespace BatInspector.Forms
       _cvImg.Children.Clear();
       for (double i = 0; i < w;i++)
       {
-        System.Windows.Media.Color color = App.Model.ColorTable.getSwmColor(i, 0, w);
+        System.Windows.Media.Color color = App.Model.ColorTable.getSwmColor(i, 0, w, 0);
         GraphHelper.createLine(_cvImg, i, 0, i, h, new SolidColorBrush(color));
       }
     }

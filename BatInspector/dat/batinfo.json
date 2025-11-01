@@ -9,38 +9,74 @@
         {
           "CallCharacteristic": 1,
           "Duration": {
-            "Max": 3.5,
-            "Min": 2
+            "Max": 5,
+            "Min": 2,
+            "NormMax": 3.5,
+            "NormMin": 2
           },
           "FreqChar": null,
           "FreqEnd": {
-            "Max": 30,
-            "Min": 27
+            "Max": 32,
+            "Min": 27,
+            "NormMax": 30,
+            "NormMin": 27
           },
           "FreqMk": null,
           "FreqStart": {
-            "Max": 42,
-            "Min": 33
+            "Max": 39,
+            "Min": 33,
+            "NormMax": 36,
+            "NormMin": 33
           },
           "Identifiable": 0
         },
         {
-          "CallCharacteristic": 5,
+          "CallCharacteristic": 1,
           "Duration": {
-            "Max": 7,
-            "Min": 3.5
+            "Max": 10,
+            "Min": 2,
+            "NormMax": 6,
+            "NormMin": 2
+          },
+          "FreqChar": null,
+          "FreqEnd": {
+            "Max": 37,
+            "Min": 29,
+            "NormMax": 35,
+            "NormMin": 30
+          },
+          "FreqMk": null,
+          "FreqStart": {
+            "Max": 50,
+            "Min": 40,
+            "NormMax": 46,
+            "NormMin": 43
+          },
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 1,
+          "Duration": {
+            "Max": 6,
+            "Min": 2,
+            "NormMax": 5,
+            "NormMin": 2
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 30,
-            "Min": 25
+            "Min": 20,
+            "NormMax": 30,
+            "NormMin": 25
           },
           "FreqMk": null,
           "FreqStart": {
-            "Max": 48,
-            "Min": 42
+            "Max": 55,
+            "Min": 42,
+            "NormMax": 55,
+            "NormMin": 46
           },
-          "Identifiable": 0
+          "Identifiable": 1
         }
       ],
       "ConfusionSpec": "",
@@ -55,6 +91,8 @@
       "Habitat": null,
       "Latin": "Barbastella barbastellus",
       "Local": "Mopsfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 73,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Bbar_13.wav"
@@ -69,11 +107,15 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 25,
-            "Min": 10
+            "Min": 10,
+            "NormMax": 22,
+            "NormMin": 10
           },
           "FreqChar": {
             "Max": 30,
-            "Min": 25
+            "Min": 25,
+            "NormMax": 30,
+            "NormMin": 26
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -84,11 +126,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 19,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 19,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 33,
-            "Min": 26
+            "Min": 26,
+            "NormMax": 33,
+            "NormMin": 26
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -99,13 +145,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 7,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 6.5,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 35,
-            "Min": 26
+            "Min": 26,
+            "NormMax": 35,
+            "NormMin": 26
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -123,6 +173,8 @@
       "Habitat": null,
       "Latin": "Eptesicus nilsonii",
       "Local": "Nordfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 47,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"
@@ -137,11 +189,15 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 18,
-            "Min": 10
+            "Min": 10,
+            "NormMax": 16,
+            "NormMin": 10
           },
           "FreqChar": {
             "Max": 26,
-            "Min": 21
+            "Min": 21,
+            "NormMax": 25,
+            "NormMin": 21
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -152,11 +208,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 18,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 16,
+            "NormMin": 4
           },
           "FreqChar": {
             "Max": 26,
-            "Min": 22
+            "Min": 22,
+            "NormMax": 26,
+            "NormMin": 22
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -167,11 +227,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 18,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 16,
+            "NormMin": 4.2
           },
           "FreqChar": {
             "Max": 31,
-            "Min": 26
+            "Min": 26,
+            "NormMax": 30.8,
+            "NormMin": 26
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -182,13 +246,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 7,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 7,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 34,
-            "Min": 25
+            "Min": 25,
+            "NormMax": 34,
+            "NormMin": 26
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -206,6 +274,8 @@
       "Habitat": null,
       "Latin": "Eptesicus Serotinus",
       "Local": "Breitflügelfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 43,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
@@ -220,11 +290,15 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 17,
-            "Min": 8
+            "Min": 8,
+            "NormMax": 15,
+            "NormMin": 8
           },
           "FreqChar": {
             "Max": 36,
-            "Min": 30
+            "Min": 30,
+            "NormMax": 35,
+            "NormMin": 31
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -235,11 +309,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 14,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 13.8,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 42,
-            "Min": 31
+            "Min": 31,
+            "NormMax": 38,
+            "NormMin": 31.1
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -250,11 +328,15 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 7,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": {
             "Max": 41,
-            "Min": 34
+            "Min": 34,
+            "NormMax": 40.9,
+            "NormMin": 34
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -274,6 +356,8 @@
       "Habitat": null,
       "Latin": "Hypsugo savii",
       "Local": "Alpenfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 51,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -288,20 +372,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 1.4
+            "Min": 1.4,
+            "NormMax": 3.5,
+            "NormMin": 1.4
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 52,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 47,
+            "NormMin": 40
           },
           "FreqMk": {
             "Max": 56,
-            "Min": 43
+            "Min": 43,
+            "NormMax": 55,
+            "NormMin": 45
           },
           "FreqStart": {
             "Max": 135,
-            "Min": 93
+            "Min": 93,
+            "NormMax": 129,
+            "NormMin": 100
           },
           "Identifiable": 0
         },
@@ -309,20 +401,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 5.5,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 5,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 48,
-            "Min": 36
+            "Min": 36,
+            "NormMax": 46,
+            "NormMin": 38
           },
           "FreqMk": {
             "Max": 52,
-            "Min": 43
+            "Min": 43,
+            "NormMax": 50,
+            "NormMin": 45
           },
           "FreqStart": {
             "Max": 123,
-            "Min": 88
+            "Min": 88,
+            "NormMax": 120,
+            "NormMin": 94
           },
           "Identifiable": 0
         }
@@ -339,6 +439,8 @@
       "Habitat": null,
       "Latin": "Myotis alcathoe",
       "Local": "Nymphenfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 19,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -353,20 +455,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 1.5
+            "Min": 1.5,
+            "NormMax": 3.5,
+            "NormMin": 1.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 36,
-            "Min": 24
+            "Min": 24,
+            "NormMax": 34,
+            "NormMin": 28
           },
           "FreqMk": {
             "Max": 45,
-            "Min": 37
+            "Min": 37,
+            "NormMax": 45,
+            "NormMin": 38
           },
           "FreqStart": {
             "Max": 150,
-            "Min": 114
+            "Min": 114,
+            "NormMax": 140,
+            "NormMin": 125
           },
           "Identifiable": 1
         },
@@ -374,20 +484,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 32,
-            "Min": 21
+            "Min": 21,
+            "NormMax": 27,
+            "NormMin": 23
           },
           "FreqMk": {
             "Max": 46,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 43,
+            "NormMin": 38
           },
           "FreqStart": {
             "Max": 140,
-            "Min": 99
+            "Min": 99,
+            "NormMax": 130,
+            "NormMin": 110
           },
           "Identifiable": 1
         },
@@ -395,20 +513,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 9.1,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 9.1,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 30,
-            "Min": 20
+            "Min": 20,
+            "NormMax": 30,
+            "NormMin": 23
           },
           "FreqMk": {
             "Max": 42,
-            "Min": 33
+            "Min": 33,
+            "NormMax": 38,
+            "NormMin": 34
           },
           "FreqStart": {
             "Max": 116,
-            "Min": 100
+            "Min": 100,
+            "NormMax": 116,
+            "NormMin": 106
           },
           "Identifiable": 1
         }
@@ -425,6 +551,8 @@
       "Habitat": null,
       "Latin": "Myotis bechsteinii",
       "Local": "Bechsteinfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 28,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_bechsteinii_Rid_6059.wav"
@@ -439,20 +567,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 1.5
+            "Min": 1.5,
+            "NormMax": 3.5,
+            "NormMin": 1.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 39,
-            "Min": 23
+            "Min": 23,
+            "NormMax": 36,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 48,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 46,
+            "NormMin": 43
           },
           "FreqStart": {
             "Max": 140,
-            "Min": 90
+            "Min": 90,
+            "NormMax": 128,
+            "NormMin": 105
           },
           "Identifiable": 1
         },
@@ -460,20 +596,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 37,
-            "Min": 20
+            "Min": 20,
+            "NormMax": 34,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 44,
-            "Min": 33
+            "Min": 33,
+            "NormMax": 42,
+            "NormMin": 35
           },
           "FreqStart": {
             "Max": 122,
-            "Min": 72
+            "Min": 72,
+            "NormMax": 115,
+            "NormMin": 86
           },
           "Identifiable": 1
         },
@@ -481,20 +625,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 8,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 31,
-            "Min": 27
+            "Min": 27,
+            "NormMax": 31,
+            "NormMin": 27
           },
           "FreqMk": {
             "Max": 39,
-            "Min": 33
+            "Min": 33,
+            "NormMax": 39,
+            "NormMin": 33
           },
           "FreqStart": {
             "Max": 88,
-            "Min": 70
+            "Min": 70,
+            "NormMax": 88,
+            "NormMin": 75
           },
           "Identifiable": 2
         }
@@ -511,6 +663,8 @@
       "Habitat": null,
       "Latin": "Myotis brandtii",
       "Local": "Große Bartfledermaus",
+      "NotDistinguishableFrom": "MMYS",
+      "PageNr": 23,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"
@@ -525,20 +679,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 2.4
+            "Min": 2.4,
+            "NormMax": 3.5,
+            "NormMin": 2.4
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 30,
-            "Min": 25
+            "Min": 25,
+            "NormMax": 30,
+            "NormMin": 26
           },
           "FreqMk": {
             "Max": 36,
-            "Min": 32
+            "Min": 32,
+            "NormMax": 36,
+            "NormMin": 32
           },
           "FreqStart": {
             "Max": 93,
-            "Min": 70
+            "Min": 70,
+            "NormMax": 90,
+            "NormMin": 75
           },
           "Identifiable": 1
         },
@@ -546,20 +708,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 32,
-            "Min": 21
+            "Min": 21,
+            "NormMax": 32,
+            "NormMin": 22
           },
           "FreqMk": {
             "Max": 37,
-            "Min": 28
+            "Min": 28,
+            "NormMax": 37,
+            "NormMin": 32
           },
           "FreqStart": {
             "Max": 103,
-            "Min": 65
+            "Min": 65,
+            "NormMax": 97,
+            "NormMin": 72
           },
           "Identifiable": 1
         },
@@ -567,41 +737,57 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 8,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 31,
-            "Min": 23
+            "Min": 23,
+            "NormMax": 31,
+            "NormMin": 24
           },
           "FreqMk": {
             "Max": 36,
-            "Min": 27
+            "Min": 27,
+            "NormMax": 36,
+            "NormMin": 30
           },
           "FreqStart": {
-            "Max": 95,
-            "Min": 66
+            "Max": 101,
+            "Min": 66,
+            "NormMax": 95,
+            "NormMin": 66
           },
-          "Identifiable": 1
+          "Identifiable": 2
         },
         {
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 23,
-            "Min": 8
+            "Min": 8,
+            "NormMax": 23,
+            "NormMin": 8
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 33,
-            "Min": 23
+            "Min": 23,
+            "NormMax": 33,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 37,
-            "Min": 29
+            "Min": 29,
+            "NormMax": 36,
+            "NormMin": 30
           },
           "FreqStart": {
             "Max": 86,
-            "Min": 38
+            "Min": 38,
+            "NormMax": 78,
+            "NormMin": 41
           },
           "Identifiable": 0
         }
@@ -618,6 +804,8 @@
       "Habitat": null,
       "Latin": "Myotis dasycneme",
       "Local": "Teichfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 15,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -632,20 +820,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 1.5
+            "Min": 1.5,
+            "NormMax": 3.5,
+            "NormMin": 1.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 36,
-            "Min": 22
+            "Min": 22,
+            "NormMax": 32,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 46,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 45.9,
+            "NormMin": 40
           },
           "FreqStart": {
             "Max": 101,
-            "Min": 73
+            "Min": 73,
+            "NormMax": 100,
+            "NormMin": 82
           },
           "Identifiable": 1
         },
@@ -653,20 +849,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 38,
-            "Min": 20
+            "Min": 20,
+            "NormMax": 30,
+            "NormMin": 26
           },
           "FreqMk": {
             "Max": 48,
-            "Min": 34
+            "Min": 34,
+            "NormMax": 44,
+            "NormMin": 40
           },
           "FreqStart": {
             "Max": 103,
-            "Min": 70
+            "Min": 70,
+            "NormMax": 89,
+            "NormMin": 82
           },
           "Identifiable": 1
         },
@@ -674,20 +878,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 8,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 37,
-            "Min": 20
+            "Min": 20,
+            "NormMax": 37,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 43,
-            "Min": 33
+            "Min": 33,
+            "NormMax": 38,
+            "NormMin": 34
           },
           "FreqStart": {
             "Max": 91,
-            "Min": 60
+            "Min": 60,
+            "NormMax": 91,
+            "NormMin": 80
           },
           "Identifiable": 1
         }
@@ -704,6 +916,8 @@
       "Habitat": null,
       "Latin": "Myotis daubentonii",
       "Local": "Wasserfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 11,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
@@ -718,20 +932,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 1.8
+            "Min": 1.8,
+            "NormMax": 3.5,
+            "NormMin": 1.8
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 45,
-            "Min": 28
+            "Min": 28,
+            "NormMax": 42,
+            "NormMin": 33
           },
           "FreqMk": {
             "Max": 50,
-            "Min": 45
+            "Min": 45,
+            "NormMax": 50,
+            "NormMin": 45
           },
           "FreqStart": {
             "Max": 175,
-            "Min": 123
+            "Min": 123,
+            "NormMax": 160,
+            "NormMin": 130
           },
           "Identifiable": 1
         },
@@ -739,20 +961,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 45,
-            "Min": 28
+            "Min": 30,
+            "NormMax": 45,
+            "NormMin": 30
           },
           "FreqMk": {
             "Max": 60,
-            "Min": 44
+            "Min": 44,
+            "NormMax": 52,
+            "NormMin": 44
           },
           "FreqStart": {
             "Max": 158,
-            "Min": 97
+            "Min": 97,
+            "NormMax": 150,
+            "NormMin": 108
           },
           "Identifiable": 1
         }
@@ -769,6 +999,8 @@
       "Habitat": null,
       "Latin": "Myotis emarginatus",
       "Local": "Wimperfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 32,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -783,20 +1015,23 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 2.5
+            "Min": 2.5,
+            "NormMax": 3.5,
+            "NormMin": 2.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 32,
-            "Min": 17
+            "Min": 17,
+            "NormMax": 27,
+            "NormMin": 20
           },
-          "FreqMk": {
-            "Max": -1,
-            "Min": -1
-          },
+          "FreqMk": null,
           "FreqStart": {
             "Max": 120,
-            "Min": 90
+            "Min": 90,
+            "NormMax": 110,
+            "NormMin": 94
           },
           "Identifiable": 0
         },
@@ -804,20 +1039,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 27,
-            "Min": 16
+            "Min": 16,
+            "NormMax": 25,
+            "NormMin": 23
           },
           "FreqMk": {
             "Max": 38,
-            "Min": 27
+            "Min": 27,
+            "NormMax": 35,
+            "NormMin": 27
           },
           "FreqStart": {
             "Max": 120,
-            "Min": 70
+            "Min": 70,
+            "NormMax": 105,
+            "NormMin": 90
           },
           "Identifiable": 0
         },
@@ -825,20 +1068,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 12,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 12,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
-            "Max": 110,
-            "Min": 52
+            "Max": 27,
+            "Min": 17,
+            "NormMax": 25,
+            "NormMin": 17
           },
           "FreqMk": {
             "Max": 32,
-            "Min": 27
+            "Min": 27,
+            "NormMax": 30,
+            "NormMin": 27
           },
           "FreqStart": {
-            "Max": 158,
-            "Min": 97
+            "Max": 110,
+            "Min": 52,
+            "NormMax": 90,
+            "NormMin": 70
           },
           "Identifiable": 0
         }
@@ -855,6 +1106,8 @@
       "Habitat": null,
       "Latin": "Myotis myotis",
       "Local": "Großes Mausohr",
+      "NotDistinguishableFrom": "",
+      "PageNr": 36,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
@@ -869,20 +1122,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 1.5
+            "Min": 1.5,
+            "NormMax": 3.5,
+            "NormMin": 1.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 39,
-            "Min": 23
+            "Min": 23,
+            "NormMax": 36,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 48,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 46,
+            "NormMin": 43
           },
           "FreqStart": {
             "Max": 140,
-            "Min": 90
+            "Min": 90,
+            "NormMax": 128,
+            "NormMin": 105
           },
           "Identifiable": 1
         },
@@ -890,20 +1151,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 37,
-            "Min": 20
+            "Min": 20,
+            "NormMax": 34,
+            "NormMin": 25
           },
           "FreqMk": {
             "Max": 44,
-            "Min": 33
+            "Min": 33,
+            "NormMax": 42,
+            "NormMin": 35
           },
           "FreqStart": {
             "Max": 122,
-            "Min": 72
+            "Min": 72,
+            "NormMax": 115,
+            "NormMin": 86
           },
           "Identifiable": 1
         },
@@ -911,20 +1180,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 8,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 31,
-            "Min": 27
+            "Min": 27,
+            "NormMax": 31,
+            "NormMin": 27
           },
           "FreqMk": {
             "Max": 39,
-            "Min": 33
+            "Min": 33,
+            "NormMax": 39,
+            "NormMin": 33
           },
           "FreqStart": {
             "Max": 88,
-            "Min": 70
+            "Min": 70,
+            "NormMax": 88,
+            "NormMin": 75
           },
           "Identifiable": 2
         }
@@ -941,6 +1218,8 @@
       "Habitat": null,
       "Latin": "Myotis mystacinus",
       "Local": "Kleine Bartfledermaus",
+      "NotDistinguishableFrom": "MBRA",
+      "PageNr": 23,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
@@ -955,20 +1234,23 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 3.5,
-            "Min": 2
+            "Min": 2,
+            "NormMax": 3.5,
+            "NormMin": 2
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 23,
-            "Min": 10
+            "Min": 10,
+            "NormMax": 23,
+            "NormMin": 14
           },
-          "FreqMk": {
-            "Max": -1,
-            "Min": -1
-          },
+          "FreqMk": null,
           "FreqStart": {
             "Max": 185,
-            "Min": 120
+            "Min": 120,
+            "NormMax": 150,
+            "NormMin": 135
           },
           "Identifiable": 0
         },
@@ -976,20 +1258,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3.5
+            "Min": 3.5,
+            "NormMax": 6,
+            "NormMin": 3.5
           },
           "FreqChar": null,
           "FreqEnd": {
-            "Max": 27,
-            "Min": 14
+            "Max": 23,
+            "Min": 14,
+            "NormMax": 23,
+            "NormMin": 14
           },
           "FreqMk": {
             "Max": 41,
-            "Min": 23
+            "Min": 23,
+            "NormMax": 37,
+            "NormMin": 23
           },
           "FreqStart": {
             "Max": 135,
-            "Min": 102
+            "Min": 102,
+            "NormMax": 120,
+            "NormMin": 105
           },
           "Identifiable": 0
         },
@@ -997,20 +1287,28 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 8,
+            "NormMin": 6
           },
           "FreqChar": null,
           "FreqEnd": {
             "Max": 27,
-            "Min": 14
+            "Min": 14,
+            "NormMax": 25,
+            "NormMin": 19
           },
           "FreqMk": {
             "Max": 44,
-            "Min": 25
+            "Min": 25,
+            "NormMax": 40,
+            "NormMin": 25
           },
           "FreqStart": {
             "Max": 131,
-            "Min": 100
+            "Min": 100,
+            "NormMax": 131,
+            "NormMin": 109
           },
           "Identifiable": 1
         }
@@ -1027,6 +1325,8 @@
       "Habitat": null,
       "Latin": "Myotis nattereri",
       "Local": "Fransenfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 40,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1049,6 +1349,8 @@
       "Habitat": null,
       "Latin": "Myotis oxygnatus",
       "Local": "Kleines Mausohr",
+      "NotDistinguishableFrom": "",
+      "PageNr": 1,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1071,6 +1373,8 @@
       "Habitat": null,
       "Latin": "Miniopterus schreibersii",
       "Local": "Langflügelfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 1,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1093,6 +1397,8 @@
       "Habitat": null,
       "Latin": "Nyctalus lasiopterus",
       "Local": "Riesenabendsegler",
+      "NotDistinguishableFrom": "",
+      "PageNr": 1,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1104,14 +1410,37 @@
       "CharCalls": "TODO",
       "CheckData": [
         {
-          "CallCharacteristic": 4,
+          "CallCharacteristic": 0,
           "Duration": {
             "Max": 20,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 20,
+            "NormMin": 8
           },
           "FreqChar": {
             "Max": 27,
-            "Min": 21
+            "Min": 21,
+            "NormMax": 27,
+            "NormMin": 21
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 4,
+          "Duration": {
+            "Max": 20,
+            "Min": 6,
+            "NormMax": 20,
+            "NormMin": 8
+          },
+          "FreqChar": {
+            "Max": 27,
+            "Min": 21,
+            "NormMax": 27,
+            "NormMin": 21
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1122,11 +1451,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 18,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 16,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 31,
-            "Min": 24
+            "Min": 24,
+            "NormMax": 29,
+            "NormMin": 25
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1137,13 +1470,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 32,
-            "Min": 26
+            "Min": 26,
+            "NormMax": 32,
+            "NormMin": 28
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1161,6 +1498,8 @@
       "Habitat": null,
       "Latin": "Nyctalus leisleri",
       "Local": "Kleiner Abendsegler",
+      "NotDistinguishableFrom": "",
+      "PageNr": 36,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
@@ -1175,11 +1514,34 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 30,
-            "Min": 10
+            "Min": 10,
+            "NormMax": 30,
+            "NormMin": 15
           },
           "FreqChar": {
             "Max": 23,
-            "Min": 16
+            "Min": 16,
+            "NormMax": 22,
+            "NormMin": 17
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 0,
+          "Duration": {
+            "Max": 30,
+            "Min": 10,
+            "NormMax": 30,
+            "NormMin": 15
+          },
+          "FreqChar": {
+            "Max": 23,
+            "Min": 16,
+            "NormMax": 22,
+            "NormMin": 17
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1190,11 +1552,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 20,
-            "Min": 6
+            "Min": 6,
+            "NormMax": 20,
+            "NormMin": 6
           },
           "FreqChar": {
             "Max": 30,
-            "Min": 19
+            "Min": 19,
+            "NormMax": 29,
+            "NormMin": 20
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1205,13 +1571,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 7,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 7,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 30,
-            "Min": 24
+            "Min": 24,
+            "NormMax": 30,
+            "NormMin": 26
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1229,6 +1599,8 @@
       "Habitat": null,
       "Latin": "Nyctalus noctula",
       "Local": "Großer Abendsegler",
+      "NotDistinguishableFrom": "",
+      "PageNr": 32,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Nyctalus_noctula_Rid_5953.wav"
@@ -1243,11 +1615,15 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 12,
-            "Min": 5
+            "Min": 5,
+            "NormMax": 10,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 42,
-            "Min": 34
+            "Min": 34,
+            "NormMax": 41,
+            "NormMin": 35
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1255,14 +1631,37 @@
           "Identifiable": 0
         },
         {
-          "CallCharacteristic": 4,
+          "CallCharacteristic": 0,
+          "Duration": {
+            "Max": 12,
+            "Min": 5,
+            "NormMax": 10,
+            "NormMin": 5
+          },
+          "FreqChar": {
+            "Max": 42,
+            "Min": 34,
+            "NormMax": 41,
+            "NormMin": 35
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
           "Duration": {
             "Max": 11,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 11,
+            "NormMin": 4
           },
           "FreqChar": {
             "Max": 45,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 45,
+            "NormMin": 35
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1273,13 +1672,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 46,
-            "Min": 36
+            "Min": 36,
+            "NormMax": 46,
+            "NormMin": 36
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1297,6 +1700,8 @@
       "Habitat": null,
       "Latin": "Pipistrellus kuhlii",
       "Local": "Weißrandfledermaus",
+      "NotDistinguishableFrom": "PNAT",
+      "PageNr": 55,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1311,11 +1716,15 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 12,
-            "Min": 5
+            "Min": 5,
+            "NormMax": 10,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 42,
-            "Min": 34
+            "Min": 34,
+            "NormMax": 41,
+            "NormMin": 35
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1323,14 +1732,37 @@
           "Identifiable": 0
         },
         {
-          "CallCharacteristic": 4,
+          "CallCharacteristic": 0,
+          "Duration": {
+            "Max": 12,
+            "Min": 5,
+            "NormMax": 10,
+            "NormMin": 5
+          },
+          "FreqChar": {
+            "Max": 42,
+            "Min": 34,
+            "NormMax": 41,
+            "NormMin": 35
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 2,
           "Duration": {
             "Max": 11,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 11,
+            "NormMin": 4
           },
           "FreqChar": {
             "Max": 45,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 45,
+            "NormMin": 35
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1341,13 +1773,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 6,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 46,
-            "Min": 36
+            "Min": 36,
+            "NormMax": 46,
+            "NormMin": 36
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1365,6 +1801,8 @@
       "Habitat": null,
       "Latin": "Pipistrellus nathusii",
       "Local": "Rauhautfledermaus",
+      "NotDistinguishableFrom": "PKUH",
+      "PageNr": 55,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
@@ -1379,11 +1817,34 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 11,
-            "Min": 5
+            "Min": 5,
+            "NormMax": 10,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 50,
-            "Min": 40.1
+            "Min": 40.1,
+            "NormMax": 50,
+            "NormMin": 40.1
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 0,
+          "Duration": {
+            "Max": 11,
+            "Min": 5,
+            "NormMax": 10,
+            "NormMin": 5
+          },
+          "FreqChar": {
+            "Max": 50,
+            "Min": 40.1,
+            "NormMax": 50,
+            "NormMin": 40.1
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1394,11 +1855,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 10,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 10,
+            "NormMin": 3
           },
           "FreqChar": {
             "Max": 54,
-            "Min": 41
+            "Min": 41,
+            "NormMax": 54,
+            "NormMin": 42
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1408,14 +1873,18 @@
         {
           "CallCharacteristic": 1,
           "Duration": {
-            "Max": 5,
-            "Min": 3
+            "Max": 6,
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 55,
-            "Min": 44
+            "Min": 44,
+            "NormMax": 55,
+            "NormMin": 45
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1433,6 +1902,8 @@
       "Habitat": null,
       "Latin": "Pipistrellus pipistrellus",
       "Local": "Zwergfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 61,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
@@ -1447,11 +1918,34 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 10,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 8,
+            "NormMin": 5
           },
           "FreqChar": {
             "Max": 60,
-            "Min": 50
+            "Min": 49,
+            "NormMax": 56,
+            "NormMin": 50
+          },
+          "FreqEnd": null,
+          "FreqMk": null,
+          "FreqStart": null,
+          "Identifiable": 0
+        },
+        {
+          "CallCharacteristic": 0,
+          "Duration": {
+            "Max": 10,
+            "Min": 4,
+            "NormMax": 8,
+            "NormMin": 5
+          },
+          "FreqChar": {
+            "Max": 60,
+            "Min": 49,
+            "NormMax": 56,
+            "NormMin": 50
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1462,11 +1956,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 10,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 10,
+            "NormMin": 3
           },
           "FreqChar": {
             "Max": 68,
-            "Min": 50
+            "Min": 50,
+            "NormMax": 64,
+            "NormMin": 51
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1477,13 +1975,17 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 7,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 68,
-            "Min": 56
+            "Min": 56,
+            "NormMax": 68,
+            "NormMin": 56
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1501,6 +2003,8 @@
       "Habitat": null,
       "Latin": "Pipistrellus pygmaeus",
       "Local": "Mückenfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 65,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Pipistrellus_pygmaeus_Rid_6162.wav"
@@ -1515,20 +2019,23 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 2
+            "Min": 2,
+            "NormMax": 8,
+            "NormMin": 2
           },
           "FreqChar": null,
-          "FreqEnd": {
-            "Max": -1,
-            "Min": -1
-          },
+          "FreqEnd": null,
           "FreqMk": {
             "Max": 35,
-            "Min": 20
+            "Min": 11,
+            "NormMax": 35,
+            "NormMin": 20
           },
           "FreqStart": {
             "Max": 60,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 60,
+            "NormMin": 35
           },
           "Identifiable": 0
         }
@@ -1545,6 +2052,8 @@
       "Habitat": null,
       "Latin": "Plecotus auritus",
       "Local": "Braunes Langohr",
+      "NotDistinguishableFrom": "PAUS",
+      "PageNr": 69,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
@@ -1559,20 +2068,23 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 8,
-            "Min": 2
+            "Min": 2,
+            "NormMax": 8,
+            "NormMin": 2
           },
           "FreqChar": null,
-          "FreqEnd": {
-            "Max": -1,
-            "Min": -1
-          },
+          "FreqEnd": null,
           "FreqMk": {
             "Max": 35,
-            "Min": 20
+            "Min": 11,
+            "NormMax": 35,
+            "NormMin": 20
           },
           "FreqStart": {
             "Max": 60,
-            "Min": 35
+            "Min": 35,
+            "NormMax": 60,
+            "NormMin": 35
           },
           "Identifiable": 0
         }
@@ -1589,6 +2101,8 @@
       "Habitat": null,
       "Latin": "Plecotus austriacus",
       "Local": "Graues Langohr",
+      "NotDistinguishableFrom": "PAUR",
+      "PageNr": 69,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
@@ -1603,11 +2117,15 @@
           "CallCharacteristic": 3,
           "Duration": {
             "Max": 75,
-            "Min": 16
+            "Min": 16,
+            "NormMax": 60,
+            "NormMin": 30
           },
           "FreqChar": {
             "Max": 86,
-            "Min": 77
+            "Min": 77,
+            "NormMax": 83,
+            "NormMin": 78
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1627,6 +2145,8 @@
       "Habitat": null,
       "Latin": "Rhinolophus ferrumequinum",
       "Local": "Große Hufeisennase",
+      "NotDistinguishableFrom": "",
+      "PageNr": 77,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1641,11 +2161,15 @@
           "CallCharacteristic": 3,
           "Duration": {
             "Max": 75,
-            "Min": 16
+            "Min": 16,
+            "NormMax": 60,
+            "NormMin": 20
           },
           "FreqChar": {
             "Max": 116,
-            "Min": 100
+            "Min": 100,
+            "NormMax": 114,
+            "NormMin": 105
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1665,6 +2189,8 @@
       "Habitat": null,
       "Latin": "Rhinolophus hipposideros",
       "Local": "Kleine Hufeisennase",
+      "NotDistinguishableFrom": "",
+      "PageNr": 79,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1679,11 +2205,15 @@
           "CallCharacteristic": 0,
           "Duration": {
             "Max": 30,
-            "Min": 10
+            "Min": 10,
+            "NormMax": 26,
+            "NormMin": 12
           },
           "FreqChar": {
             "Max": 26,
-            "Min": 21
+            "Min": 21,
+            "NormMax": 26,
+            "NormMin": 25
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1694,11 +2224,15 @@
           "CallCharacteristic": 4,
           "Duration": {
             "Max": 30,
-            "Min": 10
+            "Min": 10,
+            "NormMax": 26,
+            "NormMin": 12
           },
           "FreqChar": {
             "Max": 26,
-            "Min": 21
+            "Min": 21,
+            "NormMax": 26,
+            "NormMin": 25
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1709,11 +2243,15 @@
           "CallCharacteristic": 2,
           "Duration": {
             "Max": 16,
-            "Min": 4
+            "Min": 4,
+            "NormMax": 14,
+            "NormMin": 4
           },
           "FreqChar": {
             "Max": 30,
-            "Min": 22
+            "Min": 22,
+            "NormMax": 30,
+            "NormMin": 23
           },
           "FreqEnd": null,
           "FreqMk": null,
@@ -1724,13 +2262,17 @@
           "CallCharacteristic": 1,
           "Duration": {
             "Max": 7,
-            "Min": 3
+            "Min": 3,
+            "NormMax": 5,
+            "NormMin": 3
           },
           "FreqChar": null,
           "FreqEnd": null,
           "FreqMk": {
             "Max": 30,
-            "Min": 23
+            "Min": 23,
+            "NormMax": 30,
+            "NormMin": 25
           },
           "FreqStart": null,
           "Identifiable": 2
@@ -1748,6 +2290,8 @@
       "Habitat": null,
       "Latin": "Vespertilio murinus",
       "Local": "Zweifarbfledermaus",
+      "NotDistinguishableFrom": "",
+      "PageNr": 40,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Vespertilio_murinus_Ski0150_S2_From0877624ms_To0904583ms.wav"

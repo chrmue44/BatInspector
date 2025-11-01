@@ -116,8 +116,9 @@ namespace BatInspector
       }
     }
 
+
     [HandleProcessCorruptedStateExceptions]
-   // [SecurityCritical]
+    // [SecurityCritical]
     public static ThresholdDetectItem[] analyzeCalls(string wavFile, out int sampleRate, out double duration)
     {
       WavFile wav = new WavFile();
@@ -168,6 +169,55 @@ namespace BatInspector
       releaseMemory();
       return items;
     }
+
+
+    [HandleProcessCorruptedStateExceptions]
+   // [SecurityCritical]
+    public static ThresholdDetectItem[] analyzeCalls(double[] samples, int sampleRate)
+    {
+      int evCount = 0;
+      ThresholdDetectItem[] items = new ThresholdDetectItem[evCount];
+      short[] sSamples = new short[samples.Length];
+      for(int i = 0; i < samples.Length; i++)
+        sSamples[i] = (short)(samples[i] * 16384.0);
+      
+      evCount = threshold_detection(
+        sSamples, sSamples.Length, sampleRate,
+        5,   // threshold
+        1.5, // min_d
+        80,  // max_d
+        30, //min_TBE
+        1e100,  //max_TBE
+        0.996,  //EDG
+        140000, //LPF
+        10000,  //HPF
+        80,    //dur_t
+        5,     //snr_t
+        125,   //angl_t
+        256,   //FFT_size
+        0.875,   //FFT_overlap
+        30,      // start_t
+        35,      // end_t
+        100,     // NWS
+        1e-5,    //KPE
+        1e-4     //KME
+        );
+      items = new ThresholdDetectItem[evCount];
+      
+      for (int i = 0; i < evCount; i++)
+      {
+        IntPtr Ptr = getEvalItem(i);
+        unsafe
+        {
+          ThresholdDetectItem* pItem = (ThresholdDetectItem*)Ptr;
+          if (pItem != null)
+            items[i] = *pItem;
+        }
+      }
+      releaseMemory();
+      return items;
+    }
+
 
     //https://learn.microsoft.com/de-de/dotnet/framework/interop/marshalling-different-types-of-arrays
     [HandleProcessCorruptedStateExceptions]

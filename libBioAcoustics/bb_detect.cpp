@@ -79,7 +79,7 @@ void detect_impl (const std::vector<int> &audio_samples,
   for (size_t i = 1; i < frames; i++)
   {
     if (seek > n_samples) continue;
-
+ 
     sum_squares = 0;
     for (size_t j = 0; j < fft.getSize(); j++)
     {
@@ -102,11 +102,11 @@ void detect_impl (const std::vector<int> &audio_samples,
     std::vector<double> filtered_spectrum = power_spectrum;
     band_pass_filter(filtered_spectrum, LPF, HPF, freq_res);
 
-    for (size_t i = 0; i < prev.size(); i++)
+    for (size_t k = 0; k < prev.size(); k++)
     {
-      double y = filtered_spectrum[i];
-      filtered_spectrum[i] = (filtered_spectrum[i] + prev[i]) / (double)2;
-      prev[i] = y;
+      double y = filtered_spectrum[k];
+      filtered_spectrum[k] = (filtered_spectrum[k] + prev[k]) / (double)2;
+      prev[k] = y;
     }
 
     if (!triggered || duration > dur_t)
@@ -117,27 +117,27 @@ void detect_impl (const std::vector<int> &audio_samples,
       if (bg_noiz_f_win_size < win_size)
       {
         bg_noiz_f_win_size++;
-        for (size_t i = 0; i < bg_noiz_f_win.size(); i++)
+        for (size_t l = 0; l < bg_noiz_f_win.size(); l++)
         {
-          background_noise_filtered_new[i] =   \
-            background_noise_filtered_new[i] + \
-            (filtered_spectrum[i] - background_noise_filtered_new[i]) / (double)bg_noiz_f_win_size;
+          background_noise_filtered_new[l] =   \
+            background_noise_filtered_new[l] + \
+            (filtered_spectrum[l] - background_noise_filtered_new[l]) / (double)bg_noiz_f_win_size;
         }
       }
       else
       {
-        for (size_t i = 0; i < bg_noiz_f_win.size(); i++)
+        for (size_t m = 0; m < bg_noiz_f_win.size(); m++)
         {
-          background_noise_filtered_new[i] =                             \
-            background_noise_filtered_new[i] -                           \
-            bg_noiz_f_win[i][bg_noiz_f_insert_at] / bg_noiz_f_win_size + \
-            filtered_spectrum[i] / bg_noiz_f_win_size;
+          background_noise_filtered_new[m] =                             \
+            background_noise_filtered_new[m] -                           \
+            bg_noiz_f_win[m][bg_noiz_f_insert_at] / bg_noiz_f_win_size + \
+            filtered_spectrum[m] / bg_noiz_f_win_size;
         }
       }
 
-      for (size_t i = 0; i < bg_noiz_f_win.size(); i++)
+      for (size_t n = 0; n < bg_noiz_f_win.size(); n++)
       {
-        bg_noiz_f_win[i][bg_noiz_f_insert_at] = filtered_spectrum[i];
+        bg_noiz_f_win[n][bg_noiz_f_insert_at] = filtered_spectrum[n];
       }
       bg_noiz_f_insert_at++;
     }

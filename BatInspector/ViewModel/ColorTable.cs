@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System;
+using System.Runtime.InteropServices;
 
 namespace BatInspector
 {
@@ -53,17 +54,19 @@ namespace BatInspector
       }
       return (int)retVal;
     }
-    public System.Windows.Media.Color getSwmColor(double val, double min, double max)
+    public System.Windows.Media.Color getSwmColor(double val, double min, double max, double blackLevel)
     {
-      Color col = getColor(val, min, max);
+      Color col = getColor(val, min, max, blackLevel);
       System.Windows.Media.Color retVal;
       retVal = System.Windows.Media.Color.FromArgb(col.A, col.R, col.G, col.B);
       return retVal;
     }
 
 
-    public Color getColor(double val, double min, double max)
+    public Color getColor(double val, double min, double max, double blackLevel)
     {
+      if (val < (min + (max-min) * blackLevel/100.0))
+        return _colorTable[0];
       if (val < min)
         return _colorTable[0];
       else if (val > max)

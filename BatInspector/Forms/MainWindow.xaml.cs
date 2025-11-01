@@ -128,6 +128,13 @@ namespace BatInspector.Forms
       Installer.hideSplash();
       collapseTreeView(false);
       _wavCtls = new Pool<ctlWavFile>(AppParams.CNT_WAV_CONTROLS);
+
+      if (!File.Exists(AppParams.Inst.ExeAcrobat))
+      {
+        MessageBox.Show(BatInspector.Properties.MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        _frmSettings = new frmSettings(AppParams.Inst);
+        _frmSettings.ShowDialog();
+      }
     }
 
 

@@ -38,6 +38,7 @@ FFT::FFT(size_t fft_sz, FFT::WIN_TYPE win_type)
 
 void FFT::set_plan(const size_t &fft_sz)
 {
+  m_fftSize = fft_sz;
   m_original.resize(fft_sz, 0);
   m_transformed.resize(fft_sz, 0);
   m_magnitude.resize(fft_sz / 2, 0);

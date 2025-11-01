@@ -56,7 +56,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>kopf64.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -270,6 +270,7 @@
     <Compile Include="Forms\frmVerifySpecies.xaml.cs">
       <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\DocHelper.cs" />
     <Compile Include="ViewModel\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
@@ -717,6 +718,9 @@
     <Content Include="dat\default_model_params.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\batInspectorLogo.png" />
+    <Resource Include="images\logo.png" />
+    <Resource Include="logo.ico" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

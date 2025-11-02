@@ -115,10 +115,12 @@
                 </Popup>
                 <Line Name="_cross1X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Orange" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
                 <Line Name="_cross1Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Orange" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
-                <Line Name="_cross2X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="GhostWhite" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
-                <Line Name="_cross2Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="GhostWhite" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross2X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Bisque" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross2Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Bisque" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
                 <Line Name="_cross3X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Magenta" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
                 <Line Name="_cross3Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="Magenta" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross4X" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="LightBlue"  StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
+                <Line Name="_cross4Y" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Stroke="LightBlue" StrokeThickness="3" Margin="0,0,0,20" Grid.RowSpan="2"/>
             </Grid>
         </GroupBox>
     </Grid>

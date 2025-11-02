@@ -14,9 +14,10 @@ namespace BatInspector.Forms
   enum enVerifyState
   {
     SET_FSTART = 0,
-    SET_FEND = 1,
-    SET_FMK = 2,
-    CLEAR = 3
+    SET_FCHAR = 1,
+    SET_FEND = 2,
+    SET_FMK = 3,
+    CLEAR = 4
   }
 
   /// <summary>
@@ -29,8 +30,9 @@ namespace BatInspector.Forms
     double _fMin, _fMax;
     enVerifyState _state = enVerifyState.SET_FSTART;
     double _tStart;
+    double _tChar;
     double _lat, _lon;
-    double _tEend;
+    double _tEnd;
     double _tMk;
 
     public frmVerifySpecies()
@@ -135,6 +137,40 @@ namespace BatInspector.Forms
       App.Model.ZoomView.Waterfall.generateFtDiagram(tMin, tMax, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
+
+
+    private enCallChar setCalltype()
+    {
+      enCallChar retVal = enCallChar.QCF;
+      if((_tStart < _tChar) && (_tChar < _tEnd))
+      {
+        double fStart = _ctlFstart.getDoubleValue();
+        double fChar = _ctlFChar.getDoubleValue();
+        double fEnd = _ctlFend.getDoubleValue();
+        double slope = Math.Abs(fStart - fChar) / (_tChar - _tStart) / 1000;
+        if (slope <= 0.1)
+          retVal = enCallChar.CF;
+        else if (slope <= 1)
+          retVal = enCallChar.QCF;
+        else retVal = enCallChar.FM;
+
+        slope = Math.Abs(fChar - fEnd) / (_tEnd - _tChar) / 1000;
+        if (retVal == enCallChar.FM)
+        {
+          if (slope <= 1)
+            retVal = enCallChar.FM_QCF;
+        }
+        else if((retVal == enCallChar.QCF) || (retVal == enCallChar.CF))
+        {
+          if (slope > 1)
+            retVal = enCallChar.QCF_FM;
+        }
+        else if (slope <= 1)
+          retVal = enCallChar.QCF;
+      }
+      return retVal;
+    }
+
 
     private void _btnCheck_Click(object sender, RoutedEventArgs e)
     {
@@ -249,6 +285,11 @@ namespace BatInspector.Forms
           _cross1X.Visibility = Visibility.Visible;
           _cross1Y.Visibility = Visibility.Visible;
           break;
+        case enVerifyState.SET_FCHAR:
+          setCrossPosition(_cross4X, _cross4Y, p);
+          _cross4X.Visibility = Visibility.Visible;
+          _cross4Y.Visibility = Visibility.Visible;
+          break;
         case enVerifyState.SET_FEND:
           setCrossPosition(_cross2X, _cross2Y, p);
           _cross2X.Visibility = Visibility.Visible;
@@ -266,6 +307,8 @@ namespace BatInspector.Forms
           _cross2Y.Visibility = Visibility.Hidden;
           _cross3X.Visibility = Visibility.Hidden;
           _cross3Y.Visibility = Visibility.Hidden;
+          _cross4X.Visibility = Visibility.Hidden;
+          _cross4Y.Visibility = Visibility.Hidden;
           _ctlFMk.setValue(0.0);
           break;
       }
@@ -285,7 +328,7 @@ namespace BatInspector.Forms
     {
       Point p = new Point(getXFromt(_tStart), getYFromF(_ctlFstart.getDoubleValue()));
       setCrossPosition(_cross1X, _cross1Y, p);
-      p = new Point(getXFromt(_tEend), getYFromF(_ctlFend.getDoubleValue()));
+      p = new Point(getXFromt(_tEnd), getYFromF(_ctlFend.getDoubleValue()));
       setCrossPosition(_cross2X, _cross2Y, p);
       p = new Point(getXFromt(_tMk), getYFromF(_ctlFMk.getDoubleValue()));
       setCrossPosition(_cross3X, _cross3Y, p);
@@ -310,17 +353,26 @@ namespace BatInspector.Forms
           case enVerifyState.SET_FSTART:
             _tStart = t;
             _ctlFstart.setValue(f);
+            _state = enVerifyState.SET_FCHAR;
+            _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFchar;
+            break;
+
+          case enVerifyState.SET_FCHAR:
+            _tChar = t;
+            _ctlFChar.setValue(f);
             _state = enVerifyState.SET_FEND;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFend;
             break;
 
           case enVerifyState.SET_FEND:
             _ctlFend.setValue(f);
-            _tEend = t;
+            _tEnd = t;
             double duration = (t - _tStart) * 1000.0;
             _ctlDuration.setValue(duration);
             _state = enVerifyState.SET_FMK;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFmk;
+            enCallChar callChar = setCalltype();
+            _ctlCallType.SelectIndex = (int)callChar;
             break;
 
           case enVerifyState.SET_FMK:

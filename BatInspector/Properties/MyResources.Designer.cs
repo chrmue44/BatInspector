@@ -3193,6 +3193,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click to set characteristic Frequency.
+        /// </summary>
+        public static string frmVerifySpecies_MsgClickFchar {
+            get {
+                return ResourceManager.GetString("frmVerifySpecies_MsgClickFchar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click to set end frequency.
         /// </summary>
         public static string frmVerifySpecies_MsgClickFend {
@@ -3234,6 +3243,15 @@ namespace BatInspector.Properties {
         public static string frmVerifySpecies_setup_Yes {
             get {
                 return ResourceManager.GetString("frmVerifySpecies_setup_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Analize WAV File.
+        /// </summary>
+        public static string frmWav_title {
+            get {
+                return ResourceManager.GetString("frmWav_title", resourceCulture);
             }
         }
         

@@ -222,8 +222,8 @@ namespace BatInspector
           retVal = new SpeciesInfos("Plecotus", "Plecotus", "Plecotus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         else if (abbreviation == "Pipistrellus")
           retVal = new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        else if (abbreviation == "Nyctalus")
-          retVal = new SpeciesInfos("Nyctalus", "Nyctalus", "Nyctalus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        else if (abbreviation == "Nyctaloid")
+          retVal = new SpeciesInfos("Nyctaloid", "Nyctaloid", "Nyctaloid",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
       }
       return retVal;
     }

@@ -1918,4 +1918,10 @@
   <data name="msgNewVerBatRegions" xml:space="preserve">
     <value>Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatRegions.json' verfügbar. Soll die vorhandene überschrieben werden?</value>
   </data>
+  <data name="frmVerifySpecies_MsgClickFchar" xml:space="preserve">
+    <value>Klicke zum Setzen der charakteristischen Frequenz</value>
+  </data>
+  <data name="frmWav_title" xml:space="preserve">
+    <value>WAV Datei analysieren</value>
+  </data>
 </root>

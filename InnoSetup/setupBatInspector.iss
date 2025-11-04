@@ -82,7 +82,8 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; F
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\dat";
-source: "{#SourceFolder}\{#MyAppName}\dat\batInfo.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
+source: "{#SourceFolder}\{#MyAppName}\dat\scriptinst.txt"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
+source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\mysql\*"; DestDir: "#MyAppDataFolder}\mySql";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
@@ -103,7 +104,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Flags:runasoriginaluser; Components: python
+Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Components: python
 Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BatDetectVersion}"; Flags:runasoriginaluser; Components: modbd2
 Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BbnetVersion}"; Flags:runasoriginaluser; Components: modbatty
 Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BirdnetVersion}"; Flags:runasoriginaluser; Components: modbnet

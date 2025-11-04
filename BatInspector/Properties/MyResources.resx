@@ -1905,4 +1905,22 @@
   <data name="BatInfo_buildResults_See" xml:space="preserve">
     <value>see</value>
   </data>
+  <data name="Attention" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="MainWindow_MsgAcrobat" xml:space="preserve">
+    <value>Please fill out path to executable Acrobat Reader in the settings</value>
+  </data>
+  <data name="msgNewVerBatInfo" xml:space="preserve">
+    <value>Due to installation of a new version, a more current version of the file 'BatInfo.json' is available. Overwrite the existing version?</value>
+  </data>
+  <data name="msgNewVerBatRegions" xml:space="preserve">
+    <value>Due to installation of a new version, a more current version of the file 'BatRegions.json' is available. Overwrite the existing version?</value>
+  </data>
+  <data name="frmVerifySpecies_MsgClickFchar" xml:space="preserve">
+    <value>Click to set characteristic Frequency</value>
+  </data>
+  <data name="frmWav_title" xml:space="preserve">
+    <value>Analize WAV File</value>
+  </data>
 </root>

@@ -1,265 +1,307 @@
 {
-	"Regions": [{
-		"Name": "Darmstadt-Dieburg",
-		"Location": [{
-				"Lat": 49.963175,
-				"Lon": 8.563220
-			},
-			{
-				"Lat": 49.727209,
-				"Lon": 8.539645
-			},
-			{
-				"Lat": 49.728493,
-				"Lon": 8.788927
-			},
-			{
-				"Lat": 49.839054,
-				"Lon": 9.030958
-			},
-			{
-				"Lat": 49.995876,
-				"Lon": 9.010885
-			}
-		],
-		"Species": [
-			"MMYO",
-			"MBEC",
-			"MNAT",
-			"MMYS",
-			"MBRA",
-			"MALC",
-			"MDAU",
-			"NNOC",
-			"NLEI",
-			"ESER",
-			"ENIL",
-			"VMUR",
-			"PPIP",
-			"PPYG",
-			"PNAT",
-			"BBAR",
-			"PAUR",
-			"PAUS",
-			"Eptesicus",
-			"Nyctalus",
-			"Myotis",
-			"Vespertilio",
-			"Pipistrellus",
-			"Plecotus"
-		],
-		"InformationSource": "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm"
-	},
-	{
-		"Name": "Norway",
-		"Location": [{
-				"Lat": 58.03315047073381,
-				"Lon": 7.27678231645965
-			},
-			{
-				"Lat": 59.64141461545502, 
-				"Lon": 4.988287311243992
-			},
-			{
-				"Lat": 62.10627175787673, 
-				"Lon": 4.434672775646467
-			},
-			{
-				"Lat": 71.72799336070543,
-				"Lon": 25.381615291901824
-			},
-			{
-				"Lat": 69.79114374529098,
-				"Lon": 32.16566376889443
-			},
-			{
-				"Lat": 68.50180138485125,
-				"Lon": 24.717826186995556
-			},
-			{
-				"Lat": 68.08832864271665,
-				"Lon": 18.357576864552833
-			},
-			{
-				"Lat": 64.1026052585473,
-				"Lon": 13.845134278292283
-			},
-			{
-				"Lat": 58.88181859511196,
-				"Lon": 11.65020431757494
-			}
-		],
-		"Species": [
-			"ENIL",
-			"MBRA",
-			"MDAU",
-			"MMYS",
-			"MNAT",
-			"NNOC",
-			"PNAT",
-			"PPYG",
-			"PAUR",
-			"VMUR",
-			"Eptesicus",
-			"Myotis",
-			"Nyctalus",
-			"Vespertilio",
-			"Pipistrellus",
-			"Plecotus"
-
-		],
-		"InformationSource": "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway"
-	   },
-	   {
-		"Name": "United Kingdom",
-		"Location": [{
-			    "Lat": 51.033539, 
-				"Lon": 1.113506
-			},
-			{
-				"Lat": 52.873203,  
-				"Lon": 1.533058
-			},
-			{
-				"Lat": 59.262795, 
-				"Lon": -2.593458
-			},
-			{
-				"Lat": 57.512548,
-				"Lon": -6.764195
-			},
-			{
-				"Lat": 53.319476, 
-				"Lon": -4.496293
-			},
-			{
-				"Lat": 50.016064, 
-				"Lon": -5.487250
-			},
-			{
-				"Lat": 50.733974,
-				"Lon": 0.240915
-			}
-		],
-		"Species": [
-			"MALC",
-			"BBAR",
-			"MBEC",
-			"MBRA",
-			"PAUR",
-			"PPIP",
-			"MDAU",
-			"RFER",
-			"PAUS",
-			"NLEI",
-			"RHIP",
-			"PNAT",
-			"MNAT",
-			"NNOC",
-			"ESER",
-			"PPYG",
-			"MMYS",		
-			"Eptesicus",
-			"Myotis",
-			"Nyctalus",
-			"Vespertilio",
-			"Pipistrellus",
-			"Plecotus"
-		],
-		"InformationSource": "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats"
-	   },
-	   {
-		"Name": "Deutschland",
-		"Location": [{
-			    "Lat": 54.850456, 
-				"Lon": 9.943414
-			},
-			{
-				"Lat": 54.627120, 
-				"Lon": 13.459099
-			},
-			{
-				"Lat": 53.575474, 
-				"Lon": 14.797689
-			},
-			{
-				"Lat": 50.845796,
-				"Lon": 14.835755
-			},
-			{
-				"Lat": 50.184498, 
-				"Lon": 12.231023
-			},
-			{
-				"Lat": 48.774997, 
-				"Lon": 13.811179
-			},
-			{
-				"Lat": 47.491914,
-				"Lon": 13.011019
-			},
-			{
-				"Lat": 47.284410, 
-				"Lon": 10.217837
-			},
-			{
-				"Lat": 47.593611,
-				"Lon": 7.540160
-			},
-			{
-				"Lat": 48.968411,
-				"Lon": 8.211553
-			},
-			{
-				"Lat": 49.489325,
-				"Lon": 6.345152
-			},
-			{
-				"Lat": 51.847398,
-				"Lon": 5.990045
-			},
-			{
-				"Lat": 53.761120,
-				"Lon": 7.548357
-			}
-		],
-		"Species": [
-			"BBAR",
-			"ENIL",
-			"ESER",
-			"HSAV",
-			"MSCH",
-			"MALC",
-			"MBEC",
-			"MBRA",
-			"MDAS",
-			"MDAU",
-			"MEMA",
-			"MMYO",
-			"MMYS",
-			"MNAT",
-			"NLAS",
-			"NLEI",
-			"NNOC",
-			"PKUH",
-			"PAUR",
-			"PAUS",
-			"RFER",
-			"RHIP",
-			"PNAT",
-			"PPIP",
-			"PPYG",
-			"TTEN",
-			"VMUR",
-			"Eptesicus",
-			"Myotis",
-			"Nyctalus",
-			"Vespertilio",
-			"Pipistrellus",
-			"Plecotus"
-
-		],
-		"InformationSource": "https://de.wikipedia.org/wiki/Liste_von_Fledermausarten_in_Deutschland"
-	   }
-	]
+  "Regions": [
+    {
+      "InformationSource": "http:\/\/www.adb.naturkunde-institut-langstadt.de\/arten\/flederm.htm",
+      "Location": [
+        {
+          "Lat": 49.963175,
+          "Lon": 8.56322
+        },
+        {
+          "Lat": 49.727209,
+          "Lon": 8.539645
+        },
+        {
+          "Lat": 49.728493,
+          "Lon": 8.788927
+        },
+        {
+          "Lat": 49.839054,
+          "Lon": 9.030958
+        },
+        {
+          "Lat": 49.995876,
+          "Lon": 9.010885
+        }
+      ],
+      "Name": "Darmstadt-Dieburg",
+      "Species": [
+        "MMYO",
+        "MBEC",
+        "MNAT",
+        "MMYS",
+        "MBRA",
+        "MALC",
+        "MDAU",
+        "NNOC",
+        "NLEI",
+        "ESER",
+        "ENIL",
+        "VMUR",
+        "PPIP",
+        "PPYG",
+        "PNAT",
+        "BBAR",
+        "PAUR",
+        "PAUS",
+        "Eptesicus",
+        "Nyctaloid",
+        "Myotis",
+        "Vespertilio",
+        "Pipistrellus"
+      ]
+    },
+    {
+      "InformationSource": "https:\/\/de.wikipedia.org\/wiki\/Liste_von_Fledermausarten_in_Deutschland",
+      "Location": [
+        {
+          "Lat": 54.850456,
+          "Lon": 9.943414
+        },
+        {
+          "Lat": 54.62712,
+          "Lon": 13.459099
+        },
+        {
+          "Lat": 53.575474,
+          "Lon": 14.797689
+        },
+        {
+          "Lat": 50.845796,
+          "Lon": 14.835755
+        },
+        {
+          "Lat": 50.184498,
+          "Lon": 12.231023
+        },
+        {
+          "Lat": 48.774997,
+          "Lon": 13.811179
+        },
+        {
+          "Lat": 47.491914,
+          "Lon": 13.011019
+        },
+        {
+          "Lat": 47.28441,
+          "Lon": 10.217837
+        },
+        {
+          "Lat": 47.593611,
+          "Lon": 7.54016
+        },
+        {
+          "Lat": 48.968411,
+          "Lon": 8.211553
+        },
+        {
+          "Lat": 49.489325,
+          "Lon": 6.345152
+        },
+        {
+          "Lat": 51.847398,
+          "Lon": 5.990045
+        },
+        {
+          "Lat": 53.76112,
+          "Lon": 7.548357
+        }
+      ],
+      "Name": "Deutschland",
+      "Species": [
+        "BBAR",
+        "ENIL",
+        "ESER",
+        "HSAV",
+        "MSCH",
+        "MALC",
+        "MBEC",
+        "MBRA",
+        "MDAS",
+        "MDAU",
+        "MEMA",
+        "MMYO",
+        "MMYS",
+        "MNAT",
+        "NLAS",
+        "NLEI",
+        "NNOC",
+        "PKUH",
+        "PAUR",
+        "PAUS",
+        "RFER",
+        "RHIP",
+        "PNAT",
+        "PPIP",
+        "PPYG",
+        "TTEN",
+        "VMUR",
+        "Eptesicus",
+        "Myotis",
+        "Nyctaloid",
+        "Vespertilio",
+        "Pipistrellus"
+      ]
+    },
+    {
+      "InformationSource": "https:\/\/en.wikipedia.org\/wiki\/List_of_mammals_of_Norway",
+      "Location": [
+        {
+          "Lat": 58.033150470733808,
+          "Lon": 7.27678231645965
+        },
+        {
+          "Lat": 59.64141461545502,
+          "Lon": 4.9882873112439921
+        },
+        {
+          "Lat": 62.106271757876733,
+          "Lon": 4.434672775646467
+        },
+        {
+          "Lat": 71.727993360705426,
+          "Lon": 25.381615291901824
+        },
+        {
+          "Lat": 69.791143745290981,
+          "Lon": 32.165663768894433
+        },
+        {
+          "Lat": 68.501801384851248,
+          "Lon": 24.717826186995556
+        },
+        {
+          "Lat": 68.088328642716647,
+          "Lon": 18.357576864552833
+        },
+        {
+          "Lat": 64.1026052585473,
+          "Lon": 13.845134278292283
+        },
+        {
+          "Lat": 58.881818595111959,
+          "Lon": 11.650204317574939
+        }
+      ],
+      "Name": "Norway",
+      "Species": [
+        "ENIL",
+        "MBRA",
+        "MDAU",
+        "MMYS",
+        "MNAT",
+        "NNOC",
+        "PNAT",
+        "PPYG",
+        "PAUR",
+        "VMUR",
+        "Eptesicus",
+        "Myotis",
+        "Nyctaloid",
+        "Vespertilio",
+        "Pipistrellus"
+      ]
+    },
+    {
+      "InformationSource": "",
+      "Location": [
+        {
+          "Lat": 51.35333,
+          "Lon": -2.62814
+        },
+        {
+          "Lat": 53.47805,
+          "Lon": -2.81731
+        },
+        {
+          "Lat": 53.53009,
+          "Lon": -4.8663
+        },
+        {
+          "Lat": 51.35333,
+          "Lon": -5.88538
+        }
+      ],
+      "Name": "Wales",
+      "Species": [
+        "BBAR",
+        "ESER",
+        "MALC",
+        "MBRA",
+        "MDAU",
+        "MNAT",
+        "MMYS",
+        "NLEI",
+        "NNOC",
+        "PAUR",
+        "PNAT",
+        "PPIP",
+        "PPYG",
+        "RFER",
+        "RHIP",
+        "Eptesicus",
+        "Myotis",
+        "Nyctaloid",
+        "Pipistrellus"
+      ]
+    },
+    {
+      "InformationSource": "https:\/\/www.bats.org.uk\/about-bats\/what-are-bats\/uk-bats",
+      "Location": [
+        {
+          "Lat": 51.033539,
+          "Lon": 1.113506
+        },
+        {
+          "Lat": 52.873203,
+          "Lon": 1.533058
+        },
+        {
+          "Lat": 59.262795,
+          "Lon": -2.593458
+        },
+        {
+          "Lat": 57.512548,
+          "Lon": -6.764195
+        },
+        {
+          "Lat": 53.319476,
+          "Lon": -4.496293
+        },
+        {
+          "Lat": 50.016064,
+          "Lon": -5.48725
+        },
+        {
+          "Lat": 50.733974,
+          "Lon": 0.240915
+        }
+      ],
+      "Name": "United Kingdom",
+      "Species": [
+        "BBAR",
+        "ESER",
+        "MALC",
+        "MBEC",
+        "MBRA",
+        "MDAU",
+        "MMYS",
+        "MNAT",
+        "NLEI",
+        "NNOC",
+        "PAUR",
+        "PAUS",
+        "PNAT",
+        "PPIP",
+        "PPYG",
+        "RFER",
+        "RHIP",
+        "Eptesicus",
+        "Myotis",
+        "Nyctaloid",
+        "Vespertilio",
+        "Pipistrellus"
+      ]
+    }
+  ]
 }

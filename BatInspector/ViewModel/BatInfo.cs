@@ -222,8 +222,8 @@ namespace BatInspector
           retVal = new SpeciesInfos("Plecotus", "Plecotus", "Plecotus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         else if (abbreviation == "Pipistrellus")
           retVal = new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        else if (abbreviation == "Nyctalus")
-          retVal = new SpeciesInfos("Nyctalus", "Nyctalus", "Nyctalus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        else if (abbreviation == "Nyctaloid")
+          retVal = new SpeciesInfos("Nyctaloid", "Nyctaloid", "Nyctaloid",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
       }
       return retVal;
     }
@@ -400,7 +400,7 @@ namespace BatInspector
         {
           if (File.GetLastWriteTime(dstFileName) < File.GetLastWriteTime(srcFileName))
           {
-            MessageBoxResult res = MessageBox.Show("Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatInfo.json' verfügbar. Soll die vorhandene überschrieben werden?",
+            MessageBoxResult res = MessageBox.Show(MyResources.msgNewVerBatInfo,
                BatInspector.Properties.MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res == MessageBoxResult.Yes)
               File.Copy(srcFileName, dstFileName, true);
@@ -921,8 +921,7 @@ namespace BatInspector
     }
 
 
-    static private bool checkParameter(double val, ValRange range, string name, ref string info, bool verbose)
-
+    static private bool checkParameter(double val, ValRange range, string name, string unit, ref string info, bool verbose)
     {
       bool retVal = false;
       if ((range == null) || (range.Min < 0))
@@ -932,7 +931,7 @@ namespace BatInspector
       {
         retVal = true;
         if (verbose)
-          info += $"{range.Min} < {name} < {range.Max}, ";
+          info += $"{range.Min} {unit} < {name} < {range.Max} {unit}, ";
         else
           info += name + " OK, ";
       }
@@ -940,7 +939,7 @@ namespace BatInspector
       {
         retVal = true;
         if (verbose)
-          info += $"{range.Min} < {name} ({MyResources.BatInfoLowerLimit}) < {range.Max}, ";
+          info += $"{range.Min} {unit} < {name} ({MyResources.BatInfoLowerLimit}) < {range.Max} {unit}, ";
         else
           info += name + $" OK ({MyResources.BatInfoLowerLimit}), ";
       }
@@ -948,7 +947,7 @@ namespace BatInspector
       {
         retVal = true;
         if (verbose)
-          info += $"{range.Min} < {name} ({MyResources.BatInfoUpperLimit}) < {range.Max} , ";
+          info += $"{range.Min} {unit} < {name} ({MyResources.BatInfoUpperLimit}) < {range.Max} {unit} , ";
         else
           info += name + $" OK ({MyResources.BatInfoUpperLimit}), ";
       }
@@ -986,11 +985,11 @@ namespace BatInspector
               continue;
 
             string info = call.CallCharacteristic.ToString() + ": ";
-            ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", ref info, verbose);
-            ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", ref info, verbose);
-            ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", ref info, verbose);
-            ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk", ref info, verbose);
-            ok &= checkParameter(call.Duration, check.Duration, "D", ref info, verbose);
+            ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, verbose);
+            ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, verbose);
+            ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz",ref info, verbose);
+            ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk","kHz", ref info, verbose);
+            ok &= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, verbose);
             if (ok)
             {
               CheckResult res = new CheckResult();
@@ -1058,13 +1057,13 @@ namespace BatInspector
                        (d.HasNoCallChanges == enYesNoProperty.YES)
                      );
             if (ok1)
-              addInfo += "{QCF & (Fend < 27) & no call change";
+              addInfo += "{QCF & (Fend < 27 kHz) & no call change";
             bool ok2 = (
                        (d.CallCharacteristic == enCallChar.FM_QCF) &&
                        (d.FreqEnd >= 30.0)
                      );
             if (ok2)
-              addInfo += "{ FM_QCF & Fend > 30}";
+              addInfo += "{ FM_QCF & Fend > 30 kHz}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1078,7 +1077,7 @@ namespace BatInspector
                        (d.FreqEnd >= 21.0) && (d.FreqEnd <= 25.0)
                      );
             if (ok1)
-              addInfo += "{QCF & (200 < callI < 400) & uniform calls & (21 <= Fend <=26)}";
+              addInfo += "{QCF & (200 ms < callI < 400 ms) & uniform calls & (21 kHz <= Fend <= 26 kHz)}";
             bool ok2 = (
                        (d.CallCharacteristic == enCallChar.FM_QCF) &&
                        (d.CallInterval >= 100.0) && (d.CallInterval <= 300.0) &&
@@ -1086,7 +1085,7 @@ namespace BatInspector
                        (d.HasUpwardHookAtEnd == enYesNoProperty.YES)
                      );
             if (ok2)
-              addInfo += "{FM_QCF & (100 < callI < 300) & Fend <=26 & upwardHook}";
+              addInfo += "{FM_QCF & (100 ms < callI < 300 ms) & Fend <=26 kHz & upwardHook}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1098,13 +1097,13 @@ namespace BatInspector
                        (d.FreqChar <= 34.0)
                      );
             if (ok1)
-              addInfo += "{QCF & Fc <= 34}";
+              addInfo += "{QCF & Fc <= 34 kHz}";
             bool ok2 = (
                        (d.CallCharacteristic == enCallChar.FM_QCF) &&
                        (d.FreqChar <= 35.0)
                      );
             if (ok2)
-              addInfo += "{FM_QCF & Fc <= 35}";
+              addInfo += "{FM_QCF & Fc <= 35 kHz}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1118,13 +1117,13 @@ namespace BatInspector
                        (d.FreqEnd <= 36.0)
                      );
             if (ok1)
-              addInfo += "{(1.5 < D < 3.5) & Fstart > 140 & no mk & Fend <= 36}";
+              addInfo += "{(1.5 ms < D < 3.5 ms) & Fstart > 140 kHz & no mk & Fend <= 36 kHz}";
             bool ok2 = (
                        (d.Duration > 3.5) && (d.Duration <= 6) &&
                        (d.FreqStart > 122.0) && (d.FreqStart < 140.0)
                      );
             if (ok2)
-              addInfo += "{(3.5 < D <= 6) & (122 < Fstart < 140}";
+              addInfo += "{(3.5 ms < D <= 6 ms) & (122 kHz < Fstart < 140 kHz}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1140,14 +1139,14 @@ namespace BatInspector
                        (d.HasKneeClearly == enYesNoProperty.YES)
                      );
             if (ok1)
-              addInfo += "{(15. < D < 3.5) & has mk & (36 <= Fmk <= 44) & (bw > 75)}";
+              addInfo += "{(1.5 ms < D < 3.5 ms) & has mk & (36 kHz <= Fmk <= 44 kHz) & (bw > 75 kHz)}";
             bool ok2 = (
                        (d.Duration > 3.5) && (d.Duration <= 6.0) &&
                        (d.HasMyotisKink == enYesNoProperty.YES) &&
                        (d.FreqMk >= 37.0)
                      );
             if (ok2)
-              addInfo += "{(D > 3.5) & has mk & (Fmk >= 37)}";
+              addInfo += "{(D > 3.5 ms) & has mk & (Fmk >= 37 kHz)}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1155,7 +1154,7 @@ namespace BatInspector
         case "MALC":
           retVal = (d.FreqStart < 123.0) && (d.FreqMk > 45) && (d.FreqEnd > 40.0);
           if (retVal)
-            addInfo += "{Fstart < 123 & Fmk > 45 & Fend > 40}";
+            addInfo += "{Fstart < 123 kHz & Fmk > 45 kHz & Fend > 40 kHz}";
           break;
 
         case "MDAS":
@@ -1167,14 +1166,14 @@ namespace BatInspector
                        ((d.FreqStart - d.FreqEnd) <= 65.0) || (d.FreqStart < 90.0)
                      );
             if (ok1)
-              addInfo += "{calld < 3.5 & has mk & Fmk < 35 & bw <=65}";
+              addInfo += "{calld < 3.5 ms & has mk & Fmk < 35 kHz & bw <=65 kHz}";
             bool ok2 = (
                        (d.Duration > 3.5) && (d.Duration < 6.0) &&
                        (d.HasMyotisKink == enYesNoProperty.YES) &&
                        (d.FreqMk < 33.0) && (d.FreqStart < 103.0)
                      );
             if (ok2)
-              addInfo += "{calld > 3.5 & has mk & Fmk < 33 & Fstart < 103.0}";
+              addInfo += "{calld > 3.5 ms & has mk & Fmk < 33 kHz & Fstart < 103.0 kHz}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1184,7 +1183,7 @@ namespace BatInspector
                    (d.FreqMk > 36.0) &&
                    ((d.FreqStart - d.FreqEnd) <= 66.0) || (d.FreqStart < 90.0);
           if (retVal)
-            addInfo += "{has mk & bw <= 66 & Fstart < 90}";
+            addInfo += "{has mk & bw <= 66 kHz & Fstart < 90 kHz}";
           break;
 
         case "MEMA":
@@ -1195,7 +1194,7 @@ namespace BatInspector
             (d.FreqStart > 150.0)
           );
           if (retVal)
-            addInfo += "{has mk & D < 6 & Fstart > 150}";
+            addInfo += "{has mk & D < 6 ms & Fstart > 150 kHz}";
           /*  TODO  ||
           (
             ((d.HasMyotisKink == enYesNoProperty.YES) || (d.HasKneeClearly == enYesNoProperty.YES)) &&
@@ -1213,13 +1212,13 @@ namespace BatInspector
               (d.FreqStart < 120.0) && (d.FreqEnd > 23.0)
             );
             if (ok1)
-              addInfo += "{has mk & (2.5 < D < 3.5) & Fstart < 120 & Fend > 23}";
+              addInfo += "{has mk & (2.5 ms < D < 3.5 ms) & Fstart < 120 kHz & Fend > 23 kHz}";
             bool ok2 = (
               (d.IsConvex == enYesNoProperty.YES) &&
               (d.Duration > 3.5) && (d.Duration <= 6.0)
             );
             if (ok2)
-              addInfo += "{is convex & (3.5 < D < 6)}";
+              addInfo += "{is convex & (3.5 ms < D < 6 ms)}";
             bool ok3 = (
               (d.IsConvex == enYesNoProperty.NO) &&
               (d.Duration > 3.5) && (d.Duration <= 6.0) &&
@@ -1227,7 +1226,7 @@ namespace BatInspector
               (d.FreqEnd < 16.0)
             );
             if (ok3)
-              addInfo += "{not convex & (3.5 < D < 6) & Fstart > 120 & Fend < 16}";
+              addInfo += "{not convex & (3.5 ms < D < 6 ms) & Fstart > 120 kHz & Fend < 16 kHz}";
             bool ok4 =
             (
               (d.Duration > 6.0) && (d.Duration <= 8.0) &&
@@ -1237,7 +1236,7 @@ namespace BatInspector
               )
             );
             if (ok4)
-              addInfo += "{(6 < D < 8) & Fstart > 120 & Fend > 17}";
+              addInfo += "{(6 ms < D < 8 ms) & Fstart > 120 kHz & Fend > 17 kHz}";
             retVal = ok1 || ok2 || ok3 || ok4;
           }
           break;
@@ -1249,19 +1248,19 @@ namespace BatInspector
             (d.FreqStart > 120.0) && (d.FreqEnd <= 20.0)
           );
           if (retVal)
-            addInfo += "{has mk & Fstart > 120 & Fend < 20}";
+            addInfo += "{has mk & Fstart > 120 kHz & Fend < 20 kHz}";
           break;
 
         case "NLEI":
           retVal = (d.FreqChar > 23.0) && (d.CallCharacteristic == enCallChar.QCF);
           if (retVal)
-            addInfo += "{QCF & Fc > 23}";
+            addInfo += "{QCF & Fc > 23 kHz}";
           break;
 
         case "NNOC":
           retVal = d.FreqChar < 21.0;
           if (retVal)
-            addInfo += "{Fc < 21}";
+            addInfo += "{Fc < 21 kHz}";
           break;
 
         case "PAUS":
@@ -1280,14 +1279,14 @@ namespace BatInspector
               (d.FreqChar > 36.0) && (d.FreqChar <= 40.0)
             );
             if (ok1)
-              addInfo += "{QCF & (36 < Fc <= 40)}";
+              addInfo += "{QCF & (36 kHz < Fc <= 40 kHz)}";
             bool ok2 = (
               (d.CallCharacteristic == enCallChar.FM_QCF) &&
               (d.Duration >= 7.0) &&
               (d.FreqChar >= 37.0) && (d.FreqChar <= 40.0)
             );
             if (ok2)
-              addInfo += "{FM_QCF & CallD > 7 & (37 <= Fc <= 40}";
+              addInfo += "{FM_QCF & D > 7 ms & (37 kHz <= Fc <= 40 kHz}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1300,14 +1299,14 @@ namespace BatInspector
             (d.FreqChar > 42.0) && (d.FreqChar <= 50.0)
             );
             if (ok1)
-              addInfo += "{QCF & (42 < Fc <= 50}";
+              addInfo += "{QCF & (42 kHz < Fc <= 50 kHz}";
             bool ok2 = (
               (d.CallCharacteristic == enCallChar.FM_QCF) &&
               (d.Duration >= 4.0) &&
               (d.FreqChar >= 43.0) && (d.FreqChar < 50.0)
             );
             if (ok2)
-              addInfo += "{FM_QCF & (43 < Fc <= 50}";
+              addInfo += "{FM_QCF & (43 kHz < Fc <= 50 kHz}";
             retVal = ok1 || ok2;
           }
           break;
@@ -1320,21 +1319,21 @@ namespace BatInspector
             (d.FreqChar > 51.0)
           );
             if (ok1)
-              addInfo += "{QCF & Fc > 51}";
+              addInfo += "{QCF & Fc > 51 kHz}";
             bool ok2 = (
               (d.CallCharacteristic == enCallChar.FM_QCF) &&
             (d.Duration < 4.0) &&
             (d.FreqChar > 55.0)
           );
             if (ok2)
-              addInfo += "{FM_QCF & D < 4 & Fc > 55}";
+              addInfo += "{FM_QCF & D < 4 ms & Fc > 55 kHz}";
             bool ok3 = (
               (d.CallCharacteristic == enCallChar.FM_QCF) &&
               (d.Duration >= 4.0) &&
               (d.FreqChar > 53.0)
             );
             if (ok3)
-              addInfo += "{FM_QCF & D > 4 & Fc > 53}";
+              addInfo += "{FM_QCF & D > 4 ms & Fc > 53 kHz}";
             retVal = ok1 || ok2 || ok3;
           }
           break;

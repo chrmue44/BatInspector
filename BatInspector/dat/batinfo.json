@@ -92,6 +92,7 @@
       "Latin": "Barbastella barbastellus",
       "Local": "Mopsfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 73,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Bbar_13.wav"
@@ -173,6 +174,7 @@
       "Latin": "Eptesicus nilsonii",
       "Local": "Nordfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 47,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"
@@ -273,6 +275,7 @@
       "Latin": "Eptesicus Serotinus",
       "Local": "Breitflügelfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 43,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"
@@ -354,6 +357,7 @@
       "Latin": "Hypsugo savii",
       "Local": "Alpenfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 51,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -436,6 +440,7 @@
       "Latin": "Myotis alcathoe",
       "Local": "Nymphenfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 19,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -547,6 +552,7 @@
       "Latin": "Myotis bechsteinii",
       "Local": "Bechsteinfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 28,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_bechsteinii_Rid_6059.wav"
@@ -658,6 +664,7 @@
       "Latin": "Myotis brandtii",
       "Local": "Große Bartfledermaus",
       "NotDistinguishableFrom": "MMYS",
+      "PageNr": 23,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"
@@ -798,6 +805,7 @@
       "Latin": "Myotis dasycneme",
       "Local": "Teichfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 15,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -909,6 +917,7 @@
       "Latin": "Myotis daubentonii",
       "Local": "Wasserfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 11,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"
@@ -991,6 +1000,7 @@
       "Latin": "Myotis emarginatus",
       "Local": "Wimperfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 32,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1097,6 +1107,7 @@
       "Latin": "Myotis myotis",
       "Local": "Großes Mausohr",
       "NotDistinguishableFrom": "",
+      "PageNr": 36,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"
@@ -1208,6 +1219,7 @@
       "Latin": "Myotis mystacinus",
       "Local": "Kleine Bartfledermaus",
       "NotDistinguishableFrom": "MBRA",
+      "PageNr": 23,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"
@@ -1314,6 +1326,7 @@
       "Latin": "Myotis nattereri",
       "Local": "Fransenfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 40,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1337,6 +1350,7 @@
       "Latin": "Myotis oxygnatus",
       "Local": "Kleines Mausohr",
       "NotDistinguishableFrom": "",
+      "PageNr": 1,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1360,6 +1374,7 @@
       "Latin": "Miniopterus schreibersii",
       "Local": "Langflügelfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 1,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1383,6 +1398,7 @@
       "Latin": "Nyctalus lasiopterus",
       "Local": "Riesenabendsegler",
       "NotDistinguishableFrom": "",
+      "PageNr": 1,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1483,6 +1499,7 @@
       "Latin": "Nyctalus leisleri",
       "Local": "Kleiner Abendsegler",
       "NotDistinguishableFrom": "",
+      "PageNr": 36,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"
@@ -1583,6 +1600,7 @@
       "Latin": "Nyctalus noctula",
       "Local": "Großer Abendsegler",
       "NotDistinguishableFrom": "",
+      "PageNr": 32,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Nyctalus_noctula_Rid_5953.wav"
@@ -1683,6 +1701,7 @@
       "Latin": "Pipistrellus kuhlii",
       "Local": "Weißrandfledermaus",
       "NotDistinguishableFrom": "PNAT",
+      "PageNr": 55,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -1783,6 +1802,7 @@
       "Latin": "Pipistrellus nathusii",
       "Local": "Rauhautfledermaus",
       "NotDistinguishableFrom": "PKUH",
+      "PageNr": 55,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"
@@ -1883,6 +1903,7 @@
       "Latin": "Pipistrellus pipistrellus",
       "Local": "Zwergfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 61,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"
@@ -1983,6 +2004,7 @@
       "Latin": "Pipistrellus pygmaeus",
       "Local": "Mückenfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 65,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Pipistrellus_pygmaeus_Rid_6162.wav"
@@ -2031,6 +2053,7 @@
       "Latin": "Plecotus auritus",
       "Local": "Braunes Langohr",
       "NotDistinguishableFrom": "PAUS",
+      "PageNr": 69,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
@@ -2079,6 +2102,7 @@
       "Latin": "Plecotus austriacus",
       "Local": "Graues Langohr",
       "NotDistinguishableFrom": "PAUR",
+      "PageNr": 69,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"
@@ -2122,6 +2146,7 @@
       "Latin": "Rhinolophus ferrumequinum",
       "Local": "Große Hufeisennase",
       "NotDistinguishableFrom": "",
+      "PageNr": 77,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -2165,6 +2190,7 @@
       "Latin": "Rhinolophus hipposideros",
       "Local": "Kleine Hufeisennase",
       "NotDistinguishableFrom": "",
+      "PageNr": 79,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": null
@@ -2265,6 +2291,7 @@
       "Latin": "Vespertilio murinus",
       "Local": "Zweifarbfledermaus",
       "NotDistinguishableFrom": "",
+      "PageNr": 40,
       "ProofSpecies": "TODO",
       "Show": true,
       "WavExample": "dat\/Vespertilio_murinus_Ski0150_S2_From0877624ms_To0904583ms.wav"

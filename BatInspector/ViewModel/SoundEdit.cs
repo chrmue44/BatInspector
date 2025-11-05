@@ -357,9 +357,13 @@ namespace BatInspector
     {
       int retVal = 0;
       WavFile inFile = new WavFile();
-      retVal = inFile.readFile(name, ref _samples);
+      retVal = inFile.readFile(name);
       if (retVal == 0)
       {
+        _samples = new double[inFile.AudioSamples.Length];
+        for (int i = 0; i < _samples.Length; i++)
+          _samples[i] = ((double)inFile.AudioSamples[i]) / 32768.0;
+
         _samplingRate = (int)inFile.FormatChunk.Frequency;
         _size = _samples.Length;
         if ((_originalSamples == null) || !keepOriginal)

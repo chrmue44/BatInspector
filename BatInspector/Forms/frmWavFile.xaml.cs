@@ -73,6 +73,13 @@ namespace BatInspector.Forms
 
           _ctlSamples.setValue(App.Model.WavFile.AudioSamples.Length);
 
+          if ((App.Model.WavFile.GuanoFields == null) || (App.Model.WavFile.GuanoFields.Count < 1))
+            _grpGuano.Visibility = Visibility.Collapsed;
+          else
+          {
+            _dgGuano.ItemsSource = App.Model.WavFile.GuanoFields;
+            _grpGuano.Visibility = Visibility.Visible;
+          }
           double duration = (double)App.Model.WavFile.AudioSamples.Length / App.Model.WavFile.FormatChunk.Frequency;
           AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)App.Model.WavFile.FormatChunk.Frequency, duration);
           App.MainWin.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);

@@ -384,12 +384,14 @@ namespace BatInspector
     RawSourceWaveStream _rawStream = null;
     Pcm16BitToSampleProvider _sampleProvider = null;
     PlaybackState _playbackState = PlaybackState.Stopped;
-
+    Guano _guano = null;
     public WaveHeader WavHeader { get { return _header;} }
 
     public FormatChunk FormatChunk {  get {  return _format;} }
 
     public short[] AudioSamples {  get { return _data.WaveData; } }
+
+    public List<GuanoItem> GuanoFields { get{ return (_guano == null) ? null : _guano.Fields; } } 
 
     public PlaybackState PlaybackState
     {
@@ -431,6 +433,7 @@ namespace BatInspector
       int retVal = 0;
       try
       {
+        _guano = null;
         _rawData = File.ReadAllBytes(name);
         byte[] hdr = partArray(_rawData, 0, 12);
         _header = new WaveHeader(hdr);
@@ -438,54 +441,44 @@ namespace BatInspector
         _format = new FormatChunk(format);
 
         int pos = 12;
-        while (!(_rawData[pos] == 'd' && _rawData[pos + 1] == 'a' && _rawData[pos + 2] == 't' && _rawData[pos + 3] == 'a'))
+        while (pos < _rawData.Length - 12)
         {
-          pos += 4;
-          int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
-          pos += 4 + chunkSize;
+          if ((_rawData[pos] == 'd') && (_rawData[pos + 1] == 'a') && (_rawData[pos + 2] == 't') && (_rawData[pos + 3] == 'a'))
+          {
+
+            byte[] data = partArray(_rawData, pos, 8);
+            _data = new DataChunk(data);
+            pos += 4;
+            int dataSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
+            pos += 4;
+            if (dataSize + pos > _rawData.Length)
+              dataSize = _rawData.Length - pos;
+            //        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels);
+            _data.AddSampleData(_rawData, pos, dataSize, _format.BitsPerSample, _format.Channels);
+            pos += dataSize;
+          }
+          else if ((_rawData[pos] == 'g') && (_rawData[pos + 1] == 'u') && (_rawData[pos + 2] == 'a') && (_rawData[pos + 3] == 'n'))
+          {
+            _guano = new Guano();
+            pos += 4;
+            int dataSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
+            pos += 4;
+            byte[] guanoData = partArray(_rawData, pos, dataSize);
+            _guano.parse(guanoData);
+            pos += dataSize;
+          }
+          else
+          {
+            pos += 4;
+            int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
+            pos += 4 + chunkSize;
+          }
         }
-        byte[] data = partArray(_rawData, pos, 8);
-        _data = new DataChunk(data);
-        pos += 8;
-        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels);
         _fName = name;
         _isInitialized = true;
       }
       catch 
       {
-        retVal = 1;
-      }
-      return retVal;
-    }
-
-    public int readFile(string name, ref double[] samples)
-    {
-      int retVal = 0;
-      try
-      {
-        _rawData = File.ReadAllBytes(name);
-        byte[] hdr = partArray(_rawData, 0, 12);
-        _header = new WaveHeader(hdr);
-        byte[] format = partArray(_rawData, 12, 24);
-        _format = new FormatChunk(format);
-
-        int pos = 12;
-        while (!(_rawData[pos] == 'd' && _rawData[pos + 1] == 'a' && _rawData[pos + 2] == 't' && _rawData[pos + 3] == 'a'))
-        {
-          pos += 4;
-          int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
-          pos += 4 + chunkSize;
-        }
-        byte[] data = partArray(_rawData, pos, 8);
-        _data = new DataChunk(data);
-        pos += 8;
-        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels, ref samples);
-        _fName = name;
-        _isInitialized = true;
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("error reading WAV file: " + ex.ToString(), enLogType.ERROR);
         retVal = 1;
       }
       return retVal;

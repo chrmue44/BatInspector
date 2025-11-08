@@ -12,7 +12,7 @@ SET PYTHON=%PYTHON_DIR%\python
 @echo * This may take several minutes 
 @echo * Be patient! Ooohmm.... 
 @echo ******************************************************
-:model_birdnet
+
 cd ..
 @echo install BirdNET
 CD %OUT_DIR%
@@ -25,7 +25,7 @@ rmdir /s /q BirdNET-Analyzer-%BIRDNET_HASH%
 
 %PYTHON% -m venv %VENV%
 call %VENV%/Scripts/activate
-@echo pip install -r requirements.txt
+@echo pip install .
 @echo ******************************************************
 @echo * installing AI model BirdNET
 @echo * This may take several minutes 

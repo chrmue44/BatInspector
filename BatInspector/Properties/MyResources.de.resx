@@ -1910,7 +1910,7 @@
     <value>Achtung</value>
   </data>
   <data name="MainWindow_MsgAcrobat" xml:space="preserve">
-    <value>Bitte tragen Sie den Pfad zur ausführbaren Programm AcrobatReader in den Einstellungen ein</value>
+    <value>Bitte tragen Sie in 'ExeAcrobat' den Pfad des ausführbaren Programms für einen PDF-Reader (Acrobat-Reader oder FoxitPDFReader) in den Einstellungen ein</value>
   </data>
   <data name="msgNewVerBatInfo" xml:space="preserve">
     <value>Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatInfo.json' verfügbar. Soll die vorhandene überschrieben werden?</value>

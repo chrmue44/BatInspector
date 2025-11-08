@@ -548,7 +548,7 @@ namespace BatInspector
         if (string.IsNullOrEmpty(ModelDefaultParamsFile))
           ModelDefaultParamsFile = Path.Combine(AppDataPath, "dat", "default_model_params.xml");
         if (string.IsNullOrEmpty(ExeAcrobat))
-          ExeAcrobat = "C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe";
+          ExeAcrobat = "";
       }
       int comparison = String.Compare(Version, "0.9.2.3", comparisonType: StringComparison.OrdinalIgnoreCase);
       if (string.IsNullOrEmpty(Version) || (comparison < 0))
@@ -712,7 +712,7 @@ namespace BatInspector
       }
       if(string.IsNullOrEmpty(retVal.ExeAcrobat))
       {
-        retVal.ExeAcrobat = "C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe";
+        retVal.ExeAcrobat = "";
       }
 
       retVal._scriptInventory = ScriptInventory.loadFrom(retVal.ScriptInventoryPath, out bool firstLoadAfterInstall);

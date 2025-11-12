@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.IO.Packaging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
@@ -109,7 +108,7 @@ namespace BatInspector
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ScriptInventory));
             retVal = (ScriptInventory)ser.ReadObject(file);
             if (retVal == null)
-              DebugLog.log("settings file not well formed!", enLogType.ERROR);
+              DebugLog.log("ScriptInventory inventory file not well formed!", enLogType.ERROR);
             else if (retVal.Scripts == null)
               retVal.initScripts();
             DebugLog.log("successfully loaded", enLogType.DEBUG);
@@ -309,6 +308,7 @@ namespace BatInspector
           if (i.Parameter.Count != s.Parameter.Count)
           {
             i.Parameter = s.Parameter;
+            save = true;
             DebugLog.log($"updated parameter definition in script inventory for script {s.Name}", enLogType.INFO);
           }
         }

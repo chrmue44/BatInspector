@@ -1909,7 +1909,7 @@
     <value>Attention</value>
   </data>
   <data name="MainWindow_MsgAcrobat" xml:space="preserve">
-    <value>Please fill out path to executable Acrobat Reader in the settings</value>
+    <value>Please fill out 'ExeAcrobat': path to executable for a PDF-Reader (Acrobat Reader or FoxitPDFReader) in the settings</value>
   </data>
   <data name="msgNewVerBatInfo" xml:space="preserve">
     <value>Due to installation of a new version, a more current version of the file 'BatInfo.json' is available. Overwrite the existing version?</value>

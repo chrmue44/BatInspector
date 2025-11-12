@@ -129,16 +129,15 @@ namespace BatInspector.Forms
       collapseTreeView(false);
       _wavCtls = new Pool<ctlWavFile>(AppParams.CNT_WAV_CONTROLS);
 
-      if (!File.Exists(AppParams.Inst.ExeAcrobat))
+      if (string.IsNullOrEmpty(AppParams.Inst.ExeAcrobat))
       {
-        MessageBox.Show(BatInspector.Properties.MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        MessageBox.Show(this,MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         _frmSettings = new frmSettings(AppParams.Inst);
         _frmSettings.ShowDialog();
       }
     }
 
-
-
+  
     public void initTreeView()
     {
       _trvStructure.Items.Clear();

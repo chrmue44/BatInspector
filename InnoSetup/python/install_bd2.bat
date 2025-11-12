@@ -20,6 +20,7 @@ cd %OUT_DIR%
 cd %MODEL_DIR%
 %PYTHON% -m venv %VENV%
 call %VENV%/Scripts/activate
+
 @echo ******************************************************
 @echo * installing AI model BatDetect2
 @echo * This may take several minutes 

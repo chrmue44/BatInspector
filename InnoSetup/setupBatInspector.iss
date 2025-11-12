@@ -11,12 +11,12 @@
 #define MyAppExeName "BatInspector.exe"
 #define MyAppDataFolder "{commonappdata}\BatInspector"
 #define SourceFolder "F:\prj\BatInspector"
-#define PythonInstaller "python-3.11.0-amd64.exe"
+#define PythonInstaller "python-3.11.9-amd64.exe"
 #define PythonInstFolder "python311"
-#define BatDetectVersion "1.1.1"
+#define BatDetectVersion "1.3.0"
 #define BbnetVersion "b8b9cd8a89980d7e71d4bce74d304c2ebbc20433"
 #define BirdnetVersion "0b70738ae838cd0b62d06b81ea467789a0132741"
-
+//#define BirdnetVersion "bbba28b06c773b139c477440c063c55b2db073fb"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -56,10 +56,10 @@ Name: "birds"; Description: "{cm:msgInstBirds}"
 Name: "custom"; Description: "{cm:msgInstCustom}"; Flags: iscustom
 
 [Components]
+Name: "python"; Description: "{cm:cmpPython}"; Types: full bats batsBirds batsOnlyBd2 birds; ExtraDiskSpaceRequired:97954967;  Flags: dontinheritcheck
 Name: "modbd2"; Description: "{cm:cmpBd2}"; Types: full bats batsBirds batsOnlyBd2; ExtraDiskSpaceRequired:5986975744;  Flags: dontinheritcheck
 Name: "modbatty"; Description: "{cm:cmpBbnet}"; Types: full bats; ExtraDiskSpaceRequired: 4960681984;  Flags: dontinheritcheck
 Name: "modbnet"; Description: "{cm:cmpBirdNet}"; Types: full batsBirds birds; ExtraDiskSpaceRequired: 6827147264;  Flags: dontinheritcheck
-Name: "python"; Description: "{cm:cmpPython}"; Types: full bats batsBirds batsOnlyBd2 birds; ExtraDiskSpaceRequired:97954967;  Flags: dontinheritcheck
 
 [Languages]
 Name: "en"; MessagesFile: "English.isl"

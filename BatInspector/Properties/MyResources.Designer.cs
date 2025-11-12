@@ -3895,7 +3895,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please fill out path to executable Acrobat Reader in the settings.
+        ///   Looks up a localized string similar to Please fill out &apos;ExeAcrobat&apos;: path to executable for a PDF-Reader (Acrobat Reader or FoxitPDFReader) in the settings.
         /// </summary>
         public static string MainWindow_MsgAcrobat {
             get {

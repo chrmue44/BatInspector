@@ -71,7 +71,26 @@ namespace BatInspector.Forms
                       Path.Combine(_ctlReport._ctlDestDir.getValue(), 
                       _ctlReport._ctlWebReportName.getValue()));
         }
-        if(_ctlReport._rbActivityDiagram.IsChecked == true)
+        if (_ctlReport._rbRichText.IsChecked == true)
+        {
+          SumReportJson rep = App.Model.SumReport.createWebReport(start, end, period,
+                                      _ctlReport._ctlRootDir.getValue(),
+                                      _ctlReport._ctlDestDir.getValue(),
+                                      _ctlReport._ctlWebReportName.getValue(),
+                                      App.Model.SpeciesInfos, _ctlReport.FilterExpression,
+                                      App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
+          rep.save(Path.Combine(_ctlReport._ctlDestDir.getValue(), "sumReport.json"));
+          frmReportAssistant frm = new frmReportAssistant(rep, setFormDataName);
+          frm.WindowStartupLocation = WindowStartupLocation.Manual;
+          frm.Left = 100;
+          frm.Top = 10;
+          bool? ok = frm.ShowDialog();
+          if (ok == true)
+            App.Model.SumReport.createRichText(rep, _formDataName, App.Model.SpeciesInfos,
+                      Path.Combine(_ctlReport._ctlDestDir.getValue(),
+                      _ctlReport._ctlWebReportName.getValue()));
+        }
+        if (_ctlReport._rbActivityDiagram.IsChecked == true)
         {
         
           App.Model.SumReport.createActivityDiagAsync(start, end, period, _ctlReport._ctlRootDir.getValue(),

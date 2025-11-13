@@ -1,4 +1,4 @@
-﻿using libParser;
+using libParser;
 using libScripter;
 using NAudio.Wave;
 using System;
@@ -205,7 +205,7 @@ namespace BatInspector
                 string abbr = "";
                 if (prob < minProb)
                   abbr = "??PRO[";
-                  abbr += localName;
+                abbr += localName;
                 if (prob < minProb)
                   abbr += "]";
                 report.setCell(repRow, Cols.SPECIES, abbr);
@@ -238,7 +238,7 @@ namespace BatInspector
       week = 0;
       DirectoryInfo dir = new DirectoryInfo(wavDir);
       FileInfo[] files = dir.GetFiles("*.xml");
-      if(files.Length > 0)
+      if (files.Length > 0)
       {
         BatRecord info = ElekonInfoFile.read(files[0].FullName);
         string[] pos = info.GPS.Position.Split(' ');

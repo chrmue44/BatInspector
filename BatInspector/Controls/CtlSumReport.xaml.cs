@@ -32,6 +32,8 @@ namespace BatInspector.Controls
       _ctlCsvReportName.setValue("sum_report.csv");
       _ctlWebReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlWebReportName.setValue("sum_report.md");
+      _ctlRichTextName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
+      _ctlRichTextName.setValue("sum_report.rtf");
       _ctlActivityDiagName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlActivityDiagName.setValue("activity.png");
       _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true, "", initDestDir);

@@ -1923,4 +1923,7 @@
   <data name="frmWav_title" xml:space="preserve">
     <value>WAV Datei analysieren</value>
   </data>
+  <data name="ctlReportRichText" xml:space="preserve">
+    <value>RichText-Datei</value>
+  </data>
 </root>

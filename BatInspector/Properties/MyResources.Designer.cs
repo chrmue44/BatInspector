@@ -727,6 +727,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RichText File.
+        /// </summary>
+        public static string ctlReportRichText {
+            get {
+                return ResourceManager.GetString("ctlReportRichText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web Page (Markdown).
         /// </summary>
         public static string ctlReportWebPage {

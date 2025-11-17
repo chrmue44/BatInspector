@@ -56,6 +56,7 @@ namespace BatInspector.Forms
       _tMax = tMax;
       _fMin = fMin;
       _fMax = fMax;
+      _ctlCallType.setup(MyResources.frmVerifySpecies_CallCharcteristic, 0, lw, 120);
       _ctlFstart.setup(MyResources.frmVerify_Fstart, Controls.enDataType.DOUBLE, 1, lw, true);
       _ctlFend.setup(MyResources.frmVerfy_fEnd, Controls.enDataType.DOUBLE, 1, lw, true);
       _ctlFMk.setup(MyResources.frmVerify_fMk, Controls.enDataType.DOUBLE, 1, lw, true);
@@ -101,7 +102,6 @@ namespace BatInspector.Forms
       _lblConvex.Content = "MMYO";
 
       _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFstart;
-      _ctlCallType.setup(BatInspector.Properties.MyResources.frmVerifySpecies_CallCharcteristic, 0, lw, 70);
       string[] items = new string[] { "CF", "FM", "FM-QCF", "FM-QCF-FM", "QCF", "QCF-FM" };
       _ctlCallType.setItems(items);
 

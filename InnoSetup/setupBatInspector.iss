@@ -4,8 +4,8 @@
 #include "CodeDependencies.iss"
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0951"
-#define MyAppVersion "0.9.5.1"
+#define MyInstallerName "SetupBatInspector_0952"
+#define MyAppVersion "0.9.5.2"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "BatInspector.exe"

@@ -57,7 +57,7 @@ namespace BatInspector
       new GuanoDictItem("Humidity",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Length",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Loc Position",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Loc Source",AnyType.tType.RT_FLOAT),
+      new GuanoDictItem("OAD|Loc Source",AnyType.tType.RT_STR),
       new GuanoDictItem("Loc Accuracy",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Loc Elevation",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Make",AnyType.tType.RT_STR),
@@ -65,11 +65,13 @@ namespace BatInspector
       new GuanoDictItem("Original Filename",AnyType.tType.RT_STR),
       new GuanoDictItem("Samplerate",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("BatSpy|GAIN",AnyType.tType.RT_STR),
+      new GuanoDictItem("BatSpy|Trigger AMP",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("BatSpy|Trigger TYPE",AnyType.tType.RT_STR),
       new GuanoDictItem("BatSpy|Trigger EVENTLEN",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("BatSpy|Trigger FREQ",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("BatSpy|Trigger FILTTYPE",AnyType.tType.RT_STR),
       new GuanoDictItem("BatSpy|AMP",AnyType.tType.RT_STR),
+      new GuanoDictItem("Serial",AnyType.tType.RT_STR),
       new GuanoDictItem("TE",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Temperature Ext",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Temperature Int",AnyType.tType.RT_FLOAT),
@@ -96,7 +98,7 @@ namespace BatInspector
           {
             if (par.FieldName != "")
               par.FieldName += " ";
-            par.FieldName = _name;
+            par.FieldName += _name;
             tok = getToken();
           } while (tok == enGuanoToken.NAME);
           GuanoDictItem dictEntry = getDictEntry(par.FieldName);
@@ -144,6 +146,14 @@ namespace BatInspector
                   if (tok == enGuanoToken.NAME)
                   {
                     par.Value = _name;
+                    tok = getToken();
+                    while (tok != enGuanoToken.EOL)
+                    {
+                      if (tok == enGuanoToken.NAME)
+                        par.Value += " ";
+                      par.Value +=_name;
+                      tok = getToken();
+                    }
                     pushBack = true;
                   }
                   break;
@@ -230,8 +240,10 @@ namespace BatInspector
           break;
         default:
           _name = "";
-          if (Utils.isdigit(c))
+          if (Utils.isdigit(c) || (c == '-'))
           {
+            _name += c;
+            c = getChar();
             while (Utils.isdigit(c) || (c == '.'))
             {
               _name += c;
@@ -247,7 +259,7 @@ namespace BatInspector
           }
           else
           {
-            while (Utils.isalpha(c) || (c == '|') || (c == '.'))
+            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_'))
             {
               _name += c;
               c = getChar();

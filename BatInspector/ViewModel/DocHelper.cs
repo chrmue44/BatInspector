@@ -141,7 +141,7 @@ namespace BatInspector
       for (int r = 0; r < dtbl.Rows.Count; r++)
       {
         table1.RowGroups[0].Rows.Add(new TableRow());
-        currentRow = table1.RowGroups[0].Rows[r + 1];
+        TableRow currentRow = table1.RowGroups[0].Rows[r + 1];
         currentRow.FontWeight = FontWeights.Normal;
         currentRow.Background = Brushes.Black;
         for (int c = 0; c < dtbl.Columns.Count; c++)

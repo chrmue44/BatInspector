@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Threading;
 using System.Windows;
-using System.Windows.Shapes;
+//using System.Windows.Shapes;
 
 
 namespace BatInspector
@@ -1191,8 +1191,8 @@ namespace BatInspector
           }
           doc.addTable(tbSpec);
 
-          ////////////////77
-
+          ////////////////77  TODO
+          /*
           // header for list of recording days
           i = output.findLine("%REP_SPEC%");
           if (i >= 0)
@@ -1249,9 +1249,9 @@ namespace BatInspector
               line += " " + rep.getSumStr(rep.Species[j]) + " |";
             output.setLine(i, line);
           }
+          
 
-
-          output.saveAs(outputName);
+          output.saveAs(outputName); */
         }
         catch (Exception ex)
         {

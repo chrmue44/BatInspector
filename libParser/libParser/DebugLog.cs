@@ -64,7 +64,6 @@ namespace libParser
 
     static public void save()
     {
-
       string log = "";
       _saving = true;
       foreach (stLogEntry entry in Inst()._list)
@@ -73,8 +72,9 @@ namespace libParser
       }
       if (Inst()._list.Count > 0)
       {
-        if (!Directory.Exists(Inst()._logPath))
-          Directory.CreateDirectory(Inst()._logPath);
+        string path = Inst()._logPath;
+        if (!Directory.Exists(path))
+          Directory.CreateDirectory(path);
         File.WriteAllText(Inst()._fName, log);
       }
       _saving = false;

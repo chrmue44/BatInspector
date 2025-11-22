@@ -479,8 +479,14 @@ namespace BatInspector
           {
             if ((i < _models.Count) && (Prj.AvailableModelParams[i].Enabled == true))
             {
-              _models[i].cleanUpAnnotations(Prj);
-              retVal = _models[i].classify(Prj, false, cli);
+              string path = Path.Combine(AppParams.Inst.ModelRootPath, Prj.AvailableModelParams[Prj.SelectedModelIndex].SubDir);
+              if (Directory.Exists(path))
+              {
+                _models[i].cleanUpAnnotations(Prj);
+                retVal = _models[i].classify(Prj, false, cli);
+              }
+              else
+                DebugLog.log($"could not start classification, model {_models[Prj.SelectedModelIndex].Name} not installed!", enLogType.ERROR);
             }
           }
         }
@@ -493,8 +499,14 @@ namespace BatInspector
             if (File.Exists(report))
               removeEmptyFiles = false;
           }
-          _models[Prj.SelectedModelIndex].cleanUpAnnotations(Prj);
-          retVal = _models[Prj.SelectedModelIndex].classify(Prj, removeEmptyFiles, cli);
+          string path = Path.Combine(AppParams.Inst.ModelRootPath, Prj.AvailableModelParams[Prj.SelectedModelIndex].SubDir);
+          if (Directory.Exists(path))
+          {
+            _models[Prj.SelectedModelIndex].cleanUpAnnotations(Prj);
+            retVal = _models[Prj.SelectedModelIndex].classify(Prj, removeEmptyFiles, cli);
+          }
+          else
+            DebugLog.log($"could not start classification, model {_models[Prj.SelectedModelIndex].Name} not installed!", enLogType.ERROR);
         }
         _view.Prj.writePrjFile();
       }

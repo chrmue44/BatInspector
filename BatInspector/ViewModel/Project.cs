@@ -1262,6 +1262,7 @@ namespace BatInspector
             _wavSubDir = "";
 
           _modelParams = setModelParams();
+          SelectedModelIndex = 0;
           for (int i = 0; i < AvailableModelParams.Length; i++)
           {
             if (AvailableModelParams[i].Enabled)

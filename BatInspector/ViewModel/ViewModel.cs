@@ -211,7 +211,7 @@ namespace BatInspector
           _view.Prj.Analysis.openSummary(_view.Prj.SummaryName, _view.Prj.Notes);
           if ((_view.Prj.Analysis.Files.Count > 0) && _view.Prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
           {
-            _view.Prj.Analysis.filloutTemperature(Path.Combine(_selectedDir, _view.Prj.WavSubDir));
+            _view.Prj.Analysis.filloutTemperature(_view.Prj);
             _view.Prj.Analysis.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
           }
         }

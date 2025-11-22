@@ -394,6 +394,7 @@
     <Compile Include="ViewModel\MySQL\DbBats.cs" />
     <Compile Include="ViewModel\MySQL\DbBirds.cs" />
     <Compile Include="ViewModel\MySQL\MySqlHelper.cs" />
+    <Compile Include="ViewModel\PrjMetaData.cs" />
     <Compile Include="ViewModel\PrjView.cs" />
     <Compile Include="ViewModel\Query.cs" />
     <Compile Include="ViewModel\QueryFile.cs" />

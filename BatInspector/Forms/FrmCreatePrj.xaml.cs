@@ -151,7 +151,7 @@ namespace BatInspector.Forms
           {
             if (_cbTimeFilter.IsChecked == true)
             {
-              DateTime start = ElekonInfoFile.getDateTimeFromFileName(files[0]);
+              DateTime start = PrjMetaData.getDateTimeFromFileName(files[0]);
               DateTime end = start.Date;
               end = end.AddDays(1);
               end = end.AddHours(6);

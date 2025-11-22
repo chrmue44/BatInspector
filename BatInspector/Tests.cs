@@ -11,6 +11,7 @@ using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using libScripter;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -109,7 +110,7 @@ namespace BatInspector
       //testSignalForm();
       testSimCall();
       //testReportModelBatdetect2();
-      //testCreatePrj();
+      testCreatePrjFromWavs();
       //updateSummaries();
       //string prjName = "E:/bat/2023/20230408_4_SW";
       //testCreatePrjInfoFiles(prjName, 49.7670333333333, 8.63353333333333);
@@ -383,23 +384,40 @@ namespace BatInspector
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
     }
 
-    private void testCreatePrj()
+    private void testCreatePrjFromWavs()
     {
+      string src = "F:\\prj\\BatInspector\\TestData\\srcwav";
+      string dst = "F:\\prj\\BatInspector\\TestData\\out\\prjTest";
+      if(Directory.Exists(dst))
+        Directory.Delete(dst, true);
+
       PrjInfo prj = new PrjInfo
       {
         Name = "Test",
-        SrcDir = "F:\\bat\\src",
-        DstDir = "F:\\bat\\test",
+        SrcDir = src,
+        DstDir = dst,
         MaxFileLenSec = 5,
         MaxFileCnt = 30,
         Notes = "12°C, bedeckt; Uferbereich Waldweiher",
+        Location = "Seeheim",
         Latitude = 49.123,
         Longitude = 8.123,
-        StartTime = new DateTime(2022,7,12),
-        EndTime = new DateTime(2022,7,14),
+        StartTime = new DateTime(2022, 7, 12),
+        EndTime = new DateTime(2025, 11, 22),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0]);
+      bool retVal = Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0], false);
+      assert("create Prj, return", retVal == true);
+      string[] files = Directory.GetFiles(Path.Combine(dst,"Test","Records"), "*.wav");
+      assert("create Prj, wav files exist", files.Length == 2);
+      Project p = new Project(false, App.Model.DefaultModelParams[0], 1, AppParams.DIR_WAVS);
+      p.readPrjFile(Path.Combine(dst,"Test"));
+      BatRecord r = PrjMetaData.retrieveMetaData(p, files[0]);
+      assert("Prj, check loc", r.GPS.Position == "49.123 8.123");
+      files = Directory.GetFiles(Path.Combine(dst, "Test", "Records"), "*.xml");
+      assert("create Prj, xml files exist", files.Length == 2);
+      files = Directory.GetFiles(Path.Combine(dst, "Test"), "*.batspy");
+      assert("create Prj, prj file exist", files.Length == 1);
     }
 
     private void testReportModelBatdetect2()
@@ -747,8 +765,7 @@ namespace BatInspector
           App.Model.initProject(subDir, false);
           foreach(AnalysisFile f in App.Model.Prj.Analysis.Files)
           {
-            string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.ToLower().Replace(".wav", ".xml"));
-            BatRecord rec = ElekonInfoFile.read(info);
+            BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, f.Name);
             foreach(AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
           }
@@ -816,8 +833,7 @@ namespace BatInspector
         App.Model.initProject(subDir, false);
         foreach (AnalysisFile f in App.Model.Prj.Analysis.Files)
         {
-          string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
-          BatRecord rec = ElekonInfoFile.read(info);
+          BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, f.Name);
           foreach (AnalysisCall c in f.Calls)
             c.setString(Cols.REC_TIME, rec.DateTime);
         }
@@ -1136,19 +1152,19 @@ namespace BatInspector
     private void testGetDateFromFilename()
     {
       string name1 = "BLA_20250512_225803.wav";
-      DateTime t = ElekonInfoFile.getDateTimeFromFileName(name1);
+      DateTime t = PrjMetaData.getDateTimeFromFileName(name1);
       assert($"date {name1}", t == new DateTime(2025, 5, 12, 22, 58, 03));
       string name2 = "BLA-20250612_125803.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name2);
+      t = PrjMetaData.getDateTimeFromFileName(name2);
       assert($"date {name2}", t == new DateTime(2025, 6, 12, 12, 58, 03));
       string name3 = "BLA-BLA-20240613_025803.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name3);
+      t = PrjMetaData.getDateTimeFromFileName(name3);
       assert($"date {name3}", t == new DateTime(2024, 6, 13, 2, 58, 03));
       string name4 = "B1 - N - 20211213_095008.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name4);
+      t = PrjMetaData.getDateTimeFromFileName(name4);
       assert($"date {name3}", t == new DateTime(2021, 12, 13, 9, 50, 08));
       string name5 = "20210413_115008.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name5);
+      t = PrjMetaData.getDateTimeFromFileName(name5);
       assert($"date {name3}", t == new DateTime(2021, 04, 13, 11, 50, 08));
     }
 

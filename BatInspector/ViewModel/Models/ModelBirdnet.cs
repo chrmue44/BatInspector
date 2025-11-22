@@ -170,7 +170,7 @@ namespace BatInspector
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
-                ElekonInfoFile.parsePosition(info, out lat, out lon);
+                PrjMetaData.parsePosition(info, out lat, out lon);
                 double.TryParse(info.Temparature, out temperature);
                 double.TryParse(info.Humidity, out humidity);
               }
@@ -247,7 +247,7 @@ namespace BatInspector
           lat = pos[0];
           lon = pos[1];
         }
-        DateTime t = ElekonInfoFile.parseDate(info.DateTime);
+        DateTime t = PrjMetaData.parseDate(info.DateTime);
         week = 1 + (t.Month - 1) * 4 + t.Day / 7;
       }
     }

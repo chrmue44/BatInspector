@@ -199,7 +199,7 @@ namespace BatInspector.Controls
       DateTime t = AnyType.getDate(App.Model.ZoomView.FileInfo.DateTime);
       _ctlDateTime.setValue(AnyType.getTimeString(t, true));
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
-      _ctlGpsPos.setValue(ElekonInfoFile.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
+      _ctlGpsPos.setValue(PrjMetaData.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
       _ctlSpectrum.init(App.Model.ZoomView.Spectrum, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
       _ctlBlackLevel.setup(0,100,0,5, setBlackLevel);
 

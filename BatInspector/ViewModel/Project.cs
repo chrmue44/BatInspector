@@ -14,13 +14,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Xml.Linq;
 
 //using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -109,9 +104,7 @@ namespace BatInspector
       if (records.Length > 0)
       {
         string fName = getFullFilePath(records[0].File);
-        fName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-        BatRecord info = ElekonInfoFile.read(fName);
-        ElekonInfoFile.parsePosition(info, out double lat, out double lon);        
+        PrjMetaData.getPositionFromMetaData(fName, out double lat, out double lon);
         _speciesList = createSpeciesList(lat,lon);
       }
     }
@@ -251,9 +244,7 @@ namespace BatInspector
         string retVal = "";
         if ((Analysis !=  null) && (Analysis.Files != null) && (Analysis.Files.Count  > 0))
         {
-            string xmlName = Path.Combine(PrjDir,WavSubDir,
-                                   Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
-          BatRecord r = ElekonInfoFile.read(xmlName);
+          BatRecord r = PrjMetaData.retrieveMetaData(this, Analysis.Files[0].Name);
           bool ok = DateTime.TryParse(r.DateTime, out DateTime t);
           if (ok)
             retVal = $"{r.SN}_{t.Year}{t.Month.ToString("00")}{t.Day.ToString("00")}";
@@ -270,9 +261,7 @@ namespace BatInspector
         string retVal = "";
         if ((Analysis != null) && (Analysis.Files != null) && (Analysis.Files.Count > 0))
         {
-          string xmlName = Path.Combine(PrjDir, WavSubDir,
-                                 Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
-          BatRecord r = ElekonInfoFile.read(xmlName);
+          BatRecord r = PrjMetaData.retrieveMetaData(this, Analysis.Files[0].Name);
           retVal = r.Trigger.getTriggerSettings();
         }
         return retVal;
@@ -286,9 +275,7 @@ namespace BatInspector
         string retVal = "";
         if ((Analysis != null) && (Analysis.Files != null) && (Analysis.Files.Count > 0))
         {
-          string xmlName = Path.Combine(PrjDir, WavSubDir,
-                                 Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
-          BatRecord r = ElekonInfoFile.read(xmlName);
+          BatRecord r = PrjMetaData.retrieveMetaData(this, Analysis.Files[0].Name);
           retVal = $"Gain: {r.Gain}; InputFilter:{r.InputFilter}";
         }
         return retVal;
@@ -305,9 +292,7 @@ namespace BatInspector
         string retVal = "";
         if ((Analysis != null) && (Analysis.Files != null) && (Analysis.Files.Count > 0))
         {
-          string xmlName = Path.Combine(PrjDir, WavSubDir,
-                                 Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
-          BatRecord r = ElekonInfoFile.read(xmlName);
+          BatRecord r = PrjMetaData.retrieveMetaData(this, Analysis.Files[0].Name);
           retVal = r.SN;
         }
         return retVal;
@@ -604,10 +589,8 @@ namespace BatInspector
         double lon = 0;
         if (Records.Length > 0)
         {
-          string infoFileName = Records[0].File.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-          infoFileName = Path.Combine(_selectedDir, _wavSubDir, infoFileName);
-          BatRecord r = ElekonInfoFile.read(infoFileName);
-          ElekonInfoFile.parsePosition(r.GPS.Position, out lat, out lon);
+          BatRecord r = PrjMetaData.retrieveMetaData(this, Records[0].File);
+          PrjMetaData.parsePosition(r.GPS.Position, out lat, out lon);
         }
         _modelParams = ModelParams.GetModelParams(App.Model.getClassifier(enModel.BAT_DETECT2).Name,
                                    App.Model.DefaultModelParams);
@@ -638,7 +621,7 @@ namespace BatInspector
       List<string> strings = new List<string>();
       foreach (string file in files)
       {
-        DateTime fileTime = ElekonInfoFile.getDateTimeFromFileName(file);
+        DateTime fileTime = PrjMetaData.getDateTimeFromFileName(file);
         if ((prjInfo.StartTime <= fileTime) && (fileTime <= prjInfo.EndTime))
           strings.Add(file);
       }
@@ -672,66 +655,6 @@ namespace BatInspector
     */
 
 
-    private static bool readGpxFile(PrjInfo info, out gpx gpxFile)
-    {
-      bool retVal = true;
-      gpxFile = null;
-      // read gpx file if needed
-      if (info.OverwriteLocation)
-      {
-        if (info.LocSourceGpx)
-        {
-          gpxFile = gpx.read(info.GpxFile);
-          if (gpxFile == null)
-          {
-            DebugLog.log("gpx file not readable: " + info.GpxFile, enLogType.ERROR);
-            retVal = false;
-          }
-        }
-      }
-      return retVal;
-    }
-
-    private static bool readKmlFile(PrjInfo info, out kml kmlFile)
-    {
-      bool retVal = true;
-      kmlFile = null;
-      // read gpx file if needed
-      if (info.OverwriteLocation)
-      {
-        if (info.LocSourceKml)
-        {
-          kmlFile = kml.read(info.GpxFile);
-          if (kmlFile == null)
-          {
-            DebugLog.log("kml file not readable: " + info.GpxFile, enLogType.ERROR);
-            retVal = false;
-          }
-        }
-      }
-      return retVal;
-    }
-
-    private static bool readLoctxtFile(PrjInfo info, LocFileSettings pars, out LocFileTxt txtFile)
-    {
-      bool retVal = true;
-      txtFile = null;
-      // read gpx file if needed
-      if (info.OverwriteLocation)
-      {
-        if (info.LocSourceTxt)
-        {
-          txtFile = LocFileTxt.read(info.GpxFile, pars);
-          if (txtFile == null)
-          {
-            DebugLog.log("txt location file not readable: " + info.GpxFile, enLogType.ERROR);
-            retVal = false;
-          }
-        }
-      }
-      return retVal;
-
-    }
 
     private static bool createPrjDirStructure(string prjDir, out string wavDir, string wavSubDir)
     {
@@ -785,7 +708,7 @@ namespace BatInspector
         if (wavFile.AudioSamples.Length > 2048)
         {
           wavFile.saveFileAs(dest);
-          DateTime time = ElekonInfoFile.getDateTimeFromFileName(file);
+          DateTime time = PrjMetaData.getDateTimeFromFileName(file);
           double[] pos = new double[2];
           pos[0] = info.Latitude;
           pos[1] = info.Longitude;
@@ -853,7 +776,7 @@ namespace BatInspector
     /// <param name="info">parameters to specify project</param>
     /// <param name="regions"></param>
     /// <param name="speciesInfo"></param>
-    public static bool createPrjFromWavs(PrjInfo info, ModelParams modelParams)
+    public static bool createPrjFromWavs(PrjInfo info, ModelParams modelParams, bool askIfTimeFromFile = true)
     {
       Stopwatch t = new Stopwatch();
       t.Start();
@@ -872,8 +795,8 @@ namespace BatInspector
         files = findSoundFiles(info, out soundFileExtension);
         if (files.Length > 0)
         {
-          bool ok = ElekonInfoFile.checkDateTimeInFileName(files[0]);
-          if (!ok)
+          bool ok = PrjMetaData.checkDateTimeInFileName(files[0]);
+          if (!ok & askIfTimeFromFile)
           {
             t.Stop();
             MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDatTimeError,
@@ -903,7 +826,7 @@ namespace BatInspector
           Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           DebugLog.log($"creating project... at {t.Elapsed}", enLogType.INFO);
-          prj.fillFromDirectory(dir, info.WavSubDir, info.Notes);
+          prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
 
           // copy location files is present
           DebugLog.log($"copy location files... at {t.Elapsed}", enLogType.INFO);
@@ -920,40 +843,9 @@ namespace BatInspector
             DebugLog.log($"create xml info files... at {t.Elapsed}", enLogType.INFO);
             prj.createXmlInfoFiles(info);
           }
-          // replace gpx locations
-          xmlFiles = Directory.GetFiles(wavDir, "*.xml");
-          if (info.OverwriteLocation && info.LocSourceGpx)
-          {
-            DebugLog.log($"replace locations from gpx file... at {t.Elapsed}", enLogType.INFO);
-            bool ok = readGpxFile(info, out gpx gpxFile);
-            if (ok)
-              replaceLocations(xmlFiles, wavDir, gpxFile);
-            else
-              DebugLog.log("error reading GPX file, could not generate location information", enLogType.ERROR);
-          }
-          else if (info.OverwriteLocation && info.LocSourceKml)
-          {
-            DebugLog.log($"replace locations from kml file... at {t.Elapsed}", enLogType.INFO);
-            bool ok = readKmlFile(info, out kml kmlFile);
-            if (ok)
-              replaceLocations(xmlFiles, wavDir, kmlFile);
-            else
-              DebugLog.log("error reading KML file, could not generate location information", enLogType.ERROR);
-          }
-          else if (info.OverwriteLocation && info.LocSourceTxt)
-          {
-            DebugLog.log($"replace locations from txt file... at {t.Elapsed}", enLogType.INFO);
-            bool ok = readLoctxtFile(info, AppParams.Inst.LocFileSettings, out LocFileTxt txtFile);
-            if (ok)
-              replaceLocations(xmlFiles, wavDir, txtFile);
-            else
-              DebugLog.log("error reading TXT file, could not generate location information", enLogType.ERROR);
-          }
-          else if (info.OverwriteLocation)
-          {
-            DebugLog.log($"replace locations with fixed location... at {t.Elapsed}", enLogType.INFO);
-            replaceLocations(xmlFiles, wavDir, info.Latitude, info.Longitude);
-          }
+
+          PrjMetaData.replaceLocations(info, wavDir, t);
+
           splitFiles(prj, info);
         }
         else
@@ -982,7 +874,7 @@ namespace BatInspector
 
       string prjWavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
       splitFiles(prjWavDir, info);
-      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), prj.WavSubDir, info.Notes);
+      prj.fillFromDirectory(new DirectoryInfo(prj.PrjDir), prj.WavSubDir, info.Notes, info.Location);
     }
 
     private static void splitFiles(string prjWavDir, PrjInfo info)
@@ -1047,7 +939,7 @@ namespace BatInspector
         Utils.copyFiles(txtFiles, dirName);
 
         Project dstprj = new Project(false, modelParams, modelCount);
-        dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes);
+        dstprj.fillFromDirectory(new DirectoryInfo(dirName), AppParams.DIR_WAVS, prj.Notes, prj.Location);
         dstprj.assignNewModelParams(prj.AvailableModelParams);
         copyAnalysisPart(prj, dstprj);
         retVal.Add(dirName);
@@ -1134,74 +1026,6 @@ namespace BatInspector
       prjDest.Analysis.save(prjDest.getReportName(prjDest.SelectedModelIndex), prjDest.Notes, prjDest.SummaryName);
     }
 
-    private static void replaceLocations(string[] xmlfiles, string wavDir, gpx gpxFile)
-    {
-      DebugLog.log("replace locations from gpx file...", enLogType.INFO);
-      foreach (string fName in xmlfiles)
-      { 
-        BatRecord f = ElekonInfoFile.read(fName);
-        DateTime t = ElekonInfoFile.getDateTimeFromFileName(fName);
-        double[] pos = gpxFile.getPosition(t);
-        if ((pos == null) || (pos.Length < 2) || ((pos[0] == 0.0) && (pos[1] == 0.0)))
-          DebugLog.log("no position found for " + fName + ", timestamp: " + t.ToString(), enLogType.ERROR);
-        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
-        string dstName = Path.GetFileName(fName);
-        dstName = Path.Combine(wavDir, dstName);
-        ElekonInfoFile.write(dstName, f);
-      }
-    }
-
-    private static void replaceLocations(string[] xmlfiles, string wavDir, kml kmlFile)
-    {
-      DebugLog.log("replace locations from kml file...", enLogType.INFO);
-      foreach (string fName in xmlfiles)
-      {
-        BatRecord f = ElekonInfoFile.read(fName);
-		    double[] posOld = {90,0};
-        double[] pos = kmlFile.getPosition(fName);
-	      if(pos[0] < 1e-6)
-	        pos = posOld;
-        else
-          posOld = pos;
-        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
-        string dstName = Path.GetFileName(fName);
-        dstName = Path.Combine(wavDir, dstName);
-        ElekonInfoFile.write(dstName, f);
-      }
-    }
-
-    private static void replaceLocations(string[] xmlfiles, string wavDir, LocFileTxt txtFile)
-    {
-      DebugLog.log("replace locations from txt file...", enLogType.INFO);
-      foreach (string fName in xmlfiles)
-      {
-        BatRecord f = ElekonInfoFile.read(fName);
-        double[] posOld = { 90, 0 };
-        DateTime t = AnyType.getDate(f.DateTime);
-        double[] pos = txtFile.getPosition(fName, t);
-        if (pos[0] < 1e-6)
-          pos = posOld;
-        else
-          posOld = pos;
-        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
-        string dstName = Path.GetFileName(fName);
-        dstName = Path.Combine(wavDir, dstName);
-        ElekonInfoFile.write(dstName, f);
-      }
-    }
-
-    private static void replaceLocations(string[] xmlfiles, string wavDir, double lat, double lon)
-    {
-      DebugLog.log("replace locations with fix location...", enLogType.INFO);
-      foreach (string fName in xmlfiles)
-      {
-        BatRecord f = ElekonInfoFile.read(fName);
-        f.GPS.Position = lat.ToString(CultureInfo.InvariantCulture) + " " + lon.ToString(CultureInfo.InvariantCulture);
-        string dstName = Path.GetFileName(fName);
-        dstName = Path.Combine(wavDir, dstName);
-        ElekonInfoFile.write(dstName, f);
-      }
-    }
 
     public static ModelParams[] readModelParams(string prjFile)
     {
@@ -1260,7 +1084,8 @@ namespace BatInspector
             _wavSubDir = AppParams.DIR_WAVS;
           else
             _wavSubDir = "";
-
+          if (string.IsNullOrEmpty(_batExplorerPrj.MetaData))
+            _batExplorerPrj.MetaData = "Xml";
           _modelParams = setModelParams();
           for (int i = 0; i < AvailableModelParams.Length; i++)
           {
@@ -1496,7 +1321,7 @@ namespace BatInspector
             t = AnyType.getDate(rec.DateTime);
           t =  t.AddMilliseconds(deltaT * 1000);
           deltaT += maxLen;
-          rec.DateTime = ElekonInfoFile.getDateString(t);
+          rec.DateTime = PrjMetaData.getDateString(t);
           ElekonInfoFile.write(xmlName, rec);
         }
       }
@@ -1544,7 +1369,7 @@ namespace BatInspector
     /// </summary>
     /// <param name="dir">directory info of prj directory</param>
     /// <param name="wavSubDir">subdir with leading '/' for wav files</param>
-    public void fillFromDirectory(DirectoryInfo dir, string wavSubDir = "", string notes = "")
+    public void fillFromDirectory(DirectoryInfo dir, string wavSubDir = "", string notes = "", string loc ="")
     {
       try
       {
@@ -1565,6 +1390,7 @@ namespace BatInspector
         _changed = true;
         Created = DateTime.Now.ToString(AppParams.GPX_DATETIME_FORMAT);
         Notes = notes;
+        Location = loc;
         writePrjFile();
       }
       catch (Exception ex)
@@ -1608,7 +1434,7 @@ namespace BatInspector
             create = true;
           if (create)
           {
-            DateTime time = ElekonInfoFile.getDateTimeFromFileName(fullName);
+            DateTime time = PrjMetaData.getDateTimeFromFileName(fullName);
             double[] pos = new double[2];
             pos[0] = info.Latitude;
             pos[1] = info.Longitude;

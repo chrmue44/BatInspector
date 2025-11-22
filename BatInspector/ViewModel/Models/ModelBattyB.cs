@@ -165,7 +165,7 @@ namespace BatInspector
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
-                ElekonInfoFile.parsePosition(info, out lat, out lon);
+                PrjMetaData.parsePosition(info, out lat, out lon);
                 double.TryParse(info.Temparature, out temperature);
                 double.TryParse(info.Humidity, out humidity);
               }

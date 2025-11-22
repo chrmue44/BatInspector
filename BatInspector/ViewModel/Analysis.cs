@@ -12,8 +12,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Windows;
-using BatInspector.Forms;
 using libParser;
 using libScripter;
 
@@ -366,12 +364,11 @@ namespace BatInspector
       }
     }
 
-    public void filloutTemperature(string wavDir)
+    public void filloutTemperature(Project prj)
     {
       foreach(AnalysisFile f in _list)
       {
-        string infoFile = Path.Combine(wavDir, f.Name.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO));
-        BatRecord info = ElekonInfoFile.read(infoFile);
+        BatRecord info = PrjMetaData.retrieveMetaData(prj, f.Name);
         info.Temparature = info.Temparature.Replace("°C", "");
         info.Humidity = info.Humidity.Replace("%","");
         double temperature = -20;

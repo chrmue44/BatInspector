@@ -151,6 +151,7 @@ public partial class BatExplorerProjectFile
   private PrjRecord[] _records;
   private string _fileVersion;
   private string _prjType;
+  private string _metaData;
   private string _createdBy;
   private string _location;
   private string _remarks;
@@ -205,6 +206,9 @@ public partial class BatExplorerProjectFile
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string ProjectType { get { return _prjType; } set { _prjType = value; } }
+
+  [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+  public string MetaData { get { return _metaData; } set { _metaData = value; } }
 
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string CreatedBy { get { return _createdBy; } set { _createdBy = value; } }

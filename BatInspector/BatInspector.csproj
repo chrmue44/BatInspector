@@ -721,6 +721,7 @@
     <Resource Include="images\batInspectorLogo.png" />
     <Resource Include="images\logo.png" />
     <Resource Include="logo.ico" />
+    <Resource Include="todo.txt" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

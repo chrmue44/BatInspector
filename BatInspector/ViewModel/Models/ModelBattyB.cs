@@ -151,7 +151,6 @@ namespace BatInspector
             {
               // read infoFile
               string wavName = Path.GetFileName(file).ToLower().Replace(".bat.results.csv", ".wav");
-              string infoName = wavDir + "/" + Path.GetFileName(file).ToLower().Replace(".bat.results.csv", ".xml");
               string sampleRate = "?";
               string fileLen = "?";
               string recTime = "?";
@@ -159,7 +158,7 @@ namespace BatInspector
               double lon = 0.0;
               double temperature = -20;
               double humidity = -1;
-              BatRecord info = ElekonInfoFile.read(infoName);
+              BatRecord info = PrjMetaData.retrieveMetaData(wavDir, wavName);
               if (info != null)
               {
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;

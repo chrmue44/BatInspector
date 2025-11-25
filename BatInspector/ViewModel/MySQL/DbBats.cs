@@ -126,12 +126,8 @@ namespace BatInspector
         return 2;
       }
 
+      BatRecord r = PrjMetaData.retrieveMetaData(prj, prj.Analysis.Files[0].Name);
       //check if record already exists
-      string xmlName = Path.Combine(prj.PrjDir,
-                                    prj.WavSubDir,
-                                    prj.Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)
-                                    );
-      BatRecord r = ElekonInfoFile.read(xmlName);
       string trigSettings = r.Trigger.getTriggerSettings();
       string date = prj.Analysis.Files[0].getString(Cols.REC_TIME);
       bool ok = DateTime.TryParse(date, out DateTime t);
@@ -196,11 +192,7 @@ namespace BatInspector
       }
 
       //check if record already exists
-      string xmlName = Path.Combine(prj.PrjDir,
-                                    prj.WavSubDir,
-                                    prj.Analysis.Files[0].Name.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO)
-                                    );
-      BatRecord r = ElekonInfoFile.read(xmlName);
+      BatRecord r = PrjMetaData.retrieveMetaData(prj, prj.Analysis.Files[0].Name);
       string date = prj.Analysis.Files[0].getString(Cols.REC_TIME);
       bool ok = DateTime.TryParse(date, out DateTime t);
       date = $"{t.Year}-{t.Month.ToString("00")}-{t.Day.ToString("00")}";

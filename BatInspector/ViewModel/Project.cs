@@ -891,13 +891,12 @@ namespace BatInspector
         if (fileInfo.Length > maxFileLen)
         {
           string[] names = Project.splitWav(f, info.MaxFileLenSec);
-          Project.createSplitXmls(f, names, info.MaxFileLenSec);
+          PrjMetaData.createSplitXmls(f, names, info.MaxFileLenSec);
           string oldXml = f.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
           if (File.Exists(oldXml))
             File.Delete(oldXml);
         }
       }
-
     }
 
     /// <summary>
@@ -1087,6 +1086,7 @@ namespace BatInspector
           if (string.IsNullOrEmpty(_batExplorerPrj.MetaData))
             _batExplorerPrj.MetaData = "Xml";
           _modelParams = setModelParams();
+          SelectedModelIndex = 0;
           for (int i = 0; i < AvailableModelParams.Length; i++)
           {
             if (AvailableModelParams[i].Enabled)
@@ -1306,26 +1306,6 @@ namespace BatInspector
 
 
 
-    private static void createSplitXmls(string fName, string[] newNames, double maxLen)
-    {
-      fName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      double deltaT = 0;
-      DateTime t = new DateTime(1900,1,1);
-      BatRecord rec = ElekonInfoFile.read(fName);
-      foreach (string newName in newNames)
-      {
-        string xmlName = newName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-        if(rec != null)
-        {
-          if(t.Year < 1910)
-            t = AnyType.getDate(rec.DateTime);
-          t =  t.AddMilliseconds(deltaT * 1000);
-          deltaT += maxLen;
-          rec.DateTime = PrjMetaData.getDateString(t);
-          ElekonInfoFile.write(xmlName, rec);
-        }
-      }
-    }
 
     private static string[] splitWav(string fName, double size)
     {

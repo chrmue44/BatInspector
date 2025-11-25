@@ -52,13 +52,18 @@
                 <!--  <GroupBox Template="{DynamicResource GroupBoxCmu}" VerticalAlignment="Stretch" ToolTip="set display range for waterfall diagram">
                     <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
                 </GroupBox> -->
-                <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
+                <StackPanel>
+                    <Slider x:Name="_slRange"  Width="120" Height="15" Margin="2" Maximum="160" Minimum="6" ToolTip="{x:Static res:MyResources.ToolTipIncRange}" Background="{DynamicResource colorBackGroundToolB}" ValueChanged="_slRange_MouseUp"/>
+                    <Slider x:Name="_slBlackLevel" Width="120" Height="15" Margin="2" Maximum="100" Minimum="0" ValueChanged="_slBlackLevel_MouseUp"/>
+                </StackPanel>
+                <!-- <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
                     <Image Source="../images/icons8-plus-+-48.png"></Image>
                 </Button>
                 <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
                     <Image Source="../images/icons8-minus-48.png"></Image>
                 </Button>
                 <local:ctlUpDown x:Name="_ctlBlackLevel"/>
+                -->
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="15,0" Width="3" />
                 <!---
                 <Button x:Name="_btnDenoise"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDenoise_Click" ToolTip="{x:Static res:MyResources.ToolTipDenoise}">

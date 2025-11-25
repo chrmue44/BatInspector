@@ -100,8 +100,7 @@ namespace BatInspector
         foreach (ModelParams p in f.Models)
         {
           string path = Path.Combine(AppParams.Inst.ModelRootPath, p.SubDir);
-          if (Directory.Exists(path))
-            l.Add(p);
+          l.Add(p);
         }
         retVal = l.ToArray();
       }

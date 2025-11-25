@@ -562,7 +562,6 @@ namespace BatInspector
       {
         DefaultModel = enModel.BAT_DETECT2;
       }
-
       Version = AppVersion;
     }
 

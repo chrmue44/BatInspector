@@ -67,6 +67,7 @@ namespace BatInspector
           */
 
 
+          DebugLog.setLogDelegate(null, null, null, AppParams.LogDataPath);
           MainWin = new MainWindow();
           this.MainWindow = MainWin;
           MainWin.Show();

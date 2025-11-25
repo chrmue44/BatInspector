@@ -164,7 +164,7 @@ namespace BatInspector
               double lon = 0.0;
               double temperature = -20;
               double humidity = -1;
-              BatRecord info = ElekonInfoFile.read(infoName);
+              BatRecord info = PrjMetaData.retrieveMetaData(wavDir, wavName);
               if (info != null)
               {
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
@@ -237,10 +237,10 @@ namespace BatInspector
       lon = "";
       week = 0;
       DirectoryInfo dir = new DirectoryInfo(wavDir);
-      FileInfo[] files = dir.GetFiles("*.xml");
+      FileInfo[] files = dir.GetFiles("*.wav");
       if (files.Length > 0)
       {
-        BatRecord info = ElekonInfoFile.read(files[0].FullName);
+        BatRecord info = PrjMetaData.retrieveMetaData(files[0].FullName);
         string[] pos = info.GPS.Position.Split(' ');
         if (pos.Length > 1)
         {

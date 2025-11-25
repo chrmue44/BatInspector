@@ -262,7 +262,7 @@
     <Compile Include="Controls\CtrlZoom.xaml.cs">
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FolderPicker.cs" />
+    <Compile Include="ViewModel\FolderPicker.cs" />
     <Compile Include="Controls\GraphHelper.cs" />
     <Compile Include="Forms\FrmConnectMysql.xaml.cs">
       <DependentUpon>FrmConnectMysql.xaml</DependentUpon>
@@ -271,7 +271,7 @@
       <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DocHelper.cs" />
-    <Compile Include="ViewModel\Guano.cs" />
+    <Compile Include="ViewModel\MetaData\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
       <DependentUpon>FrmAbout.xaml</DependentUpon>
@@ -368,7 +368,7 @@
     <Compile Include="ViewModel\BatCommands.cs" />
     <Compile Include="ViewModel\Models\Bd2AnnFile.cs" />
     <Compile Include="ViewModel\BatInfo.cs" />
-    <Compile Include="ViewModel\BatRecord.cs" />
+    <Compile Include="ViewModel\MetaData\BatRecord.cs" />
     <Compile Include="ViewModel\BatSpeciesRegions.cs" />
     <Compile Include="ViewModel\BatSpy.cs" />
     <Compile Include="ViewModel\BioAcoustics.cs" />
@@ -377,16 +377,16 @@
     <Compile Include="ViewModel\CmdLine.cs" />
     <Compile Include="ViewModel\ColorTable.cs" />
     <Compile Include="ViewModel\CtrlRecorder.cs" />
-    <Compile Include="ViewModel\ElekonInfoFile.cs" />
+    <Compile Include="ViewModel\MetaData\ElekonInfoFile.cs" />
     <Compile Include="ViewModel\ExpressionGenerator.cs" />
     <Compile Include="ViewModel\Filter.cs" />
-    <Compile Include="ViewModel\gpx.cs" />
-    <Compile Include="ViewModel\gpxPart.cs" />
+    <Compile Include="ViewModel\MetaData\gpx.cs" />
+    <Compile Include="ViewModel\MetaData\gpxPart.cs" />
     <Compile Include="ViewModel\Histogram.cs" />
     <Compile Include="ViewModel\JsonHelper.cs" />
-    <Compile Include="ViewModel\kml.cs" />
-    <Compile Include="ViewModel\kmlPart.cs" />
-    <Compile Include="ViewModel\LocFileTxt.cs" />
+    <Compile Include="ViewModel\MetaData\kml.cs" />
+    <Compile Include="ViewModel\MetaData\kmlPart.cs" />
+    <Compile Include="ViewModel\MetaData\LocFileTxt.cs" />
     <Compile Include="ViewModel\Models\ModelBatDetect2.cs" />
     <Compile Include="ViewModel\Models\ModelBirdnet.cs" />
     <Compile Include="ViewModel\Models\ModelBattyB.cs" />
@@ -394,7 +394,7 @@
     <Compile Include="ViewModel\MySQL\DbBats.cs" />
     <Compile Include="ViewModel\MySQL\DbBirds.cs" />
     <Compile Include="ViewModel\MySQL\MySqlHelper.cs" />
-    <Compile Include="ViewModel\PrjMetaData.cs" />
+    <Compile Include="ViewModel\MetaData\PrjMetaData.cs" />
     <Compile Include="ViewModel\PrjView.cs" />
     <Compile Include="ViewModel\Query.cs" />
     <Compile Include="ViewModel\QueryFile.cs" />
@@ -424,7 +424,7 @@
       <DependentUpon>FrmZoom.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppParams.cs" />
-    <Compile Include="ViewModel\Analysis.cs" />
+    <Compile Include="ViewModel\MetaData\Analysis.cs" />
     <Compile Include="ViewModel\Project.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\Waterfall.cs" />
@@ -668,7 +668,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModel\BatInspectFmt.cs" />
+    <Compile Include="ViewModel\MetaData\BatInspectFmt.cs" />
     <Compile Include="ViewModel\DSPLib.cs" />
     <Compile Include="Forms\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -722,6 +722,7 @@
     <Resource Include="images\batInspectorLogo.png" />
     <Resource Include="images\logo.png" />
     <Resource Include="logo.ico" />
+    <Resource Include="todo.txt" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

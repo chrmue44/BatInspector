@@ -1,12 +1,12 @@
 TODO
-- new flag <modified> in XML-file
-- simplification of script to copy auto to man specie
-- markieren von manuell geänderten Rufen
-- more flexible import: 
-  - parsing date/time form different file names
-  - real "inplace" import
-  
+
 - guano meatdata is now parsable by WavReader and displayed in the WavViewer
+
+# V0.9.5.3  22.11.25
+- bugfix: crash, when opening a bird project and at least one bat model is NOT installed 
+
+# V0.9.5.2  18.11.25
+- bugfix: updating from older versions failed because old BatInspectorSettings.json crashed the program (without logging)
 
 # V0.9.5.1  25.10.25
 - new button "verify" in Zoom view: verifies call params according to Bayern paper

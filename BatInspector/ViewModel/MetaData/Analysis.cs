@@ -735,14 +735,13 @@ namespace BatInspector
         string fName = _csv.getCell(r, Cols.NAME);
         if (fName != oldF)
         {
-          string xmlName = fName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-          BatRecord rec = ElekonInfoFile.read(xmlName);
+          BatRecord rec = PrjMetaData.retrieveMetaData(fName);
           if (rec != null)
           {
             dateStr = rec.DateTime;
           }
           else
-            DebugLog.log("error reading file: " + xmlName, enLogType.ERROR);
+            DebugLog.log($"error reading meta data for: {fName}", enLogType.ERROR);
         }
         _csv.setCell(r, Cols.REC_TIME, dateStr);
       }

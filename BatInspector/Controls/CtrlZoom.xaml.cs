@@ -201,7 +201,7 @@ namespace BatInspector.Controls
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
       _ctlGpsPos.setValue(PrjMetaData.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
       _ctlSpectrum.init(App.Model.ZoomView.Spectrum, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
-      _ctlBlackLevel.setup(0,100,0,5, setBlackLevel);
+     // _ctlBlackLevel.setup(0,100,0,5, setBlackLevel);
 
       initCallSelectors();
       
@@ -328,6 +328,33 @@ namespace BatInspector.Controls
       {
         DebugLog.log("Zoom:BTN 'increase range' failed: " + ex.ToString(), enLogType.ERROR);
       }
+    }
+
+
+    private void _slRange_MouseUp(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      try
+      {
+        if (App.Model.ZoomView.Waterfall == null)
+          return;
+        App.Model.ZoomView.Waterfall.Range = _slRange.Value;
+        //_ctlRange.setValue(App.Model.ZoomView.Waterfall.Range);
+        updateRuler();
+        updateImage();
+        DebugLog.log("Zoom:SLIDER 'range' moved", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:SLIDER 'range' failed: " + ex.ToString(), enLogType.ERROR);
+      }
+
+    }
+
+    private void _slBlackLevel_MouseUp(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      App.Model.ZoomView.Waterfall.BlackLevel = _slBlackLevel.Value;
+      updateRuler();
+      updateImage();
     }
 
     private void _btnDecRange_Click(object sender, RoutedEventArgs e)

@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using libParser;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using Org.BouncyCastle.Utilities;
 
 namespace BatInspector
 {
@@ -391,7 +392,7 @@ namespace BatInspector
 
     public short[] AudioSamples {  get { return _data.WaveData; } }
 
-    public List<GuanoItem> GuanoFields { get{ return (_guano == null) ? null : _guano.Fields; } } 
+    public Guano Guano { get{ return _guano; } }
 
     public PlaybackState PlaybackState
     {
@@ -418,9 +419,10 @@ namespace BatInspector
       _format = new FormatChunk();
       _data = new DataChunk();
       _header = new WaveHeader();
+      _guano = null;
     }
 
-    private byte[] partArray(byte[]list, int startIdx, int len)
+    public static byte[] partArray(byte[]list, int startIdx, int len)
     {
       byte[] retVal = new byte[len];
       for (int i = 0; i < len; i++)
@@ -459,12 +461,11 @@ namespace BatInspector
           }
           else if ((_rawData[pos] == 'g') && (_rawData[pos + 1] == 'u') && (_rawData[pos + 2] == 'a') && (_rawData[pos + 3] == 'n'))
           {
-            _guano = new Guano();
             pos += 4;
             int dataSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
             pos += 4;
-            byte[] guanoData = partArray(_rawData, pos, dataSize);
-            _guano.parse(guanoData);
+            byte[] guanoData = partArray(_rawData, pos - 8, dataSize + 8);
+            _guano = new Guano(guanoData);
             pos += dataSize;
           }
           else
@@ -505,6 +506,8 @@ namespace BatInspector
           {
             List<Byte> tempBytes = new List<byte>();
             _header.FileLength = 4 + _format.Length() + _data.Length();
+            if(_guano != null)
+              _header.FileLength += _guano.Length();
             tempBytes.AddRange(_header.GetBytes());
             tempBytes.AddRange(_format.GetBytes());
             if (_format.ChunkSize > 16)
@@ -516,6 +519,11 @@ namespace BatInspector
             _rawData = tempBytes.ToArray();
             foreach (byte b in _rawData)
               f.WriteByte(b);
+            if(_guano != null)
+            {
+              byte[] b = _guano.GetBytes();
+              f.Write(b,0, b.Length);
+            }
           }
         }
       }
@@ -631,6 +639,13 @@ namespace BatInspector
       for(int i = 0; i < sampleRate; i++)
         vals[i] = amplitude * Math.Sin(i * freqHz * 2 * Math.PI/ sampleRate) + offs;
       createFile(1, sampleRate, 0, vals.Length - 1, vals);
+    }
+
+    public void addGuanoMetaData(BatRecord rec, int timeExpFactor)
+    {
+      if (_guano == null)
+        _guano = new Guano();
+      _guano.createMetaData(rec, timeExpFactor);
     }
 
     public void pause()

@@ -12,6 +12,13 @@ using System.Threading.Tasks;
 
 namespace BatInspector
 {
+  
+  public enum enMetaData
+  {
+    XML = 1,
+    GUANO = 2,
+  }
+
   public class PrjMetaData
   {
     public PrjMetaData() { }
@@ -51,6 +58,20 @@ namespace BatInspector
       BatRecord r = ElekonInfoFile.read(infoFileName);
       return r;
     }
+
+    public static void createMetaData(string wavName, BatRecord rec, enMetaData metaData, int timeExFactor)
+    {
+      switch (metaData)
+      {
+        case enMetaData.GUANO:
+          WavFile wav = new WavFile();
+          wav.readFile(wavName);
+          wav.addGuanoMetaData(rec, timeExFactor);
+          wav.saveFile();
+          break;
+      }
+    }
+
 
     public static void parsePosition(BatRecord rec, out double lat, out double lon)
     {

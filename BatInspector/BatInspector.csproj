@@ -262,7 +262,7 @@
     <Compile Include="Controls\CtrlZoom.xaml.cs">
       <DependentUpon>CtrlZoom.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\FolderPicker.cs" />
+    <Compile Include="Controls\FolderPicker.cs" />
     <Compile Include="Controls\GraphHelper.cs" />
     <Compile Include="Forms\FrmConnectMysql.xaml.cs">
       <DependentUpon>FrmConnectMysql.xaml</DependentUpon>

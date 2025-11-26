@@ -12,6 +12,7 @@ using BatInspector.Properties;
 using libParser;
 using libScripter;
 using NAudio.Wave;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -125,6 +126,7 @@ namespace BatInspector
       testCalcSnr();
     //  testCreatePngCpp();
       testCheckSpecies();
+      testGuano();
       //    testMySql();
 
       //testCreateMicSpectrumFromNoiseFile();
@@ -1195,7 +1197,40 @@ namespace BatInspector
       assert("PPYG", (res.IndexOf("PPYG") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
     }
 
+    void testGuano()
+    {
+      string wavFile = "F:\\prj\\BatInspector\\TestData\\wavTest\\wav\\Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms.wav";
+      string target = "F:\\prj\\BatInspector\\TestData\\out\\guanoTest.wav";
+      if (File.Exists(target))
+        File.Delete(target);
+      WavFile wav = new WavFile();
+      wav.readFile(wavFile);
+      BatRecord rec = new BatRecord()
+      {
+        DateTime = "2025-11-19T12:23:18",
+        Firmware = "BatSpy 25-11-11",
+        Humidity = "33",
+        Temparature = "18.2",
+        GPS = new BatRecordGPS() { Position = "49.5  8.3566"},
+        Trigger = new BatRecordTrigger() { Filter="LP", Level="-11.0", Frequency="16", EventLength="1.5"}
+      };
+      wav.addGuanoMetaData(rec, 1);
+      wav.saveFileAs(target);
 
+      WavFile testWav = new WavFile();
+      testWav.readFile(target);
+      assert("guano, count", testWav.Guano.Fields.Count == 10);
+      GuanoItem it =  wav.Guano.getField("Timestamp");
+      assert("guano, timestamp", (it != null) && (it.Value == rec.DateTime));
+      it = wav.Guano.getField("Firmware Version");
+      assert("guano, firmware", (it != null) && (it.Value == rec.Firmware));
+      it = wav.Guano.getField("Humidity");
+      assert("guano, humidity", (it != null) && (it.Value == rec.Humidity));
+      it = wav.Guano.getField("Temperature Ext");
+      assert("guano, temperature", (it != null) && (it.Value == rec.Temparature));
+      it = wav.Guano.getField("Loc Position");
+      assert("guano, position", (it != null) && (it.Value == rec.GPS.Position));
+    }
 
     private void assert(string a, string exp)
     {

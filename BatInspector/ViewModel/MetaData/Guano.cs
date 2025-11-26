@@ -1,5 +1,19 @@
-﻿using libParser;
+﻿/********************************************************************************
+ *               Author: Christian Müller
+ *     Date of creation: 2025-11-01                                       
+ *   Copyright (C) 2025: Christian Müller chrmue44(at)gmail(dot).com
+ *
+ *              Licence:  CC BY-NC 4.0 
+ ********************************************************************************/
+using libParser;
+using NAudio.Utils;
+using Org.BouncyCastle.Asn1.Mozilla;
+using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Remoting.Channels;
+using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 
 /*
@@ -25,7 +39,33 @@ namespace BatInspector
     public string FieldName { get; set; }
     public string Value { get; set; }
     public string Comment { get; set; }
+  
+    public GuanoItem()
+    {
+      NameSpace = "";
+      FieldName = "";
+      Value = "";
+      Comment = "";
+    }
+
+    public GuanoItem(string nameSpace, string fieldName, string value)
+    {
+      NameSpace = nameSpace;
+      FieldName = fieldName;
+      Value = value;
+
+      Comment = "";
+    }
+
+    public override string ToString()
+    {
+      if(string.IsNullOrEmpty(NameSpace))       
+        return $"{FieldName}:{Value}\n";
+      else
+        return $"{NameSpace}|{FieldName}:{Value}\n";
+    }
   }
+
 
   class GuanoDictItem
   {
@@ -39,15 +79,22 @@ namespace BatInspector
     }
   }
 
-  class Guano
+
+  public class Guano
   {
     byte[] _buf;
     string _name = "";
     int _pos = 0;
+    byte[] _data;
+
     List<GuanoItem> _items = new List<GuanoItem>();
+
+    public string ChunkId { get; private set; }
+    public UInt32 ChunkSize { get; private set; }
+
     public List<GuanoItem> Fields { get { return _items; } }
 
-    GuanoDictItem[] _dictionary = new GuanoDictItem[]
+    static GuanoDictItem[] _dictionary = new GuanoDictItem[]
     {
       new GuanoDictItem("GUANO|Version",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Filter HP",AnyType.tType.RT_FLOAT),
@@ -78,8 +125,67 @@ namespace BatInspector
       new GuanoDictItem("Timestamp",AnyType.tType.RT_TIME),
     };
 
+    public Guano()
+    {
+      ChunkId = "guan";
+      ChunkSize = 8;
+      _data = new byte[8];
+    }
 
-    public void parse(byte[] s)
+    public Guano(byte[] data)
+    {
+      ChunkId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
+      ChunkSize = BitConverter.ToUInt32(data, 4);
+      _data = WavFile.partArray(data, 8, data.Length - 8);
+      parse(_data);
+    }
+
+    public byte[] GetBytes()
+    {
+      List<byte> bytes = new List<byte>();
+      bytes.AddRange(Encoding.ASCII.GetBytes(ChunkId));
+      bytes.AddRange(BitConverter.GetBytes(ChunkSize));
+      writeDataToChunk(bytes);
+      UInt32 size = (UInt32)bytes.Count - 8;
+      byte[] s = BitConverter.GetBytes(size);
+      for (int i = 4; i < 8; i++)
+        bytes[i] = s[i - 4];
+      return bytes.ToArray();
+    }
+
+    public UInt32 Length()
+    {
+      return (UInt32)_data.Length + 8;
+    }
+
+    public GuanoItem getField(string fieldName, string nameSpace = "")
+    {
+      GuanoItem retVal = null;
+      foreach(GuanoItem field in _items)
+      {
+        if ((field.NameSpace == nameSpace) && (field.FieldName == fieldName))
+        {
+          retVal = field;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+
+    private void writeDataToChunk(List<byte> bytes)
+    {
+      foreach(GuanoItem it in _items)
+      {
+        string str = it.ToString();
+        foreach(char c in str)
+        {
+          bytes.Add((byte)c);
+        }
+      }
+    }
+
+    private void parse(byte[] s)
     {
       GuanoItem par;
       _buf = s;
@@ -191,6 +297,69 @@ namespace BatInspector
       while (tok != enGuanoToken.EOF);
     }
 
+
+    public void createMetaData(BatRecord rec, int timeExpFactor = 1)
+    {
+      GuanoItem item = getItem("GUANO", "Version");
+      item.Value = "1.0";
+      item = getItem("", "Timestamp");
+      item.Value = rec.DateTime;
+      item = getItem("", "Firmware Version");
+      item.Value = rec.Firmware;
+      item = getItem("", "Serial");
+      item.Value = rec.SN;
+      item = getItem("", "Length");
+      item.Value = rec.Duration;
+      item = getItem("", "TE");
+      item.Value = $"{timeExpFactor}";
+      item = getItem("", "Loc Position");
+      item.Value = rec.GPS.Position;
+      item = getItem("", "Samplerate");
+      item.Value = rec.Samplerate;
+      _items.Add(item);
+      if (!string.IsNullOrEmpty(rec.Temparature))
+      {
+        item = getItem("", "Temperature Ext");
+        item.Value = rec.Temparature;
+      }
+      if (!string.IsNullOrEmpty(rec.Humidity))
+      {
+        item = getItem("", "Humidity");
+        item.Value = rec.Humidity;
+      }
+      if (!string.IsNullOrEmpty(rec.Trigger.TriggerType))
+      {
+        item = getItem("BatSpy", "Trigger TYPE");
+        item.Value = rec.Trigger.TriggerType;
+      }
+      if (!string.IsNullOrEmpty(rec.Trigger.Frequency))
+      {
+        item = getItem("BatSpy", "Trigger FREQ");
+        item.Value = rec.Trigger.Frequency;
+      }
+      if (!string.IsNullOrEmpty(rec.Trigger.EventLength))
+      {
+        item = getItem("BatSpy", "Trigger EVENTLEN");
+        item.Value = rec.Trigger.EventLength;
+      }
+      if (!string.IsNullOrEmpty(rec.Trigger.Level))
+      {
+        item = getItem("BatSpy", "Trigger AMP");
+        item.Value = rec.Trigger.Level;
+      }
+    }
+
+    private GuanoItem getItem(string nameSpace, string fieldName)
+    {
+      foreach (GuanoItem item in _items)
+      {
+        if((item.NameSpace == nameSpace) && (item.FieldName == fieldName))
+          return item;
+      }
+      GuanoItem retVal = new GuanoItem(nameSpace, fieldName, "");
+      _items.Add(retVal);
+      return retVal;
+    }
 
     char getChar()
     {

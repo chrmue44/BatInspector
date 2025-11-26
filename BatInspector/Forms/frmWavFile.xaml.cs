@@ -73,11 +73,11 @@ namespace BatInspector.Forms
 
           _ctlSamples.setValue(App.Model.WavFile.AudioSamples.Length);
 
-          if ((App.Model.WavFile.GuanoFields == null) || (App.Model.WavFile.GuanoFields.Count < 1))
+          if ((App.Model.WavFile.Guano == null) || (App.Model.WavFile.Guano.Fields.Count < 1))
             _grpGuano.Visibility = Visibility.Collapsed;
           else
           {
-            _dgGuano.ItemsSource = App.Model.WavFile.GuanoFields;
+            _dgGuano.ItemsSource = App.Model.WavFile.Guano.Fields;
             _grpGuano.Visibility = Visibility.Visible;
           }
           double duration = (double)App.Model.WavFile.AudioSamples.Length / App.Model.WavFile.FormatChunk.Frequency;

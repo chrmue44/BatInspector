@@ -6,16 +6,11 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Controls;
-using Pen = System.Drawing.Pen;
-using Graphics = System.Drawing.Graphics;
 using System.IO;
 using System.Windows.Media.Imaging;
-using System.Diagnostics;
 using libParser;
-using BatInspector.Forms;
 using BatInspector.Properties;
 
 namespace BatInspector.Controls
@@ -40,19 +35,29 @@ namespace BatInspector.Controls
       _diagram = new ActivityDiagram(App.Model.ColorTable);
       int lblW = 150;
       _ctrlTitle.setup(Properties.MyResources.DiagramTitle, enDataType.STRING, 0, lblW, true, textChanged);
-      _ctlStyle.setup(Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 100, styleChanged);
+      _ctlStyle.setup(Properties.MyResources.ctlActivityDisplayStyle, 0, 80, 130, styleChanged);
       _ctlMaxValue.setup(Properties.MyResources.MaxValue, enDataType.INT, 0, 80, true, textChanged);
       _ctlTimeShift.setup(MyResources.ctlActivityTimeShift, 160, 30, textChanged);
-      
+      _ctlClassWidth.setup("Class Width [min]", 0, 100, 40, selectionChanged);
+      _ctlClassWidth.setItems(new string[] { "1", "2", "5", "10" });
+      _ctlClassWidth.SelectIndex = 0;
+
       _cbWeek.IsChecked = true;
       _cbDay.IsChecked = true;
       _cbTwilight.IsChecked = true;
-      string[] items = new string[3];
-      items[0] = BatInspector.Properties.MyResources.ctlActivityColored;
-      items[1] = BatInspector.Properties.MyResources.Square;
-      items[2] = BatInspector.Properties.MyResources.Circle;
-      _ctlStyle.setItems(items);
+      string[] items = new string[] {
+      BatInspector.Properties.MyResources.ctlActivityColored,
+       BatInspector.Properties.MyResources.SquareCountCalls,
+       BatInspector.Properties.MyResources.SquareActivity,
+      BatInspector.Properties.MyResources.Circle
+    };
+    _ctlStyle.setItems(items);
       _ctlTimeShift.NUDTextBox.Text="0";
+    }
+
+    private void selectionChanged(int idx, string val)
+    {
+      createPlot();
     }
 
     private void textChanged(enDataType type, object val)
@@ -75,8 +80,6 @@ namespace BatInspector.Controls
     }
 
 
-
-
     private void createPlot()
     {
       if (_data == null)
@@ -87,6 +90,9 @@ namespace BatInspector.Controls
       bool twilight = _cbTwilight.IsChecked == true;
 
       int offsetHours = _ctlTimeShift.Value;
+      int classWidthMin = 1;
+      string strClassWidth = _ctlClassWidth.getValue();
+      int.TryParse(strClassWidth, out classWidthMin);
 
       int maxDispValue = _ctlMaxValue.getIntValue();
       if (maxDispValue == 0)
@@ -96,13 +102,13 @@ namespace BatInspector.Controls
       }
 
 
-      _bmp = _diagram.createPlot(_data, _ctrlTitle.getValue(), _ctlStyle.getSelectedIndex(), maxDispValue, month, week, day, twilight, offsetHours);
+      _bmp = _diagram.createPlot(_data, _ctrlTitle.getValue(), (enActivityStyle)_ctlStyle.getSelectedIndex(), maxDispValue, month, week, day, twilight, offsetHours, classWidthMin);
       try
       {
         BitmapImage bitmapimage = new BitmapImage();
         using (MemoryStream memory = new MemoryStream())
         {
-          _bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+          _bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
           memory.Position = 0;
           bitmapimage.BeginInit();
           bitmapimage.StreamSource = memory;

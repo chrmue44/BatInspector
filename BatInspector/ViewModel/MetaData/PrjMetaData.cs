@@ -15,8 +15,8 @@ namespace BatInspector
   
   public enum enMetaData
   {
-    XML = 1,
-    GUANO = 2,
+    XML = 0,
+    GUANO = 1,
   }
 
   public class PrjMetaData

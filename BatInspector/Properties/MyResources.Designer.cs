@@ -5074,11 +5074,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rectangle.
+        ///   Looks up a localized string similar to Rectangle Activity.
         /// </summary>
-        public static string Square {
+        public static string SquareActivity {
             get {
-                return ResourceManager.GetString("Square", resourceCulture);
+                return ResourceManager.GetString("SquareActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rectangle Call Count.
+        /// </summary>
+        public static string SquareCountCalls {
+            get {
+                return ResourceManager.GetString("SquareCountCalls", resourceCulture);
             }
         }
         

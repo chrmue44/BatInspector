@@ -8,7 +8,7 @@
              xmlns:viewmodel="clr-namespace:BatInspector"
              xmlns:res="clr-namespace:BatInspector.Properties" 
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="900">
+             d:DesignHeight="700" d:DesignWidth="1000">
  
   <Grid>
     <Grid.RowDefinitions>
@@ -36,14 +36,15 @@
           <StackPanel Orientation="Horizontal">
             <CheckBox Name="_cbTwilight" Content="{x:Static res:MyResources.frmActivityTwilightLine}" Margin="0,7,10,5" Click="_cbMonth_Click"/>
             <local:ctlSelectItem x:Name="_ctlStyle" Margin="5,5,10,5"/>
-            <local:ctlDataItem x:Name="_ctlMaxValue" Margin="5,5,10,5" Width="170"/>
+            <local:ctlDataItem x:Name="_ctlMaxValue" Margin="5,5,10,5" Width="140"/>
             <local:ctlNumericUpDown x:Name="_ctlTimeShift" Margin="5,5,10,5"/>
+            <local:ctlSelectItem x:Name="_ctlClassWidth" Margin="5,5,10,5" Width="150"/>
                     </StackPanel>          
         </GroupBox>
       </StackPanel>
     </StackPanel>
     <GroupBox Name="_grpImg" Grid.Row="1" BorderThickness="2">
-      <Image x:Name="_cnv" Margin="2" Stretch="Uniform" />
+      <Image x:Name="_cnv" Margin="5" Stretch="Uniform" />
     </GroupBox>
   </Grid>
 </UserControl>

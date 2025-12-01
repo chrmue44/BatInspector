@@ -1560,8 +1560,8 @@
   <data name="Circle" xml:space="preserve">
     <value>Kreis</value>
   </data>
-  <data name="Square" xml:space="preserve">
-    <value>Rechteck</value>
+  <data name="SquareCountCalls" xml:space="preserve">
+    <value>Rechteck Rufanzahl</value>
   </data>
   <data name="ActivityMaxDisplayValue" xml:space="preserve">
     <value>max. Anzeigewert</value>
@@ -1925,5 +1925,8 @@
   </data>
   <data name="ctlReportRichText" xml:space="preserve">
     <value>RichText-Datei</value>
+  </data>
+  <data name="SquareActivity" xml:space="preserve">
+    <value>Rechteck Aktivität</value>
   </data>
 </root>

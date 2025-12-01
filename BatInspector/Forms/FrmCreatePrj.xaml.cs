@@ -65,6 +65,10 @@ namespace BatInspector.Forms
       string[] dataSetItems = App.Model.DefaultModelParams[modelIndex].AvailableDataSets;
       _ctlDataSet.setItems(dataSetItems);
       _ctlDataSet.setValue(App.Model.DefaultModelParams[modelIndex].DataSet);
+      _ctlMetaData.setup("MetaData", 0, _widthLbl, 100);
+      string[] metaItems = {"XML","Guano"};
+      _ctlMetaData.setItems(metaItems);
+      _ctlMetaData.SelectIndex = 0;
       setVisibilityTimeFilter();
     }
 
@@ -115,6 +119,7 @@ namespace BatInspector.Forms
           string[] dataSetItems = App.Model.DefaultModelParams[prj.SelectedModelIndex].AvailableDataSets;
           _ctlDataSet.setItems(dataSetItems);
           _ctlDataSet.setValue(prj.SelectedModelParams.DataSet);
+          _ctlMetaData.SelectIndex = (int)prj.MetaData;
         }
         else
         {
@@ -204,6 +209,7 @@ namespace BatInspector.Forms
         _info.IsProjectFolder = _isProjectFolder;
         _info.ModelParams = App.Model.DefaultModelParams[_ctlModel.SelectIndex];
         _info.ModelParams.DataSet = _ctlDataSet.getValue();
+        _info.MetaData = (enMetaData)_ctlMetaData.SelectIndex;
         bool ok = true;
         double lat = 0;
         double lon = 0;

@@ -109,7 +109,7 @@ namespace BatInspector
       testTranslateFilter();
       testGetDateFromFilename();
       //testSignalForm();
-      testSimCall();
+      //testSimCall();
       //testReportModelBatdetect2();
       testCreatePrjFromWavs();
       //updateSummaries();
@@ -141,6 +141,7 @@ namespace BatInspector
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
       //updatePrjsInMySqlDb();
+      createSweep();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -381,10 +382,81 @@ namespace BatInspector
         new FreqItem(22000, 29e-3, 0),
         new FreqItem(22000, 500e-3, 0)
       };
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-      SimCall call = new SimCall(l, 384000);
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+      SimCall call = new SimCall(l);
+      call.create(384000,"test.wav",true);
     }
+
+
+    private void createSweep()
+    {
+      List<FreqItem> l = new List<FreqItem>
+      {
+        new FreqItem(1000, 0.0, 0.7),
+        new FreqItem(1200, 0.1, 0.7),
+        new FreqItem(1500, 0.2, 0.7),
+        new FreqItem(1800, 0.3, 0.7),
+        new FreqItem(2200, 0.4, 0.7),
+        new FreqItem(2700, 0.5, 0.7),
+        new FreqItem(3300, 0.6, 0.7),
+        new FreqItem(3900, 0.7, 0.7),
+        new FreqItem(4700, 0.8, 0.7),
+        new FreqItem(5600, 0.9, 0.7),
+        new FreqItem(6800, 1.0, 0.7),
+        new FreqItem(8200, 1.1, 0.7),
+        new FreqItem(10000, 1.2, 0.7),
+        new FreqItem(12000, 1.3, 0.7),
+        new FreqItem(15000, 1.4, 0.7),
+        new FreqItem(18000, 1.5, 0.7),
+        new FreqItem(22000, 1.6, 0.7),
+        new FreqItem(27000, 1.7, 0.7),
+        new FreqItem(33000, 1.8, 0.7),
+        new FreqItem(39000, 1.9, 0.7),
+        new FreqItem(47000, 2.0, 0.7),
+        new FreqItem(56000, 2.1, 0.7),
+        new FreqItem(68000, 2.2, 0.7),
+        new FreqItem(82000, 2.3, 0.7),
+        new FreqItem(100000, 2.4, 0.7),
+        new FreqItem(120000, 2.5, 0.7),
+        new FreqItem(150000, 2.6, 0.7),
+        new FreqItem(180000, 2.7, 0.7),
+      };
+      SimCall call = new SimCall(l);
+      call.create(384000, "f:\\prj\\BatInspector\\TestData\\out\\constsweep.wav", false);
+      List<FreqItem> l2 = new List<FreqItem>
+      {
+        new FreqItem(1000, 0.0, 0.1),
+        new FreqItem(1200, 0.1, 0.1),
+        new FreqItem(1500, 0.2, 0.1),
+        new FreqItem(1800, 0.3, 0.1),
+        new FreqItem(2200, 0.4, 0.1),
+        new FreqItem(2700, 0.5, 0.1),
+        new FreqItem(3300, 0.6, 0.1),
+        new FreqItem(3900, 0.7, 0.1),
+        new FreqItem(4700, 0.8, 0.1),
+        new FreqItem(5600, 0.9, 0.1),
+        new FreqItem(6800, 1.0, 0.1),
+        new FreqItem(8200, 1.1, 0.1),
+        new FreqItem(10000, 1.2, 0.1),
+        new FreqItem(12000, 1.3, 0.1),
+        new FreqItem(15000, 1.4, 0.1),
+        new FreqItem(18000, 1.5, 0.1),
+        new FreqItem(22000, 1.6, 0.1),
+        new FreqItem(27000, 1.7, 0.2),
+        new FreqItem(33000, 1.8, 0.3),
+        new FreqItem(39000, 1.9, 0.4),
+        new FreqItem(47000, 2.0, 0.5),
+        new FreqItem(56000, 2.1, 0.6),
+        new FreqItem(68000, 2.2, 0.7),
+        new FreqItem(82000, 2.3, 0.8),
+        new FreqItem(100000, 2.4, 0.9),
+        new FreqItem(120000, 2.5, 1.0),
+        new FreqItem(150000, 2.6, 1.0),
+        new FreqItem(180000, 2.7, 1.0),
+      };
+      SimCall call2 = new SimCall(l2);
+      call2.create(384000, "f:\\prj\\BatInspector\\TestData\\out\\boostsweep.wav", false);
+    }
+
 
     private void testCreatePrjFromWavs()
     {

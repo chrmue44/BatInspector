@@ -95,18 +95,28 @@ namespace BatInspector.Controls
     {
       _rbActivityDiagram.IsChecked = false;
       _rbWebPage.IsChecked = false;
+      _rbRichText.IsChecked = false;
     }
 
     private void _rbWebPage_Click(object sender, RoutedEventArgs e)
     {
       _rbActivityDiagram.IsChecked = false;
       _rbCsvFile.IsChecked = false;
+      _rbRichText.IsChecked = false;
     }
 
     private void _rbActivityDiagram_Click(object sender, RoutedEventArgs e)
     {
       _rbCsvFile.IsChecked = false;
       _rbWebPage.IsChecked = false;
+      _rbRichText.IsChecked = false;
+    }
+
+    private void _rbRichText_Click(object sender, RoutedEventArgs e)
+    {
+      _rbActivityDiagram.IsChecked = false;
+      _rbWebPage.IsChecked = false;
+      _rbCsvFile.IsChecked = false;
     }
 
     private void _cbFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -114,5 +124,6 @@ namespace BatInspector.Controls
       if (_cbFilter.SelectedIndex <= 0)
         _filterExpression = "";
     }
+
   }
 }

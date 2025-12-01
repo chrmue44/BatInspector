@@ -35,15 +35,19 @@ namespace BatInspector
     List<FreqItem> _list;
     double[] _samples;
 
-    public SimCall(List<FreqItem> list, int sampleRate)
+    public SimCall(List<FreqItem> list)
     {
       _file = new WavFile();
       _list = list;
-      create(sampleRate);
     }
 
-
-    public void create(int sampleRate)
+    /// <summary>
+    /// create a file from list of points
+    /// </summary>
+    /// <param name="sampleRate"></param>
+    /// <param name="outFile">name of output file</param>
+    /// <param name="interpolate">true: interpolate between points</param>
+    public void create(int sampleRate, string outFile, bool interpolate)
     {
       int count = (int)(_list[_list.Count - 1].T * (double)sampleRate);
       _samples = new double[count];
@@ -59,14 +63,14 @@ namespace BatInspector
         for (int s = tStart; s < tEnd; s++)
         {
            double t = (double)(s - tStart) / (tEnd - tStart);
-           double f = (fEnd - fStart) * t + fStart;
-           double a = (aEnd - aStart) * t + aStart;
+           double f = interpolate ? (fEnd - fStart) * t + fStart : fStart;
+           double a = interpolate ? (aEnd - aStart) * t + aStart : aStart;
            _samples[s] = Math.Sin(phi) * a;
           phi += 2 * Math.PI * f / sampleRate;
         }
       }
       _file.createFile(1, sampleRate, 0, _samples.Length - 1, _samples);
-      _file.saveFileAs("temp.wav");
+      _file.saveFileAs(outFile);
     }
   }
 }

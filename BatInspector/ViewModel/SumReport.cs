@@ -544,7 +544,7 @@ namespace BatInspector
       initDirTree(_rootDir, enModel.BAT_DETECT2);
 
       DateTime date = _start;
-      int minsPerPoint = 5;
+      int minsPerPoint = 1;//5;
       int ticksPerHour = 60 / minsPerPoint;
       bool addLine = false;
       ActivityData retVal = new ActivityData(ticksPerHour);

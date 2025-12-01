@@ -48,6 +48,7 @@ namespace BatInspector
 
     public string Location { get; set; }
     public string Creator { get; set; }
+    public enMetaData MetaData { get; set; } = enMetaData.XML;
   }
 
 
@@ -226,6 +227,7 @@ namespace BatInspector
       }
     }
 
+    public enMetaData MetaData { get { return (_batExplorerPrj != null) && (_batExplorerPrj.MetaData == "Guano") ? enMetaData.GUANO : enMetaData.XML; } }
 
     public string PrjDir { get { return _selectedDir; } }
 

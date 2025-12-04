@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="{x:Static res:MyResources.titleCreateReport}" Height="460" Width="800" Loaded="Window_Loaded"
+        Title="{x:Static res:MyResources.titleCreateReport}" Height="520" Width="800" Loaded="Window_Loaded"
         Icon="../images/report.png">
     <Grid>
     <Grid.RowDefinitions>

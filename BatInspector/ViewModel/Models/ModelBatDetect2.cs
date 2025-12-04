@@ -152,7 +152,6 @@ namespace BatInspector
             {
               // read infoFile
               string wavName = /*wavDir + "/" + */ Path.GetFileName(file).ToLower().Replace(".csv", "");
-              string infoName = wavDir + "/" + Path.GetFileName(file).ToLower().Replace(".wav.csv", ".xml");
               string sampleRate = "?";
               string fileLen = "?";
               string recTime = "?";
@@ -160,7 +159,7 @@ namespace BatInspector
               double lon = 0.0;
               double temperature = -20;
               double humidity = -1;
-              BatRecord info = ElekonInfoFile.read(infoName);
+              BatRecord info = PrjMetaData.retrieveMetaData(wavDir, wavName);
               WavFile wav = new WavFile();
               string fullName = Path.Combine(wavDir, wavName);
               int res = wav.readFile(fullName);
@@ -169,7 +168,7 @@ namespace BatInspector
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
-                ElekonInfoFile.parsePosition(info, out lat, out lon);
+                PrjMetaData.parsePosition(info, out lat, out lon);
                 double.TryParse(info.Temparature, out temperature);
                 double.TryParse(info.Humidity, out humidity);
               }
@@ -284,8 +283,8 @@ namespace BatInspector
         return "Barbastella barbastellus";
       else if (spec == "Myotis natteri")
         return "Myotis nattereri";
-      else if (spec == "Eptesicus nilssonii")
-        return "Eptesicus nilssoni";
+      else if (spec == "Eptesicus nilssoni")
+        return "Eptesicus nilssonii";
       else
         return spec;
     }

@@ -171,7 +171,7 @@
       "FreqMinMax": 29,
       "FreqMinMin": 26,
       "Habitat": null,
-      "Latin": "Eptesicus nilsonii",
+      "Latin": "Eptesicus nilssonii",
       "Local": "Nordfledermaus",
       "NotDistinguishableFrom": "",
       "PageNr": 47,
@@ -1710,7 +1710,7 @@
       "Abbreviation": "PNAT",
       "CallDistMax": 130,
       "CallDistMin": 100,
-      "CharCalls": "TODO",
+      "CharCalls": "Bestimmbar sind QCF-Rufe mit einer charakteristischen Frequenz von 36 bis max. 40 kHz. FM_QCF-Rufe sind bestimmbar, wenn sie mindestens 7ms lang sind und zwischen 37 und 40 kHz liegen",
       "CheckData": [
         {
           "CallCharacteristic": 4,

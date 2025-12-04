@@ -558,7 +558,7 @@ namespace BatInspector
         grad = Math.Log10(grad) * 10 + 20;
         GradientRange = grad;
       }
-      if ((int)DefaultModel < (int)enModel.BAT_DETECT2)
+      if((int)DefaultModel < (int)enModel.BAT_DETECT2)
       {
         DefaultModel = enModel.BAT_DETECT2;
       }

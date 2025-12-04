@@ -1560,8 +1560,8 @@
   <data name="Circle" xml:space="preserve">
     <value>Circle</value>
   </data>
-  <data name="Square" xml:space="preserve">
-    <value>Rectangle</value>
+  <data name="SquareCountCalls" xml:space="preserve">
+    <value>Rectangle Call Count</value>
   </data>
   <data name="ActivityMaxDisplayValue" xml:space="preserve">
     <value>max. Display Value</value>
@@ -1922,5 +1922,11 @@
   </data>
   <data name="frmWav_title" xml:space="preserve">
     <value>Analize WAV File</value>
+  </data>
+  <data name="ctlReportRichText" xml:space="preserve">
+    <value>RichText File</value>
+  </data>
+  <data name="SquareActivity" xml:space="preserve">
+    <value>Rectangle Activity</value>
   </data>
 </root>

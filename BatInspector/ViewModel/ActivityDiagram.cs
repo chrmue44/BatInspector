@@ -7,6 +7,7 @@
  ********************************************************************************/
 
 using BatInspector.Controls;
+using BatInspector.Properties;
 using libParser;
 using System;
 using System.Drawing;
@@ -14,14 +15,23 @@ using System.Drawing;
 
 namespace BatInspector
 {
+  public enum enActivityStyle
+  { 
+    COLOR_SCALE = 0,
+    RECT_CALLS = 1,
+    RECT_ACTIVITY = 2,
+    CIRCLE_CALLS = 3,
+  };
+
   public class ActivityDiagram
   {
     const int BMP_WITH = 1800;
     const int BMP_HEIGHT = 900;
-    const float X_BL = 50.0f;
-    const float X_BR = 250.0f;
+    const float X_BL = 50.0f;     //left border
+    const float X_BR = 250.0f;    //right border
     const float Y_BT = 80.0f;
     const float Y_BB = 80.0f;
+    const float MAX_WIDTH_DAY = 70.0f;
 
     DateTime DIAG_START_TIME = new DateTime(2024, 1, 1, 17, 0, 0);
     DateTime DIAG_END_TIME = new DateTime(2024, 1, 1, 9, 0, 0);
@@ -44,20 +54,23 @@ namespace BatInspector
     Graphics _graphics;
     ColorTable _colorTable;
     float _maxDispValue;
+    int _classWidth;
 
     public ActivityDiagram(ColorTable colorTable)
     {
       _colorTable = colorTable;
     }
     
-    public Bitmap createPlot(ActivityData hm, string title, int style, int maxDispValue, bool month, bool week, bool day, bool twilight, int offsetHours)
+    public Bitmap createPlot(ActivityData hm, string title, enActivityStyle style, int maxDispValue, bool month, bool week, bool day, bool twilight, int offsetHours, int classWidthMin)
     {
       try
       {
         _data = hm;
         _maxDispValue = maxDispValue;
-        _width = BMP_WITH;
+        int nrOfDays = (int)(_data.EndDate - _data.StartDate).TotalDays;
+        _width = Math.Min(BMP_WITH, nrOfDays * MAX_WIDTH_DAY + X_BL + X_BL);
         _height = BMP_HEIGHT;
+        _classWidth = classWidthMin;
         _bmp = new Bitmap((int)_width, (int)_height);
         _graphics = Graphics.FromImage(_bmp);
         _graphics.Clear(COL_BACK);
@@ -88,28 +101,28 @@ namespace BatInspector
     }
 
 
-    void drawLegend(int style)
+    void drawLegend(enActivityStyle style)
     {
       int lh = 20;
       int bl = 20;
       int nights = _data.DaysWithData > 1 ? _data.DaysWithData - 1 : _data.DaysWithData;
-      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT, $"{BatInspector.Properties.MyResources.ActivityTotalCalls}: {_data.TotalCalls}", COL_TEXT);
-      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + lh, $"{BatInspector.Properties.MyResources.ActivityNightsWithActivity}: {nights}", COL_TEXT);
-      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 2 * lh, $"{BatInspector.Properties.MyResources.ClassWidth}: {(60/_data.TicksPerHour).ToString()} min", COL_TEXT);
-      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 3 * lh, $"{BatInspector.Properties.MyResources.ActivityMaxCountsPerClass}: {(_data.MaxCount).ToString()}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT, $"{MyResources.ActivityTotalCalls}: {_data.TotalCalls}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + lh, $"{MyResources.ActivityNightsWithActivity}: {nights}", COL_TEXT);
+      GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 2 * lh, $"{MyResources.ClassWidth}: {_classWidth} min", COL_TEXT);
 
       GraphHelper.createText(_graphics, _width - X_BR + bl , Y_BT + 6 * lh, $"Position", COL_TEXT);
       GraphHelper.createText(_graphics, _width - X_BR + bl + 100 , Y_BT + 6 * lh, $"{Utils.LatitudeToString(_data.Latitude)}", COL_TEXT);
       GraphHelper.createText(_graphics, _width - X_BR + bl + 100, Y_BT + 7 * lh, $"{Utils.LongitudeToString(_data.Longitude)}", COL_TEXT);
 
-      if (style == 0)
+      if (style == enActivityStyle.COLOR_SCALE)
       {
         drawColorLegend(10 * lh, bl + 10);
       }
-      else
+      else if((style == enActivityStyle.RECT_CALLS) || (style == enActivityStyle.CIRCLE_CALLS))
       {
-        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 11*lh, $"{BatInspector.Properties.MyResources.ActivityMaxDisplayValue}: {(int)_maxDispValue}", COL_TEXT);
-        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 12*lh, $"{BatInspector.Properties.MyResources.ActivityValuesAbove}", COL_TEXT);
+        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 3 * lh, $"{MyResources.ActivityMaxCountsPerClass}: {(_data.MaxCount).ToString()}", COL_TEXT);
+        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 11*lh, $"{MyResources.ActivityMaxDisplayValue}: {(int)_maxDispValue}", COL_TEXT);
+        GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 12*lh, $"{MyResources.ActivityValuesAbove}", COL_TEXT);
       }
     }
     
@@ -191,7 +204,7 @@ namespace BatInspector
       _maxDispValue = meanValue;
     }
 
-    private void drawData(int style, int offsetHours)
+    private void drawData(enActivityStyle style, int offsetHours)
     {
       int days = (int)(_data.EndDate.Date - _data.StartDate.Date).TotalDays;
       float dy = (_height - Y_BB - Y_BT) / 24;
@@ -200,21 +213,23 @@ namespace BatInspector
 
 
       float wBox = dx - 2;
-      float hBox = dy / _data.TicksPerHour + 0.5f;
+      float hBox = dy / _data.TicksPerHour * _classWidth + 0.5f;
       int offset = offsetHours * _data.TicksPerHour;
 
       for (int i = 0; i < _data.Days.Count; i++)
       {
         int startTimeInTicks = DIAG_END_TIME.Hour * _data.TicksPerHour;
-        for (int j = 0; j < _data.Days[i].Counter.Count; j++)
+        for (int j = 0; j < _data.Days[i].Counter.Count; j+=_classWidth)
         {
           float xPos = getXCoord(_data.Days[i].Date);          
            if (j < startTimeInTicks)
             xPos -= dx;
-          int tCountValue = _data.Days[i].Counter[j];
+          int tCountValue = 0;
+          for(int k = j; k < j+_classWidth; k++)
+            tCountValue += _data.Days[i].Counter[k];
           switch (style)
           {
-            case 0:
+            case enActivityStyle.COLOR_SCALE:
               if (tCountValue > 0)
               {
                 Color col = _colorTable.getColor((double)tCountValue, 0, _maxDispValue, 0);
@@ -223,17 +238,24 @@ namespace BatInspector
               }
               break;
 
-            case 1:
+            case enActivityStyle.RECT_CALLS:
               wBox = (float)tCountValue / _maxDispValue * (dx - 2);
               if ((wBox > 0.01f) && (wBox < 2.0f))
-                wBox = 2.0f;
+                wBox = 2.0f; 
               if (_data.Days[i].Counter[j] <= _maxDispValue)
                 GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), wBox, hBox, COL_DATA);
               else
                 GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), (dx - 2), hBox, COL_DATA2);
               break;
 
-            case 2:
+            case enActivityStyle.RECT_ACTIVITY:
+              wBox = dx > 10 ? dx / 2 : dx - 2;
+              if (tCountValue == 0)
+                wBox = 0;
+              GraphHelper.createRectangle(_graphics, xPos, getYCoord(j, offset), wBox, hBox, COL_DATA);
+              break;
+
+            case enActivityStyle.CIRCLE_CALLS:
               float dotDia = (float)tCountValue / _maxDispValue * maxDia;
               if ((dotDia > 0.01f) && (dotDia < 3.0f))
                 dotDia = 3.0f;

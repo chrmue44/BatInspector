@@ -11,6 +11,8 @@ using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using libScripter;
+using NAudio.Wave;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -107,9 +109,9 @@ namespace BatInspector
       testTranslateFilter();
       testGetDateFromFilename();
       //testSignalForm();
-      testSimCall();
+      //testSimCall();
       //testReportModelBatdetect2();
-      //testCreatePrj();
+      testCreatePrjFromWavs();
       //updateSummaries();
       //string prjName = "E:/bat/2023/20230408_4_SW";
       //testCreatePrjInfoFiles(prjName, 49.7670333333333, 8.63353333333333);
@@ -124,6 +126,7 @@ namespace BatInspector
       testCalcSnr();
     //  testCreatePngCpp();
       testCheckSpecies();
+      testGuano();
       //    testMySql();
 
       //testCreateMicSpectrumFromNoiseFile();
@@ -138,6 +141,7 @@ namespace BatInspector
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
       //updatePrjsInMySqlDb();
+      createSweep();
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -378,28 +382,116 @@ namespace BatInspector
         new FreqItem(22000, 29e-3, 0),
         new FreqItem(22000, 500e-3, 0)
       };
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-      SimCall call = new SimCall(l, 384000);
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+      SimCall call = new SimCall(l);
+      call.create(384000,"test.wav",true);
     }
 
-    private void testCreatePrj()
+
+    private void createSweep()
     {
+      List<FreqItem> l = new List<FreqItem>
+      {
+        new FreqItem(1000, 0.0, 0.7),
+        new FreqItem(1200, 0.1, 0.7),
+        new FreqItem(1500, 0.2, 0.7),
+        new FreqItem(1800, 0.3, 0.7),
+        new FreqItem(2200, 0.4, 0.7),
+        new FreqItem(2700, 0.5, 0.7),
+        new FreqItem(3300, 0.6, 0.7),
+        new FreqItem(3900, 0.7, 0.7),
+        new FreqItem(4700, 0.8, 0.7),
+        new FreqItem(5600, 0.9, 0.7),
+        new FreqItem(6800, 1.0, 0.7),
+        new FreqItem(8200, 1.1, 0.7),
+        new FreqItem(10000, 1.2, 0.7),
+        new FreqItem(12000, 1.3, 0.7),
+        new FreqItem(15000, 1.4, 0.7),
+        new FreqItem(18000, 1.5, 0.7),
+        new FreqItem(22000, 1.6, 0.7),
+        new FreqItem(27000, 1.7, 0.7),
+        new FreqItem(33000, 1.8, 0.7),
+        new FreqItem(39000, 1.9, 0.7),
+        new FreqItem(47000, 2.0, 0.7),
+        new FreqItem(56000, 2.1, 0.7),
+        new FreqItem(68000, 2.2, 0.7),
+        new FreqItem(82000, 2.3, 0.7),
+        new FreqItem(100000, 2.4, 0.7),
+        new FreqItem(120000, 2.5, 0.7),
+        new FreqItem(150000, 2.6, 0.7),
+        new FreqItem(180000, 2.7, 0.7),
+      };
+      SimCall call = new SimCall(l);
+      call.create(384000, "f:\\prj\\BatInspector\\TestData\\out\\constsweep.wav", false);
+      List<FreqItem> l2 = new List<FreqItem>
+      {
+        new FreqItem(1000, 0.0, 0.1),
+        new FreqItem(1200, 0.1, 0.1),
+        new FreqItem(1500, 0.2, 0.1),
+        new FreqItem(1800, 0.3, 0.1),
+        new FreqItem(2200, 0.4, 0.1),
+        new FreqItem(2700, 0.5, 0.1),
+        new FreqItem(3300, 0.6, 0.1),
+        new FreqItem(3900, 0.7, 0.1),
+        new FreqItem(4700, 0.8, 0.1),
+        new FreqItem(5600, 0.9, 0.1),
+        new FreqItem(6800, 1.0, 0.1),
+        new FreqItem(8200, 1.1, 0.1),
+        new FreqItem(10000, 1.2, 0.1),
+        new FreqItem(12000, 1.3, 0.1),
+        new FreqItem(15000, 1.4, 0.1),
+        new FreqItem(18000, 1.5, 0.1),
+        new FreqItem(22000, 1.6, 0.1),
+        new FreqItem(27000, 1.7, 0.2),
+        new FreqItem(33000, 1.8, 0.3),
+        new FreqItem(39000, 1.9, 0.4),
+        new FreqItem(47000, 2.0, 0.5),
+        new FreqItem(56000, 2.1, 0.6),
+        new FreqItem(68000, 2.2, 0.7),
+        new FreqItem(82000, 2.3, 0.8),
+        new FreqItem(100000, 2.4, 0.9),
+        new FreqItem(120000, 2.5, 1.0),
+        new FreqItem(150000, 2.6, 1.0),
+        new FreqItem(180000, 2.7, 1.0),
+      };
+      SimCall call2 = new SimCall(l2);
+      call2.create(384000, "f:\\prj\\BatInspector\\TestData\\out\\boostsweep.wav", false);
+    }
+
+
+    private void testCreatePrjFromWavs()
+    {
+      string src = "F:\\prj\\BatInspector\\TestData\\srcwav";
+      string dst = "F:\\prj\\BatInspector\\TestData\\out\\prjTest";
+      if(Directory.Exists(dst))
+        Directory.Delete(dst, true);
+
       PrjInfo prj = new PrjInfo
       {
         Name = "Test",
-        SrcDir = "F:\\bat\\src",
-        DstDir = "F:\\bat\\test",
+        SrcDir = src,
+        DstDir = dst,
         MaxFileLenSec = 5,
         MaxFileCnt = 30,
         Notes = "12°C, bedeckt; Uferbereich Waldweiher",
+        Location = "Seeheim",
         Latitude = 49.123,
         Longitude = 8.123,
-        StartTime = new DateTime(2022,7,12),
-        EndTime = new DateTime(2022,7,14),
+        StartTime = new DateTime(2022, 7, 12),
+        EndTime = new DateTime(2025, 11, 22),
         WavSubDir = AppParams.DIR_WAVS,
       };
-      Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0]);
+      bool retVal = Project.createPrjFromWavs(prj, App.Model.DefaultModelParams[0], false);
+      assert("create Prj, return", retVal == true);
+      string[] files = Directory.GetFiles(Path.Combine(dst,"Test","Records"), "*.wav");
+      assert("create Prj, wav files exist", files.Length == 2);
+      Project p = new Project(false, App.Model.DefaultModelParams[0], 1, AppParams.DIR_WAVS);
+      p.readPrjFile(Path.Combine(dst,"Test"));
+      BatRecord r = PrjMetaData.retrieveMetaData(p, files[0]);
+      assert("Prj, check loc", r.GPS.Position == "49.123 8.123");
+      files = Directory.GetFiles(Path.Combine(dst, "Test", "Records"), "*.xml");
+      assert("create Prj, xml files exist", files.Length == 2);
+      files = Directory.GetFiles(Path.Combine(dst, "Test"), "*.batspy");
+      assert("create Prj, prj file exist", files.Length == 1);
     }
 
     private void testReportModelBatdetect2()
@@ -747,8 +839,7 @@ namespace BatInspector
           App.Model.initProject(subDir, false);
           foreach(AnalysisFile f in App.Model.Prj.Analysis.Files)
           {
-            string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.ToLower().Replace(".wav", ".xml"));
-            BatRecord rec = ElekonInfoFile.read(info);
+            BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, f.Name);
             foreach(AnalysisCall c in f.Calls)
               c.setString(Cols.REC_TIME, rec.DateTime);
           }
@@ -816,8 +907,7 @@ namespace BatInspector
         App.Model.initProject(subDir, false);
         foreach (AnalysisFile f in App.Model.Prj.Analysis.Files)
         {
-          string info = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, f.Name.Replace(".wav", ".xml"));
-          BatRecord rec = ElekonInfoFile.read(info);
+          BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, f.Name);
           foreach (AnalysisCall c in f.Calls)
             c.setString(Cols.REC_TIME, rec.DateTime);
         }
@@ -1136,19 +1226,19 @@ namespace BatInspector
     private void testGetDateFromFilename()
     {
       string name1 = "BLA_20250512_225803.wav";
-      DateTime t = ElekonInfoFile.getDateTimeFromFileName(name1);
+      DateTime t = PrjMetaData.getDateTimeFromFileName(name1);
       assert($"date {name1}", t == new DateTime(2025, 5, 12, 22, 58, 03));
       string name2 = "BLA-20250612_125803.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name2);
+      t = PrjMetaData.getDateTimeFromFileName(name2);
       assert($"date {name2}", t == new DateTime(2025, 6, 12, 12, 58, 03));
       string name3 = "BLA-BLA-20240613_025803.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name3);
+      t = PrjMetaData.getDateTimeFromFileName(name3);
       assert($"date {name3}", t == new DateTime(2024, 6, 13, 2, 58, 03));
       string name4 = "B1 - N - 20211213_095008.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name4);
+      t = PrjMetaData.getDateTimeFromFileName(name4);
       assert($"date {name3}", t == new DateTime(2021, 12, 13, 9, 50, 08));
       string name5 = "20210413_115008.wav";
-      t = ElekonInfoFile.getDateTimeFromFileName(name5);
+      t = PrjMetaData.getDateTimeFromFileName(name5);
       assert($"date {name3}", t == new DateTime(2021, 04, 13, 11, 50, 08));
     }
 
@@ -1179,7 +1269,40 @@ namespace BatInspector
       assert("PPYG", (res.IndexOf("PPYG") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
     }
 
+    void testGuano()
+    {
+      string wavFile = "F:\\prj\\BatInspector\\TestData\\wavTest\\wav\\Eptesicus_serotinus_Ski0113_S1_From2475052ms_To2501559ms.wav";
+      string target = "F:\\prj\\BatInspector\\TestData\\out\\guanoTest.wav";
+      if (File.Exists(target))
+        File.Delete(target);
+      WavFile wav = new WavFile();
+      wav.readFile(wavFile);
+      BatRecord rec = new BatRecord()
+      {
+        DateTime = "2025-11-19T12:23:18",
+        Firmware = "BatSpy 25-11-11",
+        Humidity = "33",
+        Temparature = "18.2",
+        GPS = new BatRecordGPS() { Position = "49.5  8.3566"},
+        Trigger = new BatRecordTrigger() { Filter="LP", Level="-11.0", Frequency="16", EventLength="1.5"}
+      };
+      wav.addGuanoMetaData(rec, 1);
+      wav.saveFileAs(target);
 
+      WavFile testWav = new WavFile();
+      testWav.readFile(target);
+      assert("guano, count", testWav.Guano.Fields.Count == 10);
+      GuanoItem it =  wav.Guano.getField("Timestamp");
+      assert("guano, timestamp", (it != null) && (it.Value == rec.DateTime));
+      it = wav.Guano.getField("Firmware Version");
+      assert("guano, firmware", (it != null) && (it.Value == rec.Firmware));
+      it = wav.Guano.getField("Humidity");
+      assert("guano, humidity", (it != null) && (it.Value == rec.Humidity));
+      it = wav.Guano.getField("Temperature Ext");
+      assert("guano, temperature", (it != null) && (it.Value == rec.Temparature));
+      it = wav.Guano.getField("Loc Position");
+      assert("guano, position", (it != null) && (it.Value == rec.GPS.Position));
+    }
 
     private void assert(string a, string exp)
     {

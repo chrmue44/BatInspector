@@ -32,6 +32,8 @@ namespace BatInspector.Controls
       _ctlCsvReportName.setValue("sum_report.csv");
       _ctlWebReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlWebReportName.setValue("sum_report.md");
+      _ctlRichTextName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
+      _ctlRichTextName.setValue("sum_report.rtf");
       _ctlActivityDiagName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlActivityDiagName.setValue("activity.png");
       _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true, "", initDestDir);
@@ -93,18 +95,28 @@ namespace BatInspector.Controls
     {
       _rbActivityDiagram.IsChecked = false;
       _rbWebPage.IsChecked = false;
+      _rbRichText.IsChecked = false;
     }
 
     private void _rbWebPage_Click(object sender, RoutedEventArgs e)
     {
       _rbActivityDiagram.IsChecked = false;
       _rbCsvFile.IsChecked = false;
+      _rbRichText.IsChecked = false;
     }
 
     private void _rbActivityDiagram_Click(object sender, RoutedEventArgs e)
     {
       _rbCsvFile.IsChecked = false;
       _rbWebPage.IsChecked = false;
+      _rbRichText.IsChecked = false;
+    }
+
+    private void _rbRichText_Click(object sender, RoutedEventArgs e)
+    {
+      _rbActivityDiagram.IsChecked = false;
+      _rbWebPage.IsChecked = false;
+      _rbCsvFile.IsChecked = false;
     }
 
     private void _cbFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -112,5 +124,6 @@ namespace BatInspector.Controls
       if (_cbFilter.SelectedIndex <= 0)
         _filterExpression = "";
     }
+
   }
 }

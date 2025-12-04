@@ -42,7 +42,7 @@ namespace BatInspector
       {
         _args = e.Args;
         string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-        AppParams.PROG_DAT_DIR, "log");
+                           AppParams.PROG_DAT_DIR, "log");
         DebugLog.setLogDelegate(null, null, null, appDataPath);
 
         AppParams.load();
@@ -87,11 +87,10 @@ namespace BatInspector
           System.Environment.Exit(0);
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log(ex.ToString(), enLogType.ERROR);
         DebugLog.save();
-        System.Environment.Exit(0);
       }
     }
   }

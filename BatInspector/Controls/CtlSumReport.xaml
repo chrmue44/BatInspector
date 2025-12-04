@@ -55,9 +55,13 @@
             <local:ctlDataItem x:Name="_ctlWebReportName" Width="355"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-            <RadioButton Content="{x:Static res:MyResources.ActivityDiagram}" Name="_rbActivityDiagram" Width="180" Click="_rbActivityDiagram_Click"/>
-            <local:ctlDataItem x:Name="_ctlActivityDiagName" Width="355"/>
+            <RadioButton Content="{x:Static res:MyResources.ctlReportRichText}" Name="_rbRichText" Width="180" Click="_rbRichText_Click"/>
+            <local:ctlDataItem x:Name="_ctlRichTextName" Width="355"/>
         </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
+                    <RadioButton Content="{x:Static res:MyResources.ActivityDiagram}" Name="_rbActivityDiagram" Width="180" Click="_rbActivityDiagram_Click"/>
+                    <local:ctlDataItem x:Name="_ctlActivityDiagName" Width="355"/>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
     </StackPanel>

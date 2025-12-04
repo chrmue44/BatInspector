@@ -98,7 +98,7 @@ namespace BatInspector.Controls
 
     public string getValue()
     {
-      return _valString;
+      return _cb.Items[_cb.SelectedIndex].ToString(); 
     }
 
     public int getSelectedIndex()

@@ -11,9 +11,10 @@
     <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="44"/>
-      <RowDefinition/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="40"/>
 
-    </Grid.RowDefinitions>
+        </Grid.RowDefinitions>
     <ToolBarTray Grid.Row="0" Height="44" Loaded="windowLoaded">
       <ToolBar>
         <Button x:Name="_btnOpen" Grid.Row="0" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnOpen_Click">
@@ -28,33 +29,50 @@
 
             </ToolBar>
     </ToolBarTray>
-    <StackPanel Orientation="Vertical" Grid.Row="1">
-            <local:ctlDataItem x:Name="_ctlFileName" Margin="15,15,0,0" />
-            <GroupBox Header="WaveHeader" Margin="10,10,10,0">
-                <StackPanel Orientation="Vertical">
-                    <local:ctlDataItem x:Name="_ctlFileType"/>
-                    <local:ctlDataItem x:Name="_ctlFileLength"/>
-                    <local:ctlDataItem x:Name="_ctlMediaTypeId"/>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="FormatChunk" Margin="10,10,10,0">
-      <StackPanel Orientation="Vertical">
-                    <local:ctlDataItem x:Name="_ctlChunkId"/>
-                    <local:ctlDataItem x:Name="_ctlChunkSize"/>
-                    <local:ctlDataItem x:Name="_ctlFormatTag"/>
-                    <local:ctlDataItem x:Name="_ctlChannels"/>
-                    <local:ctlDataItem x:Name="_ctlSamplingRate"/>
-                    <local:ctlDataItem x:Name="_ctlAvgBytesPerSec"/>
-                    <local:ctlDataItem x:Name="_ctlBlockAlign"/>
-                    <local:ctlDataItem x:Name="_ctlBitsPerSample"/>
-      </StackPanel>
-    </GroupBox>
-            <GroupBox Header="Samples" Margin="10,10,10,0">
-                <StackPanel Orientation="Vertical">
-                    <local:ctlDataItem x:Name="_ctlSamples"/>
-                </StackPanel>
-            </GroupBox>
-            <Button x:Name="_btnClose" Content="{x:Static res:MyResources.frmDebugClose}" Width="80" Height="25" HorizontalAlignment="Right" Margin="0,10,15,0" Click="_btnClose_Click"/>
-        </StackPanel>
-  </Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel Orientation="Vertical" >
+                <local:ctlDataItem x:Name="_ctlFileName" Margin="15,15,11,0" />
+                <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="1" Grid.Column="0">
+                    <GroupBox.Header>
+                        <TextBlock Text="WaveHeader" FontWeight="Bold" />
+                    </GroupBox.Header>  
+                    <StackPanel Orientation="Vertical" Margin="5">
+                        <local:ctlDataItem x:Name="_ctlFileType"/>
+                        <local:ctlDataItem x:Name="_ctlFileLength"/>
+                        <local:ctlDataItem x:Name="_ctlMediaTypeId"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="1" Grid.Column="0">
+                    <GroupBox.Header>
+                        <TextBlock Text="FormatChunk" FontWeight="Bold" />
+                    </GroupBox.Header> 
+                    <StackPanel Orientation="Vertical" Margin="5">
+                        <local:ctlDataItem x:Name="_ctlChunkId"/>
+                        <local:ctlDataItem x:Name="_ctlChunkSize"/>
+                        <local:ctlDataItem x:Name="_ctlFormatTag"/>
+                        <local:ctlDataItem x:Name="_ctlChannels"/>
+                        <local:ctlDataItem x:Name="_ctlSamplingRate"/>
+                        <local:ctlDataItem x:Name="_ctlAvgBytesPerSec"/>
+                        <local:ctlDataItem x:Name="_ctlBlockAlign"/>
+                        <local:ctlDataItem x:Name="_ctlBitsPerSample"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="1" Grid.Column="0">
+                    <GroupBox.Header>
+                        <TextBlock Text="Samples" FontWeight="Bold" />
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical" Margin="5" >
+                        <local:ctlDataItem x:Name="_ctlSamples"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox x:Name="_grpGuano" Template="{DynamicResource GroupBoxCmu}"  Grid.Row="1" Grid.Column="0" Visibility="Collapsed">
+                    <GroupBox.Header>
+                        <TextBlock Text="Guano Metadata" FontWeight="Bold" />
+                    </GroupBox.Header>
+                    <DataGrid x:Name="_dgGuano" Margin="10"/>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        <Button x:Name="_btnClose" Grid.Row="2" Content="{x:Static res:MyResources.frmDebugClose}" Width="80" Height="25" HorizontalAlignment="Right" Margin="0,5,15,5" Click="_btnClose_Click"/>
+    </Grid>
 </Window>

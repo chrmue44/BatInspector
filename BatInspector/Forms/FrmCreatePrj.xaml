@@ -17,8 +17,8 @@
           <TextBlock Text="{x:Static res:MyResources.FrmCreatePrjFileSelection}" FontWeight="Bold" />
         </GroupBox.Header>
                 <StackPanel Margin="5">
-            <local:CtlSelectFile x:Name="_ctlSrcFolder" Margin=" 5,20,0,0"/>
-            <local:CtlSelectFile x:Name="_ctlDstFolder" Margin=" 5,0,0,0"/>
+            <local:CtlSelectFile x:Name="_ctlSrcFolder" Margin=" 5,20,5,0"/>
+            <local:CtlSelectFile x:Name="_ctlDstFolder" Margin=" 5,0,5,0"/>
       <local:ctlDataItem x:Name="_ctlPrjName" Margin=" 0,10,0,0"/>
       <StackPanel Orientation="Horizontal" Name="_spStartDate" Margin="0,20,0,20">
                         <CheckBox Name="_cbTimeFilter" Content="{x:Static res:MyResources.FrmCreatePrjFilterByTime}" Click="_cbTimeFilter_Click" Margin="0,5,10,0"/>
@@ -27,6 +27,7 @@
                     </StackPanel>
                     <CheckBox x:Name="_cbDelSrc" Content="{x:Static res:MyResources.FrmCreatePrjDelSrc}"/>
                     <CheckBox x:Name="_cbCorrectMic" Content="{x:Static res:MyResources.FrmCreatePrjCorrectMic}"/>
+                    <local:ctlSelectItem x:Name="_ctlMetaData" Margin="5"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Template="{DynamicResource GroupBoxCmu}">

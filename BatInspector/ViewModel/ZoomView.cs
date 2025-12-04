@@ -148,7 +148,7 @@ namespace BatInspector
     {
       _wf = new Waterfall(wavName, _colorTable, AppParams.FFT_WIDTH, AppParams.Inst.GradientRange, AppParams.Inst.BlackLevel);
       string infoName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      _fileInfo = ElekonInfoFile.read(infoName);
+      _fileInfo = PrjMetaData.retrieveMetaData(wavName);
     }
 
     public void zoomInV()

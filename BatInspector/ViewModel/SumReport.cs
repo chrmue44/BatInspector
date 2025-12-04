@@ -7,9 +7,11 @@
  ********************************************************************************/
 using libParser;
 using libScripter;
+using Mysqlx.Crud;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,6 +20,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Threading;
 using System.Windows;
+//using System.Windows.Shapes;
 
 
 namespace BatInspector
@@ -541,7 +544,7 @@ namespace BatInspector
       initDirTree(_rootDir, enModel.BAT_DETECT2);
 
       DateTime date = _start;
-      int minsPerPoint = 5;
+      int minsPerPoint = 1;//5;
       int ticksPerHour = 60 / minsPerPoint;
       bool addLine = false;
       ActivityData retVal = new ActivityData(ticksPerHour);
@@ -1117,6 +1120,138 @@ namespace BatInspector
 
 
           output.saveAs(outputName);
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log("failed to create web report: " + ex.ToString(), enLogType.ERROR);
+        }
+      }
+      else
+        DebugLog.log("could not load file '" + formDataName + "'", enLogType.ERROR);
+    }
+
+    public void createRichText(SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string outputName)
+    {
+      WebReportDataJson formData = WebReportDataJson.load(formDataName);
+      DocHelper doc = new DocHelper();
+      if (formData != null)
+      {
+        try
+        {
+          doc.addHeader(1, formData.LocationName);
+
+          // head
+          DataTable tab = new DataTable();
+          tab.Columns.Add("", typeof(string));
+          tab.Columns.Add("", typeof(string));
+          tab.Rows.Add("Durchführung", formData.Author);
+          tab.Rows.Add("Aufnahmeort", formData.LocationDescription);
+          tab.Rows.Add("Bemerkungen", formData.Comment);
+          string str;
+          if (string.IsNullOrEmpty(formData.TimeSpan))
+          {
+            DateTime start = new DateTime(2100, 1, 1);
+            DateTime end = new DateTime(1900, 1, 1);
+            foreach (SumReportItem it in rep.Days)
+            {
+              if (it.Date < start)
+                start = it.Date;
+              if (it.Date > end)
+                end = it.Date;
+            }
+            str = start.ToString("dd.MM.yyyy") + " - " + end.ToString("dd.MM.yyyy") +
+                         ", " + rep.Days.Count.ToString() + " Nächte";
+          }
+          else
+            str = formData.TimeSpan;
+          tab.Rows.Add("Zeitraum", formData.TimeSpan);
+          tab.Rows.Add("Witterung", formData.Weather);
+          doc.addTable(tab, 1, 0, true);
+
+          // list of detected species
+          DataTable tbSpec = new DataTable();
+          tbSpec.Columns.Add("Art", typeof(string));
+          tbSpec.Columns.Add("[%]", typeof(string));
+          tbSpec.Columns.Add("Bemerkungen", typeof(string));
+          tbSpec.Columns.Add("Mögliche Verwechslungsarten", typeof(string));
+          foreach (string spec in rep.Species)
+          {
+            if ((spec != "?") && (spec.ToLower() != "social"))
+            {
+              SpeciesInfos info = SpeciesInfos.findAbbreviation(spec, speciesInfo);
+              if (info != null)
+              {
+                SpeciesWebInfo webInfo = formData.findSpecies(spec);
+                if(webInfo != null)
+                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), webInfo.Comment, formData.findSpecies(spec).Confusion);
+                else
+                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), "", formData.findSpecies(spec).Confusion);
+              }
+            }
+          }
+          doc.addTable(tbSpec);
+
+          ////////////////77  TODO
+          /*
+          // header for list of recording days
+          i = output.findLine("%REP_SPEC%");
+          if (i >= 0)
+          {
+            string line = output.getLine(i);
+            rep.Species.Sort();
+            line = line.Replace("%REP_SPEC%", rep.Species[0]);
+            for (int j = 1; j < rep.Species.Count; j++)
+              line += "**" + rep.Species[j] + "** |";
+            output.setLine(i, line);
+          }
+
+          // list of recording days
+          i = output.findLine("%REP_DATE%");
+          if (i >= 0)
+          {
+            string templateLine = output.getLine(i);
+            output.removeLine(i);
+            int lineNr = i;
+            foreach (SumReportItem it in rep.Days)
+            {
+              string line = templateLine;
+              line = line.Replace("%REP_DATE%", it.Date.ToString("dd.MM.yyyy"));
+              line = line.Replace("%REP_LAT%", it.Latitude.ToString("#.#####"));
+              line = line.Replace("%REP_LON%", it.Longitude.ToString("#.#####"));
+              line = line.Replace("%REP_TEMP%", it.TempMin.ToString("#.#") + " ... " + it.TempMax.ToString("#.#"));
+              line = line.Replace("%REP_HUMID%", it.HumidityMin.ToString("#.#") + " ... " + it.HumidityMax.ToString("#.#"));
+              SumItem sumIt = null;
+              while ((sumIt == null) && (rep.Species.Count > 0))
+              {
+                sumIt = SumItem.find(rep.Species[0], it.SpecList);
+                if (sumIt == null)
+                  rep.Species.RemoveAt(0);
+              }
+              line = line.Replace("%REP_CNT%", sumIt.Count.ToString());
+              for (int j = 1; j < rep.Species.Count; j++)
+              {
+                sumIt = SumItem.find(rep.Species[j], it.SpecList);
+                if (sumIt != null)
+                  line += " " + sumIt.Count.ToString() + " |";
+              }
+              output.insert(lineNr, line);
+              lineNr++;
+            }
+          }
+
+          // sums of all species
+          i = output.findLine("%REP_SUM%");
+          if (i >= 0)
+          {
+            string line = output.getLine(i);
+            line = line.Replace("%REP_SUM%", rep.getSumStr(rep.Species[0]));
+            for (int j = 1; j < rep.Species.Count; j++)
+              line += " " + rep.getSumStr(rep.Species[j]) + " |";
+            output.setLine(i, line);
+          }
+          
+
+          output.saveAs(outputName); */
         }
         catch (Exception ex)
         {

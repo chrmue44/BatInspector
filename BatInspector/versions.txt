@@ -1,3 +1,6 @@
+TODO
+
+- guano meatdata is now parsable by WavReader and displayed in the WavViewer
 
 # V0.9.5.3  22.11.25
 - bugfix: crash, when opening a bird project and at least one bat model is NOT installed 

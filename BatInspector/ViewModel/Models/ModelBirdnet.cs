@@ -1,4 +1,4 @@
-﻿using libParser;
+using libParser;
 using libScripter;
 using NAudio.Wave;
 using System;
@@ -164,13 +164,13 @@ namespace BatInspector
               double lon = 0.0;
               double temperature = -20;
               double humidity = -1;
-              BatRecord info = ElekonInfoFile.read(infoName);
+              BatRecord info = PrjMetaData.retrieveMetaData(wavDir, wavName);
               if (info != null)
               {
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
-                ElekonInfoFile.parsePosition(info, out lat, out lon);
+                PrjMetaData.parsePosition(info, out lat, out lon);
                 double.TryParse(info.Temparature, out temperature);
                 double.TryParse(info.Humidity, out humidity);
               }
@@ -205,7 +205,7 @@ namespace BatInspector
                 string abbr = "";
                 if (prob < minProb)
                   abbr = "??PRO[";
-                  abbr += localName;
+                abbr += localName;
                 if (prob < minProb)
                   abbr += "]";
                 report.setCell(repRow, Cols.SPECIES, abbr);
@@ -237,17 +237,17 @@ namespace BatInspector
       lon = "";
       week = 0;
       DirectoryInfo dir = new DirectoryInfo(wavDir);
-      FileInfo[] files = dir.GetFiles("*.xml");
-      if(files.Length > 0)
+      FileInfo[] files = dir.GetFiles("*.wav");
+      if (files.Length > 0)
       {
-        BatRecord info = ElekonInfoFile.read(files[0].FullName);
+        BatRecord info = PrjMetaData.retrieveMetaData(files[0].FullName);
         string[] pos = info.GPS.Position.Split(' ');
         if (pos.Length > 1)
         {
           lat = pos[0];
           lon = pos[1];
         }
-        DateTime t = ElekonInfoFile.parseDate(info.DateTime);
+        DateTime t = PrjMetaData.parseDate(info.DateTime);
         week = 1 + (t.Month - 1) * 4 + t.Day / 7;
       }
     }

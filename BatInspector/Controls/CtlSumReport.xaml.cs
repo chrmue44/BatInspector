@@ -76,6 +76,7 @@ namespace BatInspector.Controls
 
     private void _cbFilter_DropDownClosed(object sender, EventArgs e)
     {
+
       DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
       bool apply;
       bool resetFilter;

@@ -1929,4 +1929,7 @@
   <data name="SquareActivity" xml:space="preserve">
     <value>Rectangle Activity</value>
   </data>
+  <data name="CtlSumReportIncludeActivityDiagrams" xml:space="preserve">
+    <value>include Activity Diagrams</value>
+  </data>
 </root>

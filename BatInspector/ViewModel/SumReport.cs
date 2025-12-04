@@ -16,10 +16,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media.Imaging;
 //using System.Windows.Shapes;
 
 
@@ -97,7 +99,11 @@ namespace BatInspector
     {
       Species = new List<string>();
       Days = new List<SumReportItem>();
+      Activities = new List<ActivityItem>();
     }
+
+    [DataMember]
+    public List<ActivityItem> Activities { get; set; }
 
     public string getPerCentStr(string spec, int decimals)
     {
@@ -121,6 +127,25 @@ namespace BatInspector
         formatStr += "#";
       string str = perCent.ToString(formatStr, CultureInfo.InvariantCulture);
       return str;
+    }
+
+    /// <summary>
+    /// calculates the fraction of the total activity for the species
+    /// </summary>
+    /// <param name="species">abbreviation of species</param>
+    /// <returns>fraction of total activity (0..1)</returns>
+    public double getActivityPercentage(string species)
+    {
+      double sum = 0.0;
+      double act = 0.0;
+      foreach (ActivityItem it in Activities)
+      {
+        sum += it.Activity;
+        if(it.Species == species)
+          act = it.Activity;
+      }
+
+      return act / sum;
     }
 
     public string getSumStr(string spec)
@@ -346,6 +371,9 @@ namespace BatInspector
     }
   }
 
+  /// <summary>
+  /// list item for activity data of one day
+  /// </summary>
   public class DailyActivity
   {
     public DailyActivity(DateTime date, int ticksPerHour) 
@@ -370,6 +398,28 @@ namespace BatInspector
     public int MaxCount { get; set; }
   }
 
+  /// <summary>
+  /// item for a list of mean activities per species
+  /// </summary>
+  [DataContract]
+  public class ActivityItem
+  {
+    [DataMember]
+    public string Species { get; set; }
+    
+    [DataMember]
+    public double Activity { get; set; }
+
+    public ActivityItem(string species, double activity)
+    {
+      Species = species;
+      Activity = activity;
+    }
+  }
+
+  /// <summary>
+  /// summary of activities data  over a period of time
+  /// </summary>
   public class ActivityData
   {
     public ActivityData(int ticksPerHour)
@@ -431,6 +481,23 @@ namespace BatInspector
       meanValue = sum / (float)countEvents;
       return meanValue;
     }
+
+
+    public double getMeanActivity()
+    {
+      int countEvents = 0;
+      int countTicks = 0;
+      for (int i = 0; i < Days.Count; i++)
+      {
+        for (int j = 0; j < Days[i].Counter.Count; j++)
+        {
+          if (Days[i].Counter[j] > 0)
+            countEvents++;
+          countTicks++;
+        }
+      }
+      return (double)countEvents / countTicks;
+    }
   }
 
   /// <summary>
@@ -443,6 +510,7 @@ namespace BatInspector
     private DirectoryInfo _dirInfo;
     private List<ReportListItem> _reports;
     private List<SumItem> _totalSum;
+    private ActivityItem _currActivityItem;
 
     private DateTime _start;
     private DateTime _end;
@@ -454,6 +522,7 @@ namespace BatInspector
     private ModelParams _modelParams;
     private string _reportName;
     private List<SpeciesInfos> _species;
+    private SpeciesInfos _currSpecies;
 
     public SumReport()
     {
@@ -580,6 +649,9 @@ namespace BatInspector
       }
       if(_showActivityData != null)
         _showActivityData(retVal, Path.Combine(_dstDir,_bmpName));
+      
+      
+      _currActivityItem  = new ActivityItem(_currSpecies.Abbreviation,retVal.getMeanActivity());
     }
 
     public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
@@ -597,6 +669,49 @@ namespace BatInspector
       Thread t = new Thread(createActivityDiagSync);
       t.Start();
 
+    }
+
+    public ActivityItem createActivityDiagSync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
+    {
+      _start = start;
+      _end = end;
+      _period = period;
+      _rootDir = rootDir;
+      _dstDir = dstDir;
+      _expression = expression;
+      _showActivityData = dlgShowHeatMap;
+      _bmpName = bmpName;
+      _modelParams = modelPars;
+       createActivityDiagSync();
+      return _currActivityItem;
+    }
+
+
+    void createActivityPNG(ActivityData data, string bmpName)
+    {
+      if (_currSpecies == null)
+        return;
+      ActivityDiagram diagram = new ActivityDiagram(App.Model.ColorTable);
+      System.Drawing.Bitmap bmp = diagram.createPlot(data, $"Aktivität {_currSpecies.Local}", enActivityStyle.RECT_ACTIVITY, 20, false, true, true, true, 0, 1);
+      try
+      {
+        BitmapImage bitmapimage = new BitmapImage();
+        using (MemoryStream memory = new MemoryStream())
+        {
+          bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+          memory.Position = 0;
+          bitmapimage.BeginInit();
+          bitmapimage.StreamSource = memory;
+          bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+          bitmapimage.EndInit();
+
+        }
+        diagram.saveBitMap(bmpName);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"unable to create activity diagram: {_bmpName}" + ex.ToString(), enLogType.ERROR);
+      }
     }
 
 
@@ -624,6 +739,17 @@ namespace BatInspector
         date = incrementDate(date, period);
       }
       retVal.Species = getSpeciesInReport(retVal.Days);
+      retVal.Activities.Clear();
+      foreach (string s in retVal.Species)
+      {
+        SpeciesInfos si = SpeciesInfos.findAbbreviation(s, App.Model.SpeciesInfos);
+        if (si != null)
+        {
+          _currSpecies = si;
+          ActivityItem it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG);
+          retVal.Activities.Add(it);
+        }
+      }
       return retVal;
     }
 
@@ -1025,6 +1151,7 @@ namespace BatInspector
                   line = line.Replace("%SPEC_LAT%", info.Latin);
                   line = line.Replace("%SPEC_LOC%", info.Local);
                   line = line.Replace("%PERCENT%", rep.getPerCentStr(spec, 1));
+                  line = line.Replace("%ACTIVITY%", (rep.getActivityPercentage(spec) * 100.0).ToString("0.#", CultureInfo.InvariantCulture));
                   SpeciesWebInfo webInfo = formData.findSpecies(spec);
                   if (webInfo != null)
                   {
@@ -1035,6 +1162,23 @@ namespace BatInspector
                   lineNr++;
                 }
               }
+            }
+          }
+
+          // list of activity diagrams
+          i = output.findLine("%IMG_ACTIVITY%");
+          if (i >= 0)
+          {
+            string templateLine = output.getLine(i);
+            output.removeLine(i);
+            int lineNr = i;
+            for (int j = 0; j < rep.Activities.Count; j++)
+            {
+              string imgFile = $"activity_{rep.Activities[j].Species}.png";
+              string line = templateLine;
+              line = line.Replace("%IMG_ACTIVITY%", imgFile);
+              output.insert(lineNr, line);
+              lineNr++;
             }
           }
 

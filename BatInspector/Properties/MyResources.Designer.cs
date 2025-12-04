@@ -862,6 +862,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to include Activity Diagrams.
+        /// </summary>
+        public static string CtlSumReportIncludeActivityDiagrams {
+            get {
+                return ResourceManager.GetString("CtlSumReportIncludeActivityDiagrams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report Name.
         /// </summary>
         public static string CtlSumReportReportName {

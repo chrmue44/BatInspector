@@ -23,8 +23,12 @@ Details zur Bestimmungsmethode <a href="/bat/methode.html" target="_blank">siehe
 <br>
 ### Gefundene Arten
 
- | **Art** | **[%]** | **Bemerkungen** |**Mögliche Verwechslungsarten In der Region** |
- | **%SPEC_ABR%**<br>%SPEC_LOC%<br>*%SPEC_LAT%*		|	%PERCENT%	|	%COMMENT%	| %CONFUSION% |			
+In der Liste sind alle vorkommenden Arten aufgeführt. In der Spalte 'Rufe' ist der prozentuale 
+Anteil der gezählten Rufe erfasst, in der Spalte 'Aktivität' der prozentuale Anteil der Gesamtaktivität. 
+Jede Minute, in der mindestens ein Ruf einer Art erkannt wurde, wird als aktiv gezählt.  
+<br>
+ | **Art** | **Rufe [%]** | **Aktivität [%]** | **Bemerkungen** |**Mögliche Verwechslungsarten In der Region** |
+ | **%SPEC_ABR%**<br>%SPEC_LOC%<br>*%SPEC_LAT%*		|	%PERCENT%	|%ACTIVITY%|	%COMMENT%	| %CONFUSION% |			
 
 <br>
 <br>
@@ -36,6 +40,11 @@ Details zur Bestimmungsmethode <a href="/bat/methode.html" target="_blank">siehe
 
 <br>
 <br>
+
+### Aktivitätsdiagramme der einzelnen Arten
+
+<img height="600" src="/assets/wav/%YEAR%/%PAGE_NAME%/%IMG_ACTIVITY%"><br><br>
+
 
 ### Ergebnisse der automatischen Zählung
 

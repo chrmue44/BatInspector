@@ -283,8 +283,8 @@ namespace BatInspector
         return "Barbastella barbastellus";
       else if (spec == "Myotis natteri")
         return "Myotis nattereri";
-      else if (spec == "Eptesicus nilssonii")
-        return "Eptesicus nilssoni";
+      else if (spec == "Eptesicus nilssoni")
+        return "Eptesicus nilssonii";
       else
         return spec;
     }

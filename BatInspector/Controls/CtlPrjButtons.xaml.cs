@@ -74,7 +74,7 @@ namespace BatInspector.Controls
           }
 
           App.MainWin.updateControls();
-          DebugLog.log("select all files", enLogType.DEBUG);
+          DebugLog.log("select all files", enLogType.INFO);
         }
       }
       catch (Exception ex)
@@ -95,7 +95,7 @@ namespace BatInspector.Controls
             rec.Selected = false;
           }
           App.MainWin.updateControls();
-          DebugLog.log("deselect all files", enLogType.DEBUG);
+          DebugLog.log("deselect all files", enLogType.INFO);
         }
       }
       catch (Exception ex)

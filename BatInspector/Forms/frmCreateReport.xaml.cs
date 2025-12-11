@@ -8,6 +8,7 @@
 using BatInspector.Controls;
 using BatInspector.Properties;
 using libParser;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,7 @@ namespace BatInspector.Forms
     string _reportName;
     int _selectedModelIndex;
     string _filterExpression;
+    bool _skipReportGeneration = false;
     enPeriod _period;
     public frmCreateReport()
     {
@@ -47,19 +49,44 @@ namespace BatInspector.Forms
 
     private void threadCreateWebReport()
     {
-      _report = App.Model.SumReport.createWebReport(_start, _end, _period,
+      if (!_skipReportGeneration)
+      {
+        _report = App.Model.SumReport.createWebReport(_start, _end, _period,
                               _rootDir, _dstDir, _reportName,
-                              App.Model.SpeciesInfos, _filterExpression,
+                              _filterExpression,
                               App.Model.DefaultModelParams[_selectedModelIndex]);
-      _report.save(Path.Combine(_dstDir, "sumReport.json"));
-      showReportDialog();
+        _report.save(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+      }
+      else
+      {
+        _report = SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+      }
+      showReportDialog(true, false);
     }
 
-    private void showReportDialog()
+    private void threadCreateRichTextReport()
+    {
+      if (!_skipReportGeneration)
+      {
+        _report = App.Model.SumReport.createWebReport(_start, _end, _period,
+                              _rootDir, _dstDir, _reportName,
+                              _filterExpression,
+                              App.Model.DefaultModelParams[_selectedModelIndex]);
+        _report.save(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+      }
+      else
+      {
+        _report =  SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+      }
+      showReportDialog(false, true);
+    }
+
+    delegate void dlgShowReportDialog(bool web, bool rtf);
+    private void showReportDialog(bool webPage, bool richText)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgVoid(showReportDialog));
+        Dispatcher.BeginInvoke(new dlgShowReportDialog(showReportDialog), webPage, richText);
       }
       else
       {
@@ -69,10 +96,30 @@ namespace BatInspector.Forms
         frm.Top = 10;
         bool? ok = frm.ShowDialog();
         if (ok == true)
-          App.Model.SumReport.createWebPage(_report, _formDataName, App.Model.SpeciesInfos,
+        {
+          if(webPage)
+            App.Model.SumReport.createWebPage(_report, _formDataName, App.Model.SpeciesInfos,
                     Path.Combine(_ctlReport._ctlDestDir.getValue(),
                     _ctlReport._ctlWebReportName.getValue()));
+          if (richText)
+            App.Model.SumReport.createDocument(enDocType.HTML, _report, _formDataName, App.Model.SpeciesInfos,
+                      Path.Combine(_ctlReport._ctlDestDir.getValue(),
+                      _ctlReport._ctlRichTextName.getValue()));
+
+        }
       }
+    }
+
+    private bool checkIfSkipReportGeneration(string dir, string fileName)
+    {
+      string path = Path.Combine(dir, fileName);
+      if (File.Exists(path))
+      {
+        MessageBoxResult res = MessageBox.Show(MyResources.msgFrmReport,MyResources.msgQuestion,MessageBoxButton.YesNo,MessageBoxImage.Question);
+        if(res == MessageBoxResult.Yes)
+          return true;
+      }
+      return false;
     }
 
     private void _btnCreate_Click(object sender, RoutedEventArgs e)
@@ -100,27 +147,15 @@ namespace BatInspector.Forms
         }
         if (_ctlReport._rbWebPage.IsChecked == true)
         {
+          _skipReportGeneration = checkIfSkipReportGeneration(_dstDir, AppParams.SUM_REPORT_JSON);          
           Thread t = new Thread(threadCreateWebReport);
           t.Start();
         }
         if (_ctlReport._rbRichText.IsChecked == true)
         {
-          SumReportJson rep = App.Model.SumReport.createWebReport(_start, _end, _period,
-                                      _ctlReport._ctlRootDir.getValue(),
-                                      _ctlReport._ctlDestDir.getValue(),
-                                      _ctlReport._ctlWebReportName.getValue(),
-                                      App.Model.SpeciesInfos, _ctlReport.FilterExpression,
-                                      App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex]);
-          rep.save(Path.Combine(_ctlReport._ctlDestDir.getValue(), "sumReport.json"));
-          frmReportAssistant frm = new frmReportAssistant(rep, setFormDataName);
-          frm.WindowStartupLocation = WindowStartupLocation.Manual;
-          frm.Left = 100;
-          frm.Top = 10;
-          bool? ok = frm.ShowDialog();
-          if (ok == true)
-            App.Model.SumReport.createRichText(rep, _formDataName, App.Model.SpeciesInfos,
-                      Path.Combine(_ctlReport._ctlDestDir.getValue(),
-                      _ctlReport._ctlWebReportName.getValue()));
+          _skipReportGeneration = checkIfSkipReportGeneration(_dstDir, AppParams.SUM_REPORT_JSON);
+          Thread t = new Thread(threadCreateRichTextReport);
+          t.Start();
         }
         if (_ctlReport._rbActivityDiagram.IsChecked == true)
         {

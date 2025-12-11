@@ -43,12 +43,43 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Name="_lblComment" Grid.Column="0" TextAlignment="Right" Margin="0,0,5,0"   Background="{DynamicResource colorBackGround}" Foreground="{DynamicResource colorForeGroundLabel}" >lbl1</TextBlock>
-                            <TextBox Name= "_tbComment" Grid.Column="1" VerticalAlignment="Top" VerticalContentAlignment="Top"  BorderThickness="1"  Height="60" AcceptsReturn="True" Background="{DynamicResource colorBackGroundTextB}" Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
+                            <TextBox Name= "_tbComment" Grid.Column="1" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                     Margin="0,0,5,0" VerticalAlignment="Top" VerticalContentAlignment="Top"  BorderThickness="1" 
+                                     Height="60" AcceptsReturn="True" Background="{DynamicResource colorBackGroundTextB}"
+                                     Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
 
                         </Grid>
                     </StackPanel>
               
         </GroupBox>
+                <GroupBox x:Name="_grpExplanations" >
+                    <GroupBox.Header>
+                        <TextBlock Text="{x:Static res:MyResources.frmReportAssistant_Explanation}" FontWeight="Bold" />
+                    </GroupBox.Header>
+                    <StackPanel Margin="5">
+                        <Grid x:Name="_grExplanations">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                        
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Name="_lblMethod" Grid.Column="0" Grid.Row="0" TextAlignment="Right" Margin="0,0,5,0"   Background="{DynamicResource colorBackGround}" Foreground="{DynamicResource colorForeGroundLabel}" >lbl1</TextBlock>
+                            <TextBox Name= "_tbMethod" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                     Margin="0,0,5,0" VerticalAlignment="Top" VerticalContentAlignment="Top"  BorderThickness="1" Height="60" 
+                                     AcceptsReturn="True" Background="{DynamicResource colorBackGroundTextB}" 
+                                     Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
+                            <TextBlock Name="_lblDefinitions" Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="0,0,5,0"   Background="{DynamicResource colorBackGround}" Foreground="{DynamicResource colorForeGroundLabel}" >lbl1</TextBlock>
+                            <TextBox Name= "_tbDefinitions" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                     Margin="0,0,5,0" VerticalAlignment="Top" VerticalContentAlignment="Top"  BorderThickness="1" Height="60" 
+                                     AcceptsReturn="True" Background="{DynamicResource colorBackGroundTextB}" 
+                                     Foreground="{DynamicResource colorForeGroundLabel}"></TextBox>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
                 <GroupBox >
                     <GroupBox.Header>
                         <TextBlock Text="{x:Static res:MyResources.frmReportAssistant_Miscellanous}" FontWeight="Bold" />

@@ -1923,13 +1923,43 @@
   <data name="frmWav_title" xml:space="preserve">
     <value>Analize WAV File</value>
   </data>
-  <data name="ctlReportRichText" xml:space="preserve">
-    <value>RichText File</value>
+  <data name="ctlReportHtmlText" xml:space="preserve">
+    <value>Html File</value>
   </data>
   <data name="SquareActivity" xml:space="preserve">
     <value>Rectangle Activity</value>
   </data>
   <data name="CtlSumReportIncludeActivityDiagrams" xml:space="preserve">
     <value>include Activity Diagrams</value>
+  </data>
+  <data name="msgFrmReport" xml:space="preserve">
+    <value>Use the already existing data set?</value>
+  </data>
+  <data name="frmReportAssistant_Explanation" xml:space="preserve">
+    <value>Explanations</value>
+  </data>
+  <data name="EvaluationMethod" xml:space="preserve">
+    <value>Evaluation Method</value>
+  </data>
+  <data name="Definitions" xml:space="preserve">
+    <value>Definitions</value>
+  </data>
+  <data name="reportEvaluationOfTheResults" xml:space="preserve">
+    <value>Evaluation of the Results</value>
+  </data>
+  <data name="reportListOfDetectedSpecies" xml:space="preserve">
+    <value>List of Detected Species</value>
+  </data>
+  <data name="reportActivityDiagrams" xml:space="preserve">
+    <value>Activity Diagrams of Detected Species</value>
+  </data>
+  <data name="reportResultsOfAutomaticCounting" xml:space="preserve">
+    <value>Results of Automatic Counting</value>
+  </data>
+  <data name="ExecutedBy" xml:space="preserve">
+    <value>Executed by</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
   </data>
 </root>

@@ -33,7 +33,7 @@ namespace BatInspector.Controls
       _ctlWebReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlWebReportName.setValue("sum_report.md");
       _ctlRichTextName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
-      _ctlRichTextName.setValue("sum_report.rtf");
+      _ctlRichTextName.setValue("sum_report.html");
       _ctlActivityDiagName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
       _ctlActivityDiagName.setValue("activity.png");
       _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true, "", initDestDir);

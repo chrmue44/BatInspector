@@ -1,32 +1,85 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using ZstdSharp.Unsafe;
 
 namespace BatInspector
 {
-  public class DocHelper
+
+  public enum enDocType
+  { 
+    RTF,
+    HTML
+  }
+  public abstract class DocHelper
   {
-    FlowDocument _doc = new FlowDocument();
-    public FontFamily Font { get; set; } = new FontFamily("Arial");
+    public enDocType DocType { get;}
     public int FontSizeText { get; set; } = 11;
     public int FontSizeH1 { get; set; } = 16;
     public int FontSizeH2 { get; set; } = 14;
     public int FontSizeH3 { get; set; } = 12;
 
-    public void init()
+    public DocHelper(enDocType docType)
+    {
+      DocType = docType;
+    }
+
+    public abstract void begin();
+    public abstract void end();
+    public abstract void addHeader(int order, string text);
+    public abstract void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler);
+    public abstract void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null);
+    public abstract void addTable(DataTable dtbl, System.Collections.Generic.List<double> colWidth, int width = 1, int border = 0, bool ommitHeader = false);
+    public abstract void saveAs(string docPath);
+
+    public static DocHelper create(enDocType type)
+    {
+      switch(type)
+      {
+        case enDocType.RTF:
+          return new DocHelperRtf() as DocHelper;
+        default:
+        case enDocType.HTML:
+          return new DocHelperHtml() as DocHelper;
+      }
+    }
+  }
+
+  public class DocHelperRtf : DocHelper
+  {
+    FlowDocument _doc = new FlowDocument();
+
+    public FontFamily Font { get; set; } = new FontFamily("Arial");
+
+    public DocHelperRtf() : base(enDocType.RTF) 
+    {
+    }
+
+    public FlowDocument Doc { get{ return _doc; }  }  
+
+    public override void begin()
     {
       _doc.Blocks.Clear();
       _doc.FontFamily = Font;
       _doc.FontSize = FontSizeText;
     }
 
-    public FlowDocument Doc { get { return _doc; } }
+    public override void end()
+    {
+      
+    }
+
+  //  public FlowDocument Doc { get { return _doc; } }
 
     public Paragraph addParagraph()
     {
@@ -35,7 +88,7 @@ namespace BatInspector
       return p;
     }
 
-    public void addHeader(int order, string text)
+    public override void addHeader(int order, string text)
     {
       Paragraph p = addParagraph();
       Run t = new Run(text);
@@ -60,7 +113,7 @@ namespace BatInspector
       }
     }
 
-    public void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null)
+    public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null)
     {
       Paragraph p = getLastParagraph();
       Run t = new Run(text);
@@ -77,7 +130,7 @@ namespace BatInspector
       p.Inlines.Add(t);
     }
 
-    public void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler)
+    public override void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler)
     {
       Run t = new Run(text);
       t.FontFamily = Font;
@@ -94,7 +147,7 @@ namespace BatInspector
     }
 
 
-    public void addTable(DataTable dtbl, int width = 1, int border = 0, bool ommitHeader = false)
+    public override void addTable(DataTable dtbl, System.Collections.Generic.List<double> colWidth, int width = 1, int border = 0, bool ommitHeader = false)
     {
       Table table1 = new Table();
       table1.BorderThickness = new Thickness(border);
@@ -111,6 +164,8 @@ namespace BatInspector
       for (int x = 0; x < numberOfColumns; x++)
       {
         TableColumn c = new TableColumn();
+        if(colWidth.Count < x)
+          c.Width = new GridLength(colWidth[x]);
         table1.Columns.Add(c);
       }
 
@@ -141,7 +196,7 @@ namespace BatInspector
       for (int r = 0; r < dtbl.Rows.Count; r++)
       {
         table1.RowGroups[0].Rows.Add(new TableRow());
-        TableRow currentRow = table1.RowGroups[0].Rows[r + 1];
+        TableRow currentRow = table1.RowGroups[0].Rows[r];
         currentRow.FontWeight = FontWeights.Normal;
         currentRow.Background = Brushes.Black;
         for (int c = 0; c < dtbl.Columns.Count; c++)
@@ -185,7 +240,7 @@ namespace BatInspector
       }
     }
 
-    public void saveAs(string docPath)
+    public override void saveAs(string docPath)
     {
       TextRange content = new TextRange(_doc.ContentStart, _doc.ContentEnd);
 
@@ -206,6 +261,65 @@ namespace BatInspector
         p = addParagraph();      
       
       return p;
+    }
+  }
+
+
+  public class DocHelperHtml : DocHelper
+  {
+    StringBuilder _doc;
+    public DocHelperHtml() : base (enDocType.HTML)
+    {
+      _doc = new StringBuilder();
+    }
+
+    public override void begin()
+    {
+      _doc.Append("<!DOCTYPE html>\n<html>\n  <head>\n<meta charset=\"utf-8\">\n");
+      _doc.Append("</head>\n");
+      _doc.Append("<body>\n");
+    }
+
+    public override void end()
+    {
+      _doc.Append("</body>\n</html>\n");
+    }
+
+    public override void addHeader(int order, string text)
+    {
+      _doc.Append($"<h{order}>{text}</h{order}>\n");
+    }
+
+    public override void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler)
+    {
+      _doc.Append($"<a href=\"{url}\">{text}</a>\n");
+    }
+
+    public override void addTable(DataTable dtbl, List<double> colWidth, int width = 1, int border = 0, bool ommitHeader = false)
+    {
+      _doc.Append("<table style=\"width:100%\">\n<tr>\n");
+      for (int i= 0; i < dtbl.Columns.Count; i++)
+        _doc.Append($"<th>{dtbl.Columns[i].ColumnName}</th>\n");
+      _doc.Append("</tr>\n");
+
+      for (int r = 0; r < dtbl.Rows.Count; r++)
+      {
+        _doc.Append("<tr>\n");
+        for (int c = 0; c < dtbl.Columns.Count; c++)
+          _doc.Append($"<td>{dtbl.Rows[r].ItemArray[c].ToString()}</td>\n");
+        _doc.Append("</tr>\n");
+      }
+      _doc.Append("</table>\n");
+    }
+
+    public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null)
+    {
+      _doc.Append($"<p>{text}</p>\n");
+    }
+
+    public override void saveAs(string docPath)
+    {
+       File.WriteAllText(docPath, _doc.ToString()); 
     }
   }
 }

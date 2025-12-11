@@ -8,23 +8,17 @@
 
 using BatInspector.Properties;
 using libParser;
-using Mysqlx;
-using MySqlX.XDevAPI.Common;
-using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Web.Compilation;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using System.Xml.Linq;
+
 
 namespace BatInspector
 {
@@ -826,9 +820,9 @@ namespace BatInspector
     }
 
 
-    static private DocHelper buildResults(List<CheckResult> results, double lat, double lon, bool localNames, RequestNavigateEventHandler evHandler)
+    static private DocHelperRtf buildResults(List<CheckResult> results, double lat, double lon, bool localNames, RequestNavigateEventHandler evHandler)
     {
-      DocHelper doc = new DocHelper();
+      DocHelperRtf doc = new  DocHelperRtf();
 
       // sum up test results
       foreach (CheckResult r in results)
@@ -1006,7 +1000,7 @@ namespace BatInspector
           }
         }
       }
-      DocHelper doc = buildResults(results, lat, lon, localNames, evHandler);
+      DocHelperRtf doc = buildResults(results, lat, lon, localNames, evHandler);
       return doc.Doc;
     }
 

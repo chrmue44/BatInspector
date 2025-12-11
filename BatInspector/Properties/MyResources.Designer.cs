@@ -421,6 +421,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        public static string Comment {
+            get {
+                return ResourceManager.GetString("Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string Connect {
@@ -727,11 +736,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RichText File.
+        ///   Looks up a localized string similar to Html File.
         /// </summary>
-        public static string ctlReportRichText {
+        public static string ctlReportHtmlText {
             get {
-                return ResourceManager.GetString("ctlReportRichText", resourceCulture);
+                return ResourceManager.GetString("ctlReportHtmlText", resourceCulture);
             }
         }
         
@@ -1303,6 +1312,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Definitions.
+        /// </summary>
+        public static string Definitions {
+            get {
+                return ResourceManager.GetString("Definitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Lag.
         /// </summary>
         public static string DeltaT {
@@ -1371,6 +1389,24 @@ namespace BatInspector.Properties {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluation Method.
+        /// </summary>
+        public static string EvaluationMethod {
+            get {
+                return ResourceManager.GetString("EvaluationMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executed by.
+        /// </summary>
+        public static string ExecutedBy {
+            get {
+                return ResourceManager.GetString("ExecutedBy", resourceCulture);
             }
         }
         
@@ -2748,6 +2784,15 @@ namespace BatInspector.Properties {
         public static string frmReportAssistant_DescrLoc {
             get {
                 return ResourceManager.GetString("frmReportAssistant_DescrLoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explanations.
+        /// </summary>
+        public static string frmReportAssistant_Explanation {
+            get {
+                return ResourceManager.GetString("frmReportAssistant_Explanation", resourceCulture);
             }
         }
         
@@ -4147,6 +4192,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use the already existing data set?.
+        /// </summary>
+        public static string msgFrmReport {
+            get {
+                return ResourceManager.GetString("msgFrmReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Information.
         /// </summary>
         public static string msgInformation {
@@ -4368,6 +4422,42 @@ namespace BatInspector.Properties {
         public static string Recording {
             get {
                 return ResourceManager.GetString("Recording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity Diagrams of Detected Species.
+        /// </summary>
+        public static string reportActivityDiagrams {
+            get {
+                return ResourceManager.GetString("reportActivityDiagrams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluation of the Results.
+        /// </summary>
+        public static string reportEvaluationOfTheResults {
+            get {
+                return ResourceManager.GetString("reportEvaluationOfTheResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of Detected Species.
+        /// </summary>
+        public static string reportListOfDetectedSpecies {
+            get {
+                return ResourceManager.GetString("reportListOfDetectedSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Results of Automatic Counting.
+        /// </summary>
+        public static string reportResultsOfAutomaticCounting {
+            get {
+                return ResourceManager.GetString("reportResultsOfAutomaticCounting", resourceCulture);
             }
         }
         

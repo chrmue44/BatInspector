@@ -23,6 +23,9 @@ namespace BatInspector.Forms
       _ctlAuthor.setup(BatInspector.Properties.MyResources.frmReportAssistant_Author, Controls.enDataType.STRING, 0, wl, true);
       _ctlLocDescription.setup(BatInspector.Properties.MyResources.frmReportAssistant_DescrLoc, Controls.enDataType.STRING, 0, wl, true);
       _lblComment.Text = BatInspector.Properties.MyResources.CtlWavRemarks;
+      _lblMethod.Text = BatInspector.Properties.MyResources.EvaluationMethod;
+      _lblDefinitions.Text = BatInspector.Properties.MyResources.Definitions;
+      _grExplanations.ColumnDefinitions[0].Width = new GridLength(wl + 5);
       _grComment.ColumnDefinitions[0].Width = new GridLength(wl + 5);
       _ctlLocationName.setup(BatInspector.Properties.MyResources.frmReportAssistant_LocationName, Controls.enDataType.STRING, 0, wl, true);
       _ctlPageTitle.setup(BatInspector.Properties.MyResources.frmReportAssistant_PageTitle, Controls.enDataType.STRING, 0, wl, true);
@@ -70,6 +73,8 @@ namespace BatInspector.Forms
         _ctlSelectWavFolder.setValue(_formData.WavFolder);
         _ctlImgLandscape.setValue(_formData.ImgLandscape);
         _ctlImgPortrait.setValue(_formData.ImgPortrait);
+        _tbMethod.Text = _formData.Method;
+        _tbDefinitions.Text = _formData.Definitions;
         for (int i = 0; i < _spFoundSpecies.Children.Count; i++)
         {
           ctlWebRepSpecies ctl = _spFoundSpecies.Children[i] as ctlWebRepSpecies;
@@ -99,6 +104,7 @@ namespace BatInspector.Forms
       _formData.WavFolder = _ctlSelectWavFolder.getValue();
       _formData.ImgLandscape = _ctlImgLandscape.getValue();
       _formData.ImgPortrait = _ctlImgPortrait.getValue();
+      _formData.Method = _tbMethod.Text;
       foreach (ctlWebRepSpecies ctl in _spFoundSpecies.Children)
       {
         SpeciesWebInfo info = _formData.findSpecies(ctl.Species);

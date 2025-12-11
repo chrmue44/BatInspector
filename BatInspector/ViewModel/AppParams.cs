@@ -22,6 +22,7 @@ using System.Configuration.Install;
 using NAudio.SoundFont;
 using System.Deployment.Application;
 using System.Reflection;
+using System.Security.Permissions;
 
 namespace BatInspector
 {
@@ -176,6 +177,7 @@ namespace BatInspector
     public const string CMD_REDUCE_NOISE = "reduce_noise.bat"; //command to reduce the background noise in WAV file
     public const string BATSPECIES_REGIONS = "BatSpeciesRegions.json";   //name of the file containing region information
 
+    public const string SUM_REPORT_JSON = "sumReport.json";    // name of summarized report data file
     public const int CTLWAV_WIDTH_BIRDS = 500;            // ctlWav with of info section for bird projects
     public const int CTLWAV_WIDTH_BATS = 360;             // ctlWav with of info section for bat projects
 

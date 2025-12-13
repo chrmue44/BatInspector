@@ -270,7 +270,7 @@
     <Compile Include="Forms\frmVerifySpecies.xaml.cs">
       <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DocHelper.cs" />
+    <Compile Include="ViewModel\Report\DocHelper.cs" />
     <Compile Include="ViewModel\MetaData\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
     <Compile Include="Forms\FrmAbout.xaml.cs">
@@ -363,7 +363,7 @@
       <DependentUpon>MyResources.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Tests.cs" />
-    <Compile Include="ViewModel\ActivityDiagram.cs" />
+    <Compile Include="ViewModel\Report\ActivityDiagram.cs" />
     <Compile Include="ViewModel\Models\BaseModel.cs" />
     <Compile Include="ViewModel\BatCommands.cs" />
     <Compile Include="ViewModel\Models\Bd2AnnFile.cs" />
@@ -405,8 +405,8 @@
     <Compile Include="ViewModel\SoundEdit.cs" />
     <Compile Include="ViewModel\Spectrum.cs" />
     <Compile Include="ViewModel\Statistic.cs" />
-    <Compile Include="ViewModel\SumReport.cs" />
-    <Compile Include="ViewModel\Sunrise.cs" />
+    <Compile Include="ViewModel\Report\SumReport.cs" />
+    <Compile Include="ViewModel\Report\Sunrise.cs" />
     <Compile Include="ViewModel\Wav.cs" />
     <Compile Include="ViewModel\ZoomView.cs" />
     <Compile Include="winUtils.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Ocsp;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -37,6 +38,8 @@ namespace BatInspector
     public abstract void begin();
     public abstract void end();
     public abstract void addHeader(int order, string text);
+
+    public abstract void addImage(string image, string altText, int sizeH);
     public abstract void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler);
     public abstract void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null);
     public abstract void addTable(DataTable dtbl, System.Collections.Generic.List<double> colWidth, int width = 1, int border = 0, bool ommitHeader = false);
@@ -78,8 +81,12 @@ namespace BatInspector
     {
       
     }
+    public override void addImage(string image, string altText, int sizeH)
+    {
 
-  //  public FlowDocument Doc { get { return _doc; } }
+    }
+
+    //  public FlowDocument Doc { get { return _doc; } }
 
     public Paragraph addParagraph()
     {
@@ -315,6 +322,10 @@ namespace BatInspector
     public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null)
     {
       _doc.Append($"<p>{text}</p>\n");
+    }
+    public override void addImage(string image, string altText, int sizeH)
+    {
+      _doc.Append($"<p><img src=\"{image}\" height=\"{sizeH}\" alt=\"{altText}\"></p>\n");
     }
 
     public override void saveAs(string docPath)

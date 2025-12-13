@@ -1477,7 +1477,7 @@
     <value>Formulardaten</value>
   </data>
   <data name="frmReportAssistant_TemplateFile" xml:space="preserve">
-    <value>Vorlagedatei</value>
+    <value>Vorlagedatei (Markdown)</value>
   </data>
   <data name="frmReportAssistant_Author" xml:space="preserve">
     <value>Autor</value>
@@ -1489,7 +1489,7 @@
     <value>Name des Aufnahmeorts</value>
   </data>
   <data name="frmReportAssistant_PageTitle" xml:space="preserve">
-    <value>Überschrift Seite</value>
+    <value>Überschrift Seite (Markdown)</value>
   </data>
   <data name="frmReportAssistant_Weather" xml:space="preserve">
     <value>Wetter</value>
@@ -1961,5 +1961,17 @@
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Bemerkungen</value>
+  </data>
+  <data name="reportPositioningRecorder" xml:space="preserve">
+    <value>Positionierung des Aufnahmegeräts</value>
+  </data>
+  <data name="Species" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Rufe</value>
+  </data>
+  <data name="Activity" xml:space="preserve">
+    <value>Aktivität</value>
   </data>
 </root>

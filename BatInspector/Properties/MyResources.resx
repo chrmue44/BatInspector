@@ -1477,7 +1477,7 @@
     <value>Form Data</value>
   </data>
   <data name="frmReportAssistant_TemplateFile" xml:space="preserve">
-    <value>Template file</value>
+    <value>Template file (Markdown)</value>
   </data>
   <data name="frmReportAssistant_Author" xml:space="preserve">
     <value>Author</value>
@@ -1489,7 +1489,7 @@
     <value>Location Name</value>
   </data>
   <data name="frmReportAssistant_PageTitle" xml:space="preserve">
-    <value>Page Title</value>
+    <value>Page Title (Markdown)</value>
   </data>
   <data name="frmReportAssistant_Weather" xml:space="preserve">
     <value>Weather</value>
@@ -1961,5 +1961,17 @@
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Comment</value>
+  </data>
+  <data name="reportPositioningRecorder" xml:space="preserve">
+    <value>Positioning of Recording Device</value>
+  </data>
+  <data name="Species" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="Calls" xml:space="preserve">
+    <value>Calls</value>
+  </data>
+  <data name="Activity" xml:space="preserve">
+    <value>Activity</value>
   </data>
 </root>

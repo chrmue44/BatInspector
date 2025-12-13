@@ -12,7 +12,7 @@ namespace BatInspector.Forms
     SumReportJson _rep;
     WebReportDataJson _formData = null;
     DlgCmd _dlgSetFormDataName = null;
-    public frmReportAssistant(SumReportJson rep, DlgCmd dlgSetFormDataName)
+    public frmReportAssistant(SumReportJson rep, DlgCmd dlgSetFormDataName, bool markdown)
     {
       InitializeComponent();
       _dlgSetFormDataName = dlgSetFormDataName;
@@ -20,6 +20,7 @@ namespace BatInspector.Forms
       _rep = rep;
       _ctlFormData.setup(BatInspector.Properties.MyResources.frmReportAssistant_FormData, wl + 5, false, "json files(*.json)|*.json|All files(*.*) |*.*", setFormData);
       _ctlTemplate.setup(BatInspector.Properties.MyResources.frmReportAssistant_TemplateFile, wl + 5, false,"markdown files(*.md)|*.md|All files(*.*)|*.*");
+      _ctlTemplate.Visibility = markdown ? Visibility.Visible : Visibility.Collapsed; 
       _ctlAuthor.setup(BatInspector.Properties.MyResources.frmReportAssistant_Author, Controls.enDataType.STRING, 0, wl, true);
       _ctlLocDescription.setup(BatInspector.Properties.MyResources.frmReportAssistant_DescrLoc, Controls.enDataType.STRING, 0, wl, true);
       _lblComment.Text = BatInspector.Properties.MyResources.CtlWavRemarks;
@@ -29,6 +30,7 @@ namespace BatInspector.Forms
       _grComment.ColumnDefinitions[0].Width = new GridLength(wl + 5);
       _ctlLocationName.setup(BatInspector.Properties.MyResources.frmReportAssistant_LocationName, Controls.enDataType.STRING, 0, wl, true);
       _ctlPageTitle.setup(BatInspector.Properties.MyResources.frmReportAssistant_PageTitle, Controls.enDataType.STRING, 0, wl, true);
+      _ctlPageTitle.Visibility = markdown ? Visibility.Visible : Visibility.Collapsed;
       _ctlWeather.setup(BatInspector.Properties.MyResources.frmReportAssistant_Weather, Controls.enDataType.STRING, 0, wl, true);
       _ctlTimeSpan.setup(BatInspector.Properties.MyResources.frmReportAssistant_TimeSpan, Controls.enDataType.STRING, 0, wl, true);
       _ctlSelectWavFolder.setup(BatInspector.Properties.MyResources.frmReportAssistant_SelectWAVFolder, wl + 10, true);

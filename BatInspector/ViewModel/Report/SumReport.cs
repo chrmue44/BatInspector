@@ -115,7 +115,7 @@ namespace BatInspector
       double perCent = sumSpec / sumTotal * 100;
       string formatStr = "0.";
       for (int i = 0; i < decimals; i++)
-        formatStr += "#";
+        formatStr += "0";
       string str = perCent.ToString(formatStr, CultureInfo.InvariantCulture);
       return str;
     }
@@ -138,6 +138,18 @@ namespace BatInspector
 
       return act / sum;
     }
+
+    public string getActivityPercentageStr(string spec, int decimals)
+    {
+     
+      double perCent = getActivityPercentage(spec) * 100;
+      string formatStr = "0.";
+      for (int i = 0; i < decimals; i++)
+        formatStr += "0";
+      string str = perCent.ToString(formatStr, CultureInfo.InvariantCulture);
+      return str;
+    }
+
 
     public string getSumStr(string spec)
     {
@@ -1303,7 +1315,7 @@ namespace BatInspector
     }
 
 
-    public void createDocument(enDocType docType, SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string outputName)
+    public void createDocument(enDocType docType, SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string srcDir, string outputName)
     {
       WebReportDataJson formData = WebReportDataJson.load(formDataName);
       DocHelper doc = DocHelper.create(docType);
@@ -1311,9 +1323,11 @@ namespace BatInspector
       {
         try
         {
+          int head = 2; //order of header
+
           List<string> row = new List<string>();
           doc.begin();
-          doc.addHeader(1, formData.LocationName);
+          doc.addHeader(head, formData.LocationName);
           List<double> colWidth = new List<double>();
           // head
           DataTable tab = new DataTable();
@@ -1341,27 +1355,27 @@ namespace BatInspector
           }
           else
             str = formData.TimeSpan;
-          tab.Rows.Add("Zeitraum", formData.TimeSpan);
+          tab.Rows.Add("Zeitraum", str);
           tab.Rows.Add("Witterung", formData.Weather);
           doc.addTable(tab, colWidth, 1, 0, true);
 
           //
-          doc.addHeader(1, MyResources.reportEvaluationOfTheResults);
+          doc.addHeader(head, MyResources.reportEvaluationOfTheResults);
           doc.addText(formData.Comment);
 
           //evaluation method
-          doc.addHeader(1, MyResources.EvaluationMethod);
+          doc.addHeader(head, MyResources.EvaluationMethod);
           doc.addText(formData.Method);
 
           // list of detected species
-          doc.addHeader(1, MyResources.reportListOfDetectedSpecies);
+          doc.addHeader(head, MyResources.reportListOfDetectedSpecies);
           doc.addText(formData.Definitions);
           DataTable tbSpec = new DataTable();
-          DataColumn col = new DataColumn("Art", typeof(string));
+          DataColumn col = new DataColumn($"{MyResources.Species}", typeof(string));
           tbSpec.Columns.Add(col);
-          col = new DataColumn("Rufe [%]", typeof(string));
+          col = new DataColumn($"{MyResources.Calls} [%]", typeof(string));
           tbSpec.Columns.Add(col);
-          tbSpec.Columns.Add("Aktivität [%]", typeof(string));
+          tbSpec.Columns.Add($"{MyResources.Activity} [%]", typeof(string));
           tbSpec.Columns.Add(MyResources.Comment, typeof(string));
           tbSpec.Columns.Add("Mögl. Verwechslungsarten", typeof(string));
           tbSpec.Rows.Add("");
@@ -1374,9 +1388,9 @@ namespace BatInspector
               {
                 SpeciesWebInfo webInfo = formData.findSpecies(spec);
                 if(webInfo != null)
-                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), (rep.getActivityPercentage(spec) * 100.0).ToString("#.#"), webInfo.Comment, formData.findSpecies(spec).Confusion);
+                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), webInfo.Comment, formData.findSpecies(spec).Confusion);
                 else
-                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), (rep.getActivityPercentage(spec) * 100.0).ToString("#.#"), "", "");
+                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), "", "");
               }
             }
           }
@@ -1384,16 +1398,16 @@ namespace BatInspector
 
 
           // list of activity diagrams
-          doc.addHeader(1, MyResources.reportActivityDiagrams);
+          doc.addHeader(head, MyResources.reportActivityDiagrams);
           for (int j = 0; j < rep.Activities.Count; j++)
           {
             string imgFile = $"activity_{rep.Activities[j].Species}.png";
-            doc.addText($"<img src=\"{imgFile}\" height=\"400\" alt=\"activity diagram {rep.Activities[j].Species}\"><br><br>");
+            doc.addImage(imgFile, $"activity diagram {rep.Activities[j].Species}", 400);
           }
 
 
           // table for automatic count results
-          doc.addHeader(1, MyResources.reportResultsOfAutomaticCounting);
+          doc.addHeader(head, MyResources.reportResultsOfAutomaticCounting);
 
           DataTable tbCount = new DataTable();
           tbCount.Columns.Add("Datum");
@@ -1441,8 +1455,15 @@ namespace BatInspector
           // add last col with sums
           for (int i = 0; i < rep.Species.Count; i++)
             tbCount.Rows[i + 4][c] = rep.getSumStr(rep.Species[i]);
-
           doc.addTable(tbCount, colWidth);
+
+          // pictures of the recording device
+          doc.addHeader(head, MyResources.reportPositioningRecorder);
+          string img = formData.ImgLandscape.Replace(srcDir + "\\", "");
+          doc.addImage(img, $"view recorder 1", 400);
+          img = formData.ImgPortrait.Replace(srcDir + "\\", "");
+          doc.addImage(img, $"view recorder 2", 400 * 4 / 3);
+
           doc.end();
           doc.saveAs(outputName); 
         }

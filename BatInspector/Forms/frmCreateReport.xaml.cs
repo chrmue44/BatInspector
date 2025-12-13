@@ -7,16 +7,11 @@
  ********************************************************************************/
 using BatInspector.Controls;
 using BatInspector.Properties;
-using libParser;
-using Org.BouncyCastle.Ocsp;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Interop;
-using System.Windows.Markup;
 
 namespace BatInspector.Forms
 {
@@ -61,7 +56,7 @@ namespace BatInspector.Forms
       {
         _report = SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
       }
-      showReportDialog(true, false);
+      showReportDialog(true, false, _dstDir);
     }
 
     private void threadCreateRichTextReport()
@@ -78,19 +73,19 @@ namespace BatInspector.Forms
       {
         _report =  SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
       }
-      showReportDialog(false, true);
+      showReportDialog(false, true, _dstDir);
     }
 
-    delegate void dlgShowReportDialog(bool web, bool rtf);
-    private void showReportDialog(bool webPage, bool richText)
+    delegate void dlgShowReportDialog(bool web, bool rtf, string srcDir);
+    private void showReportDialog(bool webPage, bool richText, string srcDir)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgShowReportDialog(showReportDialog), webPage, richText);
+        Dispatcher.BeginInvoke(new dlgShowReportDialog(showReportDialog), webPage, richText, srcDir);
       }
       else
       {
-        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName);
+        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName, webPage);
         frm.WindowStartupLocation = WindowStartupLocation.Manual;
         frm.Left = 100;
         frm.Top = 10;
@@ -103,8 +98,8 @@ namespace BatInspector.Forms
                     _ctlReport._ctlWebReportName.getValue()));
           if (richText)
             App.Model.SumReport.createDocument(enDocType.HTML, _report, _formDataName, App.Model.SpeciesInfos,
-                      Path.Combine(_ctlReport._ctlDestDir.getValue(),
-                      _ctlReport._ctlRichTextName.getValue()));
+                      srcDir, Path.Combine(_ctlReport._ctlDestDir.getValue(), 
+                                           _ctlReport._ctlRichTextName.getValue()));
 
         }
       }

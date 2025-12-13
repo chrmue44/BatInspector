@@ -79,6 +79,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activity.
+        /// </summary>
+        public static string Activity {
+            get {
+                return ResourceManager.GetString("Activity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activity Diagram.
         /// </summary>
         public static string ActivityDiagram {
@@ -309,6 +318,15 @@ namespace BatInspector.Properties {
         public static string CallInformation {
             get {
                 return ResourceManager.GetString("CallInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calls.
+        /// </summary>
+        public static string Calls {
+            get {
+                return ResourceManager.GetString("Calls", resourceCulture);
             }
         }
         
@@ -2851,7 +2869,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page Title.
+        ///   Looks up a localized string similar to Page Title (Markdown).
         /// </summary>
         public static string frmReportAssistant_PageTitle {
             get {
@@ -2869,7 +2887,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Template file.
+        ///   Looks up a localized string similar to Template file (Markdown).
         /// </summary>
         public static string frmReportAssistant_TemplateFile {
             get {
@@ -4453,6 +4471,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Positioning of Recording Device.
+        /// </summary>
+        public static string reportPositioningRecorder {
+            get {
+                return ResourceManager.GetString("reportPositioningRecorder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Results of Automatic Counting.
         /// </summary>
         public static string reportResultsOfAutomaticCounting {
@@ -5169,6 +5196,15 @@ namespace BatInspector.Properties {
         public static string SpecDescWidthWf {
             get {
                 return ResourceManager.GetString("SpecDescWidthWf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Species.
+        /// </summary>
+        public static string Species {
+            get {
+                return ResourceManager.GetString("Species", resourceCulture);
             }
         }
         

@@ -439,13 +439,17 @@ namespace BatInspector
         _rawData = File.ReadAllBytes(name);
         byte[] hdr = partArray(_rawData, 0, 12);
         _header = new WaveHeader(hdr);
-        byte[] format = partArray(_rawData, 12, 24);
-        _format = new FormatChunk(format);
 
         int pos = 12;
         while (pos < _rawData.Length - 12)
         {
-          if ((_rawData[pos] == 'd') && (_rawData[pos + 1] == 'a') && (_rawData[pos + 2] == 't') && (_rawData[pos + 3] == 'a'))
+          if ((_rawData[pos] == 'f') && (_rawData[pos + 1] == 'm') && (_rawData[pos + 2] == 't') && (_rawData[pos + 3] == ' '))
+          {
+            byte[] format = partArray(_rawData, pos, 24);
+            _format = new FormatChunk(format);
+            pos += 24;
+          }
+          else if ((_rawData[pos] == 'd') && (_rawData[pos + 1] == 'a') && (_rawData[pos + 2] == 't') && (_rawData[pos + 3] == 'a'))
           {
 
             byte[] data = partArray(_rawData, pos, 8);
@@ -472,15 +476,22 @@ namespace BatInspector
           {
             pos += 4;
             int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
+            if (chunkSize == 0)
+            {
+              retVal = 1;
+              DebugLog.log($"format error in WAV file: {name}", enLogType.ERROR);
+              break;
+            }
             pos += 4 + chunkSize;
           }
         }
         _fName = name;
         _isInitialized = true;
       }
-      catch 
+      catch (Exception ex)
       {
         retVal = 1;
+        DebugLog.log($"unable to read WAV file: {name}: {ex.ToString()}", enLogType.ERROR);
       }
       return retVal;
     }

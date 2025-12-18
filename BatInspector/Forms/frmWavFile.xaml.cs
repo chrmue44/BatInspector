@@ -55,34 +55,36 @@ namespace BatInspector.Forms
         if (openFileDialog.ShowDialog() == true)
         {
           wavFile = openFileDialog.FileName;
-          App.Model.WavFile.readFile(wavFile);
-          _ctlFileName.setValue(openFileDialog.FileName);
-
-          _ctlFileType.setValue(App.Model.WavFile.WavHeader.FileTypeId);
-          _ctlFileLength.setValue(App.Model.WavFile.WavHeader.FileLength);
-          _ctlMediaTypeId.setValue(App.Model.WavFile.WavHeader.MediaTypeId);
-
-          _ctlChunkId.setValue(App.Model.WavFile.FormatChunk.ChunkId);
-          _ctlChunkSize.setValue(App.Model.WavFile.FormatChunk.ChunkSize);
-          _ctlFormatTag.setValue((uint)App.Model.WavFile.FormatChunk.FormatTag);
-          _ctlChannels.setValue((uint)App.Model.WavFile.FormatChunk.Channels);
-          _ctlSamplingRate.setValue(App.Model.WavFile.FormatChunk.Frequency);
-          _ctlAvgBytesPerSec.setValue(App.Model.WavFile.FormatChunk.AverageBytesPerSec);
-          _ctlBlockAlign.setValue((uint)App.Model.WavFile.FormatChunk.BlockAlign);
-          _ctlBitsPerSample.setValue((uint)App.Model.WavFile.FormatChunk.BitsPerSample);
-
-          _ctlSamples.setValue(App.Model.WavFile.AudioSamples.Length);
-
-          if ((App.Model.WavFile.Guano == null) || (App.Model.WavFile.Guano.Fields.Count < 1))
-            _grpGuano.Visibility = Visibility.Collapsed;
-          else
+          if (App.Model.WavFile.readFile(wavFile) == 0)
           {
-            _dgGuano.ItemsSource = App.Model.WavFile.Guano.Fields;
-            _grpGuano.Visibility = Visibility.Visible;
+            _ctlFileName.setValue(openFileDialog.FileName);
+
+            _ctlFileType.setValue(App.Model.WavFile.WavHeader.FileTypeId);
+            _ctlFileLength.setValue(App.Model.WavFile.WavHeader.FileLength);
+            _ctlMediaTypeId.setValue(App.Model.WavFile.WavHeader.MediaTypeId);
+
+            _ctlChunkId.setValue(App.Model.WavFile.FormatChunk.ChunkId);
+            _ctlChunkSize.setValue(App.Model.WavFile.FormatChunk.ChunkSize);
+            _ctlFormatTag.setValue((uint)App.Model.WavFile.FormatChunk.FormatTag);
+            _ctlChannels.setValue((uint)App.Model.WavFile.FormatChunk.Channels);
+            _ctlSamplingRate.setValue(App.Model.WavFile.FormatChunk.Frequency);
+            _ctlAvgBytesPerSec.setValue(App.Model.WavFile.FormatChunk.AverageBytesPerSec);
+            _ctlBlockAlign.setValue((uint)App.Model.WavFile.FormatChunk.BlockAlign);
+            _ctlBitsPerSample.setValue((uint)App.Model.WavFile.FormatChunk.BitsPerSample);
+
+            _ctlSamples.setValue(App.Model.WavFile.AudioSamples.Length);
+
+            if ((App.Model.WavFile.Guano == null) || (App.Model.WavFile.Guano.Fields.Count < 1))
+              _grpGuano.Visibility = Visibility.Collapsed;
+            else
+            {
+              _dgGuano.ItemsSource = App.Model.WavFile.Guano.Fields;
+              _grpGuano.Visibility = Visibility.Visible;
+            }
+            double duration = (double)App.Model.WavFile.AudioSamples.Length / App.Model.WavFile.FormatChunk.Frequency;
+            AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)App.Model.WavFile.FormatChunk.Frequency, duration);
+            App.MainWin.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);
           }
-          double duration = (double)App.Model.WavFile.AudioSamples.Length / App.Model.WavFile.FormatChunk.Frequency;
-          AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)App.Model.WavFile.FormatChunk.Frequency, duration);
-          App.MainWin.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);
         }
       }
       catch (Exception ex)

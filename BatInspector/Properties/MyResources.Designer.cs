@@ -646,11 +646,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export Data ....
+        ///   Looks up a localized string similar to Export Csv ....
         /// </summary>
         public static string CtlMySqlExportData {
             get {
                 return ResourceManager.GetString("CtlMySqlExportData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Prj....
+        /// </summary>
+        public static string CtlMySqlExportPrj {
+            get {
+                return ResourceManager.GetString("CtlMySqlExportPrj", resourceCulture);
             }
         }
         
@@ -693,9 +702,18 @@ namespace BatInspector.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Export result of query to CSV file.
         /// </summary>
-        public static string CtlMySqlToolTipExport {
+        public static string CtlMySqlToolTipExportCsv {
             get {
-                return ResourceManager.GetString("CtlMySqlToolTipExport", resourceCulture);
+                return ResourceManager.GetString("CtlMySqlToolTipExportCsv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export result of query to BatInspector project.
+        /// </summary>
+        public static string CtlMySqlToolTipExportPrj {
+            get {
+                return ResourceManager.GetString("CtlMySqlToolTipExportPrj", resourceCulture);
             }
         }
         
@@ -1938,6 +1956,15 @@ namespace BatInspector.Properties {
         public static string frmCreatePrjFixedPos {
             get {
                 return ResourceManager.GetString("frmCreatePrjFixedPos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Project From MySql Query.
+        /// </summary>
+        public static string frmCreatePrjFromQuery_Title {
+            get {
+                return ResourceManager.GetString("frmCreatePrjFromQuery_Title", resourceCulture);
             }
         }
         
@@ -5268,6 +5295,15 @@ namespace BatInspector.Properties {
         public static string SubDirectory {
             get {
                 return ResourceManager.GetString("SubDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target Directory.
+        /// </summary>
+        public static string TargetDirectory {
+            get {
+                return ResourceManager.GetString("TargetDirectory", resourceCulture);
             }
         }
         

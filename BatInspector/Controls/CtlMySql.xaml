@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:res="clr-namespace:BatInspector.Properties" 
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1200">
+             d:DesignHeight="800" d:DesignWidth="1400">
     <Grid x:Name="_grid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
@@ -16,7 +16,7 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="550"/>
+            <ColumnDefinition Width="500"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Horizontal">
@@ -29,7 +29,8 @@
             <Label Content="Limit" Margin="0,5,0,0"/>
             <ComboBox Name="_cbLimit" Width="100" Height="25" SelectionChanged="_cbLimit_SelectionChanged" ToolTip="{x:Static res:MyResources.CtlMySqlToolTipLimit}" />
             <Separator Width="5" Margin="10,2,10,2" />
-            <Button Content="{x:Static res:MyResources.CtlMySqlExportData}" Width ="100" Margin="0,5,10,5" Click="Button_Click" ToolTip="{x:Static res:MyResources.CtlMySqlToolTipExport}"/>
+            <Button Content="{x:Static res:MyResources.CtlMySqlExportData}" Width ="100" Margin="0,5,10,5" Click="Button_Click" ToolTip="{x:Static res:MyResources.CtlMySqlToolTipExportCsv}"/>
+            <Button Content="{x:Static res:MyResources.CtlMySqlExportPrj}" Width ="100" Margin="0,5,10,5" Click="_btnExportPrj_Click" ToolTip="{x:Static res:MyResources.CtlMySqlToolTipExportPrj}"/>
         </StackPanel>
         <Label Content="MySQL Dashboard" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
         <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2"> 

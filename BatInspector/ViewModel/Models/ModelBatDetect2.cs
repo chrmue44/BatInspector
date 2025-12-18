@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Animation;
 
 
 namespace BatInspector
@@ -271,6 +272,39 @@ namespace BatInspector
 
       return retVal;
     }
+
+
+    /// <summary>
+    /// add a sql row to BatDetect2 report
+    /// </summary>
+    /// <param name="csv"></param>
+    /// <param name="sqlRow"></param>
+    public static void addReportRow(Csv csv, sqlRow sqlRow)
+    {
+      csv.addRow();
+      addFieldToRow(csv, sqlRow, Cols.SAMPLERATE, DBBAT.SAMPLE_RATE);
+      addFieldToRow(csv, sqlRow, Cols.FILE_LEN, DBBAT.FILE_LENGTH);
+      addFieldToRow(csv, sqlRow, Cols.REC_TIME, DBBAT.RECORDING_TIME);
+      addFieldToRow(csv, sqlRow, Cols.NAME, DBBAT.WAV_FILE_NAME);
+      addFieldToRow(csv, sqlRow, Cols.LAT, DBBAT.LAT);
+      addFieldToRow(csv, sqlRow, Cols.LON, DBBAT.LON);
+      addFieldToRow(csv, sqlRow, Cols.TEMPERATURE, DBBAT.TEMP);
+      addFieldToRow(csv, sqlRow, Cols.HUMIDITY, DBBAT.HUMI);
+      addFieldToRow(csv, sqlRow, Cols.NR, DBBAT.CALLNR);
+      addFieldToRow(csv, sqlRow, Cols.START_TIME, DBBAT.START_TIME);
+      addFieldToRow(csv, sqlRow, Cols.F_MIN, DBBAT.FMIN);
+      addFieldToRow(csv, sqlRow, Cols.F_MAX, DBBAT.FMAX);
+      addFieldToRow(csv, sqlRow, Cols.F_MAX_AMP, DBBAT.FMAXAMP);      
+      addFieldToRow(csv, sqlRow, Cols.BANDWIDTH, DBBAT.BWIDTH);
+      addFieldToRow(csv, sqlRow, Cols.CALL_INTERVALL, DBBAT.CALL_DST);
+      addFieldToRow(csv, sqlRow, Cols.DURATION, DBBAT.CALL_LEN);
+      addFieldToRow(csv, sqlRow, Cols.SNR, DBBAT.SNR);
+      addFieldToRow(csv, sqlRow, Cols.PROBABILITY, DBBAT.PROB);
+      addFieldToRow(csv, sqlRow, Cols.SPECIES, DBBAT.SPEC_AUTO);
+      addFieldToRow(csv, sqlRow, Cols.SPECIES_MAN, DBBAT.SPEC_MAN);
+      addFieldToRow(csv, sqlRow, Cols.REMARKS, DBBAT.REM);
+    }
+
 
     /// <summary>
     /// translate species name to official form

@@ -772,6 +772,50 @@ namespace BatInspector
       return retVal;
     }
 
+    public static bool createPrjFromQuery(string prjName, string remarks, List<sqlRow> query, string dstDir)
+    {
+      bool retVal = true;
+      retVal = createPrjDirStructure(dstDir, out string wavDir, AppParams.DIR_WAVS);
+      Csv report = new Csv();
+
+      string[] colNames = query[0].getColNames();
+      report.initColNames(colNames, true);
+      Enum.TryParse<enModel>(query[0].getField(DBBAT.CLASSI).ToString(), out enModel classifier);
+
+      string fName = "";
+      List<PrjRecord> records = new List<PrjRecord>();
+      Project prj = new Project(false, App.Model.DefaultModelParams[0], App.Model.DefaultModelParams.Length, AppParams.DIR_WAVS);
+
+      for (int row =  0; row < query.Count; row++)
+      {
+        BaseModel.addReportRow(classifier, report, query[row]);
+        string fileName = Path.Combine(query[row].getField(DBBAT.PATH_TO_WAV).ToString(),
+                                       query[row].getField(DBBAT.WAV_FILE_NAME).ToString());
+        if (fName != fileName)
+        {
+          prj.addRecord(fileName, ref records);
+          App.Model.MySQL.copyFile(fileName, wavDir);
+          fileName = fileName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+          App.Model.MySQL.copyFile(fileName, wavDir);
+          fName = fileName;
+        }
+      }
+
+      prj._batExplorerPrj = new BatExplorerProjectFile("wavs", records);
+      prj._wavSubDir = AppParams.DIR_WAVS;
+      prj._ok = true;
+      prj._prjFileName = prjName + AppParams.EXT_BATSPY;
+      prj._batExplorerPrj.Name = prj._prjFileName;
+      prj._changed = true;
+      prj.Created = DateTime.Now.ToString(AppParams.GPX_DATETIME_FORMAT);
+      prj.Notes = remarks;
+      prj.Location = "";
+      prj._selectedDir = dstDir;
+      prj.writePrjFile();
+
+      return retVal;
+    }
+
     /// <summary>
     /// create one or multiple projects from a directory containing WAV files
     /// </summary>
@@ -1099,11 +1143,13 @@ namespace BatInspector
           }
           DirectoryInfo dir = new DirectoryInfo(Path.Combine(_selectedDir, _wavSubDir));
           FileInfo[] wavFiles = dir.GetFiles("*.wav");
-          _batExplorerPrj.Records = new PrjRecord[wavFiles.Length];
-          for (int i = 0; i < wavFiles.Length; i++)
-          {
-            _batExplorerPrj.Records[i] = new PrjRecord(wavFiles[i].Name);
-          }
+          List<string> wavNames = new List<string>();
+          foreach(FileInfo wavFile in wavFiles)
+            wavNames.Add(wavFile.Name);
+          wavNames.Sort();
+            _batExplorerPrj.Records = new PrjRecord[wavFiles.Length];
+          for (int i = 0; i < wavNames.Count; i++)
+            _batExplorerPrj.Records[i] = new PrjRecord(wavNames[i]);
 
           initSpeciesList();
           _ok = true;

@@ -31,6 +31,7 @@ namespace BatInspector
     SPECIAL = 3,
     EOL = 4,
     EOF = 5,
+    JSON_STR = 6
   }
 
   public class GuanoItem
@@ -192,6 +193,7 @@ namespace BatInspector
       _pos = 0;
       enGuanoToken tok;
       bool err = true;
+      string str = System.Text.Encoding.UTF8.GetString(s,0, s.Length);
       _items.Clear();
       do
       {
@@ -270,7 +272,7 @@ namespace BatInspector
           {
             tok = getToken();
             par.Comment = "unknown FieldName";
-            while (tok != enGuanoToken.EOL)
+            while ((tok != enGuanoToken.EOL) && (tok != enGuanoToken.EOF))
             {
               par.Value += _name;
               tok = getToken();
@@ -285,6 +287,9 @@ namespace BatInspector
             {
               par.NameSpace = toks[0];
               par.FieldName = toks[1];
+              for(int i = 2; i < toks.Length; i++)
+                par.FieldName += $"|{toks[i]}";
+
             }
             else
               par.NameSpace = "General";
@@ -366,7 +371,10 @@ namespace BatInspector
       char retVal = '\0';
       if (_pos < _buf.Length)
       {
-        retVal = (char)_buf[_pos];
+        if (((_buf[_pos] > 0) && (_buf[_pos] < 4)) || ((_buf[_pos] > 4) && (_buf[_pos] < 9)))
+          retVal = '_';
+        else
+          retVal = (char)_buf[_pos];
         _pos++;
       }
       return retVal;
@@ -404,6 +412,23 @@ namespace BatInspector
           retVal = enGuanoToken.DIVIDER;
           _name = ":";
           break;
+        case '[':
+          {
+            int braceCnt = 1;
+
+            _name = "" + c;
+            while ((c != ']') && (braceCnt != 0))
+            {
+              c = getChar();
+              if (c == '[')
+                braceCnt++;
+              if(c == ']')
+                braceCnt--;
+              _name += c;
+            }
+            retVal = enGuanoToken.JSON_STR;
+          }
+          break;        
         case '\n':
           retVal = enGuanoToken.EOL;
           break;
@@ -421,7 +446,7 @@ namespace BatInspector
             putBack();
             retVal = enGuanoToken.NUMBER;
           }
-          else if((c == '-') || (c=='+') || (c=='(') || (c==')'))
+          else if("-+(),.{}[]".IndexOf(c) >= 0)
           {
             _name += c;
             retVal = enGuanoToken.SPECIAL;

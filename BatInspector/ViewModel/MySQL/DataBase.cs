@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Text;
+using System.Windows.Media.Converters;
 using System.Xml;
 
 
@@ -349,6 +350,31 @@ namespace BatInspector
       { 
         DebugLog.log($"Error export query: {ex.ToString()}", enLogType.ERROR);
       }
+    }
+
+    /// <summary>
+    /// transfer a file from the data base to the destination folder
+    /// </summary>
+    /// <param name="srcFile"></param>
+    /// <param name="dstFolder"></param>
+    /// <returns></returns>
+    public bool copyFile(string srcFile, string dstFolder)
+    {
+      bool retVal = true;
+      string dst = "";
+      try
+      {
+       // TODO: here is more to come (sftp in case of remote db)
+       string fileName= Path.GetFileName(srcFile);
+       dst = Path.Combine(dstFolder, fileName);
+        File.Copy(srcFile, dst);
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log($"Error copying file {srcFile} to {dst}: {ex.ToString()}", enLogType.ERROR);
+        retVal = false;
+      }
+      return retVal;
     }
 
     public bool checkIfOpen(string cmd)

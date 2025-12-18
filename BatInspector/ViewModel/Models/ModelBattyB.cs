@@ -115,6 +115,16 @@ namespace BatInspector
     }
 
 
+    /// <summary>
+    /// add a sql row to BatDetect2 report
+    /// </summary>
+    /// <param name="csv"></param>
+    /// <param name="sqlRow"></param>
+    public static void addReportRow(Csv csv, sqlRow sqlRow)
+    {
+      ModelBirdnet.addReportRow(csv, sqlRow);      
+    }
+
     public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode)
     {
       bool retVal = true;

@@ -1,6 +1,7 @@
 
-
-- new option "Squary Activity" in activity diagram 
+- files now are displayed in alphabetical order in project view
+- new report type "html"
+- new option "Square Activity" in activity diagram 
 - guano meatdata is now parsable by WavReader and displayed in the WavViewer
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json

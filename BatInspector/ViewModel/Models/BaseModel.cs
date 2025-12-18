@@ -60,6 +60,31 @@ namespace BatInspector
       return 0;
     }
 
+    public static void addReportRow(enModel classifier, Csv csv, sqlRow sqlRow)
+    {
+      switch(classifier)
+      {
+        case enModel.BATTY_BIRD_NET:
+          ModelBattyB.addReportRow(csv, sqlRow);
+          break;
+        case enModel.BIRDNET:
+          ModelBirdnet.addReportRow(csv, sqlRow);
+          break;
+        default:
+        case enModel.BAT_DETECT2:
+          ModelBatDetect2.addReportRow(csv, sqlRow);
+          break;
+      }
+    }
+
+    protected static void addFieldToRow(Csv csv, sqlRow sql, string fieldNameRep, string fieldNameDb)
+    {
+      int c = sql.findField(fieldNameDb);
+      if (c >= 0)
+        csv.setCell(csv.RowCnt, fieldNameRep, sql.Fields[c].ToString());
+    }
+
+
     public static BaseModel Create(int index, enModel type)
     {
       switch (type)

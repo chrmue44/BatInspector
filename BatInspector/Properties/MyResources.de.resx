@@ -1723,10 +1723,10 @@
     <value>erweitern</value>
   </data>
   <data name="CtlMySqlExportData" xml:space="preserve">
-    <value>Datenexport ...</value>
+    <value>Export Csv ...</value>
   </data>
-  <data name="CtlMySqlToolTipExport" xml:space="preserve">
-    <value>Exportiert das Ergebnis der Abfrage in eine CSV-Datei</value>
+  <data name="CtlMySqlToolTipExportCsv" xml:space="preserve">
+    <value>Exportiere Ergebnis der Abfrage in eine CSV-Datei</value>
   </data>
   <data name="CtlMySqlToolTipFilter" xml:space="preserve">
     <value>Definiere Bedingungen zum Filtern der Daten</value>
@@ -1973,5 +1973,17 @@
   </data>
   <data name="Activity" xml:space="preserve">
     <value>Aktivität</value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Zielverzeichnis</value>
+  </data>
+  <data name="frmCreatePrjFromQuery_Title" xml:space="preserve">
+    <value>Erzeuge Projekt aus Datenbankabfrage</value>
+  </data>
+  <data name="CtlMySqlExportPrj" xml:space="preserve">
+    <value>Export Prj...</value>
+  </data>
+  <data name="CtlMySqlToolTipExportPrj" xml:space="preserve">
+    <value>Exportiere Ergebnis der Abfrage in ein BatInspector-Projekt</value>
   </data>
 </root>

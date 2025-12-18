@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Media.Animation;
 
 namespace BatInspector
 {
@@ -119,6 +120,30 @@ namespace BatInspector
       return csv;
     }
 
+    /// <summary>
+    /// add a sql row to BatDetect2 report
+    /// </summary>
+    /// <param name="csv"></param>
+    /// <param name="sqlRow"></param>
+    public static void addReportRow(Csv csv, sqlRow sqlRow)
+    {
+      csv.addRow();
+      addFieldToRow(csv, sqlRow, Cols.SAMPLERATE, DBBAT.SAMPLE_RATE);
+      addFieldToRow(csv, sqlRow, Cols.FILE_LEN, DBBAT.FILE_LENGTH);
+      addFieldToRow(csv, sqlRow, Cols.REC_TIME, DBBAT.RECORDING_TIME);
+      addFieldToRow(csv, sqlRow, Cols.NAME, DBBAT.WAV_FILE_NAME);
+      addFieldToRow(csv, sqlRow, Cols.LAT, DBBAT.LAT);
+      addFieldToRow(csv, sqlRow, Cols.LON, DBBAT.LON);
+      addFieldToRow(csv, sqlRow, Cols.TEMPERATURE, DBBAT.TEMP);
+      addFieldToRow(csv, sqlRow, Cols.HUMIDITY, DBBAT.HUMI);
+      addFieldToRow(csv, sqlRow, Cols.NR, DBBAT.CALLNR);
+      addFieldToRow(csv, sqlRow, Cols.START_TIME, DBBAT.START_TIME);
+      addFieldToRow(csv, sqlRow, Cols.DURATION, DBBAT.CALL_LEN);
+      addFieldToRow(csv, sqlRow, Cols.PROBABILITY, DBBAT.PROB);
+      addFieldToRow(csv, sqlRow, Cols.SPECIES, DBBAT.SPEC_AUTO);
+      addFieldToRow(csv, sqlRow, Cols.SPEC_LATIN, DBBAT.SPEC_MAN);
+      addFieldToRow(csv, sqlRow, Cols.REMARKS, DBBAT.REM);
+    }
 
     public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode)
     {

@@ -231,6 +231,23 @@ namespace BatInspector
       Fields.Add(field);
     }
 
+    public sqlField getField(string name)
+    {
+      sqlField retVal= null;
+      for (int i = 0; i < Fields.Count; i++)
+      {
+        if (Fields[i].Name == name)
+        {
+          retVal = Fields[i];
+          break;
+        }
+      }
+      if (retVal == null)
+        retVal = new sqlField();
+      return retVal;
+    }
+
+
     public int findField(string name)
     {
       int retVal = -1;
@@ -242,6 +259,26 @@ namespace BatInspector
           break;
         }
       }
+      return retVal;
+    }
+
+    /// <summary>
+    /// creates a list of column names 
+    /// </summary>
+    /// <returns></returns>
+    public string[] getColNames()
+    {
+      string[] retVal = new string[Fields.Count];
+      for (int i = 0; i < Fields.Count; i++)
+        retVal[i] = Fields[i].Name;
+      return retVal;
+    }
+
+    public string[] getDataFields()
+    {
+      string[] retVal = new string[Fields.Count];
+      for (int i = 0; i < Fields.Count; i++)
+        retVal[i] = Fields[i].ToString(); ;
       return retVal;
     }
   }

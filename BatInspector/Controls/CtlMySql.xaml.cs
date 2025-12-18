@@ -99,7 +99,7 @@ namespace BatInspector.Controls
       switch (_ctlPreSelect.SelectIndex)
       {
         case IDX_NONE:
-          setFieldSelector("Date", false, 0, false);
+          setFieldSelector(DBBAT.DATE, false, 0, false);
           setFieldSelector(DBBAT.LOC, false, 0, false);
           setFieldSelector(DBBAT.PRJCREATOR, false, 0, false);
           setFieldSelector(DBBAT.RECDEV, false, 0, false);
@@ -131,14 +131,14 @@ namespace BatInspector.Controls
           _tbQuery.Text = "";
           break;
         case IDX_ALL:
-          setFieldSelector("Date", true, 0, false);
+          setFieldSelector(DBBAT.DATE, true, 0, false);
           setFieldSelector(DBBAT.LOC, true, 0, false);
-          setFieldSelector("PrjCreator", true, 0, false);
+          setFieldSelector(DBBAT.PRJCREATOR, true, 0, false);
           setFieldSelector(DBBAT.PRJ_NOTES, true, 0, false);
-          setFieldSelector("RecordingDevice", true, 0, false);
-          setFieldSelector("MicrophoneId", true, 0, false);
-          setFieldSelector("Classifier", true, 0, false);
-          setFieldSelector("Model", true, 0, false);
+          setFieldSelector(DBBAT.RECDEV, true, 0, false);
+          setFieldSelector(DBBAT.MICID, true, 0, false);
+          setFieldSelector(DBBAT.CLASSI, true, 0, false);
+          setFieldSelector(DBBAT.MODEL, true, 0, false);
           setFieldSelector(DBBAT.PATH_TO_WAV, true, 0, false);
           setFieldSelector(DBBAT.LAT, true, 0, false);
           setFieldSelector(DBBAT.LON, true, 0, false);
@@ -162,14 +162,14 @@ namespace BatInspector.Controls
           setFieldSelector($"calls.{DBBAT.REM}", true, 0, false);
           break;
         case IDX_BATINPECTOR:
-          setFieldSelector("Date", false, 0, false);
+          setFieldSelector(DBBAT.DATE, false, 0, false);
           setFieldSelector(DBBAT.LOC, false, 0, false);
-          setFieldSelector("PrjCreator", false, 0, false);
+          setFieldSelector(DBBAT.PRJCREATOR, false, 0, false);
           setFieldSelector(DBBAT.PRJ_NOTES, false, 0, false);
-          setFieldSelector("RecordingDevice", true, 0, false);
-          setFieldSelector("MicrophoneId", true, 0, false);
-          setFieldSelector("Classifier", false, 0, false);
-          setFieldSelector("Model", false, 0, false);
+          setFieldSelector(DBBAT.RECDEV, true, 0, false);
+          setFieldSelector(DBBAT.MICID, true, 0, false);
+          setFieldSelector(DBBAT.CLASSI, true, 0, false);
+          setFieldSelector(DBBAT.MODEL, true, 0, false);
           setFieldSelector(DBBAT.PATH_TO_WAV, true, 0, false);
           setFieldSelector(DBBAT.LAT, true, 0, false);
           setFieldSelector(DBBAT.LON, true, 0, false);
@@ -505,6 +505,16 @@ namespace BatInspector.Controls
       }
       else
         DebugLog.log("Export data: nothing to export, query is empty", enLogType.INFO);
+    }
+
+    private void _btnExportPrj_Click(object sender, RoutedEventArgs e)
+    {
+      frmCreatePrjFromQuery frm = new frmCreatePrjFromQuery();
+      bool? ok = frm.ShowDialog();
+      if (ok == true)
+      {
+        //TODO
+      }
     }
 
     private void _btnConnect_Click(object sender, RoutedEventArgs e)

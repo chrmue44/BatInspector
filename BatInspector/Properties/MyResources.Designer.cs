@@ -2113,6 +2113,51 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute next step in script..
+        /// </summary>
+        public static string frmDebug_ExecuteNextStepInScript {
+            get {
+                return ResourceManager.GetString("frmDebug_ExecuteNextStepInScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute script..
+        /// </summary>
+        public static string frmDebug_ExecuteScript {
+            get {
+                return ResourceManager.GetString("frmDebug_ExecuteScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload script. Press after editing script..
+        /// </summary>
+        public static string frmDebug_ReloadScriptPressAfterEditingScript {
+            get {
+                return ResourceManager.GetString("frmDebug_ReloadScriptPressAfterEditingScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start editor to edit script..
+        /// </summary>
+        public static string frmDebug_StartEditorToEditScript {
+            get {
+                return ResourceManager.GetString("frmDebug_StartEditorToEditScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop and reinit script..
+        /// </summary>
+        public static string frmDebug_StopAndRestartScript {
+            get {
+                return ResourceManager.GetString("frmDebug_StopAndRestartScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string frmDebugClose {
@@ -5362,15 +5407,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decrease dynamic range.
-        /// </summary>
-        public static string ToolTipDecRange {
-            get {
-                return ResourceManager.GetString("ToolTipDecRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Denoise the current file.
         /// </summary>
         public static string ToolTipDenoise {
@@ -5389,7 +5425,16 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Increase dynamic range.
+        ///   Looks up a localized string similar to Change black level.
+        /// </summary>
+        public static string ToolTipIncBlacklevel {
+            get {
+                return ResourceManager.GetString("ToolTipIncBlacklevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change dynamic range.
         /// </summary>
         public static string ToolTipIncRange {
             get {

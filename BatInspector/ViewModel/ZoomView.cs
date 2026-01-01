@@ -144,11 +144,11 @@ namespace BatInspector
     public int SelectedCallIdx { get; set; }
     public bool RefreshZoomImg { get; set; } = false;
 
-    public void initWaterfallDiagram(string wavName)
+    public void initWaterfallDiagram(string wavName, enMetaData metaData)
     {
       _wf = new Waterfall(wavName, _colorTable, AppParams.FFT_WIDTH, AppParams.Inst.GradientRange, AppParams.Inst.BlackLevel);
       string infoName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      _fileInfo = PrjMetaData.retrieveMetaData(wavName);
+      _fileInfo = PrjMetaData.retrieveMetaData(wavName, _wf.Audio.Guano, metaData);
     }
 
     public void zoomInV()

@@ -95,6 +95,9 @@ data-recovery.png
 debug.png
 https://www.flaticon.com/free-icons/debug Debug icons created by Blaze150 - Flaticon
 
+icons8-edit-64.png
+"https://icons8.com/icon/66625/edit" icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
 filter.png
 https://www.flaticon.com/free-icons/filter
 

@@ -8,10 +8,12 @@
 
 using BatInspector.Forms;
 using libParser;
+using Org.BouncyCastle.Math.EC;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Xml.Linq;
 
 namespace BatInspector
 {
@@ -27,6 +29,7 @@ namespace BatInspector
     int _samplingRate;
     string _fName = "";
     List<Tuple<int, int>> _overdrive;
+    Guano _guano;
 
     public SoundEdit(int samplingRate = 384000, int size = 384000)
     {
@@ -48,6 +51,7 @@ namespace BatInspector
 
     public int SamplingRate {  get{ return  _samplingRate; } }
 
+    public Guano Guano { get { return _guano; } }
     /*
     public void expandSamples(double[] samples, int size)
     {
@@ -133,7 +137,7 @@ namespace BatInspector
 
     public FreqResponseRecord[] createMicSpectrumFromNoiseFile()
     {
-      FreqResponseRecord[] retVal = initFreqResponse();
+      FreqResponseRecord[] retVal = AirAbsorbtion.initFreqResponse();
       FftForward();
       int idxSpec = 0;
       int idxResp = 1;
@@ -186,31 +190,6 @@ namespace BatInspector
       return retVal;
     }
 
-    private FreqResponseRecord[] initFreqResponse()
-    {
-      int stepCnt = 33;
-
-      double[] steps = new double[stepCnt];
-      for(int i = 0; i < stepCnt; i++)
-        steps[i] = Math.Pow(10, (double)i/(double)stepCnt);
-      FreqResponseRecord[] retVal = new FreqResponseRecord[ steps.Length *6 / 5];
-      retVal[0] = new FreqResponseRecord() { Amplitude = 0.0, Frequency = 100.0 };
-      
-      for (int s = 0; s < steps.Length; s++)
-      {
-        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * 10000.0, Amplitude = 0.0 };
-        retVal[1 + s] = r;
-      }
-
-      for (int s = 0; s < steps.Length; s++)
-      {
-        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * 100000.0, Amplitude = 0.0 };
-        if ((1 + s + steps.Length) >= retVal.Length)
-          break;
-        retVal[1 + s + steps.Length] = r;
-      }
-      return retVal;
-    }
 
     private double getAmplitude(double f, FreqResponseRecord[] freqResponse)
     {
@@ -358,6 +337,7 @@ namespace BatInspector
       int retVal = 0;
       WavFile inFile = new WavFile();
       retVal = inFile.readFile(name);
+      _guano = inFile.Guano;
       if (retVal == 0)
       {
         _samples = new double[inFile.AudioSamples.Length];
@@ -379,6 +359,36 @@ namespace BatInspector
         }
       }
       return retVal;
+    }
+
+
+    public void save()
+    {
+      try
+      {
+        WavFile outFile = new WavFile();
+        outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
+        outFile.saveFileAs(_fName);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"unable to save file: {_fName}  {ex.ToString()}", enLogType.ERROR);
+      }
+    }
+
+
+    public void saveAs(string fName)
+    {
+      try
+      {
+        WavFile outFile = new WavFile();
+        outFile.createFile(1, _samplingRate, 0, Samples.Length - 1, Samples);
+        outFile.saveFileAs(fName);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"unable to save file: {_fName}  {ex.ToString()}", enLogType.ERROR);
+      }
     }
 
     /// <summary>
@@ -410,16 +420,27 @@ namespace BatInspector
       }
     }
 
-    public void normalize()
+
+    public double findMax(out int index)
     {
       double max = 0;
-      foreach(double sp in _samples)
+      index = 0;
+      for (int i = 0; i < _samples.Length; i++)
       {
-        double s = Math.Abs(sp);
+        double s = Math.Abs(_samples[i]);
         if (s > max)
+        {
           max = s;
+          index = i;
+        }
       }
-      double fact = 0.95 / max;
+      return max;
+    }
+
+    public void normalize(double maxVal = 0.95)
+    {
+      double max = findMax(out int index);
+      double fact = maxVal / max;
       for (int i = 0; i < _samples.Length; i++)
         _samples[i] *= fact;
     }
@@ -519,6 +540,149 @@ namespace BatInspector
       }
       p = Math.Sqrt(p);
       f = _samplingRate / 2 * f / _spectrum.Length;
+    }
+
+    /// <summary>
+    /// simulation of reduction of signal amplitude due to increasing distance to object.
+    /// The amplitude of recording is reduced according the original and new recording distance
+    /// The additional frequency dependent absorbtion of air is taken into account
+    /// </summary>
+    /// <param name="temp">ambient temperature [°C]</param>
+    /// <param name="humidity">relative humidity [%]</param>
+    /// <param name="distance1">original recording distance to object [m]</param>
+    /// <param name="distance2">new distance to object [m]</param>
+    public void applyDampening(double temp, double humidity, double distance1, double distance2)
+    {
+      FreqResponseRecord[] freqResponse = AirAbsorbtion.createFreqResponse(temp, humidity, distance1, distance2);
+      applyFreqResponse(freqResponse, 1.0);
+    }
+
+
+    /// <summary>
+    /// add a signal from another wav file. The other WAV file must be as least as long as the original file.
+    /// With the factor it is possible to adjust the volume relative to the original
+    /// </summary>
+    /// <param name="wavName">name of wav file to add</param>
+    /// <param name="fact">factor to apply to added signal (0.0 ... 1.0)</param>
+    /// <returns></returns>
+    public int addSignal(string wavName, double fact)
+    {
+      int retVal = 0;
+      WavFile wav = new WavFile();
+      if ((0 < fact) && (fact < 1.0))
+      {
+        double f1 = 1.0 - fact;
+        retVal = wav.readFile(wavName);
+        if (retVal == 0)
+        {
+          if (_samples.Length <= wav.AudioSamples.Length)
+          {
+            for (int i = 0; i < _samples.Length; i++)
+              _samples[i] = f1 * _samples[i] + fact * wav.AudioSamples[i] / 32768.0;
+          }
+          else
+            retVal = 2;
+        }
+      }
+      else
+        retVal = 3;
+
+      return retVal;
+    }
+  }
+
+
+  /// <summary>
+  /// functions to calculate the damping of air in relation to frequency, temperature and rel. humidity
+  /// </summary>
+  public class AirAbsorbtion
+  {
+    static double p0 = 20e-6;  //ref. sound pressure ampitude [Pa];
+    static double pa = 102.325; // ambient atmospheric pressure [kPa];
+    static double pr = 102.325; // reference atmospheric pressure [kPa];
+    static double t0 = 293;  // reference athmospheric temperatur [K]
+    static double to1 = 273.16; //triple-point isotherm temp: 273.16 K = 273.15 + 0.01 K(0.01°C)
+
+
+    public static FreqResponseRecord[] initFreqResponse()
+    {
+      int stepCnt = 33;
+
+      double[] steps = new double[stepCnt];
+      for (int i = 0; i < stepCnt; i++)
+        steps[i] = Math.Pow(10, (double)i / (double)stepCnt);
+      FreqResponseRecord[] retVal = new FreqResponseRecord[steps.Length * 6 / 5];
+      retVal[0] = new FreqResponseRecord() { Amplitude = 0.0, Frequency = 100.0 };
+
+      for (int s = 0; s < steps.Length; s++)
+      {
+        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * 10000.0, Amplitude = 0.0 };
+        retVal[1 + s] = r;
+      }
+
+      for (int s = 0; s < steps.Length; s++)
+      {
+        FreqResponseRecord r = new FreqResponseRecord() { Frequency = steps[s] * 100000.0, Amplitude = 0.0 };
+        if ((1 + s + steps.Length) >= retVal.Length)
+          break;
+        retVal[1 + s + steps.Length] = r;
+      }
+      return retVal;
+    }
+
+    public static FreqResponseRecord[] createFreqResponse(double temp, double humidity, double distance1, double distance2)
+    {
+      FreqResponseRecord[] fr = initFreqResponse();
+      for(int i = 0; i < fr.Length; i++)
+      {
+        fr[i].Amplitude = damping(fr[i].Frequency, temp + 273.15, humidity) * (distance2 - distance1);
+        fr[i].Amplitude += Math.Log10(distance2 / distance1) * 6.0 / Math.Log10(2);
+      }
+      return fr;
+    }
+
+    /// <summary>
+    /// calculate relaxation frequency of oxygen
+    /// </summary>
+    /// <param name="h"> molar water concentration [%]</param>
+    /// <returns></returns>
+    static double frO(double h = 1.0)
+    {
+      //frO = (pa / pr) · (24 + 4.04 · 104 · h · ((0.02 + h) / (0.391 + h)))
+      return pa / pr * (24 + 4.04 * 10000 * h * (0.02 + h) / (0.392 + h));
+    }
+
+
+    /// <summary>
+    /// calculate relaxation frequency of N
+    /// </summary>
+    /// <param name="h"> molar water concentration [%]</param>
+    /// <param name="t">ambient athmospheric temperature [K]</param>
+    /// <returns></returns>
+    static double frN(double t = 293.0, double h = 1.0)
+    {
+      //frN = (pa / pr) · (T / To)−1 / 2 · (9 + 280 · h · exp(−4.170 · ((T / To)−1 / 3−1)))
+      return pa / pr * Math.Sqrt(t / t0) * (9 + 280 * h * Math.Exp(-4.170 * (Math.Pow(t / t0, 1.0 / 3.0) - 1.0)));
+    }
+
+
+    /// <summary>
+    /// calculates the noise absorption of air 
+    /// </summary>
+    /// <param name="f">frequency [Hz]</param>
+    /// <param name="t">temperature of air [K]</param>
+    /// <param name="hr">relative humidity [%]</param>
+    /// <returns>damping factor [dB/m]</returns>
+
+    public static double damping(double f, double t, double hr)
+    {
+      double psat = pr * Math.Pow(10.0, -6.8346 * Math.Pow(to1 / t, 1.261) + 4.6151);
+      double h = hr * (psat / pa);
+      double z = 0.1068 * Math.Exp(-3352 / t) * Math.Pow(frN(t, h) + f * f / frN(t, h), -1.0);
+      double y = Math.Pow(t / t0, -2.5) * (0.01275 * Math.Exp(-2239.1 / t) * Math.Pow(frO(h) + f * f / frO(h), -1.0) + z);
+      double a = 8.686 * f * f * (1.84e-11 * Math.Pow(pa / pr, -1.0) * Math.Pow(t / t0, 0.5) + y);
+
+      return a;
     }
   }
 }

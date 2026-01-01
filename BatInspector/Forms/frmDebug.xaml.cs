@@ -40,32 +40,39 @@ namespace BatInspector.Forms
 
     public void setup(string script, List<ParamItem> pars)
     {
+      Title = "Script Debugger: " + script;
+      _script = script;
+      _params = pars;
+      initScriptView();
+    }
+
+    private void initScriptView()
+    {
       try
       {
-        Title = "Script Debugger: " + script;
-        _script = script;
-        string[] lines = File.ReadAllLines(script);
+        string[] lines = File.ReadAllLines(_script);
         _spScript.Children.Clear();
-        for(int i= 0; i<lines.Length; i++)
+        for (int i = 0; i < lines.Length; i++)
         {
           ctlDebugLine line = new ctlDebugLine();
           line.setup(i, lines[i], setBreakCondition);
           _spScript.Children.Add(line);
         }
-        App.Model.Scripter.initScriptForDbg(script);
+        App.Model.Scripter.initScriptForDbg(_script);
         highlightActLine(true);
-        _params = pars;
         initScriptParams();
         _ctlVarTable.setup(App.Model.Scripter.VarList);
       }
       catch (Exception ex)
       {
-        DebugLog.log("error reading script: " + script + " " + ex.ToString(), enLogType.ERROR);
+        DebugLog.log("error reading script: " + _script + " " + ex.ToString(), enLogType.ERROR);
       }
+
     }
 
     private void initScriptParams() 
     {
+      int wLbl = 160;
       if ((_params != null) && (_params.Count > 0))
       {
         _spPars.Children.Clear();
@@ -75,18 +82,18 @@ namespace BatInspector.Forms
           switch (_params[i].Type)
           {
             case enParamType.FILE:
-              ctl.setup(_params[i].Name, 150, false, "", setParams);
+              ctl.setup(_params[i].Name, wLbl, false, "", setParams);
               ctl.Margin = new Thickness(2, 2, 0, 0);
               _spPars.Children.Add(ctl);
               break;
             case enParamType.DIRECTORY:
-              ctl.setup(_params[i].Name, 150, true, "", setParams);
+              ctl.setup(_params[i].Name, wLbl, true, "", setParams);
               ctl.Margin = new Thickness(2, 2, 0, 0);
               _spPars.Children.Add(ctl);
               break;
             case enParamType.MICSCELLANOUS:
               ctlDataItem ctld = new ctlDataItem();
-              ctld.setup(_params[i].Name, enDataType.STRING, 0, 150, true, setParams);
+              ctld.setup(_params[i].Name, enDataType.STRING, 0, wLbl, true, setParams);
               ctld.Margin = new Thickness(2, 2, 0, 0);
               ctld.setValue("");
               _spPars.Children.Add(ctld);
@@ -254,6 +261,16 @@ namespace BatInspector.Forms
         _btnStep.IsEnabled = true;
         _btnStep.Opacity = 1.0;
       }
+    }
+
+    private void _btnEdit_Click(object sender, RoutedEventArgs e)
+    {
+      App.Model.editScript(_script);
+    }
+
+    private void _btnReload_Click(object sender, RoutedEventArgs e)
+    {
+      initScriptView();
     }
   }
 }

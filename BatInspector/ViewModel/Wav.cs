@@ -15,7 +15,7 @@ using System.Xml.Linq;
 using libParser;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using Org.BouncyCastle.Utilities;
+using NAudio.Flac;
 
 namespace BatInspector
 {
@@ -217,13 +217,6 @@ namespace BatInspector
     }
 
 
-    public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount, ref double[] samples)
-    {
-      AddSampleData(data, offs, len, bitsPerSample, chanCount);
-      samples = new double[WaveData.Length];
-      for(int i = 0; i <  samples.Length; i++)
-        samples[i] = (double)WaveData[i]/32768.0;
-    }
 
     public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount)
     {
@@ -356,6 +349,21 @@ namespace BatInspector
       ChunkSize = (UInt32)WaveData.Length * 2;
     }
 
+    public void AddSampleData(float[] leftBuffer, int idxStart, int idxEnd)
+    {
+      WaveData = new short[idxEnd - idxStart + 2];
+      if (idxEnd >= leftBuffer.Length)
+        idxEnd = leftBuffer.Length - 1;
+
+      int bufferOffset = 0;
+      for (int index = idxStart; index < idxEnd; index++)
+      {
+        WaveData[bufferOffset] = (short)(leftBuffer[index] * 32767.0);
+        bufferOffset++;
+      }
+      ChunkSize = (UInt32)WaveData.Length * 2;
+    }
+
     public void AddSampleData(short[] leftBuffer, int idxStart, int idxEnd)
     {
       WaveData = new short[idxEnd - idxStart + 2];
@@ -386,6 +394,9 @@ namespace BatInspector
     Pcm16BitToSampleProvider _sampleProvider = null;
     PlaybackState _playbackState = PlaybackState.Stopped;
     Guano _guano = null;
+
+    public string FileName { get { return _fName; } }
+
     public WaveHeader WavHeader { get { return _header;} }
 
     public FormatChunk FormatChunk {  get {  return _format;} }
@@ -589,6 +600,55 @@ namespace BatInspector
       return 0;
     }
 
+    public int importFlac(string file, bool chanR)
+    {
+      int retVal = 0;
+      if (!File.Exists(file))
+      {
+        DebugLog.log($"import flac failed, file {file} doesn't exist", enLogType.ERROR);
+        return 1;
+      }
+
+      using (FlacReader flac = new FlacReader(file))
+      {
+        var sampleProvider = flac.ToSampleProvider();
+
+        List<float> samplesL = new List<float>();
+        List<float> samplesR = new List<float>();
+        // 3. Create a buffer to hold the samples
+        float[] buffer = new float[sampleProvider.WaveFormat.SampleRate];
+        int samplesRead;
+        float max = 0;
+        while ((samplesRead = sampleProvider.Read(buffer, 0, buffer.Length)) > 0)
+        {
+          if (flac.WaveFormat.Channels == 2)
+          {
+            for (int i = 0; i < samplesRead; i += 2)
+            {
+              samplesL.Add(buffer[i]);
+              if (buffer[i + 1] > max)
+                max = buffer[i + 1];
+              samplesR.Add(buffer[i + 1]);
+            }
+          }
+          else
+          {
+            for (int i = 0; i < samplesRead; i++)
+              samplesR.Add(buffer[i]);
+          }
+        }
+        if((flac.WaveFormat.Channels == 2) && !chanR)
+          _data.AddSampleData(samplesL.ToArray(), 0, samplesL.Count);
+        else
+          _data.AddSampleData(samplesR.ToArray(), 0, samplesR.Count);
+        _format.Frequency = (uint)sampleProvider.WaveFormat.SampleRate;
+        _format.Channels = (ushort)sampleProvider.WaveFormat.Channels;
+        _format.BitsPerSample = 16;
+        _isInitialized = true;
+      }
+      return retVal;
+    }
+
     public static void splitWav(string name, double splitLength, bool removeOriginal)
     {
       WavFile wav = new WavFile();
@@ -604,6 +664,7 @@ namespace BatInspector
           idxEnd = wav.AudioSamples.Length - 1;
         WavFile splitWav = new WavFile();
         splitWav.createFile(sampleRate, idxStart, idxEnd, wav.AudioSamples);
+        splitWav.addGuanoMetaData(wav);
         string fName = Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name) + "_" + ext + AppParams.EXT_WAV);
         splitWav.saveFileAs(fName);
         ext++;
@@ -657,6 +718,13 @@ namespace BatInspector
       if (_guano == null)
         _guano = new Guano();
       _guano.createMetaData(rec, timeExpFactor);
+    }
+
+    public void addGuanoMetaData(WavFile wav)
+    {
+      if (_guano == null)
+        _guano = new Guano();
+      _guano.copyMetaData(wav);
     }
 
     public void pause()

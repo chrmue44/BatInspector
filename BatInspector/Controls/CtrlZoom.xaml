@@ -53,8 +53,8 @@
                     <local:ctlDataItem x:Name="_ctlRange" VerticalContentAlignment="Center"></local:ctlDataItem>
                 </GroupBox> -->
                 <StackPanel>
-                    <Slider x:Name="_slRange"  Width="120" Height="15" Margin="2" Maximum="160" Minimum="6" ToolTip="{x:Static res:MyResources.ToolTipIncRange}" Background="{DynamicResource colorBackGroundToolB}" ValueChanged="_slRange_MouseUp"/>
-                    <Slider x:Name="_slBlackLevel" Width="120" Height="15" Margin="2" Maximum="100" Minimum="0" ValueChanged="_slBlackLevel_MouseUp"/>
+                    <Slider x:Name="_slRange"  Width="120" Height="15" Margin="2" Maximum="200" Minimum="6" ToolTip="{x:Static res:MyResources.ToolTipIncRange}" Background="{DynamicResource colorBackGroundToolB}" ValueChanged="_slRange_MouseUp"/>
+                    <Slider x:Name="_slBlackLevel" Width="120" Height="15" Margin="2" Maximum="100" Minimum="0" ToolTip="{x:Static res:MyResources.ToolTipIncBlacklevel}" ValueChanged="_slBlackLevel_MouseUp"/>
                 </StackPanel>
                 <!-- <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
                     <Image Source="../images/icons8-plus-+-48.png"></Image>

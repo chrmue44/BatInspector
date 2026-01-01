@@ -52,17 +52,24 @@
                     <Image Source="../images/icons8-save-48.png"></Image>
                 </Button>
                 <Separator/> -->
-                <Button x:Name="_btnStart"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStart_Click">
+                <Button x:Name="_btnStart"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.frmDebug_ExecuteScript}" Click="_btnStart_Click">
                     <Image Source="../images/play-button.png"></Image>
                 </Button>
-                <Button x:Name="_btnStep"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStep_Click">
+                <Button x:Name="_btnStep"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.frmDebug_ExecuteNextStepInScript}" Click="_btnStep_Click">
                     <Image Source="../images/Shoes.png"></Image>
                 </Button>
-                <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnPause_Click">
+                <Button x:Name="_btnPause"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Pause script" Click="_btnPause_Click">
                     <Image Source="../images/pause.png"></Image>
                 </Button>
-                <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="" Click="_btnStop_Click">
+                <Button x:Name="_btnStop"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.frmDebug_StopAndRestartScript}" Click="_btnStop_Click">
                     <Image Source="../images/stop.png"></Image>
+                </Button>
+                <Separator Margin="10,0,10,0"/>
+                <Button x:Name="_btnEdit"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.frmDebug_StartEditorToEditScript}" Click="_btnEdit_Click">
+                    <Image Source="../images/icons8-edit-64.png"></Image>
+                </Button>
+                <Button x:Name="_btnReload"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.frmDebug_ReloadScriptPressAfterEditingScript}" Click="_btnReload_Click">
+                    <Image Source="../images/vcsupdaterequired_93493.png"></Image>
                 </Button>
             </ToolBar>
         </ToolBarTray>

@@ -127,7 +127,9 @@ namespace BatInspector
     //  testCreatePngCpp();
       testCheckSpecies();
       testGuano();
+      testAirAbsorbtion();
       //    testMySql();
+
 
       //testCreateMicSpectrumFromNoiseFile();
       //double soft = 1.0;
@@ -501,11 +503,11 @@ namespace BatInspector
       string WavDir = "G:\\bat\\2022\\20220326\\Records";
       string AnnotationDir = "G:\\bat\\2022\\20220326\\ann";
       string reportName = "G:\\bat\\2022\\20220326\\bd2\\report.csv";
-      model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE);
+      model.createReportFromAnnotations(0.5, species, WavDir, AnnotationDir, reportName, enRepMode.REPLACE, enMetaData.XML);
       ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
       Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
       Analysis a = new Analysis(false, enModel.BAT_DETECT2);
-      a.read(reportName, App.Model.DefaultModelParams);
+      a.read(reportName, App.Model.DefaultModelParams, prj.MetaData);
       a.save(reportName, prj.Notes, prj.SummaryName);
     }
 
@@ -533,7 +535,7 @@ namespace BatInspector
           ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
           Project p = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           Analysis a = new Analysis(false, enModel.BAT_DETECT2);
-          a.read(repName, App.Model.DefaultModelParams);
+          a.read(repName, App.Model.DefaultModelParams, p.MetaData);
           string sumName = repName.Replace(AppParams.PRJ_REPORT, AppParams.PRJ_SUMMARY);
           a.createSummary(sumName, p.Notes);
         }
@@ -659,7 +661,7 @@ namespace BatInspector
       w.readFile(Path.Combine(prjDir, "Records", file));
       string report = Path.Combine(prjDir, "bd2", "report_BatDetect2_GermanBats.pth.tar.csv");
       Analysis a = new Analysis(false, enModel.BAT_DETECT2);
-      a.read(report, App.Model.DefaultModelParams);
+      a.read(report, App.Model.DefaultModelParams, enMetaData.XML);
       AnalysisFile f = a.find(file);
       assert("open test data", f != null);
 
@@ -1105,7 +1107,7 @@ namespace BatInspector
         ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
         Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
         prj.readPrjFile(dir);
-        prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams);
+        prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams, prj.MetaData);
         switch (sel)
         {
           case 0:
@@ -1145,7 +1147,7 @@ namespace BatInspector
       assert("testMySql: connect", res == 0);
       Project prj = new Project(false, App.Model.DefaultModelParams[0], App.Model.DefaultModelParams.Length, AppParams.DIR_WAVS);
       prj.readPrjFile(prjPath);
-      prj.Analysis.read(analysisFile, prj.AvailableModelParams);
+      prj.Analysis.read(analysisFile, prj.AvailableModelParams, enMetaData.XML);
       res = db.DbBats.addPrjToTableProjects(prj, false);
       assert("testMySql: addPrj", res == 0);
 
@@ -1283,15 +1285,18 @@ namespace BatInspector
         Firmware = "BatSpy 25-11-11",
         Humidity = "33",
         Temparature = "18.2",
-        GPS = new BatRecordGPS() { Position = "49.5  8.3566"},
-        Trigger = new BatRecordTrigger() { Filter="LP", Level="-11.0", Frequency="16", EventLength="1.5"}
+        SN = "BS40_F_002",
+        Samplerate = "384000",
+        Duration = "2.001",
+        GPS = new BatRecordGPS() { Position = "49.5  8.3566" },
+        Trigger = new BatRecordTrigger() { Filter = "LP", Level = "-11.0", Frequency = "16", EventLength = "1.5" }
       };
       wav.addGuanoMetaData(rec, 1);
       wav.saveFileAs(target);
 
       WavFile testWav = new WavFile();
       testWav.readFile(target);
-      assert("guano, count", testWav.Guano.Fields.Count == 10);
+      assert("guano, count", testWav.Guano.Fields.Count == 13);
       GuanoItem it =  wav.Guano.getField("Timestamp");
       assert("guano, timestamp", (it != null) && (it.Value == rec.DateTime));
       it = wav.Guano.getField("Firmware Version");
@@ -1303,6 +1308,18 @@ namespace BatInspector
       it = wav.Guano.getField("Loc Position");
       assert("guano, position", (it != null) && (it.Value == rec.GPS.Position));
     }
+
+    void testAirAbsorbtion()
+    {
+      double a1 = AirAbsorbtion.damping(1000, 288, 50);
+      assert("testAirAbsorption 1",Math.Abs(a1 - 0.0042050292665746867) < 1e-8);
+      double a2 = AirAbsorbtion.damping(10000, 288, 50);
+      assert("testAirAbsorption 2", Math.Abs(a2 - 0.19325955269665906) < 1e-8);
+      double a3 = AirAbsorbtion.damping(100000, 288, 50);
+      assert("testAirAbsorption 3", Math.Abs(a3 - 2.6666182395460405) < 1e-8);
+    }
+
+
 
     private void assert(string a, string exp)
     {

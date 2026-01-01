@@ -27,10 +27,23 @@ namespace BatInspector.Controls
       _spVars.Children.Clear();
       foreach(VarListItem var in _varList.getVarList(false))
       {
-        ctlDataItem it = new ctlDataItem();
-        it.setup(var.name, enDataType.STRING, 0, 100, true);
-        it.setValue(var.value.ToString());
-        _spVars.Children.Add(it);
+        if (var.Value.Count == 1)
+        {
+          ctlDataItem it = new ctlDataItem();
+          it.setup(var.name, enDataType.STRING, 0, 100, true);
+          it.setValue(var.Value[0].ToString());
+          _spVars.Children.Add(it);
+        }
+        else
+        {
+          for (int i = 0; i < var.Value.Count; i++)
+          {
+            ctlDataItem it = new ctlDataItem();
+            it.setup($"{var.name}[{i}]", enDataType.STRING, 0, 100, true);
+            it.setValue(var.Value[i].ToString());
+            _spVars.Children.Add(it);
+          }
+        }
       }
     }
   }

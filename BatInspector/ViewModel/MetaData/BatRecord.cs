@@ -23,6 +23,19 @@ public partial class BatRecord
 
   public BatRecord()
   {
+    FileName = "";
+    DateTime = "";
+    SN = "";
+    Firmware = "";
+    Samplerate = "";
+    Gain = "";
+    InputFilter = "";
+    Duration = "";
+    PeakValue = "";
+    Temparature = "";
+    Humidity = "";
+    Trigger = new BatRecordTrigger();
+    GPS = new BatRecordGPS();
   }
 
   /// <remarks/>
@@ -86,6 +99,15 @@ public partial class BatRecord
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class BatRecordTrigger
 {
+  public BatRecordTrigger()
+  {
+    TriggerType = "";
+    Level = "";
+    Filter = "";
+    EventLength = "";
+    Frequency = "";
+  }
+
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string TriggerType { get; set; }
@@ -119,6 +141,12 @@ public partial class BatRecordTrigger
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class BatRecordGPS
 {
+
+  public BatRecordGPS()
+  {
+    Position = "";
+  }
+
   /// <remarks/>
   [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   public string Position { get; set; }

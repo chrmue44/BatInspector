@@ -10,14 +10,18 @@ using NAudio.Utils;
 using Org.BouncyCastle.Asn1.Mozilla;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Channels;
 using System.Text;
+using System.Windows.Markup;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 
 /*
  * https://github.com/riggsd/guano-py
+ * https://www.wildlifeacoustics.com/SCHEMA/GUANO.html
+ * 
  */
 
 
@@ -137,20 +141,21 @@ namespace BatInspector
     {
       ChunkId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
       ChunkSize = BitConverter.ToUInt32(data, 4);
+      #if DEBUG
+      string guanoStr = System.Text.Encoding.ASCII.GetString(data, 8, data.Length - 8);
+      #endif
       _data = WavFile.partArray(data, 8, data.Length - 8);
       parse(_data);
     }
 
     public byte[] GetBytes()
     {
+      ChunkSize = (UInt32)_data.Length;
       List<byte> bytes = new List<byte>();
       bytes.AddRange(Encoding.ASCII.GetBytes(ChunkId));
       bytes.AddRange(BitConverter.GetBytes(ChunkSize));
-      writeDataToChunk(bytes);
-      UInt32 size = (UInt32)bytes.Count - 8;
-      byte[] s = BitConverter.GetBytes(size);
-      for (int i = 4; i < 8; i++)
-        bytes[i] = s[i - 4];
+      foreach (byte b in _data)
+        bytes.Add(b);
       return bytes.ToArray();
     }
 
@@ -173,17 +178,52 @@ namespace BatInspector
       return retVal;
     }
 
-
-    private void writeDataToChunk(List<byte> bytes)
+    public BatRecord getMetaData()
     {
+      BatRecord retVal = new BatRecord();
+      retVal.Samplerate = getFieldAsString("Samplerate");
+      retVal.Temparature = getFieldAsString("Temperature Ext");
+      retVal.GPS.Position = getFieldAsString("Loc Position");
+      retVal.DateTime = getFieldAsString("Timestamp");
+      return retVal;
+    }
+
+
+    private double getFieldAsDouble(string fieldName, string nameSpace = "")
+    {
+      double retVal = 0;
+      bool ok = false;
+      GuanoItem it = getField(fieldName, nameSpace);
+      if(it != null)
+        ok = double.TryParse(it.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
+      if (!ok)
+        DebugLog.log($"could not read Guano field {fieldName} as double", enLogType.ERROR);
+      return retVal;
+    }
+
+    private string getFieldAsString(string fieldName, string nameSpace = "")
+    {
+      string retVal = "";
+      GuanoItem it = getField(fieldName, nameSpace);
+      if (it != null)
+        retVal = it.Value;
+      else
+        DebugLog.log($"could not read Guano field {fieldName}", enLogType.ERROR);
+      return retVal;
+    }
+
+    private void writeDataToChunk()
+    {
+      List<byte> data = new List<byte>();
       foreach(GuanoItem it in _items)
       {
         string str = it.ToString();
         foreach(char c in str)
         {
-          bytes.Add((byte)c);
+          data.Add((byte)c);
         }
       }
+      _data = data.ToArray();
     }
 
     private void parse(byte[] s)
@@ -292,7 +332,7 @@ namespace BatInspector
 
             }
             else
-              par.NameSpace = "General";
+              par.NameSpace = "";
             _items.Add(par);
           }
           while ((tok != enGuanoToken.EOL) && (tok != enGuanoToken.EOF))
@@ -302,6 +342,13 @@ namespace BatInspector
       while (tok != enGuanoToken.EOF);
     }
 
+    public void copyMetaData(WavFile wav)
+    {
+      _data = new byte[wav.Guano._data.Length];
+      Array.Copy(wav.Guano._data, _data, wav.Guano._data.Length);
+      ChunkId = wav.Guano.ChunkId;
+      ChunkSize = wav.Guano.ChunkSize;
+    }
 
     public void createMetaData(BatRecord rec, int timeExpFactor = 1)
     {
@@ -321,7 +368,6 @@ namespace BatInspector
       item.Value = rec.GPS.Position;
       item = getItem("", "Samplerate");
       item.Value = rec.Samplerate;
-      _items.Add(item);
       if (!string.IsNullOrEmpty(rec.Temparature))
       {
         item = getItem("", "Temperature Ext");
@@ -352,7 +398,9 @@ namespace BatInspector
         item = getItem("BatSpy", "Trigger AMP");
         item.Value = rec.Trigger.Level;
       }
+      writeDataToChunk();
     }
+
 
     private GuanoItem getItem(string nameSpace, string fieldName)
     {
@@ -443,7 +491,8 @@ namespace BatInspector
               _name += c;
               c = getChar();
             }
-            putBack();
+            if(c != 0)
+              putBack();
             retVal = enGuanoToken.NUMBER;
           }
           else if("-+(),.{}[]".IndexOf(c) >= 0)
@@ -458,7 +507,8 @@ namespace BatInspector
               _name += c;
               c = getChar();
             }
-            putBack();
+            if(c != 0)
+              putBack();
             retVal = enGuanoToken.NAME;
           }
           break;

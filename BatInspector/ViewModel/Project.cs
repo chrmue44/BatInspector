@@ -14,7 +14,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Web.UI.WebControls.WebParts;
 using System.Windows;
 
 //using System.Windows.Forms;
@@ -687,8 +689,37 @@ namespace BatInspector
       {
         extension = "*.raw";
         retVal = getSelectedFiles(info, extension);
+        if(retVal.Length == 0)
+        {
+          extension = "*.flac";
+          retVal = getSelectedFiles(info, extension);
+        }
       }
       return retVal;
+    }
+
+    private static void importFlacFiles(string[] files, string wavDir, PrjInfo info)
+    {
+      foreach (string file in files)
+      {
+        string name = Path.GetFileName(file);
+        string dest = Path.Combine(wavDir, name);
+        dest = dest.Replace(".flac", AppParams.EXT_WAV);
+        WavFile wavFile = new WavFile();
+        wavFile.importFlac(file, true);
+        if (wavFile.AudioSamples.Length > 2048)
+        {
+          wavFile.saveFileAs(dest);
+          DateTime time = PrjMetaData.getDateTimeFromFileName(file);
+          double[] pos = new double[2];
+          pos[0] = info.Latitude;
+          pos[1] = info.Longitude;
+          ElekonInfoFile.create(dest, pos[0], pos[1], time);
+        }
+        else
+          DebugLog.log($"file {name} not imported because it is too short", enLogType.INFO);
+      }
+
     }
 
     private static void importRawFiles(string[] files, string wavDir, PrjInfo info)
@@ -862,8 +893,11 @@ namespace BatInspector
           createPrjDirStructure(fullDir, out string wavDir, info.WavSubDir);
           if (soundFileExtension == "*.wav")
             Utils.copyFiles(files, wavDir, info.RemoveSource);
-          else
+          else if (soundFileExtension == "*.raw")
             importRawFiles(files, wavDir, info);
+          else if (soundFileExtension == "*.flac")
+            importFlacFiles(files, wavDir, info);
+
           string[] xmlFiles = getSelectedFiles(info, "*.xml");
           DebugLog.log($"copy xml files... at {t.Elapsed}", enLogType.INFO);
           Utils.copyFiles(xmlFiles, wavDir, info.RemoveSource);
@@ -1034,7 +1068,7 @@ namespace BatInspector
         if(report[i] != "")
           File.WriteAllText(retVal.getReportName(i), report[i]);
       }
-      retVal.Analysis.read(retVal.ReportName, retVal.AvailableModelParams);
+      retVal.Analysis.read(retVal.ReportName, retVal.AvailableModelParams, retVal.MetaData);
       retVal.Analysis.createSummary(retVal.SummaryName, "");
       return retVal;
     }
@@ -1493,7 +1527,7 @@ namespace BatInspector
             _analysis[SelectedModelIndex].undo(file.FullName);
             File.Delete(file.FullName);
             _analysis[SelectedModelIndex].save(ReportName, Notes, SummaryName);
-            _analysis[SelectedModelIndex].read(ReportName, AvailableModelParams);
+            _analysis[SelectedModelIndex].read(ReportName, AvailableModelParams, MetaData);
             _analysis[SelectedModelIndex].updateControls(wavName);
           }
           else

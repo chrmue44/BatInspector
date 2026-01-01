@@ -923,7 +923,7 @@ namespace BatInspector
         {
 
           Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
-          analysis.read(rep.ReportName, App.Model.DefaultModelParams);
+          analysis.read(rep.ReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
           FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
 
           if (analysis.Files.Count == 0)
@@ -1045,7 +1045,7 @@ namespace BatInspector
         if ((rep.StartDate >= date) && (rep.StartDate < end) || (rep.EndDate >= date) && (rep.EndDate < end))
         {
           Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
-          analysis.read(rep.ReportName, App.Model.DefaultModelParams);
+          analysis.read(rep.ReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
           if (analysis.Files.Count > 0)
           {
             foreach (AnalysisFile file in analysis.Files)

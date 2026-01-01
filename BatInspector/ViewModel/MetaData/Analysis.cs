@@ -270,7 +270,7 @@ namespace BatInspector
       _summary = new List<SumItem>();
     }
 
-    public void read(string fileName, ModelParams[] modelParams)
+    public void read(string fileName, ModelParams[] modelParams, enMetaData metaData)
     {
       init();
       lock (_fileLock)
@@ -305,7 +305,7 @@ namespace BatInspector
             _csv.save();
           }
           if (_csv.getColNr(Cols.REC_TIME) < 1)
-            filloutRecTime();
+            filloutRecTime(metaData);
           if (_csv.getColNr(Cols.TEMPERATURE) < 1)
           {
             int colnr = _csv.getColNr(Cols.LON) + 1;
@@ -722,7 +722,7 @@ namespace BatInspector
       }
     }
 
-    void filloutRecTime()
+    void filloutRecTime(enMetaData metaData)
     {
       _csv.insertCol(2, "", Cols.REC_TIME);
       string oldF = "$$$";
@@ -735,7 +735,7 @@ namespace BatInspector
         string fName = _csv.getCell(r, Cols.NAME);
         if (fName != oldF)
         {
-          BatRecord rec = PrjMetaData.retrieveMetaData(fName);
+          BatRecord rec = PrjMetaData.retrieveMetaData(fName, metaData);
           if (rec != null)
           {
             dateStr = rec.DateTime;

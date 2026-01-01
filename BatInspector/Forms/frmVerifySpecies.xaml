@@ -103,7 +103,7 @@
                         <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
                             <Image Source="../images/icons8-plus-+-48.png"></Image>
                         </Button>
-                        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipDecRange}">
+                        <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
                             <Image Source="../images/icons8-minus-48.png"></Image>
                         </Button>
                         <Label x:Name="_lblClick" Content="" Margin="20,5,5,10"/>

@@ -12,6 +12,7 @@ using libScripter;
 using OxyPlot;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 
@@ -23,23 +24,25 @@ namespace BatInspector
     {
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
+        new OptItem("AddProjectToDb", "add currently open project to DB", 0, ftcAddPrjToDb),
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
         new OptItem("AdjustProject","remove all entries from project file not corresponding to report", 0, fctAdjustProject),
+        new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
+        new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
         new OptItem("CombineProjects", "combine multiple projects <DirName> <PrjOut> <Prj1> < Prj2> ...",4 , fctCombineProjects ),
+        new OptItem("CopyFile", "copy file to directory <fileName> <targetDir>",2, fctCopyFile),
+        new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
+        new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
         new OptItem("CreatePrjFile", "create project file in directory <dirName>",1, fctCreatePrjFile),
         new OptItem("CreateReport", "create report from annotations <prjDirName>",1, ftcCreateReport ),
         new OptItem("CreateTrainingReport", "create report of training annotations <srcDir> <reportName>", 2, fctTrainReport),
+        new OptItem("DelProjectFromDb", "delete currently open project from DB", 0, ftcDelPrjFromDb),
+        new OptItem("EditWav", "<option> edit wav file", 1, fctEditWav),
         new OptItem("ExportFiles", "export files from project <FilterExpression> <outDir> <allCalls",3, ftcExportFiles ),
+        new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
-        new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
-        new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
-        new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
-        new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
-        new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
-        new OptItem("AddProjectToDb", "add currently open project to DB", 0, ftcAddPrjToDb),
-        new OptItem("DelProjectFromDb", "delete currently open project from DB", 0, ftcDelPrjFromDb),
         });
 
       _options = new Options(_features, false);
@@ -103,7 +106,7 @@ namespace BatInspector
         {
           prj.readPrjFile(prjDir);
           if (File.Exists(prj.ReportName))
-            prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams);
+            prj.Analysis.read(prj.ReportName, App.Model.DefaultModelParams, prj.MetaData);
           prjs.Add(prj);
         }
         else
@@ -366,5 +369,130 @@ namespace BatInspector
       return retVal;
     }
 
+
+    int fctCopyFile(List<string> pars, out string ErrText)
+    {
+
+      int retVal = 0;
+      ErrText = "";
+      string[] fileName =  new string[]{ pars[0] };
+      string targetDir = pars[1];
+      bool overWrite = (pars.Count > 2) && ((pars[2] == "1") || (pars[2]=="TRUE")) ? true : false;
+      Utils.copyFiles(fileName, targetDir, false, overWrite);
+      return retVal;
+    }
+    
+    
+    int fctEditWav(List<string> pars, out string ErrText)
+    {
+
+      int retVal = 0;
+      ErrText = "";
+
+      switch(pars[0])
+      {
+        case "OPEN":
+          {
+            if (pars.Count > 1)
+            {
+              string wavName = pars[1];
+              if (App.Model.ZoomView.Waterfall == null)
+                App.Model.ZoomView.initWaterfallDiagram(wavName, enMetaData.AUTO);
+              int ret = App.Model.ZoomView.Waterfall.Audio.readWav(wavName);
+              if(ret != 0)
+              {
+                ErrText = $"unable to read wav file {wavName}";
+              }
+            }
+            else
+              ErrText = "EditWav: not enough parameters for option OPEN";
+          }
+          break;
+
+        case "BANDPASS":
+          {
+            if (pars.Count > 2)
+            {
+              bool ok = double.TryParse(pars[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double fMin);
+              ok &= double.TryParse(pars[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double fMax);
+              if (ok)
+              {
+                App.Model.ZoomView.Waterfall.Audio.FftForward();
+                App.Model.ZoomView.Waterfall.Audio.bandpass(fMin, fMax);
+                App.Model.ZoomView.Waterfall.Audio.FftBackward();
+              }
+              else
+                ErrText = $"EditWav: erroneous parameters: {fMax}, {fMax}";
+            }
+            else
+              ErrText = "EditWav: not enough parameters for option 'BANDPASS";
+          }
+          break;
+
+        case "NORM":
+          {
+            double amplitude = 0.95;
+            if (pars.Count > 1)
+            {
+              bool ok = double.TryParse(pars[1], NumberStyles.Any, CultureInfo.InvariantCulture, out amplitude);
+              if (!ok)
+                ErrText = $"EditWav: erroneous parameters ({pars[1]}) for option 'NORM'";
+            }
+            App.Model.ZoomView.Waterfall.Audio.normalize(amplitude);
+          }
+          break;
+
+        case "DAMP":
+          {
+            if (pars.Count > 2)
+            {
+              bool ok = double.TryParse(pars[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double dist1);
+              ok &= double.TryParse(pars[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double dist2);
+              if (ok)
+              {
+                if ((dist1 > 0) && (dist2 > dist1))
+                  App.Model.ZoomView.Waterfall.Audio.applyDampening(20, 50, dist1, dist2);
+                else
+                  ErrText = "EditWav: distance 1 must be > 0, and distance 2 > distance 1";
+              }
+              else
+                ErrText = $"EditWav: erroneous parameters ({pars[1]}, {pars[2]}) for option 'DAMP'";
+            }
+            else
+              ErrText = "EditWav: not enough parameters for option 'DAMP'";
+          }
+          break;
+
+        case "ADD":
+          if (pars.Count > 2)
+          {
+            string wavName = pars[1];
+            bool ok = double.TryParse(pars[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double fact);
+            if(ok)
+            {
+              int ret = App.Model.ZoomView.Waterfall.Audio.addSignal(wavName, fact);
+              if (ret != 0)
+                ErrText = "EditWav: addition of external WAV failed: added wav, does'n exist, is to short or factor erroneous";
+            }
+            else
+              ErrText = $"EditWav: erroneous parameter ({pars[2]}) for option 'ADD'";
+
+          }
+          else
+            ErrText = "EditWav: not enough parameters for option 'ADD'";
+          break;
+
+        case "SAVE":
+          if(pars.Count > 1)
+            App.Model.ZoomView.Waterfall.Audio.saveAs(pars[1]);
+          else
+            App.Model.ZoomView.Waterfall.Audio.save();
+          break;
+      }
+
+      if (ErrText != "")
+        retVal = 1;
+      return retVal;
+    }
   }
 }

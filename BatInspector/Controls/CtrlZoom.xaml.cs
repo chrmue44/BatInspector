@@ -155,7 +155,7 @@ namespace BatInspector.Controls
       _tbWavName.Text = System.IO.Path.GetFileName(analysis.Name);
       string wavName = File.Exists(analysis.Name) ? analysis.Name : _wavFilePath + "/" + analysis.Name;
 
-      App.Model.ZoomView.initWaterfallDiagram(wavName);
+      App.Model.ZoomView.initWaterfallDiagram(wavName, enMetaData.AUTO);
       _duration.setValue(App.Model.ZoomView.Waterfall.Duration);
       _sampleRate.setValue((double)App.Model.ZoomView.Waterfall.SamplingRate / 1000);
       SizeChanged += ctrlZoom_SizeChanged;
@@ -218,6 +218,9 @@ namespace BatInspector.Controls
       _cbMode.SelectedIndex = 0;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
       _cbGrid.IsChecked = true;
+
+      _slBlackLevel.Value = AppParams.Inst.BlackLevel;
+      _slRange.Value = AppParams.Inst.GradientRange;
     }
 
 
@@ -338,7 +341,6 @@ namespace BatInspector.Controls
         if (App.Model.ZoomView.Waterfall == null)
           return;
         App.Model.ZoomView.Waterfall.Range = _slRange.Value;
-        //_ctlRange.setValue(App.Model.ZoomView.Waterfall.Range);
         updateRuler();
         updateImage();
         DebugLog.log("Zoom:SLIDER 'range' moved", enLogType.DEBUG);
@@ -352,9 +354,19 @@ namespace BatInspector.Controls
 
     private void _slBlackLevel_MouseUp(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-      App.Model.ZoomView.Waterfall.BlackLevel = _slBlackLevel.Value;
-      updateRuler();
-      updateImage();
+      try
+      {
+        if (App.Model.ZoomView.Waterfall == null)
+          return;
+        App.Model.ZoomView.Waterfall.BlackLevel = _slBlackLevel.Value;
+        updateRuler();
+        updateImage();
+        DebugLog.log("Zoom:SLIDER 'blacklevel' moved", enLogType.DEBUG);
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log("Zoom:SLIDER 'blacklevel' failed: " + ex.ToString(), enLogType.ERROR);
+      }
     }
 
     private void _btnDecRange_Click(object sender, RoutedEventArgs e)

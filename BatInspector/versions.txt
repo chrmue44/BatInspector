@@ -1,10 +1,20 @@
 
+- import Songmeter mini WAV files (wildlife acoustics)
+- import batMode WAV files (bio acoustic technology)
 - files now are displayed in alphabetical order in project view
 - new report type "html"
 - new option "Square Activity" in activity diagram 
-- guano meatdata is now parsable by WavReader and displayed in the WavViewer
+- guano metadata is now parsable by WavReader and displayed in the WavViewer
+- added buttons "edit", "reload" to debug window 
+- new script commands: EditWav, CopyFile
+- new function rand()
+- array varaiables in script
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json
+- bugfix: parser add: add const to variable 
+- enhanced Model:
+  - added data: PAUS, RHIP
+  - data augmentation: MALC, MEMA, MBRA, PAUS, PAUR
 
 # V0.9.5.3  22.11.25
 - bugfix: crash, when opening a bird project and at least one bat model is NOT installed 

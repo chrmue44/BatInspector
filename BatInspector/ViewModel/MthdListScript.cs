@@ -13,7 +13,6 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using NAudio.MediaFoundation;
 using System.Globalization;
 
 namespace BatInspector
@@ -61,6 +60,9 @@ namespace BatInspector
       _scriptHelpTab.Add(new HelpTabItem("getCell", "get a cell content of a previously opened csv file",
                       new List<string> { "1: handle", "2: row nr", "3: col name or nr" }, new List<string> { "1: cell content" }));
       addMethod(new FuncTabItem("setCell", setCell));
+      addMethod(new FuncTabItem("getMaxAmplitude", getMaxAmplitude));
+      _scriptHelpTab.Add(new HelpTabItem("getMAxAmplitude", "get max. Amplitude of currently opened wac file",
+      new List<string> { "" }, new List<string> { "" }));
       _scriptHelpTab.Add(new HelpTabItem("setCell", "set a cell content of a previously opened csv file",
                       new List<string> { "1: handle", "2: row nr", "3: col name or nr", "4: value" }, new List<string> { "1: cell content" }));
       addMethod(new FuncTabItem("getRowCount", getRowCount));
@@ -225,6 +227,19 @@ namespace BatInspector
       result.assign((Int64)err);
       return err;
     }
+
+
+    static tParseError getMaxAmplitude(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = tParseError.SUCCESS;
+      result = new AnyType();
+
+      double max = App.Model.ZoomView.Waterfall.Audio.findMax(out int idx);
+
+      result.assign(max);
+      return err;
+    }
+
 
     static tParseError createPrjFromFiles(List<AnyType> argv, out AnyType result)
     {

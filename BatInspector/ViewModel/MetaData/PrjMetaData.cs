@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup.Localizer;
 
 namespace BatInspector
 {
@@ -17,6 +18,7 @@ namespace BatInspector
   {
     XML = 0,
     GUANO = 1,
+    AUTO = 2, // check individually for each file (slower)
   }
 
   public class PrjMetaData
@@ -36,27 +38,75 @@ namespace BatInspector
       }
     }
 
+    public static BatRecord retrieveMetaData(string wavName, Guano guano, enMetaData metaData)
+    {
+      BatRecord retVal = null;
+
+      if (metaData == enMetaData.AUTO)
+      {
+        if (guano != null)
+          metaData = enMetaData.GUANO;
+        else
+          metaData = enMetaData.XML;
+      }
+      switch (metaData)
+      {
+        case enMetaData.XML:
+          string infoFileName = wavName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+          retVal = ElekonInfoFile.read(infoFileName);
+          break;
+
+        case enMetaData.GUANO:
+          retVal = guano.getMetaData();
+          break;
+      }
+      return retVal;
+    }
+
     public static BatRecord retrieveMetaData(Project prj, string wavName)
     {
-      string infoFileName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      infoFileName = Path.Combine(prj.PrjDir, prj.WavSubDir, infoFileName);
-      BatRecord r = ElekonInfoFile.read(infoFileName);
-      return r;
+      string fullWavName = Path.Combine(prj.PrjDir, prj.WavSubDir, wavName);
+      return retrieveMetaData(fullWavName, prj.MetaData);
     }
 
-    public static BatRecord retrieveMetaData(string fullWavPath)
+    public static BatRecord retrieveMetaData(string fullWavPath, enMetaData metaData)
     {
+      BatRecord r = null;
+
       string infoFileName = fullWavPath.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      BatRecord r = ElekonInfoFile.read(infoFileName);
+      if(metaData == enMetaData.AUTO)
+      {
+        if (File.Exists(infoFileName))
+          metaData = enMetaData.XML;
+        else
+          metaData = enMetaData.GUANO;
+      }
+
+      switch (metaData)
+      {
+        case enMetaData.AUTO:
+          break;
+
+        case enMetaData.XML:
+          r = ElekonInfoFile.read(infoFileName);
+          break;
+
+        case enMetaData.GUANO:
+          {
+            WavFile w = new WavFile();
+            w.readFile(fullWavPath);
+            if (w.Guano != null)
+              r = w.Guano.getMetaData();
+          }
+          break;
+      }
       return r;
     }
 
-    public static BatRecord retrieveMetaData(string path, string wavName)
+    public static BatRecord retrieveMetaData(string path, string wavName, enMetaData metaData)
     {
-      string infoFileName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-      infoFileName = Path.Combine(path, infoFileName);
-      BatRecord r = ElekonInfoFile.read(infoFileName);
-      return r;
+      string fullWavName = Path.Combine(path, wavName);
+      return retrieveMetaData(fullWavName, metaData);
     }
 
     public static void createMetaData(string wavName, BatRecord rec, enMetaData metaData, int timeExFactor)
@@ -113,7 +163,7 @@ namespace BatInspector
     {
       double deltaT = 0;
       DateTime t = new DateTime(1900, 1, 1);
-      BatRecord rec = PrjMetaData.retrieveMetaData(fName);
+      BatRecord rec = PrjMetaData.retrieveMetaData(fName, enMetaData.XML);
       foreach (string newName in newNames)
       {
         string xmlName = newName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);

@@ -250,10 +250,10 @@
     <value>Gehe nach rechts auf der Zeitachse</value>
   </data>
   <data name="ToolTipIncRange" xml:space="preserve">
-    <value>Vergrößere Dynamik-Bereich für Darstellung</value>
+    <value>Ändere den Dynamik-Bereich für Sonogramm-Darstellung</value>
   </data>
-  <data name="ToolTipDecRange" xml:space="preserve">
-    <value>Verkleinere Dynamik-Bereich für Darstellung</value>
+  <data name="ToolTipIncBlacklevel" xml:space="preserve">
+    <value>Ändere den Schwarzwert für Sonogramm-Darstellung</value>
   </data>
   <data name="ToolTipPlayDispSection" xml:space="preserve">
     <value>Spiele angezeigten Abschnitt ab</value>
@@ -1985,5 +1985,20 @@
   </data>
   <data name="CtlMySqlToolTipExportPrj" xml:space="preserve">
     <value>Exportiere Ergebnis der Abfrage in ein BatInspector-Projekt</value>
+  </data>
+  <data name="frmDebug_StartEditorToEditScript" xml:space="preserve">
+    <value>Starte Editor, um Skript zu editieren.</value>
+  </data>
+  <data name="frmDebug_StopAndRestartScript" xml:space="preserve">
+    <value>Stoppe und reinitialisiere Skript.</value>
+  </data>
+  <data name="frmDebug_ExecuteNextStepInScript" xml:space="preserve">
+    <value>Führe nächsten Schritt aus.</value>
+  </data>
+  <data name="frmDebug_ExecuteScript" xml:space="preserve">
+    <value>Führe Skript ohne Unterbrechung aus.</value>
+  </data>
+  <data name="frmDebug_ReloadScriptPressAfterEditingScript" xml:space="preserve">
+    <value>Lade Skript neu (nach dem Editieren ausführen).</value>
   </data>
 </root>

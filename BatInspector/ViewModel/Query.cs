@@ -185,7 +185,7 @@ namespace BatInspector
         retVal._analysis[retVal.SelectedModelIndex] = new Analysis(false,
                                            App.Model.DefaultModelParams[retVal.SelectedModelIndex].Type);
         string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
-        retVal._analysis[retVal.SelectedModelIndex].read(fullReportName, App.Model.DefaultModelParams);
+        retVal._analysis[retVal.SelectedModelIndex].read(fullReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
         retVal._reportName = fullReportName;
         retVal.initSpeciesList();
 
@@ -258,7 +258,7 @@ namespace BatInspector
       ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
       Project prj = Project.createFrom(dir.FullName);
       Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
-      analysis.read(prj.getReportName(SelectedModelIndex), App.Model.DefaultModelParams);
+      analysis.read(prj.getReportName(SelectedModelIndex), App.Model.DefaultModelParams, enMetaData.AUTO);
 
       FilterItem filter = new FilterItem(-1, "query",
        _expression.Replace('\n', ' '), false);

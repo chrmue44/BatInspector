@@ -176,9 +176,9 @@ namespace BatInspector
     public void updateReport()
     {
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
-        _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams);
+        _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, _view.Prj.MetaData);
       else if ((Query != null) && File.Exists(Query.ReportName))
-        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams);
+        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, _view.Prj.MetaData);
 
     }
 
@@ -207,7 +207,7 @@ namespace BatInspector
         _view.initReport();
         if (File.Exists(Prj.ReportName))
         {
-          _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams);
+          _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, Prj.MetaData);
           _view.Prj.Analysis.openSummary(_view.Prj.SummaryName, _view.Prj.Notes);
           if ((_view.Prj.Analysis.Files.Count > 0) && _view.Prj.Analysis.Files[0].getDouble(Cols.TEMPERATURE) <= 0)
           {

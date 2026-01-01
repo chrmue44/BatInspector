@@ -250,10 +250,10 @@
     <value>Move right (increasing time)</value>
   </data>
   <data name="ToolTipIncRange" xml:space="preserve">
-    <value>Increase dynamic range</value>
+    <value>Change dynamic range</value>
   </data>
-  <data name="ToolTipDecRange" xml:space="preserve">
-    <value>Decrease dynamic range</value>
+  <data name="ToolTipIncBlacklevel" xml:space="preserve">
+    <value>Change black level</value>
   </data>
   <data name="ToolTipPlayDispSection" xml:space="preserve">
     <value>play displayed section</value>
@@ -1985,5 +1985,20 @@
   </data>
   <data name="CtlMySqlToolTipExportPrj" xml:space="preserve">
     <value>Export result of query to BatInspector project</value>
+  </data>
+  <data name="frmDebug_StartEditorToEditScript" xml:space="preserve">
+    <value>Start editor to edit script.</value>
+  </data>
+  <data name="frmDebug_StopAndRestartScript" xml:space="preserve">
+    <value>Stop and reinit script.</value>
+  </data>
+  <data name="frmDebug_ExecuteNextStepInScript" xml:space="preserve">
+    <value>Execute next step in script.</value>
+  </data>
+  <data name="frmDebug_ExecuteScript" xml:space="preserve">
+    <value>Execute script.</value>
+  </data>
+  <data name="frmDebug_ReloadScriptPressAfterEditingScript" xml:space="preserve">
+    <value>Reload script. Press after editing script.</value>
   </data>
 </root>

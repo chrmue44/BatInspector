@@ -1019,11 +1019,16 @@ namespace BatInspector.Forms
           App.Model.Prj.writePrjFile();
         }
         if((App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null) && 
-           (App.Model.ZoomView.Waterfall.Range != AppParams.Inst.GradientRange))
+           ((App.Model.ZoomView.Waterfall.Range != AppParams.Inst.GradientRange) ||
+            (App.Model.ZoomView.Waterfall.BlackLevel != AppParams.Inst.BlackLevel))
+          )
         {
           MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDisplayContrast, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
+          {
             AppParams.Inst.GradientRange = App.Model.ZoomView.Waterfall.Range;
+            AppParams.Inst.BlackLevel = App.Model.ZoomView.Waterfall.BlackLevel;
+          }
         }
         App.Model.saveSettings();
         if ((App.Model != null) && (App.Model.Prj != null) && (App.Model.Prj.Analysis != null) &&

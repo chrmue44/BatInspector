@@ -42,17 +42,17 @@ namespace BatInspector
                          AppParams.Inst.ModelRootPath :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
         string wrkDir = Path.Combine(modPath, prj.AvailableModelParams[this.Index].SubDir);
-        getInfos(wavDir, out string lat, out string lon, out int week);
+        getInfos(wavDir, out string lat, out string lon, out int week, prj.MetaData);
         string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {sens} {minProb} {lat} {lon} {week} {locale}";
         string cmd = Path.Combine(wrkDir, prj.AvailableModelParams[this.Index].Script);
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
-          bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
+          bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE, prj.MetaData);
           if (ok)
           {
             //        cleanup(prj);
-            prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams);
+            prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams, prj.MetaData);
             if (removeEmptyFiles)
               prj.removeFilesNotInReport();
           }
@@ -78,11 +78,11 @@ namespace BatInspector
       int retVal = 0;
       string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
       string annDir = prj.getAnnotationDir();
-      bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE);
+      bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE, prj.MetaData);
       if (ok)
       {
         //        cleanup(prj.PrjDir);
-        prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams);
+        prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams, prj.MetaData);
         prj.removeFilesNotInReport();
       }
       else
@@ -145,7 +145,7 @@ namespace BatInspector
       addFieldToRow(csv, sqlRow, Cols.REMARKS, DBBAT.REM);
     }
 
-    public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode)
+    public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode, enMetaData metaData)
     {
       bool retVal = true;
       try
@@ -189,7 +189,7 @@ namespace BatInspector
               double lon = 0.0;
               double temperature = -20;
               double humidity = -1;
-              BatRecord info = PrjMetaData.retrieveMetaData(wavDir, wavName);
+              BatRecord info = PrjMetaData.retrieveMetaData(wavDir, wavName, metaData);
               if (info != null)
               {
                 sampleRate = info.Samplerate.Replace(" Hz", ""); ;
@@ -256,7 +256,7 @@ namespace BatInspector
     }
 
 
-    private void getInfos(string wavDir, out string lat, out string lon, out int week)
+    private void getInfos(string wavDir, out string lat, out string lon, out int week, enMetaData metaData)
     {
       lat = "";
       lon = "";
@@ -265,7 +265,7 @@ namespace BatInspector
       FileInfo[] files = dir.GetFiles("*.wav");
       if (files.Length > 0)
       {
-        BatRecord info = PrjMetaData.retrieveMetaData(files[0].FullName);
+        BatRecord info = PrjMetaData.retrieveMetaData(files[0].FullName, metaData);
         string[] pos = info.GPS.Position.Split(' ');
         if (pos.Length > 1)
         {

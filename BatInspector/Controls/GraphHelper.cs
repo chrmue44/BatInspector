@@ -145,24 +145,31 @@ namespace BatInspector.Controls
     /// <param name="nrTicks">nr of ticks</param>
     public static void createRulerY(Canvas can, double x, double y, double height, double min, double max, int nrTicks = 9, string nrFmt = "0.#")
     {
-      if (max == min)
-        max += 1;
-      double[] fTicks = GraphHelper.createTicks(nrTicks, min, max);
-      nrTicks = fTicks.Length;
-      GraphHelper.createLine(can, x , y, x , y + height, Brushes.Black);
-      double span = max - min;
-      if (span == 0)
-        span = 1;
-      for (int i = 0; i < nrTicks; i++)
+      if (min <= max)
       {
-        double yp =y + height - ((fTicks[i] - min) / span * height);
-        GraphHelper.createLine(can,x - 5, yp, x, yp, Brushes.Black);
-        string str = fTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-        GraphHelper.createText(can, x - 32, yp - 9, str, Colors.Black);
+        if (max == min)
+          max += 1;
+        double[] fTicks = GraphHelper.createTicks(nrTicks, min, max);
+        nrTicks = fTicks.Length;
+        GraphHelper.createLine(can, x, y, x, y + height, Brushes.Black);
+        double span = max - min;
+        if (span == 0)
+          span = 1;
+        for (int i = 0; i < nrTicks; i++)
+        {
+          double yp = y + height - ((fTicks[i] - min) / span * height);
+          GraphHelper.createLine(can, x - 5, yp, x, yp, Brushes.Black);
+          string str = fTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
+          GraphHelper.createText(can, x - 32, yp - 9, str, Colors.Black);
+        }
+        double ymax = y;
+        GraphHelper.createLine(can, x - 5, ymax, x, ymax, Brushes.Black);
+        GraphHelper.createText(can, x - 32, ymax - 9, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
       }
-      double ymax = y;
-      GraphHelper.createLine(can, x - 5, ymax, x, ymax, Brushes.Black);
-      GraphHelper.createText(can, x - 32, ymax - 9, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
+      else
+      {
+        DebugLog.log($"create ruler Y failed: min:{min}, max:{max}", enLogType.ERROR);
+      }
     }
 
     public static void createGridY(Canvas can, double x, double y, double w, double h, double min, double max, double[] tTicks, string nrFmt = "0.#")
@@ -211,23 +218,28 @@ namespace BatInspector.Controls
     /// <param name="nrTicks">nr of ticks</param>
     public static void createRulerX(Canvas can, double x, double y, double width, double min, double max, int nrTicks = 9, string nrFmt = "0.#")
     {
-      double[] tTicks = GraphHelper.createTicks(nrTicks, min, max);
-      nrTicks = tTicks.Length;
-      GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
-      double span = max - min;
-      if (span == 0)
-        span = 1;
-      double min1 = min;
-      for (int i = 0; i < nrTicks; i++)
+      if (min < max)
       {
-        double xp = x + width * (tTicks[i] - min1) / span;
-        GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
-        string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-        GraphHelper.createText(can, xp - 10,y + 15, str, Colors.Black);
+        double[] tTicks = GraphHelper.createTicks(nrTicks, min, max);
+        nrTicks = tTicks.Length;
+        GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
+        double span = max - min;
+        if (span == 0)
+          span = 1;
+        double min1 = min;
+        for (int i = 0; i < nrTicks; i++)
+        {
+          double xp = x + width * (tTicks[i] - min1) / span;
+          GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
+          string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
+          GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
+        }
+        double xmax = x + width;
+        GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, Brushes.Black);
+        GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
       }
-      double xmax = x + width;
-      GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, Brushes.Black);
-      GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
+      else
+        DebugLog.log($"create ruler X failed: min:{min}, max:{max}", enLogType.ERROR);
     }
 
     public static void createRulerX(Canvas can, double x, double y, double width, double max,  double[] tTicks, string nrFmt = "0.#")
@@ -248,16 +260,21 @@ namespace BatInspector.Controls
 
     public static void createRulerLogX(Canvas can, double x, double y, double width, double min, double max, double[] tTicks, string nrFmt = "0.#")
     {
-      GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
-      double minLog = Math.Log10(min);
-      double maxLog = Math.Log10(max);
-      for (int i = 0; i < tTicks.Length; i++)
+      if (min < max)
       {
-        double xp = x + width * (Math.Log10(tTicks[i]) - minLog)/(maxLog - minLog);
-        GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
-        string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-        GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
+        GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
+        double minLog = Math.Log10(min);
+        double maxLog = Math.Log10(max);
+        for (int i = 0; i < tTicks.Length; i++)
+        {
+          double xp = x + width * (Math.Log10(tTicks[i]) - minLog)/(maxLog - minLog);
+          GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
+          string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
+          GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
+        }
       }
+      else
+        DebugLog.log($"create ruler log X failed: min:{min}, max:{max}", enLogType.ERROR);
     }
 
     public static void createGridLogX(Canvas can, double x, double y, double width, double h, double min, double max, double[] tTicks, string nrFmt = "0.#")

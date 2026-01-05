@@ -5,7 +5,10 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
- using System.Collections.Generic;
+using libParser;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace libScripter
 {
@@ -137,10 +140,19 @@ namespace libScripter
 
     public enErrOption execute()
     {
-      enErrOption retVal = enErrOption.OK;
-      string errText;
-      int ret = _execCmd.Func(_execCmd.Params, out errText);
-      ErrorText = errText;
+      int ret = 1;
+      enErrOption retVal = enErrOption.FUNC_ERR;
+      try
+      {
+        retVal = enErrOption.OK;
+        string errText;
+        ret = _execCmd.Func(_execCmd.Params, out errText);
+        ErrorText = errText;
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log($"Error executing command {_execCmd.Option}: {ex.ToString()}", enLogType.ERROR);
+      }
       if (ret != 0)
         retVal = enErrOption.FUNC_ERR;
       return retVal;

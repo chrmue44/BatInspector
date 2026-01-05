@@ -733,7 +733,7 @@
     <value>Bitte die fehlenden Informationen zum Erstellen eines Projekts aus Audio-Dateien ergänzen</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Importiere WAV, RAW Datei(en), BatSpy- oder Elekon-Projekt</value>
+    <value>Importiere WAV-, RAW-, FLAC-Datei(en), BatSpy- oder Elekon-Projekt</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Formatfehler Geografische Breite: </value>
@@ -760,7 +760,7 @@
     <value>Angezeigten Bereich als WAV-Datei speichern</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Quellverzeichnis (*.batspy, *.wav, *.raw)</value>
+    <value>Quellverzeichnis (*.batspy, *.wav, *.raw, *.flac)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Zielverzeichnis für Projekt</value>

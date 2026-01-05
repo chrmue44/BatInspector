@@ -91,7 +91,7 @@ namespace BatInspector
             string str = sr.ReadToEnd();
             file.Write(JsonHelper.FormatJson(str));
             file.Close();
-            DebugLog.log("settings saved to '" + fName + "'", enLogType.INFO);
+            DebugLog.log("annotations saved to '" + fName + "'", enLogType.INFO);
           }
         }
       }

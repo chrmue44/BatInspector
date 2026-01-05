@@ -127,9 +127,9 @@ namespace BatInspector
     //  testCreatePngCpp();
       testCheckSpecies();
       testGuano();
-      testAirAbsorbtion();
-      //    testMySql();
-
+      //testAirAbsorbtion();
+      //testMySql();
+      //testFlacImport();
 
       //testCreateMicSpectrumFromNoiseFile();
       //double soft = 1.0;
@@ -143,7 +143,8 @@ namespace BatInspector
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
       //updatePrjsInMySqlDb();
-      createSweep();
+      //createSweep();
+      
       if (_errors == 0)
       {
         DebugLog.clear();
@@ -1319,7 +1320,13 @@ namespace BatInspector
       assert("testAirAbsorption 3", Math.Abs(a3 - 2.6666182395460405) < 1e-8);
     }
 
-
+    void testFlacImport()
+    {
+      WavFile wav = new WavFile();
+ //      string flacName = "F:/prj/BatInspector/TestData/flac/t30khz.flac";
+         string flacName = "F:/prj/BatInspector/TestData/flac/ops-202527_Bbar.flac";
+      wav.importFlac(flacName, true);
+    }
 
     private void assert(string a, string exp)
     {

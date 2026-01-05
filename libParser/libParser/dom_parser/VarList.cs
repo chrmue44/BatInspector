@@ -17,11 +17,17 @@ using System.Globalization;
 
 namespace libParser
 {
-  public struct VarListItem
+  public class VarListItem
   {
     public string name;
-    public AnyType value;
+    public List<AnyType> Value { get { return _value; } }
     public string formulaString;
+    List<AnyType> _value;
+
+    public VarListItem()
+    {
+      _value = new List<AnyType>();
+    }
   };
 
   public class VarName
@@ -41,14 +47,14 @@ namespace libParser
       m_Value.Add(p);
     }
 
-    public Int32 setValue(Int32 Index, AnyType Val)
+    public int ArraySize { get { return m_Value.Count; } } 
+
+    public void setValue(Int32 Index, AnyType Val)
     {
-      Int32 RetVal = 0;
       AnyType p = new AnyType(m_pVarList, m_pMethods);
       while (Index >= m_Value.Count())
         m_Value.Add(p);
       m_Value[Index] = Val;
-      return RetVal;
     }
 
 
@@ -116,7 +122,7 @@ namespace libParser
       var.setValue(0,val);
     }
 
-    public VarName set(string name, string value, Methods methods = null, int index = 0)
+    public VarName set(string name, string value, int index = 0, Methods methods = null)
     {
       VarName n = insert(name, false, methods);
       if (n != null)
@@ -129,7 +135,7 @@ namespace libParser
       return n;
     }
 
-    public void set(string name, double value, Methods methods = null, int index = 0)
+    public void set(string name, double value, int index = 0, Methods methods = null)
     {
       VarName n = insert(name, false, methods);
       if (n != null)
@@ -142,7 +148,7 @@ namespace libParser
     }
 
 
-    public void set(string name, int value, Methods methods = null, int index = 0)
+    public void set(string name, int value, int index = 0, Methods methods = null)
     {
       VarName n = insert(name, false, methods);
       if (n != null)
@@ -252,9 +258,13 @@ namespace libParser
         if (v.isConst() != isConst)
           continue;
         AnyType val = new AnyType(this, m_pMethods);
-        v.getValue(0, ref val);
+        for (int i = 0; i < v.ArraySize; i++)
+        {
+          val = new AnyType(this, m_pMethods);
+          v.getValue(i, ref val);
+          item.Value.Add(val);
+        }
         item.name = v.getName();
-        item.value = val;
         if (val.getType() == AnyType.tType.RT_FORMULA)
           item.formulaString = val.getString();
         list.Add(item);

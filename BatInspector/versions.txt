@@ -1,6 +1,9 @@
 
+# V0.9.6.0
 - import Songmeter mini WAV files (wildlife acoustics)
 - import batMode WAV files (bio acoustic technology)
+- import Spotlight (trackIT)
+- import of FLAC files (experimental)
 - files now are displayed in alphabetical order in project view
 - new report type "html"
 - new option "Square Activity" in activity diagram 
@@ -12,9 +15,13 @@
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json
 - bugfix: parser add: add const to variable 
+ -bugfix: Manual species check: combination of possible species BBAR & Plecotus resulted in "Nyctaloid" (which is bs)
+ -bugfix: CheckSpecies: Fc range for ESER was too narrow (22 - 26 kHz): now 22 - 31 kHz
+ -bugfix: initialization of wavControls when 1st project was opened and after that query opened
+ -bugfix: weird scrolling behaviour at the end of the project
 - enhanced Model:
-  - added data: PAUS, RHIP
-  - data augmentation: MALC, MEMA, MBRA, PAUS, PAUR
+  - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller)
+  - data augmentation: MALC, MEMA, MBRA, PAUS, PAUR, MBEC
 
 # V0.9.5.3  22.11.25
 - bugfix: crash, when opening a bird project and at least one bat model is NOT installed 

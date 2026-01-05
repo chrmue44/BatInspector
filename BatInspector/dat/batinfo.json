@@ -213,9 +213,9 @@
             "NormMin": 4
           },
           "FreqChar": {
-            "Max": 26,
+            "Max": 31,
             "Min": 22,
-            "NormMax": 26,
+            "NormMax": 31,
             "NormMin": 22
           },
           "FreqEnd": null,
@@ -1710,7 +1710,7 @@
       "Abbreviation": "PNAT",
       "CallDistMax": 130,
       "CallDistMin": 100,
-      "CharCalls": "Bestimmbar sind QCF-Rufe mit einer charakteristischen Frequenz von 36 bis max. 40 kHz. FM_QCF-Rufe sind bestimmbar, wenn sie mindestens 7ms lang sind und zwischen 37 und 40 kHz liegen",
+      "CharCalls": "TODO",
       "CheckData": [
         {
           "CallCharacteristic": 4,

@@ -2095,7 +2095,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source Folder(*.batspy, *.wav, *.raw).
+        ///   Looks up a localized string similar to Source Folder(*.batspy, *.wav, *.raw, *.flac).
         /// </summary>
         public static string frmCreatePrjSrcFolder {
             get {
@@ -2104,7 +2104,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import WAV, RAW files, BatSpy- or Elekon Project.
+        ///   Looks up a localized string similar to Import WAV,- RAW-,FLAC- files, BatSpy- or Elekon Project.
         /// </summary>
         public static string frmCreatePrjTitle {
             get {

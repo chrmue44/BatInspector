@@ -138,22 +138,13 @@ namespace libScripter
     {
       _busy = true;
       _scriptName = name;
+      _debug = false;
       /* Create the thread object, passing in the abc.Read() method
       via a ThreadStart delegate. This does not start the thread. */
       _oThread = new Thread(new ThreadStart(this.ParseScript));
       _oThread.Start();
     }
 
-    public void StartParsing(string wrkDir, string name)
-    {
-      _busy = true;
-      _wrkDir = wrkDir;
-      _scriptName = wrkDir + "\\" + name;
-      /* Create the thread object, passing in the abc.Read() method
-      via a ThreadStart delegate. This does not start the thread. */
-      _oThread = new Thread(new ThreadStart(this.ParseScript));
-      _oThread.Start();
-    }
 
     public void StopParsing()
     {
@@ -713,16 +704,34 @@ namespace libScripter
     {
       int retVal = 0;
       ErrText = "";
+      string varName = pars[0];
+      int index = 0;
+
+      if (pars[0].IndexOf('[') > 0)
+      {
+        bool ok = false;
+        string[] toks = pars[0].Split('[');
+        varName = toks[0];
+        int pos = toks[1].IndexOf(']');
+        if(pos >= 0)
+          ok = int.TryParse(toks[1].Substring(0, pos), out index);
+        if(!ok)
+        {
+          ErrText = $"error setting variable {pars[0]}";
+          return 1;
+        }
+      }
+
       if (Utils.isNum(pars[1], false) && (pars[1].Length > 0))
-        _vars.VarList.set(pars[0], int. Parse(pars[1]));
+        _vars.VarList.set(varName, int.Parse(pars[1]), index, null);
       else if (Utils.isNum(pars[1], true) && (pars[1].Length > 0))
       {
         double val = 0;
         double.TryParse(pars[1], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
-        _vars.VarList.set(pars[0], val);
+        _vars.VarList.set(varName, val,  index, null);
       }
       else
-        _vars.VarList.set(pars[0], pars[1]);
+        _vars.VarList.set(varName, pars[1], index, null);
       return retVal;
     }
 
@@ -911,7 +920,23 @@ namespace libScripter
         if ((posEnd >= _actName.Length) || (posEnd < 0))
           break;
         string varName = _actName.Substring(pos + 1, posEnd - pos - 1);
-        VariableItem var = _vars.Find(varName);
+        
+        int index = 0;
+        if(varName.IndexOf('[') > 0)
+        {
+          string[] tok = varName.Split('[');
+          varName = tok[0];
+          bool ok = false;
+          int pos2 = tok[1].IndexOf(']');
+          if (pos2 > 0)
+          {
+            ok = int.TryParse(tok[1].Substring(0, pos2), out index);
+            if (!ok)
+              break;
+          }
+        }
+
+        VariableItem var = _vars.Find(varName, index);
         if (var == null)
         {
           _lastErr = "Variable " + varName + " not found";

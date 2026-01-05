@@ -61,6 +61,10 @@ namespace libParser
       addMethod(new FuncTabItem("abs", abs));
       MathHelpTab.Add(new HelpTabItem("abs", "absolut value",
                       new List<string> { "1: number" }, new List<string> { "1: absolut value of number(real or complex)" }));
+      addMethod(new FuncTabItem("rand", rand));
+      MathHelpTab.Add(new HelpTabItem("rand", "random value",
+                      new List<string> { "1: max Value", "2:Type:   desired type\\n\" +" +
+                                         "   FLOAT = 1 (Default), INT64 = 2" }, new List<string> { "1: random value between 0 and max" }));
       addMethod(new FuncTabItem("arg", arg));
       MathHelpTab.Add(new HelpTabItem("arg", "argument of complex number",
                       new List<string> { "1: number" }, new List<string> { "1: argument of complex number" }));
@@ -143,6 +147,37 @@ namespace libParser
      {
        m_Inst = pInst;
      }*/
+
+    static tParseError rand(List<AnyType> argv, out AnyType result)
+    {
+      tParseError err = 0;
+      result = new AnyType();
+      Random r = new Random();
+      if (argv.Count == 1)
+      {
+        argv[0].changeType(AnyType.tType.RT_FLOAT);
+        result.assign(r.NextDouble() * argv[0].getFloat());
+      }
+      else if (argv.Count == 2)
+      {
+        if (argv[1].getUint64() == 1)
+        {
+          argv[0].changeType(AnyType.tType.RT_FLOAT);
+          result.assign(r.NextDouble() * argv[0].getFloat());
+        }
+        else if (argv[1].getUint64() == 2)
+        {
+          argv[0].changeType(AnyType.tType.RT_INT64);
+          result.assignInt64((int)( (r.NextDouble() * argv[0].getInt64()) + 0.5));
+        }
+        else
+          err = tParseError.ARG2_OUT_OF_RANGE;
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
+
 
     static tParseError sqrt(List<AnyType> argv, out AnyType result)
     {

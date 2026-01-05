@@ -733,7 +733,7 @@
     <value>Longitude (e.g.: 8.4563 or 8° E 22.654)</value>
   </data>
   <data name="frmCreatePrjTitle" xml:space="preserve">
-    <value>Import WAV, RAW files, BatSpy- or Elekon Project</value>
+    <value>Import WAV,- RAW-,FLAC- files, BatSpy- or Elekon Project</value>
   </data>
   <data name="LatitudeFormatError" xml:space="preserve">
     <value>Latitude format error: </value>
@@ -760,7 +760,7 @@
     <value>save displayed range as WAV file</value>
   </data>
   <data name="frmCreatePrjSrcFolder" xml:space="preserve">
-    <value>Source Folder(*.batspy, *.wav, *.raw)</value>
+    <value>Source Folder(*.batspy, *.wav, *.raw, *.flac)</value>
   </data>
   <data name="frmCreatePrjDstFolder" xml:space="preserve">
     <value>Destination Folder for Project</value>

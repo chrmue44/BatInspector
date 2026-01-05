@@ -625,6 +625,7 @@ namespace BatInspector
           {
             for (int i = 0; i < samplesRead; i += 2)
             {
+              
               samplesL.Add(buffer[i]);
               if (buffer[i + 1] > max)
                 max = buffer[i + 1];
@@ -642,7 +643,7 @@ namespace BatInspector
         else
           _data.AddSampleData(samplesR.ToArray(), 0, samplesR.Count);
         _format.Frequency = (uint)sampleProvider.WaveFormat.SampleRate;
-        _format.Channels = (ushort)sampleProvider.WaveFormat.Channels;
+        _format.Channels = 1;  // (ushort)sampleProvider.WaveFormat.Channels;
         _format.BitsPerSample = 16;
         _isInitialized = true;
       }
@@ -664,7 +665,8 @@ namespace BatInspector
           idxEnd = wav.AudioSamples.Length - 1;
         WavFile splitWav = new WavFile();
         splitWav.createFile(sampleRate, idxStart, idxEnd, wav.AudioSamples);
-        splitWav.addGuanoMetaData(wav);
+        if(wav.Guano != null)
+          splitWav.addGuanoMetaData(wav);
         string fName = Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name) + "_" + ext + AppParams.EXT_WAV);
         splitWav.saveFileAs(fName);
         ext++;

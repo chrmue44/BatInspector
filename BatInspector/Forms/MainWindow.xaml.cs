@@ -420,6 +420,9 @@ namespace BatInspector.Forms
           App.Model.initQuery(_queryFile);
           if (App.Model.Query!= null) 
           {
+            _wavCtls.reinitializePool();
+            App.Model.View.initSonogramPool();
+            _spSpectrums.Children.Clear();
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = App.Model.Query.Records.Length - 1;
@@ -432,6 +435,7 @@ namespace BatInspector.Forms
 
             _switchTabToPrj = true;
             buildWavFileList(false);
+            App.Model.View.stopCreatingPngFiles();
             if (App.Model.Query != null)
               showStatus();
           }
@@ -654,8 +658,8 @@ namespace BatInspector.Forms
              (App.Model.View.VisibleFiles.Count - 1))
           {
             wavName = App.Model.View.VisibleFiles[App.Model.View.StartIdx + _spSpectrums.Children.Count + 1];
+            append = true;
           }
-          append = true;
         }
       }
       else
@@ -1400,9 +1404,9 @@ namespace BatInspector.Forms
             return;
 
           double diff = _scrollPrj.Value - _scrollBarPrjPos;
-          if ((diff < 2) && (diff > 0))
+          if ((diff < 2) && (diff > 0) && (_scrollBarPrjPos < _scrollPrj.Maximum))
             incrementControls(true);
-          else if ((diff > -2) && (diff < 0))
+          else if ((diff > -2) && (diff < 0) && (_scrollBarPrjPos < _scrollPrj.Maximum))
             incrementControls(false);
           else
             populateControls((int)_scrollPrj.Value);

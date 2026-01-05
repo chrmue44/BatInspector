@@ -489,7 +489,7 @@ namespace BatInspector
                                              Duration = new ValRange(10.0, 10.0, 16.0, 18.0),
                                              CallCharacteristic = enCallChar.QCF,
                                              Identifiable = enIdentifiable.CHARACTERISTIC},
-                           new CheckData() { FreqChar= new ValRange(22.0,22.0, 26.0, 26.0),
+                           new CheckData() { FreqChar= new ValRange(22.0,22.0, 31.0, 31.0),
                                              Duration = new ValRange(4.0, 4.0,16.0, 18.0 ),
                                              CallCharacteristic = enCallChar.FM_QCF,
                                              Identifiable = enIdentifiable.CHARACTERISTIC},
@@ -904,8 +904,10 @@ namespace BatInspector
                 doc.addText(listGenus[0], true);
               else
               {
-                if ((listGenus.Find(x => x == "Myotis") == null) && ((listGenus.Find(x => x == "Pipistrellus") == null)))
+                if ((listGenus.Find(x => x == "Nyctalus") != null) || ((listGenus.Find(x => x == "Eptesicus") != null)))
                   doc.addText("Nyctaloid", true);
+                else
+                  doc.addText("?");
               }
             }
           }

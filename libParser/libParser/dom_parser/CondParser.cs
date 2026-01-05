@@ -301,8 +301,12 @@ namespace libParser
             case tToken.ASSIGN:
               {
                 Int32 Err;
-                _varList.set(_nameString, 0, _methods);
                 VarName n = _varList.get(_nameString, _methods);
+                if (n == null)
+                {
+                  _varList.set(_nameString, 0, 0, _methods);
+                   n = _varList.get(_nameString, _methods);
+                }
                 getToken();
                 if (_currTok != tToken.BAD_TOKEN)
                 {
@@ -356,15 +360,16 @@ namespace libParser
                 getToken();
                 if (_currTok == tToken.ASSIGN)
                 {
-                  _varList.set(Name, 0, _methods);
                   VarName n = _varList.get(Name, _methods);
-                  Int32 Err;
+                  if (n == null)
+                  {
+                    _varList.set(Name, 0, 0, _methods);
+                    n = _varList.get(Name, _methods);
+                  }
                   getToken();
                   RetVal.assign(expr());
-                  Err = n.setValue(Index, RetVal);
-                  if (Err != 0)
-                    reportError(tParseError.ARRAY_INDEX);
-                  getToken();
+                  n.setValue(Index, RetVal);
+              // getToken(); // why?
                 }
                 else
                 {

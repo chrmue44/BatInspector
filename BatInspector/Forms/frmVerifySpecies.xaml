@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition Height="190"/>
-            <RowDefinition Height="210"/>
+            <RowDefinition Height="270"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -44,38 +44,14 @@
             </GroupBox.Header>
             <StackPanel >
                 <Label Content="{x:Static res:MyResources.frmVerify_RelevantFor}" Margin="330,0,0,0"/>
-                <StackPanel Orientation="Horizontal">
-                    <local:ctlSelectItem x:Name="_ctlHasStrongHarmonics" Margin="0,10,0,0"/>
-                    <Label x:Name="_lblHarmonic" Width="100" Margin="0,6,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <local:ctlSelectItem x:Name="_ctlHasMyotisKink" />
-                    <Label x:Name="_lblMyoK" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <local:ctlSelectItem x:Name="_ctlHasCallTypeAB" />
-                    <Label x:Name="_lblCallAB" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                        <local:ctlSelectItem x:Name="_ctlHasKneeClearly" />
-                    <Label x:Name="_lblKnee" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                            <local:ctlSelectItem x:Name="_ctlIsUniForm" />
-                    <Label x:Name="_lblUniform" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                                <local:ctlSelectItem x:Name="_ctlHasUpwardHookAtEnd" />
-                    <Label x:Name="_lblHook" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                                    <local:ctlSelectItem x:Name="_ctlHasNoCallChanges" />
-                    <Label x:Name="_lblNoChange" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                                        <local:ctlSelectItem x:Name="_ctlIsConvex" Margin="0,0,0,10"/>
-                    <Label x:Name="_lblConvex" Width="100" Margin="0,-4,0,0" Height="24" Content="bla"/>
-                </StackPanel>
+                <local:ctlSpecialQuestion x:Name="_ctlHasStrongHarmonics" />
+                <local:ctlSpecialQuestion x:Name="_ctlHasMyotisKink" Margin="0,-5,0,0" />
+                <local:ctlSpecialQuestion x:Name="_ctlHasCallTypeAB" Margin="0,-5,0,0"/>
+                <local:ctlSpecialQuestion x:Name="_ctlHasKneeClearly" Margin="0,-5,0,0"/>
+                <local:ctlSpecialQuestion x:Name="_ctlIsUniForm" Margin="0,-5,0,0"/>
+                <local:ctlSpecialQuestion x:Name="_ctlHasUpwardHookAtEnd" Margin="0,-5,0,0"/>
+                <local:ctlSpecialQuestion x:Name="_ctlHasNoCallChanges" Margin="0,-5,0,0"/>
+                <local:ctlSpecialQuestion x:Name="_ctlIsConvex" Margin="0,-5,0,0"/>
             </StackPanel>
         </GroupBox>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">

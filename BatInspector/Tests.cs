@@ -127,6 +127,7 @@ namespace BatInspector
     //  testCreatePngCpp();
       testCheckSpecies();
       testGuano();
+      testElekonBra();
       //testAirAbsorbtion();
       //testMySql();
       //testFlacImport();
@@ -138,7 +139,7 @@ namespace BatInspector
       // testSoundEditApplyFreqResponse("20250428_noise", soft);
 
       //checkIfWavFilesExist(); // not a test, a one time function
-      //fixAnnotationIds(); // not a test, a one time function
+      fixAnnotationIds(); // not a test, a one time function
       //testWriteModParams(); //not a test, a one time function
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function
@@ -1190,11 +1191,12 @@ namespace BatInspector
     {
       //      string[] dirs = { "Bbar", "Enil", "Eser", "Hsav", "Malc", "Mbec", "Mbra", "Mdas","Mdau","Mema", "Mmyo", "Mmys", "Mnat","Nlei",
       //                        "Nnoc", "Pkuh", "Plecotus", "Pnat", "Ppip", "Ppyg", "Rfer", "Rhip", "Vmur" };
-      string[] dirs = { "Rfer" };
-      string root = "F:\\bat\\trainingBd2\\raw";
+      string[] dirs = { "ann" };
+      string root = "F:\\bat\\trainingBd2";
       foreach (string dir in dirs)
       {
-        string[] files = Directory.GetFiles(Path.Combine(root, dir, "annotations"), "*.json");
+        //string[] files = Directory.GetFiles(Path.Combine(root, dir, "annotations"), "*.json");
+        string[] files = Directory.GetFiles(Path.Combine(root, dir), "*.json");
         foreach (string fileName in files)
         {
           Bd2AnnFile.checkAndFixId(fileName);
@@ -1251,23 +1253,24 @@ namespace BatInspector
       double lat = 49.5;
       double lon = 8.3;
       CallData c = new CallData(83.0, 27.0, -1, 3, -1, 42, enCallChar.FM);
+      string[] possibleSpecies;
       c.HasMyotisKink = enYesNoProperty.YES;
-      FlowDocument doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null);
+      FlowDocument doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       string res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
       assert("MDAU", (res.IndexOf("MDAU") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
       //PPIP
       c = new CallData(-1, -1, 51, 10, -1, -1, enCallChar.FM_QCF);
-      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
       assert("PPIP1", (res.IndexOf("PPIP") >= 0) && (res.IndexOf("PPYG") >= 0));
 
       c = new CallData(-1, -1, 48, 10, -1, -1, enCallChar.FM_QCF);
-      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
       assert("PPIP2", (res.IndexOf("PPIP") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
 
       c = new CallData(-1, -1, 53.5, 10, -1, -1, enCallChar.FM_QCF);
-      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
       assert("PPYG", (res.IndexOf("PPYG") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
     }
@@ -1326,6 +1329,16 @@ namespace BatInspector
  //      string flacName = "F:/prj/BatInspector/TestData/flac/t30khz.flac";
          string flacName = "F:/prj/BatInspector/TestData/flac/ops-202527_Bbar.flac";
       wav.importFlac(flacName, true);
+    }
+
+    void testElekonBra()
+    {
+      string braName = "F:\\prj\\BatInspector\\TestData\\20930002_20210322201008.bra";
+      //      BatRecordBra bra = ElekonBra.read(braName);
+      string speciesName = "Myotis daubentionii";
+      string eventName = "Eventlocation";
+      Bd2AnnFile annFile = ElekonBra.convertToBd2Ann(braName, 0.004, -2000, speciesName, eventName);
+      annFile.saveAs(braName.Replace(".bra", ".wav.json"));
     }
 
     private void assert(string a, string exp)

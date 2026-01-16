@@ -34,6 +34,7 @@ namespace BatInspector
         new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
         new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
         new OptItem("CreatePrjFile", "create project file in directory <dirName>",1, fctCreatePrjFile),
+        new OptItem("CreateAnnsFromBra", "create training annotations from Elekon BRA files <wavDir> <annDir> <timeOffs> <fMinOffs>", 4, fctCreateAnnsFromBra),
         new OptItem("CreateReport", "create report from annotations <prjDirName>",1, ftcCreateReport ),
         new OptItem("CreateTrainingReport", "create report of training annotations <srcDir> <reportName>", 2, fctTrainReport),
         new OptItem("DelProjectFromDb", "delete currently open project from DB", 0, ftcDelPrjFromDb),
@@ -382,7 +383,43 @@ namespace BatInspector
       return retVal;
     }
     
-    
+    int fctCreateAnnsFromBra(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+
+      string wavDir = pars[0];
+      string annDir = pars[1];
+      string speciesName = "Myotis daubentonii";
+      string eventType = "Echolocation";
+      if (pars.Count > 4)
+        speciesName = pars[4];
+      if (pars.Count > 5)
+        eventType = pars[5];
+
+      bool ok = double.TryParse(pars[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double timeOffs);
+      if(ok)
+      {
+        ok = double.TryParse(pars[3], NumberStyles.Any, CultureInfo.InvariantCulture, out double fMinOffs);
+        if(ok)
+        {
+          string[] files = Directory.GetFiles(wavDir, "*.wav");
+          foreach(string file in files)
+          {
+            string braName = file.Replace(".wav", ".bra");
+            Bd2AnnFile ann = ElekonBra.convertToBd2Ann(braName, timeOffs, fMinOffs, speciesName, eventType);
+            string annName = Path.Combine(annDir, Path.GetFileName(file)) + ".json";
+            ann.saveAs(annName);
+          }
+        }
+      }
+      if (!ok)
+        ErrText = $"CreateAnnsFromBra, erroneous parameters: {pars[2]}, {pars[3]}, expected doubles";
+
+      return retVal;
+    }
+
+
     int fctEditWav(List<string> pars, out string ErrText)
     {
 

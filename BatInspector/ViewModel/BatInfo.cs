@@ -157,6 +157,7 @@ namespace BatInspector
     public ValRange FreqChar { get; set; } /// end frequency [kHz]
     [DataMember]
     public ValRange Duration { get; set; } /// duration of call [ms]
+
     [DataMember]
     public ValRange FreqMk { get; set; }  /// >=0: frequency myotis knee [kHz]
     [DataMember]
@@ -963,9 +964,10 @@ namespace BatInspector
     }
 
 
-    static public FlowDocument checkBatSpecies(CallData call, List<SpeciesInfos> species, double lat, double lon, bool verbose, bool includeUnidentifiable, bool localNames, RequestNavigateEventHandler evHandler)
+    static public FlowDocument checkBatSpecies(CallData call, List<SpeciesInfos> species, double lat, double lon, bool verbose, bool includeUnidentifiable, bool localNames, RequestNavigateEventHandler evHandler, out string[] possSpecies)
     {      
-      List<CheckResult> results = new List<CheckResult>();
+      List<CheckResult> results = new List<CheckResult>(); 
+
       foreach (SpeciesInfos s in species)
       {
         if (s.CheckData != null)
@@ -1003,6 +1005,10 @@ namespace BatInspector
         }
       }
       DocHelperRtf doc = buildResults(results, lat, lon, localNames, evHandler);
+      possSpecies = new string[results.Count];
+      for (int i = 0; i < results.Count; i++)
+        possSpecies[i] = results[i].Species.Abbreviation;
+        
       return doc.Doc;
     }
 
@@ -1159,7 +1165,7 @@ namespace BatInspector
                        (d.Duration <= 3.5) &&
                        (d.HasMyotisKink == enYesNoProperty.YES) &&
                        (d.FreqMk < 35.0) &&
-                       ((d.FreqStart - d.FreqEnd) <= 65.0) || (d.FreqStart < 90.0)
+                       (((d.FreqStart - d.FreqEnd) <= 65.0) || (d.FreqStart < 90.0))
                      );
             if (ok1)
               addInfo += "{calld < 3.5 ms & has mk & Fmk < 35 kHz & bw <=65 kHz}";
@@ -1177,7 +1183,7 @@ namespace BatInspector
         case "MDAU":
           retVal = (d.HasMyotisKink == enYesNoProperty.YES) &&
                    (d.FreqMk > 36.0) &&
-                   ((d.FreqStart - d.FreqEnd) <= 66.0) || (d.FreqStart < 90.0);
+                   (((d.FreqStart - d.FreqEnd) <= 66.0) || (d.FreqStart < 90.0));
           if (retVal)
             addInfo += "{has mk & bw <= 66 kHz & Fstart < 90 kHz}";
           break;

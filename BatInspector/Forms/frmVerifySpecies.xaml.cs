@@ -34,6 +34,7 @@ namespace BatInspector.Forms
     double _lat, _lon;
     double _tEnd;
     double _tMk;
+    string[] _species;
 
     public frmVerifySpecies()
     {
@@ -69,37 +70,21 @@ namespace BatInspector.Forms
     
       string[] qItems = new string[] { MyResources.frmVerifySpecies_setup_Yes, MyResources.frmVerifySpecies_setup_No, MyResources.DonTCare };
       _ctlHasMyotisKink.setup(MyResources.frmVerifySpecies_CallHasMyotisKink, 0, qlw, qw);
-      _ctlHasMyotisKink.setItems(qItems);
-      _lblMyoK.Content = "Myotis";
-      _ctlHasMyotisKink.SelectIndex = 2;
+      _ctlHasMyotisKink.setItems(qItems, new string[]{"Myotis"});
       _ctlHasStrongHarmonics.setup(MyResources.frmVerify_CallHarmonics, 1, qlw, qw);
-      _ctlHasStrongHarmonics.setItems(qItems);
-      _ctlHasStrongHarmonics.SelectIndex = 2;
-      _lblHarmonic.Content = "Plecotus";
+      _ctlHasStrongHarmonics.setItems(qItems, new string[]{"Plecotus"});
       _ctlHasCallTypeAB.setup(MyResources.frmVerify_CallAB, 2, qlw, qw);
-      _ctlHasCallTypeAB.setItems(qItems);
-      _ctlHasCallTypeAB.SelectIndex = 2;
-      _lblCallAB.Content = "BBAR";
+      _ctlHasCallTypeAB.setItems(qItems, new string[]{"BBAR"});
       _ctlHasKneeClearly.setup(MyResources.frmVerifyCallHasKnee,3 , qlw, qw);
-      _ctlHasKneeClearly.setItems(qItems);
-      _ctlHasKneeClearly.SelectIndex = 2;
-      _lblKnee.Content = "Myotis";
+      _ctlHasKneeClearly.setItems(qItems, new string[]{"Myotis"});
       _ctlIsUniForm.setup(MyResources.frmVerify_CallsAreUniform, 4, qlw, qw);
-      _ctlIsUniForm.setItems(qItems);
-      _ctlIsUniForm.SelectIndex = 2;
-      _lblUniform.Content = "ESER/Plecotus";
+      _ctlIsUniForm.setItems(qItems, new string[]{"ESER", "Plecotus"});
       _ctlHasUpwardHookAtEnd.setup(MyResources.frmVerifySpecies_HookAtEnd, 5, qlw, qw);
-      _ctlHasUpwardHookAtEnd.setItems(qItems);
-      _ctlHasUpwardHookAtEnd.SelectIndex = 2;
-      _lblHook.Content = "ESER";
+      _ctlHasUpwardHookAtEnd.setItems(qItems, new string[] { "ESER"});
       _ctlHasNoCallChanges.setup(MyResources.frmVerify_CallChanges, 6, qlw, qw);
-      _ctlHasNoCallChanges.setItems(qItems);
-      _ctlHasNoCallChanges.SelectIndex = 2;
-      _lblNoChange.Content = "ENIL";
+      _ctlHasNoCallChanges.setItems(qItems, new string[] { "ENIL" });
       _ctlIsConvex.setup(MyResources.frmVerifySpecies_Convex, 7, qlw, qw);
-      _ctlIsConvex.setItems(qItems);
-      _ctlIsConvex.SelectIndex = 2;
-      _lblConvex.Content = "MMYO";
+      _ctlIsConvex.setItems(qItems, new string[] {"MMYO"});
 
       _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFstart;
       string[] items = new string[] { "CF", "FM", "FM-QCF", "FM-QCF-FM", "QCF", "QCF-FM" };
@@ -202,8 +187,17 @@ namespace BatInspector.Forms
                                            _cbVerbose.IsChecked == true, 
                                            _cbNotDeterminable.IsChecked == true,
                                            _cbLocalNames.IsChecked == true,
-                                           HandleRequestNavigate
+                                           HandleRequestNavigate,
+                                           out _species
                                            );
+      _ctlHasCallTypeAB.setVisibility(_species);
+      _ctlHasKneeClearly.setVisibility(_species);
+      _ctlHasMyotisKink.setVisibility(_species);
+      _ctlHasNoCallChanges.setVisibility(_species);
+      _ctlHasStrongHarmonics.setVisibility(_species);
+      _ctlHasUpwardHookAtEnd.setVisibility(_species);
+      _ctlIsConvex.setVisibility(_species);
+      _ctlIsUniForm.setVisibility(_species);
     }
 
     private void HandleRequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -385,6 +379,14 @@ namespace BatInspector.Forms
           case enVerifyState.CLEAR:
             _state = enVerifyState.SET_FSTART;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFstart;
+            _ctlHasCallTypeAB.init();
+            _ctlHasKneeClearly.init();
+            _ctlHasMyotisKink.init();
+            _ctlHasNoCallChanges.init();
+            _ctlHasStrongHarmonics.init();
+            _ctlHasUpwardHookAtEnd.init();
+            _ctlIsConvex.init();
+            _ctlIsUniForm.init();
             break;
         }
       }

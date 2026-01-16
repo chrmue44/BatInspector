@@ -4291,6 +4291,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to select a region to check for species by setting the cursors!.
+        /// </summary>
+        public static string msgFrmVerifyCursors {
+            get {
+                return ResourceManager.GetString("msgFrmVerifyCursors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Information.
         /// </summary>
         public static string msgInformation {

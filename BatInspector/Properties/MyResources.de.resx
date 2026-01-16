@@ -2001,4 +2001,7 @@
   <data name="frmDebug_ReloadScriptPressAfterEditingScript" xml:space="preserve">
     <value>Lade Skript neu (nach dem Editieren ausführen).</value>
   </data>
+  <data name="msgFrmVerifyCursors" xml:space="preserve">
+    <value>Markiere einen Bereich zum Überprüfen der Spezies durch Setzen der Cursor!</value>
+  </data>
 </root>

@@ -9,18 +9,20 @@
 - new option "Square Activity" in activity diagram 
 - guano metadata is now parsable by WavReader and displayed in the WavViewer
 - added buttons "edit", "reload" to debug window 
-- new script commands: EditWav, CopyFile
+- new script commands: EditWav, CopyFile, CreateAnnsFromBra
 - new function rand()
 - array varaiables in script
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json
 - bugfix: parser add: add const to variable 
- -bugfix: Manual species check: combination of possible species BBAR & Plecotus resulted in "Nyctaloid" (which is bs)
- -bugfix: CheckSpecies: Fc range for ESER was too narrow (22 - 26 kHz): now 22 - 31 kHz
- -bugfix: initialization of wavControls when 1st project was opened and after that query opened
+- bugfix: Manual species check: combination of possible species BBAR & Plecotus resulted in "Nyctaloid" (which is bs)
+- bugfix: CheckSpecies: Fc range for ESER was too narrow (22 - 26 kHz): now 22 - 31 kHz
+- bugfix: initialization of wavControls when 1st project was opened and after that query opened
  -bugfix: weird scrolling behaviour at the end of the project
+ -bugfix: crash when pressing "Check" without a call and without activated cursors
+
 - enhanced Model:
-  - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller)
+  - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller), PAUR(Strecker), MDAU (Strecker)
   - data augmentation: MALC, MEMA, MBRA, PAUS, PAUR, MBEC
 
 # V0.9.5.3  22.11.25

@@ -2001,4 +2001,7 @@
   <data name="frmDebug_ReloadScriptPressAfterEditingScript" xml:space="preserve">
     <value>Reload script. Press after editing script.</value>
   </data>
+  <data name="msgFrmVerifyCursors" xml:space="preserve">
+    <value>select a region to check for species by setting the cursors!</value>
+  </data>
 </root>

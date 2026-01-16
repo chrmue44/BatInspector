@@ -220,6 +220,9 @@
     <Compile Include="Controls\CtlPrjButtons.xaml.cs">
       <DependentUpon>CtlPrjButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlSpecialQuestion.xaml.cs">
+      <DependentUpon>ctlSpecialQuestion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlStatistic.xaml.cs">
       <DependentUpon>ctlStatistic.xaml</DependentUpon>
     </Compile>
@@ -276,6 +279,8 @@
     <Compile Include="Forms\frmVerifySpecies.xaml.cs">
       <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\MetaData\ElekonBra.cs" />
+    <Compile Include="ViewModel\MetaData\ElekonBraPart.cs" />
     <Compile Include="ViewModel\Report\DocHelper.cs" />
     <Compile Include="ViewModel\MetaData\Guano.cs" />
     <Compile Include="ViewModel\MySQL\DataBase.cs" />
@@ -483,6 +488,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CtlPrjButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlSpecialQuestion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

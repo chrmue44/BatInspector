@@ -472,10 +472,10 @@ namespace BatInspector
     }
 
 
-    public void addFile(AnalysisFile file, bool addCsv = false)
+    public void addFile(AnalysisFile file, bool addToReport = false)
     {
       _list.Add(file);
-      if(addCsv)
+      if(addToReport)
       {
         foreach (AnalysisCall c in file.Calls)
         {

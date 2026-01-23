@@ -1210,6 +1210,7 @@ namespace BatInspector.Forms
             _btnCreatePrj.Opacity = 1.0;
           }
           hideMsg();
+          App.Model.Busy = false;
           break;
 
         case enAppState.IMPORT_PRJ:

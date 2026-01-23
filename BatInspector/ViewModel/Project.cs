@@ -803,6 +803,59 @@ namespace BatInspector
       return retVal;
     }
 
+
+    public bool createPrjFromSelected(string prjName, string dstDir)
+    {
+      bool retVal = true;
+      string fullDir = Path.Combine(dstDir, prjName);
+      List<PrjRecord> records = new List<PrjRecord>();
+      Project prj = new Project(false, this._modelParams, _analysis.Length, _wavSubDir);
+      prj.SelectedModelIndex = this.SelectedModelIndex;
+      prj._selectedDir = fullDir;
+      string wavDstDir = Path.Combine(fullDir, prj.WavSubDir);
+      string wavSrcDir = Path.Combine(_selectedDir, prj.WavSubDir);
+      List<string> prjFiles = new List<string>();
+      foreach (PrjRecord rec in Records)
+      {
+        if(rec.Selected)
+        {
+          AnalysisFile file = Analysis.find(rec.File);
+          prj.Analysis.addFile(file, true);
+          records.Add(rec);
+          string[] files = Directory.GetFiles(wavSrcDir, rec.Name + ".*");
+          foreach (string f in files)
+            prjFiles.Add(f);
+        }
+      }
+      if (records.Count > 0)
+      {
+        retVal = createPrjDirStructure(fullDir, out string wavDir, AppParams.DIR_WAVS);
+        prj._modelParams = _modelParams;
+        prj._batExplorerPrj = new BatExplorerProjectFile("wavs", records);
+        prj._batExplorerPrj.Records = records.ToArray();
+        prj._batExplorerPrj.Models = this._batExplorerPrj.Models;
+        for (int i = 0; i < prj._batExplorerPrj.Models.Length; i++)
+          prj._batExplorerPrj.Models[i] = this._batExplorerPrj.Models[i];
+        prj._batExplorerPrj.Microphone = _batExplorerPrj.Microphone;
+        string modelDir = Path.Combine(prj._selectedDir, prj.AvailableModelParams[prj.SelectedModelIndex].SubDir);
+        Directory.CreateDirectory(modelDir);
+        Utils.copyFiles(prjFiles.ToArray(), wavDstDir);
+        prj.Analysis.save(prj.ReportName, this.Notes, prj.SummaryName);
+        prj._wavSubDir = AppParams.DIR_WAVS;
+        prj._ok = true;
+        prj._prjFileName = Path.Combine(prj._selectedDir, prjName + AppParams.EXT_BATSPY);
+        prj._batExplorerPrj.Name = prj._prjFileName;
+        prj._changed = true;
+        prj.Created = DateTime.Now.ToString(AppParams.GPX_DATETIME_FORMAT);
+        prj.Notes = this.Notes;
+        prj.Location = this.Location;
+        prj.writePrjFile();
+      }
+      return retVal;
+    }
+
+    //SaveSelectedAsProject blabla F:\bat\test
+
     public static bool createPrjFromQuery(string prjName, string remarks, List<sqlRow> query, string dstDir)
     {
       bool retVal = true;

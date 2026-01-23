@@ -139,7 +139,7 @@ namespace BatInspector
       // testSoundEditApplyFreqResponse("20250428_noise", soft);
 
       //checkIfWavFilesExist(); // not a test, a one time function
-      fixAnnotationIds(); // not a test, a one time function
+      //fixAnnotationIds(); // not a test, a one time function
       //testWriteModParams(); //not a test, a one time function
       //adjustJsonIds(); //not a test, a one time function
       //adjustJsonAnnotationCallsAtBorder(); //not a test, a one time function

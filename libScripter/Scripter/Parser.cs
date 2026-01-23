@@ -474,6 +474,32 @@ namespace libScripter
         _lastToken = enToken.NAME;
       }
 
+      else if (c == '\'')
+      {
+        _actName = "";
+        for (; ; )
+        {
+          _actPos++;
+          if (_actPos >= _actLine.Length)
+            break;
+          c = _actLine[_actPos];
+          if (c == '\'')
+          {
+            _actPos++;
+            if ((_actPos >= _actLine.Length) || (Utils.isWhiteSpace(_actLine[_actPos])))
+              break;
+            else
+            {
+              _lastToken = enToken.UNKNOWN;
+              return _lastToken;
+            }
+          }
+          _actName += c;
+        }
+        ReplaceVariables();
+        _lastToken = enToken.NAME;
+      }
+
       else if (Utils.isAlphaNum(c))
       {
         _actName = "" + c;

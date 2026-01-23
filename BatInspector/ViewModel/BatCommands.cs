@@ -6,13 +6,10 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Forms;
 using libParser;
 using libScripter;
-using OxyPlot;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 
@@ -27,6 +24,7 @@ namespace BatInspector
         new OptItem("AddProjectToDb", "add currently open project to DB", 0, ftcAddPrjToDb),
         new OptItem("AdjustReport","remove all entries from report not corresponding to project file", 0, fctAdjustReport),
         new OptItem("AdjustProject","remove all entries from project file not corresponding to report", 0, fctAdjustProject),
+        new OptItem("ApplyFilter", "<filter> <allCalls> apply filter expression to project",1, fctApplyFilter),
         new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
         new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
         new OptItem("CombineProjects", "combine multiple projects <DirName> <PrjOut> <Prj1> < Prj2> ...",4 , fctCombineProjects ),
@@ -41,6 +39,7 @@ namespace BatInspector
         new OptItem("EditWav", "<option> edit wav file", 1, fctEditWav),
         new OptItem("ExportFiles", "export files from project <FilterExpression> <outDir> <allCalls",3, ftcExportFiles ),
         new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
+        new OptItem("SaveSelectedAsProject", "<path> <name> save selected files as project",2, fctSaveSelAsPrj),
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
@@ -415,6 +414,54 @@ namespace BatInspector
       }
       if (!ok)
         ErrText = $"CreateAnnsFromBra, erroneous parameters: {pars[2]}, {pars[3]}, expected doubles";
+
+      return retVal;
+    }
+
+
+    int fctApplyFilter(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if((App.Model.Prj != null) && App.Model.Prj.Ok)
+      {
+        if (App.Model.Prj?.Ok == true)
+        {
+          string filterExp = pars[0];
+          bool allCalls = false;
+          if (pars.Count> 1)
+            allCalls = pars[1] == "1";
+          FilterItem filterItem = new FilterItem(0, "temp", filterExp, allCalls);
+          App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
+        }
+      }
+      else
+      {
+        retVal = 1;
+        ErrText = "error: no project opened";
+      }
+      return retVal;
+    }
+
+
+    int fctSaveSelAsPrj(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      if ((App.Model.Prj != null) && App.Model.Prj.Ok)
+      {
+        if (App.Model.Prj?.Ok == true)
+        {
+          string prjName = pars[0];
+          string prjPath = pars[1];
+          App.Model.Prj.createPrjFromSelected(prjName, prjPath);
+        }
+      }
+      else
+      {
+        retVal = 1;
+        ErrText = "error: no project opened";
+      }
 
       return retVal;
     }

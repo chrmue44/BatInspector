@@ -53,7 +53,7 @@ namespace BatInspector.Controls
         _cnv.Children.Clear();
          GraphHelper.createRulerY(_cnv, ry_x, ry_y, h_histo, 0, _histogram.MaxCount);
         if(_ticksX == null)
-          GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.Min, _histogram.Max);
+          GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, _histogram.MinClassValue, _histogram.MaxClassValue);
         else
           GraphHelper.createRulerX(_cnv, _rx_x, rx_y, w_histo, 24, _ticksX);
 

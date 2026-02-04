@@ -107,20 +107,13 @@ namespace BatInspector.Forms
 
     private void _btnUpdate_Click(object sender, RoutedEventArgs e)
     {
-      if( App.Model.DefaultModelParams.Length > _prj.AvailableModelParams.Length)
+      ModelParams[] mp = new ModelParams[App.Model.DefaultModelParams.Length];
+      for (int i = 0; i < mp.Length; i++)
       {
-        ModelParams[] mp = new ModelParams[App.Model.DefaultModelParams.Length];
-        for (int i = _nrOfPrjParams; i < mp.Length; i++)
-        {
-          int mIdx = i - _nrOfPrjParams;
-          if (i < _prj.AvailableModelParams.Length)
-            mp[mIdx] = _prj.AvailableModelParams[mIdx];
-          else
-            mp[mIdx] = App.Model.DefaultModelParams[mIdx].getCopy();
-        }
-        _prj.assignNewModelParams( mp);
-        this.Close();
+        mp[i] = App.Model.DefaultModelParams[i].getCopy();
       }
+      _prj.assignNewModelParams(mp);
+      this.Close();
     }
   }
 }

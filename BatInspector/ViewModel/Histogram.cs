@@ -1,4 +1,5 @@
-﻿using System;
+﻿using libParser;
+using System;
 using System.Collections.Generic;
 
 namespace BatInspector
@@ -14,16 +15,23 @@ namespace BatInspector
     public List<int> Classes { get { return _list; } }
 
     public double Mean { get { return _cnt > 0 ? _sum / _cnt : 0; } }
-    public double Min { get { return _min; } }
-    public double Max { get { return _max; } }
+    public double MinClassValue { get { return _min; } }
+    public double MaxClassValue { get { return _max; } }
+
+    public double MaxValue { get { return _maxValue; } }
+    public double MinValue { get { return _minValue; } }
 
     public int Count { get { return _cnt; } }
-    public double StdDev {  get {
+    public double StdDev 
+    {  
+      get 
+      {
         if (_cnt < 2)
           return 0;
         else
           return Math.Sqrt((_sumSquare - _sum * _sum/_cnt) / (_cnt - 1));
-      } }
+      }
+    }
 
     public int MaxCount 
     {
@@ -41,6 +49,10 @@ namespace BatInspector
 
     public void add(double val)
     {
+      if(val >_maxValue)
+        _maxValue = val;
+      if (val < _minValue)
+        _minValue = val;
       _sumSquare += val * val;
       _sum += val;
       _cnt++;
@@ -49,7 +61,10 @@ namespace BatInspector
         idx = 0;
       if(idx > (_cntClasses - 1))
         idx = _cntClasses - 1;
-      _list[idx]++;        
+      if ((idx >= 0) && (idx < _list.Count))
+        _list[idx]++;
+      else
+        DebugLog.log("Histogramm: erroneous class (class width not initialized?)", enLogType.ERROR);
     }
 
     public double getClassMin(int i)
@@ -82,6 +97,8 @@ namespace BatInspector
       _cnt = 0;
       for(int i = 0; i < _cntClasses; i++)
         _list.Add(0);
+      _minValue = _max;
+      _maxValue = _min;
     }
 
     List<int> _list = new List<int>();
@@ -91,5 +108,7 @@ namespace BatInspector
     double _sumSquare = 0;
     double _min = 0;
     double _max = 0;
+    double _maxValue = 0;
+    double _minValue = 1000;
   }
 }

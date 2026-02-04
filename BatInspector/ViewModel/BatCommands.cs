@@ -452,8 +452,8 @@ namespace BatInspector
       {
         if (App.Model.Prj?.Ok == true)
         {
-          string prjName = pars[0];
-          string prjPath = pars[1];
+          string prjPath = pars[0];
+          string prjName = pars[1];
           App.Model.Prj.createPrjFromSelected(prjName, prjPath);
         }
       }

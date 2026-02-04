@@ -89,7 +89,12 @@ public class ModelParams
       retVal.Parameters[i].Type = Parameters[i].Type;
       retVal.Parameters[i].Decimals = Parameters[i].Decimals;
     }
-    
+
+    retVal.AvailableDataSets = new string[AvailableDataSets.Length];
+    for (int i = 0; i < AvailableDataSets.Length; i++)
+    {
+      retVal.AvailableDataSets[i] = AvailableDataSets[i];
+    }
     return retVal;
   }
 

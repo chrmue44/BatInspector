@@ -12,11 +12,8 @@ using libParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Emit;
-//using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Interop;
 
 namespace BatInspector.Forms
@@ -186,6 +183,7 @@ namespace BatInspector.Forms
     {
       setBusy(true);
       highlightActLine(false);
+      
      App.Model.Scripter.debugOneStep(updateDebugView);
     }
 
@@ -206,8 +204,8 @@ namespace BatInspector.Forms
         lineNr = App.Model.Scripter.CurrentLineNr;
       else
         lineNr = _spScript.Children.Count - 1;
-      ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine; 
-      double verticalOffset = App.Model.Scripter.CurrentLineNr * ctl.ActualHeight - _spScript.ActualHeight/2;
+      ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine;
+      double verticalOffset = App.Model.Scripter.CurrentLineNr * ctl.ActualHeight - _scrlViewer.ViewportHeight / 2; // _spScript.ViewportHeight; //  ActualHeight/2;
       _scrlViewer.ScrollToVerticalOffset(verticalOffset);
     }
 

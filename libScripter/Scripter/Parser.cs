@@ -119,7 +119,8 @@ namespace libScripter
         new OptItem("END", "end of code block", 0, fctEnd),
         new OptItem("WHILE", "<condition>", 1, fctWhile),
         new OptItem("BREAK", "break while or for loop",0,fctBreak),
-        new OptItem("LOG","log <message> <type>", 1, fctLog)
+        new OptItem("LOG","log <message> <type>", 1, fctLog),
+        new OptItem("CONTINUE", "continue loop from start", 0, fctContinue),
       });
 
       _options = new Options(_features, false);
@@ -857,6 +858,29 @@ namespace libScripter
       }
       return retVal;
     }
+
+
+    int fctContinue(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      int last = _blockStack.Count;
+      for (int idx = last - 1; idx >= 0; idx--)
+      {
+        if ((_blockStack[idx].Type == enBlockType.FOR) ||
+           (_blockStack[idx].Type == enBlockType.WHILE))
+        {
+          while (_blockStack.Count > (idx + 1))
+            _blockStack.Remove(_blockStack[_blockStack.Count - 1]);
+          _currBlock = _blockStack[idx];
+          _currBlock.loopEnd();
+          _actLineNr = _currBlock.StartLine - 1;
+          break;
+        }
+      }
+      return retVal;
+    }
+
 
     int fctEnd(List<string> pars, out string ErrText)
     {

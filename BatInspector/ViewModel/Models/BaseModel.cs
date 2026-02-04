@@ -27,6 +27,41 @@ namespace BatInspector
   
   }
 
+  class ModelScriptItem
+  {
+    public enModel Classifier { get; set; }
+    public string Model { get; set; }
+    public string Script { get; set; }
+
+    ModelScriptItem(enModel classifier, string model, string script)
+    {
+      Classifier = classifier;
+      Model = model;
+      Script = script;
+    }
+
+    static ModelScriptItem[] _list = new ModelScriptItem[] 
+    {
+      new ModelScriptItem(enModel.BAT_DETECT2, "GermanBats_0.9.pth.tar", "auto_to_man_german_bats_09.scr"),
+      new ModelScriptItem(enModel.BAT_DETECT2, "Net2DFast_UK_same.pth.tar", "auto_to_man_net2dfast_uk.scr"),
+    };
+
+    public static string getScriptName(enModel classifier, string modelName)
+    {
+      string retVal = AppParams.Inst.ScriptCopyAutoToMan;
+      foreach(ModelScriptItem it in _list)
+      {
+        if ((it.Classifier == classifier)  && (modelName == it.Model))
+        {
+          retVal = it.Script;
+          break;
+        }
+      }
+      return retVal;
+    }
+  }
+
+
   public abstract class BaseModel
   {
 
@@ -110,6 +145,10 @@ namespace BatInspector
       writer.Close();
     }
 
+    public static string getScriptName(enModel classifier, string modelName)
+    {
+      return ModelScriptItem.getScriptName(classifier, modelName);
+    }
 
     public static ModelParams[] readDefaultModelParams()
     {
@@ -158,8 +197,19 @@ namespace BatInspector
 
       foreach (string file in files)
         evaluateAnnFile(prj, file, ref perfResult);
+      int lastRow = perfResult.RowCnt;
 
-      summarizePerformance(ref perfResult, thresh);
+      string modName = prj.AvailableModelParams[prj.SelectedModelIndex].Name + "-" +
+                       prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
+
+      List<SumSpec> li = null;
+      for (thresh = 0.7; thresh > 0.2; thresh -= 0.1)
+      {
+        li = summarizePerformance(perfResult, thresh, lastRow);
+        createConfusionMatrix(perfResult, thresh, li, modName);
+      }
+
+      createConfusionMatrix(perfResult, 0, li, modName);
 
       perfResult.insertRow(1);
       perfResult.insertRow(1);
@@ -167,10 +217,11 @@ namespace BatInspector
       perfResult.setCell(1, 1, "Model Performance");
       perfResult.setCell(1, 4, "Reference Project:");
       perfResult.setCell(1, 5, prj.PrjDir);
-      perfResult.setCell(2, 1, "Classifier:" );
+      perfResult.setCell(2, 1, "Classifier:");
       perfResult.setCell(2, 2, prj.AvailableModelParams[prj.SelectedModelIndex].Name);
       perfResult.setCell(2, 3, "Model");
       perfResult.setCell(2, 4, prj.AvailableModelParams[prj.SelectedModelIndex].DataSet);
+
       perfResult.save();
     }
 
@@ -321,7 +372,8 @@ namespace BatInspector
         string wavFile = Path.GetFileName(file.Replace(".json", ""));
         AnalysisFile analysis = prj.Analysis.find(wavFile);
         bool found = false;
-        if (analysis != null)
+        
+        if ((analysis != null) && (ann.Class != "Bat"))
         {
           foreach(AnalysisCall call in analysis.Calls)
           {
@@ -360,6 +412,17 @@ namespace BatInspector
       return retVal;
     }
 
+    private static string getAbbreviation(string latin)
+    {
+      string retVal;
+      SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, App.Model.SpeciesInfos);
+      if (specInfo != null)
+        retVal = specInfo.Abbreviation;
+      else
+        retVal = latin;
+      return retVal;
+    }
+
     private static string extractSpecies(string spec)
     {
       string retVal = spec;
@@ -372,12 +435,81 @@ namespace BatInspector
       return retVal;
     }
 
-    private static void summarizePerformance(ref Csv perfResult, double thresh)
+
+    private static int getIndex(List<string> list, string str)
+    {
+      int retVal = -1;
+      for(int i = 0; i < list.Count; i++)
+      {
+        if(list[i] == str)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    private static void createConfusionMatrix(Csv perfResult, double thresh, List<SumSpec> li, string modelName)
+    {
+      perfResult.addRow();
+      perfResult.addRow();
+      perfResult.setCell(perfResult.RowCnt, 1, $"Confusion Matrix {modelName} threshold: {thresh}");
+      perfResult.addRow();
+      int row = perfResult.RowCnt;
+
+      List<string> hdr = new List<string>();
+      hdr.Add("Species");
+      hdr.Add("Count");
+      foreach (SumSpec s in li)
+      {
+        if (s.Name != "Bat")
+        {
+          string abbr = getAbbreviation(s.Name);
+          hdr.Add(abbr);
+        }
+      }
+      perfResult.addRow(hdr);
+
+      foreach (SumSpec s in li)
+      {
+        if (s.Name != "Bat")
+        {
+          perfResult.addRow();
+          string abbr = getAbbreviation(s.Name);
+          perfResult.setCell(perfResult.RowCnt, 1, abbr);
+          perfResult.setCell(perfResult.RowCnt, 2, s.Total);
+          int col = getIndex(hdr, abbr) + 1;
+          if (thresh > 0.01)
+          {
+            perfResult.setCell(perfResult.RowCnt, col, s.CorrectThresh);
+            foreach (ConfusionItem ci in s.ConfusionThresh)
+            {
+              col = getIndex(hdr, ci.Name) + 1;
+              if (col >= 1)
+                perfResult.setCell(perfResult.RowCnt, col, ci.Count);
+            }
+          }
+          else
+          { 
+            perfResult.setCell(perfResult.RowCnt, col, s.Correct);
+            foreach (ConfusionItem ci in s.Confusion)
+            {
+              col = getIndex(hdr, ci.Name) + 1;
+              if (col >= 1)
+                perfResult.setCell(perfResult.RowCnt, col, ci.Count);
+            }
+          }
+        }
+      }
+    }
+
+    private static List<SumSpec> summarizePerformance(Csv perfResult, double thresh, int lastRow)
     {
       // build sums
       List<SumSpec> list = new List<SumSpec>();
       int row = 2;
-      for (; row <= perfResult.RowCnt; row++)
+      for (; row <= lastRow; row++)
       {
         string name = perfResult.getCell(row, Cols.SPECIES_MAN);
         SumSpec spec = SumSpec.find(name, list);
@@ -394,31 +526,31 @@ namespace BatInspector
           spec.CorrectThresh += corr;
         spec.Correct += corr;
         spec.Detected += det;
-
-        if((corr == 0) && (det == 1))
+        if ((corr == 1) && (det == 1))
         {
-          string latin = getLatinName(perfResult.getCell(row, Cols.SPECIES));
-          if (!string.IsNullOrEmpty(latin))
+          spec.StatisticGood.add(prob);
+        }
+        if ((corr == 0) && (det == 1))
+        {
+          string aIspec = perfResult.getCell(row, Cols.SPECIES);
+          spec.addConfusion(aIspec);
+          spec.FalsePositive++;
+          if (prob > thresh)
           {
-            spec = SumSpec.find(latin, list);
-            if (spec == null)
-            {
-              spec = new SumSpec(latin);
-              list.Add(spec);
-            }
-            spec.FalsePositive++;
-            if (prob > thresh)
-              spec.FalsePositiveThresh++;
+            spec.FalsePositiveThresh++;
+            spec.addConfusionThresh(aIspec);
           }
         }
       }
 
       perfResult.addRow();
       perfResult.addRow();
-      row += 2;
+      perfResult.setCell(perfResult.RowCnt, 1, $"Summarized Performance - Threshold:{thresh}");
+      perfResult.addRow();
+      row = perfResult.RowCnt;
 
       //print sums
-      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "CorrectThresh", "FalsePositive", "FalsePositiveThresh","Recall", "RecallThresh", "Precision","PrecisionThresh" };
+      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "CorrectThresh", "FalsePositive", "FalsePositiveThresh","Recall", "RecallThresh", "Precision","PrecisionThresh","confusion","ConfusionThresh","mean_prob_good","min_prob_good","max_prob_good","mean_prob_false_pos","min_prob_false_pos","max_prob_false_pos" };
       perfResult.addRow(h);
 
       list.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
@@ -441,9 +573,58 @@ namespace BatInspector
         perfResult.setCell(row, 9, recallThresh);
         perfResult.setCell(row, 10, precision);
         perfResult.setCell(row, 11, precisionThresh);
+        perfResult.setCell(row, 12, s.getConfusion());
+        perfResult.setCell(row, 13, s.getConfusionThresh());
+        perfResult.setCell(row, 14, s.StatisticGood.Mean);
+        perfResult.setCell(row, 15, s.StatisticGood.MinValue);
+        perfResult.setCell(row, 16, s.StatisticGood.MaxValue);
+        perfResult.setCell(row, 17, s.StatisticFalsePos.Mean);
+        perfResult.setCell(row, 18, s.StatisticFalsePos.MinValue);
+        perfResult.setCell(row, 19, s.StatisticFalsePos.MaxValue);
+      }
+      return list;
+    }
+  }
+
+  class ConfusionItem
+  {
+    public string Name { get; set; } = "";
+    public int Count { get; set; } = 0;
+
+    static public string getListAsString(List<ConfusionItem> li)
+    {
+      string retVal = "";
+      foreach (ConfusionItem s in li)
+      {
+        if (!string.IsNullOrEmpty(retVal))
+          retVal += ",";
+        retVal += $"{s.Name}[{s.Count}]";
+      }
+      return retVal;
+    }
+
+    static public void addItem(List<ConfusionItem> li, string name)
+    {
+      bool found = false;
+      foreach (ConfusionItem s1 in li)
+      {
+        if (name == s1.Name)
+        {
+          found = true;
+          s1.Count++;
+          break;
+        }
+      }
+      if (!found)
+      {
+        ConfusionItem it = new ConfusionItem();
+        it.Name = name;
+        it.Count = 1;
+        li.Add(it);
       }
     }
   }
+
 
   class SumSpec
   {
@@ -454,6 +635,10 @@ namespace BatInspector
     public int CorrectThresh;
     public int FalsePositive;
     public int FalsePositiveThresh;
+    public List<ConfusionItem> Confusion;
+    public List<ConfusionItem> ConfusionThresh;
+    public Histogram StatisticGood;
+    public Histogram StatisticFalsePos;
 
     public SumSpec(string name)
     { 
@@ -463,6 +648,12 @@ namespace BatInspector
       Correct = 0;
       FalsePositive = 0;
       FalsePositiveThresh = 0;
+      ConfusionThresh = new List<ConfusionItem>();
+      Confusion = new List<ConfusionItem>();
+      StatisticGood = new Histogram(9);
+      StatisticGood.init(0.0, 1.0);
+      StatisticFalsePos = new Histogram(9);
+      StatisticFalsePos.init(0.0, 1.0);
     }
 
     public static SumSpec find(string name, List<SumSpec> list)
@@ -477,6 +668,27 @@ namespace BatInspector
         }
       }
       return retVal;
+    }
+
+
+    public void addConfusion(string s)
+    {
+      ConfusionItem.addItem(Confusion, s);
+    }
+
+    public string getConfusion()
+    {
+      return ConfusionItem.getListAsString(Confusion);
+    }
+
+    public void addConfusionThresh(string s)
+    {
+      ConfusionItem.addItem(ConfusionThresh, s);
+    }
+
+    public string getConfusionThresh()
+    {
+      return ConfusionItem.getListAsString(ConfusionThresh);
     }
   }
 }

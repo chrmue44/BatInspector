@@ -44,12 +44,12 @@ namespace BatInspector
 
     public void calcStatistic(FilterItem filterExp, Analysis analysis, Filter filter)
     {
-      _fmin.init(_fmin.Min, _fmin.Max);
-      _fmax.init(_fmax.Min, _fmax.Max);
-      _fmaxAmp.init(_fmaxAmp.Min, _fmaxAmp.Max);
-      _duration.init(_duration.Min, _duration.Max);
-      _callDist.init(_callDist.Min, _callDist.Max);
-      _recTime.init(_recTime.Min, _recTime.Max); 
+      _fmin.init(_fmin.MinClassValue, _fmin.MaxClassValue);
+      _fmax.init(_fmax.MinClassValue, _fmax.MaxClassValue);
+      _fmaxAmp.init(_fmaxAmp.MinClassValue, _fmaxAmp.MaxClassValue);
+      _duration.init(_duration.MinClassValue, _duration.MaxClassValue);
+      _callDist.init(_callDist.MinClassValue, _callDist.MaxClassValue);
+      _recTime.init(_recTime.MinClassValue, _recTime.MaxClassValue); 
       if(filterExp  != null) 
         _fileExpression = filterExp.Expression;
       else
@@ -131,8 +131,8 @@ namespace BatInspector
       int col = 1;
       csv.setCell(row, col++, name);
       csv.setCell(row, col++, h.Count);
-      csv.setCell(row, col++, h.Min);
-      csv.setCell(row, col++, h.Max);
+      csv.setCell(row, col++, h.MinClassValue);
+      csv.setCell(row, col++, h.MaxClassValue);
       csv.setCell(row, col++, h.Mean);
       csv.setCell(row, col++, h.StdDev);
       for(int i = 0; i < h.Classes.Count; i++)

@@ -238,15 +238,15 @@ namespace BatInspector
                 double prob = csvAnn.getCellAsDouble(row, "class_prob");
                 report.setCell(repRow, Cols.PROBABILITY, prob);
                 string abbr = "";
-                if (prob < minProb)
-                  abbr = "??PRO[";
+             //   if (prob < minProb)
+             //     abbr = "??PRO[";
                 SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
                 if ((info != null) && (specInfo != null))
                   abbr += specInfo.Abbreviation;
                 else
                   abbr += latin;
-                if (prob < minProb)
-                  abbr += "]";
+             //   if (prob < minProb)
+             //     abbr += "]";
                 report.setCell(repRow, Cols.SPECIES, abbr);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
                 report.setCell(repRow, Cols.REMARKS, "");

@@ -272,9 +272,18 @@ namespace BatInspector.Controls
     {
       try
       {
-        if ((AppParams.Inst.ScriptCopyAutoToMan != null) && (AppParams.Inst.ScriptCopyAutoToMan != ""))
-          App.Model.Scripter.runScript(AppParams.Inst.ScriptCopyAutoToMan);
-        else
+        ModelParams par = App.Model.Prj?.AvailableModelParams[App.Model.Prj.SelectedModelIndex];
+        bool ok = false;
+        if (par != null)
+        {
+          string script = BaseModel.getScriptName(par.Type, par.DataSet);
+          if (!string.IsNullOrEmpty(script))
+          {
+            App.Model.Scripter.runScript(script);
+            ok = true;
+          }
+        }
+        if(!ok)
           MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         DebugLog.log("MainWin:BTN 'Copy Species' clicked", enLogType.DEBUG);
       }

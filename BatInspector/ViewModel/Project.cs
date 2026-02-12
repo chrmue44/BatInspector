@@ -51,7 +51,8 @@ namespace BatInspector
     public string Location { get; set; }
     public string Creator { get; set; }
     public enMetaData MetaData { get; set; } = enMetaData.XML;
-  }
+    public string RecorderId { get; set; }
+   }
 
 
 
@@ -580,35 +581,33 @@ namespace BatInspector
     /// </summary>
     public void SelectDefaultModel()
     {
-      if (_batExplorerPrj.ProjectType == "Birds")
+      if (Ok)
       {
-        _modelParams = ModelParams.GetModelParams(App.Model.getClassifier(enModel.BIRDNET).Name,
-                                   App.Model.DefaultModelParams);
-        _modelParams.DataSet = "WorldWide";
-        SelectedModelIndex = App.Model.getModelIndex(enModel.BIRDNET);
-      }
-      else
-      {
-        double lat = 0;
-        double lon = 0;
-        if (Records.Length > 0)
+        if (_batExplorerPrj.ProjectType == "Birds")
         {
-          BatRecord r = PrjMetaData.retrieveMetaData(this, Records[0].File);
-          PrjMetaData.parsePosition(r.GPS.Position, out lat, out lon);
+          _modelParams = ModelParams.GetModelParams(App.Model.getClassifier(enModel.BIRDNET).Name,
+                                     App.Model.DefaultModelParams);
+          _modelParams.DataSet = "WorldWide";
+          SelectedModelIndex = App.Model.getModelIndex(enModel.BIRDNET);
         }
-        _modelParams = ModelParams.GetModelParams(App.Model.getClassifier(enModel.BAT_DETECT2).Name,
-                                   App.Model.DefaultModelParams);
-        SelectedModelIndex = App.Model.getModelIndex(enModel.BAT_DETECT2);
-        if (App.Model.Regions.IsInRegion(lat, lon, "Deutschland"))
-          _modelParams.DataSet = BaseModel.BD2_MODEL_GERMAN;
-        else if (App.Model.Regions.IsInRegion(lat, lon, "United Kingdom"))
-          _modelParams.DataSet = BaseModel.BD2_MODEL_UK;
         else
-          _modelParams.DataSet = BaseModel.BD2_MODEL_GERMAN;
+        {
+          double lat = 0;
+          double lon = 0;
+          if (Records.Length > 0)
+          {
+            BatRecord r = PrjMetaData.retrieveMetaData(this, Records[0].File);
+            PrjMetaData.parsePosition(r.GPS.Position, out lat, out lon);
+          }
+          _modelParams = ModelParams.GetModelParams(App.Model.getClassifier(enModel.BAT_DETECT2).Name,
+                                     App.Model.DefaultModelParams);
+          SelectedModelIndex = App.Model.getModelIndex(enModel.BAT_DETECT2);
+          _modelParams.DataSet = BaseModel.getDefaultModel(enModel.BAT_DETECT2, lat, lon);
+        }
+        foreach (ModelParams m in AvailableModelParams)
+          m.Enabled = false;
+        AvailableModelParams[SelectedModelIndex].Enabled = true;
       }
-      foreach (ModelParams m in AvailableModelParams)
-        m.Enabled = false;
-      AvailableModelParams[SelectedModelIndex].Enabled = true;
     }
 
 
@@ -714,7 +713,7 @@ namespace BatInspector
           double[] pos = new double[2];
           pos[0] = info.Latitude;
           pos[1] = info.Longitude;
-          ElekonInfoFile.create(dest, pos[0], pos[1], time);
+          ElekonInfoFile.create(dest, pos[0], pos[1], time, info.RecorderId);
         }
         else
           DebugLog.log($"file {name} not imported because it is too short", enLogType.INFO);
@@ -745,7 +744,7 @@ namespace BatInspector
           double[] pos = new double[2];
           pos[0] = info.Latitude;
           pos[1] = info.Longitude;
-          ElekonInfoFile.create(dest, pos[0], pos[1], time);
+          ElekonInfoFile.create(dest, pos[0], pos[1], time, info.RecorderId);
         }
         else
           DebugLog.log($"file {name} not imported because it is too short", enLogType.INFO);
@@ -780,10 +779,18 @@ namespace BatInspector
             File.Copy(files[0], dstPrj, true);
           }
 
-          Project prj = Project.createFrom(fullDir);
-          prj.Location = info.Location;
-          prj.CreateBy = info.Creator;
-          prj.Notes = info.Notes;
+          Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
+          DirectoryInfo dir = new DirectoryInfo(fullDir);
+          prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
+
+          Project prjSrc = Project.createFrom(info.SrcDir);
+          prj._batExplorerPrj.Microphone.FrequencyResponse = prjSrc.MicFreqResponse;
+          prj._batExplorerPrj.Microphone.Id = prjSrc.MicId;
+
+          /*          Project prj = Project.createFrom(fullDir);
+                    prj.Location = info.Location;
+                    prj.CreateBy = info.Creator;
+                    prj.Notes = info.Notes; */
           if (modelParams != null)
             prj._modelParams = modelParams;
           else
@@ -1555,7 +1562,7 @@ namespace BatInspector
             pos[1] = info.Longitude;
        //     if (gpxFile != null)
        //       pos = gpxFile.getPosition(time);
-            ElekonInfoFile.create(fullName, pos[0], pos[1], time);
+            ElekonInfoFile.create(fullName, pos[0], pos[1], time, info.RecorderId);
           }
         }
       }

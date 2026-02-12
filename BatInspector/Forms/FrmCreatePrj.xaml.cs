@@ -37,9 +37,9 @@ namespace BatInspector.Forms
       _dtEnd._lbl.Text = MyResources.CtlSumReportEndDate;
 
       _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, _widthLbl, true);
-      _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, _widthLbl, true);
+      _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, _widthLbl, true, initDlgAfterPositionChanged);
       _ctlLat.setValue("49° 46.002 N");
-      _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, _widthLbl, true);
+      _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, _widthLbl, true, initDlgAfterPositionChanged);
       _ctlLon.setValue("8° 38.032 E");
       _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, _widthLbl, true, "", initDailogAfterSelectingSrc);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, _widthLbl, true);
@@ -49,6 +49,8 @@ namespace BatInspector.Forms
       _ctlMaxFileLen.setValue(5.0);
       _ctlPrjNotes.setup(MyResources.ctlPrjInfoNotes, Controls.enDataType.STRING, 0, _widthLbl, true);
       _ctlPrjNotes.setValue("");
+      _ctlRecorderId.setup(MyResources.FrmCreatePrjUniqueRecorderID, enDataType.STRING, 0, _widthLbl, true);
+      _ctlRecorderId.setValue("");
       _ctlCreator.setup(MyResources.frmCreatePrjCreator, enDataType.STRING, 0, _widthLbl, true);
       _ctlCreator.setValue("");
       _ctlLocation.setup(MyResources.frmCreatePrjLocation, enDataType.STRING, 0, _widthLbl, true);
@@ -96,6 +98,30 @@ namespace BatInspector.Forms
       _dtEnd.Visibility = vis;
     }
 
+    private void initDlgAfterPositionChanged(enDataType type, object val)
+    {
+      if (!_info.LocSourceGpx && !_info.LocSourceKml && !_info.LocSourceTxt && !_isProjectFolder)
+      {
+        bool ok = Project.parseLatitude(_ctlLat.getValue(), out double lat);
+        if (!ok)
+          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+                          BatInspector.Properties.MyResources.Error,
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+        else
+        {
+          ok = Project.parseLongitude(_ctlLon.getValue(), out double lon);
+          if (!ok)
+            MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(),
+                            BatInspector.Properties.MyResources.Error,
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+          else
+          {
+            _ctlDataSet.setValue(BaseModel.getDefaultModel(enModel.BAT_DETECT2, lat, lon));
+          }
+        }
+      }
+    }
+
     private void initDailogAfterSelectingSrc()
     {
       if (Directory.Exists(_ctlSrcFolder.getValue()))
@@ -120,6 +146,8 @@ namespace BatInspector.Forms
           _ctlDataSet.setItems(dataSetItems);
           _ctlDataSet.setValue(prj.SelectedModelParams.DataSet);
           _ctlMetaData.SelectIndex = (int)prj.MetaData;
+          _ctlRecorderId.Visibility = Visibility.Collapsed;
+          _ctlRecorderId.setValue(".");
         }
         else
         {
@@ -152,6 +180,8 @@ namespace BatInspector.Forms
 
           _cbTimeFilter.IsEnabled = true;
           files = Directory.GetFiles(_ctlSrcFolder.getValue(), "*.wav");
+          _ctlRecorderId.Visibility = Visibility.Visible;
+          _ctlRecorderId.setValue("");
           if (files != null && files.Length > 0)
           {
             if (_cbTimeFilter.IsChecked == true)
@@ -168,6 +198,7 @@ namespace BatInspector.Forms
               _dtStart.init(new DateTime(1950, 1, 1));
               _dtEnd.init(new DateTime(2099, 12, 31));
             }
+            _ctlRecorderId.setValue(WavFile.retrieveRecorderId(files[0]));
           }
         }
         enableGuiElements();
@@ -210,11 +241,19 @@ namespace BatInspector.Forms
         _info.ModelParams = App.Model.DefaultModelParams[_ctlModel.SelectIndex];
         _info.ModelParams.DataSet = _ctlDataSet.getValue();
         _info.MetaData = (enMetaData)_ctlMetaData.SelectIndex;
+        _info.RecorderId = _ctlRecorderId.getValue();
         bool ok = true;
         double lat = 0;
         double lon = 0;
 
-        if (string.IsNullOrEmpty(_info.DstDir))
+        if (!_info.IsProjectFolder && string.IsNullOrEmpty(_ctlRecorderId.getValue()))
+        {
+          MessageBox.Show(BatInspector.Properties.MyResources.frmCreateRecorderInfoEmpty,
+                          BatInspector.Properties.MyResources.Error,
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+          ok = false;
+        }
+        else if (string.IsNullOrEmpty(_info.DstDir))
         {
           MessageBox.Show(BatInspector.Properties.MyResources.frmCreateDestFolderEmpty,
                           BatInspector.Properties.MyResources.Error,

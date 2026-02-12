@@ -19,6 +19,8 @@ namespace BatInspector
     NEW_EXPRESSION,
     OPERATOR,
     CONST,
+    GEO_CALCDIST,
+    GEO_ISNEAR
   }
 
   public enum enOperator
@@ -90,10 +92,10 @@ namespace BatInspector
 
   public class ExpressionGenerator
   {
-    enExpType _state = enExpType.EXPRESSION;
     dlgGetVarList _dlgGetVars;
     List<string> _species;
-    public enExpType State { get { return _state; } }
+
+    public string GeoExpression { get; set; }
     public List<string> Species { get { return _species; } }
 
     public ExpressionGenerator(dlgGetVarList dlgGetVars, List<string> species)
@@ -109,11 +111,13 @@ namespace BatInspector
       {
         case enField.LEFT:
           retVal = getVariables();
+          retVal.Add(new ExpressionItem(enExpType.GEO_CALCDIST, MyResources.ExpGenCalcDist, AnyType.tType.RT_FLOAT));
+          retVal.Add(new ExpressionItem(enExpType.GEO_ISNEAR, MyResources.ExpGenIsNear, AnyType.tType.RT_BOOL));
           retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));
           break;
 
         case enField.RIGHT:
-          if(type == AnyType.tType.RT_TIME)
+          if (type == AnyType.tType.RT_TIME)
           {
             retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGen_TIME, AnyType.tType.RT_TIME));
           }
@@ -125,7 +129,7 @@ namespace BatInspector
           {
             retVal.Add(new ExpressionItem(enExpType.CONST, BatInspector.Properties.MyResources.ExpGenUserString, AnyType.tType.RT_STR));
             foreach (string bat in _species)
-              retVal.Add(new ExpressionItem(enExpType.CONST, "\""+bat+"\"", AnyType.tType.RT_STR));
+              retVal.Add(new ExpressionItem(enExpType.CONST, "\"" + bat + "\"", AnyType.tType.RT_STR));
             foreach (FilterVarItem f in _dlgGetVars())
             {
               if (AnyType.isStr(f.Type))
@@ -133,7 +137,11 @@ namespace BatInspector
             }
           }
           else if (AnyType.isBool(type))
+          {
+            retVal.Add(new ExpressionItem(enExpType.CONST, "TRUE", AnyType.tType.RT_BOOL));
+            retVal.Add(new ExpressionItem(enExpType.CONST, "FALSE", AnyType.tType.RT_BOOL));
             retVal.Add(new ExpressionItem(enExpType.NEW_EXPRESSION, MyResources.ExpGenNested, AnyType.tType.RT_FLOAT));
+          }
           break;
 
         case enField.OPERATOR:

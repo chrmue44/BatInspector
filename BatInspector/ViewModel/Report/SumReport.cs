@@ -653,7 +653,7 @@ namespace BatInspector
       initDirTree(_rootDir, enModel.BAT_DETECT2);
 
       DateTime date = _start;
-      int minsPerPoint = 1;//5;
+      int minsPerPoint = 2; //1;//5;
       int ticksPerHour = 60 / minsPerPoint;
       bool addLine = false;
       ActivityData retVal = new ActivityData(ticksPerHour);
@@ -690,8 +690,8 @@ namespace BatInspector
       if(_showActivityData != null)
         _showActivityData(retVal, Path.Combine(_dstDir,_bmpName));
       
-      
-      _currActivityItem  = new ActivityItem(_currSpecies.Abbreviation,retVal.getMeanActivity());
+      if(_currSpecies != null)
+        _currActivityItem  = new ActivityItem(_currSpecies.Abbreviation,retVal.getMeanActivity());
     }
 
     public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
@@ -1248,44 +1248,30 @@ namespace BatInspector
           // header for list of recording days
           i = output.findLine("%REP_SPEC%");
           if (i >= 0)
-          {
-            string line = output.getLine(i);
-            rep.Species.Sort();
-            line = line.Replace("%REP_SPEC%", rep.Species[0]);
-            for (int j = 1; j < rep.Species.Count; j++)
-              line += "**" + rep.Species[j] + "** |";
-            output.setLine(i, line);
-          }
+            output.removeLine(i);
 
           // list of recording days
           i = output.findLine("%REP_DATE%");
           if (i >= 0)
           {
+            DataTable tab = createCallTable(rep);
             string templateLine = output.getLine(i);
             output.removeLine(i);
             int lineNr = i;
-            foreach (SumReportItem it in rep.Days)
+            int colCnt = tab.Columns.Count;
+
+            // create table header
+            string line = "| ";
+            for (int c = 0; c < tab.Columns.Count; c++)
+              line += tab.Columns[c].ColumnName + " | ";
+            output.insert(lineNr, line);
+            lineNr++;
+
+            for (int r = 0; r < tab.Rows.Count; r++)
             {
-              string line = templateLine;
-              line = line.Replace("%REP_DATE%", it.Date.ToString("dd.MM.yyyy"));
-              line = line.Replace("%REP_LAT%", it.Latitude.ToString("#.#####"));
-              line = line.Replace("%REP_LON%", it.Longitude.ToString("#.#####"));
-              line = line.Replace("%REP_TEMP%", it.TempMin.ToString("#.#") + " ... " + it.TempMax.ToString("#.#"));
-              line = line.Replace("%REP_HUMID%", it.HumidityMin.ToString("#.#") + " ... " + it.HumidityMax.ToString("#.#"));
-              SumItem sumIt = null;
-              while ((sumIt == null) && (rep.Species.Count > 0))
-              {
-                sumIt = SumItem.find(rep.Species[0], it.SpecList);
-                if(sumIt == null)
-                  rep.Species.RemoveAt(0);
-              }
-              line = line.Replace("%REP_CNT%", sumIt.Count.ToString());
-              for (int j = 1; j < rep.Species.Count; j++)
-              {
-                sumIt = SumItem.find(rep.Species[j], it.SpecList);
-                if (sumIt != null)
-                  line += " " + sumIt.Count.ToString() + " |";
-              }
+              line = "| ";
+              for (int c = 0; c < tab.Columns.Count; c++)
+                line += tab.Rows[r][c].ToString() + " | ";
               output.insert(lineNr, line);
               lineNr++;
             }
@@ -1294,13 +1280,7 @@ namespace BatInspector
           // sums of all species
           i = output.findLine("%REP_SUM%");
           if (i >= 0)
-          {
-            string line = output.getLine(i);
-            line = line.Replace("%REP_SUM%", rep.getSumStr(rep.Species[0]));
-            for (int j = 1; j < rep.Species.Count; j++)
-              line += " " + rep.getSumStr(rep.Species[j]) + " |";
-            output.setLine(i, line);
-          }
+            output.removeLine(i);
 
 
           output.saveAs(outputName);
@@ -1387,7 +1367,7 @@ namespace BatInspector
               if (info != null)
               {
                 SpeciesWebInfo webInfo = formData.findSpecies(spec);
-                if(webInfo != null)
+                if (webInfo != null)
                   tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), webInfo.Comment, formData.findSpecies(spec).Confusion);
                 else
                   tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), "", "");
@@ -1409,52 +1389,7 @@ namespace BatInspector
           // table for automatic count results
           doc.addHeader(head, MyResources.reportResultsOfAutomaticCounting);
 
-          DataTable tbCount = new DataTable();
-          tbCount.Columns.Add("Datum");
-          foreach (SumReportItem day in rep.Days)
-            tbCount.Columns.Add(day.Date.ToString("dd.MM.yy"));
-          tbCount.Columns.Add("Summen");
-
-          for (int i = 0; i < rep.Species.Count + 5; i++)
-          {
-            string[] r = new string[tbCount.Columns.Count];
-            for(int j = 0; j < tbCount.Columns.Count; j++)
-              r[j] = " ";
-            tbCount.Rows.Add(r);
-          }
-
-          // 1st column
-          tbCount.Rows[0][0] = "geogr. Breite";
-          tbCount.Rows[1][0] = "geogr. Länge";
-          tbCount.Rows[2][0] = "Temperatur [°C]";
-          tbCount.Rows[3][0] = "Luftfeuchte [%]";
-          rep.Species.Sort();
-
-          for (int i = 0; i < rep.Species.Count; i++)
-            tbCount.Rows[i + 4][0] = rep.Species[i];
-
-          // columns with data
-          int c = 1;
-          foreach (SumReportItem it in rep.Days)
-          {
-            tbCount.Rows[0][c] = it.Latitude.ToString("00.#####", CultureInfo.InvariantCulture);
-            tbCount.Rows[1][c] = it.Longitude.ToString("000.#####", CultureInfo.InvariantCulture);
-            tbCount.Rows[2][c] = $"{it.TempMin} ... {it.TempMax}";
-            tbCount.Rows[3][c] = $"{it.HumidityMin} ... {it.HumidityMax}";
-            for (int i = 0; i < rep.Species.Count; i++)
-            {
-              SumItem sumIt = SumItem.find(rep.Species[i], it.SpecList);
-              if (sumIt != null)
-                tbCount.Rows[i + 4][c] = sumIt.Count.ToString();
-              else
-                tbCount.Rows[i + 4][c] = "0";
-            }
-            c++;
-          }
-
-          // add last col with sums
-          for (int i = 0; i < rep.Species.Count; i++)
-            tbCount.Rows[i + 4][c] = rep.getSumStr(rep.Species[i]);
+          DataTable tbCount = createCallTable(rep);
           doc.addTable(tbCount, colWidth);
 
           // pictures of the recording device
@@ -1465,7 +1400,7 @@ namespace BatInspector
           doc.addImage(img, $"view recorder 2", 400 * 4 / 3);
 
           doc.end();
-          doc.saveAs(outputName); 
+          doc.saveAs(outputName);
         }
         catch (Exception ex)
         {
@@ -1474,6 +1409,58 @@ namespace BatInspector
       }
       else
         DebugLog.log("could not load file '" + formDataName + "'", enLogType.ERROR);
+    }
+
+    private static DataTable createCallTable(SumReportJson rep)
+    {
+      DataTable tbCount = new DataTable();
+      tbCount.Columns.Add("-");
+      tbCount.Columns.Add("Summen");
+      foreach (SumReportItem day in rep.Days)
+        tbCount.Columns.Add(day.Date.ToString("dd.MM.yy"));
+
+      for (int i = 0; i < rep.Species.Count + 5; i++)
+      {
+        string[] r = new string[tbCount.Columns.Count];
+        for (int j = 0; j < tbCount.Columns.Count; j++)
+          r[j] = " ";
+        tbCount.Rows.Add(r);
+      }
+
+      // 1st column
+      tbCount.Rows[0][0] = "geogr. Breite";
+      tbCount.Rows[1][0] = "geogr. Länge";
+      tbCount.Rows[2][0] = "Temperatur [°C]";
+      tbCount.Rows[3][0] = "Luftfeuchte [%]";
+      rep.Species.Sort();
+
+      for (int i = 0; i < rep.Species.Count; i++)
+        tbCount.Rows[i + 4][0] = rep.Species[i];
+
+      // columns with data
+      int c = 2;
+      foreach (SumReportItem it in rep.Days)
+      {
+        tbCount.Rows[0][c] = it.Latitude.ToString("00.#####", CultureInfo.InvariantCulture);
+        tbCount.Rows[1][c] = it.Longitude.ToString("000.#####", CultureInfo.InvariantCulture);
+        tbCount.Rows[2][c] = $"{it.TempMin} ... {it.TempMax}";
+        tbCount.Rows[3][c] = $"{it.HumidityMin} ... {it.HumidityMax}";
+        for (int i = 0; i < rep.Species.Count; i++)
+        {
+          SumItem sumIt = SumItem.find(rep.Species[i], it.SpecList);
+          if (sumIt != null)
+            tbCount.Rows[i + 4][c] = sumIt.Count.ToString();
+          else
+            tbCount.Rows[i + 4][c] = "0";
+        }
+        c++;
+      }
+
+      c = 1;
+      // add col with sums
+      for (int i = 0; i < rep.Species.Count; i++)
+        tbCount.Rows[i + 4][c] = rep.getSumStr(rep.Species[i]);
+      return tbCount;
     }
 
     private string findFile(string part, string folder, string extension)

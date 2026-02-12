@@ -700,6 +700,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load SQL ....
+        /// </summary>
+        public static string CtlMySqlLoadSQL {
+            get {
+                return ResourceManager.GetString("CtlMySqlLoadSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save SQL ....
+        /// </summary>
+        public static string CtlMySqlSaveSQL {
+            get {
+                return ResourceManager.GetString("CtlMySqlSaveSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export result of query to CSV file.
         /// </summary>
         public static string CtlMySqlToolTipExportCsv {
@@ -732,6 +750,24 @@ namespace BatInspector.Properties {
         public static string CtlMySqlToolTipLimit {
             get {
                 return ResourceManager.GetString("CtlMySqlToolTipLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load SQL statements from files.
+        /// </summary>
+        public static string CtlMySqlToolTipLoadSql {
+            get {
+                return ResourceManager.GetString("CtlMySqlToolTipLoadSql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save SQL statements to a file.
+        /// </summary>
+        public static string CtlMySqlToolTipSaveSql {
+            get {
+                return ResourceManager.GetString("CtlMySqlToolTipSaveSql", resourceCulture);
             }
         }
         
@@ -1564,6 +1600,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geo: Calculate Distance.
+        /// </summary>
+        public static string ExpGenCalcDist {
+            get {
+                return ResourceManager.GetString("ExpGenCalcDist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geo: Is Near.
+        /// </summary>
+        public static string ExpGenIsNear {
+            get {
+                return ResourceManager.GetString("ExpGenIsNear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nested expression.
         /// </summary>
         public static string ExpGenNested {
@@ -1659,6 +1713,24 @@ namespace BatInspector.Properties {
         public static string FilterVarHelpFmin {
             get {
                 return ResourceManager.GetString("FilterVarHelpFmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        public static string FilterVarHelpLat {
+            get {
+                return ResourceManager.GetString("FilterVarHelpLat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        public static string FilterVarHelpLon {
+            get {
+                return ResourceManager.GetString("FilterVarHelpLon", resourceCulture);
             }
         }
         
@@ -2113,6 +2185,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unique recorder ID.
+        /// </summary>
+        public static string FrmCreatePrjUniqueRecorderID {
+            get {
+                return ResourceManager.GetString("FrmCreatePrjUniqueRecorderID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a unique ID for the recording device..
+        /// </summary>
+        public static string frmCreateRecorderInfoEmpty {
+            get {
+                return ResourceManager.GetString("frmCreateRecorderInfoEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute next step in script..
         /// </summary>
         public static string frmDebug_ExecuteNextStepInScript {
@@ -2451,6 +2541,51 @@ namespace BatInspector.Properties {
         public static string frmModTrigSettings {
             get {
                 return ResourceManager.GetString("frmModTrigSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance [m].
+        /// </summary>
+        public static string FrmPosDistance {
+            get {
+                return ResourceManager.GetString("FrmPosDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculate the distance of the recording position the position specified below in [m]..
+        /// </summary>
+        public static string FrmPosHintCalcDistance {
+            get {
+                return ResourceManager.GetString("FrmPosHintCalcDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checks whether the position of the recording is within a certain distance from the position specified below..
+        /// </summary>
+        public static string FrmPosHintIsNear {
+            get {
+                return ResourceManager.GetString("FrmPosHintIsNear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        public static string FrmPosLatitude {
+            get {
+                return ResourceManager.GetString("FrmPosLatitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        public static string FrmPosLongitude {
+            get {
+                return ResourceManager.GetString("FrmPosLongitude", resourceCulture);
             }
         }
         
@@ -4588,7 +4723,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sampling Rate [kHz].
+        ///   Looks up a localized string similar to Sampling Rate.
         /// </summary>
         public static string SamplingRate {
             get {

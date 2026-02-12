@@ -153,7 +153,8 @@ namespace BatInspector.Controls
             break;
 
           case enDataType.DOUBLE:
-            double.TryParse(_tb.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _valDouble);
+            string str = _tb.Text.Replace(',', '.');
+            double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out _valDouble);
             _dlgValChange?.Invoke(enDataType.DOUBLE, _valDouble);
             break;
 

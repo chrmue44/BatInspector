@@ -3,12 +3,13 @@ using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using System.IO;
 
 namespace BatInspector.Controls
 {
@@ -199,6 +200,21 @@ namespace BatInspector.Controls
       _cb_Click(this, null);
     }
 
+    private int findField(string name, string[] names)
+    {
+      int retVal = 0;
+      for (int i = 0; i < names.Length; i++)
+      {
+        if(names[i] == name)
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+
     private void _dg_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
       try
@@ -213,8 +229,9 @@ namespace BatInspector.Controls
 
         if (dep == null)
           return;
-
-        QueryItem it = null;
+        string[] it = null;
+        string[] hdr = null;
+        System.Data.DataRowView view = null;
         if (dep is DataGridCell)
         {
           DataGridCell cell = dep as DataGridCell;
@@ -223,17 +240,32 @@ namespace BatInspector.Controls
             dep = VisualTreeHelper.GetParent(dep);
 
           DataGridRow row = dep as DataGridRow;
-          it = row.DataContext as QueryItem;
+          view = row.Item as System.Data.DataRowView;
+          it = new string[view.Row.ItemArray.Length];
+          for(int k = 0; k < it.Length; k++)
+            it[k] = view.Row.ItemArray[k].ToString();
         }
 
         if (it != null)
         {
-          double.TryParse(it.Latitude, NumberStyles.Any, CultureInfo.InvariantCulture, out double lat);
-          double.TryParse(it.Longitude, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon);
+          hdr = new string[it.Length];
+          for (int k = 0; k < it.Length; k++)
+            hdr[k] = view.Row.Table.Columns[k].ColumnName;
+          int i = 0;
+          i = findField(DBBAT.LAT, hdr);
+          double.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out double lat);
+          i = findField(DBBAT.LON, hdr);
+          double.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out double lon);
           List<string> species = Project.createSpeciesList(lat, lon);
-          AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it);
-          App.MainWin.setZoom(it.WavFileName, f, it.PathToWavs, null, enModel.BAT_DETECT2, species);
-          int callIdx = f.findCallIdx(it.CallNr);
+          int iWav = findField(DBBAT.WAV_FILE_NAME, hdr);
+          int iRecT = findField(DBBAT.RECORDING_TIME, hdr);
+          int iPath = findField(DBBAT.PATH_TO_WAV, hdr);
+          AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it[iWav], it[iRecT]);
+
+          i = findField(DBBAT.CALLNR, hdr);
+          int.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out int callNr);
+          App.MainWin.setZoom(it[iWav], f, it[iPath], null, enModel.BAT_DETECT2, species);
+          int callIdx = f.findCallIdx(callNr);
           if (callIdx >= 0)
             App.MainWin.changeCallInZoom(callIdx);
         }
@@ -430,6 +462,49 @@ namespace BatInspector.Controls
         _sp3.Children.Add(c);
     }
 
+
+
+    /*  private void initDataSource(List<sqlRow> dat)
+      {
+        try
+        {
+          _dg.ItemsSource = null;
+          if (dat.Count == 0)
+            return;
+
+          List<QueryItem> list = new List<QueryItem>();
+          int line = 0;
+          foreach (sqlRow row in dat)
+          {
+            QueryItem it = new QueryItem();
+            it.setValues(row);
+            line++;
+            it.line = line;
+            list.Add(it);
+          }
+
+          _dg.ItemsSource = list;
+
+          for (int i = 1; i < _dg.Columns.Count; i++)
+          {
+            _dg.Columns[i].Visibility = Visibility.Collapsed;
+            _dg.Columns[i].IsReadOnly = true;
+          }
+          for (int j = 0; j < dat[0].Fields.Count; j++)
+          {
+            for (int i = 1; i < _dg.Columns.Count; i++)
+            {
+              if (convertNameWPFtoSQL((string)_dg.Columns[i].Header).IndexOf(dat[0].Fields[j].Name) >= 0)
+                _dg.Columns[i].Visibility = Visibility.Visible;
+            }
+          }
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log($"error query data: {ex.ToString()}", enLogType.ERROR);
+        }
+      } */
+
     private void initDataSource(List<sqlRow> dat)
     {
       try
@@ -438,31 +513,25 @@ namespace BatInspector.Controls
         if (dat.Count == 0)
           return;
 
-        List<QueryItem> list = new List<QueryItem>();
+        int fieldCnt = dat[0].Fields.Count;
+
+        DataTable dt = new DataTable();
+        for (int i = 0; i < fieldCnt; i++)
+          dt.Columns.Add(dat[0].Fields[i].Name);
+
         int line = 0;
         foreach (sqlRow row in dat)
         {
-          QueryItem it = new QueryItem();
-          it.setValues(row);
+          string[] rowStr = new string[fieldCnt];
+          for(int i = 0; i < fieldCnt; i++)
+            rowStr[i] = row.Fields[i].ToString();
+          dt.Rows.Add(rowStr);
           line++;
-          it.line = line;
-          list.Add(it);
         }
-
-        _dg.ItemsSource = list;
-
+        _dg.ItemsSource = dt.DefaultView;
         for (int i = 1; i < _dg.Columns.Count; i++)
         {
-          _dg.Columns[i].Visibility = Visibility.Collapsed;
           _dg.Columns[i].IsReadOnly = true;
-        }
-        for (int j = 0; j < dat[0].Fields.Count; j++)
-        {
-          for (int i = 1; i < _dg.Columns.Count; i++)
-          {
-            if (convertNameWPFtoSQL((string)_dg.Columns[i].Header).IndexOf(dat[0].Fields[j].Name) >= 0)
-              _dg.Columns[i].Visibility = Visibility.Visible;
-          }
         }
       }
       catch (Exception ex)
@@ -517,6 +586,57 @@ namespace BatInspector.Controls
       }
     }
 
+    private void btnSaveSql_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        if (!string.IsNullOrEmpty(_tbQuery.Text))
+        {
+          System.Windows.Forms.SaveFileDialog dlg = new System.Windows.Forms.SaveFileDialog();
+          dlg.AddExtension = true;
+          string dirSql = Path.Combine(AppParams.AppParamsPath, AppParams.DIR_SQL);
+          if (!Directory.Exists(dirSql))
+            Directory.CreateDirectory(dirSql);
+          dlg.InitialDirectory = dirSql;
+          dlg.Filter = "SQL files (*.sql)|*.sql|All files (*.*)|*.*";
+          if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+          {
+            string fName = dlg.FileName;
+            File.WriteAllText(fName, _tbQuery.Text);
+          }
+        }
+        else
+          DebugLog.log("Save Sql: nothing to save, query is empty", enLogType.INFO);
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log($"unable to write SQL: {ex.ToString()}", enLogType.ERROR);
+      }
+    }
+
+
+    private void btnLoadSql_Click(object sender, RoutedEventArgs e)
+    {
+      try
+      {
+        System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
+        dlg.Filter = "SQL files (*.sql)|*.sql|All files (*.*)|*.*";
+        string dirSql = Path.Combine(AppParams.AppParamsPath, AppParams.DIR_SQL);
+        if (!Directory.Exists(dirSql))
+          Directory.CreateDirectory(dirSql);
+        dlg.InitialDirectory = dirSql;
+        if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+          string fName = dlg.FileName;
+          _tbQuery.Text = File.ReadAllText(fName);
+        }
+      }
+      catch(Exception ex)
+      {
+        DebugLog.log($"unable to open SQL: {ex.ToString()}", enLogType.ERROR);
+      }
+    }
+
     private void _btnConnect_Click(object sender, RoutedEventArgs e)
     {
       FrmConnectMysql frm = new FrmConnectMysql();
@@ -565,6 +685,11 @@ namespace BatInspector.Controls
     private void _btnUpdateDb_Click(object sender, RoutedEventArgs e)
     {
       App.Model.MySQL.DbBats.addProjectToDb(App.Model.Prj, false);
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+
     }
   }
 }

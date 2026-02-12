@@ -167,6 +167,12 @@ namespace BatInspector
       addMethod(new FuncTabItem("calcSNR", calcSNR));
       _scriptHelpTab.Add(new HelpTabItem("calcSNR", "calculate sound noise ratio for each call in file",
                       new List<string> { "1: file name"}, new List<string> { "1: error code" }));
+      addMethod(new FuncTabItem("calcDistance", calcDistance));
+      _scriptHelpTab.Add(new HelpTabItem("calcDistance", "calculate distance between to points",
+                      new List<string> { "1: pos 1 latitude","2: pos 1 longitude","3: pos 2 latitude, 4: pos 2 longitude" }, new List<string> { "1: error code" }));
+      addMethod(new FuncTabItem("isNear", isNear));
+      _scriptHelpTab.Add(new HelpTabItem("isNear", "checks distance between to points is smaller than certain value",
+                      new List<string> { "1: pos 1 latitude", "2: pos 1 longitude", "3: pos 2 latitude", "4: pos 2 longitude", "5: distance [m]" }, new List<string> { "1: error code" }));
 
 
     }
@@ -1543,7 +1549,73 @@ namespace BatInspector
         err = tParseError.NR_OF_ARGUMENTS;
       return err;
     }
+    static tParseError calcDistance(List<AnyType> argv, out AnyType result)
+    {
+      result = new AnyType();
+      tParseError err = 0;
+      if (argv.Count >= 4)
+      { 
+        argv[0].changeType(AnyType.tType.RT_FLOAT);
+        double lat1 = argv[0].getFloat();
+        argv[1].changeType(AnyType.tType.RT_FLOAT);
+        double lon1 = argv[1].getFloat();
+        argv[2].changeType(AnyType.tType.RT_FLOAT);
+        double lat2 = argv[2].getFloat();
+        argv[3].changeType(AnyType.tType.RT_FLOAT);
+        double lon2 = argv[3].getFloat();
+        if ((lat1 < -90) || (lat1 > 90))
+          err = tParseError.ARG1_OUT_OF_RANGE;
+        else if ((lat2 < -90) || (lat2 > 90))
+          err = tParseError.ARG3_OUT_OF_RANGE;
+        else if ((lon1 < -180) || (lon1 > 180))
+          err = tParseError.ARG2_OUT_OF_RANGE;
+        else if ((lon2 < -180) || (lon2 > 180))
+          err = tParseError.ARG4_OUT_OF_RANGE;
+        else
+        {
+          double dist = Utils.calcDist(lat1, lon1, lat2, lon2);
+          result.assign(dist);
+        }
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
 
+    static tParseError isNear(List<AnyType> argv, out AnyType result)
+    {
+      result = new AnyType();
+      tParseError err = 0;
+      if (argv.Count >= 5)
+      {
+        argv[0].changeType(AnyType.tType.RT_FLOAT);
+        double lat1 = argv[0].getFloat();
+        argv[1].changeType(AnyType.tType.RT_FLOAT);
+        double lon1 = argv[1].getFloat();
+        argv[2].changeType(AnyType.tType.RT_FLOAT);
+        double lat2 = argv[2].getFloat();
+        argv[3].changeType(AnyType.tType.RT_FLOAT);
+        double lon2 = argv[3].getFloat();
+        argv[4].changeType(AnyType.tType.RT_FLOAT);
+        double dist = argv[4].getFloat();
+        if ((lat1 < -90) || (lat1 > 90))
+          err = tParseError.ARG1_OUT_OF_RANGE;
+        else if ((lat2 < -90) || (lat2 > 90))
+          err = tParseError.ARG3_OUT_OF_RANGE;
+        else if ((lon1 < -180) || (lon1 > 180))
+          err = tParseError.ARG2_OUT_OF_RANGE;
+        else if ((lon2 < -180) || (lon2 > 180))
+          err = tParseError.ARG4_OUT_OF_RANGE;
+        else
+        {
+          bool ok = Utils.isNear(lat1, lon1, lat2, lon2, dist);
+          result.assignBool(ok);
+        }
+      }
+      else
+        err = tParseError.NR_OF_ARGUMENTS;
+      return err;
+    }
 
     static tParseError checkOverdrive(List<AnyType> argv, out AnyType result)
     {

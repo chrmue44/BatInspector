@@ -26,13 +26,14 @@
       ],
       "Name": "Darmstadt-Dieburg",
       "Species": [
-        "MMYO",
+        "MALC",
         "MBEC",
+        "MBRA",
+        "MDAU",
+        "MEMA",
+        "MMYO",
         "MNAT",
         "MMYS",
-        "MBRA",
-        "MALC",
-        "MDAU",
         "NNOC",
         "NLEI",
         "ESER",
@@ -47,6 +48,101 @@
         "Eptesicus",
         "Nyctaloid",
         "Myotis",
+        "Vespertilio",
+        "Pipistrellus"
+      ]
+    },
+    {
+      "InformationSource": "https:\/\/www.saeugeratlas-nrw.lwl.org\/artenliste\/",
+      "Location": [
+        {
+          "Lat": 51.79925879077088, 
+          "Lon": 5.951825584839679
+        },
+        {
+          "Lat": 51.949875299675575,
+          "Lon": 6.7841820081257636
+        },
+        {
+          "Lat": 52.07724135003226,
+          "Lon": 6.679663032334579
+        },
+        {
+          "Lat": 52.46365081747314,
+          "Lon": 7.624521188719532
+        },	
+		{
+          "Lat": 52.05664487166167, 
+		  "Lon": 8.00257677495204
+        },	
+		{
+		  "Lat": 52.18062150694316, 
+		  "Lon": 8.510120746822444
+        },	
+		{
+		  "Lat": 52.459122526060966,
+		  "Lon": 8.33801700341521
+        },	
+		{
+		  "Lat": 52.49526486870553,
+		  "Lon": 9.069014964919418
+        },	
+		{
+		  "Lat": 51.80391492910762,
+		  "Lon": 9.411898526460565
+        },	
+		{
+		  "Lat": 51.488175772737556, 
+		  "Lon": 9.058923645342393
+        },	
+		{
+		  "Lat": 50.746270730818004,
+		  "Lon": 8.080591190279
+        },	
+		{
+		  "Lat": 50.90086470584648, 
+		  "Lon": 7.730715344897242
+        },	
+		{
+		  "Lat": 50.364122369271975,
+		  "Lon": 6.398812800512324
+        },	
+		{
+		  "Lat": 51.04889352489204, 
+		  "Lon": 5.8820236045769665
+        },	
+		{
+		 "Lat": 51.5326171098618, 
+		 "Lon": 6.201958177356159
+		}
+      ],
+      "Name": "Nodrhein-Westfalen",
+      "Species": [
+        "BBAR",
+        "ENIL",
+        "ESER",
+        "MALC",
+        "MBEC",
+        "MBRA",
+        "MDAS",
+        "MDAU",
+        "MEMA",
+        "MMYO",
+        "MMYS",
+        "MNAT",
+        "NLEI",
+        "NNOC",
+        "PAUR",
+        "PAUS",
+        "RFER",
+        "RHIP",
+        "PNAT",
+        "PPIP",
+        "PPYG",
+        "VMUR",
+        "Eptesicus",
+        "Myotis",
+        "Nyctaloid",
         "Vespertilio",
         "Pipistrellus"
       ]

@@ -276,6 +276,9 @@
     <Compile Include="Forms\frmCreatePrjFromQuery.xaml.cs">
       <DependentUpon>frmCreatePrjFromQuery.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmPosition.xaml.cs">
+      <DependentUpon>FrmPosition.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmVerifySpecies.xaml.cs">
       <DependentUpon>frmVerifySpecies.xaml</DependentUpon>
     </Compile>
@@ -616,6 +619,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\frmModelParams.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\FrmPosition.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -214,7 +214,7 @@
     <value>Call</value>
   </data>
   <data name="SamplingRate" xml:space="preserve">
-    <value>Sampling Rate [kHz]</value>
+    <value>Sampling Rate</value>
   </data>
   <data name="CtlWavRemarks" xml:space="preserve">
     <value>Remarks</value>
@@ -2003,5 +2003,50 @@
   </data>
   <data name="msgFrmVerifyCursors" xml:space="preserve">
     <value>select a region to check for species by setting the cursors!</value>
+  </data>
+  <data name="ExpGenCalcDist" xml:space="preserve">
+    <value>Geo: Calculate Distance</value>
+  </data>
+  <data name="FrmPosLatitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="FrmPosLongitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="FilterVarHelpLat" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="FilterVarHelpLon" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="ExpGenIsNear" xml:space="preserve">
+    <value>Geo: Is Near</value>
+  </data>
+  <data name="FrmPosDistance" xml:space="preserve">
+    <value>Distance [m]</value>
+  </data>
+  <data name="FrmPosHintCalcDistance" xml:space="preserve">
+    <value>Calculate the distance of the recording position the position specified below in [m].</value>
+  </data>
+  <data name="FrmPosHintIsNear" xml:space="preserve">
+    <value>Checks whether the position of the recording is within a certain distance from the position specified below.</value>
+  </data>
+  <data name="CtlMySqlLoadSQL" xml:space="preserve">
+    <value>Load SQL ...</value>
+  </data>
+  <data name="CtlMySqlSaveSQL" xml:space="preserve">
+    <value>Save SQL ...</value>
+  </data>
+  <data name="CtlMySqlToolTipSaveSql" xml:space="preserve">
+    <value>Save SQL statements to a file</value>
+  </data>
+  <data name="CtlMySqlToolTipLoadSql" xml:space="preserve">
+    <value>Load SQL statements from files</value>
+  </data>
+  <data name="frmCreateRecorderInfoEmpty" xml:space="preserve">
+    <value>Please enter a unique ID for the recording device.</value>
+  </data>
+  <data name="FrmCreatePrjUniqueRecorderID" xml:space="preserve">
+    <value>Unique recorder ID</value>
   </data>
 </root>

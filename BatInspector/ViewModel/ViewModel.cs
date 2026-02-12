@@ -205,7 +205,7 @@ namespace BatInspector
         _view.Prj = new Project(updateCtls, DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
         _view.Prj.readPrjFile(_selectedDir);
         _view.initReport();
-        if (File.Exists(Prj.ReportName))
+        if (Prj.Ok && File.Exists(Prj.ReportName))
         {
           _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, Prj.MetaData);
           _view.Prj.Analysis.openSummary(_view.Prj.SummaryName, _view.Prj.Notes);
@@ -865,24 +865,27 @@ namespace BatInspector
       string prjPath = Path.Combine(info.DstDir, info.Name);
       DirectoryInfo dir = new DirectoryInfo(prjPath);
       initProject(dir, false);
-      if (inspect)
+      if (this.Prj?.Ok == true)
       {
-        Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
-        evaluate(cli);
-        initProject(dir, false);  // re init project to take deleted files into account
+        if (inspect)
+        {
+          Status.Msg = BatInspector.Properties.MyResources.MainWindowMsgClassification;
+          evaluate(cli);
+          initProject(dir, false);  // re init project to take deleted files into account
+        }
+        if (Prj.Records.Length > info.MaxFileCnt)
+        {
+          double prjCnt = (double)Prj.Records.Length / info.MaxFileCnt;
+          if (prjCnt > (int)prjCnt)
+            prjCnt += 1;
+          List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, info.ModelParams, DefaultModelParams.Length);
+          initProject(new DirectoryInfo(prjs[0]), false);
+          // remove src project
+          Directory.Delete(prjPath, true);
+        }
+        if (!cli)
+          Prj.ReloadInGui = true;
       }
-      if (Prj.Records.Length > info.MaxFileCnt)
-      {
-        double prjCnt = (double)Prj.Records.Length / info.MaxFileCnt;
-        if (prjCnt > (int)prjCnt)
-          prjCnt += 1;
-        List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, info.ModelParams,  DefaultModelParams.Length);
-        initProject(new DirectoryInfo(prjs[0]), false);
-        // remove src project
-        Directory.Delete(prjPath, true);
-      }
-      if (!cli)
-        Prj.ReloadInGui = true;
     }
   }
 }

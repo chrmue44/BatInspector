@@ -377,7 +377,7 @@ namespace BatInspector
     }
 
 
-    public AnalysisFile fillAnalysisFromQuery(QueryItem item)
+    public AnalysisFile fillAnalysisFromQuery(string wavFileName, string recordingTime)
     {
       if (_queryResult.Count == 0)
         return null;
@@ -420,14 +420,14 @@ namespace BatInspector
       int idx = -1;
       for (int i = 0; i < _queryResult.Count; i++)
       {
-        if (_queryResult[i].Fields[colWavFile].getString() == item.WavFileName)
+        if (_queryResult[i].Fields[colWavFile].getString() == wavFileName)
         {
           idx = i;
           break;
         }
       }
 
-      while ((idx < _queryResult.Count) && (_queryResult[idx].Fields[colWavFile].getString() == item.WavFileName))
+      while ((idx < _queryResult.Count) && (_queryResult[idx].Fields[colWavFile].getString() == wavFileName))
       {
         report.addRow();
         int repRow = report.RowCnt;
@@ -457,8 +457,8 @@ namespace BatInspector
         idx++;
       }
       report.saveAs(csvName);
-      DateTime recTime = DateTime.Parse(item.RecordingTime);
-      AnalysisFile file = new AnalysisFile(report, item.WavFileName,  2, recTime);
+      DateTime recTime = DateTime.Parse(recordingTime);
+      AnalysisFile file = new AnalysisFile(report, wavFileName,  2, recTime);
       for(int r = 2; r < report.RowCnt; r++)
       {
         AnalysisCall call = new AnalysisCall(report, r, false);

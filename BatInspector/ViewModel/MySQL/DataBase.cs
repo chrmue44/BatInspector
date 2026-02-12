@@ -143,6 +143,10 @@ namespace BatInspector
                       if (!myReader.IsDBNull(fIdx))
                         newRow.Fields[fIdx].setFloat(myReader.GetFloat(fIdx));
                       break;
+                    case enSqlType.DOUBLE:
+                      if (!myReader.IsDBNull(fIdx))
+                        newRow.Fields[fIdx].setDouble(myReader.GetDouble(fIdx));
+                      break;
                     case enSqlType.INT:
                       if (!myReader.IsDBNull(fIdx))
                         newRow.Fields[fIdx].setInt32(myReader.GetInt32(fIdx));
@@ -211,6 +215,37 @@ namespace BatInspector
       return retVal;
     }
 
+
+    private static string translateGeoExpressions(string str)
+    {
+      string retVal = str;
+      int pos = 0;
+      while (pos >= 0)
+      {
+        pos = str.IndexOf("isNear", pos);
+        if (pos >= 0)
+        {
+          int posOpen = pos + 6 + 1;  // length of "isNear("
+          int posClose = Utils.findMatchingClosingBrace(str, posOpen + 1);
+          if (posClose >= posOpen)
+          {
+            string[] tokens = str.Substring(posOpen, posClose - posOpen).Split(',');
+            if (tokens.Length >= 5)
+            {
+              double[] box = Utils.getGeoBoundingBox(tokens[2], tokens[3], tokens[4]);
+              string exp = $"({tokens[0]} BETWEEN {box[0].ToString(CultureInfo.InvariantCulture)} AND {box[2].ToString(CultureInfo.InvariantCulture)}\n";
+              exp += $"AND {tokens[1]} BETWEEN {box[1].ToString(CultureInfo.InvariantCulture)} AND {box[3].ToString(CultureInfo.InvariantCulture)})\n";
+              retVal = str.Substring(0, pos) + exp + str.Substring(posClose + 1);
+              pos = posClose + 1;
+            }
+          }
+          else
+            break;
+        }
+      }
+      return retVal;
+    }
+
     /// <summary>
     /// translates BatInspector filter expressions to MySQL WHERE expressions
     /// </summary>
@@ -220,6 +255,8 @@ namespace BatInspector
     {
       string retVal = exp.Replace("indexOf", "INSTR");
       int pos = 0;
+
+      retVal = translateGeoExpressions(retVal);
 
       // replace indexOf() with INSTR()
       while ((pos >= 0) && (pos < retVal.Length))
@@ -331,6 +368,9 @@ namespace BatInspector
                 break;
               case enSqlType.FLOAT:
                 csv.setCell(row, col, (double)fi.getFloat());
+                break;
+              case enSqlType.DOUBLE:
+                csv.setCell(row, col, fi.getDouble());
                 break;
               case enSqlType.DATE:
                 csv.setCell(row, col, fi.getDateAsString());

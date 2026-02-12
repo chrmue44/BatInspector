@@ -70,6 +70,7 @@ namespace BatInspector.Controls
         )
       {
         TextBlock text = new TextBlock();
+        text.TextWrapping = TextWrapping.Wrap;
         text.Text = entry.Time.ToString() + "  " + entry.Type.ToString() + ": " + entry.Text;
         _spEntries.Children.Add(text);
         _scrViewer.ScrollToBottom();

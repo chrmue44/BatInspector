@@ -1394,7 +1394,11 @@ namespace libParser
         {
           ok = DateTime.TryParseExact(str, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out date);
           if (!ok)
+          {
             ok = DateTime.TryParseExact(str, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out date);
+            if (!ok)
+              ok = DateTime.TryParseExact(str, "yyyy-MM-ddHH:mm:sszzz", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out date);
+          }
         }
       }
       catch

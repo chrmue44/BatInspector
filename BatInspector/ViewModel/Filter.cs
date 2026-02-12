@@ -99,7 +99,9 @@ namespace BatInspector
         new FilterVarItem (DBBAT.PROB, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpProb ),
         new FilterVarItem (DBBAT.REM, AnyType.tType.RT_STR, true, true, false , MyResources.FilterVarHelpRecording),
         new FilterVarItem (DBBAT.RECORDING_TIME , AnyType.tType.RT_TIME, true, true, false, MyResources.FilterVarHelpTime),
-        new FilterVarItem (DBBAT.SNR, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpSnr)
+        new FilterVarItem (DBBAT.SNR, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpSnr),
+        new FilterVarItem (DBBAT.LAT, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpLat),
+        new FilterVarItem (DBBAT.LON, AnyType.tType.RT_FLOAT, true, true, false, MyResources.FilterVarHelpLon)
       };
 
       _expression.Variables.set(VAR_NR_CALLS, 0);
@@ -113,6 +115,8 @@ namespace BatInspector
       _expression.Variables.set(DBBAT.REM, "");
       _expression.Variables.set(DBBAT.RECORDING_TIME, 0);
       _expression.Variables.set(DBBAT.SNR, 0);
+      _expression.Variables.set(DBBAT.LAT, 0);
+      _expression.Variables.set(DBBAT.LON, 0);
 
       _gen = new ExpressionGenerator(getVariables, species);
     }
@@ -132,6 +136,8 @@ namespace BatInspector
         _expression.setVariable(DBBAT.REM, file.getString(Cols.REMARKS));
         _expression.setVariable(DBBAT.RECORDING_TIME, AnyType.getTimeString(file.RecTime));
         _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
+        _expression.setVariable(DBBAT.LAT, file.getDouble(Cols.LAT));
+        _expression.setVariable(DBBAT.LON, file.getDouble(Cols.LON));
         foreach (AnalysisCall call in file.Calls)
         {
           bool res = apply(filter, call);
@@ -199,19 +205,6 @@ namespace BatInspector
       return retVal;
     }
 
-
-    public bool apply(FilterItem filter, Csv csv, int row)
-    {
-      bool retVal = false;
-      _expression.setVariable(DBBAT.SPEC_MAN, csv.getCell(row, Cols.SPECIES_MAN));
-      AnyType res = _expression.parse(filter.Expression);
-
-      if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
-        retVal = true;
-
-      return retVal;
-
-    }
 
     public FilterItem getFilter(string name)
     {

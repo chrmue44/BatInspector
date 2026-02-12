@@ -18,11 +18,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
-using System.Configuration.Install;
-using NAudio.SoundFont;
 using System.Deployment.Application;
 using System.Reflection;
-using System.Security.Permissions;
 
 namespace BatInspector
 {
@@ -167,6 +164,7 @@ namespace BatInspector
     public const string CSV_SEPARATOR = ";";              // CSV separator
     public const string DIR_SCRIPT = "scripts";           // sub directory containig scripts
     public const string DIR_BAT_INFO = "batInfo";         // sub directory for user editable bat info files
+    public const string DIR_SQL = "sql";                  // sub directory for sql queries
     public const string BAT_INFO1_PDF = "/doc/Bestimmung-Fledermausrufe-Teil1.pdf"; // Information file about bat detection
     public const string BAT_INFO2_PDF = "/doc/Bestimmung-Fledermausrufe-Teil2.pdf"; // Information file about bat detection
     public const string HELP_FILE_DE = "/doc/BatInspector_DE.pdf"; // software manual
@@ -184,7 +182,6 @@ namespace BatInspector
     const string FILE_NAME_SETTINGS = "BatInspectorSettings.json";
     const string _dataPath = "dataPath.txt";
     public const int MAX_FILES_PRJ_OVERVIEW = 1000;
-    public const string PythonBin = "\"C:/Program Files/Python310/python.exe\"";
     public const int MAX_LOG_COUNT = 600;     // max. numbe rof log entries before creating a new log file
     public const int STATISTIC_CLASSES = 40;  // number of classes in statistic histograms
     public const int FFT_WIDTH = 1024;

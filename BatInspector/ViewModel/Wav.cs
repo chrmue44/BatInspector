@@ -816,7 +816,21 @@ namespace BatInspector
       }
     }
 
-
+    public static string retrieveRecorderId(string wavName)
+    {
+      string retVal = "";
+      WavFile wav = new WavFile();
+      wav.readFile(wavName);
+      if(wav.Guano != null)
+      {
+        GuanoItem it = wav.Guano.getField("Song Meter|Prefix", "WA");
+        if(it != null)
+          retVal = it.Value;
+      }
+      retVal = retVal.Replace('(', '_');
+      retVal = retVal.Replace(')', '_');
+      return retVal;
+    }
     public double calcEffVoltage(double tStart = 0, double tEnd = 20, bool ac = true)
     {
       double retVal = 0;

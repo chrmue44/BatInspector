@@ -11,6 +11,7 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 
 namespace libParser
@@ -263,16 +264,14 @@ namespace libParser
       return retVal;
     }
     /// <summary>
-    /// find the matching closing brace . The search begins after opening brace
-    /// ingnores braces inside of "..."
+    /// find the matching closing brace beginning one char after the opening brace: startPos.
+    /// The search begins after opening brace ingnores braces inside of "..."
     /// </summary>
     /// <param name="str">string to search</param>
-    /// <param name="startPos">first character behind opeing brace</param>
+    /// <param name="startPos">first character behind opening brace</param>
     /// <returns>position of the matching closing brace, or -1 if not found</returns>
-    public static int findMatchingClosingBrace(string str, int startPos)
+    public static int findMatchingClosingBrace(string str, int startPos, char open = '(', char close = ')')
     {
-      char open = '(';
-      char close = ')';
       int count = 1;
       int retVal = -1;
       bool inString = false;
@@ -294,24 +293,6 @@ namespace libParser
       return retVal;
     }
 
-    public static string makeUnicosName(string name)
-    {
-      string retVal = null;
-      int pos = name.IndexOf('+');
-      if(pos >= 0)
-      {
-        int pos2 = name.IndexOf('-');
-        if(pos2 > pos)  
-          retVal = name.Substring(0, pos) + name.Substring(pos2);
-      }
-      if (retVal == null)
-        retVal = name;
-      retVal = retVal.Replace("=", "");
-      retVal = retVal.Replace(".", "");
-      retVal = retVal.Replace("+", "");
-      retVal = retVal.Replace("-", "");
-      return retVal;
-    }
 
     public static string LTrim(string str)
     {
@@ -562,6 +543,100 @@ namespace libParser
         return s;
       else
         return s.Substring(0, len);
+    }
+
+
+
+    /// <summary>
+    /// calculate distance of two points on earth in [m]
+    /// </summary>
+    /// <param name="lat1"></param>
+    /// <param name="lon1"></param>
+    /// <param name="lat2"></param>
+    /// <param name="lon2"></param>
+    /// <returns></returns>
+    public static double calcDist(double lat1, double lon1, double lat2, double lon2)
+    {  
+      double dLat = DegToRad * (lat2 - lat1);
+      double dLon = DegToRad * (lon2 - lon1);
+
+      double rLat1 = DegToRad * (lat1);
+      double rLat2 = DegToRad * (lat2);
+
+      // Die Haversine-Formel
+      double a = Math.Pow(Math.Sin(dLat / 2), 2) +
+                 Math.Cos(rLat1) * Math.Cos(rLat2) *
+                 Math.Pow(Math.Sin(dLon / 2), 2);
+
+      // Berechnung des zentralen Winkels
+      double c = 2 * Math.Asin(Math.Sqrt(a));
+
+      return EarthRadiusM * c;
+    }
+
+    const double EarthRadiusM = 6371000;
+    const double DegToRad = Math.PI / 180.0;
+    const double RadToDeg = 180.0 / Math.PI;
+
+
+    /// <summary>
+    /// calculate bounding box of size 2 * dist/ 2*dist around coordinates
+    /// </summary>
+    /// <param name="lat"></param>
+    /// <param name="lon"></param>
+    /// <param name="dist"> distance [m]</param>
+    /// <returns>lat1,lon1,lat2,lon2</returns>
+    public static double[] getGeoBoundingBox(double lat, double lon, double dist)
+    {
+      double[] retVal = new double[4];
+      double dLat = dist / (60.0 * 1852.0);
+      retVal[0] = lat - dLat;
+      retVal[2] = lat + dLat;
+
+      if ((lat > -88) && (lat < 88))
+      {
+        double dLon = dLat / Math.Cos(lat * DegToRad);
+        retVal[1] = lon - dLon;
+        retVal[3] = lon + dLon;
+      }
+      else
+      {
+        retVal[1] = -180;
+        retVal[3] = 180;
+      }
+      return retVal;
+    }
+
+    public static double[] getGeoBoundingBox(string sLat, string sLon, string sDist)
+    {
+      double.TryParse(sLat, NumberStyles.Any, CultureInfo.InvariantCulture, out double lat);
+      double.TryParse(sLon, NumberStyles.Any, CultureInfo.InvariantCulture, out double lon);
+      double.TryParse(sDist, NumberStyles.Any, CultureInfo.InvariantCulture, out double dist);
+      return getGeoBoundingBox(lat, lon, dist);
+    }
+
+    /// <summary>
+    /// check if the distance between two geo coordindates is below 'dist'
+    /// </summary>
+    /// <param name="lat1"></param>
+    /// <param name="lon1"></param>
+    /// <param name="lat2"></param>
+    /// <param name="lon2"></param>
+    /// <param name="dist">distance [m]</param>
+    /// <param name="exact"true: use precise distance calculation, false: use bounding box</param>
+    /// <returns></returns>
+    public static bool isNear(double lat1, double lon1, double lat2, double lon2, double dist, bool exact = false)
+    {
+      if (exact)
+      {
+        double diff = calcDist(lat1, lon1, lat2, lon2);
+        return diff <= dist;
+      }
+      else
+      {
+        double[] box = getGeoBoundingBox(lat1, lon1, dist);
+        return (box[0] <= lat2) && (lat2 <= box[2]) && (box[1] <= lon2) && (lon2 <= box[3]);
+      }
     }
   }
 }

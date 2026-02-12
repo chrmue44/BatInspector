@@ -11,17 +11,13 @@ using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using libScripter;
-using NAudio.Wave;
-using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Xml.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BatInspector
 {
@@ -107,11 +103,12 @@ namespace BatInspector
       testKml();
       testLocfileTxt();
       testTranslateFilter();
+      testGeoCalc();
       testGetDateFromFilename();
       //testSignalForm();
       //testSimCall();
       //testReportModelBatdetect2();
-      testCreatePrjFromWavs();
+      //testCreatePrjFromWavs();
       //updateSummaries();
       //string prjName = "E:/bat/2023/20230408_4_SW";
       //testCreatePrjInfoFiles(prjName, 49.7670333333333, 8.63353333333333);
@@ -126,9 +123,9 @@ namespace BatInspector
       testCalcSnr();
     //  testCreatePngCpp();
       testCheckSpecies();
-      testGuano();
-      testElekonBra();
-      //testAirAbsorbtion();
+      //testGuano();
+      //testElekonBra();
+      testAirAbsorbtion();
       //testMySql();
       //testFlacImport();
 
@@ -970,10 +967,10 @@ namespace BatInspector
       assert("testTranslateFilter, 1", res == "(SpeciesMan = 'BBAR') AND  (INSTR(SpeciesAuto,'?') > 0)");
       expr = "(indexOf(SpeciesAuto,\"?\") < 0) && (SpeciesMan == \"BBAR\")";
       res = DataBase.translateFilterExpressionToMySQL(expr);
-      assert("testTranslateFilter, 1", res == "(INSTR(SpeciesAuto,'?') = 0) AND (SpeciesMan = 'BBAR')");
+      assert("testTranslateFilter, 2", res == "(INSTR(SpeciesAuto,'?') = 0) AND (SpeciesMan = 'BBAR')");
       expr = "(RecTime > \"0d25-04-22T18:00:02\") && (RecTime < \"0d25-04-23T06:10:00\")";
       res = DataBase.translateFilterExpressionToMySQL(expr);
-      assert("testTranslateFilter, 1", res == "(RecTime > '2025-04-22 18:00:02') AND (RecTime < '2025-04-23 06:10:00')");
+      assert("testTranslateFilter, 3", res == "(RecTime > '2025-04-22 18:00:02') AND (RecTime < '2025-04-23 06:10:00')");
     }
 
     private void testActivityDiagr()
@@ -1135,6 +1132,43 @@ namespace BatInspector
       App.Model.MySQL.connect("localhost", "bat_calls", "root", "root");
       string startDir = "F:\\bat\\2024";
       crawlDir(startDir,0,"", "");
+    }
+
+    public void testGeoCalc()
+    {
+      double lat = 52.3;
+      double lon = 8.2;
+      double dist = 100;
+      double[] box = Utils.getGeoBoundingBox(lat, lon, dist);
+
+      double diff = Utils.calcDist(box[0], box[1], box[2], box[3]);
+      assert("testGeoCalc 1", (diff - 283) < 0.1);
+
+      bool ok = Utils.isNear(lat, lon, lat + 0.001, lon + 0.001, 150);
+      assert("testGeoCalc 2", ok);
+      ok = Utils.isNear(lat, lon, lat + 0.001, lon + 0.001, 30);
+      assert("testGeoCalc 3", ok == false);
+      Expression exp = new Expression(null);
+      MthdListScript mthdListScript = new MthdListScript("");
+      exp.addMethodList(mthdListScript);
+      AnyType di = exp.parse($"calcDistance({box[0].ToString(CultureInfo.InvariantCulture)},{box[1].ToString(CultureInfo.InvariantCulture)},{box[2].ToString(CultureInfo.InvariantCulture)},{box[3].ToString(CultureInfo.InvariantCulture)})");
+      diff = di.getFloat();
+      assert("testGeoCalc 4", di.getType() == AnyType.tType.RT_FLOAT);
+      assert("testGeoCalc 4", (diff - 283) < 0.1);
+
+      dist = 300;
+      di = exp.parse($"isNear({box[0].ToString(CultureInfo.InvariantCulture)},{box[1].ToString(CultureInfo.InvariantCulture)},{box[2].ToString(CultureInfo.InvariantCulture)},{box[3].ToString(CultureInfo.InvariantCulture)}, {dist})");
+      assert("testGeoCalc 5", di.getType() == AnyType.tType.RT_BOOL);
+      assert("testGeoCalc 5", di.getBool() == true);
+
+      dist = 200;
+      di = exp.parse($"isNear({box[0].ToString(CultureInfo.InvariantCulture)},{box[1].ToString(CultureInfo.InvariantCulture)},{box[2].ToString(CultureInfo.InvariantCulture)},{box[3].ToString(CultureInfo.InvariantCulture)}, {dist})");
+      assert("testGeoCalc 6", di.getType() == AnyType.tType.RT_BOOL);
+      assert("testGeoCalc 6", di.getBool() == false);
+
+      string e = "isNear(Latitude,Longitude,52.334,8.123,200)";
+      string res = DataBase.translateFilterExpressionToMySQL(e);
+      
     }
 
     private void testMySql()

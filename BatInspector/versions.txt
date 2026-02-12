@@ -10,20 +10,38 @@
  -bugfix: crash when pressing "Check" without a call and without activated cursors
  -bugfix: update available model parameters in dialog model parameters
  -bugfix: scrolling of larger files in debug window
+
+ scripting:
+- individual scripts for different models
 - new script keyword CONTINUE
+- array variables in script
+- new script commands: EditWav, CopyFile, CreateAnnsFromBra, SaveSelectedAsProject
+- new script functions rand(), calcDistance(), isNear()
+- added buttons "edit", "reload" to script debug window 
+
+import data
 - import Songmeter mini WAV files (wildlife acoustics)
 - import batMode WAV files (bio acoustic technology)
 - import Spotlight (trackIT)
 - import of FLAC files (experimental)
-- files now are displayed in alphabetical order in project view
+
+reporting
 - new report type "html"
-- new option "Square Activity" in activity diagram 
+- new option "Square" in activity diagram 
+- generation of activity diagrams for each detected species
+- technical improvements report generation
+
+miscellanous
+- added Nordrhein-Westfalen to regions file
+- files now are displayed in alphabetical order in project view
+- new field 'Recorder Id' in import dialog
 - guano metadata is now parsable by WavReader and displayed in the WavViewer
-- added buttons "edit", "reload" to script debug window 
-- new script commands: EditWav, CopyFile, CreateAnnsFromBra
-- new function rand()
-- array varaiables in script
-- enhanced Model:
+- filter allows now to filter by position (lat, lon)
+- mySql dashboard: save/load SQL statements
+- it is now allowed to use ',' and '.' as decimal delimiter in data fields
+- log windows wraps lines around
+- import files: set default model automatically when entering fixed position
+- enhanced AI Model GermanBats 0.9:
   - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller), PAUR(Strecker), MDAU (Strecker)
   - data augmentation: MALC, MEMA, MBRA, PAUS, PAUR, MBEC
 

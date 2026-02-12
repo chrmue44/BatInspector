@@ -10,6 +10,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -43,7 +44,7 @@ namespace BatInspector
     static ModelScriptItem[] _list = new ModelScriptItem[] 
     {
       new ModelScriptItem(enModel.BAT_DETECT2, "GermanBats_0.9.pth.tar", "auto_to_man_german_bats_09.scr"),
-      new ModelScriptItem(enModel.BAT_DETECT2, "Net2DFast_UK_same.pth.tar", "auto_to_man_net2dfast_uk.scr"),
+      new ModelScriptItem(enModel.BAT_DETECT2, "Net2DFast_UK_same.pth.tar", "auto_to_man_UK.scr"),
     };
 
     public static string getScriptName(enModel classifier, string modelName)
@@ -65,7 +66,7 @@ namespace BatInspector
   public abstract class BaseModel
   {
 
-    public const string BD2_MODEL_GERMAN = "GermanBats_0.8.pth.tar";
+    public const string BD2_MODEL_GERMAN = "GermanBats_0.9.pth.tar";
     public const string BD2_MODEL_UK = "Net2DFast_UK_same.pth.tar";
 
     static protected readonly XmlSerializer ModParSerializer = new XmlSerializer(typeof(DefModelParamFile));
@@ -305,6 +306,35 @@ namespace BatInspector
       }
     }
 
+    public static string getDefaultModel(enModel model, double lat, double lon)
+    {
+      string retVal = "";
+      switch (model)
+      {
+        case enModel.BAT_DETECT2:
+          if (App.Model.Regions.IsInRegion(lat, lon, "Deutschland"))
+            retVal = BaseModel.BD2_MODEL_GERMAN;
+          else if (App.Model.Regions.IsInRegion(lat, lon, "United Kingdom"))
+            retVal = BaseModel.BD2_MODEL_UK;
+          else
+            retVal = BaseModel.BD2_MODEL_GERMAN;
+          break;
+
+        case enModel.BIRDNET:
+          retVal = "WorldWide";
+          break;
+
+        case enModel.BATTY_BIRD_NET:
+          if (App.Model.Regions.IsInRegion(lat, lon, "Deutschland"))
+            retVal =  "BattyBirdNET-EU-256kHz";
+          else if (App.Model.Regions.IsInRegion(lat, lon, "United Kingdom"))
+            retVal = "BattyBirdNET-UK-256kHz";
+          else
+            retVal = "BattyBirdNET-EU-256kHz";
+          break;
+      }
+      return retVal;
+    }
     public void cleanUpAnnotations(Project prj)
     {
       string annDir = prj.getAnnotationDir();

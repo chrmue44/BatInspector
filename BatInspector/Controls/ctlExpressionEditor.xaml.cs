@@ -5,12 +5,12 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+
 using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,6 +18,7 @@ using System.Windows.Controls;
 namespace BatInspector.Controls
 {
   public delegate void dlgEnableOk(bool enable);
+ 
   /// <summary>
   /// Interaction logic for ctlExpressionEditor.xaml
   /// </summary>
@@ -34,11 +35,10 @@ namespace BatInspector.Controls
     bool _formulaOk;
     public bool FormulaOk { get { return _formulaOk; } }
 
-    public string Expression { get{ return _tbExpression.getValue() ; } }
+    public string Expression { get{ return _tbExpression.Text; } }
     public ctlExpressionEditor()
     {
       InitializeComponent();
-      _tbExpression.setup(BatInspector.Properties.MyResources.FrmFilterFilterExpression, enDataType.STRING, 0, 100, true);
     }
 
     public void setup(ExpressionGenerator gen, dlgEnableOk dlkOk)
@@ -87,6 +87,12 @@ namespace BatInspector.Controls
             _cbLeft.SelectedIndex = iLeft;
           }
         }
+        else if(((string)_cbLeft.SelectedItem == MyResources.ExpGenCalcDist) ||
+                ((string)_cbLeft.SelectedItem == MyResources.ExpGenIsNear))
+        {
+          FrmPosition frm = new FrmPosition(_gen, (string)_cbLeft.SelectedItem);
+          bool? res = frm.ShowDialog();
+        }
         _op = _gen.getAvailableOptions(enField.OPERATOR, _left[iLeft].DataType);
         _cbRight.Items.Clear();
         _lblHelpLeft.Content = _left[iLeft].HelpText;
@@ -118,6 +124,10 @@ namespace BatInspector.Controls
           _lblTodo.Visibility = Visibility.Hidden;
           _tbFreeTxt.Visibility = Visibility.Collapsed;
           _cltDateTime.Visibility = Visibility.Collapsed;
+        }
+        else if (_left[iLeft].DataType == AnyType.tType.RT_BOOL)
+        {
+
         }
 
         _cbOperator.IsEnabled = true;
@@ -200,8 +210,9 @@ namespace BatInspector.Controls
         return;
 
       string f = _prefix + "(";
+      
       if ((_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS) ||
-         (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
+           (_op[_cbOperator.SelectedIndex].Operator == enOperator.CONTAINS_NOT))
       {
         f += "indexOf(" + _left[_cbLeft.SelectedIndex].Text + ",\"";
         if (_right[_cbRight.SelectedIndex].Type == enExpType.EXPRESSION)
@@ -216,13 +227,18 @@ namespace BatInspector.Controls
       }
       else
       {
-        f += _left[_cbLeft.SelectedIndex].Text + " ";
+        if ((_left[_cbLeft.SelectedIndex].Text == MyResources.ExpGenCalcDist) ||
+            (_left[_cbLeft.SelectedIndex].Text == MyResources.ExpGenIsNear))
+          f += _gen.GeoExpression + " ";
+        else
+          f += _left[_cbLeft.SelectedIndex].Text + " ";
         f += _op[_cbOperator.SelectedIndex].Text + " ";
         if (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_TIME)
         {
           f += "\"" + AnyType.getTimeString(_cltDateTime.DateTime, false) + "\"";
         }
-        else if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType))
+        else if (AnyType.isStr(_left[_cbLeft.SelectedIndex].DataType) ||
+                 (_left[_cbLeft.SelectedIndex].DataType == AnyType.tType.RT_BOOL))
         {
           if ((string)_cbRight.SelectedItem == BatInspector.Properties.MyResources.ExpGenUserString)
             f += "\"" + _tbFreeTxt.Text + "\"";
@@ -234,8 +250,9 @@ namespace BatInspector.Controls
         else
           f += (_tbFreeTxt.Text);
       }
+
       f += ")";
-      _tbExpression.setValue(f);
+      _tbExpression.Text = f;
     }
 
     private void _tbFreeTxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -248,7 +265,6 @@ namespace BatInspector.Controls
       }
     }
 
-
     private void dateChanged(object sender, EventArgs e)
     {
       generateFormula();
@@ -260,7 +276,7 @@ namespace BatInspector.Controls
     {
       if ((_cbAppend.SelectedIndex > 0))
       {
-        _prefix = _tbExpression.getValue() + " " + _append[_cbAppend.SelectedIndex - 1].Text + " ";
+        _prefix = _tbExpression.Text + " " + _append[_cbAppend.SelectedIndex - 1].Text + " ";
         init();
       }
     }

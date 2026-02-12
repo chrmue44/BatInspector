@@ -16,7 +16,8 @@ namespace BatInspector
     DATE = 3,
     DATETIME = 4,
     BIGINT = 5,
-    TIMESTAMP = 6
+    TIMESTAMP = 6,
+    DOUBLE = 7
   }
   public class DBBAT
   {
@@ -77,14 +78,14 @@ namespace BatInspector
 
     public sqlField(sqlField f)
     {
-      _valFloat = f._valFloat;
+      _valDouble = f._valDouble;
       _valInt32 = f._valInt32;
       _valString = f._valString;
       Name = f.Name;
       FieldType = f.FieldType;
     }
 
-    float _valFloat;
+    double _valDouble;
     int _valInt32;
     string _valString;
     DateTime _date;
@@ -94,7 +95,8 @@ namespace BatInspector
       switch (FieldType)
       {
         case enSqlType.FLOAT:
-          return _valFloat;
+        case enSqlType.DOUBLE:
+          return _valDouble;
         case enSqlType.INT:
         case enSqlType.BIGINT:
           return _valInt32;
@@ -114,7 +116,8 @@ namespace BatInspector
       switch (FieldType)
       {
         case enSqlType.FLOAT:
-          return _valFloat.ToString(CultureInfo.InvariantCulture);
+        case enSqlType.DOUBLE:
+          return _valDouble.ToString(CultureInfo.InvariantCulture);
         case enSqlType.INT:
         case enSqlType.BIGINT:
           return _valInt32.ToString(CultureInfo.InvariantCulture);
@@ -135,7 +138,12 @@ namespace BatInspector
 
     public void setFloat(float val)
     {
-      _valFloat = val;
+      _valDouble = val;
+    }
+
+    public void setDouble(double val)
+    {
+      _valDouble = (float)val;
     }
 
     public void setString(string val)
@@ -173,7 +181,11 @@ namespace BatInspector
 
     public float getFloat()
     {
-      return _valFloat;
+      return (float)_valDouble;
+    }
+    public double getDouble()
+    {
+      return _valDouble;
     }
 
     void setValue(enSqlType type, object value)
@@ -181,7 +193,10 @@ namespace BatInspector
       switch (type)
       {
         case enSqlType.FLOAT:
-          _valFloat = (float)value;
+          _valDouble = (float)value;
+          break;
+        case enSqlType.DOUBLE:
+          _valDouble = (double)value;
           break;
         case enSqlType.INT:
         case enSqlType.BIGINT:

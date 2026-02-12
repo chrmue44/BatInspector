@@ -379,8 +379,8 @@ namespace BatInspector
           double.TryParse(info.Humidity, NumberStyles.Any, CultureInfo.InvariantCulture, out humidity);
           foreach (AnalysisCall c in f.Calls)
           {
-            c.setString(Cols.TEMPERATURE, temperature.ToString("0.#", CultureInfo.InvariantCulture));
-            c.setString(Cols.HUMIDITY, humidity.ToString("0.#", CultureInfo.InvariantCulture));
+            c.setString(Cols.TEMPERATURE, temperature.ToString("0.#", CultureInfo.InvariantCulture), true);
+            c.setString(Cols.HUMIDITY, humidity.ToString("0.#", CultureInfo.InvariantCulture), true);
           }
         }
       }
@@ -831,11 +831,11 @@ namespace BatInspector
       return _csv.getCell(_row, key);
     }
 
-    public void setString(string key, string value)
+    public void setString(string key, string value, bool blockUpdate = false)
     {
       Changed = true;
       _csv.setCell(_row, key, value);
-      if (_updateCtls)
+      if (!blockUpdate && _updateCtls)
       {
          App.MainWin.callbackUpdateAnalysis(_csv.getCell(_row, Cols.NAME));
       }

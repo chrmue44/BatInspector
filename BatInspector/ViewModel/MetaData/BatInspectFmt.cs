@@ -136,7 +136,6 @@ public class ModelParams
     }
     return retVal;
   }
-
 }
 
 
@@ -190,6 +189,10 @@ public partial class BatExplorerProjectFile
     _created = "";
     _autoProcess = "true";
     _prjType = "Bats";
+    Microphone = new MicRecord();
+    Microphone.FrequencyResponse = new FreqResponseRecord[0];
+    Microphone.Id = "not def.";
+    Microphone.Type = "not def.";
   }
 
   /// <remarks/>

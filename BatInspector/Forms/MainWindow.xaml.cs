@@ -680,17 +680,20 @@ namespace BatInspector.Forms
       if (append)
       {
         PrjRecord rec = App.Model.CurrentlyOpen.findRecord(wavName);
-        AnalysisFile analysisFile = null;
-        if (App.Model.CurrentlyOpen.Analysis != null)
-          analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
-        ctlWavFile ctl = _wavCtls.get("wavCtl append");
-        ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
-        if (up)
-          _spSpectrums.Children.Add(ctl);
-        else
-          _spSpectrums.Children.Insert(0, ctl);
-        bool isQuery = App.Model.Query != null;
-        initCtlWav(ctl, rec, isQuery);
+        if (rec != null)
+        {
+          AnalysisFile analysisFile = null;
+          if (App.Model.CurrentlyOpen.Analysis != null)
+            analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
+          ctlWavFile ctl = _wavCtls.get("wavCtl append");
+          ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
+          if (up)
+            _spSpectrums.Children.Add(ctl);
+          else
+            _spSpectrums.Children.Insert(0, ctl);
+          bool isQuery = App.Model.Query != null;
+          initCtlWav(ctl, rec, isQuery);
+        }
       }
       setPrjHeader(App.Model.View.StartIdx);
     }

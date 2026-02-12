@@ -214,7 +214,7 @@
     <value>Ruf</value>
   </data>
   <data name="SamplingRate" xml:space="preserve">
-    <value>Abtastrate [kHz]</value>
+    <value>Abtastrate</value>
   </data>
   <data name="CtlWavRemarks" xml:space="preserve">
     <value>Bemerkungen</value>
@@ -2003,5 +2003,50 @@
   </data>
   <data name="msgFrmVerifyCursors" xml:space="preserve">
     <value>Markiere einen Bereich zum Überprüfen der Spezies durch Setzen der Cursor!</value>
+  </data>
+  <data name="ExpGenCalcDist" xml:space="preserve">
+    <value>Geo: Berechne Abstand</value>
+  </data>
+  <data name="FrmPosLatitude" xml:space="preserve">
+    <value>geografische Breite</value>
+  </data>
+  <data name="FrmPosLongitude" xml:space="preserve">
+    <value>geografische Länge</value>
+  </data>
+  <data name="FilterVarHelpLat" xml:space="preserve">
+    <value>geografische Breite</value>
+  </data>
+  <data name="FilterVarHelpLon" xml:space="preserve">
+    <value>geografische Länge</value>
+  </data>
+  <data name="ExpGenIsNear" xml:space="preserve">
+    <value>Geo: ist in der Nähe von</value>
+  </data>
+  <data name="FrmPosDistance" xml:space="preserve">
+    <value>Abstand [m]</value>
+  </data>
+  <data name="FrmPosHintCalcDistance" xml:space="preserve">
+    <value>Berechnet den Abstand der Aufnahmeposition zur unten spezifizierten Position in [m].</value>
+  </data>
+  <data name="FrmPosHintIsNear" xml:space="preserve">
+    <value>Prüft, ob die Position der Aufnahme innerhalb eines gewissen Abstandes zur unten spezifizierten Position ist.</value>
+  </data>
+  <data name="CtlMySqlLoadSQL" xml:space="preserve">
+    <value>Lade SQL ...</value>
+  </data>
+  <data name="CtlMySqlSaveSQL" xml:space="preserve">
+    <value>Speichere SQL ...</value>
+  </data>
+  <data name="CtlMySqlToolTipSaveSql" xml:space="preserve">
+    <value>Speichere SQL-Ausdrücke in einer Datei</value>
+  </data>
+  <data name="CtlMySqlToolTipLoadSql" xml:space="preserve">
+    <value>Lade SQL-Ausdrücke aus Datei</value>
+  </data>
+  <data name="frmCreateRecorderInfoEmpty" xml:space="preserve">
+    <value>Bitte geben Sie eine eindeutige Kennung des verwendeten Recorders ein.</value>
+  </data>
+  <data name="FrmCreatePrjUniqueRecorderID" xml:space="preserve">
+    <value>eindeutige Kennung Recorder</value>
   </data>
 </root>

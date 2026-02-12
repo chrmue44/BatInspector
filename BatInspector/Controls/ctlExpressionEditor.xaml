@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="800">
+             d:DesignHeight="200" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -17,7 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition  Height="60"/>
-            <RowDefinition  Height="30"/>
+            <RowDefinition  Height="80"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="{x:Static res:MyResources.ctlExpressionEditorLeftSide}"></Label>
         <Label Grid.Row="0" Grid.Column="1" Content="{x:Static res:MyResources.ctlExpressionEditorOperator}"></Label>
@@ -36,6 +36,7 @@
             <local:CtlDateTime x:Name="_cltDateTime" Height="30" Visibility="Collapsed"/>
         </StackPanel>
         <ComboBox Name="_cbAppend" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" Height="25" DropDownClosed="_cbAppend_DropDownClosed" />
-        <local:ctlDataItem x:Name="_tbExpression" Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="3"/>
+        <Label Name="_lblExp" Margin="0,10,10,0" Content="{x:Static res:MyResources.FrmFilterFilterExpression}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBox x:Name="_tbExpression" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Height="60" TextWrapping="Wrap"   />
     </Grid> 
 </UserControl>

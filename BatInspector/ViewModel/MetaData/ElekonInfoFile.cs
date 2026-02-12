@@ -50,10 +50,11 @@ namespace BatInspector
       File.WriteAllText(infoName, writer.ToString());
     }
 
-    public static void create(string fileName, double lat, double lon, DateTime time)
+    public static void create(string fileName, double lat, double lon, DateTime time, string recorderId)
     {
       BatRecord batRecord = new BatRecord();
       batRecord.FileName = Path.GetFileName(fileName);
+      batRecord.SN = recorderId;
       // string position = Utils.latToString(lat) + " " + Utils.lonToString(lon);
       string position = lat.ToString(CultureInfo.InvariantCulture) + " " + lon.ToString(CultureInfo.InvariantCulture);
       batRecord.GPS.Position = position;

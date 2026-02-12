@@ -37,6 +37,7 @@ miscellanous
 - new field 'Recorder Id' in import dialog
 - guano metadata is now parsable by WavReader and displayed in the WavViewer
 - filter allows now to filter by position (lat, lon)
+- calls that match filter exprssion are now highlighted with bold font (in project view)
 - mySql dashboard: save/load SQL statements
 - it is now allowed to use ',' and '.' as decimal delimiter in data fields
 - log windows wraps lines around

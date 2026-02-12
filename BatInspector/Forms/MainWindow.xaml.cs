@@ -481,6 +481,7 @@ namespace BatInspector.Forms
         setStatus("");
         _workerStartup = null;
         _tbPrj.Focus();
+        _dgData.ItemsSource = null;
       }
     }
 
@@ -505,8 +506,11 @@ namespace BatInspector.Forms
       }
       else if(_tbReport.IsSelected) 
       {
-        if(App.Model.View.populateList(filter, filterItem))
-          initDataGridSource();
+        if (_dgData.ItemsSource == null)
+        {
+          if (App.Model.View.populateList(filter, filterItem))
+            initDataGridSource();
+        }
       }
     }
 
@@ -908,8 +912,8 @@ namespace BatInspector.Forms
         _oldTab = "Prj";
         try
         {
-          if (App.Model.CurrentlyOpen != null)
-            buildWavFileList(false);
+      //    if (App.Model.CurrentlyOpen != null)
+      //      buildWavFileList(false);
           DebugLog.log("TAB 'Project' got selected", enLogType.DEBUG);
         }
         catch (Exception ex)

@@ -277,8 +277,7 @@ namespace BatInspector
           foreach (AnalysisCall call in file.Calls)
           {
             bool match = App.Model.Filter.apply(filter, call,
-                          file.getString(Cols.REMARKS),
-                          AnyType.getTimeString(file.RecTime), out retVal);
+                          file.getString(Cols.REMARKS), out retVal);
             if (!retVal)
             {
               DebugLog.log("error parsing query expression: " + _expression, enLogType.ERROR);

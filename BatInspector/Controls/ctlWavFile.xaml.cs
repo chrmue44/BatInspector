@@ -254,6 +254,7 @@ namespace BatInspector.Controls
             im.setValue(call.getString(Cols.SPECIES_MAN));
             if (call.Changed)
               im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+            im.setFontBold(call.FilterMatch);
             _spDataMan.Children.Add(im);
           }
           callNr++;

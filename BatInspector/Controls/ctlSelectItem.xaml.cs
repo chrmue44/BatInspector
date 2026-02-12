@@ -117,6 +117,19 @@ namespace BatInspector.Controls
       _lbl.Background = color;
     }
 
+    public void setFontBold(bool bold)
+    {
+      if (bold)
+      {
+        _cb.FontWeight = FontWeights.Bold;
+        _lbl.FontWeight = FontWeights.Bold;
+      }
+      else
+      {
+        _cb.FontWeight = FontWeights.Normal;
+        _lbl.FontWeight = FontWeights.Normal;
+      }
+    }
 
     private void _cb_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
     {

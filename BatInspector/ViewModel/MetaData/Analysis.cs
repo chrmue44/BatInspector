@@ -243,6 +243,17 @@ namespace BatInspector
       }
     }
 
+    public void resetFilter()
+    {
+      for (int f = 0; f < _list.Count; f++)
+      {
+        for (int c = 0; c < _list[f].Calls.Count; c++)
+        {
+          _list[f].Calls[c].FilterMatch = false;
+        }
+      }
+    }
+
     public void addCsvReportRow(List<string> row)
     {
       _csv.addRow(row);
@@ -773,6 +784,7 @@ namespace BatInspector
  //   public double DistToPrev { get; set; }
 
     public bool Changed { get; set; } = false;
+    public bool FilterMatch { get; set; } = false;
 
     public int ReportRow { get { return _row; } set { _row = value; } }
 

@@ -207,7 +207,10 @@ namespace BatInspector.Controls
       if (apply)
         _btnApplyFilter_Click(sender, null);
       if (resetFilter)
+      {
+        App.Model.Prj?.Analysis?.resetFilter();
         _btnShowAll_Click(sender, null);
+      }
     }
 
     private void _btnShowAll_Click(object sender, RoutedEventArgs e)

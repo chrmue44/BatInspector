@@ -946,8 +946,7 @@ namespace BatInspector
               foreach (AnalysisCall call in file.Calls)
               {
                 bool match = App.Model.Filter.apply(filter, call,
-                              file.getString(Cols.REMARKS),
-                              AnyType.getTimeString(file.RecTime), out retVal);
+                              file.getString(Cols.REMARKS), out retVal);
                 if (!retVal)
                 {
                   DebugLog.log("error parsing query expression: " + expression, enLogType.ERROR);
@@ -1060,8 +1059,7 @@ namespace BatInspector
               foreach (AnalysisCall call in file.Calls)
               {
                 bool match = App.Model.Filter.apply(filter, call,
-                                 file.getString(Cols.REMARKS),
-                                 AnyType.getTimeString(file.RecTime), out bool ok);
+                                 file.getString(Cols.REMARKS), out bool ok);
                 if (!ok)
                 {
                   DebugLog.log("error parsing query expression: " + expression, enLogType.ERROR);

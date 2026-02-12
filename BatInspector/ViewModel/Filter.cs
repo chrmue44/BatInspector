@@ -138,9 +138,9 @@ namespace BatInspector
         _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
         _expression.setVariable(DBBAT.LAT, file.getDouble(Cols.LAT));
         _expression.setVariable(DBBAT.LON, file.getDouble(Cols.LON));
-        foreach (AnalysisCall call in file.Calls)
+        for(int i = 0; i < file.Calls.Count; i++) 
         {
-          bool res = apply(filter, call);
+          bool res = apply(filter, file.Calls[i]);
           if (filter.IsForAllCalls)
           {
             if (!res)
@@ -154,7 +154,7 @@ namespace BatInspector
             if (res)
             {
               retVal = true;
-              break;
+//              break;
             }
           }
         }
@@ -186,11 +186,11 @@ namespace BatInspector
       
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
         retVal = true;
-
+      call.FilterMatch = retVal;
       return retVal;
     }
 
-    public bool apply(FilterItem filter, AnalysisCall call, string remarks, string time, out bool ok)
+    public bool apply(FilterItem filter, AnalysisCall call, string remarks, out bool ok)
     {
       if (string.IsNullOrEmpty(filter.Expression))
       {
@@ -199,7 +199,6 @@ namespace BatInspector
       }
 
       _expression.setVariable(DBBAT.REM, remarks);
-      _expression.setVariable(DBBAT.RECORDING_TIME, time);
       bool retVal = apply(filter, call);
       ok = _expression.Errors == 0;
       return retVal;

@@ -58,12 +58,12 @@ namespace BatInspector
 
   public abstract class PrjBase
   {
-    protected List<string> _speciesList;
+    protected string[] _speciesArray;
 
     protected Analysis[] _analysis;
     protected ModelParams _modelParams;
 
-    public List<string> Species { get { return _speciesList; } }
+    public string[] Species { get { return _speciesArray; } }
     public Analysis Analysis { get { return _analysis[SelectedModelIndex]; } }
     public int SelectedModelIndex { get; set; } = 0;
     public bool IsBirdPrj {  get { return _modelParams.Type == enModel.BIRDNET; } }
@@ -71,7 +71,6 @@ namespace BatInspector
     static protected readonly XmlSerializer PrjSerializer = new XmlSerializer(typeof(BatExplorerProjectFile));
     public PrjBase(bool updateCtls, ModelParams modelParams, int modelCount)
     {
-      _speciesList = new List<string>();
       _analysis = new Analysis[modelCount];
       for (int i = 0; i < _analysis.Length; i++)
         _analysis[i] = new Analysis(updateCtls, enModel.BAT_DETECT2);
@@ -109,11 +108,11 @@ namespace BatInspector
       {
         string fName = getFullFilePath(records[0].File);
         PrjMetaData.getPositionFromMetaData(fName, out double lat, out double lon);
-        _speciesList = createSpeciesList(lat,lon);
+        _speciesArray = createSpeciesList(lat,lon);
       }
     }
 
-    public static List<string> createSpeciesList(double lat, double lon)
+    public static string[] createSpeciesList(double lat, double lon)
     {
       List<string> speciesList = new List<string>();
       ParRegion reg = App.Model.Regions.findRegion(lat, lon);
@@ -126,11 +125,16 @@ namespace BatInspector
       {
         foreach (SpeciesInfos sp in App.Model.SpeciesInfos)
           speciesList.Add(sp.Abbreviation);
+        speciesList.Add("Mbart");
+        speciesList.Add("Myotis");
+        speciesList.Add("Nyctaloid");
+        speciesList.Add("Pipistrellus");
+        speciesList.Add("Plecotus");
       }
       speciesList.Add("?");
       speciesList.Add("Social");
       speciesList.Add("todo");
-      return speciesList;
+      return speciesList.ToArray();
     }
   }
 
@@ -192,7 +196,7 @@ namespace BatInspector
       }
     }
 
-    public string CreateBy
+    public string CreatedBy
     {
       get
       {
@@ -782,15 +786,11 @@ namespace BatInspector
           Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
-
+          prj.CreatedBy = info.Creator;
           Project prjSrc = Project.createFrom(info.SrcDir);
           prj._batExplorerPrj.Microphone.FrequencyResponse = prjSrc.MicFreqResponse;
           prj._batExplorerPrj.Microphone.Id = prjSrc.MicId;
 
-          /*          Project prj = Project.createFrom(fullDir);
-                    prj.Location = info.Location;
-                    prj.CreateBy = info.Creator;
-                    prj.Notes = info.Notes; */
           if (modelParams != null)
             prj._modelParams = modelParams;
           else
@@ -967,7 +967,7 @@ namespace BatInspector
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           DebugLog.log($"creating project... at {t.Elapsed}", enLogType.INFO);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
-
+          prj.CreatedBy = info.Creator;
           // copy location files is present
           DebugLog.log($"copy location files... at {t.Elapsed}", enLogType.INFO);
           string[] gpxFiles = Directory.GetFiles(info.SrcDir, "*.gpx");
@@ -1031,10 +1031,13 @@ namespace BatInspector
         if (fileInfo.Length > maxFileLen)
         {
           string[] names = Project.splitWav(f, info.MaxFileLenSec);
-          PrjMetaData.createSplitXmls(f, names, info.MaxFileLenSec);
-          string oldXml = f.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
-          if (File.Exists(oldXml))
-            File.Delete(oldXml);
+          if (names.Length > 1)
+          {
+            PrjMetaData.createSplitXmls(f, names, info.MaxFileLenSec);
+            string oldXml = f.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+            if (File.Exists(oldXml))
+              File.Delete(oldXml);
+          }
         }
       }
     }
@@ -1208,7 +1211,6 @@ namespace BatInspector
           string xml = File.ReadAllText(_prjFileName);
           if(_extension == AppParams.EXT_PRJ)
             _prjFileName = Path.Combine(Path.GetDirectoryName(_prjFileName), Path.GetFileNameWithoutExtension(_prjFileName) + AppParams.EXT_BATSPY);
-          _speciesList.Clear();
           TextReader reader = new StringReader(xml);
           _batExplorerPrj = (BatExplorerProjectFile)PrjSerializer.Deserialize(reader);
           if (_batExplorerPrj.Created == null)
@@ -1461,6 +1463,11 @@ namespace BatInspector
         if ((double)cnt < len)
           cnt++;
         retVal = new string[cnt];
+        if(cnt <= 1)
+        {
+          retVal[0] = fName;
+          return retVal;
+        }
         for (int i = 0; i < cnt; i++)
         {
           int iStart = (int)((double)i * wav.FormatChunk.Frequency * size);

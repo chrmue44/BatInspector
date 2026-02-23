@@ -105,7 +105,7 @@ namespace BatInspector
     {
       int lh = 20;
       int bl = 20;
-      int nights = _data.DaysWithData > 1 ? _data.DaysWithData - 1 : _data.DaysWithData;
+      int nights = _data.DaysWithData;
       GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT, $"{MyResources.ActivityTotalCalls}: {_data.TotalCalls}", COL_TEXT);
       GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + lh, $"{MyResources.ActivityNightsWithActivity}: {nights}", COL_TEXT);
       GraphHelper.createText(_graphics, _width - X_BR + bl, Y_BT + 2 * lh, $"{MyResources.ClassWidth}: {_classWidth} min", COL_TEXT);

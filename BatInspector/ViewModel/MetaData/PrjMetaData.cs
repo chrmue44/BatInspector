@@ -314,6 +314,7 @@ namespace BatInspector
     private static void replaceLocationsInXmls(string[] xmlfiles, string wavDir, kml kmlFile)
     {
       DebugLog.log("replace locations from kml file...", enLogType.INFO);
+      kmlFile.readPositions();
       foreach (string fName in xmlfiles)
       {
         BatRecord f = ElekonInfoFile.read(fName);

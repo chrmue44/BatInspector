@@ -90,7 +90,7 @@ namespace BatInspector.Controls
       bool twilight = _cbTwilight.IsChecked == true;
 
       int offsetHours = _ctlTimeShift.Value;
-      int classWidthMin = 1;
+      int classWidthMin = AppParams.ACTIVITY_CLASS_WIDTH;
       string strClassWidth = _ctlClassWidth.getValue();
       int.TryParse(strClassWidth, out classWidthMin);
 

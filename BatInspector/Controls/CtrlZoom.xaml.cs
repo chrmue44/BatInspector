@@ -127,7 +127,7 @@ namespace BatInspector.Controls
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath, 
-                     List<string> species, ctlWavFile ctlWav, dlgVoid openExpWindow, 
+                     string[] species, ctlWavFile ctlWav, dlgVoid openExpWindow, 
                      enModel modelType)
     {
       int lblWidth = 110;
@@ -193,7 +193,7 @@ namespace BatInspector.Controls
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, lblWidth);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 95, ctlSpecManChanged);
       if(species != null)
-        _ctlSpecMan.setItems(species.ToArray());
+        _ctlSpecMan.setItems(species);
       _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
       int wt = 140;
       _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt);

@@ -53,6 +53,8 @@ namespace BatInspector.Controls
       set{ _cb.IsEnabled = value; }
     }
 
+    public int ItemCount { get { return _cb.Items.Count; } }
+
     public void setAlert(bool on)
     {
       if (on)
@@ -88,13 +90,6 @@ namespace BatInspector.Controls
       _cb.SelectedIndex = 0;
     }
 
-    public List<string> getItems()
-    {
-      List<string> retVal = new List<string>();
-      foreach (string it in _cb.Items)
-        retVal.Add(it);
-      return retVal;
-    }
 
     public string getValue()
     {

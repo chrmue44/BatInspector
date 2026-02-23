@@ -5,18 +5,81 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
+using BatInspector;
 using libParser;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
 
-  public partial class kml
+class TimeLocData
+{
+  public DateTime Time { get; set; }
+  public double Lat {  get; set; }
+  public double Lon { get; set; }
+}
+  
+public partial class kml
+{
+
+  private List<TimeLocData> _list = new List<TimeLocData>();
+
+
+  public void readPositions()
   {
+    _list.Clear();
+    for (int i = 0; i < this.Doc.Placemark.Length; i++)
+    {
+      if (!string.IsNullOrEmpty(Doc.Placemark[i].name))
+      {
+        TimeLocData it = new TimeLocData();
+        it.Time = PrjMetaData.getDateTimeFromFileName(Doc.Placemark[i].name);
+        string[] coords = Doc.Placemark[i].Point.coordinates.Split(',');
+        if (coords.Length == 3)
+        {
+          double.TryParse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double lon);
+          double.TryParse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double lat);
+          it.Lat = lat;
+          it.Lon = lon;
+          _list.Add(it);
+        }
+      }
+    }
+  }
+
+
+  public double[] getPosition(string fName)
+  {
+    double[] retVal = new double[2];
+    retVal[0] = 0.0;
+    retVal[1] = 0.0;
+    DateTime t = PrjMetaData.getDateTimeFromFileName(Path.GetFileNameWithoutExtension(fName));
+    bool found = false;
+    for (int i = 0; i < _list.Count; i++)
+    {
+      if (t <= _list[i].Time)
+      {
+        retVal[0] = _list[i].Lat;
+        retVal[1] = _list[i].Lon;
+        found = true;
+        break;
+      }
+    }
+
+    if(!found && _list.Count > 0)
+    {
+      retVal[0] = _list[_list.Count - 1].Lat;
+      retVal[1] = _list[_list.Count - 1].Lon;
+    }
+    return retVal;
+  }
+
+  /*
   public double[] getPosition(string fName)
   {
     double[] retVal = new double[2];
@@ -25,21 +88,26 @@ using System.Xml.Serialization;
     string pointName = Path.GetFileNameWithoutExtension(fName);
     for (int i = 0; i < this.Doc.Placemark.Length; i++)
     {
-      if (!string.IsNullOrEmpty(Doc.Placemark[i].name) && (Doc.Placemark[i].name.ToLower() == pointName.ToLower()))
+      if (!string.IsNullOrEmpty(Doc.Placemark[i].name))
       {
-        string[] coords = Doc.Placemark[i].Point.coordinates.Split(',');
-        if (coords.Length == 3)
+        if (pointName.ToLower().IndexOf(Doc.Placemark[i].name.ToLower()) >= 0)
+        // also names of split files (name_00x) will be recognized
         {
-          double.TryParse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture, out retVal[0]);
-          double.TryParse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture, out retVal[1]);
+          string[] coords = Doc.Placemark[i].Point.coordinates.Split(',');
+          if (coords.Length == 3)
+          {
+            double.TryParse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture, out retVal[0]);
+            double.TryParse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture, out retVal[1]);
+          }
+          else
+            DebugLog.log("error reading coordinates from KML for file: " + fName, enLogType.ERROR);
         }
-        else
-          DebugLog.log("error reading coordinates from KML for file: " + fName, enLogType.ERROR);
         break;
       }
     }
     return retVal;
   }
+  */
 
   static public kml read(string fileName)
   {

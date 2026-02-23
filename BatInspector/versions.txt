@@ -10,14 +10,16 @@
  -bugfix: crash when pressing "Check" without a call and without activated cursors
  -bugfix: update available model parameters in dialog model parameters
  -bugfix: scrolling of larger files in debug window
+ -bugfix: species verification: uniqueness MBRA/MMYS, 3.5 - 6ms
 
  scripting:
 - individual scripts for different models
 - new script keyword CONTINUE
 - array variables in script
-- new script commands: EditWav, CopyFile, CreateAnnsFromBra, SaveSelectedAsProject
+- new script commands: EditWav, CopyFile, CreateAnnsFromBra, SaveSelectedAsProject, UpdateSpeciesCount
 - new script functions rand(), calcDistance(), isNear()
-- added buttons "edit", "reload" to script debug window 
+- added buttons "edit", "reload" to script debug window
+- new parameter for functions getNrOfSpecies, getRankSpecies, getRankCount
 
 import data
 - import Songmeter mini WAV files (wildlife acoustics)
@@ -41,6 +43,7 @@ miscellanous
 - mySql dashboard: save/load SQL statements
 - it is now allowed to use ',' and '.' as decimal delimiter in data fields
 - log windows wraps lines around
+- checkSpecies: Score value added, 
 - import files: set default model automatically when entering fixed position
 - enhanced AI Model GermanBats 0.9:
   - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller), PAUR(Strecker), MDAU (Strecker)

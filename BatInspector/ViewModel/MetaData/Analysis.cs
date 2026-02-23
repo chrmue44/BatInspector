@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Windows.Data;
 using libParser;
 using libScripter;
 
@@ -338,7 +339,6 @@ namespace BatInspector
         _list.Clear();
         string lastFileName = "$$$";
         int callNr = 1;
-        double oldStartTime = 0.0;
         AnalysisFile file = null;
         for (int row = 2; row <= _csv.RowCnt; row++)
         {
@@ -355,16 +355,7 @@ namespace BatInspector
           }
          
           AnalysisCall call = new AnalysisCall(_csv, row, _updateCtls);
-         /* if(callNr == 1)
-          {
-            oldStartTime = 0;
-            call.DistToPrev = 0;
-          }
-          else
-          {
-            call.DistToPrev = (startTime - oldStartTime)*1000;
-            oldStartTime = startTime;
-          }*/
+       
           bool isInList = SpeciesInfos.isInList(App.Model.SpeciesInfos, call.getString(Cols.SPECIES));
           file.addCall(call, isInList);
 
@@ -637,7 +628,7 @@ namespace BatInspector
     public void updateSpeciesCount()
     {
       foreach(AnalysisFile f in Files)
-        f.updateFoundSpecies(App.Model.SpeciesInfos);
+        f.updateFoundSpecies();
     }
 
     void updateRowNumbers()
@@ -943,7 +934,8 @@ namespace BatInspector
     public string Name { get { return _name; } set { _name = value; } }
     public DateTime RecTime { get { return _recTime; } }
 
-    Dictionary<string, int> _specFound;
+    Dictionary<string, int> _specAutoFound;
+    Dictionary<string, int> _specManFound;
 
     public List<AnalysisCall> Calls { get { return _calls; } }
 
@@ -952,7 +944,8 @@ namespace BatInspector
     public AnalysisFile(string name, int sampleRate, double duration)
     {
       _calls = new List<AnalysisCall>();
-      _specFound = new Dictionary<string, int>();
+      _specAutoFound = new Dictionary<string, int>();
+      _specManFound = new Dictionary<string, int>();
       string header = Cols.NAME + ";" + Cols.SAMPLERATE + ";" + Cols.DURATION + ";" + Cols.START_TIME;
       _csv = new Csv(header);
       _csv.addRow();
@@ -990,7 +983,8 @@ namespace BatInspector
     {
       _name = name;
       _calls = new List<AnalysisCall>();
-      _specFound = new Dictionary<string, int>();
+      _specAutoFound = new Dictionary<string, int>();
+      _specManFound = new Dictionary<string, int>();
       _startRow = startRow;
       _csv = csv;
       _recTime = recTime;
@@ -1095,20 +1089,32 @@ namespace BatInspector
         c.checkConfidence(species);
     }
 
-    public void updateFoundSpecies(List <SpeciesInfos> specList)
+    public void updateFoundSpecies()
     {
-      _specFound.Clear();
+      _specAutoFound.Clear();
+      _specManFound.Clear();
       foreach (AnalysisCall c in Calls)
       {
-        string spec = c.getString(Cols.SPECIES);
-        if (SpeciesInfos.isInList(specList, spec))
-        {
-          if (_specFound.ContainsKey(spec))
-            _specFound[spec]++;
-          else
-            _specFound.Add(spec, 1);
-        }
+        updateCall(c);
       }
+    }
+
+    private void updateCall(AnalysisCall c)
+    { 
+      string spec = c.getString(Cols.SPECIES);
+      if (SpeciesInfos.isInList(App.Model.SpeciesInfos, spec))
+      {
+        if (_specAutoFound.ContainsKey(spec))
+          _specAutoFound[spec]++;
+        else
+          _specAutoFound.Add(spec, 1);
+      }
+
+      string specMan = c.getString(Cols.SPECIES_MAN);
+      if (_specManFound.ContainsKey(specMan))
+        _specManFound[specMan]++;
+      else
+        _specManFound.Add(specMan, 1);
     }
 
     public void resetChanged()
@@ -1149,25 +1155,25 @@ namespace BatInspector
     public void addCall(AnalysisCall call, bool isInList)
     {
       _calls.Add(call);
-      if (isInList)
-      {
-        string spec = call.getString(Cols.SPECIES);
-        if (_specFound.ContainsKey(spec))
-          _specFound[spec] += 1;
-        else
-          _specFound.Add(spec, 1);
-      }
+      updateCall(call);
     }
 
-    public int getNrOfAutoSpecies()
+    public int getNrOfSpecies(string col)
     {
-      return _specFound.Count;
+      if(col == Cols.SPECIES)
+        return _specAutoFound.Count;
+      else
+        return _specManFound.Count;
     }
 
-    public KeyValuePair<string,int> getSpecies(int rank)
+    public KeyValuePair<string,int> getSpecies(int rank, string col)
     {
       KeyValuePair<string, int> retVal = new KeyValuePair<string, int>("????", 0);
-      var myList = _specFound.ToList();
+      List<KeyValuePair<string, int>> myList;
+      if (col == Cols.SPECIES)
+       myList = _specAutoFound.ToList();
+       else
+        myList = _specManFound.ToList();
       myList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
       int len = myList.Count;
       if (len >= rank)

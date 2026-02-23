@@ -43,6 +43,7 @@ namespace BatInspector
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
         new OptItem("SplitJsonAnnotation", "split Json annotation file <fileName> <splitLength> <removeOriginal>",3, fctSplitJsonAnn),
+        new OptItem("UpdateSpeciesCount", "update species count in currectly open project",0, fctUpdateSpeciesCount),
         });
 
       _options = new Options(_features, false);
@@ -463,6 +464,19 @@ namespace BatInspector
         ErrText = "error: no project opened";
       }
 
+      return retVal;
+    }
+
+    
+    int fctUpdateSpeciesCount(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+
+      if ((App.Model.Prj != null) && App.Model.Prj.Ok)
+      {
+        App.Model.Prj.Analysis.updateSpeciesCount();
+      }
       return retVal;
     }
 

@@ -173,18 +173,18 @@ namespace BatInspector.Controls
       {
         if (InfoVisible)
         {
-          if (!_isBirdPrj)
+/*          if (!_isBirdPrj)
           {
             ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
             spec = ctl.getItems();
-          }
-          initCallInformations(spec);
+          } */
+          initCallInformations(App.Model.Prj.Species);
         }
       }
       _cbSel.IsChecked = rec.Selected;
     }
 
-    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, List<string> spec, enModel modelType, double height)
+    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, string[] spec, enModel modelType, double height)
     {
       _wavFilePath = wavFilePath;
       _record = record;
@@ -218,7 +218,7 @@ namespace BatInspector.Controls
     }
 
 
-    private void initCallInformations(List<string> spec)
+    private void initCallInformations(string[] spec)
     {
       if (_analysis != null)
       {
@@ -250,7 +250,7 @@ namespace BatInspector.Controls
             ctlSelectItem im = new ctlSelectItem();
             im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
                   MyResources.ctlWavToolTipCall);
-            im.setItems(spec.ToArray());
+            im.setItems(spec);
             im.setValue(call.getString(Cols.SPECIES_MAN));
             if (call.Changed)
               im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);

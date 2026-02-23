@@ -35,7 +35,7 @@ namespace BatInspector.Forms
 
     public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
     {
-      List<string> species = App.Model.CurrentlyOpen == null ? null : App.Model.CurrentlyOpen.Species;
+      string[] species = App.Model.CurrentlyOpen == null ? null : App.Model.CurrentlyOpen.Species;
         _ctl.setup(analysis, wavFilePath, species, ctlWav, openExpWindow, modelType);
       this.Title = name;
     }

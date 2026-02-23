@@ -26,6 +26,9 @@
       ],
       "Name": "Darmstadt-Dieburg",
       "Species": [
+        "BBAR",
+        "ENIL",
+        "ESER",
         "MALC",
         "MBEC",
         "MBRA",
@@ -34,22 +37,21 @@
         "MMYO",
         "MNAT",
         "MMYS",
-        "NNOC",
+		"Mbart",
         "NLEI",
-        "ESER",
-        "ENIL",
-        "VMUR",
+        "NNOC",
         "PPIP",
         "PPYG",
         "PNAT",
-        "BBAR",
         "PAUR",
         "PAUS",
+        "VMUR",
         "Eptesicus",
         "Nyctaloid",
         "Myotis",
         "Vespertilio",
-        "Pipistrellus"
+        "Pipistrellus",
+		"Plecotus"
       ]
     },
     {
@@ -130,6 +132,7 @@
         "MMYO",
         "MMYS",
         "MNAT",
+		"Mbart",
         "NLEI",
         "NNOC",
         "PAUR",
@@ -144,7 +147,8 @@
         "Myotis",
         "Nyctaloid",
         "Vespertilio",
-        "Pipistrellus"
+        "Pipistrellus",
+		"Plecotus"
       ]
     },
     {
@@ -219,6 +223,7 @@
         "MMYO",
         "MMYS",
         "MNAT",
+		"Mbart",
         "NLAS",
         "NLEI",
         "NNOC",
@@ -236,7 +241,8 @@
         "Myotis",
         "Nyctaloid",
         "Vespertilio",
-        "Pipistrellus"
+        "Pipistrellus",
+		"Plecotus"
       ]
     },
     {
@@ -286,6 +292,7 @@
         "MDAU",
         "MMYS",
         "MNAT",
+		"Mbart",
         "NNOC",
         "PNAT",
         "PPYG",
@@ -327,6 +334,7 @@
         "MDAU",
         "MNAT",
         "MMYS",
+		"Mbart",
         "NLEI",
         "NNOC",
         "PAUR",
@@ -383,6 +391,7 @@
         "MDAU",
         "MMYS",
         "MNAT",
+		"Mbart",
         "NLEI",
         "NNOC",
         "PAUR",
@@ -396,7 +405,8 @@
         "Myotis",
         "Nyctaloid",
         "Vespertilio",
-        "Pipistrellus"
+        "Pipistrellus",
+		"Plecotus"
       ]
     }
   ]

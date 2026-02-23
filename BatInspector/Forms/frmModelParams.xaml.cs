@@ -44,7 +44,7 @@ namespace BatInspector.Forms
       _sp.Children.Clear();
       _ctlCr = new ctlDataItem();
       _ctlCr.setup(MyResources.frmModParsCreator, enDataType.STRING, 0, 140, true);
-      _ctlCr.setValue(_prj.CreateBy);
+      _ctlCr.setValue(_prj.CreatedBy);
       _sp.Children.Add(_ctlCr);
       _ctlLoc = new ctlDataItem();
       _ctlLoc.setup(MyResources.frmModParsLocation, enDataType.STRING, 0, 140, true);
@@ -93,7 +93,7 @@ namespace BatInspector.Forms
             mp[mIdx].Parameters[p].Value = dat.getValue();
           }
         }
-        _prj.CreateBy = _ctlCr.getValue();
+        _prj.CreatedBy = _ctlCr.getValue();
         _prj.Location = _ctlLoc.getValue();
         this.DialogResult = true;
         this.Close();

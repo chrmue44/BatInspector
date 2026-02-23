@@ -256,7 +256,7 @@ namespace BatInspector.Controls
           double.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out double lat);
           i = findField(DBBAT.LON, hdr);
           double.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out double lon);
-          List<string> species = Project.createSpeciesList(lat, lon);
+          string[] species = Project.createSpeciesList(lat, lon);
           int iWav = findField(DBBAT.WAV_FILE_NAME, hdr);
           int iRecT = findField(DBBAT.RECORDING_TIME, hdr);
           int iPath = findField(DBBAT.PATH_TO_WAV, hdr);

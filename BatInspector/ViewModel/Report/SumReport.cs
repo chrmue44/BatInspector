@@ -732,7 +732,7 @@ namespace BatInspector
       if (_currSpecies == null)
         return;
       ActivityDiagram diagram = new ActivityDiagram(App.Model.ColorTable);
-      System.Drawing.Bitmap bmp = diagram.createPlot(data, $"Aktivität {_currSpecies.Local}", enActivityStyle.RECT_ACTIVITY, 20, false, true, true, true, 0, 1);
+      System.Drawing.Bitmap bmp = diagram.createPlot(data, $"Aktivität {_currSpecies.Local}", enActivityStyle.RECT_ACTIVITY, 20, false, true, true, true, 0, AppParams.ACTIVITY_CLASS_WIDTH);
       try
       {
         BitmapImage bitmapimage = new BitmapImage();

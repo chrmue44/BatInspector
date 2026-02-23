@@ -397,10 +397,12 @@ namespace BatInspector
             else
               DebugLog.log($"Model '{dataSet}' not found!", enLogType.ERROR);
           }
-          info.ModelParams = modPars;
         }
         else
+        {
           DebugLog.log("import project with default model: " + AppParams.Inst.DefaultModel, enLogType.INFO);
+        }
+        info.ModelParams = modPars;
         if (File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_PRJ)) || 
             File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_BATSPY)))
         {
@@ -711,7 +713,16 @@ namespace BatInspector
                   result.assign(App.Model.Prj.Analysis.Files[idxF].getDouble(Cols.DURATION));
                   break;
                 case enFileInfo.SELECT:
-                 result.assignBool(App.Model.Prj.Records[idxF].Selected);
+                  if(App.Model.Prj.Analysis.Files.Count > 0)
+                  {
+                    PrjRecord rec = App.Model.Prj.find(App.Model.Prj.Analysis.Files[idxF].Name);
+                    if (rec != null)
+                      result.assignBool(rec.Selected);
+                    else
+                      err = tParseError.RESSOURCE;
+                  }
+                  else
+                    result.assignBool(App.Model.Prj.Records[idxF].Selected);
                   break;
                 case enFileInfo.LATITUDE:
                   result.assign(App.Model.Prj.Analysis.Files[idxF].getDouble(Cols.LAT));
@@ -735,7 +746,7 @@ namespace BatInspector
           err = tParseError.NR_OF_ARGUMENTS;
       }
       else
-        err = tParseError.ARG1_OUT_OF_RANGE;
+        err = tParseError.RESSOURCE;
       return err;
     }
 
@@ -812,20 +823,30 @@ namespace BatInspector
       result = new AnyType();
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        if (argv.Count >= 1)
+        if (argv.Count >= 2)
         {
           int maxIdx = App.Model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           argv[1].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
           int rank = (int)argv[1].getUint64();
+          string col = Cols.SPECIES;
+          if(argv.Count >= 3)
+          {
+            argv[2].changeType(AnyType.tType.RT_STR);
+            if (argv[2].getString() == Cols.SPECIES)
+              col = Cols.SPECIES;
+            else
+              col = Cols.SPECIES_MAN;
+          }
           if (idx < maxIdx)
           {
-            int cnt = App.Model.Prj.Analysis.Files[idx].getNrOfAutoSpecies();
+            int cnt = App.Model.Prj.Analysis.Files[idx].getNrOfSpecies(col);
+
             if ((rank > 0) && (rank <= cnt))
             {
-              KeyValuePair<string, int> spec = App.Model.Prj.Analysis.Files[idx].getSpecies(rank);
-              result.assign(spec.Key.ToUpper());
+              KeyValuePair<string, int> spec = App.Model.Prj.Analysis.Files[idx].getSpecies(rank, col);
+              result.assign(spec.Key);
             }
             else
               err = tParseError.ARG2_OUT_OF_RANGE;
@@ -847,19 +868,29 @@ namespace BatInspector
       result = new AnyType();
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        if (argv.Count >= 1)
+        if (argv.Count >= 2)
         {
           int maxIdx = App.Model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           argv[1].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
           int rank = (int)argv[1].getUint64();
+          string col = Cols.SPECIES;
+          if (argv.Count >= 3)
+          {
+            argv[2].changeType(AnyType.tType.RT_STR);
+            if (argv[2].getString() == Cols.SPECIES)
+              col = Cols.SPECIES;
+            else
+              col = Cols.SPECIES_MAN;
+          }
+
           if (idx < maxIdx)
           {
-            int cnt = App.Model.Prj.Analysis.Files[idx].getNrOfAutoSpecies();
+            int cnt = App.Model.Prj.Analysis.Files[idx].getNrOfSpecies(col);
             if ((rank > 0) && (rank <= cnt))
             {
-              KeyValuePair<string, int> spec = App.Model.Prj.Analysis.Files[idx].getSpecies(rank);
+              KeyValuePair<string, int> spec = App.Model.Prj.Analysis.Files[idx].getSpecies(rank, col);
               result.assignInt64(spec.Value);
             }
             else
@@ -887,9 +918,18 @@ namespace BatInspector
           int maxIdx = App.Model.Prj.Analysis.Files.Count;
           argv[0].changeType(AnyType.tType.RT_UINT64);
           int idx = (int)argv[0].getUint64();
+          string col = Cols.SPECIES;
+          if (argv.Count >= 2)
+          {
+            argv[1].changeType(AnyType.tType.RT_STR);
+            if (argv[1].getString() == Cols.SPECIES)
+              col = Cols.SPECIES;
+            else
+              col = Cols.SPECIES_MAN;
+          }
           if (idx < maxIdx)
           {
-            int nr = App.Model.Prj.Analysis.Files[idx].getNrOfAutoSpecies();
+            int nr = App.Model.Prj.Analysis.Files[idx].getNrOfSpecies(col);
             result.assignInt64(nr);
           }
           else

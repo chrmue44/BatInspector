@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 
 namespace BatInspector
 {
-
+/*
   [StructLayout(LayoutKind.Sequential)]
   public unsafe struct ThresholdDetectItem
   {
@@ -52,7 +52,7 @@ namespace BatInspector
     public int event_end;
     public int start_time;
   }
-
+  */
   
 
   public enum enWIN_TYPE
@@ -68,7 +68,7 @@ namespace BatInspector
     static object _locker = new object();
     static object _pngLocker = new object();
 
-
+    /*
     [HandleProcessCorruptedStateExceptions]
    // [SecurityCritical]
     static void addToReport(Csv csv, string fName, int samplingRate, double duration, ThresholdDetectItem[] items)
@@ -218,7 +218,7 @@ namespace BatInspector
       return items;
     }
 
-
+    */
     //https://learn.microsoft.com/de-de/dotnet/framework/interop/marshalling-different-types-of-arrays
     [HandleProcessCorruptedStateExceptions]
    // [SecurityCritical]

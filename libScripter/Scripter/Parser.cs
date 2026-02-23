@@ -268,10 +268,26 @@ namespace libScripter
       }
     }
 
-  /// <summary>
-  /// interprets one line of code
-  /// </summary>
-  /// <returns>true if line was executed</returns>
+
+    private bool checkIfActLineIsExecuted()
+    {
+      return (
+              (_currBlock == null) ||
+              (((_currBlock.Type == enBlockType.FOR) ||
+                (_currBlock.Type == enBlockType.WHILE) ||
+                (_currBlock.Type == enBlockType.IF)) &&
+                _currBlock.Execute) ||
+              ((_currBlock.Type != enBlockType.FOR) &&
+               (_currBlock.Type == enBlockType.WHILE) &&
+               (_currBlock.Type == enBlockType.IF)
+              )
+             );
+    }
+
+    /// <summary>
+    /// interprets one line of code
+    /// </summary>
+    /// <returns>true if line was executed</returns>
 
     private bool interpretOneLine()
     {
@@ -279,12 +295,7 @@ namespace libScripter
       if ((_actLineNr >= 0) && (_lines!= null) && (_actLineNr < _lines.Length))
       {
         string result = "0";
-        if ((_currBlock == null) ||
-             (((_currBlock.Type == enBlockType.FOR) || (_currBlock.Type == enBlockType.WHILE) ||
-            (_currBlock.Type == enBlockType.IF)) && _currBlock.Execute) ||
-            ((_currBlock.Type != enBlockType.FOR) && (_currBlock.Type == enBlockType.WHILE) &&
-            (_currBlock.Type == enBlockType.IF))
-          )
+        if (checkIfActLineIsExecuted())
           result = ParseLine(_lines[_actLineNr]);
         else
           result = mangeBlockLevel(_lines[_actLineNr]);
@@ -343,7 +354,8 @@ namespace libScripter
       _busy = true;
       while ((_actLineNr < _lines.Length) && _busy)
       {
-        if (_debug && !string.IsNullOrEmpty(_breakPoints[_actLineNr]))
+        if (_debug && !string.IsNullOrEmpty(_breakPoints[_actLineNr]) &&
+            checkIfActLineIsExecuted())
         {
             AnyType res = _formula.parse(_breakPoints[_actLineNr]);
             if (res.getBool() == true)

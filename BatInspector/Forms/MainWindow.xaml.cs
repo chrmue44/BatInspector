@@ -442,7 +442,7 @@ namespace BatInspector.Forms
         }
         catch (Exception ex)
         {
-          DebugLog.log("Error opening project: " + ex.ToString(), enLogType.ERROR);
+          DebugLog.log("Error opening query: " + ex.ToString(), enLogType.ERROR);
         }
       }
     }
@@ -539,7 +539,7 @@ namespace BatInspector.Forms
 
 
 
-    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav, enModel modelType, List<string> species = null)
+    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav, enModel modelType, string[] species = null)
     {
       DebugLog.log("activate zoom view of: " + name, enLogType.DEBUG);
       if (AppParams.Inst.ZoomSeparateWin)
@@ -766,7 +766,7 @@ namespace BatInspector.Forms
     void initCtlWav(ctlWavFile ctl, PrjRecord rec, bool fromQuery)
     {
       AnalysisFile analysis;
-      List<string> species;
+      string[] species;
       string fullWavName;
       string wavName;
       string wavFilePath;
@@ -1253,7 +1253,6 @@ namespace BatInspector.Forms
             App.Model.Busy = false;
             if (_btnCreatePrj.IsEnabled)
               _btnCreatePrj.IsEnabled = false;
-           // populateControls(0);
             if ((App.Model.Prj != null) && App.Model.Prj.Ok)
               _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + App.Model.Prj.Name;
             if (App.Model.Query != null)

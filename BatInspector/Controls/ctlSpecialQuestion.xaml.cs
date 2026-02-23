@@ -24,7 +24,7 @@ namespace BatInspector.Controls
 
     public void init()
     {
-      _cbSelect.SelectIndex = _cbSelect.getItems().Count - 1;
+      _cbSelect.SelectIndex = _cbSelect.ItemCount - 1;
       Visibility = Visibility.Visible;
     }
 

@@ -300,7 +300,7 @@ namespace BatInspector
       return retVal;
     }
 
-    private int testBioAcoustics()
+  /*  private int testBioAcoustics()
     {
       //  string wavFile = "C:/Users/chrmu/bat/2022/20220816/Records/20220816_0027.wav";
       string wavFile = "C:/Users/chrmu/bat/2022/20220906/Records/20220906_0005.wav";
@@ -308,7 +308,7 @@ namespace BatInspector
       ThresholdDetectItem[]items = BioAcoustics.analyzeCalls(wavFile, out int sampleRate, out double duration);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
       return 0;
-    }
+    }*/
 
     private int testClassifier()
     {
@@ -752,7 +752,7 @@ namespace BatInspector
     {
       string fName = "F:\\prj\\BatInspector\\TestData\\20230928\\Session_20230928_195716.kml";
       kml k = kml.read(fName);
-
+      k.readPositions();
       double[] pos = k.getPosition("20230928_195928.wav");
       assert("GPX lat", Math.Abs(pos[0] - 49.8973) < 0.0001);
       assert("GPX lon", Math.Abs(pos[1] - 8.6742) < 0.0001);
@@ -1119,7 +1119,7 @@ namespace BatInspector
             break;
           case 2:
             prj.Location = loc;
-            prj.CreateBy = prjCreator;
+            prj.CreatedBy = prjCreator;
             prj.writePrjFile();
             DebugLog.log($"write prj: {dir}", enLogType.INFO);
             _errors = 1;

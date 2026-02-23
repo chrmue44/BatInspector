@@ -217,8 +217,6 @@ namespace BatInspector
         }
         else
           _view.Prj.Analysis.init();
-//        if (_prj.Ok && _prj.Analysis.Report != null)
-//          checkProject();
         initScripter();
       }
       else if (Project.containsWavs(dir))

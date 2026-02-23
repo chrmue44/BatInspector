@@ -285,7 +285,7 @@ namespace libScripter
       DateTime retVal;
       bool ok = DateTime.TryParse(str, out retVal);
       if (!ok)
-        log($"parsing of date string failed: {str}", enLogType.ERROR);
+        retVal = AnyType.getDate(str);
       return retVal;
     }
 

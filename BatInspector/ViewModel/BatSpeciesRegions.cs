@@ -146,8 +146,9 @@ namespace BatInspector
       ParRegion r = new ParRegion()
       {
         Name = "Darmstadt-Dieburg",
-        Species = new List<string>() { "MMYO", "MBEC", "MNAT", "MMYS", "MBRA", "MALC", "MDAU", "NNOC", "NLEI",
-                    "ESER", "ENIL", "VMUR", "PPIP", "PPYG", "PNAT", "BBAR", "PAUR", "PAUS",
+        Species = new List<string>() { "BBAR", "ENIL", "ESER", "MALC", "MBEC", "MBRA", 
+                                       "MDAU", "MMYO", "MNAT", "MMYS", "Mbart", "NNOC", "NLEI",
+                                       "PPIP", "PPYG", "PNAT", "PAUR", "PAUS", "VMUR", 
                     "Eptesicus", "Nyctaloid", "Myotis", "Vespertilio", "Pipistrellus" },
         InformationSource = "http://www.adb.naturkunde-institut-langstadt.de/arten/flederm.htm",
         Location = new List<ParLocation>(){ new ParLocation(49.963175,8.563220),
@@ -164,7 +165,7 @@ namespace BatInspector
       {
         Name = "Deutschland",
         Species = new List<string>() { "BBAR", "ENIL", "ESER", "HSAV", "MSCH", "MALC", "MBEC", "MBRA",
-          "MDAS", "MDAU", "MEMA", "MMYO", "MMYS", "MNAT", "NLAS", "NLEI",
+          "MDAS", "MDAU", "MEMA", "MMYO", "MMYS", "MNAT", "Mbart", "NLAS", "NLEI",
           "NNOC", "PKUH", "PAUR", "PAUS", "RFER", "RHIP", "PNAT", "PPIP",
           "PPYG", "TTEN", "VMUR", "Eptesicus", "Myotis", "Nyctaloid",
           "Vespertilio", "Pipistrellus" },
@@ -187,7 +188,7 @@ namespace BatInspector
       r = new ParRegion()
       {
         Name = "Norway",
-        Species = new List<string>() { "ENIL", "MBRA", "MDAU", "MMYS", "MNAT", "NNOC", "PNAT", "PPYG", "PAUR",
+        Species = new List<string>() { "ENIL", "MBRA", "MDAU", "MMYS", "MNAT", "Mbart", "NNOC", "PNAT", "PPYG", "PAUR",
           "VMUR", "Eptesicus", "Myotis", "Nyctaloid", "Vespertilio", "Pipistrellus" },
         InformationSource = "https://en.wikipedia.org/wiki/List_of_mammals_of_Norway",
         Location = new List<ParLocation>() { new ParLocation(58.03315047073381, 7.27678231645965),
@@ -205,7 +206,7 @@ namespace BatInspector
       r = new ParRegion()
       {
         Name = "Wales",
-        Species = new List<string>() { "BBAR", "ESER", "MALC", "MBRA", "MDAU", "MNAT", "MMYS", "NLEI",
+        Species = new List<string>() { "BBAR", "ESER", "MALC", "MBRA", "MDAU", "MNAT", "MMYS", "Mbart", "NLEI",
           "NNOC", "PAUR", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
           "Eptesicus", "Myotis", "Nyctaloid", "Pipistrellus" },
         InformationSource = "",
@@ -218,8 +219,8 @@ namespace BatInspector
       r = new ParRegion()
       {
         Name = "United Kingdom",
-        Species = new List<string>() { "BBAR", "ESER", "MALC", "MBEC", "MBRA", "MDAU", "MMYS", "MNAT", "NLEI",
-          "NNOC", "PAUR", "PAUS", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
+        Species = new List<string>() { "BBAR", "ESER", "MALC", "MBEC", "MBRA", "MDAU", "MMYS", "MNAT", "Mbart", 
+          "NLEI", "NNOC", "PAUR", "PAUS", "PNAT", "PPIP", "PPYG", "RFER", "RHIP",
           "Eptesicus", "Myotis", "Nyctaloid", "Vespertilio", "Pipistrellus" },
         InformationSource = "https://www.bats.org.uk/about-bats/what-are-bats/uk-bats",
         Location = new List<ParLocation>() { new ParLocation(51.033539, 1.113506),

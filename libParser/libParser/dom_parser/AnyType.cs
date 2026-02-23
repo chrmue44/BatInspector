@@ -1403,6 +1403,7 @@ namespace libParser
       }
       catch
       {
+        ok = false;
       }
       if(!ok)
         DebugLog.log($"error parsing date: '{str}'", enLogType.ERROR);

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Windows;
@@ -829,7 +830,7 @@ namespace BatInspector
       foreach (CheckResult r in results)
       {
         string id = "";
-        SolidColorBrush color;
+        /*SolidColorBrush color;
         switch (r.Identifiable)
         {
           case enIdentifiable.CHARACTERISTIC:
@@ -845,11 +846,12 @@ namespace BatInspector
             color = new SolidColorBrush(Colors.Orange);
             id = MyResources.BatInfoNoIdent;
             break;
-        }
+        }*/
         string reg = App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon) ? "" : $"({MyResources.NotRegional})";
         string spec = localNames ? r.Species.Local : r.Species.Abbreviation;
         doc.addText("\n");
-        doc.addText(spec, true, false, new SolidColorBrush(Colors.Black), color);
+        spec += $" [{(int)(r.Score / r.MaxScore * 100)}%]";
+        doc.addText(spec, true, false, new SolidColorBrush(Colors.Black));
         if (r.Unambiguous)
           doc.addText($": {reg} {MyResources.Unambiguous} {r.AdditionalInfo} -- {MyResources.BatInfo_buildResults_See}: ");
         else
@@ -918,15 +920,17 @@ namespace BatInspector
     }
 
 
-    static private bool checkParameter(double val, ValRange range, string name, string unit, ref string info, bool verbose)
+    static private bool checkParameter(double val, ValRange range, string name, string unit, ref string info, CheckResult result, bool verbose)
     {
       bool retVal = false;
       if ((range == null) || (range.Min < 0))
         return true;
 
+      result.MaxScore += 1;
       if ((val >= range.NormMin) && (val <= range.NormMax))
       {
         retVal = true;
+        result.Score += 1.0;
         if (verbose)
           info += $"{range.Min} {unit} < {name} < {range.Max} {unit}, ";
         else
@@ -935,6 +939,7 @@ namespace BatInspector
       else if ((val >= range.Min) && (val <= range.NormMin))
       {
         retVal = true;
+        result.Score += 0.6;
         if (verbose)
           info += $"{range.Min} {unit} < {name} ({MyResources.BatInfoLowerLimit}) < {range.Max} {unit}, ";
         else
@@ -943,6 +948,7 @@ namespace BatInspector
       else if ((val >= range.NormMax) && (val <= range.Max))
       {
         retVal = true;
+        result.Score += 0.6;
         if (verbose)
           info += $"{range.Min} {unit} < {name} ({MyResources.BatInfoUpperLimit}) < {range.Max} {unit} , ";
         else
@@ -952,7 +958,7 @@ namespace BatInspector
     }
 
 
-    class CheckResult
+    class CheckResult : IComparable<CheckResult>
     {
       public SpeciesInfos Species { get; set; }
       public enIdentifiable Identifiable { get; set; }
@@ -960,7 +966,18 @@ namespace BatInspector
       public string AdditionalInfo { get; set; }
       public string PdfName { get;set; }
       public int PageNr { get; set; }
+      public double MaxScore { get; set; }
+      public double Score { get; set; }
 
+      int IComparable<CheckResult>.CompareTo(CheckResult other)
+      {
+        if (Score < other.Score)
+          return 1;
+        else if (Score > other.Score)
+          return -1;
+        else
+          return 0;
+      }
     }
 
 
@@ -983,17 +1000,20 @@ namespace BatInspector
               continue;
 
             string info = call.CallCharacteristic.ToString() + ": ";
-            ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, verbose);
-            ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, verbose);
-            ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz",ref info, verbose);
-            ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk","kHz", ref info, verbose);
-            ok &= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, verbose);
+            CheckResult res = new CheckResult();
+            res.MaxScore = 1;  // Score never reaches 100% if not unambiguous
+            ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, res, verbose);
+            ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, res, verbose);
+            ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz",ref info, res, verbose);
+            ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk","kHz", ref info, res, verbose);
+            ok &= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose);
             if (ok)
             {
-              CheckResult res = new CheckResult();
               res.Species = s;
               res.Identifiable = check.Identifiable;
               res.Unambiguous = checkUniqueness(s.Abbreviation, call, ref addInfo);
+              if (res.Unambiguous)
+                res.Score = res.MaxScore;
               addInfo += " " + info;
               res.AdditionalInfo = addInfo;
               res.PdfName = s.getGenus() == "Myotis" ? AppParams.BAT_INFO2_PDF : AppParams.BAT_INFO1_PDF;
@@ -1004,6 +1024,8 @@ namespace BatInspector
           }
         }
       }
+      results.Sort();
+
       DocHelperRtf doc = buildResults(results, lat, lon, localNames, evHandler);
       possSpecies = new string[results.Count];
       for (int i = 0; i < results.Count; i++)
@@ -1012,33 +1034,7 @@ namespace BatInspector
       return doc.Doc;
     }
 
-    /*
-    int checkBatSpecies(AnalysisFile analysis, string fileName, int callIdx)
-    {
 
-      int retVal = -1;
-      / *
-        SoundEdit file = new SoundEdit(analysis.getInt(Cols.SAMPLERATE));
-        WavFile wav = new WavFile();
-        int iStart = (int)(App.Model.ZoomView.RulerDataT.Min * App.Model.ZoomView.Waterfall.SamplingRate);
-        int iEnd = (int)(App.Model.ZoomView.RulerDataT.Max * App.Model.ZoomView.Waterfall.SamplingRate);
-        wav.createFile(1, App.Model.ZoomView.Waterfall.SamplingRate, iStart, iEnd, App.Model.ZoomView.Waterfall.Audio.Samples);
-        wav.saveFileAs(dlg.FileName); file.
-        file.readFile(fileName);
-        if ((callIdx >= 0) && (callIdx < analysis.Calls.Count))
-        {
-          double tStart = analysis.Calls[callIdx].getDouble(Cols.START_TIME);
-          double tEnd = tStart + analysis.Calls[callIdx].getDouble(Cols.DURATION) / / 1000.0;
-
-        }
-        else
-          retVal = -2;
-
-
-       * /
-      return retVal;
-    }
-    */
 
     static bool checkUniqueness(string spec, CallData d, ref string addInfo)
     {
@@ -1144,6 +1140,7 @@ namespace BatInspector
               addInfo += "{(1.5 ms < D < 3.5 ms) & has mk & (36 kHz <= Fmk <= 44 kHz) & (bw > 75 kHz)}";
             bool ok2 = (
                        (d.Duration > 3.5) && (d.Duration <= 6.0) &&
+                       (d.FreqStart > 100.0) &&
                        (d.HasMyotisKink == enYesNoProperty.YES) &&
                        (d.FreqMk >= 37.0)
                      );

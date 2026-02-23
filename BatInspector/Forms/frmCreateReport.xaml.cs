@@ -7,6 +7,7 @@
  ********************************************************************************/
 using BatInspector.Controls;
 using BatInspector.Properties;
+using libParser;
 using System;
 using System.IO;
 using System.Threading;
@@ -92,15 +93,19 @@ namespace BatInspector.Forms
         bool? ok = frm.ShowDialog();
         if (ok == true)
         {
-          if(webPage)
-            App.Model.SumReport.createWebPage(_report, _formDataName, App.Model.SpeciesInfos,
-                    Path.Combine(_ctlReport._ctlDestDir.getValue(),
-                    _ctlReport._ctlWebReportName.getValue()));
-          if (richText)
-            App.Model.SumReport.createDocument(enDocType.HTML, _report, _formDataName, App.Model.SpeciesInfos,
-                      srcDir, Path.Combine(_ctlReport._ctlDestDir.getValue(), 
-                                           _ctlReport._ctlRichTextName.getValue()));
-
+          if (_report.Days.Count > 0)
+          {
+            if (webPage)
+              App.Model.SumReport.createWebPage(_report, _formDataName, App.Model.SpeciesInfos,
+                      Path.Combine(_ctlReport._ctlDestDir.getValue(),
+                      _ctlReport._ctlWebReportName.getValue()));
+            if (richText)
+              App.Model.SumReport.createDocument(enDocType.HTML, _report, _formDataName, App.Model.SpeciesInfos,
+                        srcDir, Path.Combine(_ctlReport._ctlDestDir.getValue(),
+                                             _ctlReport._ctlRichTextName.getValue()));
+          }
+          else
+            DebugLog.log("report does not contain data for selected time range", enLogType.WARNING);
         }
       }
     }

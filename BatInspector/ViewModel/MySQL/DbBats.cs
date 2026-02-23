@@ -162,7 +162,7 @@ namespace BatInspector
         string mic = prj.MicId;
         string clsf = prj.AvailableModelParams[prj.SelectedModelIndex].Name;
         string model = prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
-        string person = prj.CreateBy;
+        string person = prj.CreatedBy;
         string location = prj.Location;
         string notes = prj.Notes;
         sqlCmd.Append($"('{id}','{date}','{recDev}','{sw}', '{person}', '{pwav}', '{mic}', ");
@@ -206,7 +206,7 @@ namespace BatInspector
       string mic = prj.MicId;
       string clsf = prj.AvailableModelParams[prj.SelectedModelIndex].Name;
       string model = prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
-      string person = prj.CreateBy;
+      string person = prj.CreatedBy;
       string location = prj.Location;
       string notes = prj.Notes;
       StringBuilder sqlCmd = new StringBuilder();

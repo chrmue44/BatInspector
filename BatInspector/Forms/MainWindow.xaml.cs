@@ -1249,6 +1249,7 @@ namespace BatInspector.Forms
           }
           else if(!_workerStartup.IsAlive)
           {
+            // it takes about 3 sec to come from init..Async() end to here, why???
             _ctlPrjBtn._cbFilter.SelectedIndex = 0;
             App.Model.Busy = false;
             if (_btnCreatePrj.IsEnabled)

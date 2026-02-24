@@ -54,12 +54,14 @@ namespace BatInspector.Controls
         if (!value)
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
+          _grid.ColumnDefinitions[2].Width = new GridLength(0);
         }
         else
         {
-          _grid.ColumnDefinitions[1].Width = new GridLength(_infoWidth);
+          _grid.ColumnDefinitions[1].Width = new GridLength(_infoWidth / 2);
+          _grid.ColumnDefinitions[2].Width = new GridLength(_infoWidth / 2);
         }
-        if(updateFlag)
+        if (updateFlag)
           update();
 
       }
@@ -232,10 +234,11 @@ namespace BatInspector.Controls
           string callStr = call.getString(Cols.NR);
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
+          
           it.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
-
+          
           if (_isBirdPrj)
           {
             ctlDataItem im = new ctlDataItem();
@@ -256,9 +259,9 @@ namespace BatInspector.Controls
               im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
             im.setFontBold(call.FilterMatch);
             _spDataMan.Children.Add(im);
-          }
+          } 
           callNr++;
-        }
+        } 
       }
     }
 

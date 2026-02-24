@@ -81,11 +81,15 @@ namespace BatInspector.Controls
 
     public void setItems(string[] items)
     {
+      /*
       if (items != null)
       {
         _cb.Items.Clear();
-        _cb.ItemsSource = items;
-	  }
+        foreach (string it in items)
+          _cb.Items.Add(it);
+      }*/
+      _cb.Items.Clear();
+      _cb.ItemsSource = items;
       _cb.SelectedIndex = 0;
     }
 
@@ -103,6 +107,7 @@ namespace BatInspector.Controls
     public ctlSelectItem()
     {
       InitializeComponent();
+   
     }
 
     public void setBgColor(SolidColorBrush color)

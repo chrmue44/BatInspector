@@ -13,6 +13,7 @@
                 <Button Name="_btnWavFile" Height="18" Background="AliceBlue" Content="blabla" Foreground="Black" Click="_btnWavFile_Click" FontWeight="Bold" ToolTip="{x:Static res:MyResources.ctlWavFileFileNameToolTip}"/>
             </StackPanel>
         </GroupBox.Header>
+        <ScrollViewer Name="_sv" VerticalScrollBarVisibility="Auto">
         <Grid Name="_grid" Margin="-1,0,1,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
@@ -20,43 +21,32 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="18" />
-                <ColumnDefinition Width="360" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="180" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Grid.Row="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
-            <Grid Grid.Row="0" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="20"/>
-                </Grid.ColumnDefinitions>
-                <Button Name="_btnCopy" Grid.Column="0" Margin="3" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
-                <Button Name="_btnTools" Grid.Column="1" Margin="3" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
-            </Grid>
-            <ScrollViewer Name="_sv" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
-                <Grid Name="_spCalls" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto"  Background="{DynamicResource colorBackGround}">
+                <Button Name="_btnCopy" Grid.Column="1" Margin="3" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
+                <Button Name="_btnTools" Grid.Column="2" Margin="3" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
+                <local:ctlDataItem x:Name="_ctlRemarks" Grid.Row ="0" Grid.Column="3"/>
+                    <GroupBox Grid.Column="1" Grid.Row="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto"  Background="{DynamicResource colorBackGround}">
                         <GroupBox.Header>
                             <TextBlock Text="{x:Static res:MyResources.CtlWavAutoDetection}" FontWeight="Bold" />
                         </GroupBox.Header>
                         <StackPanel x:Name="_spDataAuto" />
                     </GroupBox>
-                    <GroupBox Grid.Column="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan"  Background="{DynamicResource colorBackGround}">
+                    <GroupBox Grid.Column="2" Grid.Row="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan"  Background="{DynamicResource colorBackGround}">
                         <GroupBox.Header>
                             <TextBlock Text="{x:Static res:MyResources.CtlWavManualDetection}" FontWeight="Bold" />
                         </GroupBox.Header>
-                        <StackPanel Name="_spDataMan" />
+                        <StackPanel Name="_spDataMan"/>
                     </GroupBox>
-                </Grid>
-            </ScrollViewer>
-            <local:ctlDataItem x:Name="_ctlRemarks" Grid.Row ="0" Grid.Column="2"/>
-            <Button Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
+                <Button Grid.Column="3" Grid.Row="1" Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
                 <Image  Name ="_img" Focusable="False" Stretch="Fill"/>
             </Button>
         </Grid>
-    </GroupBox>
+    </ScrollViewer>
+
+  </GroupBox>
+  
 </UserControl>

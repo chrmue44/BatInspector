@@ -88,7 +88,8 @@ namespace BatInspector.Controls
         foreach (string it in items)
           _cb.Items.Add(it);
       }*/
-      _cb.Items.Clear();
+      if(_cb.ItemsSource == null)
+        _cb.Items.Clear();
       _cb.ItemsSource = items;
       _cb.SelectedIndex = 0;
     }

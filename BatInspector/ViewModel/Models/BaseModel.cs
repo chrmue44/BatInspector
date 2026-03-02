@@ -25,7 +25,7 @@ namespace BatInspector
   {
     [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public ModelParams[] Models { get; set; } = new ModelParams[5];
-  
+
   }
 
   class ModelScriptItem
@@ -41,7 +41,7 @@ namespace BatInspector
       Script = script;
     }
 
-    static ModelScriptItem[] _list = new ModelScriptItem[] 
+    static ModelScriptItem[] _list = new ModelScriptItem[]
     {
       new ModelScriptItem(enModel.BAT_DETECT2, "GermanBats_0.9.pth.tar", "auto_to_man_german_bats_09.scr"),
       new ModelScriptItem(enModel.BAT_DETECT2, "Net2DFast_UK_same.pth.tar", "auto_to_man_UK.scr"),
@@ -50,9 +50,9 @@ namespace BatInspector
     public static string getScriptName(enModel classifier, string modelName)
     {
       string retVal = AppParams.Inst.ScriptCopyAutoToMan;
-      foreach(ModelScriptItem it in _list)
+      foreach (ModelScriptItem it in _list)
       {
-        if ((it.Classifier == classifier)  && (modelName == it.Model))
+        if ((it.Classifier == classifier) && (modelName == it.Model))
         {
           retVal = it.Script;
           break;
@@ -98,7 +98,7 @@ namespace BatInspector
 
     public static void addReportRow(enModel classifier, Csv csv, sqlRow sqlRow)
     {
-      switch(classifier)
+      switch (classifier)
       {
         case enModel.BATTY_BIRD_NET:
           ModelBattyB.addReportRow(csv, sqlRow);
@@ -326,7 +326,7 @@ namespace BatInspector
 
         case enModel.BATTY_BIRD_NET:
           if (App.Model.Regions.IsInRegion(lat, lon, "Deutschland"))
-            retVal =  "BattyBirdNET-EU-256kHz";
+            retVal = "BattyBirdNET-EU-256kHz";
           else if (App.Model.Regions.IsInRegion(lat, lon, "United Kingdom"))
             retVal = "BattyBirdNET-UK-256kHz";
           else
@@ -339,8 +339,8 @@ namespace BatInspector
     {
       string annDir = prj.getAnnotationDir();
       DirectoryInfo dir = new DirectoryInfo(annDir);
-      if(dir.Exists)
-         dir.Delete(true);
+      if (dir.Exists)
+        dir.Delete(true);
     }
 
     protected void createDir(string rootDir, string subDir, bool delete)
@@ -379,8 +379,8 @@ namespace BatInspector
 
     private static Csv createPerfResult(string name)
     {
-      string header = Cols.PERF_ANN_FILE + ";" + Cols.NR + ";" + Cols.START_TIME + ";" + Cols.SPECIES_MAN + ";" 
-                     + Cols.SPECIES + ";" + Cols.PROBABILITY +";" + Cols.PERF_DETECTED + ";" + Cols.PERF_CORRECT;
+      string header = Cols.PERF_ANN_FILE + ";" + Cols.NR + ";" + Cols.START_TIME + ";" + Cols.SPECIES_MAN + ";"
+                     + Cols.SPECIES + ";" + Cols.PROBABILITY + ";" + Cols.PERF_DETECTED + ";" + Cols.PERF_CORRECT;
       Csv retVal = new Csv(header);
       retVal.saveAs(name);
       return retVal;
@@ -390,7 +390,7 @@ namespace BatInspector
     {
       Bd2AnnFile annFile = Bd2AnnFile.loadFrom(file);
       int callNr = 0;
-      foreach(Bd2Annatation ann in annFile.Annatations)
+      foreach (Bd2Annatation ann in annFile.Annatations)
       {
         callNr++;
         perfResult.addRow();
@@ -402,28 +402,33 @@ namespace BatInspector
         string wavFile = Path.GetFileName(file.Replace(".json", ""));
         AnalysisFile analysis = prj.Analysis.find(wavFile);
         bool found = false;
-        
+
         if ((analysis != null) && (ann.Class != "Bat"))
         {
-          foreach(AnalysisCall call in analysis.Calls)
+          foreach (AnalysisCall call in analysis.Calls)
           {
             double ts = call.getDouble(Cols.START_TIME);
-            if (Utils.overLap(ts, ts + call.getDouble(Cols.DURATION)/1000, ann.start_time, ann.end_time))
+            if (Utils.overLap(ts, ts + call.getDouble(Cols.DURATION) / 1000, ann.start_time, ann.end_time))
             {
               perfResult.setCell(row, Cols.PERF_DETECTED, 1);
               perfResult.setCell(row, Cols.PROBABILITY, call.getDouble(Cols.PROBABILITY));
               found = true;
-              string spec =  extractSpecies(call.getString(Cols.SPECIES));
+              string spec = extractSpecies(call.getString(Cols.SPECIES));
               perfResult.setCell(row, Cols.SPECIES, spec);
               string latinName = getLatinName(spec);
-              if(latinName == ann.Class)
+              if (
+                 (latinName == ann.Class) ||
+                 ((latinName == "Mbart") && ((ann.Class == "Myotis brandtii") || ((ann.Class == "Myotis mystacinus")))) ||
+                 ((latinName == "Pipistrellus nathusii") && (ann.Class == "Pipistrellus kuhlii")) ||
+                 ((latinName == "Plecotus") && ((ann.Class == "Plecotus auritus") || (ann.Class == "Plecotus austricus")))
+                )
                 perfResult.setCell(row, Cols.PERF_CORRECT, 1);
               else
                 perfResult.setCell(row, Cols.PERF_CORRECT, 0);
             }
           }
         }
-        if(!found)
+        if (!found)
         {
           perfResult.setCell(row, Cols.PERF_DETECTED, 0);
           perfResult.setCell(row, Cols.PERF_CORRECT, 0);
@@ -469,9 +474,9 @@ namespace BatInspector
     private static int getIndex(List<string> list, string str)
     {
       int retVal = -1;
-      for(int i = 0; i < list.Count; i++)
+      for (int i = 0; i < list.Count; i++)
       {
-        if(list[i] == str)
+        if (list[i] == str)
         {
           retVal = i;
           break;
@@ -489,8 +494,6 @@ namespace BatInspector
       int row = perfResult.RowCnt;
 
       List<string> hdr = new List<string>();
-      hdr.Add("Species");
-      hdr.Add("Count");
       foreach (SumSpec s in li)
       {
         if (s.Name != "Bat")
@@ -499,6 +502,11 @@ namespace BatInspector
           hdr.Add(abbr);
         }
       }
+      hdr.Add("Plecotus");
+      hdr.Add("Mbart");
+      hdr.Sort();
+      hdr.Insert(0, "Species");
+      hdr.Insert(1, "Count");
       perfResult.addRow(hdr);
 
       foreach (SumSpec s in li)
@@ -512,7 +520,7 @@ namespace BatInspector
           int col = getIndex(hdr, abbr) + 1;
           if (thresh > 0.01)
           {
-            perfResult.setCell(perfResult.RowCnt, col, s.CorrectThresh);
+  //          perfResult.setCell(perfResult.RowCnt, col, s.CorrectThresh);
             foreach (ConfusionItem ci in s.ConfusionThresh)
             {
               col = getIndex(hdr, ci.Name) + 1;
@@ -521,8 +529,8 @@ namespace BatInspector
             }
           }
           else
-          { 
-            perfResult.setCell(perfResult.RowCnt, col, s.Correct);
+          {
+    //        perfResult.setCell(perfResult.RowCnt, col, s.Correct);
             foreach (ConfusionItem ci in s.Confusion)
             {
               col = getIndex(hdr, ci.Name) + 1;
@@ -551,28 +559,30 @@ namespace BatInspector
         spec.Total++;
         int corr = perfResult.getCellAsInt(row, Cols.PERF_CORRECT);
         int det = perfResult.getCellAsInt(row, Cols.PERF_DETECTED);
-        double prob = perfResult.getCellAsDouble(row,Cols.PROBABILITY);
+        double prob = perfResult.getCellAsDouble(row, Cols.PROBABILITY);
         if (prob >= thresh)
           spec.CorrectThresh += corr;
         spec.Correct += corr;
         spec.Detected += det;
-        if ((corr == 1) && (det == 1))
-        {
-          spec.StatisticGood.add(prob);
-        }
-        if ((corr == 0) && (det == 1))
+        if (det == 1)
         {
           string aIspec = perfResult.getCell(row, Cols.SPECIES);
           spec.addConfusion(aIspec);
-          spec.FalsePositive++;
           if (prob > thresh)
-          {
-            spec.FalsePositiveThresh++;
             spec.addConfusionThresh(aIspec);
+
+          if (corr == 1)
+          {
+            spec.StatisticGood.add(prob);
+          }
+          if (corr == 0)
+          {
+            spec.FalsePositive++;
+            if (prob > thresh)
+              spec.FalsePositiveThresh++;
           }
         }
       }
-
       perfResult.addRow();
       perfResult.addRow();
       perfResult.setCell(perfResult.RowCnt, 1, $"Summarized Performance - Threshold:{thresh}");
@@ -580,7 +590,7 @@ namespace BatInspector
       row = perfResult.RowCnt;
 
       //print sums
-      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "CorrectThresh", "FalsePositive", "FalsePositiveThresh","Recall", "RecallThresh", "Precision","PrecisionThresh","confusion","ConfusionThresh","mean_prob_good","min_prob_good","max_prob_good","mean_prob_false_pos","min_prob_false_pos","max_prob_false_pos" };
+      List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "CorrectThresh", "FalsePositive", "FalsePositiveThresh", "Recall", "RecallThresh", "Precision", "PrecisionThresh", "confusion", "ConfusionThresh", "mean_prob_good", "min_prob_good", "max_prob_good", "mean_prob_false_pos", "min_prob_false_pos", "max_prob_false_pos" };
       perfResult.addRow(h);
 
       list.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
@@ -671,7 +681,7 @@ namespace BatInspector
     public Histogram StatisticFalsePos;
 
     public SumSpec(string name)
-    { 
+    {
       Name = name;
       Total = 0;
       Detected = 0;
@@ -691,10 +701,10 @@ namespace BatInspector
       SumSpec retVal = null;
       foreach (SumSpec s in list)
       {
-        if(s.Name == name)
+        if (s.Name == name)
         {
-          retVal = s; 
-          break; 
+          retVal = s;
+          break;
         }
       }
       return retVal;

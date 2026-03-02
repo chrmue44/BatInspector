@@ -1846,13 +1846,13 @@
     <value>Relevant für</value>
   </data>
   <data name="frmVerifySpecies_MsgClickFend" xml:space="preserve">
-    <value>Klicke zum Setzen der Endfrequenz</value>
+    <value>Linksklick zum Setzen der Endfrequenz, Rechtsklick überspringen</value>
   </data>
   <data name="frmVerifySpecies_MsgClickFstart" xml:space="preserve">
-    <value>Klicke zum Setzen der Startfrequenz</value>
+    <value>Linksklick zum Setzen der Startfrequenz, Rechtsklick überspringen</value>
   </data>
   <data name="frmVerifySpecies_MsgClickFmk" xml:space="preserve">
-    <value>Klicke zum Setzen der Myotis-Knickfrequenz</value>
+    <value>Linksklick zum Setzen der Myotis-Knickfrequenz, Rechtsklick überspringen</value>
   </data>
   <data name="frmVerifySpecies_MsgClickClear" xml:space="preserve">
     <value>Klicke zum Löschen der Markierungen</value>
@@ -1918,7 +1918,7 @@
     <value>Mit Installation der neuen Version ist eine aktuellere Version der Datei 'BatRegions.json' verfügbar. Soll die vorhandene überschrieben werden?</value>
   </data>
   <data name="frmVerifySpecies_MsgClickFchar" xml:space="preserve">
-    <value>Klicke zum Setzen der charakteristischen Frequenz</value>
+    <value>Linksklick zum Setzen der charakteristischen Frequenz, Rechtsklick überspringen</value>
   </data>
   <data name="frmWav_title" xml:space="preserve">
     <value>WAV Datei analysieren</value>

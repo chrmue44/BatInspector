@@ -127,7 +127,7 @@ namespace BatInspector.Forms
     private enCallChar setCalltype()
     {
       enCallChar retVal = enCallChar.QCF;
-      if((_tStart < _tChar) && (_tChar < _tEnd))
+      if ((_tStart < _tChar) && (_tChar < _tEnd))
       {
         double fStart = _ctlFstart.getDoubleValue();
         double fChar = _ctlFChar.getDoubleValue();
@@ -145,13 +145,24 @@ namespace BatInspector.Forms
           if (slope <= 1)
             retVal = enCallChar.FM_QCF;
         }
-        else if((retVal == enCallChar.QCF) || (retVal == enCallChar.CF))
+        else if ((retVal == enCallChar.QCF) || (retVal == enCallChar.CF))
         {
           if (slope > 1)
             retVal = enCallChar.QCF_FM;
         }
         else if (slope <= 1)
           retVal = enCallChar.QCF;
+      }
+      else if (_tStart < _tEnd)
+      {
+        double fStart = _ctlFstart.getDoubleValue();
+        double fEnd = _ctlFend.getDoubleValue();
+        double slope = Math.Abs(fStart - fEnd) / (_tEnd - _tStart) / 1000;
+        if (slope <= 0.1)
+          retVal = enCallChar.CF;
+        else if (slope <= 1)
+          retVal = enCallChar.QCF;
+        else retVal = enCallChar.FM;
       }
       return retVal;
     }
@@ -341,28 +352,39 @@ namespace BatInspector.Forms
         Point p = e.GetPosition(_img);
         double f = _fMin + (_img.ActualHeight - p.Y) / _img.ActualHeight * (_fMax - _fMin);
         double t = _tMin + p.X / _img.ActualWidth * (_tMax - _tMin);
-        setCross(p);
+        bool doSetCross = e.ChangedButton == MouseButton.Left;
+        if(doSetCross || (_state == enVerifyState.CLEAR)) 
+          setCross(p);
         switch (_state)
         {
           case enVerifyState.SET_FSTART:
-            _tStart = t;
-            _ctlFstart.setValue(f);
+            if (doSetCross)
+            {
+              _tStart = t;
+              _ctlFstart.setValue(f);
+            }
             _state = enVerifyState.SET_FCHAR;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFchar;
             break;
 
           case enVerifyState.SET_FCHAR:
-            _tChar = t;
-            _ctlFChar.setValue(f);
+            if (doSetCross)
+            {
+              _tChar = t;
+              _ctlFChar.setValue(f);
+            }
             _state = enVerifyState.SET_FEND;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFend;
             break;
 
           case enVerifyState.SET_FEND:
-            _ctlFend.setValue(f);
-            _tEnd = t;
-            double duration = (t - _tStart) * 1000.0;
-            _ctlDuration.setValue(duration);
+            if (doSetCross)
+            {
+              _ctlFend.setValue(f);
+              _tEnd = t;
+              double duration = (t - _tStart) * 1000.0;
+              _ctlDuration.setValue(duration);
+            }
             _state = enVerifyState.SET_FMK;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFmk;
             enCallChar callChar = setCalltype();
@@ -370,8 +392,11 @@ namespace BatInspector.Forms
             break;
 
           case enVerifyState.SET_FMK:
-            _ctlFMk.setValue(f);
-            _tMk = t;
+            if (doSetCross)
+            {
+              _ctlFMk.setValue(f);
+              _tMk = t;
+            }
             _state = enVerifyState.CLEAR;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickClear;
             break;

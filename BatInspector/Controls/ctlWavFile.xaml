@@ -23,25 +23,30 @@
                 <ColumnDefinition Width="18" />
                 <ColumnDefinition Width="180" />
                 <ColumnDefinition Width="180" />
-                <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <CheckBox Grid.Column="0" Grid.Row="0" Name="_cbSel" Click="_cbSel_Click" Content="" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
                 <Button Name="_btnCopy" Grid.Column="1" Margin="3" Content="{x:Static res:MyResources.ctlWavTransfer}" ToolTip="Automatische Klassifizierung für diese Datei übernehmen" Click="_btnCopy_Click"/>
                 <Button Name="_btnTools" Grid.Column="2" Margin="3" Click="_btnTools_Click" Content="{x:Static res:MyResources.ctlWavTools}"/>
-                <local:ctlDataItem x:Name="_ctlRemarks" Grid.Row ="0" Grid.Column="3"/>
-                    <GroupBox Grid.Column="1" Grid.Row="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto"  Background="{DynamicResource colorBackGround}">
-                        <GroupBox.Header>
-                            <TextBlock Text="{x:Static res:MyResources.CtlWavAutoDetection}" FontWeight="Bold" />
-                        </GroupBox.Header>
-                        <StackPanel x:Name="_spDataAuto" />
-                    </GroupBox>
-                    <GroupBox Grid.Column="2" Grid.Row="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan"  Background="{DynamicResource colorBackGround}">
-                        <GroupBox.Header>
-                            <TextBlock Text="{x:Static res:MyResources.CtlWavManualDetection}" FontWeight="Bold" />
-                        </GroupBox.Header>
-                        <StackPanel Name="_spDataMan"/>
-                    </GroupBox>
-                <Button Grid.Column="3" Grid.Row="1" Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
+                <local:ctlDataItem x:Name="_ctlRemarks" Grid.Row ="0" Grid.Column="4"/>
+                <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Horizontal">
+                        <GroupBox Grid.Column="1" Grid.Row="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoAuto" Margin="3"  Background="{DynamicResource colorBackGround}">
+                            <GroupBox.Header>
+                                <TextBlock Text="{x:Static res:MyResources.CtlWavAutoDetection}" FontWeight="Bold" />
+                            </GroupBox.Header>
+                            <StackPanel x:Name="_spDataAuto" />
+                        </GroupBox>
+                        <GroupBox Grid.Column="2" Grid.Row="1" Template="{DynamicResource GroupBoxCmu}" Name ="_grpInfoMan" Margin="3" Background="{DynamicResource colorBackGround}">
+                            <GroupBox.Header>
+                                <TextBlock Text="{x:Static res:MyResources.CtlWavManualDetection}" FontWeight="Bold" />
+                            </GroupBox.Header>
+                            <StackPanel Name="_spDataMan"/>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+                <Button Grid.Column="4" Grid.Row="1" Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
                 <Image  Name ="_img" Focusable="False" Stretch="Fill"/>
             </Button>
         </Grid>

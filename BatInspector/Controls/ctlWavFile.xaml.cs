@@ -55,11 +55,15 @@ namespace BatInspector.Controls
         {
           _grid.ColumnDefinitions[1].Width = new GridLength(0);
           _grid.ColumnDefinitions[2].Width = new GridLength(0);
+          _grid.ColumnDefinitions[3].Width = new GridLength(0);
         }
         else
         {
+          _grpInfoAuto.Width = _infoWidth / 2 - 6;
+          _grpInfoMan.Width = _infoWidth / 2 - 6;
           _grid.ColumnDefinitions[1].Width = new GridLength(_infoWidth / 2);
           _grid.ColumnDefinitions[2].Width = new GridLength(_infoWidth / 2);
+          _grid.ColumnDefinitions[3].Width = new GridLength(20);
         }
         if (updateFlag)
           update();
@@ -121,7 +125,6 @@ namespace BatInspector.Controls
       //    CachedBitmapImages.Add(val, null);
       return null;
     }
-
 
 
 

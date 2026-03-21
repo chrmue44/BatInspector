@@ -790,6 +790,7 @@ namespace BatInspector
           Project prjSrc = Project.createFrom(info.SrcDir);
           prj._batExplorerPrj.Microphone.FrequencyResponse = prjSrc.MicFreqResponse;
           prj._batExplorerPrj.Microphone.Id = prjSrc.MicId;
+          prj._batExplorerPrj.MetaData = info.MetaData == enMetaData.GUANO ? "Guano" : "Xml";
 
           if (modelParams != null)
             prj._modelParams = modelParams;
@@ -841,6 +842,7 @@ namespace BatInspector
         prj._batExplorerPrj = new BatExplorerProjectFile("wavs", records);
         prj._batExplorerPrj.Records = records.ToArray();
         prj._batExplorerPrj.Models = this._batExplorerPrj.Models;
+        prj._batExplorerPrj.MetaData = this._batExplorerPrj.MetaData;
         for (int i = 0; i < prj._batExplorerPrj.Models.Length; i++)
           prj._batExplorerPrj.Models[i] = this._batExplorerPrj.Models[i];
         prj._batExplorerPrj.Microphone = _batExplorerPrj.Microphone;
@@ -965,6 +967,7 @@ namespace BatInspector
           // create project
           Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
+          prj._batExplorerPrj.MetaData = info.MetaData == enMetaData.GUANO ? "Guano" : "Xml";
           DebugLog.log($"creating project... at {t.Elapsed}", enLogType.INFO);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
           prj.CreatedBy = info.Creator;
@@ -1172,12 +1175,19 @@ namespace BatInspector
     public static ModelParams[] readModelParams(string prjFile)
     {
       ModelParams[] retVal = null;
-      string xml = File.ReadAllText(prjFile);
-      if (Path.GetExtension(prjFile) == AppParams.EXT_BATSPY)
+      try
       {
-        TextReader reader = new StringReader(xml);
-        BatExplorerProjectFile pf = (BatExplorerProjectFile)PrjSerializer.Deserialize(reader);
-        retVal = pf.Models;
+        string xml = File.ReadAllText(prjFile);
+        if (Path.GetExtension(prjFile) == AppParams.EXT_BATSPY)
+        {
+          TextReader reader = new StringReader(xml);
+          BatExplorerProjectFile pf = (BatExplorerProjectFile)PrjSerializer.Deserialize(reader);
+          retVal = pf.Models;
+        }
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"project file {prjFile} corrupt", enLogType.ERROR);
       }
       return retVal;
     }

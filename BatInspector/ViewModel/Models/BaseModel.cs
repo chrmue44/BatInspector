@@ -9,8 +9,8 @@ using libParser;
 using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace BatInspector
@@ -43,8 +43,8 @@ namespace BatInspector
 
     static ModelScriptItem[] _list = new ModelScriptItem[]
     {
-      new ModelScriptItem(enModel.BAT_DETECT2, "GermanBats_0.9.pth.tar", "auto_to_man_german_bats_09.scr"),
-      new ModelScriptItem(enModel.BAT_DETECT2, "Net2DFast_UK_same.pth.tar", "auto_to_man_UK.scr"),
+      new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_GERMAN, "auto_to_man_german_bats_09.scr"),
+      new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_UK, "auto_to_man_UK.scr"),
     };
 
     public static string getScriptName(enModel classifier, string modelName)
@@ -62,11 +62,10 @@ namespace BatInspector
     }
   }
 
-
   public abstract class BaseModel
   {
 
-    public const string BD2_MODEL_GERMAN = "GermanBats_0.9.pth.tar";
+    public const string BD2_MODEL_GERMAN = "GermanBats_0.93.pth.tar";
     public const string BD2_MODEL_UK = "Net2DFast_UK_same.pth.tar";
 
     static protected readonly XmlSerializer ModParSerializer = new XmlSerializer(typeof(DefModelParamFile));
@@ -119,7 +118,6 @@ namespace BatInspector
       if (c >= 0)
         csv.setCell(csv.RowCnt, fieldNameRep, sql.Fields[c].ToString());
     }
-
 
     public static BaseModel Create(int index, enModel type)
     {
@@ -335,6 +333,7 @@ namespace BatInspector
       }
       return retVal;
     }
+
     public void cleanUpAnnotations(Project prj)
     {
       string annDir = prj.getAnnotationDir();
@@ -470,7 +469,6 @@ namespace BatInspector
       return retVal;
     }
 
-
     private static int getIndex(List<string> list, string str)
     {
       int retVal = -1;
@@ -489,7 +487,7 @@ namespace BatInspector
     {
       perfResult.addRow();
       perfResult.addRow();
-      perfResult.setCell(perfResult.RowCnt, 1, $"Confusion Matrix {modelName} threshold: {thresh}");
+      perfResult.setCell(perfResult.RowCnt, 1, $"Confusion Matrix {modelName} threshold: {thresh.ToString(CultureInfo.InvariantCulture)}");
       perfResult.addRow();
       int row = perfResult.RowCnt;
 
@@ -585,13 +583,13 @@ namespace BatInspector
       }
       perfResult.addRow();
       perfResult.addRow();
-      perfResult.setCell(perfResult.RowCnt, 1, $"Summarized Performance - Threshold:{thresh}");
+      perfResult.setCell(perfResult.RowCnt, 1, $"Summarized Performance - Threshold:{thresh.ToString(CultureInfo.InvariantCulture)}");
       perfResult.addRow();
-      row = perfResult.RowCnt;
 
       //print sums
       List<string> h = new List<string>() { "Species", "Total", "Detected", "Correct", "CorrectThresh", "FalsePositive", "FalsePositiveThresh", "Recall", "RecallThresh", "Precision", "PrecisionThresh", "confusion", "ConfusionThresh", "mean_prob_good", "min_prob_good", "max_prob_good", "mean_prob_false_pos", "min_prob_false_pos", "max_prob_false_pos" };
       perfResult.addRow(h);
+      row = perfResult.RowCnt;
 
       list.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
       foreach (SumSpec s in list)
@@ -637,7 +635,7 @@ namespace BatInspector
       foreach (ConfusionItem s in li)
       {
         if (!string.IsNullOrEmpty(retVal))
-          retVal += ",";
+          retVal += "|";
         retVal += $"{s.Name}[{s.Count}]";
       }
       return retVal;
@@ -664,7 +662,6 @@ namespace BatInspector
       }
     }
   }
-
 
   class SumSpec
   {
@@ -709,7 +706,6 @@ namespace BatInspector
       }
       return retVal;
     }
-
 
     public void addConfusion(string s)
     {

@@ -19,25 +19,7 @@ FOR FileNr 0 NrFiles
 
       SET specAuto =(getCallInfo(FileNr, i, "SPEC_AUTO"))      
       SET lat =(getFileInfo(FileNr, "LATITUDE"))
-      SET lon =(getFileInfo(FileNr, "LONGITUDE"))
-
-      # special treatment for PKUH/PNAT
-      IF =(specAuto == "PKUH")
-        IF =(probability >= 0.5)
-          IF =(!occursAtLocation("PKUH", lat, lon))
-            IF =(occursAtLocation("PNAT", lat, lon)) 
-              =(setCallInfo(FileNr, i, "SPEC_MAN", "PNAT"))
-            ELSE
-              =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
-            END
-          ELSE
-            =(setCallInfo(FileNr, i, "SPEC_MAN", "PKUH"))
-          END
-        ELSE
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
-        END        
-        CONTINUE
-      END            
+      SET lon =(getFileInfo(FileNr, "LONGITUDE"))           
 
       IF =(specAuto == "PNAT")
         IF =(probability >= 0.5)
@@ -103,7 +85,7 @@ FOR FileNr 0 NrFiles
       END      
       
       IF =(specAuto == "ESER")
-        IF =(probability >= 0.6)
+        IF =(probability >= 0.5)
           =(setCallInfo(FileNr, i, "SPEC_MAN", "ESER"))
         ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Nyctaloid"))
@@ -112,7 +94,7 @@ FOR FileNr 0 NrFiles
       END      
 
       IF =(specAuto == "MMYO")
-        IF =(probability >= 0.6)
+        IF =(probability >= 0.5)
           =(setCallInfo(FileNr, i, "SPEC_MAN", "MMYO"))
         ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Myotis"))
@@ -138,17 +120,8 @@ FOR FileNr 0 NrFiles
         CONTINUE
       END      
 
-      IF =(specAuto == "PAUR")
-        IF =(probability >= 0.4)
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))
-        ELSE
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
-        END        
-        CONTINUE
-      END      
-
-      IF =(specAuto == "PAUS")
-        IF =(probability >= 0.4)
+      IF =(specAuto == "Plecotus")
+        IF =(probability >= 0.5)
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))
         ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
@@ -175,7 +148,7 @@ FOR FileNr 0 NrFiles
       END      
 
       IF =(specAuto == "MBEC")
-        IF =(probability >= 0.4)
+        IF =(probability >= 0.3)
           =(setCallInfo(FileNr, i, "SPEC_MAN", "MBEC"))
         ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Myotis"))
@@ -202,18 +175,9 @@ FOR FileNr 0 NrFiles
         CONTINUE
       END      
 
-      IF =(specAuto == "MMYS")
+      IF =(specAuto == "Mbrand")
         IF =(probability >= 0.4)
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "MMYS"))
-        ELSE
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "Myotis"))
-        END        
-        CONTINUE
-      END            
-
-      IF =(specAuto == "MBRA")
-        IF =(probability >= 0.4)
-          =(setCallInfo(FileNr, i, "SPEC_MAN", "MBRA"))
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "Mbrand"))
         ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Myotis"))
         END        

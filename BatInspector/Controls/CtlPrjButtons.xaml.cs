@@ -204,7 +204,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
       CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter, true);
-      if (apply)
+      if (apply || resetFilter)
         _btnApplyFilter_Click(sender, null);
       if (resetFilter)
       {
@@ -235,7 +235,7 @@ namespace BatInspector.Controls
       {
         _btnNone_Click(sender, null);
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
-                          App.Model.Filter.TempFilter :  App.Model.Filter.getFilter(_cbFilter.Text);
+                          App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
         if ((filter != null) && (App.Model.CurrentlyOpen != null))
         {
           foreach (AnalysisFile a in App.Model.CurrentlyOpen.Analysis.Files)
@@ -245,12 +245,15 @@ namespace BatInspector.Controls
             if (res && (rec != null))
               rec.Selected = res;
           }
-          App.MainWin.buildWavFileList(true, App.Model.Filter, filter);
+          App.MainWin.buildWavFileList(true, App.Model.Filter, filter, true);
           App.MainWin.showStatus();
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
         }
         else
+        {
+          App.MainWin.buildWavFileList(true, null, null, true);
           DebugLog.log("no filter applied", enLogType.INFO);
+        }
       }
       catch (Exception ex)
       {

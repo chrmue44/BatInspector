@@ -170,8 +170,8 @@ namespace BatInspector
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
                 PrjMetaData.parsePosition(info, out lat, out lon);
-                double.TryParse(info.Temparature, out temperature);
-                double.TryParse(info.Humidity, out humidity);
+                double.TryParse(info.Temparature, NumberStyles.Any, CultureInfo.InvariantCulture, out temperature);
+                double.TryParse(info.Humidity, NumberStyles.Any, CultureInfo.InvariantCulture, out humidity);
               }
 
               // read annontation for one wav file

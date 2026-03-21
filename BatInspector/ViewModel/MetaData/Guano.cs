@@ -6,16 +6,10 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using libParser;
-using NAudio.Utils;
-using Org.BouncyCastle.Asn1.Mozilla;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.Remoting.Channels;
 using System.Text;
-using System.Windows.Markup;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 
 /*
@@ -182,7 +176,8 @@ namespace BatInspector
     {
       BatRecord retVal = new BatRecord();
       retVal.Samplerate = getFieldAsString("Samplerate");
-      retVal.Temparature = getFieldAsString("Temperature Ext");
+      retVal.Temparature =  getFieldAsString("Temperature Ext");
+      retVal.Humidity = getFieldAsString("Humidity");
       retVal.GPS.Position = getFieldAsString("Loc Position");
       retVal.DateTime = getFieldAsString("Timestamp");
       return retVal;
@@ -443,6 +438,7 @@ namespace BatInspector
       }
       return null;
     }
+
     enGuanoToken getToken()
     {
       enGuanoToken retVal = enGuanoToken.EOF;
@@ -502,7 +498,7 @@ namespace BatInspector
           }
           else
           {
-            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\'))
+            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '='))
             {
               _name += c;
               c = getChar();

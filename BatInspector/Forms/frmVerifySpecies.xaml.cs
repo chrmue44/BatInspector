@@ -363,6 +363,8 @@ namespace BatInspector.Forms
               _tStart = t;
               _ctlFstart.setValue(f);
             }
+            else
+              _ctlFstart.setValue(0.0);
             _state = enVerifyState.SET_FCHAR;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFchar;
             break;
@@ -373,6 +375,8 @@ namespace BatInspector.Forms
               _tChar = t;
               _ctlFChar.setValue(f);
             }
+            else
+              _ctlFChar.setValue(0.0);
             _state = enVerifyState.SET_FEND;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFend;
             break;
@@ -385,6 +389,8 @@ namespace BatInspector.Forms
               double duration = (t - _tStart) * 1000.0;
               _ctlDuration.setValue(duration);
             }
+            else
+              _ctlDuration.setValue(0.0);
             _state = enVerifyState.SET_FMK;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickFmk;
             enCallChar callChar = setCalltype();
@@ -397,6 +403,8 @@ namespace BatInspector.Forms
               _ctlFMk.setValue(f);
               _tMk = t;
             }
+            else
+              _ctlFMk.setValue(0.0);
             _state = enVerifyState.CLEAR;
             _lblClick.Content = MyResources.frmVerifySpecies_MsgClickClear;
             break;

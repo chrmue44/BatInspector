@@ -23,6 +23,7 @@ using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
 using System.Linq;
+//using System.Windows.Forms;
 
 namespace BatInspector.Forms
 {
@@ -106,12 +107,14 @@ namespace BatInspector.Forms
       }
       this.Top = AppParams.Inst.MainWindowPosX;
       this.Left = AppParams.Inst.MainWindowPosY;
-       
+
       // TODO find a working way to limit the window size
-      if ((this.Left + this.Width) > WpfScreen.Primary.WorkingArea.Width)
-        this.Width = WpfScreen.Primary.WorkingArea.Width - this.Left;
-      if ((this.Top + this.Height) > WpfScreen.Primary.WorkingArea.Height)
-        this.Height = WpfScreen.Primary.WorkingArea.Height - this.Top;
+      double maxWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;
+      double maxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
+      if ((this.Left + this.Width) > maxWidth)
+        this.Width = maxHeight - this.Left;
+      if ((this.Top + this.Height) > maxHeight)
+        this.Height = maxHeight - this.Top;
               
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
@@ -487,7 +490,7 @@ namespace BatInspector.Forms
 
 
     
-    public void buildWavFileList(bool selectedOnly, Filter filter = null, FilterItem filterItem = null)
+    public void buildWavFileList(bool selectedOnly, Filter filter = null, FilterItem filterItem = null, bool reInitList = false)
     {
       if (App.Model.CurrentlyOpen == null)
         return;
@@ -506,6 +509,8 @@ namespace BatInspector.Forms
       }
       else if(_tbReport.IsSelected) 
       {
+        if (reInitList)
+          _dgData.ItemsSource = null;
         if (_dgData.ItemsSource == null)
         {
           if (App.Model.View.populateList(filter, filterItem))

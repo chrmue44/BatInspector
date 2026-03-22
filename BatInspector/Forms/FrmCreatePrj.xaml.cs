@@ -37,9 +37,9 @@ namespace BatInspector.Forms
       _dtEnd._lbl.Text = MyResources.CtlSumReportEndDate;
 
       _ctlPrjName.setup(MyResources.frmCreatePrjName, Controls.enDataType.STRING, 0, _widthLbl, true);
-      _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, _widthLbl, true, initDlgAfterPositionChanged);
+      _ctlLat.setup(MyResources.Latitude, Controls.enDataType.STRING, 0, _widthLbl, true, initDlgAfterLatChanged);
       _ctlLat.setValue("49° 46.002 N");
-      _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, _widthLbl, true, initDlgAfterPositionChanged);
+      _ctlLon.setup(MyResources.Longitude, Controls.enDataType.STRING, 0, _widthLbl, true, initDlgAfterLonChanged);
       _ctlLon.setValue("8° 38.032 E");
       _ctlSrcFolder.setup(MyResources.frmCreatePrjSrcFolder, _widthLbl, true, "", initDailogAfterSelectingSrc);
       _ctlDstFolder.setup(MyResources.frmCreatePrjDstFolder, _widthLbl, true);
@@ -98,7 +98,25 @@ namespace BatInspector.Forms
       _dtEnd.Visibility = vis;
     }
 
-    private void initDlgAfterPositionChanged(enDataType type, object val)
+    private void initDlgAfterLatChanged(enDataType type, object val)
+    {
+      if (!_info.LocSourceGpx && !_info.LocSourceKml && !_info.LocSourceTxt && !_isProjectFolder)
+      {
+        bool ok = Project.parseLatitude(_ctlLat.getValue(), out double lat);
+        if (!ok)
+          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+                          BatInspector.Properties.MyResources.Error,
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+        else
+        {
+          ok = Project.parseLongitude(_ctlLon.getValue(), out double lon);
+          if (ok)
+            _ctlDataSet.setValue(BaseModel.getDefaultModel(enModel.BAT_DETECT2, lat, lon));
+        }
+      }
+    }
+
+    private void initDlgAfterLonChanged(enDataType type, object val)
     {
       if (!_info.LocSourceGpx && !_info.LocSourceKml && !_info.LocSourceTxt && !_isProjectFolder)
       {

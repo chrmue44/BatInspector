@@ -1392,11 +1392,13 @@ namespace BatInspector
 
           // pictures of the recording device
           doc.addHeader(head, MyResources.reportPositioningRecorder);
-          string img = formData.ImgLandscape.Replace(srcDir + "\\", "");
-          doc.addImage(img, $"view recorder 1", 400);
-          img = formData.ImgPortrait.Replace(srcDir + "\\", "");
-          doc.addImage(img, $"view recorder 2", 400 * 4 / 3);
-
+          if (!string.IsNullOrEmpty(formData.ImgLandscape) && !string.IsNullOrEmpty(formData.ImgPortrait))
+          {
+            string img = formData.ImgLandscape.Replace(srcDir + "\\", "");
+            doc.addImage(img, $"view recorder 1", 400);
+            img = formData.ImgPortrait.Replace(srcDir + "\\", "");
+            doc.addImage(img, $"view recorder 2", 400 * 4 / 3);
+          }
           doc.end();
           doc.saveAs(outputName);
         }

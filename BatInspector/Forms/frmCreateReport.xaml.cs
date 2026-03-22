@@ -86,7 +86,7 @@ namespace BatInspector.Forms
       }
       else
       {
-        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName, webPage);
+        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName, webPage, _dstDir);
         frm.WindowStartupLocation = WindowStartupLocation.Manual;
         frm.Left = 100;
         frm.Top = 10;

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Media.TextFormatting;
 using BatInspector.Controls;
 
@@ -12,12 +13,15 @@ namespace BatInspector.Forms
     SumReportJson _rep;
     WebReportDataJson _formData = null;
     DlgCmd _dlgSetFormDataName = null;
-    public frmReportAssistant(SumReportJson rep, DlgCmd dlgSetFormDataName, bool markdown)
+    string _dstDir = "";
+
+    public frmReportAssistant(SumReportJson rep, DlgCmd dlgSetFormDataName, bool markdown, string dstDir)
     {
       InitializeComponent();
       _dlgSetFormDataName = dlgSetFormDataName;
       int wl = 200;
       _rep = rep;
+      _dstDir = dstDir;
       _ctlFormData.setup(BatInspector.Properties.MyResources.frmReportAssistant_FormData, wl + 5, false, "json files(*.json)|*.json|All files(*.*) |*.*", setFormData);
       _ctlTemplate.setup(BatInspector.Properties.MyResources.frmReportAssistant_TemplateFile, wl + 5, false,"markdown files(*.md)|*.md|All files(*.*)|*.*");
       _ctlTemplate.Visibility = markdown ? Visibility.Visible : Visibility.Collapsed; 
@@ -118,7 +122,10 @@ namespace BatInspector.Forms
         }
       }
 
-      if (_formData != null ) 
+      if (_ctlFormData.getValue() == "")
+        _ctlFormData.setValue(Path.Combine(_dstDir, "formular.json"));
+
+      if (_formData != null)
         _formData.save(_ctlFormData.getValue());
     }
     private void _btnCancel_Click(object sender, RoutedEventArgs e)

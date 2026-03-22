@@ -967,10 +967,11 @@ namespace BatInspector
           // create project
           Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
-          prj._batExplorerPrj.MetaData = info.MetaData == enMetaData.GUANO ? "Guano" : "Xml";
           DebugLog.log($"creating project... at {t.Elapsed}", enLogType.INFO);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
           prj.CreatedBy = info.Creator;
+          prj._batExplorerPrj = new BatExplorerProjectFile("wavs", prj.Records);
+          prj._batExplorerPrj.MetaData = info.MetaData == enMetaData.GUANO ? "Guano" : "Xml";
           // copy location files is present
           DebugLog.log($"copy location files... at {t.Elapsed}", enLogType.INFO);
           string[] gpxFiles = Directory.GetFiles(info.SrcDir, "*.gpx");

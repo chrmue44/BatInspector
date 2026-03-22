@@ -180,11 +180,15 @@ public partial class BatExplorerProjectFile
     _autoProcess = "true";
     _prjType = "Bats";
   }
+  
+  public BatExplorerProjectFile(string name, List<PrjRecord> records) : this(name, records.ToArray())
+  {
+  }
 
-  public BatExplorerProjectFile(string name, List<PrjRecord> records)
+  public BatExplorerProjectFile(string name, PrjRecord[] records)
   {
     _name = name;
-    _records = records.ToArray();
+    _records = records;
     _notes = "";
     _created = "";
     _autoProcess = "true";

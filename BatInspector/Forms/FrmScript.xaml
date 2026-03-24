@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties" 
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.FrmScriptTitle}" Height="450" Width="800" Loaded="Window_Loaded"
+        Title="{x:Static res:MyResources.FrmScriptTitle}" Height="600" Width="1000" Loaded="Window_Loaded"
         Icon="../images/script.png">
   <Grid Margin="5,5,5,5">
     <Grid.RowDefinitions>

@@ -18,6 +18,7 @@
 - array variables in script
 - new script commands: EditWav, CopyFile, CreateAnnsFromBra, SaveSelectedAsProject, UpdateSpeciesCount
 - new script functions rand(), calcDistance(), isNear()
+- new script to export all species found in project to sub projects
 - added buttons "edit", "reload" to script debug window
 - new parameter for functions getNrOfSpecies, getRankSpecies, getRankCount
 

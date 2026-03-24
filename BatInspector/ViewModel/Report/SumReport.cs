@@ -919,7 +919,7 @@ namespace BatInspector
       dailyActivity.TotalCalls = 0;
       foreach (ReportListItem rep in _reports)
       {
-        if ((rep.StartDate >= start) && (rep.StartDate < end) || (rep.EndDate >= start) && (rep.EndDate < end))
+        if (Utils.overLap(rep.StartDate.Ticks, rep.EndDate.Ticks, start.Ticks, end.Ticks))
         {
 
           Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
@@ -1032,16 +1032,14 @@ namespace BatInspector
       DateTime end = date.AddDays(days);
       retVal.Days = days;
       List<SumItem> list = new List<SumItem>();
-/*      foreach (SpeciesInfos speciesInfo in species)
-        list.Add(new SumItem(speciesInfo.Abbreviation, 0)); */
       double latitude = 0;
-      double longitude = 0; ;
+      double longitude = 0;
       int sumCnt = 0;
       FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
 
       foreach (ReportListItem rep in _reports)
       {
-        if ((rep.StartDate >= date) && (rep.StartDate < end) || (rep.EndDate >= date) && (rep.EndDate < end))
+        if (Utils.overLap(rep.StartDate.Ticks, rep.EndDate.Ticks, date.Ticks, end.Ticks))
         {
           Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
           analysis.read(rep.ReportName, App.Model.DefaultModelParams, enMetaData.AUTO);

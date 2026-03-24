@@ -236,12 +236,15 @@ namespace BatInspector
                                                                                          new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
                                                                                          new ParamItem("Quelldateien löschen", enParamType.BOOL,"PAR3") }),
         new ScriptItem( 9, "replace_plecotus.scr", "Alle selektierten PAUR, PAUS im Projekt mit Plecotus ersetzen", false, new List<ParamItem>()),
-        new ScriptItem(10, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
-        new ScriptItem(11, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(12, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(13, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(14, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(15, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, new List<ParamItem>())
+        new ScriptItem(10, "export_species.scr", "Alle gefundenen Arten in Unterprojekte speichern", false, new List<ParamItem>()
+                                                                                        {new ParamItem("Zielverzeichnis für Unterprojekte", enParamType.DIRECTORY,"PAR1"),
+                                                                                         new ParamItem("Name des Ziel-Projektes", enParamType.MICSCELLANOUS, "PAR2")}),
+        new ScriptItem(11, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
+        new ScriptItem(12, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(13, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(14, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(15, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>()),
+        new ScriptItem(16, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, new List<ParamItem>())
       };
     }
 

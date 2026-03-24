@@ -16,16 +16,18 @@ Model 3:
 https://github.com/birdnet-team/BirdNET-Analyzer
 
 
-*******************
-* Training Data   *
-*******************
-www.tierstimmenarchiv.de
+*************************************
+* Training Data for GermanBats x.x  *
+*************************************
+
 https://github.com/rdz-oss/BattyBirdNET-Analyzer (download link in readme)
 Rudolf Böhm
 Holger Körber, AK-Fledermausschutz Aachen, Düren, Euskirchen (NABU / BUND / LNU)
 Christian Müller
 Klaus Schnippengerd
 Adam Strecker
+www.tierstimmenarchiv.de
+https://xeno-canto.org/
 
 thanks to Martin Hoier for annotating a lot of files
 

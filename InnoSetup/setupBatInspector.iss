@@ -79,6 +79,7 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.xml"; DestDir: "{app}"; Flag
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
+source: "{#SourceFolder}\scripts\*.xml"; DestDir: "{app}"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\dat";

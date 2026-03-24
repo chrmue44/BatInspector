@@ -1523,7 +1523,7 @@ namespace BatInspector
       return err;
     }
 
-  static tParseError occursAtLocation(List<AnyType> argv, out AnyType result)
+    static tParseError occursAtLocation(List<AnyType> argv, out AnyType result)
     {
       result = new AnyType();
       tParseError err = tParseError.SUCCESS;

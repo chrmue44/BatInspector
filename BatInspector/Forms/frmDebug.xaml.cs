@@ -69,10 +69,10 @@ namespace BatInspector.Forms
 
     private void initScriptParams() 
     {
-      int wLbl = 160;
+      int wLbl = 180;
+      _spPars.Children.Clear();
       if ((_params != null) && (_params.Count > 0))
       {
-        _spPars.Children.Clear();
         for (int i = 0; i < _params.Count; i++)
         {
           CtlSelectFile ctl = new CtlSelectFile();

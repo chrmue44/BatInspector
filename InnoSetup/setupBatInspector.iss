@@ -86,7 +86,7 @@ source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\d
 source: "{#SourceFolder}\{#MyAppName}\dat\scriptinst.txt"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
-source: "{#SourceFolder}\{#MyAppName}\mysql\*"; DestDir: "#MyAppDataFolder}\mySql";
+source: "{#SourceFolder}\{#MyAppName}\mysql\*"; DestDir: "{#MyAppDataFolder}\mySql";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2"; Components: modbd2
 source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\"; Components: modbd2

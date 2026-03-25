@@ -29,24 +29,25 @@ namespace BatInspector.Forms
       this.Title = title;
       _paramVals = new List<string>();
       this.Height = 120;
+      int wLbl = 190;
       for(int i = 0; i <  _paramText.Count; i++)
       {
         CtlSelectFile ctl = new CtlSelectFile();
         switch (_paramText[i].Type)
         {
           case enParamType.FILE:
-            ctl.setup(_paramText[i].Name, 150, false, "", checkParams);
+            ctl.setup(_paramText[i].Name, wLbl, false, "", checkParams);
             ctl.Margin = new Thickness(2, 2, 0, 0);
             _sp.Children.Add(ctl);
             break;
           case enParamType.DIRECTORY:
-            ctl.setup(_paramText[i].Name, 150, true, "", checkParams);
+            ctl.setup(_paramText[i].Name, wLbl, true, "", checkParams);
             ctl.Margin = new Thickness(2, 2, 0, 0);
             _sp.Children.Add(ctl);
             break;
           case enParamType.MICSCELLANOUS:
             ctlDataItem ctld = new ctlDataItem();
-            ctld.setup(_paramText[i].Name, enDataType.STRING, 0, 150, true, checkMiscParams);
+            ctld.setup(_paramText[i].Name, enDataType.STRING, 0, wLbl, true, checkMiscParams);
             ctld.Margin = new Thickness(2, 2, 0, 0);
             ctld.setValue("");
             _sp.Children.Add(ctld);

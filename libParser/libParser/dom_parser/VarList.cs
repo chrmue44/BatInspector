@@ -106,11 +106,14 @@ namespace libParser
     public VarList()
     {
       m_Table = new List<VarName>();
+      init();
     }
 
     public void init()
     {
       m_Table.Clear();
+      addConstant("TRUE", 1, AnyType.tType.RT_BOOL);
+      addConstant("FALSE", 0, AnyType.tType.RT_BOOL);
     }
 
     public void addConstant(string name, double value, AnyType.tType type = AnyType.tType.RT_FLOAT)

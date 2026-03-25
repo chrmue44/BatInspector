@@ -5,12 +5,13 @@
 - bugfix: parser add: add const to variable 
 - bugfix: Manual species check: combination of possible species BBAR & Plecotus resulted in "Nyctaloid" (which is bs)
 - bugfix: Manual species check: Fc range for ESER was too narrow (22 - 26 kHz): now 22 - 31 kHz
+ -bugfix: Manual species check: uniqueness MBRA/MMYS, 3.5 - 6ms
 - bugfix: initialization of wavControls when 1st project was opened and after that query opened
  -bugfix: weird scrolling behaviour at the end of the project
  -bugfix: crash when pressing "Check" without a call and without activated cursors
  -bugfix: update available model parameters in dialog model parameters
  -bugfix: scrolling of larger files in debug window
- -bugfix: species verification: uniqueness MBRA/MMYS, 3.5 - 6ms
+ -bugfix: setting break points in debug window did not always work
 
  scripting:
 - individual scripts for different models
@@ -46,8 +47,8 @@ miscellanous
 - log windows wraps lines around
 - checkSpecies: Score value added, 
 - import files: set default model automatically when entering fixed position
-- enhanced AI Model GermanBats 0.9:
-  - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller), PAUR(Strecker), MDAU (Strecker)
+- enhanced AI Model GermanBats 0.93:
+  - added training data: PAUS Koerber), PAUS(Strecker), RHIP(Koerber), ESER (Mueller), PAUR(Strecker), MDAU (Strecker), RHIP (XenoCanto)
   - data augmentation: MALC, MEMA, MBRA, PAUS, PAUR, MBEC
 
 # V0.9.5.3  22.11.25

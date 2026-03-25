@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="Skript Parameter" Height="250" Width="600">
+        Title="Skript Parameter" Height="250" Width="700">
         <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

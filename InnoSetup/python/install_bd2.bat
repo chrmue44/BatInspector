@@ -27,5 +27,8 @@ call %VENV%/Scripts/activate
 @echo * Be patient! Ooohmm.... 
 @echo ******************************************************
 pip install batdetect2=="%BD2_VERSION%"
+pip install noisereduce==3.0.3
+
+
 
 

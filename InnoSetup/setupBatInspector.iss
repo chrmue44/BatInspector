@@ -7,7 +7,7 @@
 #define MyInstallerName "SetupBatInspector_0960"
 #define MyAppVersion "0.9.6.0"
 #define MyAppPublisher "Christian Müller"
-#define MyAppURL "https://www.example.com/"
+#define MyAppURL "https://chrmue.de/bat/batinspector.html"
 #define MyAppExeName "BatInspector.exe"
 #define MyAppDataFolder "{commonappdata}\BatInspector"
 #define SourceFolder "F:\prj\BatInspector"

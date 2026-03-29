@@ -31,13 +31,14 @@ namespace BatInspector.Forms
 
     private void _btnOk_Click(object sender, RoutedEventArgs e)
     {
+      DialogResult = true;
       Close();
     }
 
     private void _btnCancel_Click(object sender, RoutedEventArgs e)
     {
+      DialogResult= false;
       Close();
-
     }
   }
 }

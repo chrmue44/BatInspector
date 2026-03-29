@@ -583,6 +583,7 @@ namespace BatInspector.Controls
       if (ok == true)
       {
         //TODO
+        DebugLog.log("ExportPrj: not yet implemented!", enLogType.INFO);
       }
     }
 

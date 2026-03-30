@@ -49,6 +49,8 @@ namespace BatInspector.Forms
           _spFoundSpecies.Children.Add(ctl);
         }
       }
+      _formData = new WebReportDataJson();
+      updateFormValues();
     }
 
     private void delSpecies(int idx)
@@ -66,6 +68,11 @@ namespace BatInspector.Forms
     private void setFormData()
     {
       _formData = WebReportDataJson.load(_ctlFormData.getValue());
+      updateFormValues();
+    }
+
+    private void updateFormValues()
+    {
       if (_formData != null)
       {
         _ctlPageTitle.setValue(_formData.PageName);
@@ -123,7 +130,7 @@ namespace BatInspector.Forms
       }
 
       if (_ctlFormData.getValue() == "")
-        _ctlFormData.setValue(Path.Combine(_dstDir, "formular.json"));
+        _ctlFormData.setValue(Path.Combine(_dstDir, "formular.json"), false);
 
       if (_formData != null)
         _formData.save(_ctlFormData.getValue());

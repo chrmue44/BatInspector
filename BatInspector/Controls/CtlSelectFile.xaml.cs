@@ -26,6 +26,7 @@ namespace BatInspector.Controls
     bool _isFolder = false;
     string _filter = "all files(*.*)|*.*";
     dlgVoid _dlgAction = null;
+    bool _runDelegate = true;
 
     public CtlSelectFile()
     {
@@ -57,8 +58,9 @@ namespace BatInspector.Controls
       return _txt.Text; 
     }
 
-    public void setValue(string value) 
+    public void setValue(string value, bool runDelegate = true) 
     {
+      _runDelegate = runDelegate;
       _txt.Text = value;
     }
 
@@ -97,8 +99,9 @@ namespace BatInspector.Controls
 
     private void _txt_TextChanged(object sender, TextChangedEventArgs e)
     {
-      if (_dlgAction != null)
+      if ((_dlgAction != null) && _runDelegate)
         _dlgAction();
+      _runDelegate = true;
     }
   }
 }

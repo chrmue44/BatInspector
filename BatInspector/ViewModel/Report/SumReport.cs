@@ -282,16 +282,16 @@ namespace BatInspector
 
     private void init()
     {
-      PageName = "name of web page";
-      LocationName = "location name of recording";
-      Author = "insert name";
-      Weather = "describe weather conditions";
-      TimeSpan = "Timespan of recordings";
-      LocationDescription = "brief description of recording location";
-      Template = "name of used template file";
-      Comment = "insert comment about the recording";
+      PageName = "Name der Webseite";
+      LocationName = "Aufnahmeort";
+      Author = "Namen einfügen";
+      Weather = "Beschreibung der Witterungsbedingungen";
+      TimeSpan = "";
+      LocationDescription = "kurze Beschreibung des Aufnahmeortes";
+      Template = "Name der Vorlagendatei (für Weseite)";
+      Comment = "Kommentar zur Aufnahme";
       WavFolder = "";
-      Method = "";
+      Method = "Zur Auswertung werden die Aufnahmen einem von der Universität Edinburgh entwickelten KI-Modell (batdetect2) zugeführt. Die KI erkennt die Ortungsrufe in den Aufnahmen und ordnet sie einer Fledermausart zu. Für die Güte der Aussage wird ein Wahrscheinlichkeitswert angegeben. Alle Zuordnungen mit einem zu geringen Wahrscheinlichkeitswert werden verworfen (In der Tabelle mit \"?\" gekennzeichnet).\r\n\r\nAnschließend wird die automatische Auswertung stichprobenartig manuell überprüft. Als Artnachweis werden ausschließlich manuell geprüfte Aufnahmen angesehen, die sämtliche Kriterien für einen Artnachweis der Broschüre „Bestimmung von Fledermausrufaufnahmen und Kriterien für die Wertung von akustischen Artnachweisen des Bayrischen Landesamt für Umwelt Teil 1 und Teil 2.“ erfüllen.";
       Species = new List<SpeciesWebInfo>();
       Species.Add(new SpeciesWebInfo("BBAR", "", "Typ A: charakteristisch\r\nTyp B: MDAU (sozial)"));
       Species.Add(new SpeciesWebInfo("ENIL", "", ""));

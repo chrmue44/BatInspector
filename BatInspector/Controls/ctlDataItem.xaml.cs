@@ -18,7 +18,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlDataItem.xaml
   /// </summary>
-  public partial class ctlDataItem : UserControl
+  public partial class ctlDataItem : UserControl, IPool
   {
     enDataType _type = enDataType.STRING;
     int _decimals = 3;
@@ -28,8 +28,10 @@ namespace BatInspector.Controls
     string _valString;
     dlgValueChanged _dlgValChange = null;
     bool _textChanged = false;
+    dlgRelease _dlgRelease;
+    int _index = 0;
 
-   // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
+    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
     public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, bool edit = false, dlgValueChanged dlgValChange = null)
     {
@@ -175,6 +177,28 @@ namespace BatInspector.Controls
     private void _tb_TextChanged(object sender, TextChangedEventArgs e)
     {
       _textChanged = true;
+    }
+
+    void IPool.setCallBack(dlgRelease dlg)
+    {
+      _dlgRelease = dlg;
+    }
+
+    public void release()
+    {
+      if (_dlgRelease != null)
+        _dlgRelease(this);
+    }
+
+
+    void IPool.setIndex(int index)
+    {
+      _index = index;
+    }
+
+    int IPool.getIndex()
+    {
+      return _index;
     }
   }
 

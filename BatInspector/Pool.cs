@@ -16,6 +16,8 @@ namespace BatInspector
   {
     void setCallBack(dlgRelease dlg);
     void release();
+    void setIndex(int index);
+    int getIndex();
   }
 
   public class Pool<T> where T : class, IPool, new()
@@ -56,6 +58,7 @@ namespace BatInspector
         _free.RemoveAt(0);
         retVal = _list[free];
         _allocated[free] = $"{id}:{free}";
+        retVal.setIndex(free);
       }
       else
       {
@@ -68,8 +71,11 @@ namespace BatInspector
 
     private void release(T obj)
     {
-      bool found = false;
-      for (int i = 0; i < _list.Length; i++)
+//      bool found = false;
+      int i = obj.getIndex();
+      _free.Add(i);
+      _allocated[i] = "";
+/*      for (int i = 0; i < _list.Length; i++)
       {
         if (_list[i] == obj)
         {
@@ -78,8 +84,8 @@ namespace BatInspector
           _allocated[i] = "";
           break;
         }
-      }
-      HashSet<int> distinctNumbers = new HashSet<int>();
+      } */
+/*      HashSet<int> distinctNumbers = new HashSet<int>();
 
       foreach (int number in _free)
       {
@@ -88,7 +94,7 @@ namespace BatInspector
       }
 
       if (!found )
-        DebugLog.log("pool error release: object not found", enLogType.ERROR);
+        DebugLog.log("pool error release: object not found", enLogType.ERROR); */
       if(_free.Count > _size)
         DebugLog.log("pool error release: too much objects released", enLogType.ERROR);
     }

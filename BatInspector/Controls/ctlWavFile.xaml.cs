@@ -7,14 +7,17 @@
  ********************************************************************************/
 
 using BatInspector.Forms;
+using BatInspector.Properties;
+using DSPLib;
 using libParser;
+using libScripter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using BatInspector.Properties;
-using System.IO;
-using libScripter;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -33,8 +36,12 @@ namespace BatInspector.Controls
     enModel _modelType;
     Sonogram _sonogram = null;
     dlgRelease _dlgRelease = null;
+    int _index;
     int _infoWidth = 360;
     bool _isBirdPrj = false;
+    static Pool<ctlDataItem> _poolData = new Pool<ctlDataItem>(3000);
+    static Pool<ctlSelectItem> _poolSelect = new Pool<ctlSelectItem>(3000);
+
 
     public string WavFilePath {  get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
@@ -82,13 +89,40 @@ namespace BatInspector.Controls
 
     public void release()
     {
+      Stopwatch sw = new Stopwatch(); //@@@
+      sw.Restart();  //@@@
       if (_sonogram != null)
       {
         _sonogram.release();
         _sonogram = null;
       }
+      foreach (UIElement el in _spDataAuto.Children)
+      {
+        ctlDataItem ctl = el as ctlDataItem;
+        ctl.release();
+      }
+      while (_spDataAuto.Children.Count > 0)
+        _spDataAuto.Children.RemoveAt(0);
+
+      foreach (UIElement el in _spDataMan.Children)
+      {
+        if (_isBirdPrj)
+        {
+          ctlDataItem ctl = el as ctlDataItem;
+          ctl.release();
+        }
+        else
+        {
+          ctlSelectItem ctl = el as ctlSelectItem;
+          ctl.release();
+        }
+      }
+      while (_spDataMan.Children.Count > 0)
+        _spDataMan.Children.RemoveAt(0);
+
       if (_dlgRelease != null)
         _dlgRelease(this);
+      sw.Stop();  //@@@
     }
 
 
@@ -232,19 +266,26 @@ namespace BatInspector.Controls
         _spDataAuto.Children.Clear();
         _spDataMan.Children.Clear();
         _ctlRemarks.setValue(_analysis.getString(Cols.REMARKS));
+        Stopwatch sw = new Stopwatch();   ///@@@
+        long[] t = new long[20]; //@@@
         foreach (AnalysisCall call in _analysis.Calls)
         {
+          sw.Restart();  //@@@
+          t[0] = sw.ElapsedTicks;  //@@@
           string callStr = call.getString(Cols.NR);
-          ctlDataItem it = new ctlDataItem();
+          t[1] = sw.ElapsedTicks;  //@@@
+          ctlDataItem it = _poolData.get(); // new ctlDataItem(); // ; //@@@ ;
+          t[2] = sw.ElapsedTicks;  //@@@
           it.Focusable = false;
-          
           it.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
+          t[3] = sw.ElapsedTicks;  //@@@
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
+          t[4] = sw.ElapsedTicks;  //@@@
           _spDataAuto.Children.Add(it);
           
           if (_isBirdPrj)
           {
-            ctlDataItem im = new ctlDataItem();
+            ctlDataItem im = _poolData.get();  // new ctlDataItem();
             im.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl, true);
             im.setValue(call.getString(Cols.SPECIES_MAN));
             if (call.Changed)
@@ -253,16 +294,22 @@ namespace BatInspector.Controls
           }
           else
           {
-            ctlSelectItem im = new ctlSelectItem();
+            ctlSelectItem im = _poolSelect.get(); // new ctlSelectItem();
+            t[5] = sw.ElapsedTicks;  //@@@
             im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
                   MyResources.ctlWavToolTipCall);
+            t[6] = sw.ElapsedTicks;  //@@@
             im.setItems(spec);
+            t[7] = sw.ElapsedTicks;  //@@@
             im.setValue(call.getString(Cols.SPECIES_MAN));
             if (call.Changed)
               im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+            t[8] = sw.ElapsedTicks;  //@@@
             im.setFontBold(call.FilterMatch);
+            t[9] = sw.ElapsedTicks;  //@@@
             _spDataMan.Children.Add(im);
-          } 
+          }
+          sw.Stop();
           callNr++;
         } 
       }
@@ -401,6 +448,16 @@ namespace BatInspector.Controls
     private void UserControl_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
       _parent._scrollPrj_MouseWheel(sender, e);
+    }
+
+    void IPool.setIndex(int index)
+    {
+      _index = index;
+    }
+
+    int IPool.getIndex()
+    {
+      return _index;
     }
   }
 }

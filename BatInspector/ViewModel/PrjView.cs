@@ -476,6 +476,7 @@ namespace BatInspector
     BitmapImage _bImgXt = null;
     BitmapImage _bImgFt = null;
     dlgRelease _dlgRelease;
+    int _index;
     MemoryStream _memory;
 
     public BitmapImage ImageXt { get { return _bImgXt; } }
@@ -624,6 +625,16 @@ namespace BatInspector
           DebugLog.log("error creating zoom view", enLogType.ERROR);
         }
       }
+    }
+
+    void IPool.setIndex(int index)
+    {
+      _index = index;
+    }
+
+    int IPool.getIndex()
+    {
+      return _index;
     }
   }
 }

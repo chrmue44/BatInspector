@@ -20,13 +20,14 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlDataItem.xaml
   /// </summary>
-  public partial class ctlSelectItem : UserControl
+  public partial class ctlSelectItem : UserControl, IPool
   {
     string _valString;
     dlgSelItemChanged _dlgValChange = null;
     int _index;
     Brush _brushDefault;
     dlgClickLabel _dlgClickLabel;
+    dlgRelease _dlgRelease;
 
     public int SelectIndex { get { return _cb.SelectedIndex; } set { _cb.SelectedIndex = value; } }    
 
@@ -171,6 +172,28 @@ namespace BatInspector.Controls
       {
         DebugLog.log($"_cb_DropDownClosed: {ex.ToString()}", enLogType.ERROR);
       }
+    }
+
+    void IPool.setCallBack(dlgRelease dlg)
+    {
+      _dlgRelease = dlg;
+    }
+
+    public void release()
+    {
+      if (_dlgRelease != null)
+        _dlgRelease(this);
+  
+    }
+
+    void IPool.setIndex(int index)
+    {
+      _index = index;
+    }
+
+    int IPool.getIndex()
+    {
+      return _index;
     }
   }
 

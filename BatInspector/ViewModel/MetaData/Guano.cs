@@ -286,13 +286,13 @@ namespace BatInspector
                   break;
                 case AnyType.tType.RT_STR:
                 default:
-                  if (tok == enGuanoToken.NAME)
+                  if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR))
                   {
                     par.Value = _name;
                     tok = getToken();
                     while (tok != enGuanoToken.EOL)
                     {
-                      if (tok == enGuanoToken.NAME)
+                      if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR))
                         par.Value += " ";
                       par.Value +=_name;
                       tok = getToken();
@@ -472,10 +472,30 @@ namespace BatInspector
             }
             retVal = enGuanoToken.JSON_STR;
           }
-          break;        
+          break;
+          
+        case '{':
+          {
+            int braceCnt = 1;
+
+            _name = "" + c;
+            while ((c != '}') && (braceCnt != 0))
+            {
+              c = getChar();
+              if (c == '{')
+                braceCnt++;
+              if (c == '}')
+                braceCnt--;
+              _name += c;
+            }
+            retVal = enGuanoToken.JSON_STR;
+          }
+          break; 
+
         case '\n':
           retVal = enGuanoToken.EOL;
           break;
+
         default:
           _name = "";
           if (Utils.isdigit(c) || (c == '-'))
@@ -498,7 +518,7 @@ namespace BatInspector
           }
           else
           {
-            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '='))
+            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '=') || (( c & 0x80) > 0))
             {
               _name += c;
               c = getChar();

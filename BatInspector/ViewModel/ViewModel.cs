@@ -160,8 +160,12 @@ namespace BatInspector
       List<string> species = new List<string>();
       foreach (SpeciesInfos info in _speciesInfos)
         species.Add(info.Abbreviation);
-      species.Add("?");
+      species.Add("Mbart");
+      species.Add("Myotis");
+      species.Add("Nyctaloid");
+      species.Add("Plecotus");
       species.Add("Social");
+      species.Add("?");
 
       _filter = new Filter(species);
       initFilter();

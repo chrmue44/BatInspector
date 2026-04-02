@@ -1138,7 +1138,10 @@ namespace BatInspector.Forms
           _frmWavFile = new frmWavFile();
         _frmWavFile.Show();
         _frmWavFile.Visibility = Visibility.Visible;
-        _frmWavFile.Topmost = true;
+        _frmWavFile.Topmost = true;  // important
+        _frmWavFile.Topmost = false; // important
+        _frmWavFile.Focus();         // important
+                                //    _frmWavFile.Topmost = true;
         DebugLog.log("MainWin:BTN 'WavTool' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1408,6 +1411,7 @@ namespace BatInspector.Forms
     {
       try
       {
+        double[] sec = new double[5];
         if (!_mouseIsDownOnScrollPrj)
         {
           if (App.Model.CurrentlyOpen == null)
@@ -1643,6 +1647,17 @@ namespace BatInspector.Forms
       HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
       source.AddHook(WndProc);
     }
+
+
+    /// <summary>
+    /// checks for new USB devices
+    /// </summary>
+    /// <param name="hwnd"></param>
+    /// <param name="msg"></param>
+    /// <param name="wParam"></param>
+    /// <param name="lParam"></param>
+    /// <param name="handled"></param>
+    /// <returns></returns>
     protected IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
       switch (msg)

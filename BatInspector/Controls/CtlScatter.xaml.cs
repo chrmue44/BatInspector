@@ -76,9 +76,19 @@ namespace BatInspector.Controls
                 cbFilter.SelectedIndex = 1;
                 App.Model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
               }
+              applyFilter = true;
+            }
+            else
+            {
+              cbFilter.SelectedIndex = 0;
+              resetFilter = true;
             }
           }
-          applyFilter = true;
+          else
+          {
+            cbFilter.SelectedIndex = 0;
+            resetFilter = true;
+          }
         }
       }
       catch (Exception ex)

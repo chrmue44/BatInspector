@@ -1,7 +1,8 @@
 TODO
 - new flag <modified> in XML-file
-- simplification of script to copy auto to man specie
 - markieren von manuell geänderten Rufen
 - more flexible import: 
-  - parsing date/time form different file names
   - real "inplace" import
+
+- scrolling through files with many calls is still slow
+  constructors of ctlDataItem and ctlSelectItem is slow (not changeable)

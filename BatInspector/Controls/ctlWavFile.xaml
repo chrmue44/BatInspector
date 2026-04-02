@@ -47,7 +47,7 @@
                     </StackPanel>
                 </ScrollViewer>
                 <Button Grid.Column="4" Grid.Row="1" Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Background="#FFF7F9FE" BorderThickness="0" Padding="0">
-                <Image  Name ="_img" Focusable="False" Stretch="Fill"/>
+                <Image  Name ="_img" Focusable="False" Stretch="Fill" MouseWheel="UserControl_MouseWheel"/>
             </Button>
         </Grid>
     </ScrollViewer>

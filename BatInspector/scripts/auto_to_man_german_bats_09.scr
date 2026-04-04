@@ -101,6 +101,15 @@ FOR FileNr 0 NrFiles
         END        
         CONTINUE
       END      
+      
+	  IF =(specAuto == "Mbart")
+        IF =(probability >= 0.4)
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "Mbart"))
+        ELSE
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "Myotis"))
+        END        
+        CONTINUE
+      END      
 
       IF =(specAuto == "MDAS")
         IF =(probability >= 0.4)

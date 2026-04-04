@@ -86,8 +86,7 @@ namespace BatInspector.Controls
           }
           else
           {
-            cbFilter.SelectedIndex = 0;
-            resetFilter = true;
+            applyFilter = true;
           }
         }
       }

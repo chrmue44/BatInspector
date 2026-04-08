@@ -1,0 +1,17 @@
+SET NrFiles =(getPrjFileCount())
+SET replSpec =(PAR1)
+SET replWith =(PAR2)
+SET Count 0
+FOR FileNr 0 NrFiles
+  IF =(getFileInfo(FileNr, "SELECT"))
+    SET NrCalls =(getCallCount(FileNr))
+    FOR i 0 NrCalls
+      SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
+      IF =(toupper(specMan) == replSpec) 
+        =(setCallInfo(FileNr, i, "SPEC_MAN", replWith))
+        SET Count =(Count + 1)
+      END
+    END
+  END
+END
+LOG =("replaced " + replSpec + " with " + replWith + " in " + Count + " calls") 

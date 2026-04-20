@@ -1,5 +1,5 @@
 
-# V0.9.6.0
+# V0.9.6.0   08.05.26
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json
 - bugfix: parser add: add const to variable 

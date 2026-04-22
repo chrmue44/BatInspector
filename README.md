@@ -19,7 +19,7 @@ A windows desktop software to analyze bat calls
   - apply bandpass filter
   - configuration of sonogram display
   - play back calls with multiple speeds (x1, x20, x20, heterodyne)
-  - Checking call parameters according to the paper LfU Bayern
+  - Checking call parameters according to the paper of LfU Bayern
 
 ![grafik](https://github.com/chrmue44/BatInspector/assets/18011976/5a4bcdf2-2029-4353-9d9a-ecd9433e2b22)
 

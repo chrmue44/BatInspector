@@ -1,5 +1,10 @@
+# V0.9.6.1
+- bugfix: Scrollbar for import dialog for small screens
+- bugfix: Tab Summary always visible, only hidden when query opened
+- bugfix: improved scroll behaviour at end of project (scroll back)
+- bugfix: proper handling of WAV files with format chunk of more than 24 byte length
 
-# V0.9.6.0
+# V0.9.6.0   08.04.26
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json
 - bugfix: parser add: add const to variable 

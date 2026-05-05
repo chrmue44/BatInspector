@@ -154,7 +154,6 @@ namespace BatInspector
     public static void splitAnnotation(string name, double splitLength, bool removeOriginal)
     {
       Bd2AnnFile file = Bd2AnnFile.loadFrom(name);
-      char ext = 'a';
       if(file != null)
       {
         double len = file.duration;
@@ -199,10 +198,9 @@ namespace BatInspector
           file.Annatations = splitAnns.ToArray();
           int pos = name.ToLower().IndexOf(".wav.json");
           string fName = name.Substring(0, pos);
-          fName += "_" + ext + ".wav.json";
-          file.id = fName + ext + "wav";
+          fName += "_" + i.ToString("000") + ".wav.json";
+          file.id = fName + i.ToString("000") + "wav";
           file.saveAs(fName);
-          ext++;
         }
         if (File.Exists(name) && removeOriginal)
           File.Delete(name);

@@ -72,6 +72,9 @@ namespace BatInspector.Forms
       _ctlMetaData.setItems(metaItems);
       _ctlMetaData.SelectIndex = 0;
       setVisibilityTimeFilter();
+      double maxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
+      if(this.Height > (maxHeight - 100))
+        this.Height = maxHeight -100;
     }
 
     private void modelHasChanged(int index, string val)

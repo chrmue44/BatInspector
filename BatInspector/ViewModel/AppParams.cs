@@ -188,7 +188,7 @@ namespace BatInspector
     public const int NR_OF_TICKS = 9;         // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
     public const int CNT_WAV_CONTROLS = 16;   // max. number of wav file controls
     public const int ACTIVITY_CLASS_WIDTH = 5;  // class width [min] for activity diagrams
-
+    public const int MAX_WAVCTL_COUNT = 6; // max. number of pre initialized WAV controls 
 
     static AppParams _inst = null;
 

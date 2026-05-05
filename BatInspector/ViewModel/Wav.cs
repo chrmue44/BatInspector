@@ -16,6 +16,7 @@ using libParser;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NAudio.Flac;
+using ZstdSharp.Unsafe;
 
 namespace BatInspector
 {
@@ -458,7 +459,7 @@ namespace BatInspector
           {
             byte[] format = partArray(_rawData, pos, 24);
             _format = new FormatChunk(format);
-            pos += 24;
+            pos += (int)_format.ChunkSize + _format.ChunkId.Length + (int)sizeof(uint);
           }
           else if ((_rawData[pos] == 'd') && (_rawData[pos + 1] == 'a') && (_rawData[pos + 2] == 't') && (_rawData[pos + 3] == 'a'))
           {
@@ -656,7 +657,6 @@ namespace BatInspector
       wav.readFile(name);
       int sampleRate = (int)wav.FormatChunk.Frequency;
       double len = (double)wav.AudioSamples.Length / sampleRate;
-      char ext = 'a';
       for(int i = 0; i <= len / splitLength; i++)
       {
         int idxStart = (int)(splitLength * i * sampleRate);
@@ -667,9 +667,8 @@ namespace BatInspector
         splitWav.createFile(sampleRate, idxStart, idxEnd, wav.AudioSamples);
         if(wav.Guano != null)
           splitWav.addGuanoMetaData(wav);
-        string fName = Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name) + "_" + ext + AppParams.EXT_WAV);
+        string fName = Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name) + "_" + i.ToString("000") + AppParams.EXT_WAV);
         splitWav.saveFileAs(fName);
-        ext++;
       }
       if (removeOriginal && File.Exists(name))
         File.Delete(name);

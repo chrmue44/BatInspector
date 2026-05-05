@@ -108,7 +108,6 @@ namespace BatInspector.Forms
       this.Top = AppParams.Inst.MainWindowPosX;
       this.Left = AppParams.Inst.MainWindowPosY;
 
-      // TODO find a working way to limit the window size
       double maxWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;
       double maxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
       if ((this.Left + this.Width) > maxWidth)
@@ -253,10 +252,10 @@ namespace BatInspector.Forms
       foreach(ctlWavFile ctl in _spSpectrums.Children)
         ctl.release();
       _spSpectrums.Children.Clear();
+      _tbSum.Visibility = Visibility.Visible;
       if ((dir != null) && (Project.containsProject(dir) != ""))
       {
         _ctlPrjBtn.initFileButton(false);
-        _tbSum.Visibility = Visibility.Visible;
         collapseTreeView(true);
         worker.DoWork += delegate (object s, DoWorkEventArgs args)
         {
@@ -730,7 +729,7 @@ namespace BatInspector.Forms
             c.release();
           _spSpectrums.Children.Clear();
 
-          int maxCtl = Math.Min(App.Model.View.VisibleFiles.Count, 6);
+          int maxCtl = Math.Min(App.Model.View.VisibleFiles.Count, AppParams.MAX_WAVCTL_COUNT);
           for (int i = 0; i < maxCtl; i++)
           {
             if ((startIdx + i) < App.Model.View.VisibleFiles.Count)
@@ -1421,7 +1420,9 @@ namespace BatInspector.Forms
             return;
 
           double diff = _scrollPrj.Value - _scrollBarPrjPos;
-          if ((diff < 2) && (diff > 0) && (_scrollBarPrjPos < _scrollPrj.Maximum))
+          if(_spSpectrums.Children.Count < 2)
+            populateControls((int)_scrollPrj.Value);
+          else if ((diff < 2) && (diff > 0) && (_scrollBarPrjPos < _scrollPrj.Maximum))
             incrementControls(true);
           else if ((diff > -2) && (diff < 0) && (_scrollBarPrjPos < _scrollPrj.Maximum))
             incrementControls(false);
@@ -1680,6 +1681,10 @@ namespace BatInspector.Forms
           bool res = frm.ShowDialog() == true;
           if (res)
             App.Model.Prj.recovery(frm._cbDel.IsChecked == true, frm._cbChanged.IsChecked == true);
+        }
+        else
+        {
+          MessageBox.Show(MyResources.msgPleaseOpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
       }
       catch (Exception ex)

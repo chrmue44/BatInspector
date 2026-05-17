@@ -166,7 +166,11 @@ FOR FileNr 0 NrFiles
       END      
 
       IF =(specAuto == "BBAR")
-        =(setCallInfo(FileNr, i, "SPEC_MAN", "BBAR"))
+        IF =((probability >= 0.5) && (getCallInfo(FileNr, i, "SNR") > 12))
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "BBAR"))
+        ELSE
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+        END        
         CONTINUE
       END      
 
@@ -223,6 +227,7 @@ END
 # kick out low counts
 LOG "start kicking out single calls"
 UpdateSpeciesCount
+SET KickOutCnt 0
 FOR FileNr 0 NrFiles
   IF =(getFileInfo(FileNr, "SELECT"))
     =(FileName = getFileInfo(FileNr, "NAME"))
@@ -245,7 +250,7 @@ FOR FileNr 0 NrFiles
         SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
         FOR j 0 Count
           IF =(specMan == ReplaceSpec[j])
-            LOG =("kick out " + specMan + " in file " + FileName)
+		    SET KickOutCnt =(KickOutCnt + 1)
             =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
           END
         END
@@ -253,3 +258,4 @@ FOR FileNr 0 NrFiles
     END
   END
 END
+LOG =("Kicked out " + KickOutCnt + " calls")

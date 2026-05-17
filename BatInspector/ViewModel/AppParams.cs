@@ -86,7 +86,7 @@ namespace BatInspector
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
-  public class FilterParams
+  public class FilterParams : IComparable<FilterParams> 
   {
     [DataMember]
     [Description("name of the display filter")]
@@ -101,6 +101,11 @@ namespace BatInspector
     public bool isForAllCalls { get; set; }
 
     public int Index { get; set; }
+
+    public int CompareTo(FilterParams other)
+    {
+      return this.Name.CompareTo(other.Name);
+    }
   }
 
   public class ColorItemConfigurationTypeConverter : TypeConverter
@@ -188,7 +193,7 @@ namespace BatInspector
     public const int NR_OF_TICKS = 9;         // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
     public const int CNT_WAV_CONTROLS = 16;   // max. number of wav file controls
     public const int ACTIVITY_CLASS_WIDTH = 5;  // class width [min] for activity diagrams
-
+    public const int MAX_WAVCTL_COUNT = 6; // max. number of pre initialized WAV controls 
 
     static AppParams _inst = null;
 
@@ -634,6 +639,7 @@ namespace BatInspector
           DirFilter = new List<string>();
         while (DirFilter.Count < 5)
           DirFilter.Add("");
+        this.Filter.Sort();
         using (StreamWriter file = new StreamWriter(fName))
         {
           using (MemoryStream stream = new MemoryStream())

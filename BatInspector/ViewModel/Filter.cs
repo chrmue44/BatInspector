@@ -40,7 +40,7 @@ namespace BatInspector
   }
 
   public delegate void dlgDelete(int index);
-  public class FilterItem
+  public class FilterItem : IComparable<FilterItem>
   {
     public int Index { get; set; }
     public string Name { get; set; }
@@ -53,6 +53,11 @@ namespace BatInspector
       Name = name;
       Expression = expression;
       IsForAllCalls = allCalls;
+    }
+
+    public int CompareTo(FilterItem other)
+    {
+      return this.Name.CompareTo(other.Name);
     }
   }
 

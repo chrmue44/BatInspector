@@ -1,5 +1,16 @@
+# V0.9.7.0   
+- new parameter "SNR" for script function getCallInfo()
+- improved copy script for GermanBats 0.9: less false positive BBAR
+- Filters get sorted each time when settings are saved
+- New checkbox "Menue" in Script Inventory to control visibility in tools menue in main window
 
-# V0.9.6.0   08.05.26
+# V0.9.6.1   08.05.26
+- bugfix: Scrollbar for import dialog for small screens
+- bugfix: Tab Summary always visible, only hidden when query opened
+- bugfix: improved scroll behaviour at end of project (scroll back)
+- bugfix: proper handling of WAV files with format chunk of more than 24 byte length
+
+# V0.9.6.0   08.04.26
 - bugfix: translation of wrongly spelled eptesicus nilssonii now works for batdetect2
 - bugfix: spelling eptesicus nilssonii in batinfo.json
 - bugfix: parser add: add const to variable 

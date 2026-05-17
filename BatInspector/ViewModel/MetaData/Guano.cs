@@ -518,7 +518,7 @@ namespace BatInspector
           }
           else
           {
-            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '=') || (( c & 0x80) > 0))
+            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '#') || (c == '=') || (( c & 0x80) > 0))
             {
               _name += c;
               c = getChar();

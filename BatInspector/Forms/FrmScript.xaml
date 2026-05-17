@@ -26,6 +26,7 @@
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="55" />
                 <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="25" />
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="40" />
@@ -37,12 +38,13 @@
                 <RowDefinition Height="*"></RowDefinition>
 
             </Grid.RowDefinitions>
-       <TextBlock Grid.Row="0" Grid.Column="0">Idx</TextBlock>
+       <TextBlock Grid.Row="0" Grid.Column="0" Text="Idx" />
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Static res:MyResources.FrmScriptDescription}" />
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static res:MyResources.FrmScriptName}" />
             <TextBlock Grid.Row="0" Grid.Column="3" Text="Par" />
             <TextBlock Grid.Row="0" Grid.Column="4" Text="Tool" />
-            <ScrollViewer Grid.Row="2"   Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="9" >
+            <TextBlock Grid.Row="0" Grid.Column="5" Text="{x:Static res:MyResources.Menue}" Grid.ColumnSpan="2"/>
+            <ScrollViewer Grid.Row="2"   Name="_scrlViewer" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="10" >
 
                 <StackPanel Name="_sp" Grid.Row="1">
                     <local:ctlScriptItem/>

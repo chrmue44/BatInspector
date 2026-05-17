@@ -513,7 +513,7 @@ namespace BatInspector
       SELECT,
       NAME,
       LATITUDE,
-      LONGITUDE
+      LONGITUDE,
     }
 
     enum enPrjInfo
@@ -953,7 +953,8 @@ namespace BatInspector
       F_MIN,
       F_MAX,
       F_MAX_AMP,
-      DURATION
+      DURATION,
+      SNR,
     }
 
     static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
@@ -1005,6 +1006,10 @@ namespace BatInspector
                   case enCallInfo.DURATION:
                     result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.DURATION));
                     break;
+                  case enCallInfo.SNR:
+                    result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.SNR));
+                    break;
+
                 }
               }
               else

@@ -252,8 +252,8 @@ namespace BatInspector
                 report.setCell(repRow, Cols.REMARKS, "");
 
                 cnt++;
-                if((cnt % 20) == 0)
-                  DebugLog.log($"processed {cnt} files", enLogType.INFO);
+                if((cnt % 500) == 0)
+                  DebugLog.log($"processed {cnt} annotation files", enLogType.INFO);
 
               }
             }

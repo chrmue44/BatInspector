@@ -48,12 +48,13 @@ namespace BatInspector
   [DataContract]
   public class ScriptItem
   {
-    public ScriptItem(int index, string name, string description, bool isTool, List<ParamItem> parameter)
+    public ScriptItem(int index, string name, string description, bool isTool, bool isInMenue, List<ParamItem> parameter)
     {
       Index = index;
       Name = name;
       Description = description;
       IsTool = isTool;
+      IsInMenue = isInMenue;
       Parameter = parameter;
     }
 
@@ -68,6 +69,10 @@ namespace BatInspector
 
     [DataMember]
     public bool IsTool { get; set; }
+
+    [DataMember]
+    public bool IsInMenue { get; set; }
+
     [DataMember]
     public List<ParamItem> Parameter { get; set; }
   }
@@ -214,40 +219,40 @@ namespace BatInspector
     {
       Scripts = new List<ScriptItem>
       {
-        new ScriptItem( 0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,new List<ParamItem>()),
-        new ScriptItem( 1, "auto_to_man_german_bats_09.scr", "Alle plausiblen KI-Bestimmungen im Modell GermanBats 0.9 übernehmen", false,new List<ParamItem>()),
-        new ScriptItem( 2, "auto_to_man_UK.scr", "Alle plausiblen KI-Bestimmungen im Modell UK übernehmen", false,new List<ParamItem>()),
-        new ScriptItem( 3, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false,new List<ParamItem>()),
-        new ScriptItem( 4, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateien", false,new List<ParamItem>()),
-        new ScriptItem( 5, "resample.scr", "Resampling einer WAV-Datei",false,
+        new ScriptItem( 0, "copyAutoToMan.scr", "Alle plausiblen KI-Bestimmungen übernehmen", false,false,new List<ParamItem>()),
+        new ScriptItem( 1, "auto_to_man_german_bats_09.scr", "Alle plausiblen KI-Bestimmungen im Modell GermanBats 0.9 übernehmen", false, false, new List<ParamItem>()),
+        new ScriptItem( 2, "auto_to_man_UK.scr", "Alle plausiblen KI-Bestimmungen im Modell UK übernehmen", false, false, new List<ParamItem>()),
+        new ScriptItem( 3, "reset_man.scr", "Alle manuellen Species auf 'todo' setzen",false, true, new List<ParamItem>()),
+        new ScriptItem( 4, "bandpass.scr", "Automatischen Bandpass auf alle selektierten Dateien", false,true, new List<ParamItem>()),
+        new ScriptItem( 5, "resample.scr", "Resampling einer WAV-Datei",false, false, 
                            new List<ParamItem>(){new ParamItem("Name der WAV-Datei", enParamType.FILE, "PAR1"),
                                                  new ParamItem("neue Sampling-Rate [Hz]",enParamType.MICSCELLANOUS,"PAR2") }),
-        new ScriptItem( 6, "rescale_dat.scr", "Samplingrate aller Dateien im Verzeichnis umskalieren",false,
+        new ScriptItem( 6, "rescale_dat.scr", "Samplingrate aller Dateien im Verzeichnis umskalieren",false, false,
                            new List<ParamItem>(){new ParamItem("Verzeichnis auswählen", enParamType.DIRECTORY,"PAR1"),
                            new ParamItem("Skalierfaktor", enParamType.MICSCELLANOUS,"PAR2")}),
-        new ScriptItem( 7, "bulk_import_batspy.scr", "mehrere BatSpy-Projekte importieren und auswerten", false, new List<ParamItem>()
+        new ScriptItem( 7, "bulk_import_batspy.scr", "mehrere BatSpy-Projekte importieren und auswerten", false, true, new List<ParamItem>()
                                                                                         {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
                                                                                          new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
                                                                                          new ParamItem("Aufnahmeort", enParamType.MICSCELLANOUS, "PAR3"),
                                                                                          new ParamItem("Ersteller des Projekts", enParamType.MICSCELLANOUS, "PAR4"),
                                                                                          new ParamItem("Bemerkungen", enParamType.MICSCELLANOUS,"PAR5")}),
-        new ScriptItem( 8, "bulk_import_wav.scr", "mehrere Verz. mit WAV Dateien importieren und auswerten", false, new List<ParamItem>()
+        new ScriptItem( 8, "bulk_import_wav.scr", "mehrere Verz. mit WAV Dateien importieren und auswerten", false, true, new List<ParamItem>()
                                                                                         {new ParamItem("Quellverzeichnis", enParamType.DIRECTORY,"PAR1"),
                                                                                          new ParamItem("Zielverzeichnis", enParamType.DIRECTORY,"PAR2"),
                                                                                          new ParamItem("Quelldateien löschen", enParamType.BOOL,"PAR3") }),
-        new ScriptItem( 9, "replace_plecotus.scr", "Alle selektierten PAUR, PAUS im Projekt mit Plecotus ersetzen", false, new List<ParamItem>()),
-        new ScriptItem(10, "replace_spec.scr", "Für alle selektierten, SpeciesMan: ersetze eine Art durch eine andere", false, new List<ParamItem>()
+        new ScriptItem( 9, "replace_plecotus.scr", "Alle selektierten PAUR, PAUS im Projekt mit Plecotus ersetzen", false, false, new List<ParamItem>()),
+        new ScriptItem(10, "replace_spec.scr", "Für alle selektierten, SpeciesMan: ersetze eine Art durch eine andere", false, true, new List<ParamItem>()
                                                                                         {new ParamItem("Ersetze Species", enParamType.MICSCELLANOUS, "PAR1"),
                                                                                          new ParamItem("durch Species", enParamType.MICSCELLANOUS, "PAR2")}),
-        new ScriptItem(11, "export_species.scr", "Alle gefundenen Arten in Unterprojekte speichern", false, new List<ParamItem>()
+        new ScriptItem(11, "export_species.scr", "Alle gefundenen Arten in Unterprojekte speichern", false, true, new List<ParamItem>()
                                                                                         {new ParamItem("Zielverzeichnis für Unterprojekte", enParamType.DIRECTORY,"PAR1"),
                                                                                          new ParamItem("Name des Ziel-Projektes", enParamType.MICSCELLANOUS, "PAR2")}),
-        new ScriptItem(12, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true,new List<ParamItem>()),
-        new ScriptItem(13, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(14, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(15, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(16, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, new List<ParamItem>()),
-        new ScriptItem(17, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, new List<ParamItem>())
+        new ScriptItem(12, "tool_all_todo.scr", "set all SpeciesMan to 'todo'", true, false, new List<ParamItem>()),
+        new ScriptItem(13, "tool_replace_pipistrelle.scr", "Alle Pipistrelluns mit Gattung ersetzen", true, false, new List<ParamItem>()),
+        new ScriptItem(14, "tool_replace_nyctalus.scr", "Alle Nyctalus mit Gattung ersetzen", true, false, new List<ParamItem>()),
+        new ScriptItem(15, "tool_copy_spec_from_first.scr", "Alle Spezies mit Spezies des ersten Rufs ersetzen", true, false, new List<ParamItem>()),
+        new ScriptItem(16, "tool_replace_PAUR.scr", "Alle PAUR, PAUS mit 'Social' ersetzen", true, false,new List<ParamItem>()),
+        new ScriptItem(17, "tool_replace_plecotus.scr", "Alle PAUR, PAUS mit 'Plecotus' ersetzen", true, false, new List<ParamItem>())
       };
     }
 

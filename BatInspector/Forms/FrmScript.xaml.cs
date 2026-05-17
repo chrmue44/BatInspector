@@ -49,7 +49,7 @@ namespace BatInspector.Forms
 
     private void _btnAdd_Click(object sender, RoutedEventArgs e)
     {
-      ScriptItem s = new ScriptItem(_temp.Count, "SCRIPT_NAME", "DESCRIPTION", false, new List<ParamItem>());
+      ScriptItem s = new ScriptItem(_temp.Count, "SCRIPT_NAME", "DESCRIPTION", false, true, new List<ParamItem>());
       _temp.Add(s);
       ctlScriptItem it = new ctlScriptItem();
       it.setup(s, deleteScript, debugScript);
@@ -84,6 +84,7 @@ namespace BatInspector.Forms
           _temp[it.Index].Description = it.Description;
           _temp[it.Index].IsTool = it.IsTool;
           _temp[it.Index].Parameter = it.Parameter;
+          _temp[it.Index].IsInMenue = it.IsInMenue;
         }
       }
       App.Model.Scripter.setScripts(_temp);

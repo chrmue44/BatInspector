@@ -282,7 +282,6 @@ namespace BatInspector.Forms
 
     private void setCross(Point p)
     {
-      int w = 14;
       switch (_state)
       {
         case enVerifyState.SET_FSTART:

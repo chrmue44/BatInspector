@@ -48,7 +48,7 @@ namespace BatInspector
       }
       if(_ampl == null)
       {
-        DebugLog.log("error cresting spectrum length 0", enLogType.ERROR);
+        DebugLog.log("error creating spectrum length 0", enLogType.ERROR);
         _ampl = new double[4];
       }
     }

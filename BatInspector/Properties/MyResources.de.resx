@@ -2049,4 +2049,7 @@
   <data name="FrmCreatePrjUniqueRecorderID" xml:space="preserve">
     <value>eindeutige Kennung Recorder</value>
   </data>
+  <data name="Menue" xml:space="preserve">
+    <value>Menü</value>
+  </data>
 </root>

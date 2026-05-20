@@ -1,3 +1,6 @@
+# V0.9.6.2    18.05.26
+- bugfix: reads TeansyBat files
+
 # V0.9.6.1
 - bugfix: Scrollbar for import dialog for small screens
 - bugfix: Tab Summary always visible, only hidden when query opened

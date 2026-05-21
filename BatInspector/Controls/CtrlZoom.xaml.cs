@@ -145,7 +145,29 @@ namespace BatInspector.Controls
       _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, lblWidth);
 
-   
+      if ((_modelType == enModel.BAT_DETECT2) || (_modelType == enModel.BATTY_BIRD_NET))
+      {
+        _btnPlay_10.Visibility = Visibility.Visible;
+        _btnPlay_20.Visibility = Visibility.Visible;
+        _btnPlay_HET.Visibility = Visibility.Visible;
+        _spFreqHet.Visibility = Visibility.Visible;
+        _grpCallPars.Visibility = Visibility.Visible;
+        _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
+        _ctlSpecMan.Visibility = Visibility.Visible;
+        _ctlSpecManBird.Visibility = Visibility.Collapsed;
+      }
+      else
+      {
+        _btnPlay_10.Visibility = Visibility.Collapsed;
+        _btnPlay_20.Visibility= Visibility.Collapsed;
+        _btnPlay_HET.Visibility= Visibility.Collapsed;
+        _spFreqHet.Visibility = Visibility.Collapsed;
+        _grpCallPars.Visibility = Visibility.Collapsed;
+        _ctlSelectCall2.setup(MyResources.CtlWavSection + " Nr.", 0, 65, 55, ctlSelCallChanged2);
+        _ctlSpecMan.Visibility = Visibility.Collapsed;
+        _ctlSpecManBird.Visibility = Visibility.Visible;
+      }
+
       lblWidth = 110;
       _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, lblWidth);
       _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, lblWidth);
@@ -164,7 +186,6 @@ namespace BatInspector.Controls
 
       lblWidth = 130;
       _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 55, ctlSelCallChanged);
-      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
       _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, lblWidth);
       _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, lblWidth);
       _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, lblWidth);
@@ -192,7 +213,8 @@ namespace BatInspector.Controls
       lblWidth = 110;
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, lblWidth);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 95, ctlSpecManChanged);
-      if(species != null)
+      _ctlSpecManBird.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 95, true, ctlSpecManBirdChanged);
+      if (species != null)
         _ctlSpecMan.setItems(species);
       _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
       int wt = 140;
@@ -303,7 +325,22 @@ namespace BatInspector.Controls
       }
     }
 
-  
+    private void ctlSpecManBirdChanged(enDataType type, object val)
+    {
+
+      if (App.Model.ZoomView.Analysis != null)
+      {
+        if ((App.Model.ZoomView.SelectedCallIdx >= 0) && (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
+        {
+          App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, (string)val);
+          _ctlSpecManBird.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+        }
+        else
+          DebugLog.log("ctlZoom.ctlSpecMan^BirdChanged(): index error", enLogType.ERROR);
+      }
+    }
+
+
 
     public void setTimeLimits(double tMin, double tMax)
     {
@@ -313,9 +350,12 @@ namespace BatInspector.Controls
 
     public void updateManSpecies()
     {
-      if((App.Model.ZoomView.SelectedCallIdx >= 0) &&
+      if ((App.Model.ZoomView.SelectedCallIdx >= 0) &&
          (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
+      { 
         _ctlSpecMan.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+        _ctlSpecManBird.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+      }
     }
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
@@ -1115,10 +1155,10 @@ namespace BatInspector.Controls
       App.Model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
       double pre = 0.01;
       double length = AppParams.Inst.ZoomOneCall / 1000.0;
-      if(((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Analysis.ModelType == enModel.BATTY_BIRD_NET)) ||
-         ((App.Model.Query != null) && (App.Model.Query.Analysis.ModelType == enModel.BATTY_BIRD_NET)))
+      if(((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Analysis.ModelType != enModel.BAT_DETECT2)) ||
+         ((App.Model.Query != null) && (App.Model.Query.Analysis.ModelType != enModel.BAT_DETECT2)))
       {
-          length = App.Model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION) / 1000;
+        length = tEnd - tStart;
       }
       App.Model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + length - pre);
       if (App.Model.ZoomView.Analysis.Calls[idx].Changed)
@@ -1142,13 +1182,14 @@ namespace BatInspector.Controls
           _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
           _ctlFMax.setValue(call.getDouble(Cols.F_MAX) / 1000);
           _ctlFMaxAmpl.setValue(call.getDouble(Cols.F_MAX_AMP) / 1000);
+          _ctlDuration.setValue(call.getDouble(Cols.DURATION));
+          _ctlDist.setValue(call.getDouble(Cols.CALL_INTERVALL));
+          _ctlSnr.setValue(call.getDouble(Cols.SNR));
         }
-        _ctlDuration.setValue(call.getDouble(Cols.DURATION));
-        _ctlDist.setValue(call.getDouble(Cols.CALL_INTERVALL));
-        _ctlSnr.setValue(call.getDouble(Cols.SNR));
         _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));
         _ctlProbability.setValue(call.getDouble(Cols.PROBABILITY));
         _ctlSpecMan.setValue(call.getString(Cols.SPECIES_MAN));
+        _ctlSpecManBird.setValue(call.getString(Cols.SPECIES_MAN));
         if (call.Changed)
           _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
       }

@@ -108,7 +108,7 @@
                 <Button x:Name="_btnPlay_HET"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_HET_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSectionHET}">
                     <Image Source="../images/play-het.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Name="_spFreqHet">
                     <TextBox Text="[kHz]" Height="18" Background="#FFCCD5F0" BorderThickness="0" Focusable="False"/>
                     <TextBox x:Name="_tbFreqHET" Height="20" TextChanged="_tbFreHET_TextChanged" ToolTip="{x:Static res:MyResources.CtrlZoomToolHeterodyneFreq}" />
                 </StackPanel>
@@ -190,6 +190,7 @@
                         <local:ctlDataItem x:Name="_ctlSpecAuto"/>
                         <local:ctlDataItem x:Name="_ctlProbability"/>
                         <local:ctlSelectItem x:Name="_ctlSpecMan"/>
+                        <local:ctlDataItem x:Name="_ctlSpecManBird"/>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpCursor1" Header="Cursor 1" Margin="5" Padding="2" Visibility="Hidden">
@@ -219,7 +220,7 @@
                     <local:ctlDataItem x:Name="_ctlTimeMax"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="380"   >
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="380" Name="_grpCallPars" >
                 <GroupBox.Header>
                     <TextBlock Text="{x:Static res:MyResources.CallInformation}" FontWeight="Bold" />
                 </GroupBox.Header>

@@ -8,7 +8,9 @@
 using BatInspector.Controls;
 using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -852,8 +854,31 @@ namespace BatInspector
       return retVal;
     }
 
-    public void createProject(PrjInfo info, bool inspect, bool cli)
-    {
+
+   public string getLastLog()
+   {
+     DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
+     FileInfo[] files = dir.GetFiles();
+     string newestLog = "";
+      DateTime lastLog = new DateTime(1900, 1, 1);
+      foreach (FileInfo f in files)
+      {
+        if (f.LastWriteTime > lastLog)
+          newestLog = f.FullName;
+      }
+      return newestLog;
+       
+   }
+
+   public void sendEmail(string receiver, string subject, string text)
+   {
+    // Basis-URI für mailto:
+     string mailtoUri = $"mailto:{receiver}?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(text)}";
+     Process.Start(new ProcessStartInfo(mailtoUri) { UseShellExecute = true });
+   }
+
+  public void createProject(PrjInfo info, bool inspect, bool cli)
+  {
       bool ok = false;
       if (info.IsProjectFolder)
         ok = Project.copyFromBatspy(info, info.ModelParams);

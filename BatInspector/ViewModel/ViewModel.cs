@@ -6,6 +6,7 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using BatInspector.Controls;
+using BatInspector.Properties;
 using libParser;
 using libScripter;
 using System;
@@ -859,15 +860,21 @@ namespace BatInspector
    {
      DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
      FileInfo[] files = dir.GetFiles();
-     string newestLog = "";
-      DateTime lastLog = new DateTime(1900, 1, 1);
-      foreach (FileInfo f in files)
+      string retVal = "";
+     Array.Sort(files, delegate (FileInfo f1, FileInfo f2) 
+     {
+       int res = (f1.LastWriteTime > f2.LastWriteTime) ? 1 : -1;
+       if (f1.LastWriteTime == f2.LastWriteTime)
+         res = 0;
+       return res;
+      });
+      int cnt = Math.Min(5, files.Length);
+      for (int i = files.Length - cnt; i < files.Length; i++)
       {
-        if (f.LastWriteTime > lastLog)
-          newestLog = f.FullName;
+        retVal += $"\n###### Log File {files[i].FullName}:\n";
+        retVal += File.ReadAllText(files[i].FullName);
       }
-      return newestLog;
-       
+     return retVal;       
    }
 
    public void sendEmail(string receiver, string subject, string text)

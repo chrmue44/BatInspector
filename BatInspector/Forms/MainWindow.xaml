@@ -9,7 +9,7 @@
         Title="BatInspector" Height="900" Width="1400" MinWidth="1280" MinHeight="640"
         Icon="../images/logo.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
     >
-<!--    PreviewKeyDown="Window_KeyDown" -->
+    <!--    PreviewKeyDown="Window_KeyDown" -->
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="34" />
     </WindowChrome.WindowChrome>
@@ -71,13 +71,17 @@
 
     <Border x:Name="MainWindowBorder" BorderBrush="LightCoral" BorderThickness="0">
         <Grid x:Name="parentContainer" Background="LightBlue">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="79*"/>
+                <ColumnDefinition Width="621*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height ="Auto"/>
                 <RowDefinition Height ="*"/>
             </Grid.RowDefinitions>
 
             <!--Window chrome-->
-            <Grid Grid.Row="0" Height="25" Background="{DynamicResource colorBackGroundWindow}">
+            <Grid Grid.Row="0" Height="25" Background="{DynamicResource colorBackGroundWindow}" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <!--App icon-->
                     <Image Source="/images/logo.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -97,7 +101,7 @@
                 </StackPanel>
             </Grid>
             <!-- App Content -->
-            <DockPanel Grid.Row="1">
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
                 <StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource colorBackGroundWindow}" Height="20">
                     <TextBlock Name="_lblProject" Text="---" Foreground="{DynamicResource colorForeGroundWindow}" Margin="0,-3,0,0" />
                     <TextBlock Name="_lblStatus" HorizontalAlignment="Right" Foreground="{DynamicResource colorForeGroundWindow}" Margin="0,-3,0,0"/>
@@ -208,6 +212,7 @@
                                         <MenuItem Header="{x:Static res:MyResources.frmMainSoftwareManual}" Name="_mnHelpSw" Click="_mnHelpSw_Click" />
                                         <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
                                         <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
+                                        <MenuItem Header="{x:Static res:MyResources.FrmMainReportError}" Name="_mnReportError" Click="_mnReportError_Click" />
                                     </ContextMenu>
                                 </ToggleButton.ContextMenu>
                             </ToggleButton>
@@ -244,8 +249,8 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Name="_spPrjInfo" Grid.Row ="0">
-                                <controls:ctlPrjInfo x:Name="_ctlPrjInfo"   />
-                                    </StackPanel>
+                                    <controls:ctlPrjInfo x:Name="_ctlPrjInfo"   />
+                                </StackPanel>
                                 <Label Name="_lblProjectSelect" Grid.Row="1" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
                                 <TreeView  Grid.Row="2" x:Name="_trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,0,0,0" Grid.ColumnSpan="2"/>
                                 <Rectangle Name="_rect" Grid.Row="2" Fill="{DynamicResource colorBackGroundWindow}" Visibility="Collapsed"/>

@@ -307,9 +307,9 @@ namespace BatInspector
       ScriptInventory srcInventory = new ScriptInventory();
       srcInventory.initScripts();
       bool save = false;
+      int cntInMenue = 0;
       foreach (ScriptItem s in srcInventory.Scripts)
       {
-
         ScriptItem i = getScriptInfo(s.Name);
         if (i == null)
         {
@@ -318,6 +318,8 @@ namespace BatInspector
         }
         else
         {
+          if (i.IsInMenue)
+            cntInMenue++;
           if (i.Parameter.Count != s.Parameter.Count)
           {
             i.Parameter = s.Parameter;
@@ -326,6 +328,17 @@ namespace BatInspector
           }
         }
       }
+
+      // if not a single script in menue, add them all to the menue
+      if(cntInMenue == 0)
+      {
+        for (int i = 0; i < Scripts.Count; i++)
+        {
+          if (!Scripts[i].IsTool)
+            Scripts[i].IsInMenue = true;
+        }
+      }
+
       if (save)
       {
         saveAs(fName);

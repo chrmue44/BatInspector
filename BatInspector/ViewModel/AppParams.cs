@@ -142,6 +142,7 @@ namespace BatInspector
   [DataContract]
   public class AppParams
   {
+    public const string ERROR_RECIPIENT = "kontakt@chrmue.de";
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
     public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
     public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports

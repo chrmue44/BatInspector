@@ -3,6 +3,8 @@
 - improved copy script for GermanBats 0.9: less false positive BBAR
 - Filters get sorted each time when settings are saved
 - New checkbox "Menue" in Script Inventory to control visibility in tools menue in main window
+- Zoomview improved for BirdNet
+- Button to send error report via email
 
 # V0.9.6.1   08.05.26
 - bugfix: Scrollbar for import dialog for small screens

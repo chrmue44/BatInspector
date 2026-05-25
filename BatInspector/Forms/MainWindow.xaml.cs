@@ -1496,6 +1496,22 @@ namespace BatInspector.Forms
       showPdf(AppParams.BAT_INFO2_PDF);
     }
 
+    private void _mnReportError_Click(object sender, RoutedEventArgs e)
+    {
+      MessageBoxResult res = MessageBox.Show(MyResources.MsgReportError, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      if(res == MessageBoxResult.Yes)
+      {
+        string subject = $"Error Report BatInspector V{AppParams.AppVersion}";
+        DebugLog.save();
+        string text = App.Model.getLastLog();
+        if (!string.IsNullOrEmpty(text))
+        {
+          text = MyResources.msgErrorEmail + "\n\n" + text;
+          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, text);
+        }
+      }
+    }
+
     private void _btnCreatePrj_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -1915,6 +1931,7 @@ namespace BatInspector.Forms
     private void _tbPrj_GotFocus(object sender, RoutedEventArgs e)
     {
     }
+
   }
 
   public enum enWinType

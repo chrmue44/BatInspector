@@ -2052,4 +2052,13 @@
   <data name="Menue" xml:space="preserve">
     <value>Menü</value>
   </data>
+  <data name="FrmMainReportError" xml:space="preserve">
+    <value>Fehlerbericht senden...</value>
+  </data>
+  <data name="MsgReportError" xml:space="preserve">
+    <value>Möchten Sie wirklich einen Fehlerbericht senden?</value>
+  </data>
+  <data name="msgErrorEmail" xml:space="preserve">
+    <value>Bitte beschreiben Sie, was Sie getan haben, was Sie als Ergebnis erwartet haben und was tatsächlich passiert ist.</value>
+  </data>
 </root>

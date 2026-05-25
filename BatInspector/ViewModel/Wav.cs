@@ -451,6 +451,7 @@ namespace BatInspector
         _rawData = File.ReadAllBytes(name);
         byte[] hdr = partArray(_rawData, 0, 12);
         _header = new WaveHeader(hdr);
+        int remainingBytes = (int)_header.FileLength - 12;
 
         int pos = 12;
         while (pos < _rawData.Length - 12)
@@ -459,7 +460,10 @@ namespace BatInspector
           {
             byte[] format = partArray(_rawData, pos, 24);
             _format = new FormatChunk(format);
-            pos += (int)_format.ChunkSize + _format.ChunkId.Length + (int)sizeof(uint);
+            int size = (int)_format.ChunkSize + _format.ChunkId.Length + sizeof(uint);
+            pos += (int)size;
+            remainingBytes -= size;
+
           }
           else if ((_rawData[pos] == 'd') && (_rawData[pos + 1] == 'a') && (_rawData[pos + 2] == 't') && (_rawData[pos + 3] == 'a'))
           {
@@ -469,11 +473,13 @@ namespace BatInspector
             pos += 4;
             int dataSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
             pos += 4;
+            remainingBytes -= 8;
             if (dataSize + pos > _rawData.Length)
               dataSize = _rawData.Length - pos;
             //        _data.AddSampleData(_rawData, pos, _rawData.Length - pos, _format.BitsPerSample, _format.Channels);
             _data.AddSampleData(_rawData, pos, dataSize, _format.BitsPerSample, _format.Channels);
             pos += dataSize;
+            remainingBytes -= dataSize;
           }
           else if ((_rawData[pos] == 'g') && (_rawData[pos + 1] == 'u') && (_rawData[pos + 2] == 'a') && (_rawData[pos + 3] == 'n'))
           {
@@ -488,14 +494,20 @@ namespace BatInspector
           {
             pos += 4;
             int chunkSize = _rawData[pos] + _rawData[pos + 1] * 256 + _rawData[pos + 2] * 65536 + _rawData[pos + 3] * 16777216;
-            if (chunkSize == 0)
+            if (chunkSize <= 0)
             {
-              retVal = 1;
-              DebugLog.log($"format error in WAV file: {name}", enLogType.ERROR);
+              DebugLog.log($"format error in WAV file: {name}, {remainingBytes} unrecognized remaining bytes", enLogType.WARNING);
+              break;
+            }
+            else if (remainingBytes < chunkSize)
+            {
+              DebugLog.log($"format error (chunksize mismatch) in WAV file: {name}", enLogType.WARNING);
               break;
             }
             pos += 4 + chunkSize;
           }
+          if(remainingBytes < 0)
+            DebugLog.log($"format error (chunk too long, {-remainingBytes} Bytes) in WAV file: {name}", enLogType.DEBUG);
         }
         _fName = name;
         _isInitialized = true;

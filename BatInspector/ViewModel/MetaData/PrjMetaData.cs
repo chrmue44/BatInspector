@@ -52,7 +52,7 @@ namespace BatInspector
       switch (metaData)
       {
         case enMetaData.XML:
-          string infoFileName = wavName.Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+          string infoFileName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
           retVal = ElekonInfoFile.read(infoFileName);
           break;
 

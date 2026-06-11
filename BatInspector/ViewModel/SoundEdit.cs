@@ -597,7 +597,7 @@ namespace BatInspector
   /// </summary>
   public class AirAbsorbtion
   {
-    static double p0 = 20e-6;  //ref. sound pressure ampitude [Pa];
+//    static double p0 = 20e-6;  //ref. sound pressure ampitude [Pa];
     static double pa = 102.325; // ambient atmospheric pressure [kPa];
     static double pr = 102.325; // reference atmospheric pressure [kPa];
     static double t0 = 293;  // reference athmospheric temperatur [K]

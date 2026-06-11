@@ -5,23 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
              xmlns:viewmodel="clr-namespace:BatInspector"
-             xmlns:oxy="http://oxyplot.org/wpf"
              xmlns:res="clr-namespace:BatInspector.Properties" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" SizeChanged="UserControl_SizeChanged">
 
-  <Grid >
-      <Grid.RowDefinitions>
-        <RowDefinition Height="35"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <StackPanel Grid.Row="0">
-        <StackPanel Orientation="Horizontal">
-          <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right" Margin="0,7,0,0"/>
-        <ComboBox Name="_cbFilterStatistic" Margin="5,10,0,0"  DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"/>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Filter:" Width="80" HorizontalContentAlignment="Right" Margin="0,7,0,0"/>
+                <ComboBox Name="_cbFilterStatistic" Margin="5,10,0,0"  DropDownClosed="_cbFilter_DropDownClosed" DropDownOpened="_cbFilter_DropDownOpened"/>
                 <Button Width="120" Content="Export..." Name="_btnExport" Click="_btnExport_Click"  Margin="100,0,0,0" Height="22"/>
             </StackPanel>
-      </StackPanel>
+        </StackPanel>
         <Grid Grid.Row="1" Margin="0,4,0,-4">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -30,14 +29,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-        <ColumnDefinition/>
-      </Grid.ColumnDefinitions>
-      <local:ctlHistogram x:Name="_stat1" Grid.Row="0" Grid.Column="0"/>
-      <local:ctlHistogram x:Name="_stat2" Grid.Row="0" Grid.Column="1"/>
-      <local:ctlHistogram x:Name="_stat3" Grid.Row="1" Grid.Column="0"/>
-      <local:ctlHistogram x:Name="_stat4" Grid.Row="1" Grid.Column="1" Margin="0,2,0,-2"/>
-      <local:ctlHistogram x:Name="_stat5" Grid.Row="0" Grid.Column="2"/>
-      <local:ctlHistogram x:Name="_stat6" Grid.Row="1" Grid.Column="2"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <local:ctlHistogram x:Name="_stat1" Grid.Row="0" Grid.Column="0"/>
+            <local:ctlHistogram x:Name="_stat2" Grid.Row="0" Grid.Column="1"/>
+            <local:ctlHistogram x:Name="_stat3" Grid.Row="1" Grid.Column="0"/>
+            <local:ctlHistogram x:Name="_stat4" Grid.Row="1" Grid.Column="1" Margin="0,2,0,-2"/>
+            <local:ctlHistogram x:Name="_stat5" Grid.Row="0" Grid.Column="2"/>
+            <local:ctlHistogram x:Name="_stat6" Grid.Row="1" Grid.Column="2"/>
         </Grid>
-  </Grid>
+    </Grid>
 </UserControl>

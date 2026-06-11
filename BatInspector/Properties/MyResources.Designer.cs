@@ -2455,6 +2455,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send Error Report....
+        /// </summary>
+        public static string FrmMainReportError {
+            get {
+                return ResourceManager.GetString("FrmMainReportError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scatter Diagram.
         /// </summary>
         public static string frmMainScatterDiagram {
@@ -4327,6 +4336,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Menue.
+        /// </summary>
+        public static string Menue {
+            get {
+                return ResourceManager.GetString("Menue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Microphone.
         /// </summary>
         public static string Microphone {
@@ -4404,6 +4422,15 @@ namespace BatInspector.Properties {
         public static string MsgErrorBd2 {
             get {
                 return ResourceManager.GetString("MsgErrorBd2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please describe what you did, what you expected to happen, and what happened instead..
+        /// </summary>
+        public static string msgErrorEmail {
+            get {
+                return ResourceManager.GetString("msgErrorEmail", resourceCulture);
             }
         }
         
@@ -4512,6 +4539,15 @@ namespace BatInspector.Properties {
         public static string msgQuestion {
             get {
                 return ResourceManager.GetString("msgQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to send an error report?.
+        /// </summary>
+        public static string MsgReportError {
+            get {
+                return ResourceManager.GetString("MsgReportError", resourceCulture);
             }
         }
         

@@ -108,7 +108,6 @@ namespace BatInspector
         case enSqlType.VARCHAR:
           return _valString;
       }
-      return null;
     }
 
     public override string ToString()

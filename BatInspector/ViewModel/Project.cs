@@ -756,7 +756,17 @@ namespace BatInspector
     }
 
 
-
+    public static string getPrjType(string prjName)
+    {
+      string retVal = "";
+      if(Directory.Exists(prjName))
+      {
+        Project p = new Project(false, App.Model.DefaultModelParams[0], 1, AppParams.DIR_WAVS);
+        p.readPrjFile(prjName);
+        retVal = p._batExplorerPrj.ProjectType;
+      }
+    return retVal;
+    }
 
     public static bool copyFromBatspy(PrjInfo info, ModelParams modelParams)
     {
@@ -783,14 +793,18 @@ namespace BatInspector
             File.Copy(files[0], dstPrj, true);
           }
 
+          Project prjSrc = Project.createFrom(info.SrcDir);
           Project prj = new Project(false, modelParams, App.Model.DefaultModelParams.Length);
           DirectoryInfo dir = new DirectoryInfo(fullDir);
           prj.fillFromDirectory(dir, info.WavSubDir, info.Notes, info.Location);
           prj.CreatedBy = info.Creator;
-          Project prjSrc = Project.createFrom(info.SrcDir);
           prj._batExplorerPrj.Microphone.FrequencyResponse = prjSrc.MicFreqResponse;
           prj._batExplorerPrj.Microphone.Id = prjSrc.MicId;
-          prj._batExplorerPrj.MetaData = info.MetaData == enMetaData.GUANO ? "Guano" : "Xml";
+        //  prj._batExplorerPrj.MetaData = info.MetaData == enMetaData.GUANO ? "Guano" : "Xml";
+          prj._batExplorerPrj.ProjectType = prjSrc._batExplorerPrj.ProjectType;
+          prj._batExplorerPrj.MetaData = prjSrc._batExplorerPrj.MetaData;
+          prj.SelectedModelIndex = prjSrc.SelectedModelIndex;
+
 
           if (modelParams != null)
             prj._modelParams = modelParams;
@@ -1186,7 +1200,7 @@ namespace BatInspector
           retVal = pf.Models;
         }
       }
-      catch (Exception ex)
+      catch 
       {
         DebugLog.log($"project file {prjFile} corrupt", enLogType.ERROR);
       }
@@ -1239,6 +1253,14 @@ namespace BatInspector
           if (string.IsNullOrEmpty(_batExplorerPrj.MetaData))
             _batExplorerPrj.MetaData = "Xml";
           _modelParams = setModelParams();
+          if (_batExplorerPrj.ProjectType == "Birds")
+          {
+            for (int i = 0; i < AvailableModelParams.Length; i++)
+            {
+              AvailableModelParams[i].Enabled = AvailableModelParams[i].Type == enModel.BIRDNET;
+            }
+          }
+          ;
           SelectedModelIndex = 0;
           for (int i = 0; i < AvailableModelParams.Length; i++)
           {

@@ -91,7 +91,7 @@ public:
   stDataChunk* getData() { return &_data; }
   bool isData();
   void addSampleData(const char* data, int offs, int len, int bitsPerSample, int chanCount);
-  int getSampleCnt() { return _samples.size(); }
+  int getSampleCnt() { return (int)_samples.size(); }
   int16_t* getSamples() { return &_samples[0]; }
 
 private:

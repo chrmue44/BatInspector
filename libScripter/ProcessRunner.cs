@@ -124,24 +124,10 @@ namespace libScripter
 
     private void errDataHandler(object sender, DataReceivedEventArgs ev)
     {
-      _errData[_errDataIdx] = ev.Data;
-      _errDataIdx++;
-      if (_errDataIdx >= _errData.Length)
-        _errDataIdx = 0;
+      if (_logOutput)
+        DebugLog.log(ev.Data, enLogType.INFO);
     }
 
-    public string ErrData 
-    {
-      get
-      {
-        string s = "";
-        for (int i = _errDataIdx; i < _errData.Length; i++)
-          s += _errData[i];
-        for (int i = 0; i < _errDataIdx; i++)
-          s += _errData[i];
-        return s;
-      }
-    }
 
     private void LogMsg(string text, enLogType type)
     {

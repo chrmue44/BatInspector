@@ -227,7 +227,6 @@ namespace BatInspector
       _buf = s;
       _pos = 0;
       enGuanoToken tok;
-      bool err = true;
       string str = System.Text.Encoding.UTF8.GetString(s,0, s.Length);
       _items.Clear();
       do
@@ -518,7 +517,7 @@ namespace BatInspector
           }
           else
           {
-            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '=') || (c == '#') || (( c & 0x80) > 0))
+            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '#') || (c == '=') || (( c & 0x80) > 0))
             {
               _name += c;
               c = getChar();

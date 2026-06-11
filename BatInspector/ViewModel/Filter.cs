@@ -17,8 +17,8 @@ namespace BatInspector
   public class FilterVarItem
   {
     public string VarName { get; set; }
-    public bool AvailableFile { get; set; } 
-    public bool AvailableCall { get;set; }
+    public bool AvailableFile { get; set; }
+    public bool AvailableCall { get; set; }
     public bool AvailableSumReport { get; set; }
     public AnyType.tType Type { get; set; }
     public string Help { get; set; }
@@ -40,13 +40,13 @@ namespace BatInspector
   }
 
   public delegate void dlgDelete(int index);
-  public class FilterItem
+  public class FilterItem : IComparable<FilterItem>
   {
     public int Index { get; set; }
     public string Name { get; set; }
     public string Expression { get; set; }
     public bool IsForAllCalls { get; set; }
-  
+
     public FilterItem(int index, string name, string expression, bool allCalls)
     {
       Index = index;
@@ -54,30 +54,35 @@ namespace BatInspector
       Expression = expression;
       IsForAllCalls = allCalls;
     }
+
+    public int CompareTo(FilterItem other)
+    {
+      return this.Name.CompareTo(other.Name);
+    }
   }
 
 
- 
+
   public class Filter
   {
     const string VAR_NR_CALLS = "NrOfCalls";
-  /*  const string VAR_SPECIES_AUTO = "SpeciesAuto";
-    const string VAR_SPECIES_MAN = "SpeciesMan";
-    const string VAR_FREQ_MAX = "FreqMax";
-    const string VAR_FREQ_MIN = "FreqMin";
-    const string VAR_FREQ_MAX_AMP = "FreqMaxAmp";
-    const string VAR_DURATION = "DurationCall";
-    const string VAR_PROBABILITY = "Probability";
-    const string VAR_REMARKS = "Remarks";
-    const string VAR_TIME = "RecordingTime";
-    const string VAR_SNR = "SNR";  */
+    /*  const string VAR_SPECIES_AUTO = "SpeciesAuto";
+      const string VAR_SPECIES_MAN = "SpeciesMan";
+      const string VAR_FREQ_MAX = "FreqMax";
+      const string VAR_FREQ_MIN = "FreqMin";
+      const string VAR_FREQ_MAX_AMP = "FreqMaxAmp";
+      const string VAR_DURATION = "DurationCall";
+      const string VAR_PROBABILITY = "Probability";
+      const string VAR_REMARKS = "Remarks";
+      const string VAR_TIME = "RecordingTime";
+      const string VAR_SNR = "SNR";  */
 
     ExpressionGenerator _gen;
     List<FilterItem> _list;
     Expression _expression;
-   
+
     public List<FilterItem> Items { get { return _list; } }
-    public ExpressionGenerator ExpGenerator { get{ return _gen; } }
+    public ExpressionGenerator ExpGenerator { get { return _gen; } }
 
     public FilterItem TempFilter = null;
 
@@ -105,13 +110,13 @@ namespace BatInspector
       };
 
       _expression.Variables.set(VAR_NR_CALLS, 0);
-      _expression.Variables.set(DBBAT.SPEC_AUTO,"");
-      _expression.Variables.set(DBBAT.SPEC_MAN,"");
-      _expression.Variables.set(DBBAT.FMIN,"");
-      _expression.Variables.set(DBBAT.FMAX,"");
+      _expression.Variables.set(DBBAT.SPEC_AUTO, "");
+      _expression.Variables.set(DBBAT.SPEC_MAN, "");
+      _expression.Variables.set(DBBAT.FMIN, "");
+      _expression.Variables.set(DBBAT.FMAX, "");
       _expression.Variables.set(DBBAT.FMAXAMP, "");
-      _expression.Variables.set(DBBAT.CALL_LEN,"");
-      _expression.Variables.set(DBBAT.PROB,"");
+      _expression.Variables.set(DBBAT.CALL_LEN, "");
+      _expression.Variables.set(DBBAT.PROB, "");
       _expression.Variables.set(DBBAT.REM, "");
       _expression.Variables.set(DBBAT.RECORDING_TIME, 0);
       _expression.Variables.set(DBBAT.SNR, 0);
@@ -138,7 +143,7 @@ namespace BatInspector
         _expression.setVariable(VAR_NR_CALLS, file.Calls.Count);
         _expression.setVariable(DBBAT.LAT, file.getDouble(Cols.LAT));
         _expression.setVariable(DBBAT.LON, file.getDouble(Cols.LON));
-        for(int i = 0; i < file.Calls.Count; i++) 
+        for (int i = 0; i < file.Calls.Count; i++)
         {
           bool res = apply(filter, file.Calls[i]);
           if (filter.IsForAllCalls)
@@ -154,7 +159,7 @@ namespace BatInspector
             if (res)
             {
               retVal = true;
-//              break;
+              //              break;
             }
           }
         }
@@ -183,7 +188,7 @@ namespace BatInspector
       DateTime trec = call.getDateTime(Cols.REC_TIME);
       _expression.setVariable(DBBAT.RECORDING_TIME, trec);
       AnyType res = _expression.parse(filter.Expression);
-      
+
       if ((res.getType() == AnyType.tType.RT_BOOL) && res.getBool())
         retVal = true;
       call.FilterMatch = retVal;
@@ -208,9 +213,9 @@ namespace BatInspector
     public FilterItem getFilter(string name)
     {
       FilterItem retVal = null;
-      foreach(FilterItem it in _list)
+      foreach (FilterItem it in _list)
       {
-        if(it.Name == name)
+        if (it.Name == name)
         {
           retVal = it;
           break;
@@ -223,7 +228,7 @@ namespace BatInspector
     {
       string retVal = "Variable Name       | File | Call | SumReport |\n" +
                       "--------------------+------+------+-----------+\n";
-      foreach(VarListItem v in _expression.Variables.getVarList(false))
+      foreach (VarListItem v in _expression.Variables.getVarList(false))
       {
         retVal += v.name;
         int len = 20 - v.name.Length;
@@ -263,7 +268,7 @@ namespace BatInspector
     private FilterVarItem findVarItem(string varName)
     {
       FilterVarItem item = new FilterVarItem();
-      foreach(FilterVarItem f in _vars)
+      foreach (FilterVarItem f in _vars)
       {
         if (f.VarName == varName)
         {

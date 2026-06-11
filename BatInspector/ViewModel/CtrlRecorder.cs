@@ -8,7 +8,6 @@
 
 
 using libParser;
-using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,7 +26,7 @@ namespace BatInspector
 
   public class TriggerBat
   {
-    
+
     NumType _level = new NumType("Prh");
     NumType _freq = new NumType("Prf");
     NumType _length = new NumType("Prm");
@@ -38,7 +37,7 @@ namespace BatInspector
     public NumType Frequency { get { return _freq; } }
     public NumType EventLength { get { return _length; } }
     public EnumType Type { get { return _type; } }
-    public EnumType Filter { get { return _filter; }  }
+    public EnumType Filter { get { return _filter; } }
 
     public void init()
     {
@@ -91,9 +90,9 @@ namespace BatInspector
     {
     }
 
-    public EnumType SampleRate { get { return _sampleRate; } } 
+    public EnumType SampleRate { get { return _sampleRate; } }
     public EnumType Gain { get { return _gain; } }
-    public NumType PreTrigger {  get { return _preTrig; } }
+    public NumType PreTrigger { get { return _preTrig; } }
 
     public NumType RecordingFilter { get { return _recFilter; } }
     public EnumType RecFiltType { get { return _recFiltType; } }
@@ -143,8 +142,8 @@ namespace BatInspector
       _preTrig.init();
       _recFilter.init();
       _recFiltType.init();
-      _recTime .init();
-      _deadTime .init();
+      _recTime.init();
+      _deadTime.init();
     }
   }
 
@@ -184,16 +183,16 @@ namespace BatInspector
     NumType _lat = new NumType("Pla");
     NumType _lon = new NumType("Plo");
 
-    public NumType Latitude { get { return _lat; } } 
-    public NumType Longitude { get { return _lon;} }
+    public NumType Latitude { get { return _lat; } }
+    public NumType Longitude { get { return _lon; } }
 
     public EnumType Language { get { return _language; } }
 
     public NumType BackLightTime { get { return _backLightTime; } }
 
-    public EnumType DisplayMode {  get { return _displayMode; } }
+    public EnumType DisplayMode { get { return _displayMode; } }
 
-    public EnumType PositionMode{ get { return _posMode; } }
+    public EnumType PositionMode { get { return _posMode; } }
     public void init()
     {
       _language.init();
@@ -239,20 +238,20 @@ namespace BatInspector
     public NumType CpuLoadAvg { get { return _cpuAvg; } }
     public NumType CpuLoadMax { get { return _cpuMax; } }
     public NumType MainLoop { get { return _mainLoop; } }
-    public NumType DiskSpace { get { return _diskSpace;} }
+    public NumType DiskSpace { get { return _diskSpace; } }
     public NumType RecCount { get { return _recCount; } }
     public StringType Date { get { return _date; } }
-    public StringType Time { get { return _time; } }  
+    public StringType Time { get { return _time; } }
     public NumType NrSatellites { get { return _nrSatellites; } }
     public EnumType RecordingStatus { get { return _recStatus; } }
     public StringType Location { get { return _location; } }
     public NumType Height { get { return _height; } }
 
-    public EnumType Gps { get{ return _gps; } }
+    public EnumType Gps { get { return _gps; } }
     public BitmapImage getLiveFft()
     {
-      
-      
+
+
       int height = 128;
       int width = 256;
       byte[] fft = new byte[height * width];
@@ -261,11 +260,11 @@ namespace BatInspector
       buf = BatSpy.getLiveFft(1);
       Array.Copy(buf, 0, fft, buf.Length, buf.Length);
       BitmapFast bmp = new BitmapFast(width, height);
-      for(int w = 0; w < width; w++)
+      for (int w = 0; w < width; w++)
       {
-        for(int h = 0; h< height; h++) 
+        for (int h = 0; h < height; h++)
         {
-          double val = fft[w * height+ h];
+          double val = fft[w * height + h];
           System.Drawing.Color col = _colorTable.getColor(val, 0, 255, 0);
           bmp.setPixel(w, height - 1 - h, col);
         }
@@ -372,7 +371,7 @@ namespace BatInspector
     public bool getMicInfos(out string id, out string type, out string comment)
     {
       bool retVal = false;
-      id = ""; type = "";comment = "";
+      id = ""; type = ""; comment = "";
       if (BatSpy.IsConnected)
       {
         string res = BatSpy.ExecuteCommand("ie");
@@ -390,22 +389,22 @@ namespace BatInspector
 
     public List<MicFreqItem> readFreqResponseFromMic()
     {
-      List<MicFreqItem> retVal = new List<MicFreqItem> ();
+      List<MicFreqItem> retVal = new List<MicFreqItem>();
       bool ok = BatSpy.getDoubleValue("in", out double val);
-      if(ok)
+      if (ok)
       {
         int cnt = (int)val;
         for (int i = 0; i < cnt; i++)
         {
           string vals = BatSpy.ExecuteCommand($"if{i}");
           string[] items = vals.Split(',');
-          if(items.Length == 3)
+          if (items.Length == 3)
           {
             MicFreqItem f = new MicFreqItem();
             double.TryParse(items[1], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
             f.Frequency = val;
             double.TryParse(items[2], NumberStyles.Any, CultureInfo.InvariantCulture, out val);
-            f.Amplitude= val;
+            f.Amplitude = val;
             retVal.Add(f);
           }
         }
@@ -490,7 +489,7 @@ namespace BatInspector
     public bool IsConnected { get { return _connected; } }
     public TriggerBat TriggerBat { get { return _triggerBat; } }
     public TriggerBird TriggerBird { get { return _triggerBird; } }
-    public AcquisitionBat AcquisitionBat { get { return _acqBat;} }
+    public AcquisitionBat AcquisitionBat { get { return _acqBat; } }
     public AcquisitionBird AcquisitionBird { get { return _acqBird; } }
     public ControlRec Control { get { return _ctrl; } }
     public GeneralRec General { get { return _gen; } }
@@ -503,7 +502,7 @@ namespace BatInspector
       _acqBird.init();
       _ctrl.init();
       _gen.init();
-      _status.init(); 
+      _status.init();
     }
   }
 }

@@ -480,7 +480,10 @@ namespace BatInspector
               dstFile = Path.Combine(dstDir, Path.GetFileName(srcFile));
             else
               dstFile = Path.Combine(dstDir, prefix + "_" + Path.GetFileName(srcFile));
-            File.Copy(srcFile, dstFile);
+            if (File.Exists(srcFile))
+              File.Copy(srcFile, dstFile);
+            else
+              DebugLog.log($"PNG file: {srcFile} doesn'exist!", enLogType.WARNING);
           }
           if (incXml)
           {
@@ -489,7 +492,10 @@ namespace BatInspector
               dstFile = Path.Combine(dstDir, Path.GetFileName(srcFile));
             else
               dstFile = Path.Combine(dstDir, prefix + "_" + Path.GetFileName(srcFile));
-            File.Copy(srcFile, dstFile);
+            if (File.Exists(srcFile))
+              File.Copy(srcFile, dstFile);
+            else
+              DebugLog.log($"XML file: {srcFile} doesn'exist!", enLogType.WARNING);
           }
         }
         else

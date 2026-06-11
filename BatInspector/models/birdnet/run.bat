@@ -11,6 +11,6 @@ SET LOCALE=%9
 @echo *   Starting AI model BirdNET ...       *
 @echo *****************************************
 call %BIN_PATH%/_venv/Scripts/activate
-python -m birdnet_analyzer.analyze %WAV_DIR% --output %ANN_DIR% --lat %LAT% --lon %LON% --sensitivity %SENSITIVITY% --min_conf %MIN_CONF% --week %WEEK% --locale %LOCALE% --rtype csv
+python -m birdnet_analyzer.analyze %WAV_DIR% --output %ANN_DIR% --lat %LAT% --lon %LON% --sensitivity %SENSITIVITY% --min_conf %MIN_CONF% --week %WEEK% --locale %LOCALE% --rtype csv  2>&1
 call %BIN_PATH%/_venv/Scripts/deactivate
 rem pause

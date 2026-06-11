@@ -29,6 +29,8 @@ namespace BatInspector.Forms
     public string Description { get { return _tbDescription.Text; } }
     public bool IsTool { get { return _cbTool.IsChecked == true; } }
 
+    public bool IsInMenue { get { return _cbInMenue.IsChecked == true; } }
+
     public List<ParamItem> Parameter { get; private set;}
 
     public ctlScriptItem()
@@ -47,10 +49,19 @@ namespace BatInspector.Forms
       _tbScriptName.Text = script.Name;
       _tbDescription.Text = script.Description;
       _cbTool.IsChecked = script.IsTool;
+      _cbInMenue.IsChecked = script.IsInMenue;
       if (_cbTool.IsChecked == true)
       {
         _btnRun.Visibility = Visibility.Hidden;
         _btnPars.Visibility = Visibility.Hidden;
+        _cbInMenue.Visibility = Visibility.Hidden;
+        _cbInMenue.IsChecked = false;
+      }
+      else
+      {
+        _btnRun.Visibility = Visibility.Visible;
+        _btnPars.Visibility = Visibility.Visible;
+        _cbInMenue.Visibility = Visibility.Visible;
       }
       _lblIdx.Text = _index.ToString();
       _btnPars.Content = "Pars(" + Parameter.Count.ToString() + ")";
@@ -91,6 +102,11 @@ namespace BatInspector.Forms
     {
       _btnRun.Visibility = _cbTool.IsChecked == true ? Visibility.Hidden : Visibility.Visible;
       _btnPars.Visibility = _cbTool.IsChecked == true ? Visibility.Hidden : Visibility.Visible;
+      _cbInMenue.Visibility = _cbTool.IsChecked == true ? Visibility.Hidden: Visibility.Visible;
+    }
+
+    private void _cbIsInMenue_Click(object sender, RoutedEventArgs e)
+    {
     }
 
     private void _btnPars_Click(object sender, RoutedEventArgs e)

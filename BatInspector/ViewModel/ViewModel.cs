@@ -6,9 +6,12 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using BatInspector.Controls;
+using BatInspector.Properties;
 using libParser;
 using libScripter;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -68,7 +71,7 @@ namespace BatInspector
     ModelParams[] _defaultModelParams;
     dlgVoid _callBackEnd = null;
     DataBase _mySql;
-    public PrjView View { get{ return _view; } }
+    public PrjView View { get { return _view; } }
 
     public DataBase MySQL { get { return _mySql; } }
     public string SelectedDir { get { return _selectedDir; } }
@@ -104,7 +107,7 @@ namespace BatInspector
     public ModelState Status { get; set; }
 
     public Statistic Statistic { get { return _statistic; } }
-    
+
     public CtrlRecorder Recorder { get { return _recorder; } }
 
     public ModelParams[] DefaultModelParams { get { return _defaultModelParams; } }
@@ -149,7 +152,7 @@ namespace BatInspector
       int index = 0;
 
       _defaultModelParams = BaseModel.readDefaultModelParams();
-      foreach ( ModelParams m in _defaultModelParams)
+      foreach (ModelParams m in _defaultModelParams)
       {
         _models.Add(BaseModel.Create(index, m.Type));
         index++;
@@ -312,7 +315,7 @@ namespace BatInspector
 
     public static void createPng(string wavName, string pngName, int fftWidth, ColorTable colorTable)
     {
-      Waterfall wf = new Waterfall(wavName,  colorTable, fftWidth, AppParams.Inst.GradientRange, AppParams.Inst.BlackLevel);
+      Waterfall wf = new Waterfall(wavName, colorTable, fftWidth, AppParams.Inst.GradientRange, AppParams.Inst.BlackLevel);
       if (wf.Ok)
       {
         wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
@@ -327,8 +330,8 @@ namespace BatInspector
         DebugLog.log("could not create PNG for " + wavName, enLogType.WARNING);
     }
 
-    
-  
+
+
 
     /// <summary>
     /// execute command in separate thread
@@ -345,7 +348,7 @@ namespace BatInspector
     public void threadExecCmd()
     {
       _scripter.execCmd(_tempCmd);
-      if(_callBackEnd != null)
+      if (_callBackEnd != null)
       {
         _callBackEnd();
         _callBackEnd = null;
@@ -369,7 +372,7 @@ namespace BatInspector
       string args = scriptName;
       _proc.launchCommandLineApp(exe, null, null, false, args, true, false);
     }
- 
+
     public void deleteFiles(List<string> files)
     {
       DebugLog.log("start deleting files", enLogType.INFO);
@@ -397,12 +400,12 @@ namespace BatInspector
         delName = delName.ToLower().Replace(AppParams.EXT_WAV, ".*");
         IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
         string destDir = Path.Combine(SelectedDir, AppParams.DIR_DEL);
-        if(!Directory.Exists(destDir))
+        if (!Directory.Exists(destDir))
           Directory.CreateDirectory(destDir);
         foreach (string f in delFiles)
         {
           try
-          { 
+          {
             File.Copy(f, destDir + "/" + System.IO.Path.GetFileName(f));
             File.Delete(f);
             DebugLog.log("delete file " + f, enLogType.DEBUG);
@@ -415,7 +418,7 @@ namespace BatInspector
 
         _view.Prj.removeFile(wavName);
         _view.Prj.writePrjFile();
-        if(_view.Prj.Analysis.IsEmpty == false)
+        if (_view.Prj.Analysis.IsEmpty == false)
           _view.Prj.Analysis.removeFile(_view.Prj.ReportName, wavName);
       }
     }
@@ -443,9 +446,9 @@ namespace BatInspector
     public int getModelIndex(enModel modType)
     {
       int retVal = -1;
-      for(int i = 0; i < _models.Count; i++)
+      for (int i = 0; i < _models.Count; i++)
       {
-        if(modType == _models[i].Type)
+        if (modType == _models[i].Type)
         {
           retVal = i;
           break;
@@ -473,7 +476,7 @@ namespace BatInspector
     public int evaluate(bool cli)
     {
       int retVal = 2;
-      if((Prj != null) && Prj.Ok)
+      if ((Prj != null) && Prj.Ok)
       {
         if (AppParams.Inst.AllowMoreThanOneModel)
         {
@@ -495,7 +498,7 @@ namespace BatInspector
         else
         {
           bool removeEmptyFiles = true;
-          for(int i = 0; i < Prj.AvailableModelParams.Length; i++)
+          for (int i = 0; i < Prj.AvailableModelParams.Length; i++)
           {
             string report = Prj.getReportName(i);
             if (File.Exists(report))
@@ -519,9 +522,9 @@ namespace BatInspector
     public BaseModel getClassifier(enModel type)
     {
       BaseModel retVal = null;
-      foreach(BaseModel m in _models)
+      foreach (BaseModel m in _models)
       {
-        if(type == m.Type)
+        if (type == m.Type)
         {
           retVal = m;
           break;
@@ -530,25 +533,25 @@ namespace BatInspector
       return retVal;
     }
 
-/*
-    public ModelParams[] getDefaultModelParams()
-    {
-      ModelParams[] retVal = new ModelParams[AppParams.Inst.Models.Count];
-      for (int i = 0; i < AppParams.Inst.Models.Count; i++)
-      {
-        BaseModel c = getClassifier(AppParams.Inst.Models[i].ModelType);
-        retVal[i] = new ModelParams()
+    /*
+        public ModelParams[] getDefaultModelParams()
         {
-          Name = c.Name,
-          Type = c.Type,
-          Parameters = c.getDefaultModelParams(),
-          DataSet = BaseModel.getDataSetItems(c.Type)[0],
-          Enabled = (i == 0)
-        };
-      }
-      return retVal;
-    }
-    */
+          ModelParams[] retVal = new ModelParams[AppParams.Inst.Models.Count];
+          for (int i = 0; i < AppParams.Inst.Models.Count; i++)
+          {
+            BaseModel c = getClassifier(AppParams.Inst.Models[i].ModelType);
+            retVal[i] = new ModelParams()
+            {
+              Name = c.Name,
+              Type = c.Type,
+              Parameters = c.getDefaultModelParams(),
+              DataSet = BaseModel.getDataSetItems(c.Type)[0],
+              Enabled = (i == 0)
+            };
+          }
+          return retVal;
+        }
+        */
 
     public int createReport(Project prj)
     {
@@ -575,12 +578,12 @@ namespace BatInspector
     {
       List<SpeciesItem> retVal = new List<SpeciesItem>();
 
-      foreach(SpeciesInfos s in _speciesInfos)
+      foreach (SpeciesInfos s in _speciesInfos)
       {
-        if(
+        if (
             (s.FreqCharMin <= charFreq) && (charFreq <= s.FreqCharMax) &&
             (s.DurationMin <= duration) && (duration <= s.DurationMax) &&
-            (s.CallDistMin <= callDist) && (callDist <= s.CallDistMax) 
+            (s.CallDistMin <= callDist) && (callDist <= s.CallDistMax)
           )
         {
           SpeciesItem item = new SpeciesItem
@@ -687,7 +690,7 @@ namespace BatInspector
             DebugLog.log("AI annotation files permanently removed from project " + dir.Name, enLogType.INFO);
           }
         }
-        if (pngs) 
+        if (pngs)
         {
           FileInfo[] files = dir.GetFiles("*.png");
           foreach (FileInfo file in files)
@@ -718,7 +721,7 @@ namespace BatInspector
         if (Directory.Exists(delDir))
         {
           DirectoryInfo d = new DirectoryInfo(delDir);
-          foreach(FileInfo file in d.GetFiles())
+          foreach (FileInfo file in d.GetFiles())
             wavSpace += (int)(file.Length / 1024);
         }
 
@@ -779,13 +782,13 @@ namespace BatInspector
       return ok;
     }
 
-    private bool crawlCheckSpace(DirectoryInfo dir, ref int wavSpace,  ref int pngSpace, ref int origSpace, ref int annSpace)
+    private bool crawlCheckSpace(DirectoryInfo dir, ref int wavSpace, ref int pngSpace, ref int origSpace, ref int annSpace)
     {
       if (!dir.Exists)
         return false;
 
       DirectoryInfo[] dirs = dir.GetDirectories();
-      
+
       bool ok = true;
       if (Project.containsProject(dir) != "")
         ok = checkProjectMem(dir, ref wavSpace, ref pngSpace, ref origSpace, ref annSpace);
@@ -850,6 +853,42 @@ namespace BatInspector
     {
       bool retVal = _proc.IsRunning | _extBusy;
       return retVal;
+    }
+
+
+    public string getLastLog()
+    {
+      DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
+      FileInfo[] files = dir.GetFiles();
+      string retVal = "";
+      Array.Sort(files, delegate (FileInfo f1, FileInfo f2)
+      {
+        int res = (f1.LastWriteTime > f2.LastWriteTime) ? 1 : -1;
+        if (f1.LastWriteTime == f2.LastWriteTime)
+          res = 0;
+        return res;
+      });
+      int cnt = Math.Min(5, files.Length);
+      for (int i = files.Length - cnt; i < files.Length; i++)
+      {
+        retVal += $"\n###### Log File {files[i].FullName}:\n";
+        retVal += File.ReadAllText(files[i].FullName);
+      }
+      return retVal;
+    }
+
+    public void sendEmail(string receiver, string subject, string text)
+    {
+      try
+      {
+        // Basis-URI für mailto:
+        string mailtoUri = $"mailto:{receiver}?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(text)}";
+        Process.Start(new ProcessStartInfo(mailtoUri) { UseShellExecute = true });
+      }
+      catch (Exception ex)
+      {
+        DebugLog.log($"unable to send error report: {ex.ToString()}", enLogType.ERROR);
+      }
     }
 
     public void createProject(PrjInfo info, bool inspect, bool cli)

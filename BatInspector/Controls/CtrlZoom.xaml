@@ -89,12 +89,12 @@
                 <Button x:Name="_btnUndo"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnUndo_Click" ToolTip="{x:Static res:MyResources.ToolTipUndo}">
                     <Image Source="../images/Undo_icon-icons.com_73701.png"></Image>
                 </Button>
-                 <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
+                <Button x:Name="_btnSaveAs"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSaveAs_Click" ToolTip="{x:Static res:MyResources.ToolTipSaveAs}">
                     <Image Source="../images/icons8-save-as-48.png"></Image>
                 </Button>
-        <Button x:Name="_btnExport"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnExport_Click" ToolTip="{x:Static res:MyResources.ToolTipExport}">
-          <Image Source="../images/icons8-save-48-exp.png"></Image>
-        </Button>
+                <Button x:Name="_btnExport"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnExport_Click" ToolTip="{x:Static res:MyResources.ToolTipExport}">
+                    <Image Source="../images/icons8-save-48-exp.png"></Image>
+                </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="15,0" Width="3"/>
                 <Button x:Name="_btnPlay_1"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_1_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSection}">
                     <Image Source="../images/play-button.png" Style="{StaticResource ImageEnabled}"></Image>
@@ -108,7 +108,7 @@
                 <Button x:Name="_btnPlay_HET"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_HET_Click" ToolTip="{x:Static res:MyResources.ToolTipPlayDispSectionHET}">
                     <Image Source="../images/play-het.png" Style="{StaticResource ImageEnabled}"></Image>
                 </Button>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Name="_spFreqHet">
                     <TextBox Text="[kHz]" Height="18" Background="#FFCCD5F0" BorderThickness="0" Focusable="False"/>
                     <TextBox x:Name="_tbFreqHET" Height="20" TextChanged="_tbFreHET_TextChanged" ToolTip="{x:Static res:MyResources.CtrlZoomToolHeterodyneFreq}" />
                 </StackPanel>
@@ -159,25 +159,25 @@
             <Line Name="_grid_y1"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
             <Line Name="_grid_y2"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
             <Line Name="_grid_y3"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_y4"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_y5"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_y6"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_y7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_y8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_y9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
-      <Line Name="_grid_x1"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x2"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x3"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x4"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x5"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x6"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Line Name="_grid_x9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
-      <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
+            <Line Name="_grid_y4"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y5"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y6"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_y9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 10" />
+            <Line Name="_grid_x1"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x2"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x3"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x4"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x5"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x6"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_grid_x9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
             <StackPanel Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2">
-        <CheckBox Name="_cbGrid" Content="{x:Static res:MyResources.ctlZoomShowGrid}"  Margin="5,0,5,0" Click="_cbGrid_Click"/>
-        <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5" Padding="2" >
+                <CheckBox Name="_cbGrid" Content="{x:Static res:MyResources.ctlZoomShowGrid}"  Margin="5,0,5,0" Click="_cbGrid_Click"/>
+                <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5" Padding="2" >
                     <GroupBox.Header>
                         <TextBlock Text="{x:Static res:MyResources.CtlZoomSpecInfo}" FontWeight="Bold" />
                     </GroupBox.Header>
@@ -190,6 +190,7 @@
                         <local:ctlDataItem x:Name="_ctlSpecAuto"/>
                         <local:ctlDataItem x:Name="_ctlProbability"/>
                         <local:ctlSelectItem x:Name="_ctlSpecMan"/>
+                        <local:ctlDataItem x:Name="_ctlSpecManBird"/>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Template="{DynamicResource GroupBoxCmu}" Name="_grpCursor1" Header="Cursor 1" Margin="5" Padding="2" Visibility="Hidden">
@@ -204,7 +205,7 @@
                         <local:ctlDataItem x:Name="_freq2" />
                         <local:ctlDataItem x:Name="_deltaT" />
                         <local:ctlDataItem x:Name="_deltaF"/>
-          </StackPanel>
+                    </StackPanel>
                 </GroupBox>
             </StackPanel>
             <Canvas Name ="_rulerT" Grid.Row="3" Grid.Column="2" ></Canvas>
@@ -219,7 +220,7 @@
                     <local:ctlDataItem x:Name="_ctlTimeMax"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="380"   >
+            <GroupBox Template="{DynamicResource GroupBoxCmu}" MinWidth="380" Name="_grpCallPars" >
                 <GroupBox.Header>
                     <TextBlock Text="{x:Static res:MyResources.CallInformation}" FontWeight="Bold" />
                 </GroupBox.Header>
@@ -248,7 +249,7 @@
                 </StackPanel>
             </GroupBox>
 
-         <!--   <GroupBox Name="_gbMean" Template="{DynamicResource GroupBoxCmu}" >
+            <!--   <GroupBox Name="_gbMean" Template="{DynamicResource GroupBoxCmu}" >
                 <GroupBox.Header>
                     <TextBlock Text="{x:Static res:MyResources.CtrlZoomMeanValues}" FontWeight="Bold" />
                 </GroupBox.Header>
@@ -272,7 +273,7 @@
                     <local:ctlDataItem x:Name="_ctlDateTime" />
                     <local:ctlDataItem x:Name="_ctlGpsPos" />
                     <Button x:Name="_btnShowLoc" Height="22" Width="75" HorizontalAlignment="Right" Content="{x:Static res:MyResources.CtlZoomBtnShowPlace}" Click="_btnShowLoc_Click" Margin="5"/>
-             <!--       <local:ctlDataItem x:Name="_ctlGain" />
+                    <!--       <local:ctlDataItem x:Name="_ctlGain" />
                     <local:ctlDataItem x:Name="_ctlTrigLevel" />
                     <local:ctlDataItem x:Name="_ctlTrigFilter" />
                     <local:ctlDataItem x:Name="_ctlTrigFiltFreq" />  -->

@@ -33,8 +33,8 @@ namespace BatInspector
     public const string BD2_DEFAULT_MODEL = "Net2DFast_UK_same.pth.tar";
     Project _prj;
     string _listOfFiles;
-    
-    public ModelBatDetect2(int index) : 
+
+    public ModelBatDetect2(int index) :
       base(index, enModel.BAT_DETECT2, MODEL_NAME)
     {
     }
@@ -50,10 +50,10 @@ namespace BatInspector
       {
         ModelParams pars = prj.AvailableModelParams[prj.SelectedModelIndex];
         string detTrsh = pars.getPar(PAR_DETECTION_THRESHOLD);
-        string wavDir = Path.Combine(prj.PrjDir ,prj.WavSubDir);
+        string wavDir = Path.Combine(prj.PrjDir, prj.WavSubDir);
         string annDir = prj.getAnnotationDir();
         string modPath = Path.IsPathRooted(AppParams.Inst.ModelRootPath) ?
-                         AppParams.Inst.ModelRootPath  :
+                         AppParams.Inst.ModelRootPath :
                          Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath);
         string wrkDir = Path.Combine(modPath, prj.AvailableModelParams[this.Index].SubDir);
         string args = $"\"{wrkDir}\" \"{wavDir}\" \"{annDir}\" {detTrsh} {pars.DataSet}";
@@ -62,12 +62,12 @@ namespace BatInspector
         retVal = _proc.launchCommandLineApp(cmd, outputDataHandler, wrkDir, true, args);
         if (retVal == 0)
         {
-          bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE,prj.MetaData);
+          bool ok = createReportFromAnnotations(0.5, App.Model.SpeciesInfos, wavDir, annDir, prj.getReportName(this.Index), enRepMode.REPLACE, prj.MetaData);
           if (ok)
           {
-    //        cleanup(prj);
+            //        cleanup(prj);
             prj.Analysis.read(prj.getReportName(this.Index), App.Model.DefaultModelParams, prj.MetaData);
-            if(removeEmptyFiles)
+            if (removeEmptyFiles)
               prj.removeFilesNotInReport();
           }
           else
@@ -78,10 +78,9 @@ namespace BatInspector
           string logName = wrkDir + "/files.txt";
           File.WriteAllText(logName, _listOfFiles);
           MessageBox.Show(BatInspector.Properties.MyResources.MsgErrorBd2, BatInspector.Properties.MyResources.Error, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-          DebugLog.log(_proc.ErrData, enLogType.ERROR);
         }
       }
-      catch 
+      catch
       {
         retVal = 1;
       }
@@ -238,22 +237,22 @@ namespace BatInspector
                 double prob = csvAnn.getCellAsDouble(row, "class_prob");
                 report.setCell(repRow, Cols.PROBABILITY, prob);
                 string abbr = "";
-             //   if (prob < minProb)
-             //     abbr = "??PRO[";
+                //   if (prob < minProb)
+                //     abbr = "??PRO[";
                 SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
                 if ((info != null) && (specInfo != null))
                   abbr += specInfo.Abbreviation;
                 else
                   abbr += latin;
-             //   if (prob < minProb)
-             //     abbr += "]";
+                //   if (prob < minProb)
+                //     abbr += "]";
                 report.setCell(repRow, Cols.SPECIES, abbr);
                 report.setCell(repRow, Cols.SPECIES_MAN, "todo");
                 report.setCell(repRow, Cols.REMARKS, "");
 
                 cnt++;
-                if((cnt % 20) == 0)
-                  DebugLog.log($"processed {cnt} files", enLogType.INFO);
+                if ((cnt % 500) == 0)
+                  DebugLog.log($"processed {cnt} annotation files", enLogType.INFO);
 
               }
             }
@@ -264,7 +263,7 @@ namespace BatInspector
           report.saveAs(reportName);
         }
       }
-      catch (Exception e) 
+      catch (Exception e)
       {
         retVal = false;
         DebugLog.log("error creating report from model predicitons, " + e.ToString(), enLogType.ERROR);
@@ -294,7 +293,7 @@ namespace BatInspector
       addFieldToRow(csv, sqlRow, Cols.START_TIME, DBBAT.START_TIME);
       addFieldToRow(csv, sqlRow, Cols.F_MIN, DBBAT.FMIN);
       addFieldToRow(csv, sqlRow, Cols.F_MAX, DBBAT.FMAX);
-      addFieldToRow(csv, sqlRow, Cols.F_MAX_AMP, DBBAT.FMAXAMP);      
+      addFieldToRow(csv, sqlRow, Cols.F_MAX_AMP, DBBAT.FMAXAMP);
       addFieldToRow(csv, sqlRow, Cols.BANDWIDTH, DBBAT.BWIDTH);
       addFieldToRow(csv, sqlRow, Cols.CALL_INTERVALL, DBBAT.CALL_DST);
       addFieldToRow(csv, sqlRow, Cols.DURATION, DBBAT.CALL_LEN);

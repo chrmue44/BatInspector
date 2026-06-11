@@ -223,7 +223,7 @@ namespace BatInspector.Forms
         {
           Process.Start(AppParams.Inst.ExeAcrobat, arguments);
         }
-        catch (Exception ex1)
+        catch 
         {
           // If the Adobe Reader process fails, try another viewer or just open the file.
           DebugLog.log("Could not find AcroRd32.exe. Attempting to use default handler.", enLogType.WARNING);
@@ -282,7 +282,6 @@ namespace BatInspector.Forms
 
     private void setCross(Point p)
     {
-      int w = 14;
       switch (_state)
       {
         case enVerifyState.SET_FSTART:

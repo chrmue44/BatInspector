@@ -21,7 +21,7 @@ namespace BatInspector.Controls
   {
     bool _initFlag = false;
     Spectrum _spectrum;
-    int _mode;
+    enSpectrumMode _mode;
     double _fMin;
     double _fMax;
    
@@ -40,7 +40,7 @@ namespace BatInspector.Controls
     }
 
 
-    public void createFftImage(double[] samples, double tStart, double tEnd, double fMin, double fMax, int samplingRate, int mode, bool logarithmic)
+    public void createFftImage(double[] samples, double tStart, double tEnd, double fMin, double fMax, int samplingRate, enSpectrumMode mode, bool logarithmic)
     {
       _fMax = fMax;
       _fMin = fMin;
@@ -49,7 +49,7 @@ namespace BatInspector.Controls
       drawSpectrum(mode, fMin, fMax, logarithmic);
     }
 
-    private void drawSpectrum(int mode, double fMin, double fMax, bool logarithmic)
+    private void drawSpectrum(enSpectrumMode mode, double fMin, double fMax, bool logarithmic)
     {
       _cvSpec.Children.Clear();
       if ((_spectrum != null) && (_spectrum.Amplitude != null))
@@ -78,7 +78,7 @@ namespace BatInspector.Controls
         {
           int x1 = w;
           int x2 = w - (int)(w * (spectrum[y-1] / (max - min)));
-          if (mode == 0)
+          if (mode == enSpectrumMode.CALL)
             GraphHelper.createLine(_cvSpec, x1, y, x2, y, Brushes.Blue);
           else
             GraphHelper.createLine(_cvSpec, x1, y, x2, y, Brushes.Cyan);

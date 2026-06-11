@@ -3,6 +3,7 @@ using libScripter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 
 namespace BatInspector
@@ -122,7 +123,7 @@ namespace BatInspector
     /// <param name="sqlRow"></param>
     public static void addReportRow(Csv csv, sqlRow sqlRow)
     {
-      ModelBirdnet.addReportRow(csv, sqlRow);      
+      ModelBirdnet.addReportRow(csv, sqlRow);
     }
 
     public bool createReportFromAnnotations(double minProb, List<SpeciesInfos> speciesInfos, string wavDir, string annDir, string reportName, enRepMode mode, enMetaData metaData)
@@ -175,8 +176,8 @@ namespace BatInspector
                 fileLen = info.Duration.Replace(" Sec", "");
                 recTime = info.DateTime;
                 PrjMetaData.parsePosition(info, out lat, out lon);
-                double.TryParse(info.Temparature, out temperature);
-                double.TryParse(info.Humidity, out humidity);
+                double.TryParse(info.Temparature, NumberStyles.Any, CultureInfo.InvariantCulture, out temperature);
+                double.TryParse(info.Humidity, NumberStyles.Any, CultureInfo.InvariantCulture, out humidity);
               }
 
               // read annontation for one wav file

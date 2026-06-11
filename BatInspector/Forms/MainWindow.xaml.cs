@@ -71,16 +71,16 @@ namespace BatInspector.Forms
 
     double _scrollBarPrjPos = 0;
     bool _mouseIsDownOnScrollPrj = false;
-    double _scrollBarListPos = 0;
-    bool _mouseIsDownOnScrollList = false;
+//    double _scrollBarListPos = 0;
+//    bool _mouseIsDownOnScrollList = false;
     bool _treeViewCollaped = false;
     bool _infoVisible = true;
-    
-    
+
+
     public MainWindow()
     {
       DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
-      
+
       App.Model.Status.State = enAppState.IDLE;
       string versionStr = "BatInspector V" + AppParams.AppVersion + " " + linkTimeLocal.ToString();
       setLanguage();
@@ -114,7 +114,7 @@ namespace BatInspector.Forms
         this.Width = maxHeight - this.Left;
       if ((this.Top + this.Height) > maxHeight)
         this.Height = maxHeight - this.Top;
-              
+
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
@@ -133,13 +133,13 @@ namespace BatInspector.Forms
 
       if (string.IsNullOrEmpty(AppParams.Inst.ExeAcrobat))
       {
-        MessageBox.Show(this,MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        MessageBox.Show(this, MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         _frmSettings = new frmSettings(AppParams.Inst);
         _frmSettings.ShowDialog();
       }
     }
 
-  
+
     public void initTreeView()
     {
       _trvStructure.Items.Clear();
@@ -249,7 +249,7 @@ namespace BatInspector.Forms
       TreeViewItem item = e.Source as TreeViewItem;
       DirectoryInfo dir = item.Tag as DirectoryInfo;
       _sw.Restart();
-      foreach(ctlWavFile ctl in _spSpectrums.Children)
+      foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.release();
       _spSpectrums.Children.Clear();
       _tbSum.Visibility = Visibility.Visible;
@@ -354,7 +354,7 @@ namespace BatInspector.Forms
     {
       if (Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-//        _tbReport_GotFocus(null, null);
+        //        _tbReport_GotFocus(null, null);
         foreach (ctlWavFile ctl in _spSpectrums.Children)
         {
           if (ctl.Analysis?.getString(Cols.NAME) == fName)
@@ -366,11 +366,11 @@ namespace BatInspector.Forms
               _ctlZoom.updateManSpecies();
             break;
           }
-        } 
+        }
       }
     }
 
-   
+
 
     private void initProjectAsync()
     {
@@ -391,7 +391,7 @@ namespace BatInspector.Forms
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = App.Model.Prj.Records.Length - 1;
-            _scrollBarListPos = 0;
+           // _scrollBarListPos = 0;
             // TODO set scroll button size
             _ctlPrjInfo.setup(App.Model.Prj);
             _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(App.Model.Prj.Name) + "]";
@@ -402,7 +402,7 @@ namespace BatInspector.Forms
             App.Model.View.startCreatingPngFiles();
           }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
           DebugLog.log("Error opening project: " + ex.ToString(), enLogType.ERROR);
         }
@@ -420,7 +420,7 @@ namespace BatInspector.Forms
         try
         {
           App.Model.initQuery(_queryFile);
-          if (App.Model.Query!= null) 
+          if (App.Model.Query != null)
           {
             _wavCtls.reinitializePool();
             App.Model.View.initSonogramPool();
@@ -428,7 +428,7 @@ namespace BatInspector.Forms
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = App.Model.Query.Records.Length - 1;
-            _scrollBarListPos = 0;
+       //     _scrollBarListPos = 0;
             // TODO set scroll button size
             _lblPrj.Content = "QUERY:" + " [" + Path.GetFileNameWithoutExtension(App.Model.Query.Name) + "]";
             if (_frmQuery == null)
@@ -488,7 +488,7 @@ namespace BatInspector.Forms
     }
 
 
-    
+
     public void buildWavFileList(bool selectedOnly, Filter filter = null, FilterItem filterItem = null, bool reInitList = false)
     {
       if (App.Model.CurrentlyOpen == null)
@@ -504,9 +504,9 @@ namespace BatInspector.Forms
         _scrollPrj.InvalidateVisual();
         _scrollPrj.Value = 0;
         if (oldValue == _scrollPrj.Value)  //if value is different list will be built by change event  
-          populateControls(0);             
+          populateControls(0);
       }
-      else if(_tbReport.IsSelected) 
+      else if (_tbReport.IsSelected)
       {
         if (reInitList)
           _dgData.ItemsSource = null;
@@ -627,7 +627,7 @@ namespace BatInspector.Forms
         if ((anaF != null) && (rec != null))
           ctl.updateCallInformations(anaF, rec);
       }
-    
+
     }
 
 
@@ -820,15 +820,16 @@ namespace BatInspector.Forms
       {
         ctlWavFile ctl = it as ctlWavFile;
         PrjRecord rec = App.Model.CurrentlyOpen?.findRecord(ctl.WavName);
-        if(rec != null)
+        if (rec != null)
           setCheckboxInWavCtl(ctl, rec.Selected);
       }
 
     }
 
-    
+
     void showMsg(string title, string msg, bool topmost = false)
-    {  Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+    {
+      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         _frmMsg.showMessage(title, msg, topmost);
         _frmMsg.Visibility = Visibility.Visible;
@@ -850,7 +851,7 @@ namespace BatInspector.Forms
         showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification, true);
         App.Model.evaluate(false);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log("error predicting species: " + ex.ToString(), enLogType.ERROR);
         DebugLog.save();
@@ -906,18 +907,18 @@ namespace BatInspector.Forms
       for (int i = 0; i < _dgData.Columns.Count; i++)
       {
         _dgData.Columns[i].IsReadOnly = true;
-      } 
+      }
     }
 
     private void _tbMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      if(_tbPrj.IsSelected && (_oldTab != "Prj"))
+      if (_tbPrj.IsSelected && (_oldTab != "Prj"))
       {
         _oldTab = "Prj";
         try
         {
-      //    if (App.Model.CurrentlyOpen != null)
-      //      buildWavFileList(false);
+          //    if (App.Model.CurrentlyOpen != null)
+          //      buildWavFileList(false);
           DebugLog.log("TAB 'Project' got selected", enLogType.DEBUG);
         }
         catch (Exception ex)
@@ -927,7 +928,7 @@ namespace BatInspector.Forms
 
       }
 
-      else if(_tbReport.IsSelected && (_oldTab != "Report"))
+      else if (_tbReport.IsSelected && (_oldTab != "Report"))
       {
         _oldTab = "Report";
         try
@@ -995,7 +996,7 @@ namespace BatInspector.Forms
         _frmQuery.Close();
       if (_frmCleanup != null)
         _frmCleanup.Close();
-      if(_frmMsg != null)
+      if (_frmMsg != null)
         _frmMsg.Close();
       if (_frmExp != null)
         _frmExp.Close();
@@ -1033,7 +1034,7 @@ namespace BatInspector.Forms
           App.Model.Prj.Notes = _ctlPrjInfo._tbNotes.Text;
           App.Model.Prj.writePrjFile();
         }
-        if((App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null) && 
+        if ((App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null) &&
            ((App.Model.ZoomView.Waterfall.Range != AppParams.Inst.GradientRange) ||
             (App.Model.ZoomView.Waterfall.BlackLevel != AppParams.Inst.BlackLevel))
           )
@@ -1120,7 +1121,7 @@ namespace BatInspector.Forms
           _frmSettings.update(AppParams.Inst);
         _frmSettings.Show();
         _frmSettings.Visibility = Visibility.Visible;
-//        _frmSettings.Topmost = true;
+        //        _frmSettings.Topmost = true;
         DebugLog.log("MainWin:BTN 'Settings' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1140,7 +1141,7 @@ namespace BatInspector.Forms
         _frmWavFile.Topmost = true;  // important
         _frmWavFile.Topmost = false; // important
         _frmWavFile.Focus();         // important
-                                //    _frmWavFile.Topmost = true;
+                                     //    _frmWavFile.Topmost = true;
         DebugLog.log("MainWin:BTN 'WavTool' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1198,7 +1199,7 @@ namespace BatInspector.Forms
       {
         if ((App.Model.Prj != null) && (App.Model.Prj.Analysis != null))
           App.Model.Prj.Analysis.updateSpeciesCount();
-//        _tbReport_GotFocus(null, null);
+        //        _tbReport_GotFocus(null, null);
         updateWavControls();
         App.Model.UpdateUi = false;
       }
@@ -1254,7 +1255,7 @@ namespace BatInspector.Forms
               _workerStartup = new Thread(initQueryAsync);
             _workerStartup.Start();
           }
-          else if(!_workerStartup.IsAlive)
+          else if (!_workerStartup.IsAlive)
           {
             // it takes about 3 sec to come from init..Async() end to here, why???
             _ctlPrjBtn._cbFilter.SelectedIndex = 0;
@@ -1278,9 +1279,9 @@ namespace BatInspector.Forms
           showStatus();
           App.Model.Status.State = enAppState.IDLE;
           break;
-          
+
       }
-    
+
       if (_switchTabToPrj)
       {
         _tbPrj.IsSelected = true;
@@ -1302,7 +1303,7 @@ namespace BatInspector.Forms
         Filter.populateFilterComboBox(_frmCreateReport._ctlReport._cbFilter);
         _frmCreateReport.Show();
         _frmCreateReport.Visibility = Visibility.Visible;
-//        _frmCreateReport.Topmost = true;
+        //        _frmCreateReport.Topmost = true;
         DebugLog.log("MainWin:BTN 'Report' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1371,7 +1372,7 @@ namespace BatInspector.Forms
           else
             pars = s.Parameter;
         }
-        _frmDebug.Visibility = Visibility.Visible;  
+        _frmDebug.Visibility = Visibility.Visible;
         _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
         DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
 
@@ -1381,7 +1382,7 @@ namespace BatInspector.Forms
         DebugLog.log("MainWin:debugScript() failed: " + ex.ToString(), enLogType.ERROR);
       }
     }
-  
+
 
     private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
     {
@@ -1402,7 +1403,7 @@ namespace BatInspector.Forms
 
     private void _scrollList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-      _mouseIsDownOnScrollList = true;
+    //  _mouseIsDownOnScrollList = true;
     }
 
 
@@ -1420,7 +1421,7 @@ namespace BatInspector.Forms
             return;
 
           double diff = _scrollPrj.Value - _scrollBarPrjPos;
-          if(_spSpectrums.Children.Count < 2)
+          if (_spSpectrums.Children.Count < 2)
             populateControls((int)_scrollPrj.Value);
           else if ((diff < 2) && (diff > 0) && (_scrollBarPrjPos < _scrollPrj.Maximum))
             incrementControls(true);
@@ -1445,7 +1446,7 @@ namespace BatInspector.Forms
         _mouseIsDownOnScrollPrj = false;
         _scrollPrj_ValueChanged(null, null);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log(ex.ToString(), enLogType.ERROR);
       }
@@ -1496,6 +1497,22 @@ namespace BatInspector.Forms
       showPdf(AppParams.BAT_INFO2_PDF);
     }
 
+    private void _mnReportError_Click(object sender, RoutedEventArgs e)
+    {
+      MessageBoxResult res = MessageBox.Show(MyResources.MsgReportError, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      if (res == MessageBoxResult.Yes)
+      {
+        string subject = $"Error Report BatInspector V{AppParams.AppVersion}";
+        DebugLog.save();
+        string text = App.Model.getLastLog();
+        if (!string.IsNullOrEmpty(text))
+        {
+          text = MyResources.msgErrorEmail + "\n\n" + text;
+          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, text);
+        }
+      }
+    }
+
     private void _btnCreatePrj_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -1505,7 +1522,7 @@ namespace BatInspector.Forms
         _frmCreatePrj.init();
         _frmCreatePrj.Show();
         _frmCreatePrj.Visibility = Visibility.Visible;
-     //   _frmCreatePrj.Topmost = true;
+        //   _frmCreatePrj.Topmost = true;
         DebugLog.log("MainWin:BTN 'Create Project' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1600,7 +1617,7 @@ namespace BatInspector.Forms
       {
         foreach (ScriptItem s in AppParams.Inst.ScriptInventory.Scripts)
         {
-          if (!s.IsTool)
+          if (!s.IsTool && s.IsInMenue)
           {
             MenuItem m = new MenuItem();
             m.Header = s.Description;
@@ -1624,7 +1641,7 @@ namespace BatInspector.Forms
         {
           if (item.Parameter.Count > 0)
           {
-            string winTitle = BatInspector.Properties.MyResources.frmScriptParamTitle +": " + script;
+            string winTitle = BatInspector.Properties.MyResources.frmScriptParamTitle + ": " + script;
             frmScriptParams frm = new frmScriptParams(winTitle, item.Parameter);
             frm.ShowDialog();
             if (frm.DialogResult == true)
@@ -1634,13 +1651,13 @@ namespace BatInspector.Forms
             App.Model.Scripter.runScript(script);
         }
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log("Error BTN custom tool: " + ex.ToString(), enLogType.ERROR);
       }
     }
 
-   // https://stackoverflow.com/questions/16245706/check-for-device-change-add-remove-events/16245901#16245901
+    // https://stackoverflow.com/questions/16245706/check-for-device-change-add-remove-events/16245901#16245901
 
     protected override void OnSourceInitialized(EventArgs e)
     {
@@ -1665,7 +1682,7 @@ namespace BatInspector.Forms
       {
         case 0x0219:       //WM_DEVICECHANGE 
           initTreeView();
-          break;             
+          break;
       }
       return IntPtr.Zero;
     }
@@ -1771,13 +1788,13 @@ namespace BatInspector.Forms
       int idx = -e.Delta / 100;
       if (idx > 0)
       {
-        if (_scrollPrj.Value + idx  <= _scrollPrj.Maximum)
+        if (_scrollPrj.Value + idx <= _scrollPrj.Maximum)
           _scrollPrj.Value += idx;
         else
           _scrollPrj.Value = _scrollPrj.Maximum;
       }
       else if (idx < 0)
-      { 
+      {
         if (_scrollPrj.Value + idx >= 0)
           _scrollPrj.Value += idx;
         else
@@ -1818,7 +1835,7 @@ namespace BatInspector.Forms
             break;
         }
       }
-      else if(_tbReport.IsSelected)
+      else if (_tbReport.IsSelected)
       {
         _tbReport.Focus();
         switch (e.Key)
@@ -1831,7 +1848,7 @@ namespace BatInspector.Forms
             break;
           case Key.PageUp:
           case Key.Up:
-            if (_dgData.SelectedIndex >  20)
+            if (_dgData.SelectedIndex > 20)
               _dgData.SelectedIndex -= 20;
             else
               _dgData.SelectedIndex = 0;
@@ -1860,7 +1877,7 @@ namespace BatInspector.Forms
         _grdCtrl.ColumnDefinitions[0].Width = new GridLength(20);
         _ctlPrjInfo.Visibility = Visibility.Collapsed;
         _lblProjectSelect.Content = "";
-//        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
+        //        _spTreeView.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
         _spPrjInfo.Background = (SolidColorBrush)App.Current.Resources["colorBackGroundWindow"];
         _trvStructure.Visibility = Visibility.Collapsed;
         _rect.Visibility = Visibility.Visible;
@@ -1915,6 +1932,7 @@ namespace BatInspector.Forms
     private void _tbPrj_GotFocus(object sender, RoutedEventArgs e)
     {
     }
+
   }
 
   public enum enWinType

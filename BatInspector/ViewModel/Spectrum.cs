@@ -16,6 +16,13 @@ using System.Runtime.ExceptionServices;
 
 namespace BatInspector
 {
+  public enum enSpectrumMode
+  {
+    CALL = 0,
+    CURSOR = 1,
+    FILE = 2
+  }
+
   public class Spectrum
   {
     double[] _samples;
@@ -24,7 +31,7 @@ namespace BatInspector
     double[] _ampl;
     double _fMax;
     public RulerData RulerDataF { get { return _rulerDataF; } }
-    public double[] Amplitude {  get { return _ampl; } }
+    public double[] Amplitude { get { return _ampl; } }
     public double Fmax { get { return _fMax; } }
 
     public Spectrum()
@@ -46,9 +53,9 @@ namespace BatInspector
           _fftSize <<= 1;
         _ampl = generateFft(idxStart, len, logarithmic, DSP.Window.Type.Hanning);
       }
-      if(_ampl == null)
+      if (_ampl == null)
       {
-        DebugLog.log("error cresting spectrum length 0", enLogType.ERROR);
+        DebugLog.log("error creating spectrum length 0", enLogType.ERROR);
         _ampl = new double[4];
       }
     }
@@ -122,18 +129,18 @@ namespace BatInspector
         return null;
     }
 
-    public static  double findMinAmplitude(bool logarithmic, double[] ampl)
+    public static double findMinAmplitude(bool logarithmic, double[] ampl)
     {
       double min = 100000;
-      foreach(double a in ampl)
+      foreach (double a in ampl)
       {
         if (min > a)
           min = a;
       }
-      if(logarithmic)
+      if (logarithmic)
         return Math.Pow(10, min / 10);
       else
-        return min; 
+        return min;
     }
 
     public static double findMaxAmplitude(bool logarithmic, double[] ampl)
@@ -144,18 +151,18 @@ namespace BatInspector
         if (max < a)
           max = a;
       }
-    //  if (logarithmic)
-    //    return Math.Pow(10, max / 10);
-    //  else
-        return max;
+      //  if (logarithmic)
+      //    return Math.Pow(10, max / 10);
+      //  else
+      return max;
     }
 
     public double getMeanAmpl(int idx, int n, bool logarithmic)
     {
       double retVal = 0;
-      if(idx >= 0)
+      if (idx >= 0)
       {
-        for(int i = idx; i < (idx + n); i++)
+        for (int i = idx; i < (idx + n); i++)
         {
           if (i < _ampl.Length)
           {
@@ -167,7 +174,7 @@ namespace BatInspector
           else
             n--;
         }
-        if(n > 0)
+        if (n > 0)
           retVal /= n;
       }
       return retVal;

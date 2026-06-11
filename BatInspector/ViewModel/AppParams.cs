@@ -86,7 +86,7 @@ namespace BatInspector
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
-  public class FilterParams
+  public class FilterParams : IComparable<FilterParams>
   {
     [DataMember]
     [Description("name of the display filter")]
@@ -101,6 +101,11 @@ namespace BatInspector
     public bool isForAllCalls { get; set; }
 
     public int Index { get; set; }
+
+    public int CompareTo(FilterParams other)
+    {
+      return this.Name.CompareTo(other.Name);
+    }
   }
 
   public class ColorItemConfigurationTypeConverter : TypeConverter
@@ -131,12 +136,13 @@ namespace BatInspector
     public int Value { get; set; }
   }
 
-  
+
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
   public class AppParams
   {
+    public const string ERROR_RECIPIENT = "kontakt@chrmue.de";
     public const string SUM_REPORT = "sum_report.csv";    // report name for sumarized report
     public const string REPORT_DATE_FORMAT = "yyyy-MM-dd"; // date format for reports
     public const string REPORT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss"; // date format for reports
@@ -194,9 +200,9 @@ namespace BatInspector
 
     bool _isInitialized = false;
     ScriptInventory _scriptInventory = null;
-    static public  bool IsInitialized { get { return Inst._isInitialized; } }
-   
-    public static string AppVersion 
+    static public bool IsInitialized { get { return Inst._isInitialized; } }
+
+    public static string AppVersion
     {
       get
       {
@@ -213,10 +219,10 @@ namespace BatInspector
         return version.ToString();
       }
     }
-    
-    public static AppParams Inst 
-    { 
-      get 
+
+    public static AppParams Inst
+    {
+      get
       {
         if (_inst == null)
         {
@@ -226,7 +232,7 @@ namespace BatInspector
       }
     }
 
-    static public string DriveLetter 
+    static public string DriveLetter
     {
       get
       {
@@ -287,20 +293,20 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     public enCulture Culture { get; set; } = enCulture.de_DE;
 
-  /*  [DataMember]
-    [LocalizedCategory("SetCatApplication")]
-    [LocalizedDescription("SpecDescWidthWf")]
-    public uint WaterfallHeight { get; set; } = 256;  */
+    /*  [DataMember]
+      [LocalizedCategory("SetCatApplication")]
+      [LocalizedDescription("SpecDescWidthWf")]
+      public uint WaterfallHeight { get; set; } = 256;  */
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescHeightWf")]
     public uint WaterfallWidth { get; set; } = 1024;
 
-  /*  [DataMember]
-    [LocalizedCategory("SetCatApplication")]
-    [LocalizedDescription("SetDescWidthFFT")]
-    public uint FftWidth { get; set; } = 256; */
+    /*  [DataMember]
+      [LocalizedCategory("SetCatApplication")]
+      [LocalizedDescription("SetDescWidthFFT")]
+      public uint FftWidth { get; set; } = 256; */
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
@@ -381,7 +387,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescColorBackgXTDiag")]
-    [Browsable (false)]
+    [Browsable(false)]
     public Color ColorXtBackground { get; set; } = Color.LightGray;
 
     [DataMember]
@@ -462,11 +468,11 @@ namespace BatInspector
     LocalizedDescription("SetDescDefaultModel")]
     public enModel DefaultModel { get; set; } = enModel.BAT_DETECT2;
 
-/*    [DataMember]
-    [LocalizedCategory("SetCatModel")]
-    [Browsable(false)]
-    public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
-    */
+    /*    [DataMember]
+        [LocalizedCategory("SetCatModel")]
+        [Browsable(false)]
+        public List<ModelItem> Models { get; set; } = new List<ModelItem> { };
+        */
     [DataMember]
     [Browsable(false)]
     public enWIN_TYPE FftWindow { get; set; }
@@ -475,7 +481,7 @@ namespace BatInspector
     [LocalizedCategory("SetCatColorGradient"),
      LocalizedDescription("SpecDescColorRed"),
      DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-     [Browsable(false)]
+    [Browsable(false)]
     public List<ColorItem> ColorGradientRed { get; set; } = new List<ColorItem>();
 
     [DataMember]
@@ -504,13 +510,13 @@ namespace BatInspector
      LocalizedDescription("SpecDescShowWarning")]
     [Browsable(false)]
     public bool LogShowWarning { get; set; }
-    
+
     [DataMember]
     [LocalizedCategory("SetCatLog"),
      LocalizedDescription("SpecDescShowInfo")]
     [Browsable(false)]
     public bool LogShowInfo { get; set; }
-    
+
     [DataMember]
     [LocalizedCategory("SetCatLog"),
      LocalizedDescription("SpecDescShowDebug")]
@@ -558,7 +564,7 @@ namespace BatInspector
         grad = Math.Log10(grad) * 10 + 20;
         GradientRange = grad;
       }
-      if((int)DefaultModel < (int)enModel.BAT_DETECT2)
+      if ((int)DefaultModel < (int)enModel.BAT_DETECT2)
       {
         DefaultModel = enModel.BAT_DETECT2;
       }
@@ -608,7 +614,7 @@ namespace BatInspector
       LogShowWarning = true;
       LogShowInfo = true;
       LogShowDebug = false;
-      
+
       ShowOnlyFilteredDirs = false;
       DirFilter = new List<string>();
       for (int i = 0; i < 5; i++)
@@ -634,6 +640,7 @@ namespace BatInspector
           DirFilter = new List<string>();
         while (DirFilter.Count < 5)
           DirFilter.Add("");
+        this.Filter.Sort();
         using (StreamWriter file = new StreamWriter(fName))
         {
           using (MemoryStream stream = new MemoryStream())
@@ -713,7 +720,7 @@ namespace BatInspector
         retVal.BatInfoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
                                          PROG_DAT_DIR, AppParams.DIR_BAT_INFO);
       }
-      if(string.IsNullOrEmpty(retVal.ExeAcrobat))
+      if (string.IsNullOrEmpty(retVal.ExeAcrobat))
       {
         retVal.ExeAcrobat = "";
       }
@@ -728,7 +735,7 @@ namespace BatInspector
         BatSpeciesRegions.copyRegionsFileAfterSetup(srcPath, dstPath);
       }
       retVal.AppRootPath = replaceDriveLetter(retVal.AppRootPath);
-    //  retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
+      //  retVal.ModelRootPath = replaceDriveLetter(retVal.ModelRootPath);
       //retVal.SpeciesFile = replaceDriveLetter(retVal.SpeciesFile);
       LogDataPath = replaceDriveLetter(LogDataPath);
       AppDataPath = replaceDriveLetter(AppDataPath);
@@ -745,7 +752,7 @@ namespace BatInspector
         FftWindow = enWIN_TYPE.HANN;
     }
 
-    static string replaceDriveLetter(string  path)
+    static string replaceDriveLetter(string path)
     {
       string driveStr = "C";
       int driveIdx = 0;
@@ -754,8 +761,8 @@ namespace BatInspector
         driveStr = "\"C";
         driveIdx = 1;
       }
-      if(path.IndexOf(driveStr) < 0)
-        path = path.Replace(path.Substring(driveIdx,1), DriveLetter.Substring(0,1));
+      if (path.IndexOf(driveStr) < 0)
+        path = path.Replace(path.Substring(driveIdx, 1), DriveLetter.Substring(0, 1));
       return path;
     }
 
@@ -864,5 +871,5 @@ namespace BatInspector
           }
           catch { }
         }*/
-  } 
+  }
 }

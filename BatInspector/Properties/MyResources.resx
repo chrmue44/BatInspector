@@ -2049,4 +2049,16 @@
   <data name="FrmCreatePrjUniqueRecorderID" xml:space="preserve">
     <value>Unique recorder ID</value>
   </data>
+  <data name="Menue" xml:space="preserve">
+    <value>Menue</value>
+  </data>
+  <data name="FrmMainReportError" xml:space="preserve">
+    <value>Send Error Report...</value>
+  </data>
+  <data name="MsgReportError" xml:space="preserve">
+    <value>Do you really want to send an error report?</value>
+  </data>
+  <data name="msgErrorEmail" xml:space="preserve">
+    <value>Please describe what you did, what you expected to happen, and what happened instead.</value>
+  </data>
 </root>

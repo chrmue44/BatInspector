@@ -1,3 +1,13 @@
+# V0.9.7.0   
+- new parameter "SNR" for script function getCallInfo()
+- improved copy script for GermanBats 0.9: less false positive BBAR
+- Filters get sorted each time when settings are saved
+- New checkbox "Menue" in Script Inventory to control visibility in tools menue in main window
+- Zoomview improved for BirdNet
+- Button to send error report via email
+- New option "PRJTYPE" for script function getPrjInfo
+- more error output in case of failing model start
+
 # V0.9.6.3   25.05.26
 -  be more tolerant with WAV files where the chunk sizes don't match to the total file size (Petterson D1000X)
 

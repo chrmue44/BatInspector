@@ -9,6 +9,6 @@ SET MODEL=%6
 @echo *****************************************
 call %BIN_PATH%/_venv/Scripts/activate
 @echo python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%.tflite
-python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%.tflite
+python bat_ident.py --i %WAV_DIR% --o %ANN_DIR% --sensitivity %SENS% --min_conf %MIN_CONF%  --classifier %BIN_PATH%\checkpoints\bats\v1.0\%MODEL%.tflite  2>&1
 call %BIN_PATH%/_venv/Scripts/deactivate
 rem pause

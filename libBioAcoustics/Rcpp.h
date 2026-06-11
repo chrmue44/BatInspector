@@ -30,7 +30,7 @@ namespace Rcpp
 		void push_front(double val)
 		{
 			_list.push_back(0);
-			for (int i = _list.size() - 1; i > 0 ; i--)
+			for (size_t i = _list.size() - 1; i > 0 ; i--)
 				_list[i] = _list[i - 1];
 			_list[0] = val;
 		}

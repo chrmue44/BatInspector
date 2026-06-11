@@ -6,21 +6,19 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using BatInspector.Forms;
+using BatInspector.Properties;
+using libParser;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using libParser;
-using BatInspector.Properties;
-using System;
-using System.IO;
-using System.Globalization;
-using System.Collections.Generic;
-using BatInspector.Forms;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 
 namespace BatInspector.Controls
 {
@@ -35,7 +33,7 @@ namespace BatInspector.Controls
     int _oldCallIdx = -1;
     Image[] _playImgs;
     ctlWavFile _ctlWav = null;
-    dlgVoid _openExportForm= null;
+    dlgVoid _openExportForm = null;
     enModel _modelType;
     Sonogram _sonogramFt;
     Sonogram _sonogramXt;
@@ -126,8 +124,8 @@ namespace BatInspector.Controls
       _sonogramXt = App.Model.View.createSonogram("zoom X-t");
     }
 
-    public void setup(AnalysisFile analysis, string wavFilePath, 
-                     string[] species, ctlWavFile ctlWav, dlgVoid openExpWindow, 
+    public void setup(AnalysisFile analysis, string wavFilePath,
+                     string[] species, ctlWavFile ctlWav, dlgVoid openExpWindow,
                      enModel modelType)
     {
       int lblWidth = 110;
@@ -145,14 +143,49 @@ namespace BatInspector.Controls
       _freq2.setup(MyResources.Frequency + " [kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _time2.setup(MyResources.PointInTime + " [s]:", enDataType.DOUBLE, 3, lblWidth);
 
-   
+      if ((_modelType == enModel.BAT_DETECT2) || (_modelType == enModel.BATTY_BIRD_NET))
+      {
+        _btnPlay_10.Visibility = Visibility.Visible;
+        _btnPlay_20.Visibility = Visibility.Visible;
+        _btnPlay_HET.Visibility = Visibility.Visible;
+        _spFreqHet.Visibility = Visibility.Visible;
+        _grpCallPars.Visibility = Visibility.Visible;
+        _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
+        _ctlSpecMan.Visibility = Visibility.Visible;
+        _ctlSpecManBird.Visibility = Visibility.Collapsed;
+      }
+      else
+      {
+        _btnPlay_10.Visibility = Visibility.Collapsed;
+        _btnPlay_20.Visibility = Visibility.Collapsed;
+        _btnPlay_HET.Visibility = Visibility.Collapsed;
+        _spFreqHet.Visibility = Visibility.Collapsed;
+        _grpCallPars.Visibility = Visibility.Collapsed;
+        _ctlSelectCall2.setup(MyResources.CtlWavSection + " Nr.", 0, 65, 55, ctlSelCallChanged2);
+        _ctlSpecMan.Visibility = Visibility.Collapsed;
+        _ctlSpecManBird.Visibility = Visibility.Visible;
+      }
+      if (_modelType == enModel.BAT_DETECT2)
+      {
+        _cbMode.Visibility = Visibility.Visible;
+        _cbMode.SelectedIndex = 0;
+      }
+      else
+      {
+        _cbMode.SelectedIndex = 2;
+        _cbMode.Visibility = Visibility.Hidden;
+      }
+      _cbMode.Items.Clear();
+      _cbMode.Items.Add(BatInspector.Properties.MyResources.CtlWavCall);
+      _cbMode.Items.Add("Cursor");
+      _cbMode.Items.Add("File");
       lblWidth = 110;
       _sampleRate.setup(MyResources.SamplingRate + " [kHz]", enDataType.DOUBLE, 1, lblWidth);
       _duration.setup(MyResources.Duration + " [s]", enDataType.DOUBLE, 3, lblWidth);
       _deltaT.setup(MyResources.DeltaT + " [ms]:", enDataType.DOUBLE, 1, lblWidth);
       _deltaF.setup(MyResources.Bandwidth + " kHz]:", enDataType.DOUBLE, 1, lblWidth);
       _wavFilePath = wavFilePath;
-      
+
       _tbWavName.Text = System.IO.Path.GetFileName(analysis.Name);
       string wavName = File.Exists(analysis.Name) ? analysis.Name : _wavFilePath + "/" + analysis.Name;
 
@@ -164,7 +197,6 @@ namespace BatInspector.Controls
 
       lblWidth = 130;
       _ctlSelectCall.setup(MyResources.CtlWavCall + " Nr.", 0, 45, 55, ctlSelCallChanged);
-      _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
       _ctlFMin.setup(MyResources.Fmin, enDataType.DOUBLE, 1, lblWidth);
       _ctlFMax.setup(MyResources.Fmax, enDataType.DOUBLE, 1, lblWidth);
       _ctlFMaxAmpl.setup(MyResources.fMaxAmpl, enDataType.DOUBLE, 1, lblWidth);
@@ -172,7 +204,7 @@ namespace BatInspector.Controls
       //_ctlSnr.setup(MyResources.Snr + ": ", enDataType.DOUBLE, 1, lblWidth);
       _ctlDist.setup(MyResources.CtlZoomDistToPrev + " [ms]: ", enDataType.DOUBLE, 1, lblWidth);
       _ctlSnr.setup(MyResources.Snr + " [dB]:", enDataType.DOUBLE, 1, lblWidth);
-      if(_modelType == enModel.BATTY_BIRD_NET)
+      if (_modelType == enModel.BATTY_BIRD_NET)
       {
         _ctlFMin.Visibility = Visibility.Hidden;
         _ctlFMax.Visibility = Visibility.Hidden;
@@ -192,7 +224,8 @@ namespace BatInspector.Controls
       lblWidth = 110;
       _ctlSpecAuto.setup(MyResources.CtlZoomSpeciesAuto, enDataType.STRING, 1, lblWidth);
       _ctlSpecMan.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 95, ctlSpecManChanged);
-      if(species != null)
+      _ctlSpecManBird.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 95, true, ctlSpecManBirdChanged);
+      if (species != null)
         _ctlSpecMan.setItems(species);
       _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
       int wt = 140;
@@ -202,10 +235,10 @@ namespace BatInspector.Controls
       _ctlGpsPos.setup(BatInspector.Properties.MyResources.CtlZoomPos, enDataType.STRING, 0, wt);
       _ctlGpsPos.setValue(PrjMetaData.formatPosition(App.Model.ZoomView.FileInfo.GPS.Position, 4));
       _ctlSpectrum.init(App.Model.ZoomView.Spectrum, App.Model.ZoomView.Waterfall.SamplingRate / 2000);
-     // _ctlBlackLevel.setup(0,100,0,5, setBlackLevel);
+      // _ctlBlackLevel.setup(0,100,0,5, setBlackLevel);
 
       initCallSelectors();
-      
+
       update();
       _btnZoomTotal_Click(null, null);
 
@@ -213,10 +246,6 @@ namespace BatInspector.Controls
       _ctlTimeMax.setup("tMax[s]", enDataType.DOUBLE, 3, 50);
 
       _oldCallIdx = -1;
-      _cbMode.Items.Clear();
-      _cbMode.Items.Add(BatInspector.Properties.MyResources.CtlWavCall);
-      _cbMode.Items.Add("Cursor");
-      _cbMode.SelectedIndex = 0;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
       _cbGrid.IsChecked = true;
 
@@ -303,7 +332,22 @@ namespace BatInspector.Controls
       }
     }
 
-  
+    private void ctlSpecManBirdChanged(enDataType type, object val)
+    {
+
+      if (App.Model.ZoomView.Analysis != null)
+      {
+        if ((App.Model.ZoomView.SelectedCallIdx >= 0) && (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
+        {
+          App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, (string)val);
+          _ctlSpecManBird.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
+        }
+        else
+          DebugLog.log("ctlZoom.ctlSpecMan^BirdChanged(): index error", enLogType.ERROR);
+      }
+    }
+
+
 
     public void setTimeLimits(double tMin, double tMax)
     {
@@ -313,9 +357,12 @@ namespace BatInspector.Controls
 
     public void updateManSpecies()
     {
-      if((App.Model.ZoomView.SelectedCallIdx >= 0) &&
+      if ((App.Model.ZoomView.SelectedCallIdx >= 0) &&
          (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
+      {
         _ctlSpecMan.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+        _ctlSpecManBird.setValue(App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].getString(Cols.SPECIES_MAN));
+      }
     }
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
@@ -557,7 +604,7 @@ namespace BatInspector.Controls
 
     public void tick(double ms)
     {
-      if (( App.Model != null) && (App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null))
+      if ((App.Model != null) && (App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null))
       {
         if (App.Model.ZoomView.Waterfall.PlaybackState == NAudio.Wave.PlaybackState.Playing)
         {
@@ -767,9 +814,9 @@ namespace BatInspector.Controls
 
     private void _cbModeChanged(object sender, SelectionChangedEventArgs e)
     {
-      if (!_ctlSpectrum.InitFlag)
+      if (!_ctlSpectrum.InitFlag && (App.Model.ZoomView.Waterfall != null))
       {
-        int idx = changeSpectrumMode(_cbMode.SelectedIndex);
+        int idx = changeSpectrumMode((enSpectrumMode)_cbMode.SelectedIndex);
         _cbMode.SelectedIndex = idx;
       }
       else
@@ -862,29 +909,30 @@ namespace BatInspector.Controls
       double tStartCall = App.Model.ZoomView.Analysis.getStartTime(_oldCallIdx);
       double tEndCall = App.Model.ZoomView.Analysis.getEndTime(_oldCallIdx);
 
-      if (((tEndCall - tStartCall) > 0) && ((tEndCall - tStartCall) < 0.2))
-        _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+      changeSpectrumMode((enSpectrumMode)_cbMode.SelectedIndex);
+//      if (((tEndCall - tStartCall) > 0) && ((tEndCall - tStartCall) < 0.2))
+//        _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, tStartCall, tEndCall, fMin, fMax, samplingRate, (enSpectrumMode) _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
 
       App.Model.ZoomView.Waterfall.generateFtDiagram(tStart, tEnd, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
 
     private void updateImage()
-    {      
+    {
       _sonogramFt.createZoomViewFt(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max,
                                    App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max);
-      if(_sonogramFt.ImageFt != null)
+      if (_sonogramFt.ImageFt != null)
         _imgFt.Source = _sonogramFt.ImageFt;
 
       updateXtImage();
       drawGrid();
-      
+
     }
 
     private void updateXtImage()
     {
-       _sonogramXt.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
-                                   App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
+      _sonogramXt.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
+                                  App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
       if (_sonogramXt.ImageXt != null)
         _imgXt.Source = _sonogramXt.ImageXt;
     }
@@ -924,10 +972,10 @@ namespace BatInspector.Controls
       _stretch = stretch;
       double pos = _slider.Value / 100.0 * App.Model.ZoomView.Waterfall.Duration;
       if (stretch < 0)
-        App.Model.ZoomView.Waterfall.play_HET(AppParams.Inst.FrequencyHET, 
+        App.Model.ZoomView.Waterfall.play_HET(AppParams.Inst.FrequencyHET,
                                            App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, pos);
       else
-      App.Model.ZoomView.Waterfall.play(_stretch, App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, pos);
+        App.Model.ZoomView.Waterfall.play(_stretch, App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, pos);
     }
 
     private void _btnPlay_10_Click(object sender, RoutedEventArgs e)
@@ -1030,7 +1078,7 @@ namespace BatInspector.Controls
 
         _tbf.Text = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]/" +
         t.ToString("#.###" + "[s]", CultureInfo.InvariantCulture);
-        _ftToolTip.HorizontalOffset = p.X +20;
+        _ftToolTip.HorizontalOffset = p.X + 20;
         _ftToolTip.VerticalOffset = p.Y + 20;
         DebugLog.log("ZoomBtn: image Ft mouse move", enLogType.DEBUG);
       }
@@ -1115,10 +1163,10 @@ namespace BatInspector.Controls
       App.Model.ZoomView.RulerDataF.setRange(0, samplingRate / 2000);
       double pre = 0.01;
       double length = AppParams.Inst.ZoomOneCall / 1000.0;
-      if(((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Analysis.ModelType == enModel.BATTY_BIRD_NET)) ||
-         ((App.Model.Query != null) && (App.Model.Query.Analysis.ModelType == enModel.BATTY_BIRD_NET)))
+      if (((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Analysis.ModelType != enModel.BAT_DETECT2)) ||
+         ((App.Model.Query != null) && (App.Model.Query.Analysis.ModelType != enModel.BAT_DETECT2)))
       {
-          length = App.Model.ZoomView.Analysis.Calls[idx].getDouble(Cols.DURATION) / 1000;
+        length = tEnd - tStart;
       }
       App.Model.ZoomView.RulerDataT.setRange(tStart - pre, tStart + length - pre);
       if (App.Model.ZoomView.Analysis.Calls[idx].Changed)
@@ -1142,49 +1190,65 @@ namespace BatInspector.Controls
           _ctlFMin.setValue(call.getDouble(Cols.F_MIN) / 1000);
           _ctlFMax.setValue(call.getDouble(Cols.F_MAX) / 1000);
           _ctlFMaxAmpl.setValue(call.getDouble(Cols.F_MAX_AMP) / 1000);
+          _ctlDuration.setValue(call.getDouble(Cols.DURATION));
+          _ctlDist.setValue(call.getDouble(Cols.CALL_INTERVALL));
+          _ctlSnr.setValue(call.getDouble(Cols.SNR));
         }
-        _ctlDuration.setValue(call.getDouble(Cols.DURATION));
-        _ctlDist.setValue(call.getDouble(Cols.CALL_INTERVALL));
-        _ctlSnr.setValue(call.getDouble(Cols.SNR));
         _ctlSpecAuto.setValue(call.getString(Cols.SPECIES));
         _ctlProbability.setValue(call.getDouble(Cols.PROBABILITY));
         _ctlSpecMan.setValue(call.getString(Cols.SPECIES_MAN));
+        _ctlSpecManBird.setValue(call.getString(Cols.SPECIES_MAN));
         if (call.Changed)
           _ctlSpecMan.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
       }
     }
 
-    private int changeSpectrumMode(int mode)
+    private int changeSpectrumMode(enSpectrumMode mode)
     {
       int retVal = 0;
       ZoomView z = App.Model.ZoomView;
-      
+
       double tStart = App.Model.ZoomView.Analysis.getStartTime(_oldCallIdx);
       double tEnd = App.Model.ZoomView.Analysis.getEndTime(_oldCallIdx);
       double fMin = App.Model.ZoomView.RulerDataF.Min;
       double fMax = App.Model.ZoomView.RulerDataF.Max;
       switch (mode)
       {
-        case 0:
+        case enSpectrumMode.CALL:
           {
             _ctlTimeMin.setValue(tStart);
             _ctlTimeMax.setValue(tEnd);
             _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax,
-                                        App.Model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+                                        App.Model.ZoomView.Waterfall.SamplingRate, mode, AppParams.Inst.ZoomSpectrumLogarithmic);
           }
           break;
 
-        case 1:
+        case enSpectrumMode.CURSOR:
           if (z.Cursor1.Visible && z.Cursor2.Visible)
           {
             _ctlTimeMin.setValue(z.Cursor1.Time);
             _ctlTimeMax.setValue(z.Cursor2.Time);
             _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, z.Cursor1.Time, z.Cursor2.Time, fMin, fMax,
-                                        App.Model.ZoomView.Waterfall.SamplingRate, _cbMode.SelectedIndex, AppParams.Inst.ZoomSpectrumLogarithmic);
+                                        App.Model.ZoomView.Waterfall.SamplingRate, mode, AppParams.Inst.ZoomSpectrumLogarithmic);
             retVal = 1;
           }
           else
             MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+          break;
+
+        case enSpectrumMode.FILE:
+          {
+            tStart = App.Model.ZoomView.RulerDataT.Min;
+            tEnd = App.Model.ZoomView.RulerDataT.Max;
+            _ctlTimeMin.setValue(tStart);
+            _ctlTimeMax.setValue(tEnd);
+            if (App.Model.ZoomView.Waterfall != null)
+            {
+              _ctlSpectrum.createFftImage(App.Model.ZoomView.Waterfall.Audio.Samples, tStart, tEnd, fMin, fMax,
+                                          App.Model.ZoomView.Waterfall.SamplingRate, mode, AppParams.Inst.ZoomSpectrumLogarithmic);
+            }
+            retVal = 2;
+          }
           break;
       }
       return retVal;
@@ -1468,7 +1532,7 @@ namespace BatInspector.Controls
     {
       int fHet = 0;
       bool ok = int.TryParse(_tbFreqHET.Text, out fHet);
-      if(ok && App.Model.ZoomView.Waterfall != null)
+      if (ok && App.Model.ZoomView.Waterfall != null)
       {
         double f = fHet * 1000;
         if (fHet < App.Model.ZoomView.Waterfall.SamplingRate / 2)
@@ -1497,8 +1561,8 @@ namespace BatInspector.Controls
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)
     {
-      if(_openExportForm != null)
-        _openExportForm(); 
+      if (_openExportForm != null)
+        _openExportForm();
     }
 
     private void _cbGrid_Click(object sender, RoutedEventArgs e)
@@ -1544,7 +1608,7 @@ namespace BatInspector.Controls
         if (ok)
           frm.ShowDialog();
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         DebugLog.log($"Error Species Check: {ex.ToString()}", enLogType.ERROR);
       }

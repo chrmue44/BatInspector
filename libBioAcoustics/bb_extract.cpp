@@ -113,7 +113,7 @@ void extract_impl (Audio_Event &audio_event,
   out[index].freq_75 = freq_track.data[audio_event.duration * 3 / 4];
   out[index].freq_end = freq_track.data.back();
 
-  double slope = fft_size / 2 * 1000, y, z = 0;
+  double slope = (double)fft_size / 2 * 1000, y, z = 0;
   int j = 0, k = 0;
 
   size_t win_size = 5, freq_track_win_size = 0;

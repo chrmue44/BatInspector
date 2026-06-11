@@ -38,7 +38,7 @@ void detect_impl (const std::vector<int> &audio_samples,
 {
 
   double freq_res = (double)sample_rate / fft.getSize();
-  int n_samples = audio_samples.size();
+  size_t n_samples = audio_samples.size();
   size_t step_size = fft.getSize() / 2;
   size_t frames = 1 + (n_samples - fft.getSize()) / step_size;
   int seek = -((int)step_size);

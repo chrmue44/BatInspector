@@ -36,7 +36,7 @@ namespace BatInspector.Controls
     int _infoWidth = 360;
     bool _isBirdPrj = false;
 
-    public string WavFilePath {  get { return _wavFilePath; } }
+    public string WavFilePath { get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
     public AnalysisFile Analysis { get { return _analysis; } }
     public string WavName { get { return _record.File; } }
@@ -165,7 +165,7 @@ namespace BatInspector.Controls
       InfoVisible = infoVisible;
       _infoWidth = isBird ? AppParams.CTLWAV_WIDTH_BIRDS : AppParams.CTLWAV_WIDTH_BATS;
       _isBirdPrj = isBird;
-     }
+    }
 
 
     public void updateCallInformations(AnalysisFile analysis, PrjRecord rec)
@@ -178,12 +178,18 @@ namespace BatInspector.Controls
       {
         if (InfoVisible)
         {
-/*          if (!_isBirdPrj)
-          {
-            ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
-            spec = ctl.getItems();
-          } */
-          initCallInformations(App.Model.Prj.Species);
+          /*          if (!_isBirdPrj)
+                    {
+                      ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
+                      spec = ctl.getItems();
+                    } */
+          string[] species = null;
+          if (App.Model.Prj != null)
+            species = App.Model.Prj.Species;
+          else if (App.Model.Query != null)
+            species = App.Model.Query.Species;
+          if (species != null)
+            initCallInformations(App.Model.Prj.Species);
         }
       }
       _cbSel.IsChecked = rec.Selected;
@@ -198,7 +204,7 @@ namespace BatInspector.Controls
       _btnWavFile.Content = _record.File.Replace("_", "__");  //hack, because single '_' shows as underlined char
       //_grp.Header = Name.Replace("_", "__");  //hack, because single '_' shows as underlined char
       _analysis = analysis;
-      if(InfoVisible)
+      if (InfoVisible)
         initCallInformations(spec);
       _initialized = true;
       setHeight(height);
@@ -237,11 +243,11 @@ namespace BatInspector.Controls
           string callStr = call.getString(Cols.NR);
           ctlDataItem it = new ctlDataItem();
           it.Focusable = false;
-          
+
           it.setup(getLabelStr() + " " + callStr + ": ", enDataType.STRING, 0, wLbl);
           it.setValue(call.getString(Cols.SPECIES) + "(" + ((int)(call.getDouble(Cols.PROBABILITY) * 100 + 0.5)).ToString() + "%)");
           _spDataAuto.Children.Add(it);
-          
+
           if (_isBirdPrj)
           {
             ctlDataItem im = new ctlDataItem();
@@ -262,15 +268,15 @@ namespace BatInspector.Controls
               im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
             im.setFontBold(call.FilterMatch);
             _spDataMan.Children.Add(im);
-          } 
+          }
           callNr++;
-        } 
+        }
       }
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      string fName = Path.Combine(_wavFilePath ,_record.File);
+      string fName = Path.Combine(_wavFilePath, _record.File);
       if (File.Exists(fName))
       {
         if (_analysis != null)
@@ -280,7 +286,7 @@ namespace BatInspector.Controls
         else
         {
           AnalysisFile ana = new AnalysisFile(_record.File, 383500, 3.001);
-           _parent.setZoom(_record.File, ana, _wavFilePath, this, App.Model.CurrentlyOpen.Analysis.ModelType);
+          _parent.setZoom(_record.File, ana, _wavFilePath, this, App.Model.CurrentlyOpen.Analysis.ModelType);
         }
       }
       else
@@ -342,9 +348,9 @@ namespace BatInspector.Controls
 
     private void _tbRemarks_TextChanged(enDataType type, object val)
     {
- //     if (_isSetupCall)
- //       _isSetupCall = false;
-   //   else
+      //     if (_isSetupCall)
+      //       _isSetupCall = false;
+      //   else
       {
         if ((type == enDataType.STRING) && (_analysis != null))
           _analysis.setString(Cols.REMARKS, _ctlRemarks.getValue());
@@ -392,7 +398,7 @@ namespace BatInspector.Controls
           p.launchCommandLineApp(exe, null, "", true, fName);
         }
       }
-      catch(Exception ex) 
+      catch (Exception ex)
       {
         DebugLog.log("error launching WAV tool: " + ex.ToString(), enLogType.ERROR);
       }

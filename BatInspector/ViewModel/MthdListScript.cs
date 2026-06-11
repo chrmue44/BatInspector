@@ -43,16 +43,16 @@ namespace BatInspector
                       new List<string> { "1: fileName or file index", "2:min freq [Hz]", "3:nax freq [Hz]" }, new List<string> { "" }));
       addMethod(new FuncTabItem("setSampleRate", setSampleRate));
       _scriptHelpTab.Add(new HelpTabItem("setSampleRate", "sets the samplerate of a file",
-                      new List<string> { "1: fileName","2:sample rate" }, new List<string> { "" }));
-      addMethod(new FuncTabItem("getSampleRate", getSampleRate)); 
+                      new List<string> { "1: fileName", "2:sample rate" }, new List<string> { "" }));
+      addMethod(new FuncTabItem("getSampleRate", getSampleRate));
       _scriptHelpTab.Add(new HelpTabItem("getSampleRate", "returns the samplerate of a file",
                       new List<string> { "1: fileName" }, new List<string> { "1: sampling rate" }));
       addMethod(new FuncTabItem("reSampleWav", resampleWav));
       _scriptHelpTab.Add(new HelpTabItem("reSampleWav", "resamples a WAV file to a new sampleRate",
-                      new List<string> { "1: fileName", "2:new sampling rate"}, new List<string> { "1: sampling rate" }));
+                      new List<string> { "1: fileName", "2:new sampling rate" }, new List<string> { "1: sampling rate" }));
       addMethod(new FuncTabItem("openCsv", openCsv));
       _scriptHelpTab.Add(new HelpTabItem("openCsv", "opens a csv file and reads content to memory",
-                      new List<string> { "1: fileName", "2: 1=with header (optional)","3: separator (optional)" }, new List<string> { "1: csv file handle" })) ;
+                      new List<string> { "1: fileName", "2: 1=with header (optional)", "3: separator (optional)" }, new List<string> { "1: csv file handle" }));
       addMethod(new FuncTabItem("closeCsv", closeCsv));
       _scriptHelpTab.Add(new HelpTabItem("closeCsv", "closes a csv file and releases the memory",
                       new List<string> { "1: handle", "2: 1=write (optional)" }, new List<string> { "1: 0=OK" }));
@@ -67,13 +67,13 @@ namespace BatInspector
                       new List<string> { "1: handle", "2: row nr", "3: col name or nr", "4: value" }, new List<string> { "1: cell content" }));
       addMethod(new FuncTabItem("getRowCount", getRowCount));
       _scriptHelpTab.Add(new HelpTabItem("getRowCount", "get row count of a previously opened csv file",
-                      new List<string> { "1: handle"}, new List<string> { "1: nr of rows (including header)" }));
+                      new List<string> { "1: handle" }, new List<string> { "1: nr of rows (including header)" }));
       addMethod(new FuncTabItem("getPrjFileCount", getPrjFileCount));
       _scriptHelpTab.Add(new HelpTabItem("getPrjFileCount", "get nr of files of open project",
                       new List<string> { "" }, new List<string> { "1: nr of files in project" }));
       addMethod(new FuncTabItem("setFileInfo", setFileInfo));
       _scriptHelpTab.Add(new HelpTabItem("setFileInfo", "set specific data for specified file",
-                      new List<string> { "1: file index (0..n)","2: file info type","3:data" }, new List<string> { "" }));
+                      new List<string> { "1: file index (0..n)", "2: file info type", "3:data" }, new List<string> { "" }));
       addMethod(new FuncTabItem("getFileName", getFileName));
       _scriptHelpTab.Add(new HelpTabItem("getFileName", "get file name for specified file index",
                       new List<string> { "1: file index (0..n)", "2: file info type" }, new List<string> { "" }));
@@ -88,23 +88,23 @@ namespace BatInspector
                       new List<string> { "1: file index (0..n)", "2: call index (0..n)", "3: type of information" }, new List<string> { "1: call data" }));
       addMethod(new FuncTabItem("setCallInfo", setCallInfo));
       _scriptHelpTab.Add(new HelpTabItem("setCallInfo", "set specific data for specified call",
-                      new List<string> { "1: file index (0..n)", "2: call index (0..n)", "3: type of information","4: data to set" }, new List<string> { "1: call data" }));
+                      new List<string> { "1: file index (0..n)", "2: call index (0..n)", "3: type of information", "4: data to set" }, new List<string> { "1: call data" }));
       addMethod(new FuncTabItem("getNrOfSpecies", getNrOfSpecies));
       _scriptHelpTab.Add(new HelpTabItem("getNrOfSpecies", "get number of auto detected species for spec. file in open project",
                       new List<string> { "1: file index (0..n)" }, new List<string> { "1: nr of species in recording" }));
       addMethod(new FuncTabItem("getRankSpecies", getRankSpecies));
       _scriptHelpTab.Add(new HelpTabItem("getRankSpecies", "get the species name for the specified rank in specified file in open project",
-                      new List<string> { "1: file index (0..n)","2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
+                      new List<string> { "1: file index (0..n)", "2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
       addMethod(new FuncTabItem("getRankCount", getRankCount));
       _scriptHelpTab.Add(new HelpTabItem("getRankCount", "get the number of calls of a species for the specified rank in specified file in open project",
                       new List<string> { "1: file index (0..n)", "2: rank (1..m)" }, new List<string> { "1: nr of species in recording" }));
       addMethod(new FuncTabItem("getFileIndex", getFileIndex));
       _scriptHelpTab.Add(new HelpTabItem("getFileIndex", "get file index in opended project",
-                      new List<string> { "1: file name"}, new List<string> { "1: index (-1: not found)" }));
+                      new List<string> { "1: file name" }, new List<string> { "1: index (-1: not found)" }));
       addMethod(new FuncTabItem("occursAtLocation", occursAtLocation));
       _scriptHelpTab.Add(new HelpTabItem("occursAtLocation", "check wether speicies occurs at spcified loction",
-                      new List<string> {"1: species abbrviation, 2: latitude, 3: longitude"},
-                      new List<string> { "1: boolean if occurs or not"}));
+                      new List<string> { "1: species abbrviation, 2: latitude, 3: longitude" },
+                      new List<string> { "1: boolean if occurs or not" }));
       addMethod(new FuncTabItem("getRegion", getRegion));
       _scriptHelpTab.Add(new HelpTabItem("getRegion", "get name of region",
                       new List<string> { "1: latitude, 2: longitude" },
@@ -113,7 +113,7 @@ namespace BatInspector
       _scriptHelpTab.Add(new HelpTabItem("createPrjFromFiles", "create a project from a list of WAV files",
                       new List<string> { "1: project name","2:source folder containing project","3:destination folder","4: max files per project (int)",
                                          "5: max length of WAV file [s] (float)" , "6: latitude (float)", "7: longitude (float)",
-                                         "8: information about landscape", "9: information about weather"}, 
+                                         "8: information about landscape", "9: information about weather"},
                       new List<string> { "1: list of opened projects" }));
       addMethod(new FuncTabItem("importPrj", importPrj));
       _scriptHelpTab.Add(new HelpTabItem("importPrj", "import an Elekon or BatSpy project",
@@ -125,7 +125,7 @@ namespace BatInspector
                       new List<string> { "1: project dir", "2: project name" }, new List<string> { "1: result" }));
       addMethod(new FuncTabItem("inspectPrj", inspectPrj));
       _scriptHelpTab.Add(new HelpTabItem("inspectPrj", "start inspecting currently opened project",
-                      new List<string> {  }, new List<string> { "1: result" }));
+                      new List<string> { }, new List<string> { "1: result" }));
       addMethod(new FuncTabItem("savePrj", savePrj));
       _scriptHelpTab.Add(new HelpTabItem("savePrj", "save the currently opened project",
                       new List<string> { }, new List<string> { "1: result" }));
@@ -137,7 +137,7 @@ namespace BatInspector
                       new List<string> { }, new List<string> { "1: result" }));
       addMethod(new FuncTabItem("getPrjInfo", getPrjInfo));
       _scriptHelpTab.Add(new HelpTabItem("getPrjInfo", "get project info",
-                      new List<string> { "1: type of info"}, new List<string> { "1: result" }));
+                      new List<string> { "1: type of info" }, new List<string> { "1: result" }));
       addMethod(new FuncTabItem("setPrjInfo", setPrjInfo));
       _scriptHelpTab.Add(new HelpTabItem("setPrjInfo", "set specific data for currently open project",
                       new List<string> { "1: type of info", "2: data", }, new List<string> { "" }));
@@ -166,10 +166,10 @@ namespace BatInspector
                                          new List<string> { "1: error code" }));
       addMethod(new FuncTabItem("calcSNR", calcSNR));
       _scriptHelpTab.Add(new HelpTabItem("calcSNR", "calculate sound noise ratio for each call in file",
-                      new List<string> { "1: file name"}, new List<string> { "1: error code" }));
+                      new List<string> { "1: file name" }, new List<string> { "1: error code" }));
       addMethod(new FuncTabItem("calcDistance", calcDistance));
       _scriptHelpTab.Add(new HelpTabItem("calcDistance", "calculate distance between to points",
-                      new List<string> { "1: pos 1 latitude","2: pos 1 longitude","3: pos 2 latitude, 4: pos 2 longitude" }, new List<string> { "1: error code" }));
+                      new List<string> { "1: pos 1 latitude", "2: pos 1 longitude", "3: pos 2 latitude, 4: pos 2 longitude" }, new List<string> { "1: error code" }));
       addMethod(new FuncTabItem("isNear", isNear));
       _scriptHelpTab.Add(new HelpTabItem("isNear", "checks distance between to points is smaller than certain value",
                       new List<string> { "1: pos 1 latitude", "2: pos 1 longitude", "3: pos 2 latitude", "4: pos 2 longitude", "5: distance [m]" }, new List<string> { "1: error code" }));
@@ -220,7 +220,7 @@ namespace BatInspector
         try
         {
           DirectoryInfo dir = new DirectoryInfo(argv[0].getString());
-          App.Model.initProject(dir,false);
+          App.Model.initProject(dir, false);
         }
         catch
         {
@@ -278,7 +278,7 @@ namespace BatInspector
           EndTime = new DateTime(2099, 12, 31),
           OverwriteLocation = true,
           WavSubDir = argv[8].getBool() ? AppParams.DIR_WAVS : "",
-          
+
         };
       }
       else if (argv.Count == 8)
@@ -311,7 +311,7 @@ namespace BatInspector
         };
         if (locFile.IndexOf(AppParams.EXT_GPX) >= 0)
           info.LocSourceGpx = true;
-        else if(locFile.IndexOf(AppParams.EXT_KML) >= 0)
+        else if (locFile.IndexOf(AppParams.EXT_KML) >= 0)
           info.LocSourceKml = true;
         else if (locFile.IndexOf(AppParams.EXT_TXT) >= 0)
           info.LocSourceTxt = true;
@@ -379,7 +379,13 @@ namespace BatInspector
           Location = loc,
           Creator = creator
         };
+
         ModelParams modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+        modPars.DataSet = BaseModel.getDefaultModel(modPars.Type, 49, 9);
+        if (Project.getPrjType(info.SrcDir) == "Birds")
+        {
+          modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(enModel.BIRDNET)];
+        }
         if (argv.Count >= 8)
         {
           modPars = App.Model.DefaultModelParams[App.Model.getModelIndex(argv[7].getString())];
@@ -403,7 +409,7 @@ namespace BatInspector
           DebugLog.log("import project with default model: " + AppParams.Inst.DefaultModel, enLogType.INFO);
         }
         info.ModelParams = modPars;
-        if (File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_PRJ)) || 
+        if (File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_PRJ)) ||
             File.Exists(Path.Combine(info.SrcDir, info.Name + AppParams.EXT_BATSPY)))
         {
           App.Model.createProject(info, true, true);
@@ -421,7 +427,7 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if(App.Model.Prj.Name != "")
+      if (App.Model.Prj.Name != "")
       {
         int e = App.Model.evaluate(true);
         if (e == 0)
@@ -496,13 +502,13 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-        if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
-        {
-          int nr = App.Model.Prj.Records.Length;
-          result.assignInt64(nr);
-        }
-        else
-          err = tParseError.ARG1_OUT_OF_RANGE;
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      {
+        int nr = App.Model.Prj.Records.Length;
+        result.assignInt64(nr);
+      }
+      else
+        err = tParseError.ARG1_OUT_OF_RANGE;
       return err;
     }
 
@@ -513,7 +519,7 @@ namespace BatInspector
       SELECT,
       NAME,
       LATITUDE,
-      LONGITUDE
+      LONGITUDE,
     }
 
     enum enPrjInfo
@@ -523,7 +529,8 @@ namespace BatInspector
       NOTES,
       CREATOR,
       LOCATION,
-      PRJID
+      PRJID,
+      PRJTYPE
     }
 
     static tParseError setFileInfo(List<AnyType> argv, out AnyType result)
@@ -546,12 +553,12 @@ namespace BatInspector
             {
               switch (fileInfo)
               {
-                  case enFileInfo.SELECT:
-                    argv[2].changeType(AnyType.tType.RT_BOOL);
-                    App.Model.Prj.Records[idxF].Selected = argv[2].getBool();
-                    break;
-                  case enFileInfo.SAMPLE_RATE:
-                    break;
+                case enFileInfo.SELECT:
+                  argv[2].changeType(AnyType.tType.RT_BOOL);
+                  App.Model.Prj.Records[idxF].Selected = argv[2].getBool();
+                  break;
+                case enFileInfo.SAMPLE_RATE:
+                  break;
               }
             }
             else
@@ -609,8 +616,8 @@ namespace BatInspector
           bool ok = Enum.TryParse(argv[0].getString(), out prjInfo);
           if (ok)
           {
-             switch(prjInfo)
-             {
+            switch (prjInfo)
+            {
               case enPrjInfo.ROOT:
                 result.assign(App.Model.Prj.PrjDir);
                 break;
@@ -628,6 +635,12 @@ namespace BatInspector
                 break;
               case enPrjInfo.CREATOR:
                 result.assign(App.Model.Prj.Notes);
+                break;
+              case enPrjInfo.PRJTYPE:
+                if (App.Model.Prj.IsBirdPrj)
+                  result.assign("Bird");
+                else
+                  result.assign("Bat");
                 break;
             }
           }
@@ -666,7 +679,7 @@ namespace BatInspector
                 App.Model.Prj.Notes = val;
                 break;
               case enPrjInfo.CREATOR:
-                App.Model.Prj.Notes= val;
+                App.Model.Prj.Notes = val;
                 break;
             }
           }
@@ -713,7 +726,7 @@ namespace BatInspector
                   result.assign(App.Model.Prj.Analysis.Files[idxF].getDouble(Cols.DURATION));
                   break;
                 case enFileInfo.SELECT:
-                  if(App.Model.Prj.Analysis.Files.Count > 0)
+                  if (App.Model.Prj.Analysis.Files.Count > 0)
                   {
                     PrjRecord rec = App.Model.Prj.find(App.Model.Prj.Analysis.Files[idxF].Name);
                     if (rec != null)
@@ -831,7 +844,7 @@ namespace BatInspector
           int idx = (int)argv[0].getUint64();
           int rank = (int)argv[1].getUint64();
           string col = Cols.SPECIES;
-          if(argv.Count >= 3)
+          if (argv.Count >= 3)
           {
             argv[2].changeType(AnyType.tType.RT_STR);
             if (argv[2].getString() == Cols.SPECIES)
@@ -953,7 +966,8 @@ namespace BatInspector
       F_MIN,
       F_MAX,
       F_MAX_AMP,
-      DURATION
+      DURATION,
+      SNR,
     }
 
     static tParseError getCallInfo(List<AnyType> argv, out AnyType result)
@@ -970,8 +984,8 @@ namespace BatInspector
           int idxF = (int)argv[0].getUint64();
           int idxC = (int)argv[1].getUint64();
           int maxIdxF = App.Model.Prj.Analysis.Files.Count;
-          if(idxF < maxIdxF)
-          { 
+          if (idxF < maxIdxF)
+          {
             int maxIdxC = App.Model.Prj.Analysis.Files[idxF].Calls.Count;
             if (idxC < maxIdxC)
             {
@@ -1005,6 +1019,10 @@ namespace BatInspector
                   case enCallInfo.DURATION:
                     result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.DURATION));
                     break;
+                  case enCallInfo.SNR:
+                    result.assign(App.Model.Prj.Analysis.Files[idxF].Calls[idxC].getDouble(Cols.SNR));
+                    break;
+
                 }
               }
               else
@@ -1084,7 +1102,7 @@ namespace BatInspector
       {
         argv[0].changeType(AnyType.tType.RT_STR);
         string fName = argv[0].getString();
-        if((fName.IndexOf("/") < 0) && (fName.IndexOf("\\") < 0))
+        if ((fName.IndexOf("/") < 0) && (fName.IndexOf("\\") < 0))
           fName = _inst._wrkDir + "/" + fName;
 
         string sep = ";";
@@ -1236,7 +1254,7 @@ namespace BatInspector
         {
           WavFile wav = new WavFile();
           wav.readFile(fName);
-          wav.FormatChunk.Frequency= (uint)sampleRate;
+          wav.FormatChunk.Frequency = (uint)sampleRate;
           wav.saveFile();
         }
         else
@@ -1258,7 +1276,7 @@ namespace BatInspector
         string fName = argv[0].getString();
         argv[1].changeType(AnyType.tType.RT_INT64);
         int sampleRate = (int)argv[1].getInt64();
-        if(argv.Count == 3)
+        if (argv.Count == 3)
         {
           argv[2].changeType(AnyType.tType.RT_BOOL);
           withBackup = argv[2].getBool();
@@ -1277,7 +1295,7 @@ namespace BatInspector
             }
             else
             {
-              if(!File.Exists(bakName))
+              if (!File.Exists(bakName))
                 File.Move(fName, bakName);
             }
             using (AudioFileReader reader = new AudioFileReader(bakName))
@@ -1285,7 +1303,7 @@ namespace BatInspector
               var resampler = new WdlResamplingSampleProvider(reader, sampleRate);
               WaveFileWriter.CreateWaveFile16(fName, resampler);
             }
-            if(!withBackup)
+            if (!withBackup)
               File.Delete(fName);
           }
           else
@@ -1442,7 +1460,7 @@ namespace BatInspector
         {
           if ((index >= 0) && (index < _inst._files.Count))
           {
-            if(fullPath)
+            if (fullPath)
               result.assign(_inst._files[index]);
             else
               result.assign(Path.GetFileName(_inst._files[index]));
@@ -1497,7 +1515,7 @@ namespace BatInspector
       result = new AnyType();
       tParseError err = tParseError.SUCCESS;
       if (argv.Count >= 2)
-      { 
+      {
         argv[0].changeType(AnyType.tType.RT_FLOAT);
         double lat = argv[0].getFloat();
         if ((lat >= -90) && (lat <= 90))
@@ -1512,8 +1530,8 @@ namespace BatInspector
             else
               result.assign("unspecific");
           }
-        else
-          err = tParseError.ARG2_OUT_OF_RANGE;
+          else
+            err = tParseError.ARG2_OUT_OF_RANGE;
         }
         else
           err = tParseError.ARG1_OUT_OF_RANGE;
@@ -1539,7 +1557,7 @@ namespace BatInspector
           double lon = argv[2].getFloat();
           if ((lon >= -180) && (lon <= 180))
           {
-            bool occurs = App.Model.CurrentlyOpen.IsBirdPrj ||  App.Model.Regions.occursAtLocation(spec, lat, lon);
+            bool occurs = App.Model.CurrentlyOpen.IsBirdPrj || App.Model.Regions.occursAtLocation(spec, lat, lon);
             result.assignBool(occurs);
           }
           else
@@ -1560,7 +1578,7 @@ namespace BatInspector
       if (argv.Count >= 1)
       {
         string fileName = argv[0].getString();
-        if(App.Model.Prj?.Ok == true)
+        if (App.Model.Prj?.Ok == true)
         {
           AnalysisFile f = App.Model.Prj.Analysis.find(fileName);
           if (f != null)
@@ -1594,7 +1612,7 @@ namespace BatInspector
       result = new AnyType();
       tParseError err = 0;
       if (argv.Count >= 4)
-      { 
+      {
         argv[0].changeType(AnyType.tType.RT_FLOAT);
         double lat1 = argv[0].getFloat();
         argv[1].changeType(AnyType.tType.RT_FLOAT);

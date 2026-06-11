@@ -166,7 +166,12 @@ FOR FileNr 0 NrFiles
       END      
 
       IF =(specAuto == "BBAR")
-        =(setCallInfo(FileNr, i, "SPEC_MAN", "BBAR"))
+        SET snr =(getCallInfo(FileNr, i, "SNR"))
+        IF =((snr > 10) && (probability >= 0.5))
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "BBAR"))
+        ELSE
+          =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
+        END
         CONTINUE
       END      
 

@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 //using System.Windows.Forms;
 
 namespace BatInspector.Controls
@@ -71,7 +73,9 @@ namespace BatInspector.Controls
         if (_isFolder)
         {
           System.Windows.Forms.FolderBrowserDialog ofo = new System.Windows.Forms.FolderBrowserDialog();
-          System.Windows.Forms.DialogResult res = ofo.ShowDialog();
+          System.Windows.Forms.NativeWindow win32Parent = new System.Windows.Forms.NativeWindow();
+          win32Parent.AssignHandle(new WindowInteropHelper(System.Windows.Application.Current.MainWindow).Handle);
+          System.Windows.Forms.DialogResult res = ofo.ShowDialog(win32Parent);
           if (res == System.Windows.Forms.DialogResult.OK)
           {
             _txt.Text = ofo.SelectedPath;

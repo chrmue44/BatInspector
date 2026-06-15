@@ -1035,14 +1035,14 @@ namespace BatInspector.Forms
           App.Model.Prj.writePrjFile();
         }
         if ((App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null) &&
-           ((App.Model.ZoomView.Waterfall.Range != AppParams.Inst.GradientRange) ||
+           ((_ctlZoom._gradientRange != AppParams.Inst.GradientRange) ||
             (App.Model.ZoomView.Waterfall.BlackLevel != AppParams.Inst.BlackLevel))
           )
         {
           MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDisplayContrast, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
           {
-            AppParams.Inst.GradientRange = App.Model.ZoomView.Waterfall.Range;
+            AppParams.Inst.GradientRange = _ctlZoom._gradientRange;
             AppParams.Inst.BlackLevel = App.Model.ZoomView.Waterfall.BlackLevel;
           }
         }

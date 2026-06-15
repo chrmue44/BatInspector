@@ -35,15 +35,17 @@ namespace BatInspector.Forms
     double _tEnd;
     double _tMk;
     string[] _species;
+    double _range;
 
     public frmVerifySpecies()
     {
       InitializeComponent();
+      _range = AppParams.Inst.GradientRange;
     }
 
     private void updateImage()
     {
-      _sonogram.createZoomViewFt(_tMin,_tMax, _fMin, _fMax);
+      _sonogram.createZoomViewFt(_tMin,_tMax, _fMin, _fMax, _range);
       if (_sonogram.ImageFt != null)
         _img.Source = _sonogram.ImageFt;
     }
@@ -430,14 +432,14 @@ namespace BatInspector.Forms
 
     private void _btnIncRange_Click(object sender, RoutedEventArgs e)
     {
-      App.Model.ZoomView.Waterfall.Range += 3.0;
+      _range += 3.0;
       updateImage();
     }
 
     private void _btnDecRange_Click(object sender, RoutedEventArgs e)
     {
-      if (App.Model.ZoomView.Waterfall.Range > 3)
-        App.Model.ZoomView.Waterfall.Range -= 3.0;
+      if (_range > 3)
+        _range -= 3.0;
       updateImage();
 
     }

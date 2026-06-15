@@ -575,11 +575,11 @@ namespace BatInspector
         {
           if (!File.Exists(pngName))
           {
-            Waterfall wf = new Waterfall(wavName, colorTable, fftWidth, AppParams.Inst.GradientRange, AppParams.Inst.BlackLevel);
+            Waterfall wf = new Waterfall(wavName, colorTable, fftWidth, AppParams.Inst.BlackLevel);
             if (wf.Ok)
             {
               wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-              using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000))
+              using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000, AppParams.Inst.GradientRange))
               {
                 bmp.Save(pngName);
               }
@@ -598,9 +598,9 @@ namespace BatInspector
     }
 
 
-    public void createZoomViewFt(double tStart, double tEnd, double fMin, double fMax)
+    public void createZoomViewFt(double tStart, double tEnd, double fMin, double fMax, double gradientRange)
     {
-      using (Bitmap bmp = App.Model.ZoomView.Waterfall.generateFtPicture(tStart, tEnd, fMin, fMax))
+      using (Bitmap bmp = App.Model.ZoomView.Waterfall.generateFtPicture(tStart, tEnd, fMin, fMax, gradientRange))
       {
         if (bmp != null)
           _bImgFt = Convert(bmp);

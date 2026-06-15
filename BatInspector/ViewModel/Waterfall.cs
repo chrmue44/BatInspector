@@ -27,7 +27,7 @@ namespace BatInspector
     double _maxAmplitude;
     double _minAmplitude;
     WavFile _wav = null;
-    double _range;
+   // double _range;
     double _blackLevel;
     public double Duration 
     { 
@@ -47,7 +47,7 @@ namespace BatInspector
 
     public double BlackLevel { get { return _blackLevel; }  set { _blackLevel = value; } }
 
-    public double Range 
+    /*public double Range 
     {
       get { return _range; }
       set
@@ -55,7 +55,7 @@ namespace BatInspector
         _range = value;
         calcMinAmplitude();
       }
-    }
+    }*/
 
     
     public string WavName { get { return _wavName; } }
@@ -66,14 +66,13 @@ namespace BatInspector
       get { return (_wav != null) ? _wav.PlayPosition : 0.0; } 
     }
 
-    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth, double gradientRange, double blackLevel)
+    public Waterfall(string wavName,  ColorTable colorTable, int fftWidth, double blackLevel)
     {
       _wavName = wavName;
       _colorTable = colorTable;
       _spec = new List<double[]>();
       _maxAmplitude = _minAmplitude;
       _audio = new SoundEdit(384000, fftWidth);
-      _range = gradientRange;
       _blackLevel = blackLevel;
       if (File.Exists(_wavName))
       {
@@ -254,7 +253,6 @@ namespace BatInspector
         else
           lmSpectrum[i] = logarithmic ? -100 : 0;
       }
-      calcMinAmplitude();
       // Properly scale the spectrum for the added window
 //      lmSpectrum = DSP.Math.Multiply(lmSpectrum, wScaleFactor);
 
@@ -262,11 +260,12 @@ namespace BatInspector
     }
 
 
-    public Bitmap generateFtPicture(double tMin, double tMax, double fMin, double fMax)
+    public Bitmap generateFtPicture(double tMin, double tMax, double fMin, double fMax, double gradientRange)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       BitmapFast bmp = null;
       int fftBinCnt = calculateBestFftSize(tMin, tMax) / 2;
+      calcMinAmplitude(gradientRange);
       if (_ok)
       {
         bmp = new BitmapFast(width, fftBinCnt);
@@ -411,12 +410,12 @@ namespace BatInspector
       }
     }
 
-    void calcMinAmplitude()
+    void calcMinAmplitude(double range)
     {
       if (AppParams.Inst.WaterfallLogarithmic)
-        _minAmplitude = _maxAmplitude - _range;
+        _minAmplitude = _maxAmplitude - range;
       else
-        _minAmplitude = _maxAmplitude / Math.Pow(10, _range / 20);
+        _minAmplitude = _maxAmplitude / Math.Pow(10, range / 20);
     }
   }
 }

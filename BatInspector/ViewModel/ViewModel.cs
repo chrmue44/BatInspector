@@ -315,11 +315,11 @@ namespace BatInspector
 
     public static void createPng(string wavName, string pngName, int fftWidth, ColorTable colorTable)
     {
-      Waterfall wf = new Waterfall(wavName, colorTable, fftWidth, AppParams.Inst.GradientRange, AppParams.Inst.BlackLevel);
+      Waterfall wf = new Waterfall(wavName, colorTable, fftWidth, AppParams.Inst.BlackLevel);
       if (wf.Ok)
       {
         wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-        using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000))
+        using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000, AppParams.Inst.GradientRange))
         {
           if (File.Exists(pngName))
             File.Delete(pngName);

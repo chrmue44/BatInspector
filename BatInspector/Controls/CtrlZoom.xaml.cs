@@ -37,6 +37,7 @@ namespace BatInspector.Controls
     enModel _modelType;
     Sonogram _sonogramFt;
     Sonogram _sonogramXt;
+    public double _gradientRange = 0;
 
     public CtrlZoom()
     {
@@ -122,6 +123,7 @@ namespace BatInspector.Controls
       };
       _sonogramFt = App.Model.View.createSonogram("zoom F-t");
       _sonogramXt = App.Model.View.createSonogram("zoom X-t");
+      _gradientRange = AppParams.Inst.GradientRange;
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath,
@@ -365,21 +367,6 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnIncRange_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        App.Model.ZoomView.Waterfall.Range += 3.0;
-        //_ctlRange.setValue(App.Model.ZoomView.Waterfall.Range);
-        updateRuler();
-        updateImage();
-        DebugLog.log("Zoom:BTN 'increase range' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("Zoom:BTN 'increase range' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
 
 
     private void _slRange_MouseUp(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -388,7 +375,7 @@ namespace BatInspector.Controls
       {
         if (App.Model.ZoomView.Waterfall == null)
           return;
-        App.Model.ZoomView.Waterfall.Range = _slRange.Value;
+        _gradientRange = _slRange.Value;
         updateRuler();
         updateImage();
         DebugLog.log("Zoom:SLIDER 'range' moved", enLogType.DEBUG);
@@ -417,24 +404,6 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnDecRange_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        if (App.Model.ZoomView.Waterfall.Range > 3)
-        {
-          App.Model.ZoomView.Waterfall.Range -= 3.0;
-          //_ctlRange.setValue(App.Model.ZoomView.Waterfall.Range);
-          updateRuler();
-          updateImage();
-        }
-        DebugLog.log("Zoom:BTN 'decrease range' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("Zoom:BTN 'decrease range' failed: " + ex.ToString(), enLogType.ERROR);
-      }
-    }
 
     private void ctrlZoomMouseDown(object sender, MouseEventArgs e)
     {
@@ -920,7 +889,7 @@ namespace BatInspector.Controls
     private void updateImage()
     {
       _sonogramFt.createZoomViewFt(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max,
-                                   App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max);
+                                   App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max, _gradientRange);
       if (_sonogramFt.ImageFt != null)
         _imgFt.Source = _sonogramFt.ImageFt;
 
@@ -1606,8 +1575,11 @@ namespace BatInspector.Controls
         }
 
         if (ok)
+        {
           frm.ShowDialog();
-      }
+          App.Model.ZoomView.Waterfall.generateFtDiagram(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, AppParams.Inst.WaterfallWidth);
+        }
+        }
       catch (Exception ex)
       {
         DebugLog.log($"Error Species Check: {ex.ToString()}", enLogType.ERROR);

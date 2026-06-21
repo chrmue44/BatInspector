@@ -43,6 +43,7 @@ namespace BatInspector
 
     static ModelScriptItem[] _list = new ModelScriptItem[]
     {
+      new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_GERMAN_OLD, "auto_to_man_german_bats_09.scr"),
       new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_GERMAN, "auto_to_man_german_bats_09.scr"),
       new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_UK, "auto_to_man_UK.scr"),
     };
@@ -65,7 +66,8 @@ namespace BatInspector
   public abstract class BaseModel
   {
 
-    public const string BD2_MODEL_GERMAN = "GermanBats_0.93.pth.tar";
+    public const string BD2_MODEL_GERMAN_OLD = "GermanBats_0.93.pth.tar";
+    public const string BD2_MODEL_GERMAN = "GermanBats_0.95.pth.tar";
     public const string BD2_MODEL_UK = "Net2DFast_UK_same.pth.tar";
 
     static protected readonly XmlSerializer ModParSerializer = new XmlSerializer(typeof(DefModelParamFile));

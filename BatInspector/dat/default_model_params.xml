@@ -11,6 +11,7 @@
     <AvailableDataSets>GermanBats.pth.tar</AvailableDataSets>
     <AvailableDataSets>GermanBats_0.8.pth.tar</AvailableDataSets>
     <AvailableDataSets>GermanBats_0.93.pth.tar</AvailableDataSets>
+    <AvailableDataSets>GermanBats_0.95.pth.tar</AvailableDataSets>
     <Parameters>
       <Name>Detection Threshold</Name>
       <Type>DOUBLE</Type>

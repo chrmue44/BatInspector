@@ -88,10 +88,10 @@ source: "{#SourceFolder}\{#MyAppName}\dat\*.json"; DestDir: "{#MyAppDataFolder}\
 source: "{#SourceFolder}\{#MyAppName}\doc\*"; DestDir: "{app}\doc";
 source: "{#SourceFolder}\{#MyAppName}\mysql\*"; DestDir: "{#MyAppDataFolder}\mySql";
 source: "{#SourceFolder}\{#MyAppName}\scripts\*"; DestDir: "{#MyAppDataFolder}\setup\scripts"; Permissions: everyone-full
-source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2"; Components: modbd2
-source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\"; Components: modbd2
-source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet"; Components: modbatty
-source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet"; Components: modbnet
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\*"; DestDir: "{#MyAppDataFolder}\models\bd2"
+source: "{#SourceFolder}\{#MyAppName}\models\bd2\batdetect2\models\*"; DestDir: "{#MyAppDataFolder}\models\bd2\batdetect2\models\"
+source: "{#SourceFolder}\{#MyAppName}\models\bbnet\*"; DestDir: "{#MyAppDataFolder}\models\bbnet"
+source: "{#SourceFolder}\{#MyAppName}\models\birdnet\*"; DestDir: "{#MyAppDataFolder}\models\birdnet"
 source: "{#SourceFolder}\InnoSetup\python\*"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full; Components: python
 source: "{#SourceFolder}\BatInspector\logo.ico"; DestDir: "{app}";
 

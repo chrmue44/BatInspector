@@ -1260,7 +1260,14 @@ namespace BatInspector
               AvailableModelParams[i].Enabled = AvailableModelParams[i].Type == enModel.BIRDNET;
             }
           }
-          ;
+          else if (_batExplorerPrj.ProjectType == "Bats")
+          {
+            for (int i = 0; i < AvailableModelParams.Length; i++)
+            {
+              AvailableModelParams[i].Enabled = AvailableModelParams[i].Type == enModel.BAT_DETECT2;
+            }
+          }
+
           SelectedModelIndex = 0;
           for (int i = 0; i < AvailableModelParams.Length; i++)
           {

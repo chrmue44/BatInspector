@@ -40,8 +40,8 @@ FOR FileNr 0 NrFiles
 
       IF  =((substr(specAuto, 0, 1) != "?") && !occursAtLocation(specAuto, lat, lon))
         =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
-        SET newAuto =("??REG[" + replace(specAuto,"(","]("))
-        =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
+#        SET newAuto =("??REG[" + replace(specAuto,"(","]("))
+#        =(setCallInfo(FileNr, i, "SPEC_AUTO", newAuto))
         =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
         SET region =(getRegion(lat, lon))
         LOG =(specAuto +" not expected in region '" + region + "'")
@@ -226,8 +226,9 @@ FOR FileNr 0 NrFiles
 END
 
 # kick out low counts
-LOG "start kicking out single calls"
+LOG "start kicking out individual calls"
 UpdateSpeciesCount
+SET CountKickOut 0
 FOR FileNr 0 NrFiles
   IF =(getFileInfo(FileNr, "SELECT"))
     =(FileName = getFileInfo(FileNr, "NAME"))
@@ -250,7 +251,7 @@ FOR FileNr 0 NrFiles
         SET specMan =(getCallInfo(FileNr, i, "SPEC_MAN"))
         FOR j 0 Count
           IF =(specMan == ReplaceSpec[j])
-            LOG =("kick out " + specMan + " in file " + FileName)
+		    SET CountKickOut =(CountKickOut + 1)
             =(setCallInfo(FileNr, i, "SPEC_MAN", "?"))
           END
         END
@@ -258,3 +259,4 @@ FOR FileNr 0 NrFiles
     END
   END
 END
+LOG =("kicked out " + CountKickOut + " individual calls")

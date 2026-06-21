@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net.Mail;
+using System.Reflection;
 using System.Threading;
 
 
@@ -856,11 +858,10 @@ namespace BatInspector
     }
 
 
-    public string getLastLog()
+    public string[] getLastLogs()
     {
       DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
-      FileInfo[] files = dir.GetFiles();
-      string retVal = "";
+      FileInfo[] files = dir.GetFiles("*.log");
       Array.Sort(files, delegate (FileInfo f1, FileInfo f2)
       {
         int res = (f1.LastWriteTime > f2.LastWriteTime) ? 1 : -1;
@@ -869,25 +870,36 @@ namespace BatInspector
         return res;
       });
       int cnt = Math.Min(5, files.Length);
+      string[] retVal = new string[cnt];
+      int idx = 0;
       for (int i = files.Length - cnt; i < files.Length; i++)
       {
-        retVal += $"\n###### Log File {files[i].FullName}:\n";
-        retVal += File.ReadAllText(files[i].FullName);
+        retVal[idx] = files[i].FullName;
+        idx++;
       }
       return retVal;
     }
 
-    public void sendEmail(string receiver, string subject, string text)
+    public void sendEmail(string receiver, string subject, string[] files)
     {
       try
       {
-        // Basis-URI für mailto:
-        string mailtoUri = $"mailto:{receiver}?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(text)}";
-        Process.Start(new ProcessStartInfo(mailtoUri) { UseShellExecute = true });
+        MailMessage mailMessage = new MailMessage("me@my.home", AppParams.ERROR_RECIPIENT, subject,MyResources.msgErrorEmail);
+        mailMessage.IsBodyHtml = false;
+        for(int i = 0; i < files.Length; i++)
+          mailMessage.Attachments.Add(new Attachment(files[i]));
+
+        string f = "report_" + DateTime.Now.ToString("yyMMddhhmmss") + ".eml";
+        string filename = Path.Combine(AppParams.LogDataPath, f);
+        if (File.Exists(filename))
+          File.Delete(filename);
+        mailMessage.Save(filename);
+
+        Process.Start(filename);
       }
       catch (Exception ex)
       {
-        DebugLog.log($"unable to send error report: {ex.ToString()}", enLogType.ERROR);
+        DebugLog.log($"unable to send error report: {ex.ToString()}\n Perhaps no standard mail client defined?", enLogType.ERROR);
       }
     }
 
@@ -929,4 +941,42 @@ namespace BatInspector
       }
     }
   }
-}
+
+
+    public static class MailUtility
+    {
+      //Extension method for MailMessage to save to a file on disk
+      public static void Save(this MailMessage message, string filename, bool addUnsentHeader = true)
+      {
+        using (var filestream = File.Open(filename, FileMode.Create))
+        {
+          if (addUnsentHeader)
+          {
+            var binaryWriter = new BinaryWriter(filestream);
+            //Write the Unsent header to the file so the mail client knows this mail must be presented in "New message" mode
+            binaryWriter.Write(System.Text.Encoding.UTF8.GetBytes("X-Unsent: 1" + Environment.NewLine));
+          }
+
+          var assembly = typeof(SmtpClient).Assembly;
+          var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
+
+          // Get reflection info for MailWriter contructor
+          var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
+
+          // Construct MailWriter object with our FileStream
+          var mailWriter = mailWriterContructor.Invoke(new object[] { filestream });
+
+          // Get reflection info for Send() method on MailMessage
+          var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
+
+          sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter, true, true }, null);
+
+          // Finally get reflection info for Close() method on our MailWriter
+          var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
+
+          // Call close method
+          closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+        }
+      }
+    }
+  }

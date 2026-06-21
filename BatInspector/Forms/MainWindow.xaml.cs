@@ -1504,12 +1504,9 @@ namespace BatInspector.Forms
       {
         string subject = $"Error Report BatInspector V{AppParams.AppVersion}";
         DebugLog.save();
-        string text = App.Model.getLastLog();
-        if (!string.IsNullOrEmpty(text))
-        {
-          text = MyResources.msgErrorEmail + "\n\n" + text;
-          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, text);
-        }
+        string[] logs = App.Model.getLastLogs();
+        if ((logs != null) && (logs.Length > 0))
+          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, logs);
       }
     }
 

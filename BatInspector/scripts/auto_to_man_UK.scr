@@ -104,7 +104,7 @@ FOR FileNr 0 NrFiles
 
 	  IF =(specAuto == "PAUR")
 	    IF =(probability >= 0.5)
-	      =(setCallInfo(FileNr, i, "SPEC_MAN", "PAUR"))
+	      =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))
 		ELSE
   	      IF =(probability >= 0.4)
 	        =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))
@@ -117,7 +117,7 @@ FOR FileNr 0 NrFiles
 
 	  IF =(specAuto == "PAUS")
 	    IF =(probability >= 0.5)
-	      =(setCallInfo(FileNr, i, "SPEC_MAN", "PAUS"))
+	      =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))
 		ELSE
   	      IF =(probability >= 0.4)
 	        =(setCallInfo(FileNr, i, "SPEC_MAN", "Plecotus"))

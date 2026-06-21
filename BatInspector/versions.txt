@@ -1,4 +1,7 @@
-# V0.9.7.0   
+# V0.9.7.0   21.06.26
+- new AI model GermanBats0.95, slightly improved for HSAV, MBEC
+- bugfix: changing contrast in zoomview after closing frmVerify shows wrong section
+- changing contrast in frmVerify doesn't affect global settings
 - new parameter "SNR" for script function getCallInfo()
 - improved copy script for GermanBats 0.9: less false positive BBAR
 - Filters get sorted each time when settings are saved
@@ -7,9 +10,11 @@
 - Button to send error report via email
 - New option "PRJTYPE" for script function getPrjInfo
 - more error output in case of failing model start
+- installer now copies all model related stuff to c:\ProgramData\Batinspector regardless the selection of installed modules
+  (enables installing update without uninstalling the old version)
 
 # V0.9.6.3   25.05.26
--  be more tolerant with WAV files where the chunk sizes don't match to the total file size (Petterson D1000X)
+-  be more tolerant with WAV files where the chunk sizes don't match the total file size (Petterson D1000X)
 
 # V0.9.6.2   18.05.26
 - bugfix: reads TeansyBat files

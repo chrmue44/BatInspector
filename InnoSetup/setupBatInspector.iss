@@ -4,8 +4,8 @@
 #include "CodeDependencies.iss"
 
 #define MyAppName "BatInspector"
-#define MyInstallerName "SetupBatInspector_0970"
-#define MyAppVersion "0.9.7.0"
+#define MyInstallerName "SetupBatInspector_0971"
+#define MyAppVersion "0.9.7.1"
 #define MyAppPublisher "Christian Müller"
 #define MyAppURL "https://chrmue.de/bat/batinspector.html"
 #define MyAppExeName "BatInspector.exe"
@@ -105,10 +105,10 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#PythonInstaller} """; Components: python
-Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BatDetectVersion}"; Flags:runasoriginaluser; Components: modbd2
-Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BbnetVersion}"; Flags:runasoriginaluser; Components: modbatty
-Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:"""{app}\{#PythonInstFolder}"" {#BirdnetVersion}"; Flags:runasoriginaluser; Components: modbnet
+Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#PythonInstaller}"" ""{#MyAppDataFolder}\log"" "; Components: python
+Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#BatDetectVersion}"" ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbd2
+Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#BbnetVersion}"" ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbatty
+Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#BirdnetVersion}"" ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbnet
 ; Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]

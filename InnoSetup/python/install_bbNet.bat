@@ -4,9 +4,13 @@ SET VENV=_venv
 SET BBNET_ARCH=https://github.com/kahst/BirdNET-Analyzer/archive/
 SET PYTHON_DIR=%1
 SET BBNET_HASH=%2
+SET LOG_DIR=%3
+SET LOG_FILE=%LOG_DIR%\bbnet.inst_log
+
 SET PYTHON=%PYTHON_DIR%\python
 
-@echo params %PYTHON_DIR% %BBNET_HASH%
+@echo params %PYTHON_DIR% %BBNET_HASH% %LOG_DIR%
+
 @echo ******************************************************
 @echo * installing AI model BattyBirdNET
 @echo * This may take several minutes 
@@ -16,17 +20,21 @@ SET PYTHON=%PYTHON_DIR%\python
 cd ..
 cd %OUT_DIR%
 cd %MODEL_BB_DIR%
-curl -L %BBNET_ARCH%%BBNET_HASH%.zip --output bbnet.zip
-tar -xf bbnet.zip
-del bbnet.zip
-xcopy /E /H /C BirdNET-Analyzer-%BBNET_HASH%
-rmdir /s /q BirdNET-Analyzer-%BBNET_HASH%
-%PYTHON% -m venv %VENV%
-call %VENV%/Scripts/activate
+@echo fetching battx BirdNET...
+curl -L %BBNET_ARCH%%BBNET_HASH%.zip --output bbnet.zip > %LOG_FILE% 2>&1
+tar -xf bbnet.zip >> %LOG_FILE% 2>&1
+del bbnet.zip >> %LOG_FILE% 2>&1
+xcopy /E /H /C BirdNET-Analyzer-%BBNET_HASH% >> %LOG_FILE% 2>&1
+rmdir /s /q BirdNET-Analyzer-%BBNET_HASH% >> %LOG_FILE% 2>&1
+@echo create virtual environment...
+%PYTHON% -m venv %VENV% >> %LOG_FILE% 2>&1
+call %VENV%/Scripts/activate >> %LOG_FILE% 2>&1
 @echo ******************************************************
 @echo * installing AI model BattyBirdNET
 @echo * This may take several minutes 
 @echo * Be patient! Ooohmm.... 
 @echo ******************************************************
-@echo pip install -r requirements.txt
-pip install -r requirements.txt
+@echo pip install -r requirements.txt >> %LOG_FILE% 2>&1
+pip install -r requirements.txt >> %LOG_FILE% 2>&1
+@echo installation complete
+

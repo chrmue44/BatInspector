@@ -39,6 +39,7 @@ namespace BatInspector
         new OptItem("EditWav", "<option> edit wav file", 1, fctEditWav),
         new OptItem("ExportFiles", "export files from project <FilterExpression> <outDir> <allCalls",3, ftcExportFiles ),
         new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
+        new OptItem("RemoveFileFromPrj", "remove file from currently open project <FileNr>", 1, fctRemoveFileFromPrj),
         new OptItem("SaveSelectedAsProject", "<path> <name> save selected files as project",2, fctSaveSelAsPrj),
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
@@ -62,6 +63,17 @@ namespace BatInspector
       ErrText = "";
       App.Model.Prj?.removeFilesNotInReport();
       return 0;
+    }
+
+    int fctRemoveFileFromPrj(List<string> pars, out string ErrText)
+    {
+      ErrText = "";
+      int ok = App.Model.deleteFile(pars[0]);
+      if (ok == 2)
+        DebugLog.log("RemoveFileFromPrj: project is not open", enLogType.ERROR);
+      if (ok == 1)
+        DebugLog.log("RemoveFileFromPrj: unable to delete", enLogType.ERROR);
+      return ok;
     }
 
     int fctSplitProject(List<string> pars, out string ErrText)

@@ -437,6 +437,7 @@ namespace BatInspector.Forms
 
             _switchTabToPrj = true;
             buildWavFileList(false);
+
             App.Model.View.stopCreatingPngFiles();
             if (App.Model.Query != null)
               showStatus();
@@ -505,6 +506,9 @@ namespace BatInspector.Forms
         _scrollPrj.Value = 0;
         if (oldValue == _scrollPrj.Value)  //if value is different list will be built by change event  
           populateControls(0);
+        if(_spSpectrums.Children.Count == 0)
+          populateControls(0);
+
       }
       else if (_tbReport.IsSelected)
       {
@@ -1065,7 +1069,7 @@ namespace BatInspector.Forms
       try
       {
         if (_frmAbout == null)
-          _frmAbout = new FrmAbout(AppParams.AppVersion);
+          _frmAbout = new FrmAbout("Version " + AppParams.AppVersion);
         _frmAbout.Show();
         _frmAbout.Visibility = Visibility.Visible;
         _frmAbout.Topmost = true;

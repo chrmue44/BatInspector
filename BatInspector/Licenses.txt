@@ -64,6 +64,11 @@ https://icons8.com
 https://www.iconsdb.com
 https://uxwing.com
 
+check.png
+https://www.flaticon.com/free-icons/validate" title="validate icons">Validate icons created by meaicon - Flaticon
+
+danger-sign.png:
+https://www.flaticon.com/free-icons/complain" title="complain icons">Complain icons created by Good Ware - Flaticon
 
 Bat_icon-icons.com_75012.png:
 https://icon-icons.com/de/download/75012/PNG/128/

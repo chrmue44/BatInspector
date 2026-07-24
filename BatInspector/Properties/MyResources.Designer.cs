@@ -70,6 +70,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installed Components.
+        /// </summary>
+        public static string AboutComponents {
+            get {
+                return ResourceManager.GetString("AboutComponents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Versions.
         /// </summary>
         public static string AboutHistory {

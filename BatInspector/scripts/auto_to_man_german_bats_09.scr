@@ -22,7 +22,8 @@ FOR FileNr 0 NrFiles
       SET lon =(getFileInfo(FileNr, "LONGITUDE"))           
 
       IF =(specAuto == "PNAT")
-        IF =(probability >= 0.5)
+        SET Fmin =(getCallInfo(FileNr, i, "F_MIN"))
+        IF =((probability >= 0.5) && (Fmin < 41000))
           IF =(!occursAtLocation("PNAT", lat, lon))
             IF =(occursAtLocation("PKUH", lat, lon)) 
               =(setCallInfo(FileNr, i, "SPEC_MAN", "PKUH"))
@@ -49,7 +50,8 @@ FOR FileNr 0 NrFiles
       END
 
       IF =(specAuto == "PPIP")
-        IF =(probability >= 0.5)
+        SET Fmin =(getCallInfo(FileNr, i, "F_MIN"))
+        IF =((probability >= 0.5) && (Fmin >= 42000) && (Fmin <= 49000))
           =(setCallInfo(FileNr, i, "SPEC_MAN", "PPIP"))
         ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Pipistrellus"))
@@ -58,9 +60,10 @@ FOR FileNr 0 NrFiles
       END      
 
       IF =(specAuto == "PPYG")
-        IF =(probability >= 0.5)
+        SET Fmin =(getCallInfo(FileNr, i, "F_MIN"))
+        IF =((probability >= 0.5) && (Fmin > 51000))
           =(setCallInfo(FileNr, i, "SPEC_MAN", "PPYG"))
-          ELSE
+        ELSE
           =(setCallInfo(FileNr, i, "SPEC_MAN", "Pipistrellus"))
         END        
         CONTINUE

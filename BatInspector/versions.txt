@@ -1,3 +1,10 @@
+# V0.9.7.1   
+- bugfix: removed error msg when "saving" query
+- added loggging of installation of python  components
+- added display of installation status in info screen
+- new sript command RemoveFileFromPrj
+- uniqueness condition for ENIL in species checker refined
+
 # V0.9.7.0   21.06.26
 - new AI model GermanBats0.95, slightly improved for HSAV, MBEC
 - bugfix: changing contrast in zoomview after closing frmVerify shows wrong section

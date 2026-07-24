@@ -2061,4 +2061,7 @@
   <data name="msgErrorEmail" xml:space="preserve">
     <value>Bitte beschreiben Sie, was Sie getan haben, was Sie als Ergebnis erwartet haben und was tatsächlich passiert ist.</value>
   </data>
+  <data name="AboutComponents" xml:space="preserve">
+    <value>Installierte Komponenten</value>
+  </data>
 </root>

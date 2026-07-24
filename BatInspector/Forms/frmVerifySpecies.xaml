@@ -50,7 +50,6 @@
                 <local:ctlSpecialQuestion x:Name="_ctlHasKneeClearly" Margin="0,-5,0,0"/>
                 <local:ctlSpecialQuestion x:Name="_ctlIsUniForm" Margin="0,-5,0,0"/>
                 <local:ctlSpecialQuestion x:Name="_ctlHasUpwardHookAtEnd" Margin="0,-5,0,0"/>
-                <local:ctlSpecialQuestion x:Name="_ctlHasNoCallChanges" Margin="0,-5,0,0"/>
                 <local:ctlSpecialQuestion x:Name="_ctlIsConvex" Margin="0,-5,0,0"/>
             </StackPanel>
         </GroupBox>

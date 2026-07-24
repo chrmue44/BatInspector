@@ -66,7 +66,6 @@ namespace BatInspector
     public enYesNoProperty IsUniformFormFreqInt { get; set; }
     public enYesNoProperty HasUpwardHookAtEnd { get; set; }
 
-    public enYesNoProperty HasNoCallChanges { get; set; }
     public enYesNoProperty IsConvex { get; set; }
     public enYesNoProperty HasStrongHarmonic { get; set; }
 
@@ -84,7 +83,6 @@ namespace BatInspector
       HasKneeClearly = enYesNoProperty.DONT_CARE;
       IsUniformFormFreqInt = enYesNoProperty.DONT_CARE;
       HasUpwardHookAtEnd = enYesNoProperty.DONT_CARE;
-      HasNoCallChanges = enYesNoProperty.DONT_CARE;
       IsConvex = enYesNoProperty.DONT_CARE;
       HasStrongHarmonic = enYesNoProperty.DONT_CARE;
     }
@@ -103,7 +101,6 @@ namespace BatInspector
       HasKneeClearly = enYesNoProperty.DONT_CARE;
       IsUniformFormFreqInt = enYesNoProperty.DONT_CARE;
       HasUpwardHookAtEnd = enYesNoProperty.DONT_CARE;
-      HasNoCallChanges = enYesNoProperty.DONT_CARE;
       IsConvex = enYesNoProperty.DONT_CARE;
       HasStrongHarmonic = enYesNoProperty.DONT_CARE;
     }
@@ -1051,18 +1048,24 @@ namespace BatInspector
           {
             bool ok1 = (
                        (d.CallCharacteristic == enCallChar.QCF) &&
-                       (d.FreqEnd > 27.0) &&
-                       (d.HasNoCallChanges == enYesNoProperty.YES)
+                       (d.FreqEnd > 27.0) 
                      );
             if (ok1)
-              addInfo += "{QCF & (Fend < 27 kHz) & no call change";
+              addInfo += "{QCF & (Fend < 27 kHz)}";
             bool ok2 = (
                        (d.CallCharacteristic == enCallChar.FM_QCF) &&
-                       (d.FreqEnd >= 30.0)
+                       (d.FreqEnd >= 30.0) && (d.Duration > 6) && (d.Duration <10)
                      );
             if (ok2)
-              addInfo += "{ FM_QCF & Fend > 30 kHz}";
-            retVal = ok1 || ok2;
+              addInfo += "{FM_QCF & Fend > 30 kHz, 6ms < D < 10ms}";
+            bool ok3 = (
+                         (d.CallCharacteristic == enCallChar.FM_QCF) &&
+                         (d.FreqEnd >= 28.0) && (d.Duration > 10) &&
+                         d.IsUniformFormFreqInt == enYesNoProperty.YES
+                       );
+            if (ok3)
+              addInfo += "{ FM_QCF & Fend > 28 kHz, D > 10ms, uniform calls}";
+            retVal = ok1 || ok2 || ok3;
           }
           break;
 

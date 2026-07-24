@@ -105,10 +105,10 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFile
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo.ico"; Tasks: desktopicon starticon
 
 [Run]
-Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#PythonInstaller}"" ""{#MyAppDataFolder}\log"" "; Components: python
-Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#BatDetectVersion}"" ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbd2
-Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#BbnetVersion}"" ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbatty
-Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" ""{#BirdnetVersion}"" ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbnet
+Filename: "{#MyAppDataFolder}\setup\install_python.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" {#PythonInstaller} ""{#MyAppDataFolder}\log"" "; Components: python
+Filename: "{#MyAppDataFolder}\setup\install_bd2.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" {#BatDetectVersion} ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbd2
+Filename: "{#MyAppDataFolder}\setup\install_bbnet.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" {#BbnetVersion} ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbatty
+Filename: "{#MyAppDataFolder}\setup\install_birdnet.bat"; Parameters:" ""{app}\{#PythonInstFolder}"" {#BirdnetVersion} ""{#MyAppDataFolder}\log"" "; Flags:runasoriginaluser; Components: modbnet
 ; Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall unchecked; StatusMsg: {cm:MsgInstModell} 
 
 [UninstallDelete]

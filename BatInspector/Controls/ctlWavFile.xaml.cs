@@ -188,7 +188,7 @@ namespace BatInspector.Controls
             species = App.Model.Prj.Species;
           else if (App.Model.Query != null)
             species = App.Model.Query.Species;
-          if (species != null)
+          if ((species != null) && (App.Model.Prj != null))
             initCallInformations(App.Model.Prj.Species);
         }
       }

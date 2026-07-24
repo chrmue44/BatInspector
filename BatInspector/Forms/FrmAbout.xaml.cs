@@ -25,6 +25,16 @@ namespace BatInspector.Forms
       _tbVersion.Text = version;
       try
       {
+        _ctlMain.setup("Main Software");
+        _ctlMain.Ok = App.Model.checkInstalltionComponent(enInstComp.MAIN);
+        _ctlPython.setup("Local Python Instance");
+        _ctlPython.Ok = App.Model.checkInstalltionComponent(enInstComp.PYTHON);
+        _ctlBd2.setup("AI model BatDetect2");
+        _ctlBd2.Ok = App.Model.checkInstalltionComponent(enInstComp.BAT_DETECT2);
+        _ctlBirdNet.setup("AI model BirdNet");
+        _ctlBirdNet.Ok = App.Model.checkInstalltionComponent(enInstComp.BIRDNET);
+        _ctlBbNet.setup("AI model Batty BirdNet");
+        _ctlBbNet.Ok = App.Model.checkInstalltionComponent(enInstComp.BATTY_BIRDNET);
         _tbLicences.Text = File.ReadAllText("Licenses.txt");
         _tbHistory.Text = File.ReadAllText("versions.txt");
       }

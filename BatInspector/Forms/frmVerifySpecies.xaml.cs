@@ -80,11 +80,9 @@ namespace BatInspector.Forms
       _ctlHasKneeClearly.setup(MyResources.frmVerifyCallHasKnee,3 , qlw, qw);
       _ctlHasKneeClearly.setItems(qItems, new string[]{"Myotis"});
       _ctlIsUniForm.setup(MyResources.frmVerify_CallsAreUniform, 4, qlw, qw);
-      _ctlIsUniForm.setItems(qItems, new string[]{"ESER", "Plecotus"});
+      _ctlIsUniForm.setItems(qItems, new string[]{"ESER", "Plecotus, ENIL"});
       _ctlHasUpwardHookAtEnd.setup(MyResources.frmVerifySpecies_HookAtEnd, 5, qlw, qw);
       _ctlHasUpwardHookAtEnd.setItems(qItems, new string[] { "ESER"});
-      _ctlHasNoCallChanges.setup(MyResources.frmVerify_CallChanges, 6, qlw, qw);
-      _ctlHasNoCallChanges.setItems(qItems, new string[] { "ENIL" });
       _ctlIsConvex.setup(MyResources.frmVerifySpecies_Convex, 7, qlw, qw);
       _ctlIsConvex.setItems(qItems, new string[] {"MMYO"});
 
@@ -190,7 +188,6 @@ namespace BatInspector.Forms
       cd.HasCallTypeAandB = (enYesNoProperty)_ctlHasCallTypeAB.SelectIndex;
       cd.HasKneeClearly = (enYesNoProperty)_ctlHasKneeClearly.SelectIndex;
       cd.HasMyotisKink = (enYesNoProperty)_ctlHasMyotisKink.SelectIndex;
-      cd.HasNoCallChanges = (enYesNoProperty)_ctlHasNoCallChanges.SelectIndex;
       cd.HasUpwardHookAtEnd = (enYesNoProperty)_ctlHasUpwardHookAtEnd.SelectIndex;
       cd.HasStrongHarmonic = (enYesNoProperty)_ctlHasStrongHarmonics.SelectIndex;
       cd.IsConvex = (enYesNoProperty) _ctlIsConvex.SelectIndex;
@@ -206,7 +203,6 @@ namespace BatInspector.Forms
       _ctlHasCallTypeAB.setVisibility(_species);
       _ctlHasKneeClearly.setVisibility(_species);
       _ctlHasMyotisKink.setVisibility(_species);
-      _ctlHasNoCallChanges.setVisibility(_species);
       _ctlHasStrongHarmonics.setVisibility(_species);
       _ctlHasUpwardHookAtEnd.setVisibility(_species);
       _ctlIsConvex.setVisibility(_species);
@@ -416,7 +412,6 @@ namespace BatInspector.Forms
             _ctlHasCallTypeAB.init();
             _ctlHasKneeClearly.init();
             _ctlHasMyotisKink.init();
-            _ctlHasNoCallChanges.init();
             _ctlHasStrongHarmonics.init();
             _ctlHasUpwardHookAtEnd.init();
             _ctlIsConvex.init();

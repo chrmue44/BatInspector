@@ -1343,6 +1343,8 @@ namespace BatInspector
       _batExplorerPrj.Records = list.ToArray();
     }
 
+
+
     public void removeFilesNotInReport()
     {
       List<PrjRecord> newList = new List<PrjRecord>();

@@ -187,6 +187,9 @@
     <Compile Include="Controls\CtlColorMap.xaml.cs">
       <DependentUpon>CtlColorMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlComponent.xaml.cs">
+      <DependentUpon>ctlComponent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlDebugLine.xaml.cs">
       <DependentUpon>ctlDebugLine.xaml</DependentUpon>
     </Compile>
@@ -447,6 +450,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CtlColorMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ctlComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -750,6 +757,8 @@
     <Resource Include="logo.ico" />
     <Resource Include="todo.txt" />
     <Resource Include="images\icons8-edit-64.png" />
+    <Resource Include="images\danger-sign.png" />
+    <Resource Include="images\check.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

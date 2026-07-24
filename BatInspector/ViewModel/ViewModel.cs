@@ -17,6 +17,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 
 
 
@@ -32,6 +33,15 @@ namespace BatInspector
     TOOL_RUNNING
   }
 
+  public enum enInstComp
+  {
+    MAIN,
+    PYTHON,
+    BAT_DETECT2,
+    BIRDNET,
+    BATTY_BIRDNET
+  }
+
   public class SpeciesItem
   {
     public string Abbreviation { get; set; }
@@ -43,7 +53,7 @@ namespace BatInspector
     public double CallDistMin { get; set; }
     public double CallDistMax { get; set; }
   }
-
+  
   public class ModelState
   {
     public string Msg { get; set; } = null;
@@ -187,7 +197,7 @@ namespace BatInspector
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
         _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, _view.Prj.MetaData);
       else if ((Query != null) && File.Exists(Query.ReportName))
-        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, _view.Prj.MetaData);
+        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
 
     }
 
@@ -393,9 +403,10 @@ namespace BatInspector
         _view.Prj.Analysis.removeDeletedWavsFromReport(_view.Prj);
     }
 
-    void deleteFile(string wavName)
+    public int deleteFile(string wavName)
     {
-      if (_view.Prj != null)
+      int retVal = 0;
+      if ((_view.Prj != null) && _view.Prj.Ok)
       {
         string dirName = Path.Combine(_selectedDir, _view.Prj.WavSubDir);
         string delName = System.IO.Path.GetFileName(wavName);
@@ -414,8 +425,9 @@ namespace BatInspector
           }
           catch
           {
+            retVal = 1;
+            DebugLog.log($"unable to remove file {f} from project", enLogType.ERROR);
           }
-
         }
 
         _view.Prj.removeFile(wavName);
@@ -423,6 +435,9 @@ namespace BatInspector
         if (_view.Prj.Analysis.IsEmpty == false)
           _view.Prj.Analysis.removeFile(_view.Prj.ReportName, wavName);
       }
+      else
+        retVal = 2;
+      return retVal;
     }
 
     public void stopEvaluation()
@@ -940,43 +955,121 @@ namespace BatInspector
           Prj.ReloadInGui = true;
       }
     }
+
+    public bool checkInstalltionComponent(enInstComp comp)
+    {
+      bool retVal = false;
+      bool ret1, ret2, ret3, ret4;
+      switch (comp)
+      {
+        case enInstComp.MAIN:
+          ret1 = Directory.Exists(AppParams.AppDataPath);
+          if (!ret1)
+            DebugLog.log("MainApplication: Application data path not found", enLogType.ERROR);
+          ret2 = File.Exists(AppDomain.CurrentDomain.BaseDirectory + AppParams.HELP_FILE_DE);
+          if (!ret2)
+            DebugLog.log("MainApplication: Help files not found", enLogType.ERROR);
+          ret3 = Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/de");
+          if (!ret3)
+            DebugLog.log("MainApplication: Ressource files not found", enLogType.ERROR);
+          ret4 = Directory.Exists(AppParams.AppDataPath + "/dat");
+          if (!ret4)
+            DebugLog.log("MainApplication: additional application data not found", enLogType.ERROR);
+          retVal = ret1 && ret2 && ret3 && ret4;
+          break;
+
+        case enInstComp.BAT_DETECT2:
+          ret1 = File.Exists(AppParams.AppDataPath + "/models/bd2/run.bat");
+          if (!ret1)
+            DebugLog.log("BatDetect2: start script not found", enLogType.ERROR);
+          ret2 = Directory.Exists(AppParams.AppDataPath + "/models/bd2/_venv");
+          if (!ret2)
+            DebugLog.log("BatDetect2: virtual environment missing", enLogType.ERROR);
+          ret3 = Directory.Exists(AppParams.AppDataPath + "/models/bd2/batdetect2/models");
+          if (!ret3)
+            DebugLog.log("BatDetect2: models missing", enLogType.ERROR);
+          retVal = ret1 && ret2 && ret3;
+          break;
+
+        case enInstComp.BIRDNET:
+          ret1 = File.Exists(AppParams.AppDataPath + "/models/birdnet/run.bat");
+          if (!ret1)
+            DebugLog.log("BirdNET: start script not found", enLogType.ERROR);
+          ret2 = Directory.Exists(AppParams.AppDataPath + "/models/birdnet/_venv");
+          if (!ret2)
+            DebugLog.log("BirdNET: virtual environment missing", enLogType.ERROR);
+          ret3 = Directory.Exists(AppParams.AppDataPath + "/models/birdnet/birdnet_analyzer");
+          if (!ret3)
+            DebugLog.log("Birdnet: python scripts missing", enLogType.ERROR);
+          retVal = ret1 && ret2 && ret3;
+          break;
+
+        case enInstComp.BATTY_BIRDNET:
+          ret1 = File.Exists(AppParams.AppDataPath + "/models/bbnet/run.bat");
+          if (!ret1)
+            DebugLog.log("Batty BirdNET: start script not found", enLogType.ERROR);
+          ret2 = Directory.Exists(AppParams.AppDataPath + "/models/bbnet/_venv");
+          if (!ret2)
+            DebugLog.log("Batty BirdNET: virtual environment missing", enLogType.ERROR);
+          ret3 = Directory.Exists(AppParams.AppDataPath + "/models/bbnet/checkpoints");
+          if (!ret3)
+            DebugLog.log("Batty Birdnet: python scripts missing", enLogType.ERROR);
+          retVal = ret1 && ret2 && ret3;
+          break;
+
+        case enInstComp.PYTHON:
+          ret1 = Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/python311");
+          if (!ret1)
+            DebugLog.log("Python: installation directory missing", enLogType.ERROR);
+          ret2 = File.Exists(AppDomain.CurrentDomain.BaseDirectory + "/python311/python.exe");
+          if (!ret2)
+            DebugLog.log("Python: executable missing", enLogType.ERROR);
+          ret3 = Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/python311/Lib");
+          if (!ret3)
+            DebugLog.log("Python: libraries missing", enLogType.ERROR);
+          retVal = ret1 && ret2 && ret3;
+          break;
+      }
+      return retVal;
+    }
+
   }
 
 
-    public static class MailUtility
+  public static class MailUtility
+  {
+    //Extension method for MailMessage to save to a file on disk
+    public static void Save(this MailMessage message, string filename, bool addUnsentHeader = true)
     {
-      //Extension method for MailMessage to save to a file on disk
-      public static void Save(this MailMessage message, string filename, bool addUnsentHeader = true)
+      using (var filestream = File.Open(filename, FileMode.Create))
       {
-        using (var filestream = File.Open(filename, FileMode.Create))
+        if (addUnsentHeader)
         {
-          if (addUnsentHeader)
-          {
-            var binaryWriter = new BinaryWriter(filestream);
-            //Write the Unsent header to the file so the mail client knows this mail must be presented in "New message" mode
-            binaryWriter.Write(System.Text.Encoding.UTF8.GetBytes("X-Unsent: 1" + Environment.NewLine));
-          }
-
-          var assembly = typeof(SmtpClient).Assembly;
-          var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
-
-          // Get reflection info for MailWriter contructor
-          var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
-
-          // Construct MailWriter object with our FileStream
-          var mailWriter = mailWriterContructor.Invoke(new object[] { filestream });
-
-          // Get reflection info for Send() method on MailMessage
-          var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
-
-          sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter, true, true }, null);
-
-          // Finally get reflection info for Close() method on our MailWriter
-          var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
-
-          // Call close method
-          closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+          var binaryWriter = new BinaryWriter(filestream);
+          //Write the Unsent header to the file so the mail client knows this mail must be presented in "New message" mode
+          binaryWriter.Write(System.Text.Encoding.UTF8.GetBytes("X-Unsent: 1" + Environment.NewLine));
         }
+
+        var assembly = typeof(SmtpClient).Assembly;
+        var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
+
+        // Get reflection info for MailWriter contructor
+        var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
+
+        // Construct MailWriter object with our FileStream
+        var mailWriter = mailWriterContructor.Invoke(new object[] { filestream });
+
+        // Get reflection info for Send() method on MailMessage
+        var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter, true, true }, null);
+
+        // Finally get reflection info for Close() method on our MailWriter
+        var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        // Call close method
+        closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
       }
     }
   }
+}

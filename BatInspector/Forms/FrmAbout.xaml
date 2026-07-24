@@ -4,23 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:BatInspector.Properties"
+        xmlns:local="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
         Title="{x:Static res:MyResources.About}" Height="650" Width="650" Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         Icon="../images/kopf64.png">
     <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="138"></RowDefinition>
-      <RowDefinition Height="*"></RowDefinition>
-      <RowDefinition Height="*"></RowDefinition>
+      <RowDefinition Height="190"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
       <RowDefinition Height="33"></RowDefinition>
     </Grid.RowDefinitions>
-    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-      <TextBlock Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version</TextBlock>
-      <TextBlock Name="_tbVersion" Margin="50,20,30,30" FontSize="16" FontWeight="Bold">Version 0.1.2</TextBlock>
-      <Image Source="..\images\kopf256.jpg" Height="128" HorizontalAlignment="Right" Margin="10,10,10,10"></Image>
-    </StackPanel>
-    <GroupBox  Grid.Row="1" Margin="8,3,8,3" Template="{DynamicResource GroupBoxCmu}">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Margin="8,3,8,3" Template="{DynamicResource GroupBoxCmu}">
+            <GroupBox.Header>
+                <TextBlock Text="{x:Static res:MyResources.AboutComponents}" FontWeight="Bold"/>
+            </GroupBox.Header>
+                <StackPanel Orientation="Vertical">
+                    <local:ctlComponent  x:Name="_ctlMain" Margin="10,0,10,0"/>
+                    <local:ctlComponent x:Name="_ctlPython" Margin="10,0,10,0"/>
+                    <local:ctlComponent x:Name="_ctlBd2" Margin="10,0,10,0"/>
+                    <local:ctlComponent x:Name="_ctlBirdNet" Margin="10,0,10,0"/>
+                        <local:ctlComponent x:Name="_ctlBbNet" Margin="10,0,10,0"/>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Grid.Column="1" Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Right" Margin="10,0,20,0">
+                <TextBlock Name="_tbVersion" Margin="10,10,10,10" FontSize="16" FontWeight="Bold">Version 0.1.2</TextBlock>
+                <Image Source="..\images\kopf256.jpg" Height="128" HorizontalAlignment="Right" ></Image>
+            </StackPanel>
+
+        </Grid>
+
+      <GroupBox  Grid.Row="1" Margin="8,3,8,3" Template="{DynamicResource GroupBoxCmu}">
       <GroupBox.Header>
         <TextBlock Text="{x:Static res:MyResources.AboutHistory}" FontWeight="Bold"/>
       </GroupBox.Header>

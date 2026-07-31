@@ -74,7 +74,6 @@ namespace BatInspector
     List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
     BatSpeciesRegions _batSpecRegions;
-    Forms.MainWindow _mainWin;
     List<BaseModel> _models;
     CtrlRecorder _recorder;
     Statistic _statistic;

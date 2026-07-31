@@ -34,6 +34,15 @@ namespace BatInspector
     UNKNOWN = 7,
   }
 
+  enum enGuanoVarType
+  {
+    FLOAT,
+    TIME,
+    STRING,
+    LOCATION,
+    MIXED
+  }
+
   public class GuanoItem
   {
     public string NameSpace { get; set; }
@@ -71,9 +80,9 @@ namespace BatInspector
   class GuanoDictItem
   {
     public string Name { get; set; }
-    public AnyType.tType Type {get; set; }
+    public enGuanoVarType Type {get; set; }
 
-    public GuanoDictItem(string name, AnyType.tType type)
+    public GuanoDictItem(string name, enGuanoVarType type)
     {
       Name = name;
       Type = type;
@@ -101,34 +110,34 @@ namespace BatInspector
 
     static GuanoDictItem[] _dictionary = new GuanoDictItem[]
     {
-      new GuanoDictItem("GUANO|Version",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Filter HP",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Filter LP",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Firmware Version", AnyType.tType.RT_STR),
-      new GuanoDictItem("Hardware Version",AnyType.tType.RT_STR),
-      new GuanoDictItem("Humidity",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Length",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Loc Position",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("OAD|Loc Source",AnyType.tType.RT_STR),
-      new GuanoDictItem("OAD|Recording Settings",AnyType.tType.RT_STR),
-      new GuanoDictItem("Loc Accuracy",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Loc Elevation",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Make",AnyType.tType.RT_STR),
-      new GuanoDictItem("Model",AnyType.tType.RT_STR),
-      new GuanoDictItem("Original Filename",AnyType.tType.RT_STR),
-      new GuanoDictItem("Samplerate",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("BatSpy|GAIN",AnyType.tType.RT_STR),
-      new GuanoDictItem("BatSpy|Trigger AMP",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("BatSpy|Trigger TYPE",AnyType.tType.RT_STR),
-      new GuanoDictItem("BatSpy|Trigger EVENTLEN",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("BatSpy|Trigger FREQ",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("BatSpy|Trigger FILTTYPE",AnyType.tType.RT_STR),
-      new GuanoDictItem("BatSpy|AMP",AnyType.tType.RT_STR),
-      new GuanoDictItem("Serial",AnyType.tType.RT_STR),
-      new GuanoDictItem("TE",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Temperature Ext",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Temperature Int",AnyType.tType.RT_FLOAT),
-      new GuanoDictItem("Timestamp",AnyType.tType.RT_TIME),
+      new GuanoDictItem("GUANO|Version", enGuanoVarType.FLOAT),
+      new GuanoDictItem("Filter HP",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Filter LP",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Firmware Version", enGuanoVarType.STRING),
+      new GuanoDictItem("Hardware Version", enGuanoVarType.STRING),
+      new GuanoDictItem("Humidity",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Length",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Loc Position",enGuanoVarType.LOCATION),
+      new GuanoDictItem("OAD|Loc Source", enGuanoVarType.STRING),
+      new GuanoDictItem("OAD|Recording Settings", enGuanoVarType.MIXED),
+      new GuanoDictItem("Loc Accuracy",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Loc Elevation",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Make", enGuanoVarType.STRING),
+      new GuanoDictItem("Model",enGuanoVarType.STRING),
+      new GuanoDictItem("Original Filename", enGuanoVarType.STRING),
+      new GuanoDictItem("Samplerate",enGuanoVarType.FLOAT),
+      new GuanoDictItem("BatSpy|GAIN", enGuanoVarType.STRING),
+      new GuanoDictItem("BatSpy|Trigger AMP",enGuanoVarType.FLOAT),
+      new GuanoDictItem("BatSpy|Trigger TYPE", enGuanoVarType.STRING),
+      new GuanoDictItem("BatSpy|Trigger EVENTLEN",enGuanoVarType.FLOAT),
+      new GuanoDictItem("BatSpy|Trigger FREQ",enGuanoVarType.FLOAT),
+      new GuanoDictItem("BatSpy|Trigger FILTTYPE",enGuanoVarType.STRING),
+      new GuanoDictItem("BatSpy|AMP",enGuanoVarType.STRING),
+      new GuanoDictItem("Serial",enGuanoVarType.STRING),
+      new GuanoDictItem("TE",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Temperature Ext",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Temperature Int",enGuanoVarType.FLOAT),
+      new GuanoDictItem("Timestamp",enGuanoVarType.TIME),
     };
 
     public Guano()
@@ -203,13 +212,13 @@ namespace BatInspector
       return retVal;
     }
 
-    private string getFieldAsString(string fieldName, string nameSpace = "")
+    private string getFieldAsString(string fieldName, string nameSpace = "", bool logError = false)
     {
       string retVal = "";
       GuanoItem it = getField(fieldName, nameSpace);
       if (it != null)
         retVal = it.Value;
-      else
+      else if(logError)
         DebugLog.log($"could not read Guano field {fieldName}", enLogType.ERROR);
       return retVal;
     }
@@ -262,22 +271,22 @@ namespace BatInspector
               switch(dictEntry.Type)
               {
 
-                case AnyType.tType.RT_FLOAT:
-                  if (par.FieldName == "Loc Position")
-                  {
-                    par.Value = _name;
-                    tok = getToken();
-                    par.Value += " " + _name;
-                    pushBack = true;
-                  }
-                  else if (tok == enGuanoToken.NUMBER)
+                case enGuanoVarType.FLOAT:
+                  if (tok == enGuanoToken.NUMBER)
                   {
                     par.Value = _name;
                     pushBack = true;
                   }
                   break;
 
-                case AnyType.tType.RT_TIME:
+                case enGuanoVarType.LOCATION:
+                  par.Value = _name;
+                  tok = getToken();
+                  par.Value += " " + _name;
+                  pushBack = true;
+                  break;
+
+                case enGuanoVarType.TIME:
                   if (tok == enGuanoToken.NUMBER)
                   {
                     par.Value = _name;
@@ -290,19 +299,20 @@ namespace BatInspector
                     pushBack = true;
                   }
                   break;
-                case AnyType.tType.RT_STR:
-                default:
-                  if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR) || ((par.FieldName == "OAD|Recording Settings") && (tok == enGuanoToken.NUMBER)))
+
+                case enGuanoVarType.MIXED:
+                  if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.NUMBER))
                   {
-                    par.Value = _name;
-                    tok = getToken();
-                    while (tok != enGuanoToken.EOL)
-                    {
-                      if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR) || (tok == enGuanoToken.NUMBER))
-                        par.Value += " ";
-                      par.Value +=_name;
-                      tok = getToken();
-                    }
+                    tok = handleExtendedGuanoString(par);
+                    pushBack = true;
+                  }
+                  break;
+
+                case enGuanoVarType.STRING:
+                default:
+                  if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR))
+                  {
+                    tok = handleExtendedGuanoString(par);
                     pushBack = true;
                   }
                   break;
@@ -341,6 +351,22 @@ namespace BatInspector
         }
       }
       while (tok != enGuanoToken.EOF);
+    }
+
+    private enGuanoToken handleExtendedGuanoString(GuanoItem par)
+    {
+      enGuanoToken tok;
+      par.Value = _name;
+      tok = getToken();
+      while (tok != enGuanoToken.EOL)
+      {
+        if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR) || (tok == enGuanoToken.NUMBER))
+          par.Value += " ";
+        par.Value += _name;
+        tok = getToken();
+      }
+
+      return tok;
     }
 
     public void copyMetaData(WavFile wav)

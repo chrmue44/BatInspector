@@ -31,7 +31,6 @@ namespace BatInspector.Forms
     int _annSpace;
     string _rootDir;
 
-    bool _memCalcDone;
     public frmCleanup()
     {
       InitializeComponent();
@@ -52,8 +51,6 @@ namespace BatInspector.Forms
       }
       else
       {
-
-        _memCalcDone = true;
         _btnOk.IsEnabled = true;
         string wavUnit = "kB";
         string pngUnit = "kB";
@@ -90,7 +87,6 @@ namespace BatInspector.Forms
     }
 private void folderSelected()
     {
-      _memCalcDone = false;
       _btnOk.IsEnabled = false;
       _rootDir = _ctlSelectFolder.getValue();
       Thread t = new Thread(threadCheckMem);

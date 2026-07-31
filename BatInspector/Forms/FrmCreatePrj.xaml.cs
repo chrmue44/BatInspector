@@ -263,6 +263,7 @@ namespace BatInspector.Forms
         _info.ModelParams.DataSet = _ctlDataSet.getValue();
         _info.MetaData = (enMetaData)_ctlMetaData.SelectIndex;
         _info.RecorderId = _ctlRecorderId.getValue();
+        _info.IncludeSubDirs = _cbRecursive.IsChecked == true;
         bool ok = true;
         double lat = 0;
         double lon = 0;

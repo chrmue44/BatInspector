@@ -111,9 +111,15 @@ namespace BatInspector.Forms
       double maxWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;
       double maxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
       if ((this.Left + this.Width) > maxWidth)
-        this.Width = maxHeight - this.Left;
+      {
+        double w = maxHeight - this.Left;
+        this.Width = w > 0 ? w : maxWidth - 50;
+      }
       if ((this.Top + this.Height) > maxHeight)
-        this.Height = maxHeight - this.Top;
+      {
+        double h = maxHeight - this.Top;
+        this.Height = h > 0 ? h : maxHeight - 50;
+      }
 
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
@@ -1510,7 +1516,20 @@ namespace BatInspector.Forms
         DebugLog.save();
         string[] logs = App.Model.getLastLogs();
         if ((logs != null) && (logs.Length > 0))
-          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, logs);
+          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, MyResources.msgErrorEmail, logs);
+      }
+    }
+
+    private void _mnReportInstall_Click(object sender, RoutedEventArgs e)
+    {
+      MessageBoxResult res = MessageBox.Show(MyResources.MsgInstallReport, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      if (res == MessageBoxResult.Yes)
+      {
+        string subject = $"Installation Report BatInspector V{AppParams.AppVersion}";
+        DebugLog.save();
+        string[] logs = App.Model.getInstallationLogs();
+        if ((logs != null) && (logs.Length > 0))
+          App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, MyResources.msgInstallationEmail, logs);
       }
     }
 

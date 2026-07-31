@@ -209,6 +209,7 @@
                                         <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination1}" Name="_mnBat1" Click="_mnBat1_Click" />
                                         <MenuItem Header="{x:Static res:MyResources.FrmMainBatDetermination2}" Name="_mnBat2" Click="_mnBat2_Click" />
                                         <MenuItem Header="{x:Static res:MyResources.FrmMainReportError}" Name="_mnReportError" Click="_mnReportError_Click" />
+                                        <MenuItem Header="{x:Static res:MyResources.FrmMainReportInstallation}" Name="_mnReportInstall" Click="_mnReportInstall_Click" />
                                     </ContextMenu>
                                 </ToggleButton.ContextMenu>
                             </ToggleButton>

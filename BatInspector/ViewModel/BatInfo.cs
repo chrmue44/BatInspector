@@ -170,7 +170,7 @@ namespace BatInspector
   public class SpeciesInfos
   {
     public SpeciesInfos(string abbr, string latin, string local, int page, string notDist, bool show, double fcMin, double fcMax, double dMin, double dMax,
-                        double fMinMin, double fMinMax, double fMaxMin, double fMaxMax, double distMin, double distMax,
+                        double fMinMin, double fMinMax, double fMaxMin, double fMaxMax, double distMin, double distMax, string addContraint,
                         CheckData[] check = null, string wavExample = null)
     {
       Abbreviation = abbr;
@@ -190,6 +190,7 @@ namespace BatInspector
       CallDistMax = distMax;
       ProofSpecies = "TODO";
       CharCalls = "TODO";
+      AdditionalConstraint = addContraint;
       WavExample = wavExample;
       CheckData = check;
       PageNr = page;
@@ -210,13 +211,13 @@ namespace BatInspector
       if (retVal == null)
       {
         if (abbreviation == "Myotis")
-          retVal = new SpeciesInfos("Myotis", "Myotis", "Myotis", 1,"", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          retVal = new SpeciesInfos("Myotis", "Myotis", "Myotis", 1,"", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"");
         else if (abbreviation == "Plecotus")
-          retVal = new SpeciesInfos("Plecotus", "Plecotus", "Plecotus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          retVal = new SpeciesInfos("Plecotus", "Plecotus", "Plecotus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"");
         else if (abbreviation == "Pipistrellus")
-          retVal = new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          retVal = new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"");
         else if (abbreviation == "Nyctaloid")
-          retVal = new SpeciesInfos("Nyctaloid", "Nyctaloid", "Nyctaloid",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+          retVal = new SpeciesInfos("Nyctaloid", "Nyctaloid", "Nyctaloid",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"");
       }
       return retVal;
     }
@@ -329,8 +330,13 @@ namespace BatInspector
     public string WavExample { get; set; }
 
     [DataMember]
-    [LocalizedDescription("SpecDescWav")]
+    [Description("Check data")]
     public CheckData[] CheckData { get; set; }
+
+    [DataMember]
+    [Description("Check data")]
+    public string AdditionalConstraint { get; set; }
+
 
     public static bool isInList(List<SpeciesInfos> list, string species)
     {
@@ -426,7 +432,8 @@ namespace BatInspector
               DebugLog.log("settings file not well formed!", enLogType.ERROR);
           }
         }
-        else
+
+        if ((retVal == null) || (retVal.Species[0].AdditionalConstraint == null))
         {
           DebugLog.log("BatInfo does not exist, create new file: " + fPath, enLogType.DEBUG);
           if (!Directory.Exists(fDir))
@@ -789,33 +796,33 @@ namespace BatInspector
 
 
       Species = new List<SpeciesInfos>();
-      Species.Add(new SpeciesInfos("BBAR", "Barbastella barbastellus", "Mopsfledermaus", 73, "", true, 31, 42, 2, 5, 25, 30, 38, 48, 50, 75, cBbar, "dat/Bbar_13.wav"));
-      Species.Add(new SpeciesInfos("ENIL", "Eptesicus nilssonii", "Nordfledermaus", 47, "", true, 26, 31, 8, 19, 26, 29, 35, 45, 120, 220, cEnil, "dat/Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"));
-      Species.Add(new SpeciesInfos("ESER", "Eptesicus Serotinus", "Breitflügelfledermaus", 43, "", true, 21, 25, 10, 18, 22, 27, 35, 60, 130, 180, cEser, "dat/Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"));
-      Species.Add(new SpeciesInfos("HSAV", "Hypsugo savii", "Alpenfledermaus", 51, "", true, 31, 36, 6, 12, 31, 36, 35, 50, 180, 370, cHsav));
-      Species.Add(new SpeciesInfos("MALC", "Myotis alcathoe", "Nymphenfledermaus", 19, "", true, 48, 65, 2, 4, 41, 47, 100, 130, 50, 90, cMalc));
-      Species.Add(new SpeciesInfos("MBEC", "Myotis bechsteinii", "Bechsteinfledermaus", 28, "", true, 38, 50, 2.5, 6, 25, 40, 80, 100, 90, 110, cMbec, "dat/Myotis_bechsteinii_Rid_6059.wav"));
-      Species.Add(new SpeciesInfos("MBRA", "Myotis brandtii", "Große Bartfledermaus", 23, "MMYS", true, 37, 50, 4, 7, 23, 30, 65, 100, 80, 110, cMmys, "dat/Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"));
-      Species.Add(new SpeciesInfos("MDAS", "Myotis dasycneme", "Teichfledermaus", 15, "", true, 36, 42, 5, 9, 25, 35, 65, 85, 80, 120, cMdas));
-      Species.Add(new SpeciesInfos("MDAU", "Myotis daubentonii", "Wasserfledermaus", 11, "", true, 37, 55, 3, 7, 25, 40, 55, 95, 65, 95, cMdau, "dat/Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"));
-      Species.Add(new SpeciesInfos("MEMA", "Myotis emarginatus", "Wimperfledermaus", 32, "", true, 48, 65, 1.5, 4, 30, 40, 90, 140, 40, 90, cMema));
-      Species.Add(new SpeciesInfos("MMYO", "Myotis myotis", "Großes Mausohr", 36, "", true, 27, 37, 5, 10, 21, 26, 50, 75, 90, 160, cMmyo, "dat/Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"));
-      Species.Add(new SpeciesInfos("MMYS", "Myotis mystacinus", "Kleine Bartfledermaus", 23, "MBRA", true, 40, 57, 3, 6, 28, 35, 65, 100, 70, 90, cMmys, "dat/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"));
-      Species.Add(new SpeciesInfos("MNAT", "Myotis nattereri", "Fransenfledermaus", 40, "", true, 28, 53, 2, 5, 12, 25, 80, 150, 75, 110, cMnat));
-      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnatus", "Kleines Mausohr", 1, "", true, 28, 40, 5, 10, 21, 26, 50, 80, 90, 160, null));
-      Species.Add(new SpeciesInfos("MSCH", "Miniopterus schreibersii", "Langflügelfledermaus", 1,"", true, 49, 55, 6, 15, 49, 55, 55, 80, 65, 140, null));
-      Species.Add(new SpeciesInfos("NLAS", "Nyctalus lasiopterus", "Riesenabendsegler", 1,"", true, 14.5, 23, 12, 28, 14, 20, 15, 25, 160, 820, null));
-      Species.Add(new SpeciesInfos("NLEI", "Nyctalus leisleri", "Kleiner Abendsegler", 36, "", true, 21, 30, 5, 20, 22, 26, 25, 40, 200, 400, cNlei, "dat/Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"));
-      Species.Add(new SpeciesInfos("NNOC", "Nyctalus noctula", "Großer Abendsegler", 32, "", true, 17, 29, 5, 28, 16, 27, 20, 40, 250, 300, cNnoc, "dat/Nyctalus_noctula_Rid_5953.wav"));
-      Species.Add(new SpeciesInfos("PKUH", "Pipistrellus kuhlii", "Weißrandfledermaus", 55,"PNAT", true, 35, 42, 5, 12, 35, 42, 35, 60, 90, 130, cPnat));
-      Species.Add(new SpeciesInfos("PNAT", "Pipistrellus nathusii", "Rauhautfledermaus", 55, "PKUH", true, 35, 42, 4, 11, 35, 41, 36, 70, 100, 130, cPnat, "dat/Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"));
-      Species.Add(new SpeciesInfos("PPIP", "Pipistrellus pipistrellus", "Zwergfledermaus", 61, "", true, 41, 52, 3, 10, 42, 51, 44, 70, 75, 130, cPpip, "dat/Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"));
-      Species.Add(new SpeciesInfos("PPYG", "Pipistrellus pygmaeus", "Mückenfledermaus", 65,"", true, 50, 64, 3, 10, 51, 56, 60, 80, 65, 95, cPpyg, "dat/Pipistrellus_pygmaeus_Rid_6162.wav"));
-      Species.Add(new SpeciesInfos("PAUR", "Plecotus auritus", "Braunes Langohr", 69, "PAUS", true, 22, 40, 2, 5, 18, 23, 45, 60, 40, 120, cPaur, "dat/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"));
-      Species.Add(new SpeciesInfos("PAUS", "Plecotus austriacus", "Graues Langohr", 69, "PAUR", true, 22, 32, 2, 6, 20, 25, 40, 50, 60, 150, cPaur, "dat/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"));
-      Species.Add(new SpeciesInfos("RFER", "Rhinolophus ferrumequinum", "Große Hufeisennase", 77, "", true, 77, 86, 35, 75, 50, 78, 77, 86, 80, 120, cRfer));
-      Species.Add(new SpeciesInfos("RHIP", "Rhinolophus hipposideros", "Kleine Hufeisennase", 79, "", true, 100, 116, 16, 75, 83, 100, 100, 116, 60, 100, cRhip));
-      Species.Add(new SpeciesInfos("VMUR", "Vespertilio murinus", "Zweifarbfledermaus", 40, "", true, 22, 27, 10, 21, 21, 24, 30, 45, 75, 130, cVmur, "dat/Vespertilio_murinus_Ski0150_S2_From0877624ms_To0904583ms.wav"));
+      Species.Add(new SpeciesInfos("BBAR", "Barbastella barbastellus", "Mopsfledermaus", 73, "", true, 31, 42, 2, 5, 25, 30, 38, 48, 50, 75, "",cBbar, "dat/Bbar_13.wav"));
+      Species.Add(new SpeciesInfos("ENIL", "Eptesicus nilssonii", "Nordfledermaus", 47, "((Duration >= 6) && (Duration <= 10) && (FreqMin >= 30000)) || ((Duration > 10) && (FreqMin >= 28000))", true, 26, 31, 8, 19, 26, 29, 35, 45, 120, 220, "FreqMin >= 30000", cEnil, "dat/Eptesicus_nilssonii_Ski0125_S2_From0192948ms_To0203771ms.wav"));
+      Species.Add(new SpeciesInfos("ESER", "Eptesicus Serotinus", "Breitflügelfledermaus", 43, "", true, 21, 25, 10, 18, 22, 27, 35, 60, 130, 180, "FreqMin <= 26000", cEser, "dat/Eser_Ski0113_S2_From2329314ms_To2354627ms.wav"));
+      Species.Add(new SpeciesInfos("HSAV", "Hypsugo savii", "Alpenfledermaus", 51, "", true, 31, 36, 6, 12, 31, 36, 35, 50, 180, 370, "", cHsav));
+      Species.Add(new SpeciesInfos("MALC", "Myotis alcathoe", "Nymphenfledermaus", 19, "", true, 48, 65, 2, 4, 41, 47, 100, 130, 50, 90, "", cMalc));
+      Species.Add(new SpeciesInfos("MBEC", "Myotis bechsteinii", "Bechsteinfledermaus", 28, "", true, 38, 50, 2.5, 6, 25, 40, 80, 100, 90, 110, "", cMbec, "dat/Myotis_bechsteinii_Rid_6059.wav"));
+      Species.Add(new SpeciesInfos("MBRA", "Myotis brandtii", "Große Bartfledermaus", 23, "MMYS", true, 37, 50, 4, 7, 23, 30, 65, 100, 80, 110, "", cMmys, "dat/Myotis_brandtii_Ski0120_S2_From2264955ms_To2272950ms.wav"));
+      Species.Add(new SpeciesInfos("MDAS", "Myotis dasycneme", "Teichfledermaus", 15, "", true, 36, 42, 5, 9, 25, 35, 65, 85, 80, 120, "", cMdas));
+      Species.Add(new SpeciesInfos("MDAU", "Myotis daubentonii", "Wasserfledermaus", 11, "", true, 37, 55, 3, 7, 25, 40, 55, 95, 65, 95, "", cMdau, "dat/Mdau_Ski0111_S2_From2386127ms_To2412446ms.wav"));
+      Species.Add(new SpeciesInfos("MEMA", "Myotis emarginatus", "Wimperfledermaus", 32, "", true, 48, 65, 1.5, 4, 30, 40, 90, 140, 40, 90, "", cMema));
+      Species.Add(new SpeciesInfos("MMYO", "Myotis myotis", "Großes Mausohr", 36, "", true, 27, 37, 5, 10, 21, 26, 50, 75, 90, 160, "", cMmyo, "dat/Mmyo_Ski0112_S1_From0748143ms_To0763637ms.wav"));
+      Species.Add(new SpeciesInfos("MMYS", "Myotis mystacinus", "Kleine Bartfledermaus", 23, "MBRA", true, 40, 57, 3, 6, 28, 35, 65, 100, 70, 90, "", cMmys, "dat/Myotis_mystacinus_Ski0126_S2_From0066286ms_To0091143ms.wav"));
+      Species.Add(new SpeciesInfos("MNAT", "Myotis nattereri", "Fransenfledermaus", 40, "", true, 28, 53, 2, 5, 12, 25, 80, 150, 75, 110, "", cMnat));
+      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnatus", "Kleines Mausohr", 1, "", true, 28, 40, 5, 10, 21, 26, 50, 80, 90, 160, "", null));
+      Species.Add(new SpeciesInfos("MSCH", "Miniopterus schreibersii", "Langflügelfledermaus", 1,"", true, 49, 55, 6, 15, 49, 55, 55, 80, 65, 140,"", null));
+      Species.Add(new SpeciesInfos("NLAS", "Nyctalus lasiopterus", "Riesenabendsegler", 1,"", true, 14.5, 23, 12, 28, 14, 20, 15, 25, 160, 820, "", null));
+      Species.Add(new SpeciesInfos("NLEI", "Nyctalus leisleri", "Kleiner Abendsegler", 36, "", true, 21, 30, 5, 20, 22, 26, 25, 40, 200, 400, "FreqMin > 23000", cNlei, "dat/Nlei_Ski0112_S2_From0359779ms_To0397522ms.wav"));
+      Species.Add(new SpeciesInfos("NNOC", "Nyctalus noctula", "Großer Abendsegler", 32, "", true, 17, 29, 5, 28, 16, 27, 20, 40, 250, 300, "FreqMin < 21000", cNnoc, "dat/Nyctalus_noctula_Rid_5953.wav"));
+      Species.Add(new SpeciesInfos("PKUH", "Pipistrellus kuhlii", "Weißrandfledermaus", 55,"PNAT", true, 35, 42, 5, 12, 35, 42, 35, 60, 90, 130, "FreqMin < 41000", cPnat));
+      Species.Add(new SpeciesInfos("PNAT", "Pipistrellus nathusii", "Rauhautfledermaus", 55, "PKUH", true, 35, 42, 4, 11, 35, 41, 36, 70, 100, 130, "FreqMin < 41000",cPnat, "dat/Pnat_Ski0121_S1_From1276579ms_To1294660ms.wav"));
+      Species.Add(new SpeciesInfos("PPIP", "Pipistrellus pipistrellus", "Zwergfledermaus", 61, "", true, 41, 52, 3, 10, 42, 51, 44, 70, 75, 130, "(FreqMin > 42000) && (FreqMin < 49000)",cPpip, "dat/Ppip_Ski0112_S1_From0107809ms_To0159033ms.wav"));
+      Species.Add(new SpeciesInfos("PPYG", "Pipistrellus pygmaeus", "Mückenfledermaus", 65,"", true, 50, 64, 3, 10, 51, 56, 60, 80, 65, 95, "FreqMin > 51000", cPpyg, "dat/Pipistrellus_pygmaeus_Rid_6162.wav"));
+      Species.Add(new SpeciesInfos("PAUR", "Plecotus auritus", "Braunes Langohr", 69, "PAUS", true, 22, 40, 2, 5, 18, 23, 45, 60, 40, 120, "",cPaur, "dat/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"));
+      Species.Add(new SpeciesInfos("PAUS", "Plecotus austriacus", "Graues Langohr", 69, "PAUR", true, 22, 32, 2, 6, 20, 25, 40, 50, 60, 150, "", cPaur, "dat/Plecotus_spec_Ski0126_S2_From0311629ms_To0329446ms.wav"));
+      Species.Add(new SpeciesInfos("RFER", "Rhinolophus ferrumequinum", "Große Hufeisennase", 77, "", true, 77, 86, 35, 75, 50, 78, 77, 86, 80, 120, "", cRfer));
+      Species.Add(new SpeciesInfos("RHIP", "Rhinolophus hipposideros", "Kleine Hufeisennase", 79, "", true, 100, 116, 16, 75, 83, 100, 100, 116, 60, 100, "", cRhip));
+      Species.Add(new SpeciesInfos("VMUR", "Vespertilio murinus", "Zweifarbfledermaus", 40, "", true, 22, 27, 10, 21, 21, 24, 30, 45, 75, 130, "", cVmur, "dat/Vespertilio_murinus_Ski0150_S2_From0877624ms_To0904583ms.wav"));
     }
 
 

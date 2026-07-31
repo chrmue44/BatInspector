@@ -196,8 +196,10 @@ namespace BatInspector
     {
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
         _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, _view.Prj.MetaData);
+      //      else if ((Query != null) && File.Exists(Query.ReportName))
+      //        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
       else if ((Query != null) && File.Exists(Query.ReportName))
-        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
+      _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
 
     }
 
@@ -685,7 +687,7 @@ namespace BatInspector
           if (Directory.Exists(delDir))
           {
             Directory.Delete(delDir, true);
-            DebugLog.log("deletes files permanently removed from project " + dir.Name, enLogType.INFO);
+            DebugLog.log("deleted files permanently removed from project " + dir.Name, enLogType.INFO);
           }
         }
         if (delOrig)
@@ -813,6 +815,7 @@ namespace BatInspector
       {
         foreach (DirectoryInfo d in dirs)
         {
+          DebugLog.log($"checking for disk space to free in directory {d.FullName}", enLogType.INFO);
           if (Project.containsProject(d) != "")
             ok = checkProjectMem(d, ref wavSpace, ref pngSpace, ref origSpace, ref annSpace);
           else
@@ -895,11 +898,23 @@ namespace BatInspector
       return retVal;
     }
 
-    public void sendEmail(string receiver, string subject, string[] files)
+    public string[] getInstallationLogs()
+    {
+      DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
+      FileInfo[] files = dir.GetFiles("*.inst_log");
+      string[] retVal = new string[files.Length];
+      for (int i = 0; i < files.Length; i++)
+      {
+        retVal[i] = files[i].FullName;
+      }
+      return retVal;
+    }
+
+    public void sendEmail(string receiver, string subject, string body, string[] files)
     {
       try
       {
-        MailMessage mailMessage = new MailMessage("me@my.home", AppParams.ERROR_RECIPIENT, subject,MyResources.msgErrorEmail);
+        MailMessage mailMessage = new MailMessage("me@my.home", AppParams.ERROR_RECIPIENT, subject, body);
         mailMessage.IsBodyHtml = false;
         for(int i = 0; i < files.Length; i++)
           mailMessage.Attachments.Add(new Attachment(files[i]));

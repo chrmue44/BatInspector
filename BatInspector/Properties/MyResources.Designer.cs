@@ -1960,6 +1960,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to recursive.
+        /// </summary>
+        public static string FrmCreatePrj_Rekursiv {
+            get {
+                return ResourceManager.GetString("FrmCreatePrj_Rekursiv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to for import of raw data (WAV, FLAC, RAW): add sub directories.
+        /// </summary>
+        public static string FrmCreatePrj_toolTipRecursive {
+            get {
+                return ResourceManager.GetString("FrmCreatePrj_toolTipRecursive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overwrite location in source files?.
         /// </summary>
         public static string FrmCreatePrjCbOverwriteLoc {
@@ -2469,6 +2487,15 @@ namespace BatInspector.Properties {
         public static string FrmMainReportError {
             get {
                 return ResourceManager.GetString("FrmMainReportError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Installation Report....
+        /// </summary>
+        public static string FrmMainReportInstallation {
+            get {
+                return ResourceManager.GetString("FrmMainReportInstallation", resourceCulture);
             }
         }
         
@@ -4476,6 +4503,24 @@ namespace BatInspector.Properties {
         public static string msgInformation {
             get {
                 return ResourceManager.GetString("msgInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation Report.
+        /// </summary>
+        public static string msgInstallationEmail {
+            get {
+                return ResourceManager.GetString("msgInstallationEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to send an installation report?.
+        /// </summary>
+        public static string MsgInstallReport {
+            get {
+                return ResourceManager.GetString("MsgInstallReport", resourceCulture);
             }
         }
         

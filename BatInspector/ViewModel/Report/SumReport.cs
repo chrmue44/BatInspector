@@ -36,6 +36,7 @@ namespace BatInspector
   {
     public string ReportName { get; set; }
     public string SummaryName { get; set; }
+    public string PrjDir { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
   }
@@ -545,6 +546,7 @@ namespace BatInspector
   /// </summary>
   public class SumReport
   {
+    public const int CNT_BEST_FILES = 10;
     private Csv _rep;
     private string _rootDir;
     private DirectoryInfo _dirInfo;
@@ -563,6 +565,10 @@ namespace BatInspector
     private string _reportName;
     private List<SpeciesInfos> _species;
     private SpeciesInfos _currSpecies;
+
+    private List<SpeciesRecordingItem> _bestFilesCurSpec;
+    private Query _qryBestOf;
+    private bool _withQuery = false;
 
     public SumReport()
     {
@@ -661,10 +667,20 @@ namespace BatInspector
       retVal.EndDate = _end;
       double latitude = 0;
       double longitude = 0;
+
+      if (_withQuery)
+      {
+        ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+        string qryName = Path.Combine(_dstDir, _currSpecies.Abbreviation);
+        _qryBestOf = new Query(qryName, _rootDir, _dstDir, "", modelParams, App.Model.DefaultModelParams.Length);
+        _qryBestOf.createQueryFile();
+      }
+
       while (date < _end)
       {
         DailyActivity dailyActivity = new DailyActivity(date,ticksPerHour);
         int days = calcDays(date, _end, _period);
+
         bool cont = gatherDailyActivity(date, days, _expression, dailyActivity, out bool addedLine);
         if(dailyActivity.TotalCalls > 0)
         {
@@ -687,7 +703,10 @@ namespace BatInspector
         retVal.Latitude = latitude / retVal.DaysWithData;
         retVal.Longitude = longitude / retVal.DaysWithData;
       }
-      if(_showActivityData != null)
+      if (_withQuery)
+        _qryBestOf.writeQueryFile();
+
+      if (_showActivityData != null)
         _showActivityData(retVal, Path.Combine(_dstDir,_bmpName));
       
       if(_currSpecies != null)
@@ -705,13 +724,14 @@ namespace BatInspector
       _showActivityData = dlgShowHeatMap;
       _bmpName = bmpName;
       _modelParams = modelPars;
+      _withQuery = false;
 
       Thread t = new Thread(createActivityDiagSync);
       t.Start();
 
     }
 
-    public ActivityItem createActivityDiagSync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
+    public ActivityItem createActivityDiagSync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap, bool withQuery)
     {
       _start = start;
       _end = end;
@@ -722,6 +742,7 @@ namespace BatInspector
       _showActivityData = dlgShowHeatMap;
       _bmpName = bmpName;
       _modelParams = modelPars;
+      _withQuery = withQuery;
        createActivityDiagSync();
       return _currActivityItem;
     }
@@ -780,13 +801,15 @@ namespace BatInspector
       }
       retVal.Species = getSpeciesInReport(retVal.Days);
       retVal.Activities.Clear();
+
       foreach (string s in retVal.Species)
       {
         SpeciesInfos si = SpeciesInfos.findAbbreviation(s, App.Model.SpeciesInfos);
         if (si != null)
         {
           _currSpecies = si;
-          ActivityItem it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG);
+          _bestFilesCurSpec = new List<SpeciesRecordingItem>();
+          ActivityItem it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG, true);
           retVal.Activities.Add(it);
         }
       }
@@ -886,6 +909,7 @@ namespace BatInspector
           {
             ReportName = reportFile,
             SummaryName = summaryName,
+            PrjDir = subDir.FullName,
             StartDate = startDate,
             EndDate = endDate
           };
@@ -967,8 +991,22 @@ namespace BatInspector
                     DebugLog.log("SumReport::createHeatMapLine, index error", enLogType.ERROR);
                 }
               }
+
               if (!retVal)
                 break;
+              if (_withQuery)
+              {
+                double score = file.getScore(_currSpecies.Abbreviation);
+                if (score > 0.1)
+                {
+                  string fileName = Path.Combine(rep.PrjDir, AppParams.DIR_WAVS, file.Name);
+                  bool add = SpeciesRecordingItem.insert(_bestFilesCurSpec, file.Name, score, out string remove);
+                  if (add)
+                    _qryBestOf.addFile(file, rep.PrjDir, AppParams.DIR_WAVS);
+                  if (remove != "")
+                    _qryBestOf.removeFile(remove);
+                }
+              }
             }
             addedLine = true;
             DebugLog.log($"evaluating report {rep.ReportName}  nr of calls: {dailyActivity.TotalCalls}", enLogType.INFO);

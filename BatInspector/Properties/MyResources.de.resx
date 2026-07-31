@@ -2064,4 +2064,19 @@
   <data name="AboutComponents" xml:space="preserve">
     <value>Installierte Komponenten</value>
   </data>
+  <data name="FrmCreatePrj_Rekursiv" xml:space="preserve">
+    <value>rekursiv</value>
+  </data>
+  <data name="FrmCreatePrj_toolTipRecursive" xml:space="preserve">
+    <value>für den Import von Rohdaten (WAV, FLAC, RAW): beziehe Unterverzeichnisse mit ein</value>
+  </data>
+  <data name="FrmMainReportInstallation" xml:space="preserve">
+    <value>Installationsbericht senden...</value>
+  </data>
+  <data name="MsgInstallReport" xml:space="preserve">
+    <value>Möchten Sie wirklich einen Installationsbericht senden?</value>
+  </data>
+  <data name="msgInstallationEmail" xml:space="preserve">
+    <value>Installation Report</value>
+  </data>
 </root>

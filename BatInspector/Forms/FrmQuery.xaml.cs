@@ -53,7 +53,7 @@ namespace BatInspector.Forms
 
     private void btnOK_Click(object sender, RoutedEventArgs e)
     {
-       ModelParams modelParams = App.Model.DefaultModelParams[_ctlModel.getSelectedIndex()];
+      ModelParams modelParams = App.Model.DefaultModelParams[_ctlModel.getSelectedIndex()];
       App.Model.Query = new Query(_ctlName.getValue(), _ctlSelectSource.getValue(), _ctlSelectDest.getValue(),
                                _tbQuery.Text, modelParams, App.Model.DefaultModelParams.Length);
       this.Visibility = Visibility.Hidden;

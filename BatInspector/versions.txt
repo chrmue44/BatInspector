@@ -1,4 +1,10 @@
-# V0.9.7.1   
+# V0.9.8.0
+- create "best of" queries for each species automatically during report generation
+- added option "recursive" in import dialog
+- improved behaviour of cleanup dialog: 
+  doesn't freeze anymore, during analysis of deeply nested dir structures
+
+# V0.9.7.1   22.07.26
 - bugfix: removed error msg when "saving" query
 - added loggging of installation of python  components
 - added display of installation status in info screen

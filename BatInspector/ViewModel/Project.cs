@@ -8,6 +8,7 @@
 
 using libParser;
 using libScripter;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,6 +48,8 @@ namespace BatInspector
     public bool RemoveSource { get; set; }
     public string WavSubDir { get; set; } = AppParams.DIR_WAVS;
     public ModelParams ModelParams { get; set; }
+
+    public bool IncludeSubDirs { get; set; } = false;
 
     public string Location { get; set; }
     public string Creator { get; set; }
@@ -624,18 +627,35 @@ namespace BatInspector
     private static string[] getSelectedFiles(PrjInfo prjInfo, string searchPattern)
     {
       string wavDir = prjInfo.IsProjectFolder ? Path.Combine(prjInfo.SrcDir, prjInfo.WavSubDir) : prjInfo.SrcDir;
-      string[] files = Directory.GetFiles(wavDir, searchPattern);
-      List<string> strings = new List<string>();
-      foreach (string file in files)
+      List<string> fileNames = new List<string>();
+      crawlForFiles(prjInfo, wavDir, fileNames, searchPattern);
+      return fileNames.ToArray();
+    }
+
+    private static void crawlForFiles(PrjInfo prjInfo, string wavDir, List<string>files, string searchPattern)
+    {
+      // search in subdirs
+      string[] dirs = Directory.GetDirectories(wavDir);
+      if (prjInfo.IncludeSubDirs)
+      {
+        foreach (string dir in dirs)
+        {
+          DebugLog.log($"include files from sub directory '{dir}'", enLogType.INFO);
+          crawlForFiles(prjInfo, dir, files, searchPattern);
+        }
+      }
+
+      // search in current dir
+      string[] filesInDir = Directory.GetFiles(wavDir, searchPattern);
+      foreach (string file in filesInDir)
       {
         DateTime fileTime = PrjMetaData.getDateTimeFromFileName(file);
         if ((prjInfo.StartTime <= fileTime) && (fileTime <= prjInfo.EndTime))
-          strings.Add(file);
+          files.Add(file);
       }
-      return strings.ToArray();
     }
 
- 
+
     /*
     private static bool removeAppleTempFiles(PrjInfo info)
     {

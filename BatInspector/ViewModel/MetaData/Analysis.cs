@@ -82,6 +82,52 @@ namespace BatInspector
     public const string PERF_CORRECT = "correct";  //performance result: bat call correctly detected
   }
 
+
+  public class SpeciesRecordingItem
+  {
+    public string fullName { get; set; }
+    public double Score { get; set; }
+
+    public SpeciesRecordingItem(string name, double score)
+    {
+      fullName = name;
+      Score = score;
+    }
+
+    public static bool insert(List<SpeciesRecordingItem> list, string name, double score, out string remove)
+    {
+      bool retVal = false;
+      int idx = -1;
+      remove = "";
+      for(int i = 0; i < list.Count; i++)
+      {
+        if (list[i].Score < score)
+        {
+          idx = i;
+          break;
+        }
+      }
+
+      SpeciesRecordingItem it = new SpeciesRecordingItem(name, score);
+      if (idx >= 0)
+      {
+        list.Insert(idx, it);
+        retVal = true;
+        if (list.Count > SumReport.CNT_BEST_FILES)
+        {
+          remove = list.Last().fullName;
+          list.Remove(list.Last());
+        }   
+      }
+      else if (list.Count < SumReport.CNT_BEST_FILES)
+      {
+        list.Add(it);
+        retVal = true;
+      }
+      return retVal;
+    }
+  }
+
   [DataContract]
   public class SumItem
   {
@@ -1137,6 +1183,57 @@ namespace BatInspector
       return retVal;
     }
 
+
+    /// <summary>
+    /// calculation of a score value to find the best reference recording for a certain species
+    /// </summary>
+    /// <param name="spec"></param>
+    /// <returns></returns>
+    public double getScore(string spec)
+    {
+      double retVal = 0;
+      foreach(AnalysisCall c in _calls)
+      {
+        string specMan = c.getString(Cols.SPECIES_MAN);
+        if(specMan == spec)
+        {
+          retVal += c.getDouble(Cols.PROBABILITY) * 100;
+          retVal += c.getDouble(Cols.SNR) * 5;
+        }
+      }
+      int nrOfSpecies = getNrOfSpecies(Cols.SPECIES_MAN);
+      if (retVal > 0)
+        retVal += (3 - nrOfSpecies) * 100;
+      for (int i = 1; i < (nrOfSpecies + 1); i++)
+      {
+        KeyValuePair<string, int> specKey = getSpecies(i, Cols.SPECIES_MAN);
+        if (specKey.Key == spec)
+        {
+          SpeciesInfos si = SpeciesInfos.findAbbreviation(spec, App.Model.SpeciesInfos);
+          if (si != null)
+          {
+            //reward if contraint for species is fulfilled
+            string filterExp = $"(SpeciesMan ==\"{spec}\") && ({si.AdditionalConstraint})";
+            FilterItem filterItem = new FilterItem(0, "temp", filterExp, false);
+            App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
+            bool ok = App.Model.Filter.apply(filterItem, this);
+            if (ok && (si.AdditionalConstraint != ""))
+              retVal += 100;
+
+            // penalize too much calls
+            double callDist = 0.1;  // default avg. call dist for all species, TODO calc avg. call dist for species
+            double maxCallsPerWav = this.getDouble(Cols.FILE_LEN) / callDist;
+            if (maxCallsPerWav == 0)
+              maxCallsPerWav = 3 / callDist;
+            if (specKey.Value > maxCallsPerWav)
+              retVal -= (specKey.Value - maxCallsPerWav) * 300;
+          }
+        } 
+      }
+      return retVal;
+    }
+
+
     static public AnalysisFile find(List<AnalysisFile> list, string fName)
     {
       AnalysisFile retVal = null;
@@ -1151,6 +1248,7 @@ namespace BatInspector
       }
       return retVal;
     }
+
 
     public void addCall(AnalysisCall call, bool isInList)
     {

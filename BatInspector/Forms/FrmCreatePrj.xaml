@@ -22,7 +22,14 @@
                         <TextBlock Text="{x:Static res:MyResources.FrmCreatePrjFileSelection}" FontWeight="Bold" />
                     </GroupBox.Header>
                     <StackPanel Margin="5">
-                        <local:CtlSelectFile x:Name="_ctlSrcFolder" Margin=" 5,20,5,0"/>
+                        <Grid  Margin=" 5,20,5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                        <local:CtlSelectFile x:Name="_ctlSrcFolder" />
+                            <CheckBox Content="{x:Static res:MyResources.FrmCreatePrj_Rekursiv}" Name="_cbRecursive" ToolTip="{x:Static res:MyResources.FrmCreatePrj_toolTipRecursive}" Grid.Column="1"  HorizontalAlignment="Right"/>
+                        </Grid>
                         <local:CtlSelectFile x:Name="_ctlDstFolder" Margin=" 5,0,5,0"/>
                         <local:ctlDataItem x:Name="_ctlPrjName" Margin=" 0,10,0,0"/>
                         <StackPanel Orientation="Horizontal" Name="_spStartDate" Margin="0,20,0,20">

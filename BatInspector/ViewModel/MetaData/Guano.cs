@@ -9,6 +9,7 @@ using libParser;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 
@@ -29,7 +30,8 @@ namespace BatInspector
     SPECIAL = 3,
     EOL = 4,
     EOF = 5,
-    JSON_STR = 6
+    JSON_STR = 6,
+    UNKNOWN = 7,
   }
 
   public class GuanoItem
@@ -88,10 +90,14 @@ namespace BatInspector
 
     List<GuanoItem> _items = new List<GuanoItem>();
 
+
     public string ChunkId { get; private set; }
     public UInt32 ChunkSize { get; private set; }
 
     public List<GuanoItem> Fields { get { return _items; } }
+
+    const string GUANO_SPEC_CHAR = "-+(),.{}[]";
+    const string GUANO_NAME_CHAR = "|./_\\#=";
 
     static GuanoDictItem[] _dictionary = new GuanoDictItem[]
     {
@@ -104,6 +110,7 @@ namespace BatInspector
       new GuanoDictItem("Length",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Loc Position",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("OAD|Loc Source",AnyType.tType.RT_STR),
+      new GuanoDictItem("OAD|Recording Settings",AnyType.tType.RT_STR),
       new GuanoDictItem("Loc Accuracy",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Loc Elevation",AnyType.tType.RT_FLOAT),
       new GuanoDictItem("Make",AnyType.tType.RT_STR),
@@ -285,13 +292,13 @@ namespace BatInspector
                   break;
                 case AnyType.tType.RT_STR:
                 default:
-                  if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR))
+                  if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR) || ((par.FieldName == "OAD|Recording Settings") && (tok == enGuanoToken.NUMBER)))
                   {
                     par.Value = _name;
                     tok = getToken();
                     while (tok != enGuanoToken.EOL)
                     {
-                      if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR))
+                      if ((tok == enGuanoToken.NAME) || (tok == enGuanoToken.JSON_STR) || (tok == enGuanoToken.NUMBER))
                         par.Value += " ";
                       par.Value +=_name;
                       tok = getToken();
@@ -510,21 +517,31 @@ namespace BatInspector
               putBack();
             retVal = enGuanoToken.NUMBER;
           }
-          else if("-+(),.{}[]".IndexOf(c) >= 0)
+          else if(GUANO_SPEC_CHAR.IndexOf(c) >= 0)
           {
             _name += c;
             retVal = enGuanoToken.SPECIAL;
           }
           else
           {
-            while (Utils.isalpha(c) || (c == '|') || (c == '.') || (c == '/') || (c == '_') || (c == '\\') || (c == '#') || (c == '=') || (( c & 0x80) > 0))
+            int cnt = 0;
+            while (Utils.isalpha(c) || (GUANO_NAME_CHAR.IndexOf(c) >= 0)  || (( c & 0x80) > 0))
             {
               _name += c;
+              cnt++;
               c = getChar();
             }
-            if(c != 0)
+            if ((c != 0) && (cnt > 0))
+            {
               putBack();
-            retVal = enGuanoToken.NAME;
+              retVal = enGuanoToken.NAME;
+            }
+            else
+            {
+              _name = "";
+              _name += c;
+              retVal = enGuanoToken.UNKNOWN;
+            }
           }
           break;
       }

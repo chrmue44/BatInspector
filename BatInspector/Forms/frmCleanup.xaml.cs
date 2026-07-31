@@ -24,51 +24,77 @@ namespace BatInspector.Forms
     bool _delPngs;
     bool _delOrigs;
     bool _delAnn;
+    int _logSpace;
+    int _wavSpace;
+    int _pngSpace;
+    int _origSpace;
+    int _annSpace;
+    string _rootDir;
 
+    bool _memCalcDone;
     public frmCleanup()
     {
       InitializeComponent();
       _ctlSelectFolder.setup(MyResources.frmCleanupSelRootFolder, 120, true, "", folderSelected);
     }
 
-    private void folderSelected()
+    void threadCheckMem()
     {
-      int logSpace;
-      int wavSpace;
-      int pngSpace;
-      int origSpace;
-      int annSpace;
-      string wavUnit = "kB";
-      string pngUnit = "kB";
-      string logUnit = "kB";
-      string origUnit = "kB";
-      string annUnit = "kB";
-      App.Model.checkMem(_ctlSelectFolder.getValue(), out wavSpace, out logSpace, out pngSpace, out origSpace, out annSpace);
-      if( wavSpace > 2048)
+      App.Model.checkMem(_rootDir, out _wavSpace, out _logSpace, out _pngSpace, out _origSpace, out _annSpace);
+      update();
+    }
+
+    void update()
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        wavSpace /= 1024;
-        wavUnit = "MB";
+        Dispatcher.BeginInvoke(new delegateLogClear(update));
       }
-      if (pngSpace > 2048)
+      else
       {
-        pngSpace /= 1024;
-        pngUnit = "MB";
+
+        _memCalcDone = true;
+        _btnOk.IsEnabled = true;
+        string wavUnit = "kB";
+        string pngUnit = "kB";
+        string logUnit = "kB";
+        string origUnit = "kB";
+        string annUnit = "kB";
+
+        if (_wavSpace > 2048)
+        {
+          _wavSpace /= 1024;
+          wavUnit = "MB";
+        }
+        if (_pngSpace > 2048)
+        {
+          _pngSpace /= 1024;
+          pngUnit = "MB";
+        }
+        if (_origSpace > 2048)
+        {
+          _origSpace /= 1024;
+          origUnit = "MB";
+        }
+        if (_annSpace > 2048)
+        {
+          _annSpace /= 1024;
+          annUnit = "MB";
+        }
+        _cbDelWav.Content = MyResources.frmCleanupDeletedFiles + "  (" + _wavSpace.ToString() + " " + wavUnit + ")";
+        _cbDelPNG.Content = MyResources.frmCleanupPngFiles + "  (" + _pngSpace.ToString() + " " + pngUnit + ")";
+        _cbDelLog.Content = MyResources.frmCleanupLogFiles + "  (" + _logSpace.ToString() + " " + logUnit + ")";
+        _cbOriginal.Content = MyResources.frmCleanupOrigFiles + "  (" + _origSpace.ToString() + " " + origUnit + ")";
+        _cbDelAnn.Content = MyResources.frmCleanupAnnotations + "  (" + _annSpace.ToString() + " " + annUnit + ")";
       }
-      if (origSpace > 2048)
-      {
-        origSpace /= 1024;
-        origUnit = "MB";
-      }
-      if (annSpace > 2048)
-      {
-        annSpace /= 1024;
-        annUnit = "MB";
-      }
-      _cbDelWav.Content = MyResources.frmCleanupDeletedFiles + "  (" + wavSpace.ToString() + " " + wavUnit + ")";
-      _cbDelPNG.Content = MyResources.frmCleanupPngFiles + "  (" + pngSpace.ToString() + " " + pngUnit + ")";
-      _cbDelLog.Content = MyResources.frmCleanupLogFiles + "  (" + logSpace.ToString() + " " + logUnit + ")";
-      _cbOriginal.Content = MyResources.frmCleanupOrigFiles + "  (" + origSpace.ToString() + " " + origUnit + ")";
-      _cbDelAnn.Content = MyResources.frmCleanupAnnotations + "  (" + annSpace.ToString() + " " + annUnit + ")";
+    }
+private void folderSelected()
+    {
+      _memCalcDone = false;
+      _btnOk.IsEnabled = false;
+      _rootDir = _ctlSelectFolder.getValue();
+      Thread t = new Thread(threadCheckMem);
+      t.Start();
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)

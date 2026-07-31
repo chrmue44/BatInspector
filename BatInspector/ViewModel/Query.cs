@@ -26,7 +26,7 @@ namespace BatInspector
     string _srcDir;
     string _destDir;
     string _expression;
-    string _reportName = "";
+    //string _reportName = "";
  
     QueryFile _queryFile = null;
     List<PrjRecord> _records = null;
@@ -50,7 +50,7 @@ namespace BatInspector
     /// </summary>
     public string Expression { get { return _expression; } }
 
-    public string ReportName { get {  return _reportName; } }
+    public string ReportName { get {  return _queryFile.ReportFile; } }
     public PrjRecord[] Records { get { return _queryFile.Records; } }
 
     public Query(string name, string srcDir, string dstDir, string query, ModelParams modelParams, int modelCount) :
@@ -152,7 +152,7 @@ namespace BatInspector
     }
 
 
-    private void createQueryFile()
+    public void createQueryFile()
     {
       _queryFile = new QueryFile
       {
@@ -186,7 +186,7 @@ namespace BatInspector
                                            App.Model.DefaultModelParams[retVal.SelectedModelIndex].Type);
         string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
         retVal._analysis[retVal.SelectedModelIndex].read(fullReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
-        retVal._reportName = fullReportName;
+//        retVal._reportName = fullReportName;
         retVal.initSpeciesList();
 
       }
@@ -233,7 +233,44 @@ namespace BatInspector
     }
 
 
-    private void writeQueryFile() 
+    public void addFile(AnalysisFile file, string prjDir, string wavSubDir)
+    {
+      string lastFileName = "";
+      foreach (AnalysisCall call in file.Calls)
+      {
+          _cntCall++;
+          if (lastFileName != file.Name)
+          {
+            _cntFile++;
+            PrjRecord rec = new PrjRecord();
+
+            string absPath = Path.Combine(prjDir, wavSubDir, file.Name);
+            rec.File = Utils.relativePath(this._destDir, absPath);
+            _records.Add(rec);
+            file.Name = rec.File;
+            lastFileName = file.Name;
+          }
+          List<string> row = call.getReportRow();
+          row[0] = file.Name;
+          _analysis[SelectedModelIndex].addCsvReportRow(row);
+        }
+    }
+
+    public void removeFile(string wavName)
+    {
+      foreach (PrjRecord rec in _records)
+      {
+        if (rec.File.Contains(wavName))
+        {
+          _records.Remove(rec);
+          break;
+        }
+      }
+      //     _analysis[SelectedModelIndex].removeFile(_reportName, wavName);
+      _analysis[SelectedModelIndex].removeFile(_queryFile.ReportFile, wavName);
+    }
+
+    public void writeQueryFile() 
     {
       if (_queryFile != null)
       {
@@ -247,7 +284,7 @@ namespace BatInspector
       }
       string reportName = Path.Combine(_destDir, _queryFile.ReportFile);
       _analysis[SelectedModelIndex].save(reportName, "sum query\nsum query", null);
-      _reportName = reportName;
+//      _reportName = reportName;
       DebugLog.log(_cntCall.ToString() + " calls in " + _cntFile.ToString() + " files found", enLogType.INFO);
     }
 

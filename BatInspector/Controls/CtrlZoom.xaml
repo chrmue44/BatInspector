@@ -174,9 +174,24 @@
             <Line Name="_grid_x7"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
             <Line Name="_grid_x8"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
             <Line Name="_grid_x9"  Visibility="Hidden" Stroke="Yellow" Grid.Row="2" Grid.Column="2" StrokeThickness="1.2" StrokeDashArray="2 10" />
+            <Line Name="_lineF1"   Visibility="Hidden" Stroke="Green" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 2" />
+            <Line Name="_lineF2"   Visibility="Hidden" Stroke="Green" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 2" />
+            <Line Name="_lineF3"   Visibility="Hidden" Stroke="Green" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 2" />
+            <Line Name="_lineF4"   Visibility="Hidden" Stroke="Green" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 2" />
+            <Line Name="_lineF5"   Visibility="Hidden" Stroke="Green" Grid.Row="2" Grid.Column="2" StrokeThickness="1" StrokeDashArray="2 2" />
             <Canvas Name ="_rulerF" Grid.Row="2" Grid.Column="1" ></Canvas>
-            <StackPanel Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2">
+            <StackPanel Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" x:Name="_spSideBar">
                 <CheckBox Name="_cbGrid" Content="{x:Static res:MyResources.ctlZoomShowGrid}"  Margin="5,0,5,0" Click="_cbGrid_Click"/>
+                <Label Content="Frequenzlinien anzeigen:" Margin="0,10,0,0" ToolTip="{x:Static res:MyResources.CtrlZoom_ZoomFreqLines}"/>
+                <StackPanel Orientation="Horizontal" Margin="5,0,0,5" >
+                    <CheckBox x:Name="_cbFreq1" Content="F1" Click="_cbFreq1_Click" ToolTip="{x:Static res:MyResources.CtrlZoom_ZoomFreqLines}"/>
+                    <CheckBox x:Name="_cbFreq2" Content="F2" Click="_cbFreq1_Click" Margin="5,0,0,0" ToolTip="{x:Static res:MyResources.CtrlZoom_ZoomFreqLines}"/>
+                    <CheckBox x:Name="_cbFreq3" Content="F3" Click="_cbFreq1_Click" Margin="5,0,0,0" ToolTip="{x:Static res:MyResources.CtrlZoom_ZoomFreqLines}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5,0,0,5">
+                    <CheckBox x:Name="_cbFreq4" Content="F4" Click="_cbFreq1_Click" ToolTip="{x:Static res:MyResources.CtrlZoom_ZoomFreqLines}"/>
+                    <CheckBox x:Name="_cbFreq5" Content="F5" Click="_cbFreq1_Click" Margin="5,0,0,0" ToolTip="{x:Static res:MyResources.CtrlZoom_ZoomFreqLines}"/>
+                </StackPanel>
                 <GroupBox Template="{DynamicResource GroupBoxCmu}" Margin="5" Padding="2" >
                     <GroupBox.Header>
                         <TextBlock Text="{x:Static res:MyResources.CtlZoomSpecInfo}" FontWeight="Bold" />

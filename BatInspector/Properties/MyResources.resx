@@ -469,7 +469,7 @@
     <value>End Date</value>
   </data>
   <data name="CtlSumReportTimespan" xml:space="preserve">
-    <value>Timespan</value>
+    <value>Class Width Activity Diagram [min]</value>
   </data>
   <data name="CtlSumReportTsDaily" xml:space="preserve">
     <value>Daily</value>
@@ -1582,7 +1582,7 @@
     <value>Nights with activity</value>
   </data>
   <data name="CtlSumReport_CSVFile" xml:space="preserve">
-    <value>CSV file</value>
+    <value>Comprehensive report (CSV)</value>
   </data>
   <data name="ctlReportWebPage" xml:space="preserve">
     <value>Web Page (Markdown)</value>
@@ -2078,5 +2078,41 @@
   </data>
   <data name="msgInstallationEmail" xml:space="preserve">
     <value>Installation Report</value>
+  </data>
+  <data name="ctlSumReportSummary" xml:space="preserve">
+    <value>Summary; 1 entry/day, species &amp; location (CSV)</value>
+  </data>
+  <data name="CtlSumReport_ActivityDiagrams" xml:space="preserve">
+    <value>Activity Diagrams</value>
+  </data>
+  <data name="SetDescZoomFrequencyLines" xml:space="preserve">
+    <value>Frequency lines for orientation in the zoom window</value>
+  </data>
+  <data name="SetDescFrequencyKhz" xml:space="preserve">
+    <value>Frequency [kHz]</value>
+  </data>
+  <data name="SetDescShowGrid" xml:space="preserve">
+    <value>Show grid in ZoomView</value>
+  </data>
+  <data name="CtrlZoom_ZoomFreqLines" xml:space="preserve">
+    <value>Enable/disable frequency guides: adjust frequencies in application settings</value>
+  </data>
+  <data name="ColGradientBlueToGreen" xml:space="preserve">
+    <value>blue to green to red</value>
+  </data>
+  <data name="ColGradientWhiteToBlue" xml:space="preserve">
+    <value>white to blue</value>
+  </data>
+  <data name="ColGradientUser" xml:space="preserve">
+    <value>user defined</value>
+  </data>
+  <data name="ColGradientBlackToGreen" xml:space="preserve">
+    <value>black to green to red</value>
+  </data>
+  <data name="ColGradientBlackToMagenta" xml:space="preserve">
+    <value>black to yellow to magenta</value>
+  </data>
+  <data name="FrmColorMap_SelectPredefinedColorPreset" xml:space="preserve">
+    <value>Select predefined Color Preset:</value>
   </data>
 </root>

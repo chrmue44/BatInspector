@@ -6,11 +6,17 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Drawing;
+using BatInspector.Forms;
+using BatInspector.Properties;
+using libParser;
 using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace BatInspector
 {
@@ -26,7 +32,7 @@ namespace BatInspector
       _intColorTable = new Int32[100];
     }
 
-    public Int32[] ColorTableInt32 { get { return _intColorTable;} }
+    public Int32[] ColorTableInt32 { get { return _intColorTable; } }
 
     public void createColorLookupTable()
     {
@@ -65,7 +71,7 @@ namespace BatInspector
 
     public Color getColor(double val, double min, double max, double blackLevel)
     {
-      if (val < (min + (max-min) * blackLevel/100.0))
+      if (val < (min + (max - min) * blackLevel / 100.0))
         return _colorTable[0];
       if (val < min)
         return _colorTable[0];
@@ -79,6 +85,225 @@ namespace BatInspector
         else
           return _colorTable.Last();
       }
+    }
+  }
+
+  [DataContract]
+  public class ColorPreset
+  {
+    [DataMember]
+    public string Name { get; set; }
+
+    [DataMember]
+    [LocalizedCategory("SetCatColorGradient"),
+    LocalizedDescription("SpecDescColorRed"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
+    public List<ColorItem> ColorGradientRed { get; set; } = new List<ColorItem>();
+
+    [DataMember]
+    [LocalizedCategory("SetCatColorGradient"),
+    LocalizedDescription("SpecDescColorGreen"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
+    public List<ColorItem> ColorGradientGreen { get; set; } = new List<ColorItem>();
+
+    [DataMember]
+    [LocalizedCategory("SetCatColorGradient"),
+    LocalizedDescription("SpecDescColorBlue"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
+    public List<ColorItem> ColorGradientBlue { get; set; } = new List<ColorItem>();
+  }
+
+  [DataContract]
+  public class ColorPresetCollection
+  {
+    [DataMember]
+    [LocalizedCategory("SetCatColorGradient"),
+    LocalizedDescription("SpecDescColorRed"),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
+    public List<ColorPreset> Presets { get; set; } = new List<ColorPreset>();
+
+    public enum enColorGrading
+    {
+      GREEN_BLUE,
+      GREEN_BLACK,
+      BLUE_WHITE,
+      MAGENTA_BLACK,
+    }
+
+    public ColorPresetCollection() 
+    {
+      init();
+    }
+
+    public static ColorPreset initColorGradient(enColorGrading type)
+    {
+      ColorPreset p = new ColorPreset();
+      switch (type)
+      {
+        case enColorGrading.GREEN_BLUE:
+        p.Name = MyResources.ColGradientBlueToGreen;
+          p.ColorGradientBlue = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(100, 20),
+            new ColorItem(0, 40),
+            new ColorItem(0, 75),
+            new ColorItem(40, 100)
+          };
+          p.ColorGradientGreen = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(0, 20),
+            new ColorItem(200, 60),
+            new ColorItem(200, 75),
+            new ColorItem(0, 100)
+          };
+          p.ColorGradientRed = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(0, 20),
+            new ColorItem(100, 60),
+            new ColorItem(200, 75),
+            new ColorItem(255, 100)
+          };
+          break;
+
+        case enColorGrading.GREEN_BLACK:
+          p.Name = MyResources.ColGradientBlackToGreen;
+          p.ColorGradientBlue = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(0, 30),
+            new ColorItem(0, 70),
+            new ColorItem(0, 75),
+            new ColorItem(40, 100)
+          };
+          p.ColorGradientGreen = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(70, 30),
+            new ColorItem(200, 70),
+            new ColorItem(200, 75),
+            new ColorItem(0, 100)
+          };
+          p.ColorGradientRed = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(0, 30),
+            new ColorItem(200, 70),
+            new ColorItem(200, 75),
+            new ColorItem(255, 100)
+          };
+          break;
+
+        case enColorGrading.BLUE_WHITE:
+          p.Name = MyResources.ColGradientWhiteToBlue;
+          p.ColorGradientBlue = new List<ColorItem>
+          {
+            new ColorItem(255, 0),
+            new ColorItem(255, 30),
+            new ColorItem(255, 50),
+            new ColorItem(255, 75),
+            new ColorItem(255, 100)
+          };
+          p.ColorGradientGreen = new List<ColorItem>
+          {
+            new ColorItem(255, 0),
+            new ColorItem(230, 30),
+            new ColorItem(150, 50),
+            new ColorItem(100, 75),
+            new ColorItem(0, 100)
+          };
+          p.ColorGradientRed = new List<ColorItem>
+          {
+            new ColorItem(255, 0),
+            new ColorItem(230, 30),
+            new ColorItem(150, 50),
+            new ColorItem(100, 75),
+            new ColorItem(0, 100)
+          };
+          break;
+
+        case enColorGrading.MAGENTA_BLACK:
+          p.Name = MyResources.ColGradientBlackToMagenta;
+          p.ColorGradientBlue = new List<ColorItem>
+          {
+            new ColorItem(50,  0),
+            new ColorItem(150, 20),
+            new ColorItem(0,   50),
+            new ColorItem(40,  75),
+            new ColorItem(255, 100)
+          };
+          p.ColorGradientGreen = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(255, 20),
+            new ColorItem(240, 50),
+            new ColorItem(0, 75),
+            new ColorItem(0, 100)
+          };
+          p.ColorGradientRed = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(150, 20),
+            new ColorItem(240, 50),
+            new ColorItem(255, 75),
+            new ColorItem(255, 100)
+          };
+          break;
+
+      }
+      return p;
+    }
+
+    public void saveAs(string fName)
+    {
+      try
+      {
+        using (StreamWriter file = new StreamWriter(fName))
+        {
+          using (MemoryStream stream = new MemoryStream())
+          {
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ColorPresetCollection));
+            ser.WriteObject(stream, this);
+            StreamReader sr = new StreamReader(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            string str = sr.ReadToEnd();
+            file.Write(JsonHelper.FormatJson(str));
+            file.Close();
+            DebugLog.log("settings saved to '" + fName + "'", enLogType.INFO);
+          }
+        }
+      }
+      catch (Exception e)
+      {
+        DebugLog.log("failed to write colr preset collection" + fName + ": " + e.ToString(), enLogType.ERROR);
+      }
+    }
+
+
+
+    public static void load()
+    {
+
+    }
+
+    private void init()
+    {
+      Presets = new List<ColorPreset>();
+      ColorPreset preset = initColorGradient(enColorGrading.GREEN_BLUE) ;
+      Presets.Add(preset);
+      preset = initColorGradient(enColorGrading.GREEN_BLACK);
+      Presets.Add(preset);
+      preset = initColorGradient(enColorGrading.MAGENTA_BLACK);
+      Presets.Add(preset);
+      preset = initColorGradient(enColorGrading.BLUE_WHITE);
+      Presets.Add(preset);
+
     }
   }
 }

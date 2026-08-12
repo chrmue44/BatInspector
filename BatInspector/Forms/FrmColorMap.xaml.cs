@@ -6,11 +6,14 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
 using System.Windows.Media;
 using BatInspector.Controls;
 using BatInspector.Properties;
+using Org.BouncyCastle.Utilities;
 
 namespace BatInspector.Forms
 {
@@ -19,12 +22,23 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmColorMap : Window
   {
+    ColorPresetCollection _presets;
     public FrmColorMap()
     {
       InitializeComponent();
       _ctlB.setup(MyResources.ColorMapBlue, AppParams.Inst.ColorGradientBlue);
       _ctlG.setup(MyResources.ColorMapGreen, AppParams.Inst.ColorGradientGreen);
       _ctlR.setup(MyResources.ColorMapRed, AppParams.Inst.ColorGradientRed);
+      
+      _presets = new ColorPresetCollection();
+      List<string> items = new List<string>();
+      items.Add(MyResources.ColGradientUser);
+      for (int i = 0; i < _presets.Presets.Count; i++)
+      {
+        items.Add(_presets.Presets[i].Name);
+      }
+      _cbPresets.ItemsSource = items.ToArray();
+      _cbPresets.SelectedIndex = 0;
     }
 
 
@@ -70,6 +84,12 @@ namespace BatInspector.Forms
     private void _btnApply_Click(object sender, RoutedEventArgs e)
     {
       readValuesFromScreen();
+      _cbPresets.SelectedIndex = 0;
+      createGradient();
+    }
+
+    private void createGradient()
+    { 
       App.Model.ColorTable.createColorLookupTable();
       double w = _cvImg.ActualWidth;
       double h = _cvImg.ActualHeight;
@@ -95,6 +115,20 @@ namespace BatInspector.Forms
     {
       _btnApply_Click(null, null);
       winUtils.hideCloseButton(new WindowInteropHelper(this).Handle);
+    }
+
+    private void _cbPresets_DropDownClosed(object sender, System.EventArgs e)
+    {
+      if (_cbPresets.SelectedIndex == 0)
+        return;
+
+      if (_cbPresets.SelectedIndex > _presets.Presets.Count)
+        return;
+
+      AppParams.Inst.ColorGradientBlue = _presets.Presets[_cbPresets.SelectedIndex - 1].ColorGradientBlue;
+      AppParams.Inst.ColorGradientGreen = _presets.Presets[_cbPresets.SelectedIndex - 1].ColorGradientGreen;
+      AppParams.Inst.ColorGradientRed = _presets.Presets[_cbPresets.SelectedIndex - 1].ColorGradientRed;
+      createGradient();
     }
   }
 }

@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 namespace BatInspector
 {
 
-  public delegate void dlgShowActivityDiag(ActivityData data, string bmpName);
+  public delegate void dlgShowActivityDiag(ActivityData data, string bmpName, int classWidthMin);
   public enum enPeriod
   {
     DAILY = 0,
@@ -53,9 +53,9 @@ namespace BatInspector
     [DataMember]
     public double Longitude { get; set; }
     [DataMember]
-    public string Landscape { get; set; }
+    public string Location { get; set; }
     [DataMember]
-    public string Weather { get; set; }
+    public string CreatedBy { get; set; }
     [DataMember]
     public double TempMin { get; set; }
     [DataMember]
@@ -569,6 +569,7 @@ namespace BatInspector
     private List<SpeciesRecordingItem> _bestFilesCurSpec;
     private Query _qryBestOf;
     private bool _withQuery = false;
+    private int _classWidthMin;
 
     public SumReport()
     {
@@ -659,8 +660,7 @@ namespace BatInspector
       initDirTree(_rootDir, enModel.BAT_DETECT2);
 
       DateTime date = _start;
-      int minsPerPoint = 2; //1;//5;
-      int ticksPerHour = 60 / minsPerPoint;
+      int ticksPerHour = 60 / _classWidthMin;
       bool addLine = false;
       ActivityData retVal = new ActivityData(ticksPerHour);
       retVal.StartDate = _start.AddDays(-1); ;
@@ -707,13 +707,13 @@ namespace BatInspector
         _qryBestOf.writeQueryFile();
 
       if (_showActivityData != null)
-        _showActivityData(retVal, Path.Combine(_dstDir,_bmpName));
+        _showActivityData(retVal, Path.Combine(_dstDir,_bmpName), _classWidthMin);
       
       if(_currSpecies != null)
         _currActivityItem  = new ActivityItem(_currSpecies.Abbreviation,retVal.getMeanActivity());
     }
 
-    public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap)
+    public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap, int classWidthMin)
     {
       _start = start;
       _end = end;
@@ -725,6 +725,7 @@ namespace BatInspector
       _bmpName = bmpName;
       _modelParams = modelPars;
       _withQuery = false;
+      _classWidthMin = classWidthMin;
 
       Thread t = new Thread(createActivityDiagSync);
       t.Start();
@@ -748,12 +749,12 @@ namespace BatInspector
     }
 
 
-    void createActivityPNG(ActivityData data, string bmpName)
+    void createActivityPNG(ActivityData data, string bmpName, int classWidthMin)
     {
       if (_currSpecies == null)
         return;
       ActivityDiagram diagram = new ActivityDiagram(App.Model.ColorTable);
-      System.Drawing.Bitmap bmp = diagram.createPlot(data, $"Aktivität {_currSpecies.Local}", enActivityStyle.RECT_ACTIVITY, 20, false, true, true, true, 0, AppParams.ACTIVITY_CLASS_WIDTH);
+      System.Drawing.Bitmap bmp = diagram.createPlot(data, $"Aktivität {_currSpecies.Local}", enActivityStyle.RECT_ACTIVITY, 20, false, true, true, true, 0, classWidthMin);
       try
       {
         BitmapImage bitmapimage = new BitmapImage();
@@ -775,14 +776,75 @@ namespace BatInspector
       }
     }
 
+    public void createSummaryAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string reportName)
+    {
+      _start = start;
+      _end = end;
+      _period = period;
+      _rootDir = rootDir;
+      _dstDir = dstDir;
+      _expression = expression;
+      _modelParams = modelPars;
+      _withQuery = false;
+      _reportName = reportName;
+
+      Thread t = new Thread(createSummarySync);
+      t.Start();
+
+    }
+
+    public void createSummarySync()
+    {
+      //      string header = "Date;Latitude;Longitude;Location;Species";
+      string header = "Art;Datum;Beobachter;Bestimmer;Fundort;X;Y;EPSG;Nachweistyp";
+      Csv rep = new Csv(header);
+      DebugLog.log("start creation of summary report...", enLogType.INFO);
+      initDirTree(_rootDir, enModel.BAT_DETECT2);
+      DateTime date = _start;
+      
+      foreach(ReportListItem report in _reports)
+      {
+        SumReportItem item = getSums(_start, _end, _expression, report);
+        foreach (SumItem it in item.SpecList)
+        {
+          if ((it.Species == "?") || (it.Species == "Social"))
+            continue;
+          rep.addRow();
+          int row = rep.RowCnt;
+          /*
+          rep.setCell(row, "Latitude", item.Latitude);
+          rep.setCell(row, "Longitude", item.Longitude);
+          rep.setCell(row, "Date", date.ToString());
+          rep.setCell(row, "Species", it.Species);
+          rep.setCell(row, "Location", item.Location);
+          */
+          if((it.Species == "PAUR") || (it.Species == "PAUS"))
+            rep.setCell(row, "Art", "Plecotus");
+          else if ((it.Species == "MBRA") || (it.Species == "MMYS"))
+            rep.setCell(row, "Art", "Mbart");
+          else
+            rep.setCell(row, "Art", it.Species);
+          rep.setCell(row, "Datum", item.Date.ToString("dd.MM.yyyy"));
+          rep.setCell(row, "Beobachter", item.CreatedBy);
+          rep.setCell(row, "Bestimmer", item.CreatedBy);
+          rep.setCell(row, "Fundort", item.Location);
+          rep.setCell(row, "X", item.Longitude);
+          rep.setCell(row, "Y", item.Latitude);
+          rep.setCell(row, "EPSG", 4326);
+          rep.setCell(row, "Nachweistyp", "akustisch");
+        }
+
+      }
+      rep.saveAs(Path.Combine(_dstDir, _reportName));
+    }
 
     public SumReportJson createWebReport(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, string reportName,
-                         string expression, ModelParams modelPars)
+                         string expression, ModelParams modelPars, int classWidthMin, bool includeActivityDiags)
     {
       SumReportJson retVal = new SumReportJson();
       _modelParams = modelPars;
       initDirTree(rootDir, enModel.BAT_DETECT2);
-
+      _classWidthMin = classWidthMin;
       DateTime date = start;
       while (date < end)
       {
@@ -802,15 +864,18 @@ namespace BatInspector
       retVal.Species = getSpeciesInReport(retVal.Days);
       retVal.Activities.Clear();
 
-      foreach (string s in retVal.Species)
+      if (includeActivityDiags)
       {
-        SpeciesInfos si = SpeciesInfos.findAbbreviation(s, App.Model.SpeciesInfos);
-        if (si != null)
+        foreach (string s in retVal.Species)
         {
-          _currSpecies = si;
-          _bestFilesCurSpec = new List<SpeciesRecordingItem>();
-          ActivityItem it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG, true);
-          retVal.Activities.Add(it);
+          SpeciesInfos si = SpeciesInfos.findAbbreviation(s, App.Model.SpeciesInfos);
+          if (si != null)
+          {
+            _currSpecies = si;
+            _bestFilesCurSpec = new List<SpeciesRecordingItem>();
+            ActivityItem it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG, true);
+            retVal.Activities.Add(it);
+          }
         }
       }
       return retVal;
@@ -1055,6 +1120,77 @@ namespace BatInspector
       }
     }
 
+    private SumReportItem getSums(DateTime start, DateTime end, string expression, ReportListItem report)
+    {
+      SumReportItem retVal = new SumReportItem();
+      List<SumItem> list = new List<SumItem>();
+      double latitude = 0, longitude = 0;
+      if (Utils.overLap(report.StartDate.Ticks, report.EndDate.Ticks, start.Ticks, end.Ticks))
+      {
+        int sumCnt = 0;
+        FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
+        Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
+        analysis.read(report.ReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
+        if (analysis.Files.Count > 0)
+        {
+          retVal.Date = analysis.Files[0].RecTime;
+          foreach (AnalysisFile file in analysis.Files)
+          {
+            sumCnt++;
+            latitude += file.getDouble(Cols.LAT);
+            longitude += file.getDouble(Cols.LON);
+            DateTime t = file.RecTime;
+            if (!((t.Date >= start) && (t < end)))
+              continue;
+            DebugLog.log($"evaluating report {report.ReportName}", enLogType.INFO);
+            foreach (AnalysisCall call in file.Calls)
+            {
+              bool match = App.Model.Filter.apply(filter, call,
+                               file.getString(Cols.REMARKS), out bool ok);
+              if (!ok)
+              {
+                DebugLog.log("error parsing query expression: " + expression, enLogType.ERROR);
+                break;
+              }
+              if (match)
+              {
+                string spec = call.getString(Cols.SPECIES_MAN);
+                SumItem item = SumItem.find(spec, list, true);
+                item.Count++;
+                double temp = call.getDouble(Cols.TEMPERATURE);
+                if (temp < item.TempMin)
+                  item.TempMin = temp;
+                if (temp < retVal.TempMin)
+                  retVal.TempMin = temp;
+                if (temp > item.TempMax)
+                  item.TempMax = temp;
+                if (temp > retVal.TempMax)
+                  retVal.TempMax = temp;
+                double humid = call.getDouble(Cols.HUMIDITY);
+                if (humid < item.HumidityMin)
+                  item.HumidityMin = humid;
+                if (humid < retVal.HumidityMin)
+                  retVal.HumidityMin = humid;
+                if (humid > retVal.HumidityMax)
+                  retVal.HumidityMax = humid;
+              }
+            }
+          }
+        }
+        if (sumCnt > 0)
+        {
+          latitude /= sumCnt;
+          longitude /= sumCnt;
+        }
+      }
+      retVal.Latitude = latitude;
+      retVal.Longitude = longitude;
+      retVal.SpecList = list;
+      Project prj = Project.createFrom(report.PrjDir);
+      retVal.Location = prj.Location;
+      retVal.CreatedBy = prj.CreatedBy;
+      return retVal;
+    }
 
     /// <summary>
     /// calculate sums for all species in the specified period
@@ -1128,8 +1264,16 @@ namespace BatInspector
           }
         }
       }
-      latitude /= sumCnt;
-      longitude /= sumCnt;
+      if (_reports.Count > 0)
+      {
+        Project prj = Project.createFrom(_reports[0].PrjDir);
+        retVal.Location = prj.Location;
+      }
+      if (sumCnt > 0)
+      {
+        latitude /= sumCnt;
+        longitude /= sumCnt;
+      }
       retVal.Latitude = latitude;
       retVal.Longitude = longitude;
       retVal.SpecList = list;
@@ -1167,7 +1311,7 @@ namespace BatInspector
     }
 
 
-    public void createWebPage(SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string outputName)
+    public void createMarkdownDoc(SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string outputName, bool inclActivityDiags)
     {
       WebReportDataJson formData = WebReportDataJson.load(formDataName);
       if (formData != null)
@@ -1245,14 +1389,17 @@ namespace BatInspector
           {
             string templateLine = output.getLine(i);
             output.removeLine(i);
-            int lineNr = i;
-            for (int j = 0; j < rep.Activities.Count; j++)
+            if (inclActivityDiags)
             {
-              string imgFile = $"activity_{rep.Activities[j].Species}.png";
-              string line = templateLine;
-              line = line.Replace("%IMG_ACTIVITY%", imgFile);
-              output.insert(lineNr, line);
-              lineNr++;
+              int lineNr = i;
+              for (int j = 0; j < rep.Activities.Count; j++)
+              {
+                string imgFile = $"activity_{rep.Activities[j].Species}.png";
+                string line = templateLine;
+                line = line.Replace("%IMG_ACTIVITY%", imgFile);
+                output.insert(lineNr, line);
+                lineNr++;
+              }
             }
           }
 

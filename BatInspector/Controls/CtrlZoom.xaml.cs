@@ -249,10 +249,17 @@ namespace BatInspector.Controls
 
       _oldCallIdx = -1;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
-      _cbGrid.IsChecked = true;
+      _cbGrid.IsChecked = AppParams.Inst.ShowGrid;
 
       _slBlackLevel.Value = AppParams.Inst.BlackLevel;
       _slRange.Value = AppParams.Inst.GradientRange;
+
+      for(int i = 0; i < AppParams.NR_ZOOM_FREQ_LINES; i++)
+      {
+        string cbName = $"_cbFreq{i + 1}";
+        CheckBox cb = (CheckBox)_spSideBar.FindName(cbName);
+        cb.IsChecked = AppParams.Inst.FrequencyLines[i].Visible;
+      }
     }
 
 
@@ -804,6 +811,31 @@ namespace BatInspector.Controls
       initRulerA();
     }
 
+    private void showFrequencyLine(int i)
+    {
+      string name = $"_lineF{i + 1}";
+      string cbName = $"_cbFreq{i+1}";
+      CheckBox cb = (CheckBox)_spSideBar.FindName(cbName);
+      string fStr = AppParams.Inst.FrequencyLines[i].Frequency.ToString("#.0");
+      cb.Content = $"F{i + 1}({fStr})";
+      Line line = (Line)_gridXt.FindName(name);
+      if (AppParams.Inst.FrequencyLines[i].Visible)
+      {
+        double f = AppParams.Inst.FrequencyLines[i].Frequency;
+        int y = (int)(_imgFt.Margin.Top + (1.0 - (f - App.Model.ZoomView.RulerDataF.Min) /
+                        (App.Model.ZoomView.RulerDataF.Max - App.Model.ZoomView.RulerDataF.Min)) * _imgFt.ActualHeight);
+        line.X1 = _imgFt.Margin.Left;
+        line.Y1 = y;
+        line.X2 = _imgFt.ActualWidth + _imgFt.Margin.Left;
+        line.Y2 = y;
+        System.Drawing.Color c = AppParams.Inst.FrequencyLines[i].Color;
+        System.Windows.Media.Color lineColor = System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+        line.Stroke = new SolidColorBrush(lineColor);
+        line.Visibility = Visibility.Visible;
+      }
+      else
+        line.Visibility = Visibility.Hidden;
+    }
 
     private void drawGrid()
     {
@@ -865,6 +897,9 @@ namespace BatInspector.Controls
           ly.Visibility = Visibility.Hidden;
         }
       }
+
+      for(int i = 0; i < AppParams.Inst.FrequencyLines.Length; i++)
+        showFrequencyLine(i);
     }
 
     private void createZoomImg()
@@ -1536,6 +1571,7 @@ namespace BatInspector.Controls
 
     private void _cbGrid_Click(object sender, RoutedEventArgs e)
     {
+      AppParams.Inst.ShowGrid = _cbGrid.IsChecked == true;
       drawGrid();
     }
 
@@ -1584,6 +1620,17 @@ namespace BatInspector.Controls
       {
         DebugLog.log($"Error Species Check: {ex.ToString()}", enLogType.ERROR);
       }
+    }
+
+    private void _cbFreq1_Click(object sender, RoutedEventArgs e)
+    {
+      AppParams.Inst.FrequencyLines[0].Visible = _cbFreq1.IsChecked == true;
+      AppParams.Inst.FrequencyLines[1].Visible = _cbFreq2.IsChecked == true;
+      AppParams.Inst.FrequencyLines[2].Visible = _cbFreq3.IsChecked == true;
+      AppParams.Inst.FrequencyLines[3].Visible = _cbFreq4.IsChecked == true;
+      AppParams.Inst.FrequencyLines[4].Visible = _cbFreq5.IsChecked == true;
+      for (int i = 0; i < AppParams.Inst.FrequencyLines.Length; i++)
+        showFrequencyLine(i);
     }
   }
 }

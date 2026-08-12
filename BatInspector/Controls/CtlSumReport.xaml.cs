@@ -23,6 +23,23 @@ namespace BatInspector.Controls
     Window _parent = null;
     string _filterExpression = "";
 
+    public int ClassWidthMin
+    {
+      get
+      {
+        switch(_cbPeriod.SelectedIndex)
+        {
+          default:
+          case 0:
+            return 1;
+          case 1:
+            return 2;
+          case 2:
+            return 5;
+        }
+      }
+    }
+
     public CtlSumReport()
     {
       InitializeComponent();
@@ -38,6 +55,10 @@ namespace BatInspector.Controls
       _ctlActivityDiagName.setValue("activity.png");
       _ctlRootDir.setup(MyResources.CtlSumReportRootDirectory, 150, true, "", initDestDir);
       _ctlDestDir.setup(MyResources.CtlSumReportDstDirectory, 150, true);
+      _ctlSumReportName.setup(MyResources.CtlSumReportReportName, enDataType.STRING, 0, lblW, true);
+      _ctlSumReportName.setValue("summary_export.csv");
+      _cbMdInclActivity.IsChecked = true;
+      _cbRtxInclActivity.IsChecked = true;
     }
 
     public void setup(Window parent)
@@ -97,6 +118,7 @@ namespace BatInspector.Controls
       _rbActivityDiagram.IsChecked = false;
       _rbWebPage.IsChecked = false;
       _rbRichText.IsChecked = false;
+      _rbSumReport.IsChecked = false;
     }
 
     private void _rbWebPage_Click(object sender, RoutedEventArgs e)
@@ -104,6 +126,7 @@ namespace BatInspector.Controls
       _rbActivityDiagram.IsChecked = false;
       _rbCsvFile.IsChecked = false;
       _rbRichText.IsChecked = false;
+      _rbSumReport.IsChecked = false;
     }
 
     private void _rbActivityDiagram_Click(object sender, RoutedEventArgs e)
@@ -111,6 +134,7 @@ namespace BatInspector.Controls
       _rbCsvFile.IsChecked = false;
       _rbWebPage.IsChecked = false;
       _rbRichText.IsChecked = false;
+      _rbSumReport.IsChecked = false;
     }
 
     private void _rbRichText_Click(object sender, RoutedEventArgs e)
@@ -118,6 +142,15 @@ namespace BatInspector.Controls
       _rbActivityDiagram.IsChecked = false;
       _rbWebPage.IsChecked = false;
       _rbCsvFile.IsChecked = false;
+      _rbSumReport.IsChecked = false;
+    }
+
+    private void _rbSumReport_Click(object sender, RoutedEventArgs e)
+    {
+      _rbActivityDiagram.IsChecked = false;
+      _rbWebPage.IsChecked = false;
+      _rbCsvFile.IsChecked = false;
+      _rbRichText.IsChecked = false;
     }
 
     private void _cbFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)

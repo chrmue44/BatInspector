@@ -1,4 +1,8 @@
-# V0.9.8.0
+- up to 5 fully configurable frequency guide lines in zoom view
+- summarized report (for multibase import)
+- color gradient presets in color dialog
+
+# V0.9.8.0   31.07.26
 - bugfix: import of Audiomoth files (Firmware Basic 1.12.1) no longer freezes BatInspector
 - create "best of" queries for each species automatically during report generation
 - added option "recursive" in import dialog

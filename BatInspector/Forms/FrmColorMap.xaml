@@ -9,10 +9,6 @@
         Title="{x:Static res:MyResources.ColorMapConfig}" Height="550" Width="1000" Loaded="Window_Loaded"
         Icon="../images/color-palette.png">
   <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="280*"/>
-      <ColumnDefinition Width="640*"/>
-    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition/>
       <RowDefinition Height="120"/>
@@ -30,11 +26,13 @@
         <Canvas Name="_cvRuler" Height="30" Grid.Row="1" />
       </Grid>
     </GroupBox>
-    <local:CtlColorMap x:Name="_ctlR" Grid.Row="1" Grid.ColumnSpan="2"/>
-    <local:CtlColorMap x:Name="_ctlG" Grid.Row="2" Grid.ColumnSpan="2"/>
-    <local:CtlColorMap x:Name="_ctlB" Grid.Row="3" Grid.ColumnSpan="2"/>
+    <local:CtlColorMap x:Name="_ctlR" Grid.Row="1" />
+    <local:CtlColorMap x:Name="_ctlG" Grid.Row="2"/>
+    <local:CtlColorMap x:Name="_ctlB" Grid.Row="3" />
     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-      <Button Name="_btnApply" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnApply_Click" Content="{x:Static res:MyResources.BtnApply}"></Button>
+            <Label Content="{x:Static res:MyResources.FrmColorMap_SelectPredefinedColorPreset}" Margin="0,10,0,0"/>
+            <ComboBox x:Name="_cbPresets" Width="250" Height="28"  Grid.Row="4" Margin="0,0,30,0" DropDownClosed="_cbPresets_DropDownClosed"/>
+            <Button Name="_btnApply" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnApply_Click" Content="{x:Static res:MyResources.BtnApply}"></Button>
       <Button Name="_btnCancel" Width="100" HorizontalAlignment="Right" Margin="10" Click="_btnCancel_Click" Content="{x:Static res:MyResources.BtnCancel}"></Button>
       <Button Name="_btnOk" Width="100"  HorizontalAlignment="Right" Margin="10" Click="_btnOk_Click">OK</Button>
     </StackPanel>

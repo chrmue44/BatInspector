@@ -32,6 +32,9 @@ namespace BatInspector.Forms
     string _filterExpression;
     bool _skipReportGeneration = false;
     enPeriod _period;
+    int _classWidthMin = 1;
+    bool _inclActivityDiags = false;
+
     public frmCreateReport()
     {
       InitializeComponent();
@@ -43,14 +46,16 @@ namespace BatInspector.Forms
       _formDataName = s;
     }
 
-    private void threadCreateWebReport()
+    private void threadCreateMarkdownReport()
     {
       if (!_skipReportGeneration)
       {
+        
+
         _report = App.Model.SumReport.createWebReport(_start, _end, _period,
                               _rootDir, _dstDir, _reportName,
                               _filterExpression,
-                              App.Model.DefaultModelParams[_selectedModelIndex]);
+                              App.Model.DefaultModelParams[_selectedModelIndex], _classWidthMin, _inclActivityDiags);
         _report.save(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
       }
       else
@@ -60,14 +65,14 @@ namespace BatInspector.Forms
       showReportDialog(true, false, _dstDir);
     }
 
-    private void threadCreateRichTextReport()
+    private void threadCreateHtmlReport()
     {
       if (!_skipReportGeneration)
       {
         _report = App.Model.SumReport.createWebReport(_start, _end, _period,
                               _rootDir, _dstDir, _reportName,
                               _filterExpression,
-                              App.Model.DefaultModelParams[_selectedModelIndex]);
+                              App.Model.DefaultModelParams[_selectedModelIndex], _classWidthMin, _inclActivityDiags);
         _report.save(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
       }
       else
@@ -78,15 +83,15 @@ namespace BatInspector.Forms
     }
 
     delegate void dlgShowReportDialog(bool web, bool rtf, string srcDir);
-    private void showReportDialog(bool webPage, bool richText, string srcDir)
+    private void showReportDialog(bool markdown, bool html, string srcDir)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgShowReportDialog(showReportDialog), webPage, richText, srcDir);
+        Dispatcher.BeginInvoke(new dlgShowReportDialog(showReportDialog), markdown, html, srcDir);
       }
       else
       {
-        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName, webPage, _dstDir);
+        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName, markdown, _dstDir);
         frm.WindowStartupLocation = WindowStartupLocation.Manual;
         frm.Left = 100;
         frm.Top = 10;
@@ -95,11 +100,11 @@ namespace BatInspector.Forms
         {
           if (_report.Days.Count > 0)
           {
-            if (webPage)
-              App.Model.SumReport.createWebPage(_report, _formDataName, App.Model.SpeciesInfos,
+            if (markdown)
+              App.Model.SumReport.createMarkdownDoc(_report, _formDataName, App.Model.SpeciesInfos,
                       Path.Combine(_ctlReport._ctlDestDir.getValue(),
-                      _ctlReport._ctlWebReportName.getValue()));
-            if (richText)
+                      _ctlReport._ctlWebReportName.getValue()), _ctlReport._cbMdInclActivity.IsChecked == true);
+            if (html)
               App.Model.SumReport.createDocument(enDocType.HTML, _report, _formDataName, App.Model.SpeciesInfos,
                         srcDir, Path.Combine(_ctlReport._ctlDestDir.getValue(),
                                              _ctlReport._ctlRichTextName.getValue()));
@@ -135,8 +140,9 @@ namespace BatInspector.Forms
         _reportName = _ctlReport._ctlWebReportName.getValue();
         _selectedModelIndex = _ctlReport._cbModel.SelectedIndex;
         _filterExpression = _ctlReport.FilterExpression;
-        //        enPeriod period = (enPeriod)_ctlReport._cbPeriod.SelectedIndex;
         _period = enPeriod.DAILY;
+        _classWidthMin = _ctlReport.ClassWidthMin;
+        _inclActivityDiags = false;
         if (_ctlReport._rbCsvFile.IsChecked == true)
         {
           App.Model.SumReport.createCsvReportAsync(_start, _end, _period, _ctlReport._ctlRootDir.getValue(),
@@ -147,22 +153,27 @@ namespace BatInspector.Forms
         }
         if (_ctlReport._rbWebPage.IsChecked == true)
         {
-          _skipReportGeneration = checkIfSkipReportGeneration(_dstDir, AppParams.SUM_REPORT_JSON);          
-          Thread t = new Thread(threadCreateWebReport);
+          _skipReportGeneration = checkIfSkipReportGeneration(_dstDir, AppParams.SUM_REPORT_JSON);
+          _inclActivityDiags = _ctlReport._cbMdInclActivity.IsChecked == true;
+          Thread t = new Thread(threadCreateMarkdownReport);
           t.Start();
         }
         if (_ctlReport._rbRichText.IsChecked == true)
         {
           _skipReportGeneration = checkIfSkipReportGeneration(_dstDir, AppParams.SUM_REPORT_JSON);
-          Thread t = new Thread(threadCreateRichTextReport);
+          _inclActivityDiags = _ctlReport._cbRtxInclActivity.IsChecked == true;
+          Thread t = new Thread(threadCreateHtmlReport);
           t.Start();
         }
         if (_ctlReport._rbActivityDiagram.IsChecked == true)
         {
-        
           App.Model.SumReport.createActivityDiagAsync(_start, _end, _period, _ctlReport._ctlRootDir.getValue(),
           _ctlReport._ctlDestDir.getValue(), App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex], _ctlReport.FilterExpression,   //TODO find another way for multiple models
-          _ctlReport._ctlActivityDiagName.getValue(), showActivityDiagram);
+          _ctlReport._ctlActivityDiagName.getValue(), showActivityDiagram, _ctlReport.ClassWidthMin);
+        }
+        if(_ctlReport._rbSumReport.IsChecked == true)
+        {
+          App.Model.SumReport.createSummaryAsync(_start, _end, _period, _rootDir, _dstDir, App.Model.DefaultModelParams[_ctlReport._cbModel.SelectedIndex], _ctlReport.FilterExpression, _ctlReport._ctlSumReportName.getValue());
         }
       }
       else
@@ -170,7 +181,7 @@ namespace BatInspector.Forms
         this.Visibility = Visibility.Hidden;
       }
 
-    private void showActivityDiagram(ActivityData data, string bmpName)
+    private void showActivityDiagram(ActivityData data, string bmpName, int classWidthMin)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {

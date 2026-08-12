@@ -469,7 +469,7 @@
     <value>Datum Ende</value>
   </data>
   <data name="CtlSumReportTimespan" xml:space="preserve">
-    <value>Zeitspanne</value>
+    <value>Klassenbreite Aktivitätsdiagramm [min]</value>
   </data>
   <data name="CtlSumReportTsDaily" xml:space="preserve">
     <value>Täglich</value>
@@ -1582,7 +1582,7 @@
     <value>Nächte mit Aktivität</value>
   </data>
   <data name="CtlSumReport_CSVFile" xml:space="preserve">
-    <value>CSV-Datei</value>
+    <value>Ausführliche Auswertung (CSV)</value>
   </data>
   <data name="ctlReportWebPage" xml:space="preserve">
     <value>Webseite (Markdown)</value>
@@ -2078,5 +2078,41 @@
   </data>
   <data name="msgInstallationEmail" xml:space="preserve">
     <value>Installation Report</value>
+  </data>
+  <data name="ctlSumReportSummary" xml:space="preserve">
+    <value>Zusammenfassung; 1 Eintrag/Art,Tag &amp; Ort (CSV)</value>
+  </data>
+  <data name="CtlSumReport_ActivityDiagrams" xml:space="preserve">
+    <value>Aktivitätsdiagramme</value>
+  </data>
+  <data name="SetDescZoomFrequencyLines" xml:space="preserve">
+    <value>Frequenzlinien zur Orientierung im Zoomfenster</value>
+  </data>
+  <data name="SetDescFrequencyKhz" xml:space="preserve">
+    <value>Frequenz [kHz]</value>
+  </data>
+  <data name="SetDescShowGrid" xml:space="preserve">
+    <value>Zeige Gitternetz in Zoom-Ansicht</value>
+  </data>
+  <data name="CtrlZoom_ZoomFreqLines" xml:space="preserve">
+    <value>An-/Abschalten der Frequenzhilfslinien. Frequenz einstellbar in Programm-Einstellungen</value>
+  </data>
+  <data name="ColGradientBlueToGreen" xml:space="preserve">
+    <value>blau über grün nach rot</value>
+  </data>
+  <data name="ColGradientWhiteToBlue" xml:space="preserve">
+    <value>weiß nach blau</value>
+  </data>
+  <data name="ColGradientUser" xml:space="preserve">
+    <value>benutzerderfiniert</value>
+  </data>
+  <data name="ColGradientBlackToGreen" xml:space="preserve">
+    <value>schwarz über grün nach rot</value>
+  </data>
+  <data name="ColGradientBlackToMagenta" xml:space="preserve">
+    <value>schwarz über gelb nach magenta</value>
+  </data>
+  <data name="FrmColorMap_SelectPredefinedColorPreset" xml:space="preserve">
+    <value>vordefinierten Farbverlauf wählen</value>
   </data>
 </root>

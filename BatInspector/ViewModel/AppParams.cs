@@ -137,6 +137,19 @@ namespace BatInspector
   }
 
 
+  [TypeConverter(typeof(ExpandableObjectConverter))]
+  [DataContract]
+  public class FreqLineSettings
+  {
+    [DataMember]
+    public bool Visible { get; set; } = false;
+    [DataMember]
+    [LocalizedDescription("SetDescFrequencyKhz")]
+    public double Frequency { get; set; } = 20.1;
+    [DataMember]
+    public Color Color { get; set; } = Color.Turquoise;
+  }
+
 
   [TypeConverter(typeof(ExpandableObjectConverter))]
   [DataContract]
@@ -193,8 +206,8 @@ namespace BatInspector
     public const int FFT_WIDTH = 1024;
     public const int NR_OF_TICKS = 9;         // number of ticks in zoom view (if changed, add/remove line(s) in zoom view)
     public const int CNT_WAV_CONTROLS = 16;   // max. number of wav file controls
-    public const int ACTIVITY_CLASS_WIDTH = 5;  // class width [min] for activity diagrams
-    public const int MAX_WAVCTL_COUNT = 6; // max. number of pre initialized WAV controls 
+    public const int MAX_WAVCTL_COUNT = 6;    // max. number of pre initialized WAV controls 
+    public const int NR_ZOOM_FREQ_LINES = 5;  // max. number of frequency lines to show in zoom window
 
     static AppParams _inst = null;
 
@@ -321,6 +334,11 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
+    [LocalizedDescription("SetDescShowGrid")]
+    public bool ShowGrid { get; set; } = true;
+
+    [DataMember]
+    [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SpecDescShowZoom")]
     public bool ZoomSeparateWin { get; set; } = false;
 
@@ -378,6 +396,11 @@ namespace BatInspector
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescZoomType")]
     public enZoomType ZoomType { get; set; } = enZoomType.LEFT;
+
+    [DataMember]
+    [LocalizedCategory("SetCatZoom")]
+    [LocalizedDescription("SetDescZoomFrequencyLines")]
+    public FreqLineSettings[] FrequencyLines { get; set; }
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -568,6 +591,15 @@ namespace BatInspector
       {
         DefaultModel = enModel.BAT_DETECT2;
       }
+      comparison = String.Compare(Version, "0.9.9.0", comparisonType: StringComparison.OrdinalIgnoreCase);
+      if (string.IsNullOrEmpty(Version) || (comparison < 0))
+        ShowGrid = true;
+      if (FrequencyLines == null)
+      {
+        FrequencyLines = new FreqLineSettings[5];
+        for (int i = 0; i < NR_ZOOM_FREQ_LINES; i++)
+          FrequencyLines[i] = new FreqLineSettings() { Visible= false, Frequency = 20 + i * 5, Color = Color.Turquoise };          
+      }
       Version = AppVersion;
     }
 
@@ -614,7 +646,9 @@ namespace BatInspector
       LogShowWarning = true;
       LogShowInfo = true;
       LogShowDebug = false;
-
+      FrequencyLines = new FreqLineSettings[5];
+      for (int i = 0; i < NR_ZOOM_FREQ_LINES; i++)
+        FrequencyLines[i] = new FreqLineSettings() { Frequency = 20000 + i * 5, Color = Color.Green };
       ShowOnlyFilteredDirs = false;
       DirFilter = new List<string>();
       for (int i = 0; i < 5; i++)
@@ -801,75 +835,10 @@ namespace BatInspector
 
     public void initColorGradient()
     {
-      ColorGradientBlue = new List<ColorItem>
-      {
-        new ColorItem(0, 0),
-        new ColorItem(100, 20),
-        new ColorItem(0, 40),
-        new ColorItem(0, 75),
-        new ColorItem(40, 100)
-      };
-      ColorGradientGreen = new List<ColorItem>
-      {
-        new ColorItem(0, 0),
-        new ColorItem(0, 20),
-        new ColorItem(200, 60),
-        new ColorItem(200, 75),
-        new ColorItem(0, 100)
-      };
-      ColorGradientRed = new List<ColorItem>
-      {
-        new ColorItem(0, 0),
-        new ColorItem(0, 20),
-        new ColorItem(100, 60),
-        new ColorItem(200, 75),
-        new ColorItem(255, 100)
-      };
-
-      /* black - green
-        ColorGradientBlue = new List<ColorItem>
-        {
-          new ColorItem(0, 0),
-          new ColorItem(0, 30),
-          new ColorItem(0, 70),
-          new ColorItem(0, 75),
-          new ColorItem(40, 100)
-        };
-        ColorGradientGreen = new List<ColorItem>
-        {
-          new ColorItem(0, 0),
-          new ColorItem(70, 30),
-          new ColorItem(200, 70),
-          new ColorItem(200, 75),
-          new ColorItem(0, 100)
-        };
-        ColorGradientRed = new List<ColorItem>
-        {
-          new ColorItem(0, 0),
-          new ColorItem(0, 30),
-          new ColorItem(200, 70),
-          new ColorItem(200, 75),
-          new ColorItem(255, 100)
-        }; 
-      */
+      ColorPreset preset = ColorPresetCollection.initColorGradient(ColorPresetCollection.enColorGrading.GREEN_BLUE);
+      ColorGradientBlue = preset.ColorGradientBlue;
+      ColorGradientGreen = preset.ColorGradientGreen;
+      ColorGradientRed = preset.ColorGradientRed;
     }
-
-    /*    public void adjustActivateBat()
-        {
-          string str = "VIRTUAL_ENV=";
-          string path =  ModelRootPath + "/_venv/Scripts/activate.bat";
-          try
-          {
-            string activateBat = File.ReadAllText(path);
-            int pos = activateBat.IndexOf(str) + str.Length;
-            if (activateBat[pos + 1] != DriveLetter[0])
-            {
-              string newBat = activateBat.Substring(0, pos) + DriveLetter[0] + activateBat.Substring(pos + 1);
-              File.WriteAllText(path, newBat);
-              DebugLog.log("python scripts adapted to drive " + DriveLetter, enLogType.INFO);
-            }
-          }
-          catch { }
-        }*/
   }
 }

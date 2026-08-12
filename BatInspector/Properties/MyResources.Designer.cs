@@ -376,6 +376,51 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to black to green to red.
+        /// </summary>
+        public static string ColGradientBlackToGreen {
+            get {
+                return ResourceManager.GetString("ColGradientBlackToGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to black to yellow to magenta.
+        /// </summary>
+        public static string ColGradientBlackToMagenta {
+            get {
+                return ResourceManager.GetString("ColGradientBlackToMagenta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blue to green to red.
+        /// </summary>
+        public static string ColGradientBlueToGreen {
+            get {
+                return ResourceManager.GetString("ColGradientBlueToGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to user defined.
+        /// </summary>
+        public static string ColGradientUser {
+            get {
+                return ResourceManager.GetString("ColGradientUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to white to blue.
+        /// </summary>
+        public static string ColGradientWhiteToBlue {
+            get {
+                return ResourceManager.GetString("ColGradientWhiteToBlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         public static string Color {
@@ -925,7 +970,16 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CSV file.
+        ///   Looks up a localized string similar to Activity Diagrams.
+        /// </summary>
+        public static string CtlSumReport_ActivityDiagrams {
+            get {
+                return ResourceManager.GetString("CtlSumReport_ActivityDiagrams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comprehensive report (CSV).
         /// </summary>
         public static string CtlSumReport_CSVFile {
             get {
@@ -988,7 +1042,16 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timespan.
+        ///   Looks up a localized string similar to Summary; 1 entry/day, species &amp; location (CSV).
+        /// </summary>
+        public static string ctlSumReportSummary {
+            get {
+                return ResourceManager.GetString("ctlSumReportSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class Width Activity Diagram [min].
         /// </summary>
         public static string CtlSumReportTimespan {
             get {
@@ -1254,6 +1317,15 @@ namespace BatInspector.Properties {
         public static string CtrlRecorderErrMsgRange {
             get {
                 return ResourceManager.GetString("CtrlRecorderErrMsgRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable/disable frequency guides: adjust frequencies in application settings.
+        /// </summary>
+        public static string CtrlZoom_ZoomFreqLines {
+            get {
+                return ResourceManager.GetString("CtrlZoom_ZoomFreqLines", resourceCulture);
             }
         }
         
@@ -1920,6 +1992,15 @@ namespace BatInspector.Properties {
         public static string frmCleanupTitle {
             get {
                 return ResourceManager.GetString("frmCleanupTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select predefined Color Preset:.
+        /// </summary>
+        public static string FrmColorMap_SelectPredefinedColorPreset {
+            get {
+                return ResourceManager.GetString("FrmColorMap_SelectPredefinedColorPreset", resourceCulture);
             }
         }
         
@@ -5056,6 +5137,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frequency [kHz].
+        /// </summary>
+        public static string SetDescFrequencyKhz {
+            get {
+                return ResourceManager.GetString("SetDescFrequencyKhz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grid color for the grid display in Zoom View.
         /// </summary>
         public static string SetDescGridColor {
@@ -5236,6 +5326,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show grid in ZoomView.
+        /// </summary>
+        public static string SetDescShowGrid {
+            get {
+                return ResourceManager.GetString("SetDescShowGrid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to show only directories in the explorer that matches diectory filters.
         /// </summary>
         public static string SetDescShowOnlyFiltered {
@@ -5286,6 +5385,15 @@ namespace BatInspector.Properties {
         public static string SetDescWidthMainWin {
             get {
                 return ResourceManager.GetString("SetDescWidthMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frequency lines for orientation in the zoom window.
+        /// </summary>
+        public static string SetDescZoomFrequencyLines {
+            get {
+                return ResourceManager.GetString("SetDescZoomFrequencyLines", resourceCulture);
             }
         }
         

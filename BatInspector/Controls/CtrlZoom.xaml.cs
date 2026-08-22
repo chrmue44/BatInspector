@@ -242,10 +242,11 @@ namespace BatInspector.Controls
       initCallSelectors();
 
       update();
-      _btnZoomTotal_Click(null, null);
 
       _ctlTimeMin.setup("tMin[s]", enDataType.DOUBLE, 3, 50);
       _ctlTimeMax.setup("tMax[s]", enDataType.DOUBLE, 3, 50);
+
+      _btnZoomTotal_Click(null, null);
 
       _oldCallIdx = -1;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();

@@ -297,8 +297,7 @@ namespace BatInspector
       Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
       analysis.read(prj.getReportName(SelectedModelIndex), App.Model.DefaultModelParams, enMetaData.AUTO);
 
-      FilterItem filter = new FilterItem(-1, "query",
-       _expression.Replace('\n', ' '), false);
+      FilterItem filter = new FilterItem(-1, "query", _expression.Replace('\n', ' '));
 
       string lastFileName = "";
       if (analysis.Files.Count == 0)

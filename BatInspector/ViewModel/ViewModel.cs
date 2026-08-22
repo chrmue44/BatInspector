@@ -307,7 +307,6 @@ namespace BatInspector
         {
           Expression = fItem.Expression,
           Name = fItem.Name,
-          isForAllCalls = fItem.IsForAllCalls
         };
         AppParams.Inst.Filter.Add(fPar);
       }
@@ -670,7 +669,7 @@ namespace BatInspector
       _filter.Items.Clear();
       foreach (FilterParams p in AppParams.Inst.Filter)
       {
-        FilterItem it = new FilterItem(_filter.Items.Count, p.Name, p.Expression, p.isForAllCalls);
+        FilterItem it = new FilterItem(_filter.Items.Count, p.Name, p.Expression);
         _filter.Items.Add(it);
       }
     }

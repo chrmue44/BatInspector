@@ -225,8 +225,7 @@ namespace BatInspector
       int retVal = 0;
       string filterExp = pars[0];
       string outDir = pars[1];
-      bool allCalls = pars[2] != "0";
-      FilterItem filterItem = new FilterItem(0, "temp", filterExp, allCalls);
+      FilterItem filterItem = new FilterItem(0, "temp", filterExp);
       if (App.Model.Prj?.Ok == true)
       {
         App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
@@ -441,10 +440,7 @@ namespace BatInspector
         if (App.Model.Prj?.Ok == true)
         {
           string filterExp = pars[0];
-          bool allCalls = false;
-          if (pars.Count> 1)
-            allCalls = pars[1] == "1";
-          FilterItem filterItem = new FilterItem(0, "temp", filterExp, allCalls);
+          FilterItem filterItem = new FilterItem(0, "temp", filterExp);
           App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
         }
       }

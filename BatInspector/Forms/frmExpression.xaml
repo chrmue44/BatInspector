@@ -16,10 +16,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <GroupBox Header="Filer" Grid.Row="0">
-            <StackPanel Orientation="Vertical">
                 <local:ctlExpressionEditor x:Name="_ctlEditor" />
-                <CheckBox Name="_cbAll" Content="{x:Static res:MyResources.frmExpressionApplyAllCalls}"/>
-            </StackPanel>
         </GroupBox>
         <GroupBox Name="_grpSave" Grid.Row="1" Header="{x:Static res:MyResources.frmExpressionSave}">
             <StackPanel Orientation="Vertical">

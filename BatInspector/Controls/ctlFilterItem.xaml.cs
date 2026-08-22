@@ -66,7 +66,6 @@ namespace BatInspector.Controls
       {
         _tbExpression.Text = frm.FilterExpression;
         _filter.Expression = frm.FilterExpression;
-        _filter.IsForAllCalls = frm.AllCalls;
       }
     }
   }

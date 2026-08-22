@@ -1214,7 +1214,7 @@ namespace BatInspector
           {
             //reward if contraint for species is fulfilled
             string filterExp = $"(SpeciesMan ==\"{spec}\") && ({si.AdditionalConstraint})";
-            FilterItem filterItem = new FilterItem(0, "temp", filterExp, false);
+            FilterItem filterItem = new FilterItem(0, "temp", filterExp);
             App.Model.Prj.applyFilter(App.Model.Filter, filterItem);
             bool ok = App.Model.Filter.apply(filterItem, this);
             if (ok && (si.AdditionalConstraint != ""))

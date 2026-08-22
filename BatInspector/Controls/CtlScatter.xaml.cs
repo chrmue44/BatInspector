@@ -41,7 +41,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ComboBox cbFilter, bool showAllCallsBtn)
+    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ComboBox cbFilter)
     {
       applyFilter = false;
       resetFilter = false;
@@ -55,14 +55,14 @@ namespace BatInspector.Controls
         {
           if (cbFilter.SelectedIndex == 1)
           {
-            frmExpression frm = new frmExpression(App.Model.Filter.ExpGenerator, showAllCallsBtn);
+            frmExpression frm = new frmExpression(App.Model.Filter.ExpGenerator, true);
             bool? res = frm.ShowDialog();
             if (res == true)
             {
               if (frm.SaveFilter)
               {
                 int idx = App.Model.Filter.Items.Count;
-                FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
+                FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression);
                 App.Model.Filter.Items.Add(filter);
                 cbFilter.Items.Add(filter.Name);
                 cbFilter.SelectedIndex = cbFilter.Items.Count - 1;
@@ -74,7 +74,7 @@ namespace BatInspector.Controls
                 else
                   cbFilter.Items[1] = frm.FilterExpression.Substring(0, 21) + "...";
                 cbFilter.SelectedIndex = 1;
-                App.Model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
+                App.Model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression);
               }
               applyFilter = true;
             }
@@ -127,7 +127,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
 
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterScatter, true);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterScatter);
       createPlot();
     }
   }

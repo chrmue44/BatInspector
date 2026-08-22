@@ -98,7 +98,6 @@ namespace BatInspector
 
     [DataMember]
     [Description("only valid, whall ALL calls in one file apply to the logical expression")]
-    public bool isForAllCalls { get; set; }
 
     public int Index { get; set; }
 
@@ -671,7 +670,6 @@ namespace BatInspector
       FilterParams p = new FilterParams();
       p.Name = "Example";
       p.Expression = "(SpeciesMan == \"PPIP\")";
-      p.isForAllCalls = true;
       p.Index = 0;
       Filter.Add(p);
     }

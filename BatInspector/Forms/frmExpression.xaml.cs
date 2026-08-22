@@ -19,13 +19,12 @@ namespace BatInspector.Forms
     ExpressionGenerator _gen;
 
     public string FilterExpression { get { return _ctlEditor.Expression; } }
-    public bool AllCalls { get{ return _cbAll.IsChecked == true; } }
 
     public bool SaveFilter { get { return _cbSave.IsChecked == true; } }
 
     public string FilterName {  get{ return _ctlExpName.getValue(); } }
 
-    public frmExpression(ExpressionGenerator gen, bool withSaveOption, bool withAllCallsCb = true)
+    public frmExpression(ExpressionGenerator gen, bool withSaveOption)
     {
       InitializeComponent();
       _gen = gen;
@@ -39,7 +38,6 @@ namespace BatInspector.Forms
         _grpSave.Visibility = Visibility.Hidden;
         _grd.RowDefinitions[1].Height = new GridLength(5);
       }
-      _cbAll.Visibility = withAllCallsCb ? Visibility.Visible : Visibility.Hidden;
     }
 
 

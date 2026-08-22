@@ -45,14 +45,12 @@ namespace BatInspector
     public int Index { get; set; }
     public string Name { get; set; }
     public string Expression { get; set; }
-    public bool IsForAllCalls { get; set; }
 
-    public FilterItem(int index, string name, string expression, bool allCalls)
+    public FilterItem(int index, string name, string expression)
     {
       Index = index;
       Name = name;
       Expression = expression;
-      IsForAllCalls = allCalls;
     }
 
     public int CompareTo(FilterItem other)
@@ -66,16 +64,6 @@ namespace BatInspector
   public class Filter
   {
     const string VAR_NR_CALLS = "NrOfCalls";
-    /*  const string VAR_SPECIES_AUTO = "SpeciesAuto";
-      const string VAR_SPECIES_MAN = "SpeciesMan";
-      const string VAR_FREQ_MAX = "FreqMax";
-      const string VAR_FREQ_MIN = "FreqMin";
-      const string VAR_FREQ_MAX_AMP = "FreqMaxAmp";
-      const string VAR_DURATION = "DurationCall";
-      const string VAR_PROBABILITY = "Probability";
-      const string VAR_REMARKS = "Remarks";
-      const string VAR_TIME = "RecordingTime";
-      const string VAR_SNR = "SNR";  */
 
     ExpressionGenerator _gen;
     List<FilterItem> _list;
@@ -130,8 +118,6 @@ namespace BatInspector
     public bool apply(FilterItem filter, AnalysisFile file)
     {
       bool retVal = false;
-      if (filter.IsForAllCalls)
-        retVal = true;
 
       if (string.IsNullOrEmpty(filter.Expression))
         return true;
@@ -146,21 +132,10 @@ namespace BatInspector
         for (int i = 0; i < file.Calls.Count; i++)
         {
           bool res = apply(filter, file.Calls[i]);
-          if (filter.IsForAllCalls)
+          if (res)
           {
-            if (!res)
-            {
-              retVal = false;
-              break;
-            }
-          }
-          else
-          {
-            if (res)
-            {
-              retVal = true;
+            retVal = true;
               //              break;
-            }
           }
         }
       }

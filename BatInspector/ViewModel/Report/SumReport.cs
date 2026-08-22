@@ -1013,7 +1013,7 @@ namespace BatInspector
 
           Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
           analysis.read(rep.ReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
-          FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
+          FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '));
 
           if (analysis.Files.Count == 0)
           {
@@ -1128,7 +1128,7 @@ namespace BatInspector
       if (Utils.overLap(report.StartDate.Ticks, report.EndDate.Ticks, start.Ticks, end.Ticks))
       {
         int sumCnt = 0;
-        FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
+        FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '));
         Analysis analysis = new Analysis(false, enModel.BAT_DETECT2);
         analysis.read(report.ReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
         if (analysis.Files.Count > 0)
@@ -1209,7 +1209,7 @@ namespace BatInspector
       double latitude = 0;
       double longitude = 0;
       int sumCnt = 0;
-      FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '), false);
+      FilterItem filter = new FilterItem(-1, "query", expression.Replace('\n', ' '));
 
       foreach (ReportListItem rep in _reports)
       {

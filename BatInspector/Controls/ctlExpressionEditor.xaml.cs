@@ -76,7 +76,7 @@ namespace BatInspector.Controls
         int iLeft = _cbLeft.SelectedIndex;
         if ((string)_cbLeft.SelectedItem == MyResources.ExpGenNested)
         {
-          frmExpression frm = new frmExpression(_gen, false, false);
+          frmExpression frm = new frmExpression(_gen, false);
           bool? res = frm.ShowDialog();
           if (res == true)
           {
@@ -168,7 +168,7 @@ namespace BatInspector.Controls
         int iRight = _cbRight.SelectedIndex;
         if ((string)_cbRight.SelectedItem == MyResources.ExpGenNested)
         {
-          frmExpression frm = new frmExpression(_gen, false, false);
+          frmExpression frm = new frmExpression(_gen, false);
           bool? res = frm.ShowDialog();
           if (res == true)
           {

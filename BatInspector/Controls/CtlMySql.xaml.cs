@@ -374,7 +374,7 @@ namespace BatInspector.Controls
       DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
       bool apply;
       bool resetFilter;
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter, false);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter);
       if (apply)
       {
         FilterItem filter = (_cbFilter.SelectedIndex == 1) ?

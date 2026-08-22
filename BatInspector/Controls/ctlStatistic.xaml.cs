@@ -65,7 +65,7 @@ namespace BatInspector.Controls
               if (frm.SaveFilter)
               {
                 int idx = model.Filter.Items.Count;
-                FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression, frm.AllCalls);
+                FilterItem filter = new FilterItem(idx, frm.FilterName, frm.FilterExpression);
                 model.Filter.Items.Add(filter);
                 cbFilter.Items.Add(filter.Name);
                 cbFilter.SelectedIndex = cbFilter.Items.Count - 1;
@@ -77,7 +77,7 @@ namespace BatInspector.Controls
                 else
                   cbFilter.Items[1] = frm.FilterExpression.Substring(0, 21) + "...";
                 cbFilter.SelectedIndex = 1;
-                model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression, frm.AllCalls);
+                model.Filter.TempFilter = new FilterItem(-1, "TempFilter", frm.FilterExpression);
               }
             }
           }
@@ -131,7 +131,7 @@ namespace BatInspector.Controls
       bool apply;
       bool resetFilter;
 
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterStatistic, true);
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterStatistic);
       createPlot();
     }
 

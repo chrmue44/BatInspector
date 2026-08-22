@@ -2098,7 +2098,7 @@
     <value>Enable/disable frequency guides: adjust frequencies in application settings</value>
   </data>
   <data name="ColGradientBlueToGreen" xml:space="preserve">
-    <value>blue to green to red</value>
+    <value>dark blue to green to red</value>
   </data>
   <data name="ColGradientWhiteToBlue" xml:space="preserve">
     <value>white to blue</value>
@@ -2114,5 +2114,11 @@
   </data>
   <data name="FrmColorMap_SelectPredefinedColorPreset" xml:space="preserve">
     <value>Select predefined Color Preset:</value>
+  </data>
+  <data name="ColGradientBlueToRed" xml:space="preserve">
+    <value>deep blue to green to red</value>
+  </data>
+  <data name="MainWindow_TtExpertMode" xml:space="preserve">
+    <value>Switches Expert Mode ON and OFF</value>
   </data>
 </root>

@@ -143,6 +143,7 @@ namespace BatInspector.Forms
         _frmSettings = new frmSettings(AppParams.Inst);
         _frmSettings.ShowDialog();
       }
+      setExpertMode(AppParams.Inst.ExpertMode);
     }
 
 
@@ -1393,6 +1394,33 @@ namespace BatInspector.Forms
       }
     }
 
+    void setExpertMode(bool on)
+    {
+      if (on)
+      {
+        _btnSpecies.Visibility = Visibility.Visible;
+        _tbScatter.Visibility = Visibility.Visible;
+        _tbStatistic.Visibility = Visibility.Visible;
+        _tbMySql.Visibility = Visibility.Visible;
+        _tbReport.Visibility = Visibility.Visible;
+        _btnScript.Visibility = Visibility.Visible;
+        _btnCancelScript.Visibility = Visibility.Visible;
+        _sepScript.Visibility = Visibility.Visible;
+        _btnWavTool.Visibility = Visibility.Visible;
+      }
+      else
+      {
+        _btnSpecies.Visibility = Visibility.Collapsed;
+        _tbScatter.Visibility = Visibility.Collapsed;
+        _tbStatistic.Visibility = Visibility.Collapsed;
+        _tbMySql.Visibility = Visibility.Collapsed;
+        _tbReport.Visibility = Visibility.Collapsed;
+        _btnWavTool.Visibility = Visibility.Collapsed;
+        _sepScript.Visibility= Visibility.Collapsed;
+        _btnCancelScript.Visibility = Visibility.Collapsed;
+        _btnScript.Visibility = Visibility.Collapsed;
+      }
+    }
 
     private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
     {
@@ -1737,6 +1765,11 @@ namespace BatInspector.Forms
       frm.Show();
     }
 
+    private void _btnExpert_Click(object sender, RoutedEventArgs e)
+    {
+      AppParams.Inst.ExpertMode = !AppParams.Inst.ExpertMode;
+      setExpertMode(AppParams.Inst.ExpertMode);
+    }
 
     #region WindowChrome
     // Can execute

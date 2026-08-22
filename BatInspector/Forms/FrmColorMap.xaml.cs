@@ -22,20 +22,19 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmColorMap : Window
   {
-    ColorPresetCollection _presets;
+    ColorPresetCollection _presets = new ColorPresetCollection();
     public FrmColorMap()
     {
       InitializeComponent();
       _ctlB.setup(MyResources.ColorMapBlue, AppParams.Inst.ColorGradientBlue);
       _ctlG.setup(MyResources.ColorMapGreen, AppParams.Inst.ColorGradientGreen);
       _ctlR.setup(MyResources.ColorMapRed, AppParams.Inst.ColorGradientRed);
-      
-      _presets = new ColorPresetCollection();
+
       List<string> items = new List<string>();
       items.Add(MyResources.ColGradientUser);
-      for (int i = 0; i < _presets.Presets.Count; i++)
+      for (int i = 0; i < _presets.Count; i++)
       {
-        items.Add(_presets.Presets[i].Name);
+        items.Add(_presets.getName(i));
       }
       _cbPresets.ItemsSource = items.ToArray();
       _cbPresets.SelectedIndex = 0;
@@ -122,13 +121,18 @@ namespace BatInspector.Forms
       if (_cbPresets.SelectedIndex == 0)
         return;
 
-      if (_cbPresets.SelectedIndex > _presets.Presets.Count)
+      if (_cbPresets.SelectedIndex > _presets.Count)
         return;
 
-      AppParams.Inst.ColorGradientBlue = _presets.Presets[_cbPresets.SelectedIndex - 1].ColorGradientBlue;
-      AppParams.Inst.ColorGradientGreen = _presets.Presets[_cbPresets.SelectedIndex - 1].ColorGradientGreen;
-      AppParams.Inst.ColorGradientRed = _presets.Presets[_cbPresets.SelectedIndex - 1].ColorGradientRed;
+      ColorPreset preset = _presets.getPresetCopy(_cbPresets.SelectedIndex - 1);
+      AppParams.Inst.ColorGradientBlue = preset.ColorGradientBlue;
+        AppParams.Inst.ColorGradientGreen = preset.ColorGradientGreen;
+      AppParams.Inst.ColorGradientRed = preset.ColorGradientRed;
       createGradient();
+      _ctlB.updateValue(AppParams.Inst.ColorGradientBlue);
+      _ctlR.updateValue(AppParams.Inst.ColorGradientRed);
+      _ctlG.updateValue(AppParams.Inst.ColorGradientGreen);
+
     }
   }
 }

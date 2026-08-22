@@ -6,7 +6,6 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using System;
@@ -124,19 +123,54 @@ namespace BatInspector
     LocalizedDescription("SpecDescColorRed"),
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [Browsable(false)]
-    public List<ColorPreset> Presets { get; set; } = new List<ColorPreset>();
+    
+    List<ColorPreset> _presets = new List<ColorPreset>();
 
     public enum enColorGrading
     {
       GREEN_BLUE,
       GREEN_BLACK,
       BLUE_WHITE,
+      RED_BLUE,
       MAGENTA_BLACK,
     }
 
     public ColorPresetCollection() 
     {
       init();
+    }
+
+    public int Count { get { return _presets.Count; }   }
+
+    public string getName(int i)
+    {
+      if ((i < _presets.Count) && (i >= 0))
+        return _presets[i].Name;
+      else
+        return "";
+    }
+
+    public ColorPreset getPresetCopy(int i)
+    {
+      if ((i < 0) || (i >= _presets.Count))
+        return null;
+
+      ColorPreset retVal = new ColorPreset();
+      retVal.Name = _presets[i].Name;
+      retVal.ColorGradientBlue = getGradientCopy(_presets[i].ColorGradientBlue);
+      retVal.ColorGradientGreen = getGradientCopy(_presets[i].ColorGradientGreen);
+      retVal.ColorGradientRed = getGradientCopy(_presets[i].ColorGradientRed);
+      return retVal;
+    }
+
+    private List<ColorItem> getGradientCopy(List<ColorItem> gradient)
+    { 
+      List<ColorItem> retVal = new List<ColorItem> ();
+      foreach (ColorItem item in gradient)
+      {
+        retVal.Add(new ColorItem(item));
+      }
+      return retVal;
     }
 
     public static ColorPreset initColorGradient(enColorGrading type)
@@ -256,6 +290,34 @@ namespace BatInspector
           };
           break;
 
+        case enColorGrading.RED_BLUE:
+          p.Name = MyResources.ColGradientBlueToRed;
+          p.ColorGradientBlue = new List<ColorItem>
+          {
+            new ColorItem(0,  0),
+            new ColorItem(255, 10),
+            new ColorItem(0,   50),
+            new ColorItem(0,  75),
+            new ColorItem(255, 100)
+          };
+          p.ColorGradientGreen = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(0, 10),
+            new ColorItem(255, 50),
+            new ColorItem(0, 75),
+            new ColorItem(255, 100)
+          };
+          p.ColorGradientRed = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(0, 10),
+            new ColorItem(150, 50),
+            new ColorItem(255, 75),
+            new ColorItem(255, 100)
+          };
+          break;
+
       }
       return p;
     }
@@ -294,16 +356,17 @@ namespace BatInspector
 
     private void init()
     {
-      Presets = new List<ColorPreset>();
+      _presets = new List<ColorPreset>();
       ColorPreset preset = initColorGradient(enColorGrading.GREEN_BLUE) ;
-      Presets.Add(preset);
+      _presets.Add(preset);
       preset = initColorGradient(enColorGrading.GREEN_BLACK);
-      Presets.Add(preset);
+      _presets.Add(preset);
       preset = initColorGradient(enColorGrading.MAGENTA_BLACK);
-      Presets.Add(preset);
+      _presets.Add(preset);
       preset = initColorGradient(enColorGrading.BLUE_WHITE);
-      Presets.Add(preset);
-
+      _presets.Add(preset);
+      preset = initColorGradient(enColorGrading.RED_BLUE);
+      _presets.Add(preset);
     }
   }
 }

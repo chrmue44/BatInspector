@@ -163,7 +163,7 @@
                             <!--        <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <Image Source="../images/debug.png"></Image>
                             </Button> -->
-                            <Separator Margin="15,2" Width="3"/>
+                            <Separator Margin="15,2" Width="3" x:Name="_sepScript"/>
                             <ToggleButton x:Name="_btnTools" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolTools}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <ToggleButton.Content>
                                     <StackPanel Orientation="Horizontal">
@@ -216,6 +216,9 @@
 
                             <Button x:Name="_btnInfo" Click="_btnInfo_Click"  ToolTip="{x:Static res:MyResources.MainToolShowSoftwareInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <Image Source="../images/Actions_help_about_icon.png"></Image>
+                            </Button>
+                            <Button x:Name="_btnExpert" Height="39" VerticalAlignment="Top" Width="39" Margin="10,0,0,0" ToolTip="{x:Static res:MyResources.MainWindow_TtExpertMode}" Click="_btnExpert_Click">
+                                <Image Source="/images/perfomance.png" Stretch="Fill"></Image>
                             </Button>
                         </ToolBar>
                     </ToolBarTray>

@@ -2098,7 +2098,7 @@
     <value>An-/Abschalten der Frequenzhilfslinien. Frequenz einstellbar in Programm-Einstellungen</value>
   </data>
   <data name="ColGradientBlueToGreen" xml:space="preserve">
-    <value>blau über grün nach rot</value>
+    <value>dunkelblau über grün nach rot</value>
   </data>
   <data name="ColGradientWhiteToBlue" xml:space="preserve">
     <value>weiß nach blau</value>
@@ -2113,6 +2113,12 @@
     <value>schwarz über gelb nach magenta</value>
   </data>
   <data name="FrmColorMap_SelectPredefinedColorPreset" xml:space="preserve">
-    <value>vordefinierten Farbverlauf wählen</value>
+    <value>vordefinierten Farbverlauf wählen:</value>
+  </data>
+  <data name="ColGradientBlueToRed" xml:space="preserve">
+    <value>hellblau über grün nach rot</value>
+  </data>
+  <data name="MainWindow_TtExpertMode" xml:space="preserve">
+    <value>Schaltet "Expert Mode" an und aus</value>
   </data>
 </root>

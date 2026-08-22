@@ -38,7 +38,6 @@ namespace BatInspector.Controls
       _tbExpression.Text = filter.Expression;
       _tbName.Text = filter.Name;
       _lblIdx.Text = _filter.Index.ToString();
-      _cbAll.IsChecked = filter.IsForAllCalls;
       _gen = gen;
     }
 
@@ -57,10 +56,6 @@ namespace BatInspector.Controls
       _dlgDelete(_filter.Index);
     }
 
-    private void _cbAll_Click(object sender, RoutedEventArgs e)
-    {
-      _filter.IsForAllCalls = (bool)_cbAll.IsChecked;
-    }
 
     private void _btnCreate_Click(object sender, RoutedEventArgs e)
     {
@@ -71,7 +66,6 @@ namespace BatInspector.Controls
       {
         _tbExpression.Text = frm.FilterExpression;
         _filter.Expression = frm.FilterExpression;
-        _cbAll.IsChecked = frm.AllCalls;
         _filter.IsForAllCalls = frm.AllCalls;
       }
     }

@@ -130,6 +130,11 @@ namespace BatInspector
       Color = col;
       Value = val;
     }
+    public ColorItem(ColorItem it)
+    {
+      Color = it.Color;
+      Value = it.Value;
+    }
     [DataMember]
     public int Color { get; set; }
     [DataMember]
@@ -275,6 +280,11 @@ namespace BatInspector
     [Browsable(false)]
     public string Version { get; set; } = "";
 
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescRootPath")]
+    public bool ExpertMode { get; set; } = false;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]

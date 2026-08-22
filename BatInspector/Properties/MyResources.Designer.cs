@@ -394,11 +394,20 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to blue to green to red.
+        ///   Looks up a localized string similar to dark blue to green to red.
         /// </summary>
         public static string ColGradientBlueToGreen {
             get {
                 return ResourceManager.GetString("ColGradientBlueToGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to deep blue to green to red.
+        /// </summary>
+        public static string ColGradientBlueToRed {
+            get {
+                return ResourceManager.GetString("ColGradientBlueToRed", resourceCulture);
             }
         }
         
@@ -4332,6 +4341,15 @@ namespace BatInspector.Properties {
         public static string MainWindow_timer_Tick_QUERY {
             get {
                 return ResourceManager.GetString("MainWindow_timer_Tick_QUERY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switches Expert Mode ON and OFF.
+        /// </summary>
+        public static string MainWindow_TtExpertMode {
+            get {
+                return ResourceManager.GetString("MainWindow_TtExpertMode", resourceCulture);
             }
         }
         

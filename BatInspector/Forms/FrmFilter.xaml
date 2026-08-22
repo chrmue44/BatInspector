@@ -35,7 +35,6 @@
       <TextBlock Grid.Column="0">Idx</TextBlock>
             <TextBlock Grid.Column="1" Text="{x:Static res:MyResources.FrmFilterFilterName}" />
             <TextBlock Grid.Column="2" Text="{x:Static res:MyResources.FrmFilterFilterExpression}" />
-            <TextBlock Grid.Column="3" Text="{x:Static res:MyResources.MainBtnAll}" />
     </Grid>
         <ScrollViewer Grid.Row="2"   Name="_scrlViewer" VerticalScrollBarVisibility="Auto" >
             <StackPanel Name="_sp" >

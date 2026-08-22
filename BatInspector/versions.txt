@@ -1,3 +1,8 @@
+- bugfix: color values are not updated in the setup dialog when selecting a preset (but saved if unchanged)
+- added color preset from AK Fledermausschutz Aachen, Düren
+- epert mode: hides Scatter Diagram, Statistics, MySql and Species View
+
+# V0.9.9.0    12.08.26
 - up to 5 fully configurable frequency guide lines in zoom view
 - summarized report (for multibase import)
 - color gradient presets in color dialog

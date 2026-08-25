@@ -1,5 +1,6 @@
 ﻿using libParser;
 using NAudio.Wave;
+using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Tls;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace BatInspector
 
     public static BatRecord retrieveMetaData(Project prj, string wavName)
     {
-      string fullWavName = Path.Combine(prj.PrjDir, prj.WavSubDir, wavName);
+      string fullWavName = Path.Combine(prj.PrjDir, prj.WavSubDir, prj.WavSubDir, wavName);
       return retrieveMetaData(fullWavName, prj.MetaData);
     }
 
@@ -109,19 +110,33 @@ namespace BatInspector
       return retrieveMetaData(fullWavName, metaData);
     }
 
-    public static void createMetaData(string wavName, BatRecord rec, enMetaData metaData, int timeExFactor)
+    public static void setMetaData(Project prj, string wavName, BatRecord rec)
     {
+      string fullWavName = Path.Combine(prj.PrjDir, prj.WavSubDir, wavName);
+      string infoFileName = fullWavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
+      enMetaData metaData = enMetaData.AUTO;
+      if (prj.MetaData == enMetaData.AUTO)
+      {
+        if (File.Exists(infoFileName))
+          metaData = enMetaData.XML;
+        else
+          metaData = enMetaData.GUANO;
+      }
+
       switch (metaData)
       {
         case enMetaData.GUANO:
           WavFile wav = new WavFile();
           wav.readFile(wavName);
-          wav.addGuanoMetaData(rec, timeExFactor);
+          wav.addGuanoMetaData(rec, 1);
           wav.saveFile();
+          break;
+
+        case enMetaData.XML:
+          ElekonInfoFile.write(infoFileName, rec);
           break;
       }
     }
-
 
     public static void parsePosition(BatRecord rec, out double lat, out double lon)
     {

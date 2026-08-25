@@ -557,6 +557,22 @@ namespace BatInspector
                   argv[2].changeType(AnyType.tType.RT_BOOL);
                   App.Model.Prj.Records[idxF].Selected = argv[2].getBool();
                   break;
+
+                case enFileInfo.LATITUDE:
+                case enFileInfo.LONGITUDE:
+                  {
+                    if(argv.Count < 4)
+                    {
+                      err = tParseError.NR_OF_ARGUMENTS;
+                      break;
+                    }
+                    BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, App.Model.Prj.Records[idxF].File);
+                    argv[2].changeType(AnyType.tType.RT_STR);
+                    argv[3].changeType(AnyType.tType.RT_STR);
+                    rec.GPS.Position = argv[2].getString() + " " + argv[3].getString();
+                    PrjMetaData.setMetaData(App.Model.Prj, App.Model.Prj.Records[idxF].File, rec);
+                  }
+                  break;
                 case enFileInfo.SAMPLE_RATE:
                   break;
               }

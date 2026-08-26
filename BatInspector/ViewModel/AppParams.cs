@@ -270,7 +270,14 @@ namespace BatInspector
     public string AppRootPath { get; set; } = "";
 
 
+    /// <summary>
+    /// Path to user data that is preserved during software updates (common documents)
+    /// </summary>
     public static String AppParamsPath { get; set; } = "";
+
+    /// <summary>
+    /// path to application data
+    /// </summary>
     public static string AppDataPath { get; set; } = "";
 
     public static string LogDataPath { get; set; } = "";

@@ -439,6 +439,70 @@ namespace BatInspector
     public int MaxCount { get; set; }
   }
 
+
+  [DataContract]
+  
+  public class ExportDataItem
+  {
+    [DataMember]
+    public string SpeciesLocal {  get; set; }
+    [DataMember]
+    public string SpeciesLatin { get; set; }
+    [DataMember]
+    public string Date { get; set; }
+    [DataMember]
+    public double Temperature { get; set; }
+    [DataMember]
+    public double Humidity { get; set; }
+    [DataMember]
+    public double Longitude { get; set; }
+    [DataMember]
+    public double Latitude { get; set; }
+    [DataMember]
+    public string Comment { get; set; }
+    [DataMember]
+    public string PathToWav { get; set; }
+    [DataMember]
+    public string PathToPng { get; set; }
+  }
+
+  /// <summary>
+  /// container for export data to external portals (iNaturalist, Naturgucker, ...)
+  /// </summary>
+  [DataContract]
+  public class ExportDataJson
+  {
+    public ExportDataJson(int cnt)
+    {
+      DocumentFiles = new ExportDataItem[cnt];
+    }
+
+    [DataMember]
+    public ExportDataItem[] DocumentFiles { get; set; }
+  
+    public void save(string name)
+    {
+      try
+      {
+        StreamWriter file = new StreamWriter(name);
+        MemoryStream stream = new MemoryStream();
+        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ExportDataJson));
+        ser.WriteObject(stream, this);
+        StreamReader sr = new StreamReader(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        string str = sr.ReadToEnd();
+        file.Write(JsonHelper.FormatJson(str));
+        file.Close();
+        DebugLog.log("export dats (json) saved to '" + name + "'", enLogType.INFO);
+      }
+      catch (Exception e)
+      {
+        DebugLog.log("failed to write export data:" + name + ": " + e.ToString(), enLogType.ERROR);
+      }
+
+    }
+  }
+
   /// <summary>
   /// item for a list of mean activities per species
   /// </summary>
@@ -652,6 +716,60 @@ namespace BatInspector
       else
 
         DebugLog.log("unable to save sum report, directory does not exist: " + _rootDir, enLogType.ERROR);
+    }
+
+
+    public ExportDataJson getListOfDocumentRecordings(string path)
+    {
+      DirectoryInfo dir = new DirectoryInfo(path);
+      FileInfo[] files = dir.GetFiles("*.wav");
+      ExportDataJson retVal = new ExportDataJson(files.Length);
+      int index = 0;
+      foreach (FileInfo file in files)
+      {
+        ExportDataItem item = new ExportDataItem();
+        int pos1 = file.Name.IndexOf('_');
+        item.PathToWav = file.FullName;
+        item.PathToPng = file.FullName.ToLower().Replace(".wav",".png");
+        string abbrSpec = file.Name.Substring(0, pos1);
+        SpeciesInfos spec = SpeciesInfos.findAbbreviation(abbrSpec, App.Model.SpeciesInfos);
+        if (spec != null)
+        {
+          item.SpeciesLatin = spec.Latin;
+          item.SpeciesLocal = spec.Local;
+        }
+        else
+        {
+          item.SpeciesLatin = abbrSpec;
+          item.SpeciesLocal = abbrSpec;
+        }
+        BatRecord rec = PrjMetaData.retrieveMetaData(file.FullName, enMetaData.AUTO);
+        if (rec != null)
+        {
+          string[] pos = rec.GPS.Position.Split(' ');
+          if (pos.Length == 2)
+          {
+            double lat, lon = 0.0;
+            bool ok1 = double.TryParse(pos[0], NumberStyles.Any, CultureInfo.InvariantCulture, out lat) &&
+                      double.TryParse(pos[1], NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
+            if (ok1)
+            {
+              item.Latitude = lat;
+              item.Longitude = lon;
+            }
+          }
+          bool ok = double.TryParse(Utils.removeNonNumerics(rec.Temparature,true), NumberStyles.Any, CultureInfo.InvariantCulture, out double temp);
+          if (ok)
+            item.Temperature = temp;
+          ok = double.TryParse(Utils.removeNonNumerics(rec.Humidity, true), NumberStyles.Any, CultureInfo.InvariantCulture, out double humid);
+          if (ok)
+            item.Humidity = humid;
+          item.Date = rec.DateTime;
+        }
+        retVal.DocumentFiles[index] = item;
+        index++;
+      }
+      return retVal;
     }
 
     void createActivityDiagSync()

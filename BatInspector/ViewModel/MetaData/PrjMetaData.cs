@@ -66,7 +66,7 @@ namespace BatInspector
 
     public static BatRecord retrieveMetaData(Project prj, string wavName)
     {
-      string fullWavName = Path.Combine(prj.PrjDir, prj.WavSubDir, prj.WavSubDir, wavName);
+      string fullWavName = Path.Combine(prj.PrjDir, prj.WavSubDir, wavName);
       return retrieveMetaData(fullWavName, prj.MetaData);
     }
 
@@ -122,6 +122,8 @@ namespace BatInspector
         else
           metaData = enMetaData.GUANO;
       }
+      else
+        metaData = prj.MetaData;
 
       switch (metaData)
       {

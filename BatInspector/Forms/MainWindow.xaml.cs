@@ -1407,6 +1407,7 @@ namespace BatInspector.Forms
         _btnCancelScript.Visibility = Visibility.Visible;
         _sepScript.Visibility = Visibility.Visible;
         _btnWavTool.Visibility = Visibility.Visible;
+        _btnRecorder.Visibility = Visibility.Visible;
       }
       else
       {
@@ -1419,6 +1420,7 @@ namespace BatInspector.Forms
         _sepScript.Visibility= Visibility.Collapsed;
         _btnCancelScript.Visibility = Visibility.Collapsed;
         _btnScript.Visibility = Visibility.Collapsed;
+        _btnRecorder.Visibility= Visibility.Collapsed;
       }
     }
 
@@ -1986,6 +1988,12 @@ namespace BatInspector.Forms
     {
     }
 
+    private void _btnExport_Click(object sender, RoutedEventArgs e)
+    {
+      frmExportData frm = new frmExportData();
+      frm.setup();
+      frm.Show();
+    }
   }
 
   public enum enWinType

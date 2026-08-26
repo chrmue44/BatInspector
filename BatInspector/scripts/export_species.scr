@@ -1,0 +1,46 @@
+SET DstDir %PAR1%
+SET PrjName %PAR2%
+
+SET Species[0] BBAR
+SET Species[1] ENIL
+SET Species[2] ESER
+SET Species[3] HSAV
+SET Species[4] MALC
+SET Species[5] MBEC
+SET Species[6] MBRA
+SET Species[7] MDAS
+SET Species[8] MDAU
+SET Species[9] MEMA
+SET Species[10] MMYO
+SET Species[11] MMYS
+SET Species[12] MNAT
+SET Species[13] MOXY
+SET Species[14] MSCH
+SET Species[15] NLAS
+SET Species[16] NLEI
+SET Species[17] NNOC
+SET Species[18] PKUH
+SET Species[19] PNAT
+SET Species[20] PPIP
+SET Species[21] PPYG
+SET Species[22] PAUR
+SET Species[23] PAUS
+SET Species[24] RFER
+SET Species[25] RHIP
+SET Species[26] VMUR
+SET Species[27] Myotis
+SET Species[28] Pipistrellus
+SET Species[29] Nyctaliod
+SET Species[30] Plecotus
+
+SET SpecCount 31
+
+FOR i 0 SpecCount
+  SET PartPrjName =(PrjName + "_" + Species[i])
+  LOG =("Export part project " + PartPrjName) 
+  SET Spec =(Species[i])
+  ApplyFilter 'SpeciesMan == "%Spec%"'
+  SaveSelectedAsProject %DstDir% %PartPrjName%
+END
+
+LOG "Export of all species completed"

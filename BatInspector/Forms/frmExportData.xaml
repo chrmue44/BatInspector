@@ -1,0 +1,35 @@
+﻿<Window x:Class="BatInspector.Forms.frmExportData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static res:MyResources.MainToolExportData}" Height="600" Width="1000">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <local:CtlSelectFile Grid.Row="0" x:Name="_ctlWavFolder" Margin="10,30,10,20"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <GroupBox Margin="5" Template="{DynamicResource GroupBoxCmu}">
+                <GroupBox.Header>
+                    <TextBlock Text="{x:Static res:MyResources.frmExportDataDocRecordings}" FontWeight="Bold" />
+                </GroupBox.Header>
+                <StackPanel Margin="3" x:Name="_sp">
+                    <local:ctlExportData  Margin="3"/>
+                </StackPanel>
+
+            </GroupBox>
+        </ScrollViewer>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5,20,5,5" HorizontalAlignment="Right">
+            <Button Width="120" x:Name="_btnNaturGucker" Content="Naturgucker..." Height="25" Margin="10,0,0,0" />
+            <Button Width="120" x:Name="_btnInaturalist" Content="iNaturalist..." Height="25" Margin="10,0,0,0" Click="_btnInaturalist_Click" />
+            <Button Width="120" x:Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Height="25" Margin="10,0,0,0" Click="_btnCancel_Click" />
+        </StackPanel>
+
+    </Grid>
+</Window>

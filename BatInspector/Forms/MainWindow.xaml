@@ -150,6 +150,9 @@
                             <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <Image Source="../images/query.png"></Image>
                             </Button>
+                            <Button x:Name="_btnExport" Click="_btnExport_Click"  ToolTip="{x:Static res:MyResources.MainToolExportData}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                <Image Source="../images/data-transfer.png"></Image>
+                            </Button>
                             <Button x:Name="_btnRecovery" Click="_btnRecovery_Click"  ToolTip="{x:Static res:MyResources.MainToolRecovery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <Image Source="../images/data-recovery.png"></Image>
                             </Button>

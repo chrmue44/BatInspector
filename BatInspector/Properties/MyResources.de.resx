@@ -2121,4 +2121,13 @@
   <data name="MainWindow_TtExpertMode" xml:space="preserve">
     <value>Schaltet "Expert Mode" an und aus</value>
   </data>
+  <data name="MainToolExportData" xml:space="preserve">
+    <value>Exportieren von Belegaufnahmen zu externen Portalen</value>
+  </data>
+  <data name="frmExportDataDocRecordings" xml:space="preserve">
+    <value>Belegaufnahmen</value>
+  </data>
+  <data name="frmExportData_SelectWAVFolder" xml:space="preserve">
+    <value>Verzeichnis für Belegaufnahmen auswählen</value>
+  </data>
 </root>

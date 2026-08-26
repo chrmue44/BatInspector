@@ -2401,6 +2401,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to select Folder for Document Recordings.
+        /// </summary>
+        public static string frmExportData_SelectWAVFolder {
+            get {
+                return ResourceManager.GetString("frmExportData_SelectWAVFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document Recordings.
+        /// </summary>
+        public static string frmExportDataDocRecordings {
+            get {
+                return ResourceManager.GetString("frmExportDataDocRecordings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prefix File Name.
         /// </summary>
         public static string frmExportPrefix {
@@ -4170,6 +4188,15 @@ namespace BatInspector.Properties {
         public static string MainToolExport {
             get {
                 return ResourceManager.GetString("MainToolExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export docoument recordings to external protals.
+        /// </summary>
+        public static string MainToolExportData {
+            get {
+                return ResourceManager.GetString("MainToolExportData", resourceCulture);
             }
         }
         

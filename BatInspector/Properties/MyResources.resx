@@ -2121,4 +2121,13 @@
   <data name="MainWindow_TtExpertMode" xml:space="preserve">
     <value>Switches Expert Mode ON and OFF</value>
   </data>
+  <data name="MainToolExportData" xml:space="preserve">
+    <value>Export docoument recordings to external protals</value>
+  </data>
+  <data name="frmExportDataDocRecordings" xml:space="preserve">
+    <value>Document Recordings</value>
+  </data>
+  <data name="frmExportData_SelectWAVFolder" xml:space="preserve">
+    <value>select Folder for Document Recordings</value>
+  </data>
 </root>

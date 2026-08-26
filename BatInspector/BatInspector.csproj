@@ -193,6 +193,9 @@
     <Compile Include="Controls\ctlDebugLine.xaml.cs">
       <DependentUpon>ctlDebugLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ctlExportData.xaml.cs">
+      <DependentUpon>ctlExportData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ctlHistogram.xaml.cs">
       <DependentUpon>ctlHistogram.xaml</DependentUpon>
     </Compile>
@@ -278,6 +281,9 @@
     </Compile>
     <Compile Include="Forms\frmCreatePrjFromQuery.xaml.cs">
       <DependentUpon>frmCreatePrjFromQuery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmExportData.xaml.cs">
+      <DependentUpon>frmExportData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmPosition.xaml.cs">
       <DependentUpon>FrmPosition.xaml</DependentUpon>
@@ -461,6 +467,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ctlExportData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ctlHistogram.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -617,6 +627,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\frmExportData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\frmInstall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -760,6 +774,7 @@
     <Resource Include="images\danger-sign.png" />
     <Resource Include="images\check.png" />
     <Resource Include="images\perfomance.png" />
+    <Resource Include="images\data-transfer.png" />
     <Content Include="versions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

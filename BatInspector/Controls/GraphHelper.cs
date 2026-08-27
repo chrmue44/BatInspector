@@ -20,7 +20,7 @@ namespace BatInspector.Controls
 {
   public class GraphHelper
   {
-    public static void createLine(Canvas ca, double x1, double y1, double x2, double y2, Brush brush, int thickness = 1)
+    public static void createLine(Canvas ca, double x1, double y1, double x2, double y2, System.Windows.Media.Brush brush, int thickness = 1)
     {
       Line li = new Line();
       li.X1 = x1;
@@ -59,11 +59,11 @@ namespace BatInspector.Controls
        ca.FillRectangle(color, (int)(x1 - width / 2), (int)(y1 - height / 2), width, height);
     }
 
-    public static void createBox(Canvas ca, double x1, double y1, double x2, double y2, int stroke, Brush brushBorder, Brush brushFill)
+    public static void createBox(Canvas ca, double x1, double y1, double x2, double y2, int stroke, System.Windows.Media.Brush brushBorder, System.Windows.Media.Brush brushFill)
     {
       if ((x2 > x1) && (y2 > y1))
       {
-        Rectangle r = new Rectangle();
+        System.Windows.Shapes.Rectangle r = new System.Windows.Shapes.Rectangle();
         r.Width = x2 - x1;
         r.Height = y2 - y1;
         r.Stroke = brushBorder;
@@ -87,7 +87,7 @@ namespace BatInspector.Controls
         textBlock.FontWeight = FontWeights.Bold;
       if (rotAngle > 0)
       {
-        textBlock.RenderTransformOrigin = new Point(0, 0);
+        textBlock.RenderTransformOrigin = new System.Windows.Point(0, 0);
         textBlock.RenderTransform = new RotateTransform(rotAngle);
       }
       Canvas.SetLeft(textBlock, x);
@@ -112,7 +112,7 @@ namespace BatInspector.Controls
     }
 
 
-    public static void createText(Canvas can, double x, double y, string text, Color color, double rotAngle = 0, double fontsize = 12, bool bold = false)
+    public static void createText(Canvas can, double x, double y, string text, System.Windows.Media.Color color, double rotAngle = 0, double fontsize = 12, bool bold = false)
     {
       TextBlock textBlock = new TextBlock();
       textBlock.Text = text;
@@ -123,7 +123,7 @@ namespace BatInspector.Controls
         textBlock.FontWeight = FontWeights.Bold; 
       if(rotAngle > 0)
       {
-        textBlock.RenderTransformOrigin = new Point(0,0);
+        textBlock.RenderTransformOrigin = new System.Windows.Point(0,0);
         textBlock.RenderTransform = new RotateTransform(rotAngle);
       }
       Canvas.SetLeft(textBlock, x);
@@ -151,20 +151,20 @@ namespace BatInspector.Controls
           max += 1;
         double[] fTicks = GraphHelper.createTicks(nrTicks, min, max);
         nrTicks = fTicks.Length;
-        GraphHelper.createLine(can, x, y, x, y + height, Brushes.Black);
+        GraphHelper.createLine(can, x, y, x, y + height, System.Windows.Media.Brushes.Black);
         double span = max - min;
         if (span == 0)
           span = 1;
         for (int i = 0; i < nrTicks; i++)
         {
           double yp = y + height - ((fTicks[i] - min) / span * height);
-          GraphHelper.createLine(can, x - 5, yp, x, yp, Brushes.Black);
+          GraphHelper.createLine(can, x - 5, yp, x, yp, System.Windows.Media.Brushes.Black);
           string str = fTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-          GraphHelper.createText(can, x - 32, yp - 9, str, Colors.Black);
+          GraphHelper.createText(can, x - 32, yp - 9, str, System.Windows.Media.Brushes.Black);
         }
         double ymax = y;
-        GraphHelper.createLine(can, x - 5, ymax, x, ymax, Brushes.Black);
-        GraphHelper.createText(can, x - 32, ymax - 9, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
+        GraphHelper.createLine(can, x - 5, ymax, x, ymax, System.Windows.Media.Brushes.Black);
+        GraphHelper.createText(can, x - 32, ymax - 9, max.ToString(nrFmt, CultureInfo.InvariantCulture), System.Windows.Media.Brushes.Black);
       }
       else
       {
@@ -172,16 +172,18 @@ namespace BatInspector.Controls
       }
     }
 
-    public static void createGridY(Canvas can, double x, double y, double w, double h, double min, double max, double[] tTicks, string nrFmt = "0.#")
+    public static void createGridY(Canvas can, double x, double y, double w, double h, double min, double max, 
+                                   double[] tTicks, string nrFmt = "0.#")
     {
       for (int i = 0; i < tTicks.Length; i++)
       {
         double yp = y + h  * (1 - (tTicks[i] - min) / (max - min));
-        GraphHelper.createLine(can, x, yp, x + w, yp, Brushes.Gray);
+        GraphHelper.createLine(can, x, yp, x + w, yp, System.Windows.Media.Brushes.Gray);
       }
     }
 
-    public static void showGraphLog(Canvas can, double x, double y, double w, double h, double xmin, double xmax, double ymin, double ymax, Point[] points)
+    public static void showGraphLog(Canvas can, double x, double y, double w, double h, double xmin, double xmax, 
+                                    double ymin, double ymax, System.Windows.Point[] points)
     {
       try
       {
@@ -194,7 +196,7 @@ namespace BatInspector.Controls
           double xp1 = x + dx + w * (Math.Log10(Math.Max(points[i - 1].X, xmin)) - minLog) / (maxLog - minLog);
           double yp2 = y + h * (1 - (points[i].Y - ymin) / (ymax - ymin));
           double xp2 = x + dx + w * (Math.Log10(Math.Max(points[i].X, xmin)) - minLog) / (maxLog - minLog);
-          GraphHelper.createLine(can, xp1, yp1, xp2, yp2, Brushes.Blue, 2);
+          GraphHelper.createLine(can, xp1, yp1, xp2, yp2, System.Windows.Media.Brushes.Blue, 2);
         }
       }
       catch(Exception ex)
@@ -222,7 +224,7 @@ namespace BatInspector.Controls
       {
         double[] tTicks = GraphHelper.createTicks(nrTicks, min, max);
         nrTicks = tTicks.Length;
-        GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
+        GraphHelper.createLine(can, x, y + 3, x + width, y + 3, System.Windows.Media.Brushes.Black);
         double span = max - min;
         if (span == 0)
           span = 1;
@@ -230,13 +232,13 @@ namespace BatInspector.Controls
         for (int i = 0; i < nrTicks; i++)
         {
           double xp = x + width * (tTicks[i] - min1) / span;
-          GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
+          GraphHelper.createLine(can, xp, y + 3, xp, y + 10, System.Windows.Media.Brushes.Black);
           string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-          GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
+          GraphHelper.createText(can, xp - 10, y + 15, str, System.Windows.Media.Brushes.Black);
         }
         double xmax = x + width;
-        GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, Brushes.Black);
-        GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
+        GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, System.Windows.Media.Brushes.Black);
+        GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), System.Windows.Media.Brushes.Black);
       }
       else
         DebugLog.log($"create ruler X failed: min:{min}, max:{max}", enLogType.ERROR);
@@ -244,17 +246,17 @@ namespace BatInspector.Controls
 
     public static void createRulerX(Canvas can, double x, double y, double width, double max,  double[] tTicks, string nrFmt = "0.#")
     {
-      GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
+      GraphHelper.createLine(can, x, y + 3, x + width, y + 3, System.Windows.Media.Brushes.Black);
       for (int i = 0; i < tTicks.Length; i++)
       {
         double xp = x + width * i / tTicks.Length;
-        GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
+        GraphHelper.createLine(can, xp, y + 3, xp, y + 10, System.Windows.Media.Brushes.Black);
         string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-        GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
+        GraphHelper.createText(can, xp - 10, y + 15, str, System.Windows.Media.Brushes.Black);
       }
       double xmax = x + width;
-      GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, Brushes.Black);
-      GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), Colors.Black);
+      GraphHelper.createLine(can, xmax, y + 3, xmax, y + 10, System.Windows.Media.Brushes.Black);
+      GraphHelper.createText(can, xmax - 10, y + 15, max.ToString(nrFmt, CultureInfo.InvariantCulture), System.Windows.Media.Brushes.Black);
     }
 
 
@@ -262,15 +264,15 @@ namespace BatInspector.Controls
     {
       if (min < max)
       {
-        GraphHelper.createLine(can, x, y + 3, x + width, y + 3, Brushes.Black);
+        GraphHelper.createLine(can, x, y + 3, x + width, y + 3, System.Windows.Media.Brushes.Black);
         double minLog = Math.Log10(min);
         double maxLog = Math.Log10(max);
         for (int i = 0; i < tTicks.Length; i++)
         {
           double xp = x + width * (Math.Log10(tTicks[i]) - minLog)/(maxLog - minLog);
-          GraphHelper.createLine(can, xp, y + 3, xp, y + 10, Brushes.Black);
+          GraphHelper.createLine(can, xp, y + 3, xp, y + 10, System.Windows.Media.Brushes.Black);
           string str = tTicks[i].ToString(nrFmt, CultureInfo.InvariantCulture);
-          GraphHelper.createText(can, xp - 10, y + 15, str, Colors.Black);
+          GraphHelper.createText(can, xp - 10, y + 15, str, System.Windows.Media.Brushes.Black);
         }
       }
       else
@@ -284,7 +286,7 @@ namespace BatInspector.Controls
       for (int i = 0; i < tTicks.Length; i++)
       {
         double xp = x + width * (Math.Log10(tTicks[i]) - minLog) / (maxLog - minLog);
-        GraphHelper.createLine(can, xp, y, xp, y + h, Brushes.Gray);
+        GraphHelper.createLine(can, xp, y, xp, y + h, System.Windows.Media.Brushes.Gray);
       }
     }
 

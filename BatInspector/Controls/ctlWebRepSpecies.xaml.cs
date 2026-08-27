@@ -18,7 +18,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlWebRepSpecies.xaml
   /// </summary>
-  public partial class ctlWebRepSpecies : UserControl
+  public partial class ctlWebRepSpecies : System.Windows.Controls.UserControl
   {
     dlgClickLabel _dlgDel = null;
     int _index = 0;

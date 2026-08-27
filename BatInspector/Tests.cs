@@ -11,6 +11,7 @@ using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using libScripter;
+using Org.BouncyCastle.Crypto.Generators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -84,7 +85,8 @@ namespace BatInspector
 
     public void exec()
     {
-      string wrkDir = Path.Combine(AppParams.Inst.AppRootPath, "../../../scripts");
+      string wrkDir = "F:\\prj\\BatInspector\\scripts";
+    //  string wrkDir = Path.Combine(AppParams.Inst.AppRootPath, "../../../scripts");
       // testBioAcoustics();
       //testFft();
       //testDenoising();

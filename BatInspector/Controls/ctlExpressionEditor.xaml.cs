@@ -22,7 +22,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlExpressionEditor.xaml
   /// </summary>
-  public partial class ctlExpressionEditor : UserControl
+  public partial class ctlExpressionEditor : System.Windows.Controls.UserControl
   {
 
     ExpressionGenerator _gen;

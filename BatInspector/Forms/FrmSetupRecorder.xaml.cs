@@ -274,7 +274,7 @@ namespace BatInspector.Forms
       if (ok)
         _rec.General.Longitude.Value = lon;
       else
-        MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLat.getValue(),
+        System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLat.getValue(),
                   BatInspector.Properties.MyResources.Error,
                   MessageBoxButton.OK, MessageBoxImage.Error);
     }
@@ -286,7 +286,7 @@ namespace BatInspector.Forms
       if (ok)
         _rec.General.Latitude.Value = lat;
       else
-        MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+        System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
                   BatInspector.Properties.MyResources.Error,
                   MessageBoxButton.OK, MessageBoxImage.Error);
     }
@@ -567,8 +567,8 @@ namespace BatInspector.Forms
       if (BatSpy.IsConnected)
       {
         string result = BatSpy.ExecuteCommand(cmd);
-        _cLog.addTextLine(cmd, Brushes.Blue);
-        _cLog.addTextLine(result.Replace("\n", " ").Replace("\r", ""), Brushes.Black);
+        _cLog.addTextLine(cmd, System.Windows.Media.Brushes.Blue);
+        _cLog.addTextLine(result.Replace("\n", " ").Replace("\r", ""), System.Windows.Media.Brushes.Black);
         _cLog.activateCmd();
       }
     }
@@ -597,7 +597,7 @@ namespace BatInspector.Forms
           DebugLog.log("unable to set microphone parameters", enLogType.ERROR);
       }
       else
-        MessageBox.Show(MyResources.msgNoMicSetup, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        System.Windows.MessageBox.Show(MyResources.msgNoMicSetup, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
     }
 
     private void createFreqResponseGraph(Canvas c, double h, double w)
@@ -608,12 +608,12 @@ namespace BatInspector.Forms
       GraphHelper.createGridY(c, 20, 5, w, h - 20,  DB_MIN, DB_MAX, ticksY);
       double[] ticksX = { 100, 1000, 10000, 100000 };
       GraphHelper.createRulerLogX(c, 20, h-20, w, 80, 200000, ticksX);
-      GraphHelper.createText(c, -13, h - 40, "[dB]", Brushes.Black);
+      GraphHelper.createText(c, -13, h - 40, "[dB]", System.Windows.Media.Brushes.Black);
       double[] ticksGridX = { 100, 200, 300, 400, 500,600, 700, 800, 900,
                              1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000,
                              20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 200000 };
       GraphHelper.createGridLogX(c, 20, 5, w, h - 20, 80, 200000, ticksGridX);
-      GraphHelper.createText(c, 50, h - 5, "[Hz]", Brushes.Black);
+      GraphHelper.createText(c, 50, h - 5, "[Hz]", System.Windows.Media.Brushes.Black);
     }
 
 
@@ -622,9 +622,9 @@ namespace BatInspector.Forms
       string fileName = _ctlMicFreqFile.getValue();
       createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width - 20);
       List<MicFreqItem> l = _rec.readFreqResponseFromFile(fileName);
-      Point[] points = new Point[l.Count];
+      System.Windows.Point[] points = new System.Windows.Point[l.Count];
       for(int i = 0; i <  l.Count; i++) 
-        points[i] = new Point(l[i].Frequency, l[i].Amplitude);
+        points[i] = new System.Windows.Point(l[i].Frequency, l[i].Amplitude);
       GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, DB_MIN, DB_MAX, points);
     }
 
@@ -633,9 +633,9 @@ namespace BatInspector.Forms
     {
       createFreqResponseGraph(_cnv, _cnv.Height, _cnv.Width  - 20);
       List<MicFreqItem> l = _rec.readFreqResponseFromMic();
-      Point[] points = new Point[l.Count];
+      System.Windows.Point[] points = new System.Windows.Point[l.Count];
       for (int i = 0; i < l.Count; i++)
-        points[i] = new Point(l[i].Frequency, l[i].Amplitude);
+        points[i] = new System.Windows.Point(l[i].Frequency, l[i].Amplitude);
       GraphHelper.showGraphLog(_cnv, 20, 7, _cnv.Width - 20, _cnv.Height - 25, 80, 200000, DB_MIN, DB_MAX, points);
     }
   }

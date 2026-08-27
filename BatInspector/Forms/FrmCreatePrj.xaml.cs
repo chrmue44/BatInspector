@@ -107,7 +107,7 @@ namespace BatInspector.Forms
       {
         bool ok = Project.parseLatitude(_ctlLat.getValue(), out double lat);
         if (!ok)
-          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
                           BatInspector.Properties.MyResources.Error,
                           MessageBoxButton.OK, MessageBoxImage.Error);
         else
@@ -125,14 +125,14 @@ namespace BatInspector.Forms
       {
         bool ok = Project.parseLatitude(_ctlLat.getValue(), out double lat);
         if (!ok)
-          MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
                           BatInspector.Properties.MyResources.Error,
                           MessageBoxButton.OK, MessageBoxImage.Error);
         else
         {
           ok = Project.parseLongitude(_ctlLon.getValue(), out double lon);
           if (!ok)
-            MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(),
+            System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(),
                             BatInspector.Properties.MyResources.Error,
                             MessageBoxButton.OK, MessageBoxImage.Error);
           else
@@ -270,14 +270,14 @@ namespace BatInspector.Forms
 
         if (!_info.IsProjectFolder && string.IsNullOrEmpty(_ctlRecorderId.getValue()))
         {
-          MessageBox.Show(BatInspector.Properties.MyResources.frmCreateRecorderInfoEmpty,
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.frmCreateRecorderInfoEmpty,
                           BatInspector.Properties.MyResources.Error,
                           MessageBoxButton.OK, MessageBoxImage.Error);
           ok = false;
         }
         else if (string.IsNullOrEmpty(_info.DstDir))
         {
-          MessageBox.Show(BatInspector.Properties.MyResources.frmCreateDestFolderEmpty,
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.frmCreateDestFolderEmpty,
                           BatInspector.Properties.MyResources.Error,
                           MessageBoxButton.OK, MessageBoxImage.Error);
           ok = false;
@@ -288,14 +288,14 @@ namespace BatInspector.Forms
           {
             ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
             if (!ok)
-              MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
+              System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LatitudeFormatError + _ctlLat.getValue(),
                               BatInspector.Properties.MyResources.Error,
                               MessageBoxButton.OK, MessageBoxImage.Error);
             else
             {
               ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
               if (!ok)
-                MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(),
+                System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.LongitudeFormatError + _ctlLon.getValue(),
                                 BatInspector.Properties.MyResources.Error, 
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -304,7 +304,7 @@ namespace BatInspector.Forms
           {
             ok = File.Exists(_ctlGpxFile.getValue());
             if (!ok)
-              MessageBox.Show(BatInspector.Properties.MyResources.gpxFileError,
+              System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.gpxFileError,
                               BatInspector.Properties.MyResources.Error,
                               MessageBoxButton.OK, MessageBoxImage.Error);
           }

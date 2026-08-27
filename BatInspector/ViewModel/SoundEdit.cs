@@ -6,14 +6,8 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using BatInspector.Forms;
 using libParser;
-using Org.BouncyCastle.Math.EC;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Xml.Linq;
 
 namespace BatInspector
 {

@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:BatInspector.Controls"
         mc:Ignorable="d"
         Title="BatInspector" Height="900" Width="1400" MinWidth="1280" MinHeight="640"
-        Icon="../images/logo.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
+        Icon="pack://application:,,,/BatInspector;component/images/logo.png"  Closing="Window_Closing" ContentRendered="Content_rendered" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" 
     >
 <!--    PreviewKeyDown="Window_KeyDown" -->
     <WindowChrome.WindowChrome>
@@ -80,7 +80,7 @@
             <Grid Grid.Row="0" Height="25" Background="{DynamicResource colorBackGroundWindow}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <!--App icon-->
-                    <Image Source="/images/logo.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Image Source="pack://application:,,,/BatInspector;component/images/logo.png" Width="25" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <TextBlock Name ="_windowTitle" Text="Batinspector" FontFamily="Arial" Foreground="White"  FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
                 </StackPanel>
 
@@ -119,59 +119,59 @@
                                 <Image Source="../images/icons8-save-48.png"></Image>
                             </Button>
                             <Button x:Name="_btnCreatePrj" Click="_btnCreatePrj_Click"  ToolTip="{x:Static res:MyResources.MainToolCreatePrj}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/icons8-save-48-import.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/icons8-save-48-import.png"></Image>
                             </Button>
                             <Separator Margin="15,2" Width="3
                                "/>
                             <Button x:Name="_btnSettings" Click="_btnSettings_Click"  ToolTip="{x:Static res:MyResources.MainToolEditAppSettings}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/settingscog_87317.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/settingscog_87317.png"></Image>
                             </Button>
                             <Button x:Name="_btnColorPal"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="{x:Static res:MyResources.MainToolEditColorScheme}" Click="_btnColorPalette_Click">
-                                <Image Source="../images/color-palette.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/color-palette.png"></Image>
                             </Button>
                             <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="{x:Static res:MyResources.MainToolDefFilters}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/filter.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/filter.png"></Image>
                             </Button>
                             <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/Bat_icon-icons.com_75012.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/Bat_icon-icons.com_75012.png"></Image>
                             </Button>
                             <Separator Margin="15,2" Width="3"/>
                             <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/magnifying-glass.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/magnifying-glass.png"></Image>
                             </Button>
                             <!---
           <Button x:Name="_btnFindSpecies" Click="_btnFindSpecies_Click" ToolTip="{x:Static res:MyResources.MainToolFindSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Image Source="../images/Bat_icon-icons.com_Q.png"></Image>
+            <Image Source="pack://application:,,,/BatInspector;component/images/Bat_icon-icons.com_Q.png"></Image>
           </Button>
             -->
                             <Button x:Name="_btnReport" Click="_btnReport_Click"  ToolTip="{x:Static res:MyResources.MainToolCreateSumReport}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/report.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/report.png"></Image>
                             </Button>
                             <Button x:Name="_btnQuery" Click="_btnQuery_Click"  ToolTip="{x:Static res:MyResources.MainToolQuery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/query.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/query.png"></Image>
                             </Button>
                             <Button x:Name="_btnExport" Click="_btnExport_Click"  ToolTip="{x:Static res:MyResources.MainToolExportData}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/data-transfer.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/data-transfer.png"></Image>
                             </Button>
                             <Button x:Name="_btnRecovery" Click="_btnRecovery_Click"  ToolTip="{x:Static res:MyResources.MainToolRecovery}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/data-recovery.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/data-recovery.png"></Image>
                             </Button>
                             <Separator Margin="15,2" Width ="3"/>
                             <Button x:Name="_btnScript" Click="_btnScript_Click"  ToolTip="{x:Static res:MyResources.MainToolRunScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/script.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/script.png"></Image>
                             </Button>
                             <Button x:Name="_btnCancelScript" Click="_btnCancelScript_Click"  ToolTip="{x:Static res:MyResources.MainToolCancelScript}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/cancel_77947.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/cancel_77947.png"></Image>
                             </Button>
                             <!--        <Button x:Name="_btnDebug" Click="_btnDebug_Click"  ToolTip="{x:Static res:MyResources.MainToolDebug}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/debug.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/debug.png"></Image>
                             </Button> -->
                             <Separator Margin="15,2" Width="3" x:Name="_sepScript"/>
                             <ToggleButton x:Name="_btnTools" Checked="DropdownButton_Checked"  ToolTip="{x:Static res:MyResources.MainToolTools}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <ToggleButton.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <!-- Image Source="mysrc.png" /-->
-                                        <Image Source="../images/toolhammerconstruction_81806.png"></Image>
+                                        <Image Source="pack://application:,,,/BatInspector;component/images/toolhammerconstruction_81806.png"></Image>
 
                                         <Path Margin="4" Width="5" Fill="{DynamicResource colorForeGroundLabel}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
                                     </StackPanel>
@@ -184,14 +184,14 @@
                             </ToggleButton>
 
                             <Button x:Name="_btnWavTool" Click="_btnWavTool_Click"  ToolTip="{x:Static res:MyResources.MainToolManipWavFiles}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/wav-file-format-symbol.png"></Image>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/wav-file-format-symbol.png"></Image>
                             </Button>
                             <Button x:Name="_btnCleanup" Click="_btnCleanup_Click"  ToolTip="{x:Static res:MyResources.MainToolCleanup}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/icons8-staubsauger-64.png"/>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/icons8-staubsauger-64.png"/>
 
                             </Button>
                             <Button x:Name="_btnRecorder" Click="_btnRecorder_Click"  ToolTip="{x:Static res:MyResources.MainToolRecorder}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="../images/simplescreenrecorder_94921.png"/>
+                                <Image Source="pack://application:,,,/BatInspector;component/images/simplescreenrecorder_94921.png"/>
 
                             </Button>
 
@@ -201,7 +201,7 @@
                                 <ToggleButton.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <!-- Image Source="mysrc.png" /-->
-                                        <Image Source="../images/Button_Help_icon_32.png"></Image>
+                                        <Image Source="pack://application:,,,/BatInspector;component/images/Button_Help_icon_32.png"></Image>
 
                                         <Path Margin="4" Width="5" Fill="{DynamicResource colorForeGroundLabel}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
                                     </StackPanel>

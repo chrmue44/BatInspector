@@ -22,7 +22,7 @@ using BatInspector.Controls;
 using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
-using System.Linq;
+using BatInspector.Forms;
 //using System.Windows.Forms;
 
 namespace BatInspector.Forms
@@ -139,7 +139,7 @@ namespace BatInspector.Forms
 
       if (string.IsNullOrEmpty(AppParams.Inst.ExeAcrobat))
       {
-        MessageBox.Show(this, MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        System.Windows.MessageBox.Show(this, MyResources.MainWindow_MsgAcrobat, MyResources.Attention, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         _frmSettings = new frmSettings(AppParams.Inst);
         _frmSettings.ShowDialog();
       }
@@ -299,7 +299,7 @@ namespace BatInspector.Forms
       Filter.populateFilterComboBox(_ctlPrjBtn._cbFilter);
       Filter.populateFilterComboBox(_ctlListBtn._cbFilter);
       Filter.populateFilterComboBox(_ctlMySQL._cbFilter);
-      _ctlScatter.populateComboBoxes();
+   //   _ctlScatter.populateComboBoxes();
       _ctlStatistic.populateComboBoxes();
     }
 
@@ -402,7 +402,7 @@ namespace BatInspector.Forms
             // TODO set scroll button size
             _ctlPrjInfo.setup(App.Model.Prj);
             _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(App.Model.Prj.Name) + "]";
-            _ctlScatter.initPrj();
+          //  _ctlScatter.initPrj();
             _switchTabToPrj = true;
             buildWavFileList(false);
             App.Model.View.stopCreatingPngFiles();
@@ -592,7 +592,7 @@ namespace BatInspector.Forms
       {
         if (App.Model.Prj.Ok && App.Model.Prj.Analysis.Changed && (App.Model.Prj.Analysis.Files.Count > 0))
         {
-          MessageBoxResult res = MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+          MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.msgSaveBeforeClose, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
             App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
         }
@@ -614,7 +614,7 @@ namespace BatInspector.Forms
       item.Header = o.ToString();
       item.Tag = o;
       item.Items.Add(BatInspector.Properties.MyResources.MainWindowMsgLoading);
-      item.Foreground = (SolidColorBrush)Application.Current.Resources["colorForeGroundLabel"];
+      item.Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["colorForeGroundLabel"];
       return item;
     }
 
@@ -840,7 +840,7 @@ namespace BatInspector.Forms
 
     void showMsg(string title, string msg, bool topmost = false)
     {
-      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+      System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         _frmMsg.showMessage(title, msg, topmost);
         _frmMsg.Visibility = Visibility.Visible;
@@ -849,7 +849,7 @@ namespace BatInspector.Forms
 
     void hideMsg()
     {
-      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+      System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         _frmMsg.Visibility = Visibility.Hidden;
       }), DispatcherPriority.ContextIdle);
@@ -881,7 +881,7 @@ namespace BatInspector.Forms
             MessageBoxResult res = MessageBoxResult.Yes;
             DebugLog.log("MainWin:BTN 'Find calls' clicked ", enLogType.DEBUG);
             if (App.Model.CurrentlyOpen?.Analysis.IsEmpty == false)
-              res = MessageBox.Show(BatInspector.Properties.MyResources.msgMainWinMsgOverwriteReport,
+              res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.msgMainWinMsgOverwriteReport,
               BatInspector.Properties.MyResources.msgQuestion,
               MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res == MessageBoxResult.Yes)
@@ -893,12 +893,12 @@ namespace BatInspector.Forms
             }
           }
           else
-            MessageBox.Show(BatInspector.Properties.MyResources.msgWrongModelType, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.msgWrongModelType, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
         }
         else
         {
-          MessageBox.Show(BatInspector.Properties.MyResources.msgPleaseOpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.msgPleaseOpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
       }
       catch (Exception ex)
@@ -1050,7 +1050,7 @@ namespace BatInspector.Forms
             (App.Model.ZoomView.Waterfall.BlackLevel != AppParams.Inst.BlackLevel))
           )
         {
-          MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDisplayContrast, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+          MessageBoxResult res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.MsgDisplayContrast, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
           if (res == MessageBoxResult.Yes)
           {
             AppParams.Inst.GradientRange = _ctlZoom._gradientRange;
@@ -1187,10 +1187,10 @@ namespace BatInspector.Forms
 
     void setMouseStatus()
     {
-      Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+      System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         if (App.Model.Busy)
-          Mouse.OverrideCursor = Cursors.Wait;
+          Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
         else
           Mouse.OverrideCursor = null;
       }));
@@ -1502,7 +1502,7 @@ namespace BatInspector.Forms
 
     private void ContextMenu_Closed(object sender, RoutedEventArgs e)
     {
-      ((sender as ContextMenu).PlacementTarget as ToggleButton).IsChecked = false;
+      ((sender as System.Windows.Controls.ContextMenu).PlacementTarget as ToggleButton).IsChecked = false;
     }
 
 
@@ -1539,7 +1539,7 @@ namespace BatInspector.Forms
 
     private void _mnReportError_Click(object sender, RoutedEventArgs e)
     {
-      MessageBoxResult res = MessageBox.Show(MyResources.MsgReportError, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.MsgReportError, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (res == MessageBoxResult.Yes)
       {
         string subject = $"Error Report BatInspector V{AppParams.AppVersion}";
@@ -1552,7 +1552,7 @@ namespace BatInspector.Forms
 
     private void _mnReportInstall_Click(object sender, RoutedEventArgs e)
     {
-      MessageBoxResult res = MessageBox.Show(MyResources.MsgInstallReport, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.MsgInstallReport, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (res == MessageBoxResult.Yes)
       {
         string subject = $"Installation Report BatInspector V{AppParams.AppVersion}";
@@ -1606,21 +1606,21 @@ namespace BatInspector.Forms
         DependencyObject dep = (DependencyObject)e.OriginalSource;
 
         // iteratively traverse the visual tree
-        while ((dep != null) && !(dep is DataGridCell))
+        while ((dep != null) && !(dep is System.Windows.Controls.DataGridCell))
           dep = VisualTreeHelper.GetParent(dep);
 
         if (dep == null)
           return;
 
         ReportItemBd2 it = null;
-        if (dep is DataGridCell)
+        if (dep is System.Windows.Controls.DataGridCell)
         {
-          DataGridCell cell = dep as DataGridCell;
+          System.Windows.Controls.DataGridCell cell = dep as System.Windows.Controls.DataGridCell;
           // navigate further up the tree
-          while ((dep != null) && !(dep is DataGridRow))
+          while ((dep != null) && !(dep is System.Windows.Controls.DataGridRow))
             dep = VisualTreeHelper.GetParent(dep);
 
-          DataGridRow row = dep as DataGridRow;
+          System.Windows.Controls.DataGridRow row = dep as System.Windows.Controls.DataGridRow;
           it = row.DataContext as ReportItemBd2;
         }
 
@@ -1669,7 +1669,7 @@ namespace BatInspector.Forms
         {
           if (!s.IsTool && s.IsInMenue)
           {
-            MenuItem m = new MenuItem();
+            System.Windows.Controls.MenuItem m = new System.Windows.Controls.MenuItem();
             m.Header = s.Description;
             m.Tag = s.Name;
             m.Click += _mnTool1_Click;
@@ -1684,7 +1684,7 @@ namespace BatInspector.Forms
       try
       {
         DebugLog.log("BTN custom tool pressed", enLogType.DEBUG);
-        MenuItem m = sender as MenuItem;
+        System.Windows.Controls.MenuItem m = sender as System.Windows.Controls.MenuItem;
         string script = (string)m.Tag;
         ScriptItem item = App.Model.Scripter.getScript(script);
         if (item != null)
@@ -1751,7 +1751,7 @@ namespace BatInspector.Forms
         }
         else
         {
-          MessageBox.Show(MyResources.msgPleaseOpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+          System.Windows.MessageBox.Show(MyResources.msgPleaseOpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
       }
       catch (Exception ex)
@@ -1858,7 +1858,7 @@ namespace BatInspector.Forms
       _mouseIsDownOnScrollPrj = false;
     }
 
-    private void Window_KeyDown(object sender, KeyEventArgs e)
+    private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
       if (_tbPrj.IsSelected)
       {

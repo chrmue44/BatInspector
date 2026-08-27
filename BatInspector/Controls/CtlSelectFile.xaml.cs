@@ -23,7 +23,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für CtlSelectFile.xaml
   /// </summary>
-  public partial class CtlSelectFile : UserControl
+  public partial class CtlSelectFile : System.Windows.Controls.UserControl
   {
     bool _isFolder = false;
     string _filter = "all files(*.*)|*.*";
@@ -83,7 +83,7 @@ namespace BatInspector.Controls
         }
         else
         {
-          OpenFileDialog ofi = new OpenFileDialog();
+          Microsoft.Win32.OpenFileDialog ofi = new Microsoft.Win32.OpenFileDialog();
           ofi.Filter = _filter;
           bool? ok = ofi.ShowDialog();
           if (ok == true)

@@ -77,7 +77,7 @@ namespace BatInspector
         {
           string logName = wrkDir + "/files.txt";
           File.WriteAllText(logName, _listOfFiles);
-          MessageBox.Show(BatInspector.Properties.MyResources.MsgErrorBd2, BatInspector.Properties.MyResources.Error, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.MsgErrorBd2, BatInspector.Properties.MyResources.Error, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
       }
       catch

@@ -122,7 +122,7 @@
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>libfftw3-3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)lib</AdditionalLibraryDirectories>
-      <OutputFile>$(SolutionDir)\BatInspector\bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(SolutionDir)\x64\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <PreBuildEvent>
       <Command>C:\Windows\System32\XCOPY "$(ProjectDir)\lib\libfftw3-3.dll" "$(SolutionDir)\BatInspector\bin\$(Configuration)" /D /K /Y</Command>

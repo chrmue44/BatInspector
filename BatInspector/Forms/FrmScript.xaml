@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
     <ToolBar Grid.Row="0">
       <Button x:Name="_btnAdd"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnAdd_Click" ToolTip="{x:Static res:MyResources.FrmScriptTtipAdd}">
-      <Image Source="../images/icons8-plus-+-48.png"></Image>
+                <Image Source="pack://application:,,,/BatInspector;component/images/icons8-plus-+-48.png"></Image>
     </Button>
     </ToolBar>
     <Grid Grid.Row="1">

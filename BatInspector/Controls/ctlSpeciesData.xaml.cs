@@ -15,7 +15,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlSpeciesData.xaml
   /// </summary>
-  public partial class ctlSpeciesData : UserControl
+  public partial class ctlSpeciesData : System.Windows.Controls.UserControl
   {
     dlgShowZoom _dlg;
     public ctlSpeciesData()

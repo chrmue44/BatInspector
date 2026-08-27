@@ -28,27 +28,27 @@ namespace BatInspector.Forms
       {
         if(s.IsTool)
         {
-          Button b = new Button();
+          System.Windows.Controls.Button b = new System.Windows.Controls.Button();
           b.Content = s.Description;
           b.Tag = s.Index;
           b.Click += btnCklick;
-          b.Margin = new Thickness(50, 2, 50, 2);
+          b.Margin = new System.Windows.Thickness(50, 2, 50, 2);
           b.Height = 30;
           _sp.Children.Add(b);
         }
       }
-      Button btnC = new Button();
+      System.Windows.Controls.Button btnC = new System.Windows.Controls.Button();
       btnC.Content = MyResources.BtnCancel;
       btnC.Tag = -1;
       btnC.Click += btnCklick;
-      btnC.Margin = new Thickness(50, 2, 50, 2);
+      btnC.Margin = new System.Windows.Thickness(50, 2, 50, 2);
       btnC.Height = 30;
       _sp.Children.Add(btnC);
     }
 
     private void btnCklick(object sender, RoutedEventArgs e)
     {
-      Button b = e.Source as Button;
+    System.Windows.Controls.Button b = e.Source as System.Windows.Controls.Button;
       int index = (int)b.Tag;
       if ((index >= 0) && (index < AppParams.Inst.ScriptInventory.Scripts.Count))
       {

@@ -18,13 +18,13 @@
     <ToolBarTray Grid.Row="0" Height="44" Loaded="windowLoaded">
       <ToolBar>
         <Button x:Name="_btnOpen" Grid.Row="0" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnOpen_Click">
-          <Image Source="../images/icons8-folder-48.png"></Image>
+                    <Image Source="pack://application:,,,/BatInspector;component/images/icons8-folder-48.png"></Image>
         </Button>
         <Button x:Name="_btnPlay" Grid.Row="0" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnPlay_Click">
-          <Image Source="../images/play-button.png"></Image>
+                    <Image Source="pack://application:,,,/BatInspector;component/images/play-button.png"></Image>
         </Button>
                 <Button x:Name="_btnSave" Grid.Row="0" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnSave_Click">
-                    <Image Source="../images/icons8-save-48.png"></Image>
+                    <Image Source="pack://application:,,,/BatInspector;component/images/icons8-save-48.png"></Image>
                 </Button>
 
             </ToolBar>

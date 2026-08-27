@@ -17,7 +17,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for CtlMySql.xaml
   /// </summary>
-  public partial class CtlMySql : UserControl
+  public partial class CtlMySql : System.Windows.Controls.UserControl
   {
     bool _queryCollapsed = false;
     List<CtlMySqlFieldSelect> _listCb = new List<CtlMySqlFieldSelect>();
@@ -224,7 +224,7 @@ namespace BatInspector.Controls
         DependencyObject dep = (DependencyObject)e.OriginalSource;
 
         // iteratively traverse the visual tree
-        while ((dep != null) && !(dep is DataGridCell))
+        while ((dep != null) && !(dep is System.Windows.Controls.DataGridCell))
           dep = VisualTreeHelper.GetParent(dep);
 
         if (dep == null)
@@ -232,14 +232,14 @@ namespace BatInspector.Controls
         string[] it = null;
         string[] hdr = null;
         System.Data.DataRowView view = null;
-        if (dep is DataGridCell)
+        if (dep is System.Windows.Controls.DataGridCell)
         {
-          DataGridCell cell = dep as DataGridCell;
+          System.Windows.Controls.DataGridCell cell = dep as System.Windows.Controls.DataGridCell;
           // navigate further up the tree
-          while ((dep != null) && !(dep is DataGridRow))
+          while ((dep != null) && !(dep is System.Windows.Controls.DataGridRow))
             dep = VisualTreeHelper.GetParent(dep);
 
-          DataGridRow row = dep as DataGridRow;
+          System.Windows.Controls.DataGridRow row = dep as System.Windows.Controls. DataGridRow;
           view = row.Item as System.Data.DataRowView;
           it = new string[view.Row.ItemArray.Length];
           for(int k = 0; k < it.Length; k++)

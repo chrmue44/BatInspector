@@ -76,10 +76,10 @@
                 <ToolBarTray Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="44" Margin="5,5,5,0" VerticalAlignment="Top">
                     <ToolBar x:Name="_tb"  HorizontalAlignment="Left" Height="44" VerticalAlignment="Top">
                         <Button x:Name="_btnIncRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnIncRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
-                            <Image Source="../images/icons8-plus-+-48.png"></Image>
+                            <Image Source="pack://application:,,,/BatInspector;component/images/icons8-plus-+-48.png"></Image>
                         </Button>
                         <Button x:Name="_btnDecRange"  Height="39" VerticalAlignment="Top" HorizontalAlignment="Left" Click="_btnDecRange_Click" ToolTip="{x:Static res:MyResources.ToolTipIncRange}">
-                            <Image Source="../images/icons8-minus-48.png"></Image>
+                            <Image Source="pack://application:,,,/BatInspector;component/images/icons8-minus-48.png"></Image>
                         </Button>
                         <Label x:Name="_lblClick" Content="" Margin="20,5,5,10"/>
                     </ToolBar>

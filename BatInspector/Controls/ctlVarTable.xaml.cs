@@ -13,7 +13,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlVarTable.xaml
   /// </summary>
-  public partial class ctlVarTable : UserControl
+  public partial class ctlVarTable : System.Windows.Controls.UserControl
   {
     VarList _varList = null;
     public ctlVarTable()

@@ -12,7 +12,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for CtlPrjButtons.xaml
   /// </summary>
-  public partial class CtlPrjButtons : UserControl
+  public partial class CtlPrjButtons : System.Windows.Controls.UserControl
   {
     bool _isPrjView = false;
     bool _isListView = false;
@@ -110,7 +110,7 @@ namespace BatInspector.Controls
       try
       {
         List<string> files = new List<string>();
-        MessageBoxResult res = MessageBox.Show(MyResources.msgDeleteFiles, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+        MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.msgDeleteFiles, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
         if ((res == MessageBoxResult.Yes) && (App.Model.CurrentlyOpen != null))
         {
           foreach (PrjRecord rec in App.Model.CurrentlyOpen.getRecords())
@@ -183,7 +183,7 @@ namespace BatInspector.Controls
           }
         }
         else
-          MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
         DebugLog.log("MainWin:BTN 'Add file' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -290,7 +290,7 @@ namespace BatInspector.Controls
           }
         }
         if(!ok)
-          MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+          System.Windows.MessageBox.Show(MyResources.MsgSpecifyScript, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         DebugLog.log("MainWin:BTN 'Copy Species' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -320,7 +320,7 @@ namespace BatInspector.Controls
             App.Model.Query.exportFiles(ofo.SelectedPath);
         }
         else
-          MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
+          System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.OpenProjectFirst, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Error);
 
         DebugLog.log("MainWin:BTN 'Export sel.' clicked", enLogType.DEBUG);
       }

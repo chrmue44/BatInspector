@@ -18,7 +18,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für CtlSumReport.xaml
   /// </summary>
-  public partial class CtlSumReport : UserControl
+  public partial class CtlSumReport : System.Windows.Controls.UserControl
   {
     Window _parent = null;
     string _filterExpression = "";

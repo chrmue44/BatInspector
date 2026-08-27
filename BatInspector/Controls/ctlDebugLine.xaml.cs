@@ -21,7 +21,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlDebugLine.xaml
   /// </summary>
-  public partial class ctlDebugLine : UserControl
+  public partial class ctlDebugLine : System.Windows.Controls.UserControl
   {
     static BitmapImage _imgRed = new BitmapImage(new Uri(@"pack://application:,,,/images/Button-Blank-Red.48.png", UriKind.Absolute));
     static BitmapImage _imgBlue = new BitmapImage(new Uri(@"pack://application:,,,/images/Button-Blank-Blue.48.png", UriKind.Absolute));
@@ -47,9 +47,9 @@ namespace BatInspector.Controls
     public void activate(bool on)
     {
       if (on)
-        _tbLine.Background = Brushes.LightGreen;
+        _tbLine.Background = System.Windows.Media.Brushes.LightGreen;
       else
-        _tbLine.Background = Brushes.White;
+        _tbLine.Background = System.Windows.Media.Brushes.White;
     }
 
     private void _btnBreakPt_Click(object sender, RoutedEventArgs e)

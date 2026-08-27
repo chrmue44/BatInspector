@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:res="clr-namespace:BatInspector.Properties"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" 
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="{x:Static res:MyResources.titleFrmSettings}" Height="700" Width="600" Loaded="Window_Loaded"
@@ -14,9 +16,9 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <WindowsFormsHost Name="_wfHost" Grid.Row="0">
+        <wfi:WindowsFormsHost Name="_wfHost" Grid.Row="0">
             <wf:PropertyGrid x:Name="_pg"></wf:PropertyGrid>
-        </WindowsFormsHost>
+        </wfi:WindowsFormsHost>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  Margin="5,5,5,5" Grid.Row="1">
             <Button Name="_btnFactSettings" Width="130" Margin="5" Click="_btnFactSettings_Click" Content="{x:Static res:MyResources.FactorySettings}"></Button>
             <Button Name="_btnLoad" Width="130" Margin="5" Click="_btnLoad_Click" Content="{x:Static res:MyResources.BtnLoad}"></Button>

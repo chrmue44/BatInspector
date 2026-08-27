@@ -20,12 +20,12 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlDataItem.xaml
   /// </summary>
-  public partial class ctlSelectItem : UserControl
+  public partial class ctlSelectItem : System.Windows.Controls.UserControl
   {
     string _valString;
     dlgSelItemChanged _dlgValChange = null;
     int _index;
-    Brush _brushDefault;
+    System.Windows.Media.Brush _brushDefault;
     dlgClickLabel _dlgClickLabel;
 
     public int SelectIndex { get { return _cb.SelectedIndex; } set { _cb.SelectedIndex = value; } }    
@@ -59,7 +59,7 @@ namespace BatInspector.Controls
     {
       if (on)
       {
-        _lbl.Background = Brushes.DarkOrange;
+        _lbl.Background = System.Windows.Media.Brushes.DarkOrange;
       }
       else
         _lbl.Background = _brushDefault;

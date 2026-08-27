@@ -10,13 +10,13 @@ namespace BatInspector
   /// <summary>
   /// Interaction logic for App.xaml
   /// </summary>
-  public partial class App : Application
+  public partial class App : System.Windows.Application
   {
     public static string[] _args;
     public static MainWindow MainWin;
     public static ViewModel Model;
 
-    [STAThread]
+ /*   [STAThread]
     public static void Main()
     {
   	  try
@@ -30,7 +30,7 @@ namespace BatInspector
 		    DebugLog.log(e.ToString(),enLogType.ERROR);
 		    DebugLog.save();
 	    }
-    }
+    } */
 
   //  [DllImport("Kernel32.dll")]
    // public static extern bool AttachConsole(int processId);

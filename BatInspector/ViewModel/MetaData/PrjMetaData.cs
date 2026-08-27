@@ -1,16 +1,7 @@
 ﻿using libParser;
-using NAudio.Wave;
-using Org.BouncyCastle.Asn1.Cms;
-using Org.BouncyCastle.Tls;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup.Localizer;
 
 namespace BatInspector
 {

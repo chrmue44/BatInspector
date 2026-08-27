@@ -14,7 +14,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für CtlColorMap.xaml
   /// </summary>
-  public partial class CtlColorMap : UserControl
+  public partial class CtlColorMap : System.Windows.Controls.UserControl
   {
     public CtlColorMap()
     {

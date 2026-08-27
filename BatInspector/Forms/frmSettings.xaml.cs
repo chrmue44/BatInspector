@@ -34,7 +34,7 @@ namespace BatInspector.Forms
 
     private void _btnFactSettings_Click(object sender, RoutedEventArgs e)
     {
-      MessageBoxResult res = MessageBox.Show(MyResources.msgFactorySettings, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.msgFactorySettings, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (res == MessageBoxResult.Yes)
       {
         DebugLog.log("application settings reset to factory settings", enLogType.INFO);

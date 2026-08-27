@@ -14,7 +14,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlFilterItem.xaml
   /// </summary>
-  public partial class ctlFilterItem : UserControl
+  public partial class ctlFilterItem : System.Windows.Controls.UserControl
   {
     int _index;
     dlgDelete _dlgDelete;

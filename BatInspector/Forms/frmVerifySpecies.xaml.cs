@@ -237,16 +237,16 @@ namespace BatInspector.Forms
       e.Handled = true;
     }
 
-    private void _img_MouseLeave(object sender, MouseEventArgs e)
+    private void _img_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
     {
       _ftToolTip.IsOpen = false;
     }
 
-    private void _img_MouseMove(object sender, MouseEventArgs e)
+    private void _img_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
       try
       {
-        Point p = e.GetPosition(_img);
+        System.Windows.Point p = e.GetPosition(_img);
         double f = _fMin + (_img.ActualHeight - p.Y) / _img.ActualHeight * (_fMax - _fMin);
         double t = _tMin + p.X / _img.ActualWidth * (_tMax - _tMin);
 
@@ -265,7 +265,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void setCrossPosition(System.Windows.Shapes.Line lx, System.Windows.Shapes.Line ly, Point p)
+    private void setCrossPosition(System.Windows.Shapes.Line lx, System.Windows.Shapes.Line ly, System.Windows.Point p)
     {
       int w = 14;
       lx.X1 = p.X;
@@ -278,7 +278,7 @@ namespace BatInspector.Forms
       ly.Y2 = p.Y + w / 2;
     }
 
-    private void setCross(Point p)
+    private void setCross(System.Windows.Point p)
     {
       switch (_state)
       {
@@ -328,11 +328,11 @@ namespace BatInspector.Forms
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-      Point p = new Point(getXFromt(_tStart), getYFromF(_ctlFstart.getDoubleValue()));
+      System.Windows.Point p = new System.Windows.Point(getXFromt(_tStart), getYFromF(_ctlFstart.getDoubleValue()));
       setCrossPosition(_cross1X, _cross1Y, p);
-      p = new Point(getXFromt(_tEnd), getYFromF(_ctlFend.getDoubleValue()));
+      p = new System.Windows.Point(getXFromt(_tEnd), getYFromF(_ctlFend.getDoubleValue()));
       setCrossPosition(_cross2X, _cross2Y, p);
-      p = new Point(getXFromt(_tMk), getYFromF(_ctlFMk.getDoubleValue()));
+      p = new System.Windows.Point(getXFromt(_tMk), getYFromF(_ctlFMk.getDoubleValue()));
       setCrossPosition(_cross3X, _cross3Y, p);
     }
 
@@ -346,7 +346,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        Point p = e.GetPosition(_img);
+        System.Windows.Point p = e.GetPosition(_img);
         double f = _fMin + (_img.ActualHeight - p.Y) / _img.ActualHeight * (_fMax - _fMin);
         double t = _tMin + p.X / _img.ActualWidth * (_tMax - _tMin);
         bool doSetCross = e.ChangedButton == MouseButton.Left;

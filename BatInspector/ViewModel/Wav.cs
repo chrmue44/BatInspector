@@ -5,18 +5,12 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Xml.Linq;
 using libParser;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NAudio.Flac;
-using ZstdSharp.Unsafe;
 
 namespace BatInspector
 {
@@ -389,7 +383,7 @@ namespace BatInspector
     DataChunk _data;
     string _fName;
     bool _isInitialized;
-    WaveOutEvent _outputDevice = null;
+    WaveOut _outputDevice = null;
     MemoryStream _memStream = null;
     RawSourceWaveStream _rawStream = null;
     Pcm16BitToSampleProvider _sampleProvider = null;
@@ -632,7 +626,7 @@ namespace BatInspector
         float[] buffer = new float[sampleProvider.WaveFormat.SampleRate];
         int samplesRead;
         float max = 0;
-        while ((samplesRead = sampleProvider.Read(buffer, 0, buffer.Length)) > 0)
+/*     TODO   while ((samplesRead = sampleProvider.Read(buffer, 0, buffer.Length)) > 0)
         {
           if (flac.WaveFormat.Channels == 2)
           {
@@ -650,7 +644,7 @@ namespace BatInspector
             for (int i = 0; i < samplesRead; i++)
               samplesR.Add(buffer[i]);
           }
-        }
+        } */
         if((flac.WaveFormat.Channels == 2) && !chanR)
           _data.AddSampleData(samplesL.ToArray(), 0, samplesL.Count);
         else

@@ -25,13 +25,13 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für CtrlZoom.xaml
   /// </summary>
-  public partial class CtrlZoom : UserControl
+  public partial class CtrlZoom : System.Windows.Controls.UserControl
   {
     //  AnalysisFile _analysis;
     string _wavFilePath;
     int _stretch;
     int _oldCallIdx = -1;
-    Image[] _playImgs;
+    System.Windows.Controls.Image[] _playImgs;
     ctlWavFile _ctlWav = null;
     dlgVoid _openExportForm = null;
     enModel _modelType;
@@ -42,10 +42,10 @@ namespace BatInspector.Controls
     public CtrlZoom()
     {
       InitializeComponent();
-      _playImgs = new Image[9];
+      _playImgs = new System.Windows.Controls.Image[9];
       int size = 32;
       double op = 0.3;
-      _playImgs[0] = new Image
+      _playImgs[0] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/pause.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -53,7 +53,7 @@ namespace BatInspector.Controls
         Height = size,
         Width = size,
       };
-      _playImgs[1] = new Image
+      _playImgs[1] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -61,7 +61,7 @@ namespace BatInspector.Controls
         Height = size,
         Width = size
       };
-      _playImgs[2] = new Image
+      _playImgs[2] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-10x.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -69,7 +69,7 @@ namespace BatInspector.Controls
         Height = size,
         Width = size
       };
-      _playImgs[3] = new Image
+      _playImgs[3] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-20x.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -77,7 +77,7 @@ namespace BatInspector.Controls
         Height = 32,
         Width = 32
       };
-      _playImgs[4] = new Image
+      _playImgs[4] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -86,7 +86,7 @@ namespace BatInspector.Controls
         Width = size,
         Opacity = op
       };
-      _playImgs[5] = new Image
+      _playImgs[5] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-10x.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -95,7 +95,7 @@ namespace BatInspector.Controls
         Width = size,
         Opacity = op
       };
-      _playImgs[6] = new Image
+      _playImgs[6] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-button-20x.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -104,7 +104,7 @@ namespace BatInspector.Controls
         Width = 32,
         Opacity = op
       };
-      _playImgs[7] = new Image
+      _playImgs[7] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-het.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -112,7 +112,7 @@ namespace BatInspector.Controls
         Height = 32,
         Width = 32,
       };
-      _playImgs[8] = new Image
+      _playImgs[8] = new System.Windows.Controls.Image
       {
         Source = new BitmapImage(new Uri(@"pack://application:,,,/images/play-het.png", UriKind.Absolute)),
         VerticalAlignment = VerticalAlignment.Center,
@@ -258,7 +258,7 @@ namespace BatInspector.Controls
       for(int i = 0; i < AppParams.NR_ZOOM_FREQ_LINES; i++)
       {
         string cbName = $"_cbFreq{i + 1}";
-        CheckBox cb = (CheckBox)_spSideBar.FindName(cbName);
+        System.Windows.Controls.CheckBox cb = (System.Windows.Controls.CheckBox)_spSideBar.FindName(cbName);
         cb.IsChecked = AppParams.Inst.FrequencyLines[i].Visible;
       }
     }
@@ -413,11 +413,11 @@ namespace BatInspector.Controls
     }
 
 
-    private void ctrlZoomMouseDown(object sender, MouseEventArgs e)
+    private void ctrlZoomMouseDown(object sender, System.Windows.Input.MouseEventArgs e)
     {
       try
       {
-        Point p = e.GetPosition(_imgFt);
+        System.Windows.Point p = e.GetPosition(_imgFt);
         ZoomView z = App.Model.ZoomView;
         double f = (1.0 - (double)(p.Y) / ((double)_imgFt.ActualHeight)) * (z.RulerDataF.Max - z.RulerDataF.Min) + z.RulerDataF.Min;
         double t = (double)(p.X - _imgFt.Margin.Left) / (double)_imgFt.ActualWidth * (z.RulerDataT.Max - z.RulerDataT.Min) + z.RulerDataT.Min;
@@ -550,31 +550,31 @@ namespace BatInspector.Controls
     {
       _rulerA.Children.Clear();
       GraphHelper.createLine(_rulerA, _rulerA.ActualWidth - 3, _imgXt.Margin.Top,
-                          _rulerA.ActualWidth - 3, _imgXt.ActualHeight + _imgXt.Margin.Top, Brushes.Black);
+                          _rulerA.ActualWidth - 3, _imgXt.ActualHeight + _imgXt.Margin.Top, System.Windows.Media.Brushes.Black);
       int steps = 4;
       RulerData rData = App.Model.ZoomView.RulerDataA;
       for (int i = 0; i <= steps; i++)
       {
         double y = _imgXt.Margin.Top + _imgXt.ActualHeight * i / steps;
         GraphHelper.createLine(_rulerA, _rulerA.ActualWidth - 3, y,
-                            _rulerA.ActualWidth - 10, y, Brushes.Black);
+                            _rulerA.ActualWidth - 10, y, System.Windows.Media.Brushes.Black);
       }
       double y0 = _imgXt.Margin.Top + _imgXt.ActualHeight * 1 / 2;
-      GraphHelper.createText(_rulerA, _rulerA.ActualWidth - 40, y0 - 5, "0.0", Colors.Black);
-      GraphHelper.createText(_rulerA, _rulerA.ActualWidth - 40, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), Colors.Black);
+      GraphHelper.createText(_rulerA, _rulerA.ActualWidth - 40, y0 - 5, "0.0", System.Windows.Media.Colors.Black);
+      GraphHelper.createText(_rulerA, _rulerA.ActualWidth - 40, _imgXt.Margin.Top - 5, rData.Max.ToString("0.##", CultureInfo.InvariantCulture), System.Windows.Media.Colors.Black);
     }
     void initRulerF()
     {
       _rulerF.Children.Clear();
       GraphHelper.createRulerY(_rulerF, _rulerF.ActualWidth - 3, 0, _rulerF.ActualHeight, App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max, AppParams.NR_OF_TICKS);
-      GraphHelper.createText(_rulerF, 10, _rulerF.ActualHeight - 15, "[kHz]", Colors.Black);
+      GraphHelper.createText(_rulerF, 10, _rulerF.ActualHeight - 15, "[kHz]", System.Windows.Media.Colors.Black);
     }
 
     void initRulerT()
     {
       _rulerT.Children.Clear();
       GraphHelper.createRulerX(_rulerT, 0, 0, _rulerT.ActualWidth, App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max, AppParams.NR_OF_TICKS, "0.###");
-      GraphHelper.createText(_rulerT, 5, 5, "[sec]", Colors.Black);
+      GraphHelper.createText(_rulerT, 5, 5, "[sec]", System.Windows.Media.Colors.Black);
     }
 
 
@@ -635,7 +635,7 @@ namespace BatInspector.Controls
         }
         else
         {
-          MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+          System.Windows.MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         DebugLog.log("ZoomBtn: 'zoom cursor' clicked", enLogType.DEBUG);
       }
@@ -816,10 +816,10 @@ namespace BatInspector.Controls
     {
       string name = $"_lineF{i + 1}";
       string cbName = $"_cbFreq{i+1}";
-      CheckBox cb = (CheckBox)_spSideBar.FindName(cbName);
+      System.Windows.Controls.CheckBox cb = (System.Windows.Controls.CheckBox)_spSideBar.FindName(cbName);
       string fStr = AppParams.Inst.FrequencyLines[i].Frequency.ToString("#.0");
       cb.Content = $"F{i + 1}({fStr})";
-      Line line = (Line)_gridXt.FindName(name);
+      System.Windows.Shapes.Line line = (System.Windows.Shapes.Line)_gridXt.FindName(name);
       if (AppParams.Inst.FrequencyLines[i].Visible)
       {
         double f = AppParams.Inst.FrequencyLines[i].Frequency;
@@ -1068,11 +1068,11 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _imgFt_MouseMove(object sender, MouseEventArgs e)
+    private void _imgFt_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
       try
       {
-        Point p = e.GetPosition(_imgFt);
+        System.Windows.Point p = e.GetPosition(_imgFt);
         double f = App.Model.ZoomView.RulerDataF.Min +
                    (_imgFt.ActualHeight - p.Y) / _imgFt.ActualHeight * (App.Model.ZoomView.RulerDataF.Max - App.Model.ZoomView.RulerDataF.Min);
         double t = App.Model.ZoomView.RulerDataT.Min +
@@ -1093,7 +1093,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _imgFt_MouseLeave(object sender, MouseEventArgs e)
+    private void _imgFt_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
     {
       _ftToolTip.IsOpen = false;
     }
@@ -1238,7 +1238,7 @@ namespace BatInspector.Controls
             retVal = 1;
           }
           else
-            MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+            System.Windows.MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
           break;
 
         case enSpectrumMode.FILE:
@@ -1318,11 +1318,11 @@ namespace BatInspector.Controls
 
     }
 
-    private void _imgXt_MouseMove(object sender, MouseEventArgs e)
+    private void _imgXt_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
       try
       {
-        Point pos = e.GetPosition(_imgXt);
+        System.Windows.Point pos = e.GetPosition(_imgXt);
         double t = App.Model.ZoomView.RulerDataT.Min +
         pos.X / _imgXt.ActualWidth * (App.Model.ZoomView.RulerDataT.Max - App.Model.ZoomView.RulerDataT.Min);
         if (!_xtToolTip.IsOpen)
@@ -1338,11 +1338,11 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _imgXt_MouseLeave(object sender, MouseEventArgs e)
+    private void _imgXt_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
     {
       _xtToolTip.IsOpen = false;
     }
-    private void _btnSaveAs_Click(object sender, RoutedEventArgs e)
+    private void _btnSaveAs_Click(object sender, System.Windows.RoutedEventArgs e)
     {
       try
       {
@@ -1425,7 +1425,7 @@ namespace BatInspector.Controls
           createZoomImg();
         }
         else
-          MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+          System.Windows.MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
         DebugLog.log("Zoom:Btn 'Bandpass' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1452,7 +1452,7 @@ namespace BatInspector.Controls
       }
       else
       {
-        MessageBox.Show(MyResources.msgNoMicInformation, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Information);
+        System.Windows.MessageBox.Show(MyResources.msgNoMicInformation, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Information);
       }
     }
 
@@ -1491,7 +1491,7 @@ namespace BatInspector.Controls
           update(false);
         }
         else
-          MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
+          System.Windows.MessageBox.Show(MyResources.msgZoomNotPossible, MyResources.msgInformation, MessageBoxButton.OK, MessageBoxImage.Warning);
         DebugLog.log("Zoom:Btn 'Cutout' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1606,7 +1606,7 @@ namespace BatInspector.Controls
           }
           else
           {
-            MessageBox.Show(BatInspector.Properties.MyResources.msgFrmVerifyCursors, MyResources.msgQuestion, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.msgFrmVerifyCursors, MyResources.msgQuestion, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             ok = false;
           }
         }

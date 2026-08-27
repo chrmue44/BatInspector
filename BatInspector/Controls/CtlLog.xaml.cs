@@ -13,14 +13,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 public delegate void DlgCmd(string cmd, dlgVoid callBack);
-public delegate void dlgAddTextLine(string text, Brush color);
+public delegate void dlgAddTextLine(string text, System.Windows.Media.Brush color);
 
 namespace BatInspector.Controls
 {
   /// <summary>
   /// Interaktionslogik für CtlLog.xaml
   /// </summary>
-  public partial class CtlLog : UserControl
+  public partial class CtlLog : System.Windows.Controls.UserControl
   {
 
     DlgCmd _dlgCmd = null;
@@ -77,7 +77,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public void addTextLine(string text, Brush color)
+    public void addTextLine(string text, System.Windows.Media.Brush color)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
@@ -129,7 +129,7 @@ namespace BatInspector.Controls
       _tbCmd.IsEnabled = true;
     }
 
-    public void _tbCmd_KeyDown(object sender, KeyEventArgs e)
+    public void _tbCmd_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
       if (e.Key == Key.Return)
       {

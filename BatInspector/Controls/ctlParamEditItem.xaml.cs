@@ -17,7 +17,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlParamEditItem.xaml
   /// </summary>
-  public partial class ctlParamEditItem : UserControl
+  public partial class ctlParamEditItem : System.Windows.Controls.UserControl
   {
     enParamType _type = enParamType.MICSCELLANOUS;
     string _valString;

@@ -23,7 +23,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlWavFile.xaml
   /// </summary>
-  public partial class ctlWavFile : UserControl, IPool
+  public partial class ctlWavFile : System.Windows.Controls.UserControl, IPool
   {
     AnalysisFile _analysis;
     string _wavFilePath;
@@ -99,26 +99,45 @@ namespace BatInspector.Controls
 
       if (!string.IsNullOrEmpty(imgName))
       {
-        imgName = imgName.ToLower();
+        // Prefer a direct file load if a filesystem path exists.
         try
         {
-          BitmapImage bi = null;
-          using (var fstream = new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read))
+          string path = imgName;
+          if (!Path.IsPathRooted(path))
+            path = path.ToLower();
+
+          if (File.Exists(path))
           {
-            bi = new BitmapImage();
-            bi.BeginInit();
-            bi.CacheOption = BitmapCacheOption.OnLoad;
-            bi.StreamSource = fstream;
-            bi.StreamSource.Flush();
-            bi.EndInit();
-            bi.Freeze();
-            bi.StreamSource.Dispose();
+            BitmapImage bi = null;
+            using (var fstream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+              bi = new BitmapImage();
+              bi.BeginInit();
+              bi.CacheOption = BitmapCacheOption.OnLoad;
+              bi.StreamSource = fstream;
+              bi.EndInit();
+              bi.Freeze();
+            }
+            return bi;
           }
-          return bi;
         }
         catch
         {
         }
+
+        // If the file was not found on disk, try loading as a relative URI.
+        // This supports images marked as Content and copied to the output folder.
+        try
+        {
+          var uri = new Uri(imgName, UriKind.Relative);
+          var bi2 = new BitmapImage(uri);
+          bi2.Freeze();
+          return bi2;
+        }
+        catch
+        {
+        }
+
         return null;
       }
       //if (val != null)

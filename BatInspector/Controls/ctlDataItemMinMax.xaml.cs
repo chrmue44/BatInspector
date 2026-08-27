@@ -15,7 +15,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlDataItem.xaml
   /// </summary>
-  public partial class ctlDataItemMinMax : UserControl
+  public partial class ctlDataItemMinMax : System.Windows.Controls.UserControl
   {
     enDataType _type = enDataType.STRING;
     int _decimals = 3;
@@ -69,7 +69,7 @@ namespace BatInspector.Controls
       setValue(val, ref _maxValDouble, _tbMax);
     }
 
-    private void setValue(int newVal, ref int val, TextBox tb)
+    private void setValue(int newVal, ref int val, System.Windows.Controls.TextBox tb)
     {
       if (_type == enDataType.INT)
       {
@@ -81,7 +81,7 @@ namespace BatInspector.Controls
     }
 
 
-    private void setValue(double newVal, ref double val, TextBox tb)
+    private void setValue(double newVal, ref double val, System.Windows.Controls.TextBox tb)
     {
       string format = "0.";
       for (int i = 0; i < _decimals; i++)
@@ -95,7 +95,7 @@ namespace BatInspector.Controls
         DebugLog.log("wrong data type for ctlDataItemMinMax: " + _lbl.Text, enLogType.ERROR);
     }
 
-    private void setValue(string newVal, ref string val, TextBox tb)
+    private void setValue(string newVal, ref string val, System.Windows.Controls.TextBox tb)
     {
       if (_type == enDataType.STRING)
       {

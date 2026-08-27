@@ -17,7 +17,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für CtlSpectrum.xaml
   /// </summary>
-  public partial class CtlSpectrum : UserControl
+  public partial class CtlSpectrum : System.Windows.Controls.UserControl
   {
     bool _initFlag = false;
     Spectrum _spectrum;
@@ -79,17 +79,17 @@ namespace BatInspector.Controls
           int x1 = w;
           int x2 = w - (int)(w * (spectrum[y-1] / (max - min)));
           if (mode == enSpectrumMode.CALL)
-            GraphHelper.createLine(_cvSpec, x1, y, x2, y, Brushes.Blue);
+            GraphHelper.createLine(_cvSpec, x1, y, x2, y, System.Windows.Media.Brushes.Blue);
           else
-            GraphHelper.createLine(_cvSpec, x1, y, x2, y, Brushes.Cyan);
+            GraphHelper.createLine(_cvSpec, x1, y, x2, y, System.Windows.Media.Brushes.Cyan);
 
         }
       }
     }
 
-    private void _cvSpec_MouseMove(object sender, MouseEventArgs e)
+    private void _cvSpec_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
-      Point pos = e.GetPosition(this);
+      System.Windows.Point pos = e.GetPosition(this);
       double f = _spectrum.RulerDataF.Min + ((_cvSpec.ActualHeight -pos.Y) / _cvSpec.ActualHeight) * (_spectrum.RulerDataF.Max - _spectrum.RulerDataF.Min);
       _cvSpec.ToolTip = f.ToString("#.#", CultureInfo.InvariantCulture) + "[kHz]";
     }

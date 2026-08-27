@@ -9,16 +9,12 @@
 //https://weblog.west-wind.com/posts/2020/Apr/06/Displaying-Nested-Child-Objects-in-the-Windows-Forms-Designer-Property-Grid
 
 using libParser;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 using BatInspector.Properties;
-using System.Deployment.Application;
 using System.Reflection;
 
 namespace BatInspector
@@ -223,14 +219,15 @@ namespace BatInspector
     {
       get
       {
-        System.Version version;
+        System.Version version = new System.Version(0, 0, 0, 0);
         try
         {
-          version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
+          version = Assembly.GetExecutingAssembly().GetName().Version;
+//          version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
         }
         catch
         {
-          version = Assembly.GetExecutingAssembly().GetName().Version;
+    //      version = Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         return version.ToString();

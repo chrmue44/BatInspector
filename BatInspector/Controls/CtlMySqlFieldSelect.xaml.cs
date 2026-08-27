@@ -22,7 +22,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for CtlMySqlFieldSelect.xaml
   /// </summary>
-  public partial class CtlMySqlFieldSelect : UserControl
+  public partial class CtlMySqlFieldSelect : System.Windows.Controls.UserControl
   {
     dlgCbClick _dlg = null;
     int _rank = 0;

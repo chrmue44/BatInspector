@@ -18,7 +18,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlStatitic.xaml
   /// </summary>
-  public partial class ctlStatistic : UserControl
+  public partial class ctlStatistic : System.Windows.Controls.UserControl
   {
 
     public ctlStatistic()
@@ -44,7 +44,7 @@ namespace BatInspector.Controls
     }
 
 
-    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ViewModel model, ComboBox cbFilter)
+    public static void handleFilterDropdown(out bool applyFilter, out bool resetFilter, ViewModel model, System.Windows.Controls.ComboBox cbFilter)
     {
       applyFilter = false;
       resetFilter = false;

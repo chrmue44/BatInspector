@@ -18,7 +18,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlDataItem.xaml
   /// </summary>
-  public partial class ctlDataItem : UserControl
+  public partial class ctlDataItem : System.Windows.Controls.UserControl
   {
     enDataType _type = enDataType.STRING;
     int _decimals = 3;

@@ -10,7 +10,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaktionslogik für ctlUpDown.xaml
   /// </summary>
-  public partial class ctlUpDown : UserControl
+  public partial class ctlUpDown : System.Windows.Controls.UserControl
   {
     double _min = -100;
     double _max = 100;

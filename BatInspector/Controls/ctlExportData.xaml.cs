@@ -9,7 +9,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlExportData.xaml
   /// </summary>
-  public partial class ctlExportData : UserControl
+  public partial class ctlExportData : System.Windows.Controls.UserControl
   {
     public ctlExportData()
     {

@@ -13,7 +13,6 @@ using System.Xml.Serialization;
 using BatInspector;
 using System.Globalization;
 using System.Xml;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 
 public partial class gpx

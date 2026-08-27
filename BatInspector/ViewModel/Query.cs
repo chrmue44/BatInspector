@@ -302,7 +302,7 @@ namespace BatInspector
       string lastFileName = "";
       if (analysis.Files.Count == 0)
       {
-        MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        MessageBoxResult res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning);
         retVal = res == MessageBoxResult.Yes;
       }
       else

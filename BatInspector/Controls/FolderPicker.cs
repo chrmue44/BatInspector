@@ -38,7 +38,7 @@ public class FolderPicker
   public bool? ShowDialog(Window owner = null, bool throwOnError = false)
   {
     if(owner == null)
-      owner = Application.Current.MainWindow;
+      owner = System.Windows.Application.Current.MainWindow;
     return ShowDialog(owner != null ? new WindowInteropHelper(owner).Handle : IntPtr.Zero, throwOnError);
   }
 

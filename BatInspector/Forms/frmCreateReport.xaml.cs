@@ -120,7 +120,7 @@ namespace BatInspector.Forms
       string path = Path.Combine(dir, fileName);
       if (File.Exists(path))
       {
-        MessageBoxResult res = MessageBox.Show(MyResources.msgFrmReport,MyResources.msgQuestion,MessageBoxButton.YesNo,MessageBoxImage.Question);
+        MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.msgFrmReport,MyResources.msgQuestion,MessageBoxButton.YesNo,MessageBoxImage.Question);
         if(res == MessageBoxResult.Yes)
           return true;
       }
@@ -177,7 +177,7 @@ namespace BatInspector.Forms
         }
       }
       else
-        MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        System.Windows.MessageBox.Show("Please specify start and end date", "Attention", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         this.Visibility = Visibility.Hidden;
       }
 

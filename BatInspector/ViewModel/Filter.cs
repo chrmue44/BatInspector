@@ -226,7 +226,7 @@ namespace BatInspector
       return _vars;
     }
 
-    public static void populateFilterComboBox(ComboBox fiBox)
+    public static void populateFilterComboBox(System.Windows.Controls.ComboBox fiBox)
     {
       fiBox.Items.Clear();
       fiBox.Items.Add(MyResources.MainFilterNone);

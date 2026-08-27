@@ -96,7 +96,7 @@ namespace BatInspector.Forms
               _spPars.Children.Add(ctld);
               break;
             case enParamType.BOOL:
-              CheckBox chk = new CheckBox();
+              System.Windows.Controls.CheckBox chk = new System.Windows.Controls.CheckBox();
               chk.Content = _params[i].Name;
               chk.Click += setParamsChk;
               _spPars.Children.Add(chk);
@@ -129,7 +129,7 @@ namespace BatInspector.Forms
               App.Model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
               break;
             case enParamType.BOOL:
-              CheckBox chk = _spPars.Children[i] as CheckBox;
+              System.Windows.Controls.CheckBox chk = _spPars.Children[i] as System.Windows.Controls.CheckBox;
               String boolVal = "0";
               if ((chk != null) && (chk.IsChecked == true))
                 boolVal = "1";

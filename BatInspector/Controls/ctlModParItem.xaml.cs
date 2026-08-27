@@ -8,7 +8,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlModParItem.xaml
   /// </summary>
-  public partial class ctlModParItem : UserControl
+  public partial class ctlModParItem : System.Windows.Controls.UserControl
   {
     ModelParams _pars;
     public ctlModParItem()

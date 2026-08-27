@@ -6,14 +6,11 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Interop;
 using System.Windows.Media;
 using BatInspector.Controls;
 using BatInspector.Properties;
-using Org.BouncyCastle.Utilities;
 
 namespace BatInspector.Forms
 {

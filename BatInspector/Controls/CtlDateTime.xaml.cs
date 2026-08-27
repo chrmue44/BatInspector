@@ -14,7 +14,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for CtlDateTime.xaml
   /// </summary>
-  public partial class CtlDateTime : UserControl
+  public partial class CtlDateTime : System.Windows.Controls.UserControl
   {
     dlgDateChanged _dlg = null;
 

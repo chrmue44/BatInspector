@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Ocsp;
+﻿//using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +12,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using ZstdSharp.Unsafe;
 
 namespace BatInspector
 {
@@ -62,7 +61,7 @@ namespace BatInspector
   {
     FlowDocument _doc = new FlowDocument();
 
-    public FontFamily Font { get; set; } = new FontFamily("Arial");
+    public System.Windows.Media.FontFamily Font { get; set; } = new System.Windows.Media.FontFamily("Arial");
 
     public DocHelperRtf() : base(enDocType.RTF) 
     {
@@ -147,7 +146,7 @@ namespace BatInspector
       if(reqHnadler != null) 
         hyperlink.RequestNavigate += reqHnadler;
       hyperlink.NavigateUri = new Uri(url);
-      hyperlink.Foreground = Brushes.Blue;
+      hyperlink.Foreground = System.Windows.Media.Brushes.Blue;
       hyperlink.FontWeight = FontWeights.Bold;
       Paragraph p = getLastParagraph();
       p.Inlines.Add(hyperlink);
@@ -158,13 +157,13 @@ namespace BatInspector
     {
       Table table1 = new Table();
       table1.BorderThickness = new Thickness(border);
-      table1.BorderBrush = Brushes.Black;
-      table1.Background = Brushes.Black;
+      table1.BorderBrush = System.Windows.Media.Brushes.Black;
+      table1.Background = System.Windows.Media.Brushes.Black;
       _doc.Blocks.Add(table1);
 
       // Set some global formatting properties for the table.
       table1.CellSpacing = width;
-      table1.Background = Brushes.White;
+      table1.Background = System.Windows.Media.Brushes.White;
 
       //add columns
       int numberOfColumns = dtbl.Columns.Count;
@@ -184,7 +183,7 @@ namespace BatInspector
       {
         table1.RowGroups[0].Rows.Add(new TableRow());
         TableRow currentRow = table1.RowGroups[0].Rows[0];
-        currentRow.Background = Brushes.LightSteelBlue;
+        currentRow.Background = System.Windows.Media.Brushes.LightSteelBlue;
 
         // Global formatting for the header row.
         currentRow.FontSize = FontSizeH1;
@@ -194,7 +193,7 @@ namespace BatInspector
         for (int i = 0; i < dtbl.Columns.Count; i++)
         {
           TableCell cell = new TableCell(new Paragraph(new Run(dtbl.Columns[i].ColumnName)));
-          cell.BorderBrush = Brushes.Black;
+          cell.BorderBrush = System.Windows.Media.Brushes.Black;
           cell.BorderThickness = new Thickness(border);
           currentRow.Cells.Add(cell);
         }
@@ -205,14 +204,14 @@ namespace BatInspector
         table1.RowGroups[0].Rows.Add(new TableRow());
         TableRow currentRow = table1.RowGroups[0].Rows[r];
         currentRow.FontWeight = FontWeights.Normal;
-        currentRow.Background = Brushes.Black;
+        currentRow.Background = System.Windows.Media.Brushes.Black;
         for (int c = 0; c < dtbl.Columns.Count; c++)
         {
           Run t = new Run(dtbl.Rows[r].ItemArray[c].ToString());
           TableCell cell = new TableCell(new Paragraph(t));
-          cell.BorderBrush = Brushes.Gray;
+          cell.BorderBrush = System.Windows.Media.Brushes.Gray;
           cell.BorderThickness = new Thickness(border);
-          cell.Background = Brushes.White;
+          cell.Background = System.Windows.Media.Brushes.White;
           currentRow.Cells.Add(cell);
         }
       }
@@ -229,11 +228,11 @@ namespace BatInspector
           throw new ArgumentException("Image path cannot be null or empty");
         }
         // Create an Image element and set its source to the provided image path
-        Image image = new Image();
+        System.Windows.Controls.Image image = new System.Windows.Controls.Image();
         image.Source = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
         image.Stretch = Stretch.Uniform;
         image.Width = width;
-        image.HorizontalAlignment = HorizontalAlignment.Left;
+        image.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
 
         // Create a BlockUIContainer to host the Image element
         BlockUIContainer blockUIContainer = new BlockUIContainer(image);
@@ -251,11 +250,11 @@ namespace BatInspector
     {
       TextRange content = new TextRange(_doc.ContentStart, _doc.ContentEnd);
 
-      if (content.CanSave(DataFormats.Rtf))
+      if (content.CanSave(System.Windows.DataFormats.Rtf))
       {
         using (FileStream stream = new FileStream(docPath, FileMode.Create))
         {
-          content.Save(stream, DataFormats.Rtf);
+          content.Save(stream, System.Windows.DataFormats.Rtf);
         }
       }
     }

@@ -18,7 +18,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlActivityDiagram.xaml
   /// </summary>
-  public partial class ctlActivityDiagram : UserControl
+  public partial class ctlActivityDiagram : System.Windows.Controls.UserControl
   {
     ActivityDiagram _diagram;
     Bitmap _bmp = null;

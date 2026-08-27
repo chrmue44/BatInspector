@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:BatInspector.Forms"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Icon="../images/kopf64.png"
         Title="FrmMessage" Height="170" Width="500" Loaded="Window_Loaded" Background="{DynamicResource colorBackGround}">
     <GroupBox BorderThickness="2" Margin="10,0,10,10" Background="{DynamicResource colorBackGround}">
     <Grid>
@@ -14,7 +13,7 @@
             <ColumnDefinition Width="128" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="0" Source="../images/tea-cup.png" Margin="10"/>
+            <Image Grid.Column="0" Source="pack://application:,,,/BatInspector;component/images/tea-cup.png" Margin="10"/>
         <TextBox Grid.Column="1" x:Name="_tbMsg"  Margin="10" Padding="10" FontWeight="Bold" BorderThickness="0" IsEnabled="False" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="{DynamicResource colorForeGroundLabel}"/>
     </Grid>
     </GroupBox>

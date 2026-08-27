@@ -7,8 +7,8 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlSpecialQuestion.xaml
   /// </summary>
-  public partial class ctlSpecialQuestion : UserControl
-  {
+  public partial class ctlSpecialQuestion : System.Windows.Controls.UserControl
+  { 
     string[] _relevantFor;
     
     public ctlSpecialQuestion()

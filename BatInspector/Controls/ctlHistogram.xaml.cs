@@ -10,10 +10,10 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlHistogram.xaml
   /// </summary>
-  public partial class ctlHistogram : UserControl
+  public partial class ctlHistogram : System.Windows.Controls.UserControl
   {
     Histogram _histogram = null;
-    Brush _brushBar = Brushes.Blue;
+    System.Windows.Media.Brush _brushBar = System.Windows.Media.Brushes.Blue;
     int _borderBar = 1;
     double _rx_x = 33;  //x position x axis
     double _wb = 5;     // width of histogram bar
@@ -71,14 +71,14 @@ namespace BatInspector.Controls
 
     private void paintBar(double x, double y, double width, double height)
     {
-      GraphHelper.createBox(_cnv, x , y - height , x + width , y, _borderBar,Brushes.Blue, Brushes.LightBlue);
+      GraphHelper.createBox(_cnv, x , y - height , x + width , y, _borderBar, System.Windows.Media.Brushes.Blue, System.Windows.Media.Brushes.LightBlue);
     }
 
     private void _cnv_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
       try
       {
-        Point p = e.GetPosition(_cnv);
+        System.Windows.Point p = e.GetPosition(_cnv);
         int classNr = (int)((p.X - _rx_x) / _wb) + 1;
         if (classNr < 1)
           classNr = 1;

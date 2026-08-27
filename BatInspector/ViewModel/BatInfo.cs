@@ -399,7 +399,7 @@ namespace BatInspector
         {
           if (File.GetLastWriteTime(dstFileName) < File.GetLastWriteTime(srcFileName))
           {
-            MessageBoxResult res = MessageBox.Show(MyResources.msgNewVerBatInfo,
+            MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.msgNewVerBatInfo,
                BatInspector.Properties.MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (res == MessageBoxResult.Yes)
               File.Copy(srcFileName, dstFileName, true);

@@ -9,15 +9,10 @@
 using libParser;
 using libScripter;
 using NAudio.Wave;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Web.UI.WebControls.WebParts;
 using System.Windows;
 
 //using System.Windows.Forms;
@@ -972,7 +967,7 @@ namespace BatInspector
           if (!ok & askIfTimeFromFile)
           {
             t.Stop();
-            MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.MsgDatTimeError,
+            MessageBoxResult res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.MsgDatTimeError,
                                                    BatInspector.Properties.MyResources.msgQuestion,
                                                    MessageBoxButton.OKCancel, MessageBoxImage.Question);
             t.Start();
@@ -1606,7 +1601,7 @@ namespace BatInspector
           {
             if (!msgBoxShown)
             {
-              MessageBoxResult res = MessageBox.Show(BatInspector.Properties.MyResources.ProjectmsgReplaceInfo,
+              MessageBoxResult res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.ProjectmsgReplaceInfo,
                                                    BatInspector.Properties.MyResources.msgQuestion,
                                                    MessageBoxButton.YesNo, MessageBoxImage.Question);
               if (res == MessageBoxResult.Yes)

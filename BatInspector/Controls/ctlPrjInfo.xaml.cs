@@ -19,7 +19,7 @@ namespace BatInspector.Controls
   /// <summary>
   /// Interaction logic for ctlPrjInfo.xaml
   /// </summary>
-  public partial class ctlPrjInfo : UserControl
+  public partial class ctlPrjInfo : System.Windows.Controls.UserControl
   {
     Project _prj = null;
 
@@ -43,7 +43,7 @@ namespace BatInspector.Controls
       initModelComboBox(_cbModels, _prj.AvailableModelParams, _prj.SelectedModelIndex);
     }
 
-    public static void initModelComboBox(ComboBox cbm, ModelParams[] mp, int index)
+    public static void initModelComboBox(System.Windows.Controls.ComboBox cbm, ModelParams[] mp, int index)
     {
       cbm.Items.Clear();
       for (int i = 0; i < mp.Length; i++)

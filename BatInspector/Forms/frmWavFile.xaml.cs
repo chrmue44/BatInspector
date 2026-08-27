@@ -50,7 +50,7 @@ namespace BatInspector.Forms
       string wavFile = "";
       try
       {
-        OpenFileDialog openFileDialog = new OpenFileDialog();
+        Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
         openFileDialog.Filter = "WAV files (*.wav)|*.wav|All files (*.*)|*.*";
         if (openFileDialog.ShowDialog() == true)
         {

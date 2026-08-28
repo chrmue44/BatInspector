@@ -622,17 +622,18 @@ namespace BatInspector
 
         List<float> samplesL = new List<float>();
         List<float> samplesR = new List<float>();
-        // 3. Create a buffer to hold the samples
         float[] buffer = new float[sampleProvider.WaveFormat.SampleRate];
         int samplesRead;
         float max = 0;
-/*     TODO   while ((samplesRead = sampleProvider.Read(buffer, 0, buffer.Length)) > 0)
+        Span<float> span = new Span<float>(buffer);
+
+        while ((samplesRead = sampleProvider.Read(span)) > 0)
         {
           if (flac.WaveFormat.Channels == 2)
           {
             for (int i = 0; i < samplesRead; i += 2)
             {
-              
+
               samplesL.Add(buffer[i]);
               if (buffer[i + 1] > max)
                 max = buffer[i + 1];
@@ -644,8 +645,8 @@ namespace BatInspector
             for (int i = 0; i < samplesRead; i++)
               samplesR.Add(buffer[i]);
           }
-        } */
-        if((flac.WaveFormat.Channels == 2) && !chanR)
+        } 
+        if ((flac.WaveFormat.Channels == 2) && !chanR)
           _data.AddSampleData(samplesL.ToArray(), 0, samplesL.Count);
         else
           _data.AddSampleData(samplesR.ToArray(), 0, samplesR.Count);

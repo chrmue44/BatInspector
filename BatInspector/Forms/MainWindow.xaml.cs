@@ -611,12 +611,17 @@ namespace BatInspector.Forms
     private TreeViewItem CreateTreeItem(object o)
     {
       TreeViewItem item = new TreeViewItem();
-      item.Header = o.ToString();
+      DirectoryInfo d = o as DirectoryInfo;
+      if (d != null)
+        item.Header = d.Name;
+      else
+        item.Header = o.ToString();
       item.Tag = o;
       item.Items.Add(BatInspector.Properties.MyResources.MainWindowMsgLoading);
       item.Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["colorForeGroundLabel"];
       return item;
     }
+
 
 
     private void updateWavControls()

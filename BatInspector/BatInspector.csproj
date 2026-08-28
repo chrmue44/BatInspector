@@ -16,10 +16,86 @@
      <TargetFramework>net10.0-windows</TargetFramework> 
      <UseWPF>true</UseWPF> 
      <UseWindowsForms>true</UseWindowsForms> 
+     <PlatformTarget>AnyCPU</PlatformTarget> 
   </PropertyGroup>
   
   <ItemGroup>
+    <None Remove="images\Actions_help_about_icon.png" />
+    <None Remove="images\Bandpass.png" />
+    <None Remove="images\Bat_icon-icons.com_Q.png" />
+    <None Remove="images\Button-Blank-Blue.48.png" />
+    <None Remove="images\Button-Blank-Red.48.png" />
+    <None Remove="images\Button_Help_icon_32.png" />
+    <None Remove="images\cancel_77947.png" />
+    <None Remove="images\check.png" />
+    <None Remove="images\color-palette.png" />
+    <None Remove="images\danger-sign.png" />
+    <None Remove="images\data-recovery.png" />
+    <None Remove="images\data-transfer.png" />
+    <None Remove="images\debug.png" />
+    <None Remove="images\filter.png" />
+    <None Remove="images\icons8-arrow-down.png" />
+    <None Remove="images\icons8-arrow-left-64.png" />
+    <None Remove="images\icons8-arrow-right-64.png" />
+    <None Remove="images\icons8-arrow-up.png" />
+    <None Remove="images\icons8-cleanup-noise-100.png" />
+    <None Remove="images\icons8-edit-64.png" />
+    <None Remove="images\icons8-enlarge-maximum.png" />
+    <None Remove="images\icons8-folder-48.png" />
+    <None Remove="images\icons8-minus-48.png" />
+    <None Remove="images\icons8-offener-ordner-64.png" />
+    <None Remove="images\icons8-plus-+-48.png" />
+    <None Remove="images\icons8-save-48-exp.png" />
+    <None Remove="images\icons8-save-48-import.png" />
+    <None Remove="images\icons8-save-48.png" />
+    <None Remove="images\icons8-save-as-48.png" />
+    <None Remove="images\icons8-staubsauger-64.png" />
+    <None Remove="images\icons8-zoom-in-64.png" />
+    <None Remove="images\icons8-zoom-in-A-v-64.png" />
+    <None Remove="images\icons8-zoom-in-cursor-64.png" />
+    <None Remove="images\icons8-zoom-in-h-64.png" />
+    <None Remove="images\icons8-zoom-in-v-64.png" />
+    <None Remove="images\icons8-zoom-out-A-v-64.png" />
+    <None Remove="images\icons8-zoom-out-h-64.png" />
+    <None Remove="images\icons8-zoom-out-v-64.png" />
+    <None Remove="images\magnifying-glass.png" />
+    <None Remove="images\micCorr.png" />
     <None Remove="images\pause.png" />
+    <None Remove="images\perfomance.png" />
+    <None Remove="images\play-button-10x.png" />
+    <None Remove="images\play-button-20x.png" />
+    <None Remove="images\play-button.png" />
+    <None Remove="images\play-HET.png" />
+    <None Remove="images\query.png" />
+    <None Remove="images\report.png" />
+    <None Remove="images\scissors.png" />
+    <None Remove="images\script.png" />
+    <None Remove="images\settingscog_87317.png" />
+    <None Remove="images\shoes.png" />
+    <None Remove="images\simplescreenrecorder_94921.png" />
+    <None Remove="images\stop.png" />
+    <None Remove="images\tea-cup.png" />
+    <None Remove="images\toolhammerconstruction_81806.png" />
+    <None Remove="images\vcsupdaterequired_93493.png" />
+    <None Remove="images\volume.png" />
+    <None Remove="images\wav-file-format-symbol.png" />
+    <None Remove="images\xml-dateiformatsymbol.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="images\Actions_help_about_icon.png" />
+    <Resource Include="images\Bat_icon-icons.com_Q.png" />
+    <Resource Include="images\Button-Blank-Blue.48.png" />
+    <Resource Include="images\Button-Blank-Red.48.png" />
+    <Resource Include="images\cancel_77947.png" />
+    <Resource Include="images\check.png" />
+    <Resource Include="images\danger-sign.png" />
+    <Resource Include="images\debug.png" />
+    <Resource Include="images\icons8-edit-64.png" />
+    <Resource Include="images\icons8-folder-48.png" />
+    <Resource Include="images\icons8-minus-48.png" />
+    <Resource Include="images\icons8-plus-+-48.png" />
+    <Resource Include="images\icons8-save-as-48.png" />
   </ItemGroup>
   
   
@@ -43,10 +119,59 @@
   </ItemGroup>
   
   <ItemGroup>
-    <!-- Use Content + copy for images so they can be loaded with relative URIs at runtime -->
-    <Content Include="images\**\*.*">
+    <Resource Include="images\Bandpass.png" />
+    <Resource Include="images\Button_Help_icon_32.png" />
+    <Resource Include="images\color-palette.png" />
+    <Resource Include="images\data-recovery.png" />
+    <Resource Include="images\data-transfer.png" />
+    <Resource Include="images\filter.png" />
+    <Resource Include="images\icons8-arrow-down.png" />
+    <Resource Include="images\icons8-arrow-left-64.png" />
+    <Resource Include="images\icons8-arrow-right-64.png" />
+    <Resource Include="images\icons8-arrow-up.png" />
+    <Resource Include="images\icons8-cleanup-noise-100.png" />
+    <Resource Include="images\icons8-enlarge-maximum.png" />
+    <Resource Include="images\icons8-offener-ordner-64.png" />
+    <Resource Include="images\icons8-save-48-exp.png" />
+    <Resource Include="images\icons8-save-48-import.png" />
+    <Resource Include="images\icons8-save-48.png" />
+    <Resource Include="images\icons8-staubsauger-64.png" />
+    <Resource Include="images\icons8-zoom-in-64.png" />
+    <Resource Include="images\icons8-zoom-in-A-v-64.png" />
+    <Resource Include="images\icons8-zoom-in-cursor-64.png" />
+    <Resource Include="images\icons8-zoom-in-h-64.png" />
+    <Resource Include="images\icons8-zoom-in-v-64.png" />
+    <Resource Include="images\icons8-zoom-out-A-v-64.png" />
+    <Resource Include="images\icons8-zoom-out-h-64.png" />
+    <Resource Include="images\icons8-zoom-out-v-64.png" />
+    <Resource Include="images\kopf64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
+    <Resource Include="images\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\magnifying-glass.png" />
+    <Resource Include="images\micCorr.png" />
+    <Resource Include="images\pause.png" />
+    <Resource Include="images\perfomance.png" />
+    <Resource Include="images\play-button-10x.png" />
+    <Resource Include="images\play-button-20x.png" />
+    <Resource Include="images\play-button.png" />
+    <Resource Include="images\play-HET.png" />
+    <Resource Include="images\query.png" />
+    <Resource Include="images\report.png" />
+    <Resource Include="images\scissors.png" />
+    <Resource Include="images\script.png" />
+    <Resource Include="images\settingscog_87317.png" />
+    <Resource Include="images\shoes.png" />
+    <Resource Include="images\simplescreenrecorder_94921.png" />
+    <Resource Include="images\stop.png" />
+    <Resource Include="images\tea-cup.png" />
+    <Resource Include="images\toolhammerconstruction_81806.png" />
+    <Resource Include="images\vcsupdaterequired_93493.png" />
+    <Resource Include="images\volume.png" />
+    <Resource Include="images\wav-file-format-symbol.png" />
+    <Resource Include="images\xml-dateiformatsymbol.png" />
   </ItemGroup>
 
   <ItemGroup>

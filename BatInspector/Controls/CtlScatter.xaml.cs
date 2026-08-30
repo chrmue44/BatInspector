@@ -8,7 +8,6 @@
 using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
-using System;
 using System.Windows.Controls;
 
 
@@ -20,6 +19,24 @@ namespace BatInspector.Controls
   public partial class CtlScatter {
     public CtlScatter()
     {
+      InitializeComponent();
+    }
+
+
+    public void populateComboBoxes()
+    {
+      Filter.populateFilterComboBox(_cbFilterScatter);
+    }
+
+    public void initPrj()
+    {
+      _cbXaxis.Items.Clear();
+      _cbYaxis.Items.Clear();
+      foreach (stAxisItem it in _scattDiagram.AxisItems)
+      {
+        _cbXaxis.Items.Add(it.Name);
+        _cbYaxis.Items.Add(it.Name);
+      }
     }
 
 
@@ -78,6 +95,38 @@ namespace BatInspector.Controls
       }
     }
 
+    private void _cbXaxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      createPlot();
+    }
 
+    private void createPlot()
+    {
+      if ((_cbXaxis.Items.Count > 0) && (_cbXaxis.SelectedItem != null) && (_cbYaxis.SelectedItem != null) && (_cbFilterScatter.SelectedItem != null))
+      {
+        stAxisItem x = _scattDiagram.findAxisItem(_cbXaxis.SelectedItem.ToString());
+        stAxisItem y = _scattDiagram.findAxisItem(_cbYaxis.SelectedItem.ToString());
+        FilterItem filter = (_cbFilterScatter.SelectedIndex == 1) ?
+                        filter = App.Model.Filter.TempFilter : filter = App.Model.Filter.getFilter(_cbFilterScatter.Text);
+
+        _scattDiagram.createScatterDiagram(x, y, filter, _cbFreezeAxis.IsChecked == true);
+        _scatterModel.InvalidatePlot();
+      }
+    }
+    private void _cbFilter_DropDownOpened(object sender, EventArgs e)
+    {
+      App.Model.Filter.TempFilter = null;
+      _cbFilterScatter.Items[1] = MyResources.MainFilterNew;
+    }
+
+    private void _cbFilter_DropDownClosed(object sender, EventArgs e)
+    {
+      DebugLog.log("CtlScatter: Filter dropdown closed", enLogType.DEBUG);
+      bool apply;
+      bool resetFilter;
+
+      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilterScatter);
+      createPlot();
+    }
   }
 }

@@ -299,7 +299,7 @@ namespace BatInspector.Forms
       Filter.populateFilterComboBox(_ctlPrjBtn._cbFilter);
       Filter.populateFilterComboBox(_ctlListBtn._cbFilter);
       Filter.populateFilterComboBox(_ctlMySQL._cbFilter);
-   //   _ctlScatter.populateComboBoxes();
+      _ctlScatter.populateComboBoxes();
       _ctlStatistic.populateComboBoxes();
     }
 
@@ -402,7 +402,7 @@ namespace BatInspector.Forms
             // TODO set scroll button size
             _ctlPrjInfo.setup(App.Model.Prj);
             _lblPrj.Content = MyResources.ctlProjectInfo + " [" + Path.GetFileNameWithoutExtension(App.Model.Prj.Name) + "]";
-          //  _ctlScatter.initPrj();
+            _ctlScatter.initPrj();
             _switchTabToPrj = true;
             buildWavFileList(false);
             App.Model.View.stopCreatingPngFiles();

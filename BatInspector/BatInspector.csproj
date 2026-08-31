@@ -101,6 +101,7 @@
   
   <ItemGroup>
     <PackageReference Include="BunLabs.NAudio.Flac" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
     <PackageReference Include="MySql.Data" Version="26.7.0" />
     <PackageReference Include="NAudio" Version="3.0.1" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
@@ -174,19 +175,41 @@
     <Resource Include="images\xml-dateiformatsymbol.png" />
   </ItemGroup>
 
+  
   <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
+    <EmbeddedResource Update="Properties\MyResources.de.resx">
+      <Generator></Generator>
+      <CustomToolNamespace>F:\prj\BatInspector\BatInspector\Properties</CustomToolNamespace>
+	</EmbeddedResource>
+    <EmbeddedResource Update="Properties\MyResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MyResources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>F:\prj\BatInspector\BatInspector\Properties</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\MyResources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>MyResources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="&quot;$(ProjectDir)Properties\gen_rsc.bat&quot; &quot;$(ProjectDir)&quot;" />
+	</Target>
 
 </Project>

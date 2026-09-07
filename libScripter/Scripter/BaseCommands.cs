@@ -5,8 +5,7 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using System.Collections.Generic;
-using System.IO;
+
 using libParser;
 
 namespace libScripter
@@ -16,15 +15,15 @@ namespace libScripter
     public static bool EnableLog {get; set;}
     protected IList<OptItem> _features;
     protected Options _options;
-    protected bool isLogOpen = false;
-    protected StreamWriter logFile;
-    protected delegateUpdateProgress _updateProgress;
+    protected delegateUpdateProgress? _updateProgress;
     protected Parser _parser;
- 
-    public BaseCommands(delegateUpdateProgress delUpd)
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public BaseCommands(delegateUpdateProgress? delUpd)
     {
       _updateProgress = delUpd;
     }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     public string run(string[] args, Parser parser)
     {

@@ -156,17 +156,19 @@ namespace libParser
       return tempDirectory;
     }
 
+    /*
     public static bool isNetworkPath(string path)
     {
       if (!path.StartsWith(@"/") && !path.StartsWith(@"\"))
       {
-        string rootPath = System.IO.Path.GetPathRoot(path); // get drive's letter
+        string? rootPath = System.IO.Path.GetPathRoot(path); // get drive's letter
         System.IO.DriveInfo driveInfo = new System.IO.DriveInfo(rootPath); // get info about the drive
         return driveInfo.DriveType == DriveType.Network; // return true if a network drive
       }
 
       return true; // is a UNC path
     }
+    */
 
     /// <summary>
     /// remove all non numeric characters from string
@@ -214,7 +216,7 @@ namespace libParser
     /// <param name="cell"></param>
     /// <returns></returns>
     /// 
-    public static int replaceCalculations(ref string cell, out string err, MethodList mList = null, VarList varlist = null)
+    public static int replaceCalculations(ref string cell, out string err, MethodList? mList = null, VarList? varlist = null)
     {
       int pos;
       int retVal = 0;

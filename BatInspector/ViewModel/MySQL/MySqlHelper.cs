@@ -61,15 +61,15 @@ namespace BatInspector
 
   public class sqlField
   {
-    public string Name { get; set; }
-    public enSqlType FieldType { get; set; }
+    public string Name { get; set; } = "";
+    public enSqlType FieldType { get; set; } = enSqlType.VARCHAR;
 
 
     public sqlField()
     {
 
     }
-
+        
     public sqlField(enSqlType type, string name)
     {
       Name = name;
@@ -87,14 +87,14 @@ namespace BatInspector
 
     double _valDouble;
     int _valInt32;
-    string _valString;
-    DateTime _date;
+    string _valString = "";
+    DateTime _date = new DateTime(2009,1,1);
 
     object getValue()
     {
       switch (FieldType)
       {
-        case enSqlType.FLOAT:
+        case enSqlType.FLOAT: 
         case enSqlType.DOUBLE:
           return _valDouble;
         case enSqlType.INT:
@@ -247,7 +247,7 @@ namespace BatInspector
 
     public sqlField getField(string name)
     {
-      sqlField retVal= null;
+      sqlField? retVal= null;
       for (int i = 0; i < Fields.Count; i++)
       {
         if (Fields[i].Name == name)
@@ -366,23 +366,23 @@ namespace BatInspector
   public class QueryItem
   {
     public int line { get; set; }
-    public string Date { get; set; }
-    public string Location { get; set; }
-    public string RecordingDevice { get; set; }
-    public string MicrophoneId { get; set; }
-    public string PrjCreator { get; set; }
-    public string projects___Notes { get; set; }
-    public string Classifier { get; set; }
-    public string Model { get; set; }
-    public string PathToWavs { get; set; }
-    public string Latitude { get; set; }
-    public string Longitude { get; set; }
-    public string WavFileName { get; set; }
+    public string Date { get; set; } = "";
+    public string Location { get; set; } = "";
+    public string RecordingDevice { get; set; } = "";
+    public string MicrophoneId { get; set; } = "";
+    public string PrjCreator { get; set; } = "";
+    public string projects___Notes { get; set; } = "";
+    public string Classifier { get; set; } = "";
+    public string Model { get; set; } = "";
+    public string PathToWavs { get; set; } = "";
+    public string Latitude { get; set; } = "";
+    public string Longitude { get; set; } = "";
+    public string WavFileName { get; set; } = "";
     public int SamplingRate { get; set; }
     public float FileLength { get; set; }
-    public string RecordingTime { get; set; }
-    public string Temperature { get; set; }
-    public string Humidity { get; set; }
+    public string RecordingTime { get; set; } = "";
+    public string Temperature { get; set; } = "";
+    public string Humidity { get; set; } = "";
     public int CallNr { get; set; }
 
     public float StartTime { get; set; }

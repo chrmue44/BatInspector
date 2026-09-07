@@ -737,17 +737,20 @@ namespace BatInspector
     private void testGpx()
     {
       string fName = "F:\\prj\\BatInspector\\TestData\\20230822\\Track_2023-08-22_GrubeMessel.gpx";
-      gpx g = gpx.read(fName);
+      Gpx? g = Gpx.read(fName);
+      assert("read gpx", g != null);
+      if (g != null)
+      {
+        DateTime t = DateTime.Parse("2023/08/22 18:29:37");
+        double[] pos = g.getPosition(t);
+        assert("GPX lat", Math.Abs(pos[0] - 49.9187) < 0.0001);
+        assert("GPX lon", Math.Abs(pos[1] - 8.7558) < 0.0001);
 
-      DateTime t = DateTime.Parse("2023/08/22 18:29:37");
-      double[] pos = g.getPosition(t);
-      assert("GPX lat", Math.Abs(pos[0] - 49.9187) < 0.0001);
-      assert("GPX lon", Math.Abs(pos[1] - 8.7558) < 0.0001);
-
-      t = DateTime.Parse("2023/08/22 18:43:19");
-      pos = g.getPosition(t);
-      assert("GPX lat", Math.Abs(pos[0] - 49.9185) < 0.0001);
-      assert("GPX lon", Math.Abs(pos[1] - 8.7583) < 0.0001);
+        t = DateTime.Parse("2023/08/22 18:43:19");
+        pos = g.getPosition(t);
+        assert("GPX lat", Math.Abs(pos[0] - 49.9185) < 0.0001);
+        assert("GPX lon", Math.Abs(pos[1] - 8.7583) < 0.0001);
+      }
     }
 
     private void testKml()

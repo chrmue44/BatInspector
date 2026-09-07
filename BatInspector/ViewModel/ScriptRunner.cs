@@ -81,11 +81,11 @@ namespace BatInspector
     public int initScriptForDbg(string fileName)
     {
       int retVal = 0;
-      fileName = checkScriptName(fileName);
-      if (fileName != null)
+      string? fileName1 = checkScriptName(fileName);
+      if (fileName1 != null)
       {
         initScriptVars(true);
-        _parser.restartForDbg(fileName);
+        _parser.restartForDbg(fileName1);
       }
       else
         retVal = 1;
@@ -176,9 +176,9 @@ namespace BatInspector
       _parser.VarTable.Remove(name);
     }
 
-    public ScriptItem getScript(string name)
+    public ScriptItem? getScript(string name)
     {
-      ScriptItem retVal = null;
+      ScriptItem? retVal = null;
       foreach (ScriptItem sItem in AppParams.Inst.ScriptInventory.Scripts)
       {
         if (sItem.Name == name)
@@ -228,9 +228,9 @@ namespace BatInspector
       DebugLog.log(ev.Data, enLogType.INFO);
     }
 
-    private string checkScriptName(string fileName)
+    private string? checkScriptName(string fileName)
     {
-      string retVal = null;
+      string? retVal = null;
       string ext = Path.GetExtension(fileName);
       if (ext.ToLower() == ".scr")
       {

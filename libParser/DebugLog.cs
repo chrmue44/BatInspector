@@ -41,60 +41,61 @@ namespace libParser
   public class DebugLog
   {
     const int MAX_LOG_ENTRIES = 50000;
-    static DebugLog _inst = null;
+    static DebugLog? _inst = null;
     static bool _saving = false;
     List<stLogEntry> _list;
-    delegateLogEntry _dlgLog = null;
-    delegateLogClear _dlgClear = null;
-    dlgCheckMaxLogSize _dlgCheckMaxLogSize = null;
-    string _logPath = null;
+    delegateLogEntry? _dlgLog = null;
+    delegateLogClear? _dlgClear = null;
+    dlgCheckMaxLogSize? _dlgCheckMaxLogSize = null;
+    string _logPath = "";
     string _fName = "";
     string _lastMsg = "";
 
-    public static string FileName { get { return Inst()._fName; } }
+    public static string FileName { get { return Inst._fName; } }
 
-    static public void log(string msg, enLogType type, bool beep = false)
+    static public void log(string? msg, enLogType type, bool beep = false)
     {
       while (_saving)
         Thread.Sleep(20);
       if (beep)
         Console.Beep();
-      Inst().logMsg(msg, type);
+      Inst.logMsg(msg, type);
     }
 
     static public void save()
     {
       string log = "";
       _saving = true;
-      foreach (stLogEntry entry in Inst()._list)
+      foreach (stLogEntry entry in Inst._list)
       {
         log += entry.Time.ToString() + " " + entry.Type.ToString() + " " + entry.Text + "\n";
       }
-      if (Inst()._list.Count > 0)
+      if (Inst._list.Count > 0)
       {
-        string path = Inst()._logPath;
+        string path = Inst._logPath;
         if (!Directory.Exists(path))
           Directory.CreateDirectory(path);
-        File.WriteAllText(Inst()._fName, log);
+        File.WriteAllText(Inst._fName, log);
       }
       _saving = false;
     }
 
-    static public void setLogDelegate(delegateLogEntry dlg, delegateLogClear dlgClear, dlgCheckMaxLogSize checkMax, string logPath)
-    {
-      Inst()._dlgLog = dlg;
-      Inst()._dlgClear = dlgClear;
-      Inst()._logPath = logPath;
-      Inst()._dlgCheckMaxLogSize = checkMax;
-      Inst().setupLogFile();
-      Inst().transmitEarlyMessagesToControl();
+    static public void setLogDelegate(delegateLogEntry? dlg, delegateLogClear? dlgClear, dlgCheckMaxLogSize? checkMax, string logPath)
+    {  
+      Inst._dlgLog = dlg;
+      Inst._dlgClear = dlgClear;
+      Inst._logPath = logPath;
+      Inst._dlgCheckMaxLogSize = checkMax;
+      Inst.setupLogFile();
+      Inst.transmitEarlyMessagesToControl();
     }
 
     static public void clear()
     {
       save();
-      Inst()._list.Clear();
-      Inst()._dlgClear();
+      Inst._list.Clear();
+      if(Inst._dlgClear != null)
+         Inst._dlgClear();
     }
 
     DebugLog()
@@ -102,16 +103,18 @@ namespace libParser
       _list = new List<stLogEntry>();
     }
 
-    static DebugLog Inst()
-    {
-      if (_inst == null)
-        _inst = new DebugLog();
-      return _inst;
+    static DebugLog Inst {
+      get
+      {
+        if (_inst == null)
+          _inst = new DebugLog();
+        return _inst;
+      }
     }
 
-    void logMsg(string msg, enLogType type)
+    void logMsg(string? msg, enLogType type)
     {
-      if (msg != _lastMsg)
+      if ((msg != null) && (msg != _lastMsg))
       {
         _lastMsg = msg;
         stLogEntry entry = new stLogEntry(msg, type, DateTime.Now);
@@ -143,9 +146,9 @@ namespace libParser
     void setupLogFile()
     {
       DateTime t = DateTime.Now;
-      Inst()._fName = t.Year.ToString("D4") + t.Month.ToString("D2") + t.Day.ToString("D2") + "_" +
+      Inst._fName = t.Year.ToString("D4") + t.Month.ToString("D2") + t.Day.ToString("D2") + "_" +
                  t.Hour.ToString("D2") + t.Minute.ToString("D2") + t.Second.ToString("D2") + ".log";
-      Inst()._fName = Path.Combine(Inst()._logPath, Inst()._fName);
+      Inst._fName = Path.Combine(Inst._logPath, Inst._fName);
     }
   }
 }

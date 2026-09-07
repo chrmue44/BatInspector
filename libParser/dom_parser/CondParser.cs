@@ -54,10 +54,15 @@ namespace libParser
     };
 
 
-    public CondParser(VarList varList, Methods methods)
+    public CondParser(VarList? varList, Methods? methods)
     {
-      _varList = varList;
-      _methods = methods;
+      if ((varList != null) && (methods != null))
+      {
+        _varList = varList;
+        _methods = methods;
+      }
+      else
+        DebugLog.log("CondParser: Contructor without Varlist and/or Method List", enLogType.ERROR);
     }
 
 
@@ -86,7 +91,7 @@ namespace libParser
     public tParseError parseResultStr(string Str, out MthdResult Result)
     {
       Result = new MthdResult();
-      m_CharStr = null;
+      m_CharStr = "";
       _len = Str.Length;
       _str = Str;
       return parseResultStr(ref Result);
@@ -98,7 +103,7 @@ namespace libParser
     {
       Result = new MthdResult();
       _len = BufLen;
-      _str = null;
+      _str = "";
       m_CharStr = Str;
       return parseResultStr(ref Result);
     }
@@ -301,7 +306,7 @@ namespace libParser
             case tToken.ASSIGN:
               {
                 Int32 Err;
-                VarName n = _varList.get(_nameString, _methods);
+                VarName? n = _varList!.get(_nameString, _methods);
                 if (n == null)
                 {
                   _varList.set(_nameString, 0, 0, _methods);
@@ -310,7 +315,7 @@ namespace libParser
                 getToken();
                 if (_currTok != tToken.BAD_TOKEN)
                 {
-                  if (!n.isConst())
+                  if (!n!.isConst())
                     n.setValue(0, expr());
                   else
                     Error.report(tParseError.ASSIGN_CONST);
@@ -337,7 +342,7 @@ namespace libParser
                 LabName.assign(_nameString);
                 List<AnyType> pLabName = new List<AnyType>();
                 pLabName.Add(LabName);
-                tParseError err = _methods.executeFunction(Fname, 1, pLabName, ref RetVal);
+                tParseError err = _methods!.executeFunction(Fname, 1, pLabName, ref RetVal);
                 if (err != 0)
                   Error.report(err);
               }
@@ -360,20 +365,22 @@ namespace libParser
                 getToken();
                 if (_currTok == tToken.ASSIGN)
                 {
-                  VarName n = _varList.get(Name, _methods);
+                  VarName? n = _varList!.get(Name, _methods);
                   if (n == null)
                   {
                     _varList.set(Name, 0, 0, _methods);
-                    n = _varList.get(Name, _methods);
+                    n = _varList!.get(Name, _methods);
                   }
                   getToken();
                   RetVal.assign(expr());
-                  n.setValue(Index, RetVal);
-              // getToken(); // why?
+                  if(n != null)
+                    n.setValue(Index, RetVal);
+                  else
+                    reportError(tParseError.VARIABLE);
                 }
                 else
                 {
-                  VarName n = _varList.get(Name);
+                  VarName? n = _varList!.get(Name);
                   if (n != null)
                   {
                     Int32 Err;
@@ -382,7 +389,7 @@ namespace libParser
                       reportError(tParseError.ARRAY_INDEX);
                   }
                   else
-                  {
+                  {  
                     RetVal.assign(1.0);
                     reportError(tParseError.VARIABLE);
                   }
@@ -392,7 +399,7 @@ namespace libParser
 
             default:
               {
-                VarName n = _varList.get(_nameString);
+                VarName? n = _varList!.get(_nameString);
                 if (n != null)
                 {
                   Int32 Err;
@@ -471,8 +478,14 @@ namespace libParser
 
     class ParListItem
     {
-      public AnyType Par;
-      public ParListItem Next;
+      public AnyType Par { get; set; }
+      public ParListItem? Next { get; set; } 
+      
+      public ParListItem(AnyType par)
+      {
+        Par = par;
+        Next = null;
+      }
     };
 
 
@@ -484,9 +497,9 @@ namespace libParser
       bool ErrorFlag = false;
       int ParCnt = 0;
       ParListItem pPar;
-      ParListItem pLast = null;
+      ParListItem? pLast = null;
       // Zeiger auf den Anfang der Parametertabelle
-      ParListItem pFirst = null;
+      ParListItem? pFirst = null;
 
       getToken();
       for (; ; )
@@ -495,9 +508,7 @@ namespace libParser
         if (_currTok == tToken.BRACE_CLOSE)
           break;
         // neuen Parameter erzeugen
-        pPar = new ParListItem();
-        pPar.Par = expr();
-        pPar.Next = null;
+        pPar = new ParListItem(expr());
         ParCnt++;
 
         if (pFirst == null)
@@ -522,12 +533,10 @@ namespace libParser
       // Parametertabelle erzeugen
       if (!ErrorFlag)
       {
-        ParListItem Iter = pFirst;
-        List<AnyType> argv = null;
+        ParListItem? Iter = pFirst;
+        List<AnyType> argv = new List<AnyType>();
         if (ParCnt > 0)
         {
-          argv = new List<AnyType>();
-
           while (Iter != null)
           {
             argv.Add(Iter.Par);
@@ -535,7 +544,7 @@ namespace libParser
           }
         }
 
-        tParseError err = _methods.executeFunction(FuncName, ParCnt, argv, ref RetVal);
+        tParseError err = _methods!.executeFunction(FuncName, ParCnt, argv, ref RetVal);
         if (err != 0)
           Error.report(err);
       }
@@ -1000,9 +1009,9 @@ namespace libParser
 
   }
   // zu parsender String (als String)
-  string _str = null;
+  string _str = "";
   // zu parsender String als char Buffer
-  string m_CharStr = null;
+  string m_CharStr = "";
   int _len = 0;             ///< Laenge des Strings, der zu parsen ist
   int _pos = 0;           ///< Aktuelle Position im String
   AnyType _numValue = new AnyType();     ///< num. Wert
@@ -1016,8 +1025,8 @@ namespace libParser
   // letzter aufgetretener Fehler
   tParseError _lastError;
   // Zeiger auf die Variablenliste, die der Parser verwenden soll
-  VarList _varList;
+  VarList? _varList;
   // Zeiger auf Liste externer Funktionen
-  Methods _methods;
+  Methods? _methods;
 }
 }

@@ -2130,4 +2130,10 @@
   <data name="frmExportData_SelectWAVFolder" xml:space="preserve">
     <value>select Folder for Document Recordings</value>
   </data>
+  <data name="frmVerify_AllSpecies" xml:space="preserve">
+    <value>All Bat Species</value>
+  </data>
+  <data name="frmVerify_Against" xml:space="preserve">
+    <value>against</value>
+  </data>
 </root>

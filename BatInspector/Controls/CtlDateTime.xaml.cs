@@ -16,7 +16,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlDateTime : System.Windows.Controls.UserControl
   {
-    dlgDateChanged _dlg = null;
+    dlgDateChanged? _dlg = null;
 
     public CtlDateTime()
     {
@@ -29,12 +29,12 @@ namespace BatInspector.Controls
 
     DateTime getDateTime() 
     {
-      DateTime retVal = (DateTime)_dp.SelectedDate;
+      DateTime? retVal = (DateTime?)_dp.SelectedDate;
       if(retVal == null)
         retVal = _dp.DisplayDate;
-      retVal = retVal.AddHours(getHour());
-      retVal = retVal.AddMinutes(getMinute());
-      return retVal;
+      retVal = retVal?.AddHours(getHour());
+      retVal = retVal?.AddMinutes(getMinute());
+      return (DateTime)retVal;
     }
 
     public void init(DateTime time, bool dateVisible = true, string label = "", int width = 80, dlgDateChanged dlg = null )

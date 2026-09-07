@@ -230,7 +230,7 @@ namespace BatInspector
     }
 
 
-    private static bool readGpxFile(PrjInfo info, out gpx gpxFile)
+    private static bool readGpxFile(PrjInfo info, out Gpx? gpxFile)
     {
       bool retVal = true;
       gpxFile = null;
@@ -239,7 +239,7 @@ namespace BatInspector
       {
         if (info.LocSourceGpx)
         {
-          gpxFile = gpx.read(info.GpxFile);
+          gpxFile = Gpx.read(info.GpxFile);
           if (gpxFile == null)
           {
             DebugLog.log("gpx file not readable: " + info.GpxFile, enLogType.ERROR);
@@ -296,21 +296,27 @@ namespace BatInspector
     /// <param name="xmlfiles">list if xml files</param>
     /// <param name="wavDir">directory containing the xml files</param>
     /// <param name="gpxFile">name of the gpx file with location information</param>
-    private static void replaceLocationsInXmls(string[] xmlfiles, string wavDir, gpx gpxFile)
+    private static void replaceLocationsInXmls(string[] xmlfiles, string wavDir, Gpx? gpxFile)
     {
       DebugLog.log("replace locations from gpx file...", enLogType.INFO);
-      foreach (string fName in xmlfiles)
+      if (gpxFile != null)
       {
-        BatRecord f = ElekonInfoFile.read(fName);
-        DateTime t = PrjMetaData.getDateTimeFromFileName(fName);
-        double[] pos = gpxFile.getPosition(t);
-        if ((pos == null) || (pos.Length < 2) || ((pos[0] == 0.0) && (pos[1] == 0.0)))
-          DebugLog.log("no position found for " + fName + ", timestamp: " + t.ToString(), enLogType.ERROR);
-        f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
-        string dstName = Path.GetFileName(fName);
-        dstName = Path.Combine(wavDir, dstName);
-        ElekonInfoFile.write(dstName, f);
+        foreach (string fName in xmlfiles)
+        {
+          BatRecord f = ElekonInfoFile.read(fName);
+          DateTime t = PrjMetaData.getDateTimeFromFileName(fName);
+          double[] pos = gpxFile.getPosition(t);
+          if ((pos == null) || (pos.Length < 2) || ((pos[0] == 0.0) && (pos[1] == 0.0)))
+            DebugLog.log("no position found for " + fName + ", timestamp: " + t.ToString(), enLogType.ERROR);
+          else
+            f.GPS.Position = pos[0].ToString(CultureInfo.InvariantCulture) + " " + pos[1].ToString(CultureInfo.InvariantCulture);
+          string dstName = Path.GetFileName(fName);
+          dstName = Path.Combine(wavDir, dstName);
+          ElekonInfoFile.write(dstName, f);
+        }
       }
+      else
+        DebugLog.log("replaceLocationsInXmls: gpxFile = null", enLogType.ERROR);
     }
 
     /// <summary>
@@ -399,7 +405,7 @@ namespace BatInspector
       if (info.OverwriteLocation && info.LocSourceGpx)
       {
         DebugLog.log($"replace locations from gpx file... at {t.Elapsed}", enLogType.INFO);
-        bool ok = readGpxFile(info, out gpx gpxFile);
+        bool ok = readGpxFile(info, out Gpx? gpxFile);
         if (ok)
           replaceLocationsInXmls(xmlFiles, wavDir, gpxFile);
         else

@@ -1299,7 +1299,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _cbZoomAmpl_Click(object sender, RoutedEventArgs e)
+    private void _cbZoomAmpl_Click(object? sender, RoutedEventArgs? e)
     {
       try
       {

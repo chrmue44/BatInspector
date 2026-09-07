@@ -27,17 +27,19 @@ namespace libParser
     public VarListItem()
     {
       _value = new List<AnyType>();
+      name = "";
+      formulaString = "";
     }
   };
 
   public class VarName
   {
-    string m_varName;
-    VarList m_pVarList;
-    Methods m_pMethods;
+    string m_varName = "";
+    VarList? m_pVarList;
+    Methods? m_pMethods;
     bool m_isConst;
 
-    public VarName(VarList pVarList, Methods pMethods, bool isConst)
+    public VarName(VarList? pVarList, Methods? pMethods, bool isConst)
     {
       m_pVarList = pVarList;
       m_pMethods = pMethods;
@@ -88,7 +90,7 @@ namespace libParser
       return m_isConst;
     }
 
-    public VarName Next;
+    public VarName? Next = null;
 
     //  clAnyType value;
     List<AnyType> m_Value;
@@ -100,7 +102,7 @@ namespace libParser
     // Hash-Tabelle der Variablen
     List<VarName> m_Table;
 
-    Methods m_pMethods;
+    Methods? m_pMethods;
 
 
     public VarList()
@@ -118,16 +120,17 @@ namespace libParser
 
     public void addConstant(string name, double value, AnyType.tType type = AnyType.tType.RT_FLOAT)
     {
-      VarName var = insert(name, true, m_pMethods);
+      VarName? var = insert(name, true, m_pMethods);
       AnyType val = new AnyType();
       val.assign(value);
       val.changeType(type);
-      var.setValue(0,val);
+      if(var != null)
+        var.setValue(0,val);
     }
 
-    public VarName set(string name, string value, int index = 0, Methods methods = null)
+    public VarName? set(string name, string value, int index = 0, Methods? methods = null)
     {
-      VarName n = insert(name, false, methods);
+      VarName? n = insert(name, false, methods);
       if (n != null)
       {
         AnyType v = new AnyType();
@@ -138,9 +141,9 @@ namespace libParser
       return n;
     }
 
-    public void set(string name, double value, int index = 0, Methods methods = null)
+    public void set(string name, double value, int index = 0, Methods? methods = null)
     {
-      VarName n = insert(name, false, methods);
+      VarName? n = insert(name, false, methods);
       if (n != null)
       {
         AnyType v = new AnyType();
@@ -151,9 +154,9 @@ namespace libParser
     }
 
 
-    public void set(string name, int value, int index = 0, Methods methods = null)
+    public void set(string name, int value, int index = 0, Methods? methods = null)
     {
-      VarName n = insert(name, false, methods);
+      VarName? n = insert(name, false, methods);
       if (n != null)
       {
         AnyType v = new AnyType();
@@ -164,23 +167,23 @@ namespace libParser
     }
 
     // erzeugt einen Neueintrag in der Liste der Variablen
-    private VarName insert(string s, bool isConst = false, Methods pMethods = null)
+    private VarName? insert(string s, bool isConst = false, Methods? pMethods = null)
     {
       return look(s, pMethods, isConst, 1);
     }
 
-    public VarName get(string p, Methods pMethods = null)
+    public VarName? get(string p, Methods? pMethods = null)
     {
       return look(p, pMethods);
     }
 
 
     // Zugriff auf die Symboltabelle
-    private VarName look(
+    private VarName? look(
       // Zeiger auf Varialennamen
       string p,
       // Zeiger auf die Methodenliste (fur RT_FORMULA)
-      Methods pMethods = null,
+      Methods? pMethods = null,
       bool isConst = false,
       // 1: Variable neu in die Tabelle eintragen
       Int32 ins = 0)
@@ -337,7 +340,7 @@ namespace libParser
             bool isConst = tokens[2] != "0" ? true : false;
             if (isConst != varConst)
               continue;
-            VarName varName = insert(tokens[0], isConst, pMethods);
+            VarName? varName = insert(tokens[0], isConst, pMethods);
             AnyType.tType type = AnyType.stringToType(tokens[1]);
             AnyType var = new AnyType(this, pMethods);
             double varDouble;
@@ -370,7 +373,8 @@ namespace libParser
                 break;
             }
             var.setType(type);
-            varName.setValue(0, var);
+            if(varName != null)
+              varName.setValue(0, var);
           }
         }
       }
@@ -383,7 +387,7 @@ namespace libParser
 
     public void remove(string name)
     {
-      VarName v = look(name);
+      VarName? v = look(name);
       if (v != null)
         m_Table.Remove(v);
     }

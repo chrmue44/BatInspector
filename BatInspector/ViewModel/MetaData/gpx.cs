@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.topografix.com/GPX/1/1")]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.topografix.com/GPX/1/1", IsNullable=false)]
-public partial class gpx {
+public partial class Gpx {
     
     private gpxMetadata metadataField;
     

@@ -261,13 +261,17 @@ namespace BatInspector.Controls
           int iRecT = findField(DBBAT.RECORDING_TIME, hdr);
           int iPath = findField(DBBAT.PATH_TO_WAV, hdr);
           AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it[iWav], it[iRecT]);
-
-          i = findField(DBBAT.CALLNR, hdr);
-          int.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out int callNr);
-          App.MainWin.setZoom(it[iWav], f, it[iPath], null, enModel.BAT_DETECT2, species);
-          int callIdx = f.findCallIdx(callNr);
-          if (callIdx >= 0)
-            App.MainWin.changeCallInZoom(callIdx);
+          if (f != null)
+          {
+            i = findField(DBBAT.CALLNR, hdr);
+            int.TryParse(it[i], NumberStyles.Any, CultureInfo.InvariantCulture, out int callNr);
+            App.MainWin.setZoom(it[iWav], f, it[iPath], null, enModel.BAT_DETECT2, species);
+            int callIdx = f.findCallIdx(callNr);
+            if (callIdx >= 0)
+              App.MainWin.changeCallInZoom(callIdx);
+          }
+          else
+            DebugLog.log("MySQL: AnalysisFile not found", enLogType.ERROR);
         }
         DebugLog.log("MySql:Query double click", enLogType.DEBUG);
       }

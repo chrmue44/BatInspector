@@ -18,7 +18,7 @@ namespace libScripter
   /// </summary>
   public class VarItemTypeConverter : ExpandableObjectConverter
   {
-    public override bool CanConvertFrom(ITypeDescriptorContext context,
+    public override bool CanConvertFrom(ITypeDescriptorContext? context,
     Type sourceType)
     {
 
@@ -29,8 +29,8 @@ namespace libScripter
       return base.CanConvertFrom(context, sourceType);
     }
 
-    public override object ConvertFrom(ITypeDescriptorContext context,
-      CultureInfo culture, object value)
+    public override object? ConvertFrom(ITypeDescriptorContext? context,
+      CultureInfo? culture, object value)
     {
       if (value is string)
       {
@@ -41,12 +41,15 @@ namespace libScripter
     }
 
     // Overrides the ConvertTo method of TypeConverter.
-    public override object ConvertTo(ITypeDescriptorContext context,
-       CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo(ITypeDescriptorContext? context,
+       CultureInfo? culture, object? value, Type destinationType)
     {
       if (destinationType == typeof(string))
       {
-        return ((VariableItem)value).Name + "," + ((VariableItem)value).Value;
+        if(value != null)
+          return ((VariableItem)value).Name + "," + ((VariableItem)value).Value;
+        else
+          return "";
       }
       return base.ConvertTo(context, culture, value, destinationType);
     }
@@ -73,18 +76,18 @@ namespace libScripter
 
     protected VariableItem()
     {
-
+      Name = "";
+      Value = "";
     }
   }
 
   public class Variables
   {
 
-    VarList _list;
+    VarList _list = new VarList();
 
     public Variables()
     {
-      _list = new VarList();
     }
 
     public VarList VarList { get { return _list; } }
@@ -97,7 +100,7 @@ namespace libScripter
 */
     public string GetValue(string name, int index = 0)
     {
-      VarName v =_list.get(name);
+      VarName? v =_list.get(name);
       string retVal = "";
       if (v != null)
       {
@@ -109,10 +112,10 @@ namespace libScripter
       return retVal;
     } 
 
-    public VariableItem Find(string name, int index = 0)
+    public VariableItem? Find(string name, int index = 0)
     {
-      VariableItem retVal = null;
-      VarName v = _list.get(name);
+      VariableItem? retVal = null;
+      VarName? v = _list.get(name);
       if (v != null)
       {
         AnyType value = new AnyType();

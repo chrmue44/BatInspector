@@ -25,6 +25,7 @@ namespace BatInspector
 
     public DataBase()
     {
+      _connection = new MySqlConnection();
       _dbBats = new DbBats(this);
       _dbBirds = new DbBirds(this);
     }

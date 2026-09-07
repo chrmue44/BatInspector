@@ -26,12 +26,12 @@ namespace BatInspector.Controls
     int _valInt;
     uint _valUInt;
     string _valString;
-    dlgValueChanged _dlgValChange = null;
+    dlgValueChanged? _dlgValChange = null;
     bool _textChanged = false;
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, bool edit = false, dlgValueChanged dlgValChange = null)
+    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, bool edit = false, dlgValueChanged? dlgValChange = null)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
@@ -169,7 +169,7 @@ namespace BatInspector.Controls
     private void _tb_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
     {
       if (e.Key == System.Windows.Input.Key.Return)
-        _tb_LostFocus(sender, null);
+        _tb_LostFocus(sender, null!);
     }
 
     private void _tb_TextChanged(object sender, TextChangedEventArgs e)

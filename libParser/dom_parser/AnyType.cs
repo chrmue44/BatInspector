@@ -62,6 +62,11 @@ namespace libParser
     {
       public double re;
       public double im;
+
+      public override string ToString()
+      {
+        return re.ToString() + "i" + im.ToString();
+      }
     };
 
     struct tValue
@@ -72,6 +77,12 @@ namespace libParser
       public UInt64 Uint64;   ///< Wert als uint64
       public bool Bool;         ///< Wert als Bool
       public string String;
+
+      public tValue()
+      {
+        Complex = new stComplex();
+        String = "";
+      }
 
       public void deepCopy(tValue v)
       {
@@ -94,8 +105,8 @@ namespace libParser
     {
       m_Type = tType.RT_FLOAT;
       m_Val.String = "";
-      m_pVarList = null;
-      m_pMethods = null;
+      m_pVarList = null ;
+      m_pMethods = null ;
       m_Val.Double = 0.0;
     }
 
@@ -104,7 +115,7 @@ namespace libParser
       assign(x);
     }
 
-    public AnyType(VarList pVarList, Methods pMethods)
+    public AnyType(VarList? pVarList, Methods? pMethods)
     {
       m_Type = tType.RT_FLOAT;
       m_Val.String = "";
@@ -281,14 +292,19 @@ namespace libParser
     {
       return !(a1 < a2);
     }
-    public override bool Equals(object obj)
+
+    public override bool Equals(object? obj)
     {
       AnyType x;
       try
       {
-
-        x = (AnyType)obj;
-        return this == x;
+        if (obj != null)
+        {
+          x = (AnyType)obj;
+          return this == x;
+        }
+        else
+          return false;
       }
       catch
       {
@@ -1464,7 +1480,7 @@ namespace libParser
     tType m_Type;
     tValue m_Val;
 
-    VarList m_pVarList;
-    Methods m_pMethods;
+    VarList? m_pVarList;
+    Methods? m_pMethods;
   }
 }

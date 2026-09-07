@@ -3499,6 +3499,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die against ähnelt.
+        /// </summary>
+        public static string frmVerify_Against {
+            get {
+                return ResourceManager.GetString("frmVerify_Against", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die All Bat Species ähnelt.
+        /// </summary>
+        public static string frmVerify_AllSpecies {
+            get {
+                return ResourceManager.GetString("frmVerify_AllSpecies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Call types A and B present ähnelt.
         /// </summary>
         public static string frmVerify_CallAB {

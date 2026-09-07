@@ -124,7 +124,7 @@ namespace libParser
     // Zeiger auf Ergbenis
     protected MthdResult m_pResult = new MthdResult();
 
-    protected VarList m_pVarList = new VarList();
+    protected VarList? m_pVarList = new VarList();
   };
 }
 

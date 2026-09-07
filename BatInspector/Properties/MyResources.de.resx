@@ -2130,4 +2130,10 @@
   <data name="frmExportData_SelectWAVFolder" xml:space="preserve">
     <value>Verzeichnis für Belegaufnahmen auswählen</value>
   </data>
+  <data name="frmVerify_AllSpecies" xml:space="preserve">
+    <value>Alle Fledermausarten</value>
+  </data>
+  <data name="frmVerify_Against" xml:space="preserve">
+    <value>gegen</value>
+  </data>
 </root>

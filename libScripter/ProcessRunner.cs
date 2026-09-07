@@ -15,11 +15,10 @@ namespace libScripter
 
   public class ProcessRunner
   {
-    private Process _pr;
+    private Process? _pr;
     public bool IsRunning { get { return checkIsRunning(); } }
     private bool _logOutput = false;
     private string[] _errData;
-    private int _errDataIdx = 0;
 
     public ProcessRunner()
     {
@@ -27,8 +26,8 @@ namespace libScripter
     }
 
 
-    public int launchCommandLineApp(string exePath, DataReceivedEventHandler handler = null, string workDir = "", bool wait = false,
-                                    string args = "", bool newWindow = false, bool logOutput = false, EventHandler exitHandler = null)
+    public int launchCommandLineApp(string exePath, DataReceivedEventHandler? handler = null, string workDir = "", bool wait = false,
+                                    string args = "", bool newWindow = false, bool logOutput = false, EventHandler? exitHandler = null)
     {
       int retVal = 0;
       _pr = new Process();

@@ -24,9 +24,9 @@ namespace libScripter
     protected enBlockType _blockType;
     protected int _startLine;
     protected int _endLine;
-    protected List<string> _args;
-    protected string _errText;
-    protected List<string> _lines;
+    protected List<string>? _args;
+    protected string _errText = "";
+    protected List<string> _lines = new List<string>();
     protected bool _execute;
     protected bool _inactive;
     public string ErrText { get { return _errText; } }
@@ -34,7 +34,7 @@ namespace libScripter
     public enBlockType Type { get { return _blockType; } }
     public bool Execute { get { return _execute; } set { _execute = value; } }
 
-    public CodeBlock(enBlockType type, List<string> args, int startLine)
+    public CodeBlock(enBlockType type, List<string>? args, int startLine)
     {
       _execute = true;
       _blockType = type;
@@ -64,10 +64,10 @@ namespace libScripter
     int _iterator;
     int _itStart;
     int _itEnd;
-    string _itName;
+    string _itName = "";
     Variables _vars;
 
-    public ForItCodeBlock(List<string> args, int startLine, Variables vars) 
+    public ForItCodeBlock(List<string>? args, int startLine, Variables vars) 
                            : base(enBlockType.FOR, args, startLine)
     {     
       _vars = vars;
@@ -76,10 +76,10 @@ namespace libScripter
         _errText = "";
         _itName = _args[0];
         Expression exp = new Expression(vars.VarList);
-        AnyType start = exp.parse(args[1]);
+        AnyType start = exp.parse(args![1]);
         start.changeType(AnyType.tType.RT_INT64);
         _itStart = (int)start.getInt64();
-        AnyType end = exp.parse(args[2]);
+        AnyType end = exp.parse(args![2]);
         end.changeType(AnyType.tType.RT_INT64);
         _itEnd = (int)end.getInt64();
 
@@ -93,7 +93,7 @@ namespace libScripter
 
     public override void loopStart(string condition)
     {
-      _vars.VarList.set(_itName, _iterator);
+      _vars?.VarList.set(_itName, _iterator);
       _execute = (_iterator < _itEnd);
     }
 

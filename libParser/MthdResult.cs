@@ -121,7 +121,7 @@ namespace libParser
       }
     }
 
-
+    /*
     // liefert den n-ten Parameter als string
     string getParString(int Nr)
     {
@@ -132,6 +132,7 @@ namespace libParser
         return null;
       }
     }
+    */
 
     // liefert die Größe des n-ten Parameters als string
     public int getParStringSize(int Nr)
@@ -181,10 +182,10 @@ namespace libParser
 
     #region Member
     // Ergebnis als String
-    string m_ResString;
+    string m_ResString = "";
 
     // Trennzeichen
-    string m_Delimiter;
+    string m_Delimiter = ",";
 
     // Liste der Parameter
     List<AnyType> m_List = new List<AnyType>();

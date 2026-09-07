@@ -23,16 +23,16 @@ namespace BatInspector.Controls
     double _maxValDouble;
     int _minValInt;
     int _maxValInt;
-    string _minValString;
-    string _maxValString;
-    dlgValueChanged _dlgValChange = null;
+    string _minValString = "";
+    string _maxValString = "";
+    dlgValueChanged? _dlgValChange = null;
     
     public double MaxDouble { get { return _maxValDouble; } }
     public double MinDouble { get { return _minValDouble; } }
 
     // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
-    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, int height = 22, dlgValueChanged dlgValChange = null)
+    public void setup(string label, enDataType type, int decimals = 2, int widthLbl = 80, int widthTb = 80, int height = 22, dlgValueChanged? dlgValChange = null)
     {
       _lbl.Text= label;
       _lbl.Focusable = false;

@@ -15,7 +15,7 @@ namespace libParser
     uint _err;
     public uint Errors {  get { return _err; } }
     public VarList Variables { get { return _varList; } }
-    public Expression(VarList varlist)
+    public Expression(VarList? varlist)
     {
       _methList = new MthdListMath();
       _result = new MthdResult();

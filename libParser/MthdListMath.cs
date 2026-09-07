@@ -414,7 +414,7 @@ namespace libParser
           AnyType func = new AnyType();
           AnyType funcArg = new AnyType();
           string resultString;
-          VarName nameFunc = m_Inst.m_pVarList.get(argv[0].getString());
+          VarName? nameFunc = m_Inst!.m_pVarList!.get(argv[0].getString());
           if (nameFunc != null)
             err = (tParseError)nameFunc.getValue(0, ref func);
           else
@@ -422,7 +422,7 @@ namespace libParser
           if (err != tParseError.SUCCESS)
             break;
 
-          VarName nameFuncArg = m_Inst.m_pVarList.get(argv[1].getString());
+          VarName? nameFuncArg = m_Inst.m_pVarList!.get(argv[1].getString());
           if (nameFuncArg != null)
             err = (tParseError)nameFuncArg.getValue(0, ref funcArg);
           else
@@ -436,8 +436,8 @@ namespace libParser
           arg.assign(argv[2].getFloat());
           for (; arg.getFloat() <= argv[3].getFloat(); arg += step)
           {
-            nameFuncArg.setValue(0, arg);
-            nameFunc.getValue(0, ref func);
+            nameFuncArg!.setValue(0, arg);
+            nameFunc!.getValue(0, ref func);
             func.changeType(AnyType.tType.RT_STR);
             resultString += "\n";
             resultString += nameFunc.getName();
@@ -462,7 +462,7 @@ namespace libParser
     {
       tParseError err = 0;
       result = new AnyType();
-      string str = m_Inst.m_pVarList.dumpVarList(false);
+      string str = m_Inst!.m_pVarList!.dumpVarList(false);
       result.assign(str);
       return err;
     }
@@ -472,7 +472,7 @@ namespace libParser
     {
       tParseError err = 0;
       result = new AnyType();
-      string str = m_Inst.m_pVarList.dumpVarList(true);
+      string str = m_Inst!.m_pVarList!.dumpVarList(true);
       result.assign(str);
       return err;
     }
@@ -769,7 +769,7 @@ namespace libParser
 
     // static tParseError unittest(List<AnyType> argv, out AnyType result);
 
-
+    /*
     static tParseError savevars(List<AnyType> argv, out AnyType result)
     {
       tParseError err = 0;
@@ -787,9 +787,10 @@ namespace libParser
       m_Inst.m_pVarList.load("vars.csv", m_Inst.m_pMethods, false);
       return err;
     }
+    */
 
-    Methods m_pMethods;
-    static MthdListMath m_Inst;
+    Methods? m_pMethods;
+    static MthdListMath? m_Inst;
     List<HelpTabItem> MathHelpTab = new List<HelpTabItem>();
   };
 }

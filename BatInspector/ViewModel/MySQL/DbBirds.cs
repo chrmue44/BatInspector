@@ -10,7 +10,7 @@ namespace BatInspector
   {
     DataBase _db;
     bool _isOpen = false;
-    List <sqlRow> __query;
+    List <sqlRow> __query = new List<sqlRow>();
 
     public bool IsOpen { get { return _isOpen; } }
 

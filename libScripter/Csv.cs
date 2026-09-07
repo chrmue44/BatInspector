@@ -140,7 +140,7 @@ namespace libScripter
 
     public List<string> getRow(int row)
     {
-      List<string> retVal = null;
+      List<string> retVal = new List<string>();
       if((row > 0) && (row <= _cells.Count))
       {
         row--;

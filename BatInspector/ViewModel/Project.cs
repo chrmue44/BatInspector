@@ -42,14 +42,14 @@ namespace BatInspector
     public bool OverwriteLocation { get; set; }
     public bool RemoveSource { get; set; }
     public string WavSubDir { get; set; } = AppParams.DIR_WAVS;
-    public ModelParams ModelParams { get; set; }
+    public ModelParams ModelParams { get; set; } = new ModelParams();
 
     public bool IncludeSubDirs { get; set; } = false;
 
-    public string Location { get; set; }
-    public string Creator { get; set; }
+    public string Location { get; set; } = "";
+    public string Creator { get; set; } = "";
     public enMetaData MetaData { get; set; } = enMetaData.XML;
-    public string RecorderId { get; set; }
+    public string RecorderId { get; set; } = "";
    }
 
 
@@ -59,7 +59,7 @@ namespace BatInspector
     protected string[] _speciesArray;
 
     protected Analysis[] _analysis;
-    protected ModelParams _modelParams;
+    protected ModelParams? _modelParams;
 
     public string[] Species { get { return _speciesArray; } }
     public Analysis Analysis { get { return _analysis[SelectedModelIndex]; } }
@@ -67,7 +67,7 @@ namespace BatInspector
     public bool IsBirdPrj {  get { return _modelParams.Type == enModel.BIRDNET; } }
 
     static protected readonly XmlSerializer PrjSerializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-    public PrjBase(bool updateCtls, ModelParams modelParams, int modelCount)
+    public PrjBase(bool updateCtls, ModelParams? modelParams, int modelCount)
     {
       _analysis = new Analysis[modelCount];
       for (int i = 0; i < _analysis.Length; i++)
@@ -330,7 +330,7 @@ namespace BatInspector
       }
     }
 
-    public Project(bool updateCtls, ModelParams modelParams, int modelCount, string wavSubDir = "")
+    public Project(bool updateCtls, ModelParams? modelParams, int modelCount, string wavSubDir = "")
     : base(updateCtls, modelParams, modelCount)
     {
       _wavSubDir = wavSubDir;
@@ -783,7 +783,7 @@ namespace BatInspector
     return retVal;
     }
 
-    public static bool copyFromBatspy(PrjInfo info, ModelParams modelParams)
+    public static bool copyFromBatspy(PrjInfo info, ModelParams? modelParams)
     {
       bool retVal = false;
       try

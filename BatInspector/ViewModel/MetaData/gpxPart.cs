@@ -15,7 +15,7 @@ using System.Globalization;
 using System.Xml;
 
 
-public partial class gpx
+public partial class Gpx
 {
   public double[] getPosition(DateTime t)
   {
@@ -59,9 +59,9 @@ public partial class gpx
   }
 
 
-  static public gpx read(string fileName)
+  static public Gpx? read(string fileName)
   {
-    gpx retVal = null;
+    Gpx? retVal = null;
     try
     {
       if (File.Exists(fileName))
@@ -83,9 +83,11 @@ public partial class gpx
     return retVal;
   }
 
-  static gpx createGpx(XmlDocument doc)
+  static Gpx? createGpx(XmlDocument? doc)
   {
-    gpx retVal = new gpx();
+    Gpx retVal = new Gpx();
+    if(doc == null)
+      return retVal;
     try
     {
       retVal.trk = new gpxTrk();
@@ -93,38 +95,54 @@ public partial class gpx
       //    XmlNodeList nl = doc.SelectNodes("gpx/trk/trkseg");  // does not work, why??
 
       // the ugly way work:
-      if (doc.ChildNodes.Count < 2)
-        return null;
-      if (doc.ChildNodes[1].Name != "gpx")
-        return null;
-      XmlNode n = doc.ChildNodes[1];
-      if (n.ChildNodes.Count < 2)
-        return null;
-      n = doc.ChildNodes[1];
-      if (n.ChildNodes[1].Name != "trk")
-        return null;
-      n = n.ChildNodes[1];
-      if (n.ChildNodes.Count < 3)
-        return null;
-      if (n.ChildNodes[2].Name != "trkseg")
-        return null;
-      n = n.ChildNodes[2];
-
-      XmlNodeList list = n.ChildNodes;
-      retVal.trk.trkseg = new gpxTrkTrkpt[list.Count];
-
-      for (int i = 0; i < list.Count; i++)
+      if ((doc != null) && (doc.ChildNodes != null) && (doc.ChildNodes.Count >= 2) && (doc.ChildNodes[1] != null) &&
+          (doc!.ChildNodes[1]! .Name != null) && (doc.ChildNodes[1]!.Name == "gpx"))
       {
-        string latStr = list[i].Attributes["lat"].Value;
-        string lonStr = list[i].Attributes["lon"].Value;
-        string ele = list[i].ChildNodes[0].InnerText;
-        n = list[i].ChildNodes[1];
-        string timeStr = n.FirstChild.Value;
-        retVal.trk.trkseg[i] = new gpxTrkTrkpt();
-        retVal.trk.trkseg[i].ele = ele;
-        retVal.trk.trkseg[i].lat = latStr;
-        retVal.trk.trkseg[i].lon = lonStr;
-        retVal.trk.trkseg[i].time = timeStr;
+        XmlNode n = doc.ChildNodes[1]!;
+        if (n.ChildNodes.Count < 2)
+          return null;
+        n = doc.ChildNodes[1]!;
+        if (n.ChildNodes[1] == null)
+          return null;
+        if (n.ChildNodes[1]!.Name != "trk")
+          return null;
+        n = n.ChildNodes[1]!;
+        if (n.ChildNodes.Count < 3)
+          return null;
+        if (n.ChildNodes[2] == null)
+          return null;
+        if (n.ChildNodes[2]!.Name != "trkseg")
+          return null;
+        n = n.ChildNodes[2]!;
+
+        XmlNodeList list = n.ChildNodes;
+        retVal.trk.trkseg = new gpxTrkTrkpt[list.Count];
+
+        for (int i = 0; i < list.Count; i++)
+        {
+          if ((list[i] != null) && (list[i]!.Attributes != null))
+          {
+            string latStr = list[i]!.Attributes!["lat"]!.Value;
+            string lonStr = list[i]!.Attributes!["lon"]!.Value;
+            if (list[i]!.ChildNodes.Count > 1)
+            {
+              string ele = list[i]!.ChildNodes[0]!.InnerText;
+              n = list[i]!.ChildNodes[1]!;
+              if ((n != null) && (n.FirstChild != null))
+              {
+                string? timeStr = n!.FirstChild.Value;
+                if (timeStr != null)
+                {
+                  retVal.trk.trkseg[i] = new gpxTrkTrkpt();
+                  retVal.trk.trkseg[i].ele = ele;
+                  retVal.trk.trkseg[i].lat = latStr;
+                  retVal.trk.trkseg[i].lon = lonStr;
+                  retVal.trk.trkseg[i].time = timeStr;
+                }
+              }
+            }
+          }
+        }
       }
     }
     catch (Exception ex)

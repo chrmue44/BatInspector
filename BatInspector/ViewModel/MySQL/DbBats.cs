@@ -369,7 +369,7 @@ namespace BatInspector
     }
 
 
-    public AnalysisFile fillAnalysisFromQuery(string wavFileName, string recordingTime)
+    public AnalysisFile? fillAnalysisFromQuery(string wavFileName, string recordingTime)
     {
       if (_queryResult.Count == 0)
         return null;

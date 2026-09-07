@@ -17,7 +17,7 @@ namespace libScripter
   public class OsCommands : BaseCommands
   {
     ProcessRunner _proc;
-    string _lastDosResult;
+    string _lastDosResult = "";
     public OsCommands(delegateUpdateProgress delUpd) : base(delUpd)
     {
 
@@ -37,7 +37,7 @@ namespace libScripter
       _options = new Options(_features, false);
     }
 
-    public string WorkDir { get; set; }
+    public string WorkDir { get; set; } = "";
 
     /// <summary>
     /// 

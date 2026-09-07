@@ -62,10 +62,10 @@ namespace libScripter
 
   public class Options
   {
-    OptItem _execCmd;
+    OptItem? _execCmd;
     IList<OptItem> _features;
     bool _isCmdLineOption;
-    public string ErrorText { get; set; }
+    public string ErrorText { get; set; } = "";
 
     /// <summary>
     /// constructor
@@ -142,17 +142,23 @@ namespace libScripter
     {
       int ret = 1;
       enErrOption retVal = enErrOption.FUNC_ERR;
-      try
+      if (_execCmd != null)
       {
-        retVal = enErrOption.OK;
-        string errText;
-        ret = _execCmd.Func(_execCmd.Params, out errText);
-        ErrorText = errText;
+        try
+        {
+          retVal = enErrOption.OK;
+          string errText;
+          ret = _execCmd.Func(_execCmd.Params, out errText);
+          ErrorText = errText;
+        }
+        catch (Exception ex)
+        {
+          DebugLog.log($"Error executing command {_execCmd.Option}: {ex.ToString()}", enLogType.ERROR);
+        }
       }
-      catch(Exception ex)
-      {
-        DebugLog.log($"Error executing command {_execCmd.Option}: {ex.ToString()}", enLogType.ERROR);
-      }
+      else
+        DebugLog.log($"Error executing NULL command", enLogType.ERROR);
+      
       if (ret != 0)
         retVal = enErrOption.FUNC_ERR;
       return retVal;

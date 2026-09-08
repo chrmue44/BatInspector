@@ -60,27 +60,29 @@ namespace libScripter
     enToken _lastToken;
     Variables _vars;
     string _lastErr = "";
-    string[] _lines;
-    string[] _breakPoints;
+    string[] _lines = new string[1];
+    string[] _breakPoints = new string[1];
     int _actLineNr = 0;
     List<stLabelItem> _labels;
     public const string ERROR_LEVEL = "ERROR_LEVEL";
     public const string RET_VALUE = "RET_VALUE";
-    string _scriptName;
+    string _scriptName = "";
     bool _busy = false;
-    Thread _oThread;
-    string _logLine;
+    Thread? _oThread;
+//    string _logLine = "";
     ProcessRunner _proc;
     BaseCommands[] _commands;
     string _wrkDir;
     enParserState _state = enParserState.STOP;
     bool _executed;
     bool _debug;
-    dlgFinishExecution _dlgFinish;
+    dlgFinishExecution? _dlgFinish;
     Expression _formula;
 
+    bool _stopParsing = false;
+
     //    string _codeSection;
-    CodeBlock _currBlock;
+    CodeBlock? _currBlock;
     List<CodeBlock> _blockStack;
     List<MethodList> _methods;
     /// <summary>
@@ -90,7 +92,7 @@ namespace libScripter
     /// <param name="delUpd">delegate to update progress bar</param>
     /// <param name="vars">Storage for variables</param>
     public Parser(ref ProcessRunner proc, BaseCommands[] commands, string wrkDir,
-          delegateUpdateProgress delUpd, Variables vars = null) : base(delUpd)
+          delegateUpdateProgress delUpd, Variables? vars = null) : base(delUpd)
     {
       _parser = this;
       _proc = proc;
@@ -140,6 +142,7 @@ namespace libScripter
       _busy = true;
       _scriptName = name;
       _debug = false;
+      _stopParsing = false;
       /* Create the thread object, passing in the abc.Read() method
       via a ThreadStart delegate. This does not start the thread. */
       _oThread = new Thread(new ThreadStart(this.ParseScript));
@@ -149,8 +152,7 @@ namespace libScripter
 
     public void StopParsing()
     {
-      if (_oThread != null)
-        _oThread.Abort();
+      _stopParsing = true;
       _busy = false;
     }
 
@@ -298,7 +300,7 @@ namespace libScripter
         if (checkIfActLineIsExecuted())
           result = ParseLine(_lines[_actLineNr]);
         else
-          result = mangeBlockLevel(_lines[_actLineNr]);
+          result = manageBlockLevel(_lines[_actLineNr]);
         _vars.VarList.set(ERROR_LEVEL, result);
         _actLineNr++;
       }
@@ -352,7 +354,7 @@ namespace libScripter
     public void execContinueParsing()
     { 
       _busy = true;
-      while ((_actLineNr < _lines.Length) && _busy)
+      while ((_actLineNr < _lines.Length) && _busy && !_stopParsing)
       {
         if (_debug && !string.IsNullOrEmpty(_breakPoints[_actLineNr]) &&
             checkIfActLineIsExecuted())
@@ -573,10 +575,10 @@ namespace libScripter
       return _lastToken;
     }
 
-    string mangeBlockLevel(string line)
+    string manageBlockLevel(string line)
     {
       string retVal = "0";
-      CodeBlock blk = checkForBlockStart(line);
+      CodeBlock? blk = checkForBlockStart(line);
       if (blk != null)
         _blockStack.Add(blk);
 
@@ -612,9 +614,9 @@ namespace libScripter
       return retVal;
     }
 
-    CodeBlock checkForBlockStart(string line)
+    CodeBlock? checkForBlockStart(string line)
     {
-      CodeBlock retVal = null;
+      CodeBlock? retVal = null;
       _actLine = line;
       _actPos = 0;
       if (GetToken() == enToken.NAME)
@@ -691,7 +693,7 @@ namespace libScripter
       {
         cmd = _actName; //.Replace("-","");
         args.Add(cmd);
-        _logLine = _actLine;
+//        _logLine = _actLine;
 
         do
         {
@@ -927,8 +929,11 @@ namespace libScripter
       ErrText = "";
       if ((_currBlock != null) && (_currBlock.Type == enBlockType.IF))
       {
-        IfCodeBlock blk = _currBlock as IfCodeBlock;
-        blk.Execute = !blk.Execute;
+        IfCodeBlock? blk = _currBlock as IfCodeBlock;
+        if(blk != null ) 
+          blk.Execute = !blk.Execute;
+        else
+          DebugLog.log($"Error else statement, scrpipt:{_scriptName}, line {_actLineNr}", enLogType.ERROR);
       }
       else
       {

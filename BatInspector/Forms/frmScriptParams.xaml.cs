@@ -63,7 +63,7 @@ namespace BatInspector.Forms
       _btnOk.IsEnabled = false;
     }
 
-    private void checkMiscParams(enDataType type, object val)
+    private void checkMiscParams(enDataType type, object? val)
     {
       checkParams();
     }

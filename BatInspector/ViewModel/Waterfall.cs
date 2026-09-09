@@ -22,11 +22,11 @@ namespace BatInspector
     string _wavName;
     SoundEdit _audio;
     bool _ok = false;
-    List<double[]> _spec;
+    List<double[]?> _spec;
     ColorTable _colorTable;
     double _maxAmplitude;
     double _minAmplitude;
-    WavFile _wav = null;
+    WavFile? _wav = null;
    // double _range;
     double _blackLevel;
     public double Duration 
@@ -42,7 +42,6 @@ namespace BatInspector
     public int SamplingRate { get { return _audio.SamplingRate; } }
 
     public SoundEdit Audio { get { return _audio; } }
-    public List<double[]> Spec {  get { return _spec; } }
     public bool Ok { get { return _ok; } }
 
     public double BlackLevel { get { return _blackLevel; }  set { _blackLevel = value; } }
@@ -70,7 +69,7 @@ namespace BatInspector
     {
       _wavName = wavName;
       _colorTable = colorTable;
-      _spec = new List<double[]>();
+      _spec = new List<double[]?>();
       _maxAmplitude = _minAmplitude;
       _audio = new SoundEdit(384000, fftWidth);
       _blackLevel = blackLevel;
@@ -141,7 +140,7 @@ namespace BatInspector
         {
           if (_spec[s] != null)
           {
-            sum += _spec[s][f];
+            sum += _spec[s]![f];
             count++;
           }
         }
@@ -154,8 +153,8 @@ namespace BatInspector
         {
           if (_spec[s] != null)
           {
-            if (_spec[s][f] < sum)
-              _spec[s][f] = -120;
+            if (_spec[s]![f] < sum)
+              _spec[s]![f] = -120;
             count++;
           }
         }
@@ -263,42 +262,43 @@ namespace BatInspector
     public Bitmap generateFtPicture(double tMin, double tMax, double fMin, double fMax, double gradientRange)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
-      BitmapFast bmp = null;
+      Bitmap bmp2 = new Bitmap(10, 10); 
       int fftBinCnt = calculateBestFftSize(tMin, tMax) / 2;
       calcMinAmplitude(gradientRange);
       if (_ok)
       {
-        bmp = new BitmapFast(width, fftBinCnt);
-
-        for (int x = 0; x < width; x++)
+        using (BitmapFast bmp = new BitmapFast(width, fftBinCnt))
         {
-          int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
-          if (idxSpec < _spec.Count)
+          for (int x = 0; x < width; x++)
           {
-            for (int y = 0; y < fftBinCnt; y++)
+            int idxSpec = (int)((double)_spec.Count / (double)width * (double)x);
+            if (idxSpec < _spec.Count)
             {
-              if (_spec.Count > 0)
+              for (int y = 0; y < fftBinCnt; y++)
               {
-                double f = (fMax - fMin) * y / fftBinCnt + fMin;
-                int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftBinCnt);
-                if (_spec[idxSpec] != null)
+                if (_spec.Count > 0)
                 {
-                  if (idxFreq >= _spec[idxSpec].Length)
-                    idxFreq = _spec[idxSpec].Length - 1;
-                  double val = _spec[idxSpec][idxFreq];
-                  System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude, _blackLevel);
-                  bmp.setPixel(x, fftBinCnt - 1 - y, col);
+                  double f = (fMax - fMin) * y / fftBinCnt + fMin;
+                  int idxFreq = (int)(f * 2000 / (double)_audio.SamplingRate * fftBinCnt);
+                  double[]? specFrame = _spec[idxSpec];
+                  if (specFrame != null)
+                  {
+                    if (idxFreq >= specFrame.Length)
+                      idxFreq = specFrame.Length - 1;
+                    double val = specFrame[idxFreq];
+                    System.Drawing.Color col = _colorTable.getColor(val, _minAmplitude, _maxAmplitude, _blackLevel);
+                    bmp.setPixel(x, fftBinCnt - 1 - y, col);
+                  }
                 }
               }
             }
+            else
+              DebugLog.log($"index error create Bitmap: {idxSpec}, nr of specs: {_spec.Count}", enLogType.ERROR);
           }
-          else
-            DebugLog.log($"index error create Bitmap: {idxSpec}, nr of specs: {_spec.Count}", enLogType.ERROR);
+          bmp2 = new Bitmap(bmp.Bmp);
         }
-        return bmp.Bmp;
       }
-      else
-        return null;
+      return bmp2;
     }
 
     public Bitmap generateXtPicture(double aMin, double aMax, double tMin, double tMax)
@@ -307,31 +307,34 @@ namespace BatInspector
       int heightXt = AppParams.FFT_WIDTH / XT_TO_FT_RATIO;
       int fftSize = calculateBestFftSize(tMin, tMax);
       bool ovrdrive = _audio.findOverdrive(tMin, tMax);
-      BitmapFast bmp = new BitmapFast(width, heightXt);
-      for (int x = 0; x < width; x++)
-        for (int y = 0; y < heightXt; y++)
-          bmp.setPixel(x, y, AppParams.Inst.ColorXtBackground);
-
-      if (_ok)
+      Bitmap bmp2;
+      using (BitmapFast bmp = new BitmapFast(width, heightXt))
       {
-        double samplesPerPixelf = this._audio.Samples.Length * (tMax - tMin) / this.Duration / width;
-        int samplesPerPixel = (int)samplesPerPixelf;
-        int idxMin = (int)(tMin / this.Duration * this._audio.Samples.Length) + fftSize/2;
-        int idxMax = (int)(tMax / this.Duration * this._audio.Samples.Length) + fftSize/2;
-        if(idxMax >= _audio.Samples.Length) idxMax = _audio.Samples.Length - 1;
-        if (samplesPerPixelf > 1.0)
-        {
-          //          m_isMinMax = true;
-          plotAsBand(aMin, aMax, idxMin, idxMax, bmp);
-        }
-        else
-        {
-          plotAsSinglePixels(aMin, aMax, idxMin, idxMax, bmp);
-  //        m_isMinMax = false;
-        }
+        for (int x = 0; x < width; x++)
+          for (int y = 0; y < heightXt; y++)
+            bmp.setPixel(x, y, AppParams.Inst.ColorXtBackground);
 
+        if (_ok)
+        {
+          double samplesPerPixelf = this._audio.Samples.Length * (tMax - tMin) / this.Duration / width;
+          int samplesPerPixel = (int)samplesPerPixelf;
+          int idxMin = (int)(tMin / this.Duration * this._audio.Samples.Length) + fftSize / 2;
+          int idxMax = (int)(tMax / this.Duration * this._audio.Samples.Length) + fftSize / 2;
+          if (idxMax >= _audio.Samples.Length) idxMax = _audio.Samples.Length - 1;
+          if (samplesPerPixelf > 1.0)
+          {
+            //          m_isMinMax = true;
+            plotAsBand(aMin, aMax, idxMin, idxMax, bmp);
+          }
+          else
+          {
+            plotAsSinglePixels(aMin, aMax, idxMin, idxMax, bmp);
+            //        m_isMinMax = false;
+          }
+        }
+        bmp2 = new Bitmap(bmp.Bmp);
       }
-      return bmp.Bmp;
+      return bmp2;
     }
 
     int calculateBestFftSize(double tMin, double tMax)

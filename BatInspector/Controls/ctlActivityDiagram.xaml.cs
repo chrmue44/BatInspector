@@ -60,7 +60,7 @@ namespace BatInspector.Controls
       createPlot();
     }
 
-    private void textChanged(enDataType type, object val)
+    private void textChanged(enDataType type, object? val)
     {
       createPlot();
     }

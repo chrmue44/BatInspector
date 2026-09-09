@@ -18,7 +18,7 @@ namespace BatInspector.Controls
     int minvalue = -100,
             maxvalue = 100,
             startvalue = 10;
-    dlgValueChanged _dlgValChange = null;
+    dlgValueChanged? _dlgValChange = null;
     int _number = 0;
 
     public ctlNumericUpDown()
@@ -30,7 +30,7 @@ namespace BatInspector.Controls
 
     public int Value { get { return _number; } set {  _number = value; } }
 
-    public void setup(string label,  int widthLbl = 80, int widthTb = 40, dlgValueChanged dlgValChange = null)
+    public void setup(string label,  int widthLbl = 80, int widthTb = 40, dlgValueChanged? dlgValChange = null)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
@@ -61,24 +61,24 @@ namespace BatInspector.Controls
       if (e.Key == Key.Up)
       {
         NUDButtonUP.RaiseEvent(new System.Windows.RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
-        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(NUDButtonUP, new object[] { true });
+        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(NUDButtonUP, new object[] { true });
       }
 
 
       if (e.Key == Key.Down)
       {
         NUDButtonDown.RaiseEvent(new System.Windows.RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
-        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(NUDButtonDown, new object[] { true });
+        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(NUDButtonDown, new object[] { true });
       }
     }
 
     private void NUDTextBox_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
     {
       if (e.Key == Key.Up)
-        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(NUDButtonUP, new object[] { false });
+        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(NUDButtonUP, new object[] { false });
 
       if (e.Key == Key.Down)
-        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(NUDButtonDown, new object[] { false });
+        typeof(System.Windows.Controls.Button).GetMethod("set_IsPressed", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(NUDButtonDown, new object[] { false });
     }
 
     private void NUDTextBox_TextChanged(object sender, TextChangedEventArgs e)

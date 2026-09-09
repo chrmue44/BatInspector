@@ -7,7 +7,6 @@
  ********************************************************************************/
 
 using BatInspector.Controls;
-using DSPLib;
 using libParser;
 using System;
 using System.Collections.Generic;

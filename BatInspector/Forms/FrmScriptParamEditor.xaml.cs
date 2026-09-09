@@ -29,7 +29,7 @@ namespace BatInspector.Forms
       _ctlParCnt.setValue(Parameter.Count);
     }
 
-    private void setNrParameter(enDataType type, object val) 
+    private void setNrParameter(enDataType type, object? val) 
     {
       if(type == enDataType.INT)
       {

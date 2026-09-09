@@ -12,12 +12,12 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlHistogram : System.Windows.Controls.UserControl
   {
-    Histogram _histogram = null;
+    Histogram _histogram = new Histogram(1);
     System.Windows.Media.Brush _brushBar = System.Windows.Media.Brushes.Blue;
     int _borderBar = 1;
     double _rx_x = 33;  //x position x axis
     double _wb = 5;     // width of histogram bar
-    double[] _ticksX = null;
+    double[]? _ticksX = null;
 
     public ctlHistogram()
     {
@@ -28,7 +28,7 @@ namespace BatInspector.Controls
       _ctlCnt.setup(BatInspector.Properties.MyResources.Count, enDataType.INT,2,lblW);
     }
 
-    public void initHistogram(Histogram histogram, string title, double[] ticks = null, bool hideStat = false)
+    public void initHistogram(Histogram histogram, string title, double[]? ticks = null, bool hideStat = false)
     {
       _hdrTextBlock.Text = title;
       _histogram = histogram;

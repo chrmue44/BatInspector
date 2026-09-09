@@ -152,7 +152,8 @@ public partial class Kml
         return null;
       XmlNodeList list = n.ChildNodes[0]!.ChildNodes;
       List<kmlDocumentPlacemark> tmpList = new List<kmlDocumentPlacemark>();
-
+      if(list == null)
+        return null;
       for (int i = 0; i < list.Count; i++)
       {
         if (list[i].Name == "Placemark")

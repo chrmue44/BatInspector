@@ -22,7 +22,7 @@ namespace BatInspector
   public class ReportItemBirdNet
   {
     string _remarks = "";
-    bool _changed = false;
+  //  bool _changed = false;
     public int Row { get; set; }
     public string FileName { get; set; } = "";
     public string CallNr { get; set; } = "";
@@ -42,7 +42,7 @@ namespace BatInspector
       set
       {
         _remarks = value;
-        _changed = true;
+//        _changed = true;
       }
     }
 
@@ -53,7 +53,7 @@ namespace BatInspector
       CallNr = callNr.ToString();
       if (callNr < 2)
         Remarks = file.getString(Cols.REMARKS);
-      _changed = false;
+//      _changed = false;
       Row = call.ReportRow;
       Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
       //Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
@@ -73,7 +73,7 @@ namespace BatInspector
   public class ReportItemBattyBirdNet
   {
     string _remarks = "";
-    bool _changed = false;
+//    bool _changed = false;
     public int Row { get; set; }
     public string FileName { get; set; } = "";
     public string CallNr { get; set; } = "";
@@ -93,7 +93,7 @@ namespace BatInspector
       set
       {
         _remarks = value;
-        _changed = true;
+    //    _changed = true;
       }
     }
 
@@ -104,7 +104,7 @@ namespace BatInspector
       CallNr = callNr.ToString();
       if (callNr < 2)
         Remarks = file.getString(Cols.REMARKS);
-      _changed = false;
+     // _changed = false;
       Row = call.ReportRow;
       Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
       Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
@@ -270,7 +270,7 @@ namespace BatInspector
       }
     }
 
-    public bool populateList(Filter filter, FilterItem filterItem)
+    public bool populateList(Filter? filter, FilterItem filterItem)
     {
       PrjRecord[]? recList = getRecords();
       Analysis? analysis = getAnalysis();
@@ -398,7 +398,7 @@ namespace BatInspector
 
     private void createPngFiles(ColorTable colorTable)
     {
-      if ((Prj != null))
+      if ((Prj != null) && (Prj.Records != null))
       {
         foreach (PrjRecord rec in Prj.Records)
         {
@@ -445,7 +445,7 @@ namespace BatInspector
     private PrjRecord[] getRecords()
     {
       PrjRecord[] retVal = new PrjRecord[0];
-      if ((Prj != null) && (Prj.Ok))
+      if ((Prj != null) && (Prj.Ok) && (Prj.Records != null))
       {
         retVal = Prj.Records;
       }

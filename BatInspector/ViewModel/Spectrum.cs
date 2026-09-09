@@ -8,11 +8,7 @@
 
 #define FFT_W3
 
-using DSPLib;
 using libParser;
-using System;
-using System.Numerics;
-using System.Runtime.ExceptionServices;
 
 namespace BatInspector
 {
@@ -51,7 +47,7 @@ namespace BatInspector
         _fftSize = 256;
         while (_fftSize < len)
           _fftSize <<= 1;
-        _ampl = generateFft(idxStart, len, logarithmic, DSP.Window.Type.Hanning);
+        _ampl = generateFft(idxStart, len, logarithmic, enWIN_TYPE.HANN);
       }
       if (_ampl == null)
       {
@@ -61,7 +57,7 @@ namespace BatInspector
     }
 
 
-    double[]? generateFft(UInt32 idx, UInt32 length, bool logarithmic, DSP.Window.Type window = DSP.Window.Type.Hanning)
+    double[]? generateFft(UInt32 idx, UInt32 length, bool logarithmic, enWIN_TYPE win = enWIN_TYPE.HANN)
     {
       if (length > 4)
       {
@@ -77,13 +73,12 @@ namespace BatInspector
         Array.Copy(_samples, idx, inputSignal, 0, length);
         double[] lmSpectrum;
 #if (FFT_W3)
-        enWIN_TYPE win = enWIN_TYPE.HANN;
-        switch (window)
+       /* switch (window)
         {
           case DSP.Window.Type.None:
             win = enWIN_TYPE.NONE;
             break;
-        }
+        }*/
         for (uint i = length; i < _fftSize; i++)
           inputSignal[i] = 0;
         int handle = BioAcoustics.getFft((uint)length, win);
@@ -160,7 +155,7 @@ namespace BatInspector
     public double getMeanAmpl(int idx, int n, bool logarithmic)
     {
       double retVal = 0;
-      if (idx >= 0)
+      if ((idx >= 0) && (_ampl != null))
       {
         for (int i = idx; i < (idx + n); i++)
         {

@@ -17,7 +17,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlSpeciesData : System.Windows.Controls.UserControl
   {
-    dlgShowZoom _dlg;
+    dlgShowZoom? _dlg;
     public ctlSpeciesData()
     {
       int wLbl = 120;
@@ -32,7 +32,7 @@ namespace BatInspector.Controls
       _ctlSelPic.setup(MyResources.SelectCallType, 0, 150, 150, callTypeChanged);
     }
 
-    public void setDelegate(dlgShowZoom dlg)
+    public void setDelegate(dlgShowZoom? dlg)
     {
       _dlg = dlg;
     }

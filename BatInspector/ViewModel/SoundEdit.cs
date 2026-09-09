@@ -18,12 +18,12 @@ namespace BatInspector
   {
     int _size;
     double[] _samples;
-    double[] _spectrum;
-    double[] _originalSamples = null;
+    double[] _spectrum = new double[0];
+    double[]? _originalSamples = null;
     int _samplingRate;
     string _fName = "";
     List<Tuple<int, int>> _overdrive;
-    Guano _guano;
+    Guano? _guano;
 
     public SoundEdit(int samplingRate = 384000, int size = 384000)
     {
@@ -45,7 +45,7 @@ namespace BatInspector
 
     public int SamplingRate {  get{ return  _samplingRate; } }
 
-    public Guano Guano { get { return _guano; } }
+    public Guano? Guano { get { return _guano; } }
     /*
     public void expandSamples(double[] samples, int size)
     {

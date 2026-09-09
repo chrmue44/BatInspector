@@ -65,9 +65,9 @@ namespace libScripter
     int _itStart;
     int _itEnd;
     string _itName = "";
-    Variables _vars;
+    Variables? _vars;
 
-    public ForItCodeBlock(List<string>? args, int startLine, Variables vars) 
+    public ForItCodeBlock(List<string>? args, int startLine, Variables? vars) 
                            : base(enBlockType.FOR, args, startLine)
     {     
       _vars = vars;

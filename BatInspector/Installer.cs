@@ -231,12 +231,14 @@ namespace BatInspector
 
     #region Interop
 
+    /*
     private struct TOKEN_PRIVILEGES
     {
       public UInt32 PrivilegeCount;
       [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
       public LUID_AND_ATTRIBUTES[] Privileges;
     }
+    
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     private struct LUID_AND_ATTRIBUTES
@@ -244,6 +246,7 @@ namespace BatInspector
       public LUID Luid;
       public UInt32 Attributes;
     }
+    
 
     [StructLayout(LayoutKind.Sequential)]
     private struct LUID
@@ -251,6 +254,8 @@ namespace BatInspector
       public uint LowPart;
       public int HighPart;
     }
+
+    
 
     [Flags]
     private enum ProcessAccessFlags : uint
@@ -269,6 +274,7 @@ namespace BatInspector
       QueryLimitedInformation = 0x00001000,
       Synchronize = 0x00100000
     }
+    
 
     private enum SECURITY_IMPERSONATION_LEVEL
     {
@@ -315,7 +321,8 @@ namespace BatInspector
       public IntPtr hStdOutput;
       public IntPtr hStdError;
     }
-
+    */
+    /*
     [DllImport("kernel32.dll", ExactSpelling = true)]
     private static extern IntPtr GetCurrentProcess();
 
@@ -347,7 +354,7 @@ namespace BatInspector
 
     [DllImport("advapi32", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern bool CreateProcessWithTokenW(IntPtr hToken, int dwLogonFlags, string lpApplicationName, string lpCommandLine, int dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
-
+    */
     #endregion
   }
 }

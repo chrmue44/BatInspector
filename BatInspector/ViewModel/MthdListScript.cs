@@ -23,9 +23,9 @@ namespace BatInspector
     List<Csv> _listCsv;
     List<HelpTabItem> _scriptHelpTab = new List<HelpTabItem>();
     string _wrkDir;
-    List<string> _files = null;
-    List<string> _subDirs = null;
-    SoundEdit _audio = null;
+    List<string>? _files = null;
+    List<string>? _subDirs = null;
+    SoundEdit? _audio = null;
     int _lastFileIdx = -1;
 
     public MthdListScript(string wrkDir) : base()
@@ -318,7 +318,7 @@ namespace BatInspector
       }
       else
         err = tParseError.NR_OF_ARGUMENTS;
-      if (err == tParseError.SUCCESS)
+      if ((err == tParseError.SUCCESS) && (info != null))
       {
         ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
 

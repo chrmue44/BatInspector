@@ -67,7 +67,7 @@ std::vector<stEvData> threshold_detection_impl(
   int end = 0;
   std::vector<Audio_Event> audio_events;
 
-  int step = fft.getSize() * (1 - FFT_overlap);
+  int step = (int)(fft.getSize() * (1 - FFT_overlap));
 
   std::vector<size_t> to_rm;
 
@@ -121,7 +121,7 @@ std::vector<stEvData> threshold_detection_impl(
       }
     }
 
-    for (int i = n_events-1; i >= 0; i--)
+    for (size_t i = n_events-1; i >= 0; i--)
     {
       if (del[i])
       {

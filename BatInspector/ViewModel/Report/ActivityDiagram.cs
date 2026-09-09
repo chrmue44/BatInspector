@@ -47,11 +47,11 @@ namespace BatInspector
     System.Drawing.Brush COL_DATA = System.Drawing.Brushes.Green;
     System.Drawing.Brush COL_DATA2 = System.Drawing.Brushes.Red;
 
-    ActivityData _data;
-    Bitmap _bmp = null;
+    ActivityData? _data;
+    Bitmap _bmp = new Bitmap(1, 1);
     float _width = 0;
     float _height = 0;
-    Graphics _graphics;
+    Graphics? _graphics;
     ColorTable _colorTable;
     float _maxDispValue;
     int _classWidth;
@@ -103,6 +103,8 @@ namespace BatInspector
 
     void drawLegend(enActivityStyle style)
     {
+      if ((_data == null) || (_graphics == null))
+        return;
       int lh = 20;
       int bl = 20;
       int nights = _data.DaysWithData;
@@ -129,6 +131,8 @@ namespace BatInspector
 
     void drawColorLegend(float bt,  float bl)
     {
+      if((_data == null) || (_graphics == null))
+        return;
       int barWidth = 20;
       float x = _width - X_BR + bl + barWidth / 2;
       float wColor = 40;
@@ -156,6 +160,8 @@ namespace BatInspector
 
     float getYCoord(int tick, int tOffset)
     {
+      if(_data == null)
+        return 0;
       int hours = 24 - DIAG_START_TIME.Hour + DIAG_END_TIME.Hour;
       if (tick <= (DIAG_END_TIME.Hour * _data.TicksPerHour))
         tick += (24 - DIAG_START_TIME.Hour) * _data.TicksPerHour;
@@ -168,6 +174,8 @@ namespace BatInspector
 
     float getXCoord(DateTime d)
     {
+      if(_data == null)
+        return 0;
       int days = (int)((_data.EndDate.Date - _data.StartDate).TotalDays);
       if (days == 0)
         days = 1;
@@ -179,11 +187,15 @@ namespace BatInspector
 
     float getYCoord(float hour, float offsetH)
     {
+      if(_data == null)
+        return 0;
       return getYCoord((int)(hour * _data.TicksPerHour), (int)(offsetH * _data.TicksPerHour));
     }
 
     void calcMeanValue()
     {
+      if (_data == null)
+        return;
       float sum = 0;
       int countEvents = 0;
       float meanValue = 0;
@@ -206,6 +218,8 @@ namespace BatInspector
 
     private void drawData(enActivityStyle style, int offsetHours)
     {
+      if((_data == null) || (_graphics == null))
+        return;
       int days = (int)(_data.EndDate.Date - _data.StartDate.Date).TotalDays;
       float dy = (_height - Y_BB - Y_BT) / 24;
       float dx = 1.0f / days * (_width - X_BL - X_BR);
@@ -272,6 +286,8 @@ namespace BatInspector
 
     private void createTwilightLines()
     {
+      if((_data == null) || (_graphics == null))
+        return;
       DateTime currDay = _data.StartDate;
       while (currDay.AddDays(1) < _data.EndDate)
       {
@@ -301,6 +317,8 @@ namespace BatInspector
 
     private void createTitle(string title)
     {
+      if(_graphics == null)
+        return; 
       System.Drawing.Font font = new System.Drawing.Font("Tahoma", 14);
       SizeF f = _graphics.MeasureString(title, font);
       _graphics.DrawString(title, font, COL_TEXT, (_width - f.Width) / 2, 10.0f);
@@ -323,6 +341,9 @@ namespace BatInspector
 
     private void createLabels(bool months, bool weeks, bool days, int hours)
     {
+      if((_data == null) || (_graphics == null))
+        return;
+
       int dayCnt = (int)(_data.EndDate - _data.StartDate).TotalDays;
 
       // time of day
@@ -372,6 +393,9 @@ namespace BatInspector
 
     private void createGrid(bool month, bool week, bool day, int hours)
     {
+      if((_data == null) || (_graphics == null))
+        return;
+
       // time of day lines
       for (int i = 0; i < hours; i++)
       {

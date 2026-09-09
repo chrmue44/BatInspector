@@ -33,7 +33,7 @@ namespace BatInspector
   {
     WavFile _file;
     List<FreqItem> _list;
-    double[] _samples;
+    double[] _samples = new double[0];
 
     public SimCall(List<FreqItem> list)
     {

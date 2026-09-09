@@ -25,10 +25,10 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlWavFile : System.Windows.Controls.UserControl, IPool
   {
-    AnalysisFile _analysis;
-    string _wavFilePath;
-    PrjRecord _record;
-    MainWindow _parent;
+    AnalysisFile? _analysis = null;
+    string _wavFilePath = "";
+    PrjRecord _record = new PrjRecord();
+    MainWindow? _parent = null;
     bool _initialized = false;
     enModel _modelType;
     Sonogram? _sonogram = null;
@@ -38,7 +38,7 @@ namespace BatInspector.Controls
 
     public string WavFilePath { get { return _wavFilePath; } }
     public bool WavInit { get { return _initialized; } }
-    public AnalysisFile Analysis { get { return _analysis; } }
+    public AnalysisFile Analysis { get { return _analysis!; } }
     public string WavName { get { return _record.File; } }
 
     public bool InfoVisible
@@ -97,15 +97,14 @@ namespace BatInspector.Controls
     public BitmapImage createBitmapImageFromFile(string imgName)
     {
 
+      BitmapImage bi = new BitmapImage();
       if (!string.IsNullOrEmpty(imgName))
       {
         imgName = imgName.ToLower();
         try
         {
-          BitmapImage bi = null;
           using (var fstream = new FileStream(imgName, FileMode.Open, FileAccess.Read, FileShare.Read))
           {
-            bi = new BitmapImage();
             bi.BeginInit();
             bi.CacheOption = BitmapCacheOption.OnLoad;
             bi.StreamSource = fstream;
@@ -114,16 +113,12 @@ namespace BatInspector.Controls
             bi.Freeze();
             bi.StreamSource.Dispose();
           }
-          return bi;
         }
         catch
         {
         }
-        return null;
       }
-      //if (val != null)
-      //    CachedBitmapImages.Add(val, null);
-      return null;
+      return bi;
     }
 
 
@@ -183,7 +178,7 @@ namespace BatInspector.Controls
                       ctlSelectItem ctl = _spDataMan.Children[0] as ctlSelectItem;
                       spec = ctl.getItems();
                     } */
-          string[] species = null;
+          string[]? species = null;
           if (App.Model.Prj != null)
             species = App.Model.Prj.Species;
           else if (App.Model.Query != null)
@@ -282,12 +277,12 @@ namespace BatInspector.Controls
         enModel modelType = App.Model.CurrentlyOpen?.Analysis.ModelType ?? enModel.BAT_DETECT2;
         if (_analysis != null)
         {
-          _parent.setZoom(_record.File, _analysis, _wavFilePath, this, modelType);
+          _parent!.setZoom(_record.File, _analysis, _wavFilePath, this, modelType);
         }
         else
         {
           AnalysisFile ana = new AnalysisFile(_record.File, 383500, 3.001);
-          _parent.setZoom(_record.File, ana, _wavFilePath, this, modelType);
+          _parent!.setZoom(_record.File, ana, _wavFilePath, this, modelType);
         }
       }
       else
@@ -330,15 +325,18 @@ namespace BatInspector.Controls
     {
       try
       {
-        for (int i = 0; i < _analysis.Calls.Count; i++)
+        for (int i = 0; i < _analysis!.Calls.Count; i++)
         {
-          ctlSelectItem ctlm = _spDataMan.Children[i] as ctlSelectItem;
-          if ((_analysis.Calls[i].getDouble(Cols.PROBABILITY) >= 0.5) &&  //TODO no fix value
-               SpeciesInfos.isInList(App.Model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
-            ctlm.setValue(Analysis.Calls[i].getString(Cols.SPECIES).ToUpper());
-          else
-            ctlm.setValue("?");
-          _analysis.Calls[i].setString(Cols.SPECIES_MAN, ctlm.getValue());
+          ctlSelectItem? ctlm = _spDataMan.Children[i] as ctlSelectItem;
+          if (ctlm != null)
+          {
+            if ((_analysis.Calls[i].getDouble(Cols.PROBABILITY) >= 0.5) &&  //TODO no fix value
+                 SpeciesInfos.isInList(App.Model.SpeciesInfos, Analysis.Calls[i].getString(Cols.SPECIES)))
+              ctlm.setValue(Analysis.Calls[i].getString(Cols.SPECIES).ToUpper());
+            else
+              ctlm.setValue("?");
+            _analysis.Calls[i].setString(Cols.SPECIES_MAN, ctlm.getValue());
+          }
         }
       }
       catch (Exception ex)
@@ -347,7 +345,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _tbRemarks_TextChanged(enDataType type, object val)
+    private void _tbRemarks_TextChanged(enDataType type, object? val)
     {
       //     if (_isSetupCall)
       //       _isSetupCall = false;
@@ -361,12 +359,12 @@ namespace BatInspector.Controls
     private void clickCallLabel(int index)
     {
       Button_Click(null, null);
-      _parent.changeCallInZoom(index);
+      _parent!.changeCallInZoom(index);
     }
 
     public void update()
     {
-      updateCallInformations(_analysis, _record);
+      updateCallInformations(_analysis!, _record);
       this.InvalidateVisual();
       this.UpdateLayout();
     }
@@ -407,7 +405,7 @@ namespace BatInspector.Controls
 
     private void UserControl_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
-      _parent._scrollPrj_MouseWheel(sender, e);
+      _parent!._scrollPrj_MouseWheel(sender, e);
     }
   }
 }

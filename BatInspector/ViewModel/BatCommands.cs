@@ -79,7 +79,7 @@ namespace BatInspector
     int fctSplitProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Records != null))
       {
         int maxFilesPerProject = 600;
         if (pars.Count > 0)

@@ -92,7 +92,7 @@ namespace libScripter
     /// <param name="delUpd">delegate to update progress bar</param>
     /// <param name="vars">Storage for variables</param>
     public Parser(ref ProcessRunner proc, BaseCommands[] commands, string wrkDir,
-          delegateUpdateProgress delUpd, Variables? vars = null) : base(delUpd)
+          delegateUpdateProgress? delUpd, Variables? vars = null) : base(delUpd)
     {
       _parser = this;
       _proc = proc;
@@ -1003,7 +1003,7 @@ namespace libScripter
           }
         }
 
-        VariableItem var = _vars.Find(varName, index);
+        VariableItem? var = _vars.Find(varName, index);
         if (var == null)
         {
           _lastErr = "Variable " + varName + " not found";

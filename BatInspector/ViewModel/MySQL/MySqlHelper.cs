@@ -386,18 +386,17 @@ namespace BatInspector
     public int CallNr { get; set; }
 
     public float StartTime { get; set; }
-    public string SNR { get; set; }
+    public string SNR { get; set; } = "";
 
-    public string SpeciesMan { get; set; }
-    public string SpeciesAuto { get; set; }
-    public string Probability { get; set; }
-    public string FreqMin { get; set; }
-    public string FreqMax { get; set; }
-    public string FreqMaxAmp { get; set; }
-    public string DurationCall { get; set; }
-    public string CallInterval { get; set; }
-
-    public string calls___Remarks { get; set; }
+    public string SpeciesMan { get; set; } = "";
+    public string SpeciesAuto { get; set; } = "";
+    public string Probability { get; set; } = "";
+    public string FreqMin { get; set; } = "";
+    public string FreqMax { get; set; } = "";
+    public string FreqMaxAmp { get; set; } = "";
+    public string DurationCall { get; set; } = "";
+    public string CallInterval { get; set; } = "";
+    public string calls___Remarks { get; set; } = "";
     public void setValues(sqlRow row)
     {
       foreach (sqlField f in row.Fields)

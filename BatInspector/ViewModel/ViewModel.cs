@@ -351,7 +351,7 @@ namespace BatInspector
     /// execute command in separate thread
     /// </summary>
     /// <param name="cmd"></param>
-    public void executeCmd(string cmd, dlgVoid callBackEnd)
+    public void executeCmd(string cmd, dlgVoid? callBackEnd)
     {
       _tempCmd = cmd;
       _callBackEnd = callBackEnd;
@@ -541,9 +541,9 @@ namespace BatInspector
       return retVal;
     }
 
-    public BaseModel? getClassifier(enModel type)
+    public BaseModel getClassifier(enModel type)
     {
-      BaseModel? retVal = null;
+      BaseModel retVal = new ModelBatDetect2(0);
       foreach (BaseModel m in _models)
       {
         if (type == m.Type)
@@ -1080,7 +1080,7 @@ namespace BatInspector
         // Get reflection info for Send() method on MailMessage
         MethodInfo? sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
 
-        sendMethod?.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter, true, true }, null);
+        sendMethod?.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter!, true, true }, null);
 
         // Finally get reflection info for Close() method on our MailWriter
         MethodInfo? closeMethod = mailWriter?.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);

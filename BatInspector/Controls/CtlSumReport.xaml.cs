@@ -20,7 +20,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class CtlSumReport : System.Windows.Controls.UserControl
   {
-    Window _parent = null;
+    Window? _parent = null;
     string _filterExpression = "";
 
     public int ClassWidthMin
@@ -61,7 +61,7 @@ namespace BatInspector.Controls
       _cbRtxInclActivity.IsChecked = true;
     }
 
-    public void setup(Window parent)
+    public void setup(Window? parent)
     {
       _parent = parent;
       _dtEnd.SelectedDate = DateTime.Now;
@@ -106,7 +106,7 @@ namespace BatInspector.Controls
         _filterExpression = "";
       if (apply)
       {
-        FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
+        FilterItem? filter = (_cbFilter.SelectedIndex == 1) ?
                     App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
           _filterExpression = filter.Expression;

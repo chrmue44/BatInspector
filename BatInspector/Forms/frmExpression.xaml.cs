@@ -16,18 +16,15 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmExpression : Window
   {
-    ExpressionGenerator _gen;
-
     public string FilterExpression { get { return _ctlEditor.Expression; } }
 
     public bool SaveFilter { get { return _cbSave.IsChecked == true; } }
 
     public string FilterName {  get{ return _ctlExpName.getValue(); } }
 
-    public frmExpression(ExpressionGenerator gen, bool withSaveOption)
+    public frmExpression(ExpressionGenerator? gen, bool withSaveOption)
     {
       InitializeComponent();
-      _gen = gen;
       _ctlEditor.setup(gen, enableOk);
       _ctlExpName.setup("Name", enDataType.STRING, 0, 100, true, valueOfNameChanged);
       _ctlExpName.IsEnabled = false;
@@ -41,7 +38,7 @@ namespace BatInspector.Forms
     }
 
 
-    private void valueOfNameChanged(enDataType type, object val)
+    private void valueOfNameChanged(enDataType type, object? val)
     {
       if ((_cbSave.IsChecked == true) && (_ctlExpName.getValue().Length > 0))
         _btnOk.IsEnabled = _ctlEditor.FormulaOk;

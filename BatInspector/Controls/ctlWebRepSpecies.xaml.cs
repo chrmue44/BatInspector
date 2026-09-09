@@ -20,12 +20,12 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlWebRepSpecies : System.Windows.Controls.UserControl
   {
-    dlgClickLabel _dlgDel = null;
+    dlgClickLabel? _dlgDel = null;
     int _index = 0;
     public string Species { get { return _tbSpecies.Text; } set{ _tbSpecies.Text = value; } }
     public string Comment {  get { return _tbComment.Text; } set { _tbComment.Text = value; } }
     public string Confusion {  get { return _tbConfusion.Text; } set { _tbConfusion.Text = value; } } 
-    public ctlWebRepSpecies(int idx, dlgClickLabel dlgDel)
+    public ctlWebRepSpecies(int idx, dlgClickLabel? dlgDel)
     {
       InitializeComponent();
       _index = idx;

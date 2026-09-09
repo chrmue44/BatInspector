@@ -243,13 +243,16 @@ namespace BatInspector.Controls
           if (row != null)
           {
             view = (System.Data.DataRowView)row.Item;
-            it = new string[view.Row.ItemArray.Length];
-            for (int k = 0; k < it.Length; k++)
-              it[k] = view.Row.ItemArray[k].ToString();
+            if (view != null)
+            {
+              it = new string[view.Row.ItemArray.Length];
+              for (int k = 0; k < it.Length; k++)
+                it[k] = view.Row.ItemArray[k]!.ToString() ?? "";
+            }
           }
         }
 
-        if (it != null)
+        if ((it != null) && (view != null))
         {
           hdr = new string[it.Length];
           for (int k = 0; k < it.Length; k++)
@@ -384,7 +387,7 @@ namespace BatInspector.Controls
       CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter);
       if (apply)
       {
-        FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
+        FilterItem? filter = (_cbFilter.SelectedIndex == 1) ?
                     App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
         if (filter != null)
           _filterExpression = DataBase.translateFilterExpressionToMySQL(filter.Expression);
@@ -397,7 +400,7 @@ namespace BatInspector.Controls
 
     private void setFieldSelector(string name, bool select, int order, bool reverse)
     {
-      CtlMySqlFieldSelect ctl = null;
+      CtlMySqlFieldSelect? ctl = null;
       foreach (CtlMySqlFieldSelect c in _listCb)
       {
         if (name == c.FieldName)

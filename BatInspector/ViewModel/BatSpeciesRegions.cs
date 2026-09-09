@@ -67,7 +67,7 @@ namespace BatInspector
   {
     const string _fName = AppParams.BATSPECIES_REGIONS;
     [DataMember]
-    List<ParRegion> Regions { get; set; }
+    List<ParRegion> Regions { get; set; } = new List<ParRegion>();
 
     public BatSpeciesRegions()
     {
@@ -76,8 +76,7 @@ namespace BatInspector
 
     public static BatSpeciesRegions loadFrom(string fDir)
     {
-      BatSpeciesRegions? retVal = null;
-      FileStream? file = null;
+      BatSpeciesRegions retVal = new BatSpeciesRegions();
       string fPath = Path.Combine(fDir,  _fName);
       bool createNew = false;
       try
@@ -85,12 +84,17 @@ namespace BatInspector
         DebugLog.log("try loading BatSpeciesRegions: " + fPath, enLogType.DEBUG);
         if (File.Exists(fPath))
         {
-          using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
+          using (FileStream file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
           {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatSpeciesRegions));
-            retVal = (BatSpeciesRegions?)ser.ReadObject(file);
-            if (retVal == null)
+            BatSpeciesRegions? r = (BatSpeciesRegions?)ser.ReadObject(file);
+            if (r == null)
+            { 
               DebugLog.log("regions file not well formed!", enLogType.ERROR);
+              createNew = true;
+            }
+            else
+              retVal = r;
           }
         }
         else
@@ -106,11 +110,6 @@ namespace BatInspector
         DebugLog.log("failed to read config file : " + fPath + ": " + e.ToString(), enLogType.ERROR);
         createNew = true;
       }
-      finally
-      {
-        if (file != null)
-          file.Close();
-      }
 
       if(createNew)
       {
@@ -118,7 +117,7 @@ namespace BatInspector
         retVal.init();
         retVal.save(fDir);
       }
-      return retVal;
+      return (BatSpeciesRegions)retVal;
     }
 
     public static void copyRegionsFileAfterSetup(string srcDir, string dstDir)
@@ -342,7 +341,7 @@ namespace BatInspector
     public bool occursAtLocation(string speciesAbrv, double lat, double lon)
     {
       bool retVal = false;
-      ParRegion r = findRegion(lat, lon);
+      ParRegion? r = findRegion(lat, lon);
       if(r == null) 
         retVal = true;  // if region not specified always return true
       else

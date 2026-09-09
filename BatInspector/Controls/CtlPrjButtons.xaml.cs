@@ -65,6 +65,8 @@ namespace BatInspector.Controls
     {
       try
       {
+        if(App.Model.CurrentlyOpen == null)
+          return;
         PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
         if (recList != null)
         {
@@ -87,15 +89,18 @@ namespace BatInspector.Controls
     {
       try
       {
-        PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
-        if (recList != null)
+        if (App.Model.CurrentlyOpen != null)
         {
-          foreach (PrjRecord rec in recList)
+          PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
+          if (recList != null)
           {
-            rec.Selected = false;
+            foreach (PrjRecord rec in recList)
+            {
+              rec.Selected = false;
+            }
+            App.MainWin.updateControls();
+            DebugLog.log("deselect all files", enLogType.DEBUG);
           }
-          App.MainWin.updateControls();
-          DebugLog.log("deselect all files", enLogType.DEBUG);
         }
       }
       catch (Exception ex)

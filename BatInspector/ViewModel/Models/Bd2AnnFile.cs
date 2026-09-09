@@ -54,7 +54,7 @@ namespace BatInspector
     public bool annotated = true;
 
     [DataMember (Name = "annotation") ]
-    public Bd2Annatation[] Annatations { get; set; }
+    public Bd2Annatation[] Annatations { get; set; } = new Bd2Annatation[1];
     [DataMember]
     public string class_name { get; set; } = "";
     [DataMember]
@@ -69,7 +69,7 @@ namespace BatInspector
     [DataMember]
     public int time_exp { get; set; } = 1;
 
-    string _fileName;
+    string _fileName = "";
 
     public void init()
     {
@@ -106,10 +106,10 @@ namespace BatInspector
       saveAs(_fileName);
     }
 
-    public static Bd2AnnFile loadFrom(string fPath, bool createIfMissing = true)
+    public static Bd2AnnFile? loadFrom(string fPath, bool createIfMissing = true)
     {
-      Bd2AnnFile retVal = null;
-      FileStream file = null;
+      Bd2AnnFile? retVal = null;
+      FileStream? file = null;
       try
       {
         DebugLog.log("try to load:" + fPath, enLogType.DEBUG);
@@ -118,7 +118,7 @@ namespace BatInspector
           using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
           {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Bd2AnnFile));
-            retVal = (Bd2AnnFile)ser.ReadObject(file);
+            retVal = (Bd2AnnFile?)ser.ReadObject(file);
             if (retVal == null)
               DebugLog.log("annotation file not well formed!", enLogType.ERROR);
             else
@@ -153,7 +153,7 @@ namespace BatInspector
 
     public static void splitAnnotation(string name, double splitLength, bool removeOriginal)
     {
-      Bd2AnnFile file = Bd2AnnFile.loadFrom(name);
+      Bd2AnnFile? file = Bd2AnnFile.loadFrom(name);
       if(file != null)
       {
         double len = file.duration;
@@ -210,7 +210,7 @@ namespace BatInspector
 
     public static void checkAndFixId(string name)
     {
-      Bd2AnnFile file = Bd2AnnFile.loadFrom(name);
+      Bd2AnnFile? file = Bd2AnnFile.loadFrom(name);
       if (file != null)
       {
         string fName = Path.GetFileNameWithoutExtension(name);
@@ -230,9 +230,9 @@ namespace BatInspector
     public string Name { get; set; } = "";
     public int Count { get; set; } = 0;
 
-    public static AnnReportItem find(string name, List<AnnReportItem> list)
+    public static AnnReportItem? find(string name, List<AnnReportItem> list)
     {
-      AnnReportItem retVal = null;
+      AnnReportItem? retVal = null;
       foreach (AnnReportItem item in list)
       {
         if (name == item.Name)
@@ -274,12 +274,12 @@ namespace BatInspector
       bool retVal = true;
       foreach (FileInfo file in files)
       {
-        Bd2AnnFile annFile = Bd2AnnFile.loadFrom(file.FullName);
+        Bd2AnnFile? annFile = Bd2AnnFile.loadFrom(file.FullName);
         if (annFile != null)
         {
           foreach(Bd2Annatation ann in annFile.Annatations)
           {
-            AnnReportItem rItem = AnnReportItem.find(ann.Class, _list);
+            AnnReportItem? rItem = AnnReportItem.find(ann.Class, _list);
             if (rItem != null)
               rItem.Count++;
             else

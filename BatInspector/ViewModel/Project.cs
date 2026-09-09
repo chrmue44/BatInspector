@@ -307,14 +307,14 @@ namespace BatInspector
       }
     }
 
-    public string? MicId
+    public string MicId
     {
       get
       {
         if ((_batExplorerPrj != null) && (_batExplorerPrj.Microphone != null))
           return _batExplorerPrj.Microphone.Id;
         else
-          return null;
+          return "";
 
       }
     }
@@ -1366,6 +1366,8 @@ namespace BatInspector
 
     public void removeFile(string wavName)
     {
+      if(_batExplorerPrj == null)
+        return;
       List<PrjRecord> list = _batExplorerPrj.Records.ToList();
       foreach (PrjRecord rec in list)
       {
@@ -1387,7 +1389,8 @@ namespace BatInspector
       string destDir = Path.Combine(this.PrjDir, AppParams.DIR_DEL);
       if (!Directory.Exists(destDir))
         Directory.CreateDirectory(destDir);
-
+      if(_batExplorerPrj == null)
+        return;
       foreach (PrjRecord rec in _batExplorerPrj.Records)
       {
         if (Analysis.find(rec.File) == null)
@@ -1448,6 +1451,8 @@ namespace BatInspector
     public void addFiles(string[] files, bool removeSrc = false)
     {
       List<PrjRecord> list = new List<PrjRecord>();
+      if (_batExplorerPrj == null)
+        return;
       foreach (PrjRecord rec in _batExplorerPrj.Records)
         list.Add(rec);
       foreach (string file in files)
@@ -1484,6 +1489,8 @@ namespace BatInspector
 
     public void applyMicCorrection(double softening)
     {
+      if(_batExplorerPrj == null)
+        return;
       if (_batExplorerPrj.MicCorrected == false)
       {
         DebugLog.log("applying mic correction...", enLogType.INFO);

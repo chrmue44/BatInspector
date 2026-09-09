@@ -103,7 +103,7 @@ namespace BatInspector.Forms
       App.Model.WavFile.saveFile();
     }
 
-    private void samplingRateChanged(enDataType type, object val)
+    private void samplingRateChanged(enDataType type, object? val)
     {
       int sr = _ctlSamplingRate.getIntValue();
   //    uint oldSr = App.Model.WavFile.FormatChunk.Frequency;

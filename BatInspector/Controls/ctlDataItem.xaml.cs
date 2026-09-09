@@ -178,6 +178,6 @@ namespace BatInspector.Controls
     }
   }
 
-  public delegate void dlgValueChanged(enDataType type , object val);
+  public delegate void dlgValueChanged(enDataType type , object? val);
 
 }

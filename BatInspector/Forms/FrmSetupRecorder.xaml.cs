@@ -228,22 +228,22 @@ namespace BatInspector.Forms
       _ctlTrigTypeBird.setup(BatInspector.Properties.MyResources.FrmRecTriggerType, 4, wl, wt, setTrigTypeBird, null, "", false);
     }
 
-    private void setStopMin(enDataType type, object val)
+    private void setStopMin(enDataType type, object? val)
     {
       _rec.Control.StopMin.Value = _ctlRecStopMin.getIntValue();
     }
 
-    private void setStopH(enDataType type, object val)
+    private void setStopH(enDataType type, object? val)
     {
       _rec.Control.StopH.Value = _ctlRecStopH.getIntValue();
     }
 
-    private void setStartMin(enDataType type, object val)
+    private void setStartMin(enDataType type, object? val)
     {
       _rec.Control.StartMin.Value = _ctlRecStartMin.getIntValue();
     }
 
-    private void setStartH(enDataType type, object val)
+    private void setStartH(enDataType type, object? val)
     {
       _rec.Control.StartH.Value = _ctlRecStartH.getIntValue();
     }
@@ -253,7 +253,7 @@ namespace BatInspector.Forms
       _rec.General.Language.Value = _ctlLanguage.getSelectedIndex();
     }
 
-    private void setBacklightTime(enDataType type, object val)
+    private void setBacklightTime(enDataType type, object? val)
     {
       _rec.General.BackLightTime.Value = _ctlBackLight.getIntValue();
     }
@@ -267,7 +267,7 @@ namespace BatInspector.Forms
       _rec.General.PositionMode.Value = _ctlPosMode.getSelectedIndex();
     }
 
-    private void setLon(enDataType type, object val)
+    private void setLon(enDataType type, object? val)
     {
       double lon;
       bool ok = Project.parseLongitude(_ctlLon.getValue(), out lon);
@@ -279,7 +279,7 @@ namespace BatInspector.Forms
                   MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
-    private void setLat(enDataType type, object val)
+    private void setLat(enDataType type, object? val)
     {
       double lat;
       bool ok = Project.parseLatitude(_ctlLat.getValue(), out lat);
@@ -312,27 +312,27 @@ namespace BatInspector.Forms
       _rec.TriggerBat.Type.Value = _ctlTrigTypeBat.getSelectedIndex();
     }
 
-    private void setRecTimeBat(enDataType type, object val)
+    private void setRecTimeBat(enDataType type, object? val)
     {
       _rec.AcquisitionBat.RecTime.Value = _ctlRecordingTimeBat.getDoubleValue();
     }
 
-    private void setTrigLevelBat(enDataType type, object val)
+    private void setTrigLevelBat(enDataType type, object? val)
     {
       _rec.TriggerBat.Level.Value = _ctlTrigLevelBat.getDoubleValue();
     }
 
-    private void setTrigLengthBat(enDataType type, object val)
+    private void setTrigLengthBat(enDataType type, object? val)
     {
       _rec.TriggerBat.EventLength.Value = _ctlTrigLengthBat.getDoubleValue();
     }
 
-    private void setTrigFrequencyBat(enDataType type, object val)
+    private void setTrigFrequencyBat(enDataType type, object? val)
     {
       _rec.TriggerBat.Frequency.Value = _ctlTrigFreqBat.getDoubleValue();
     }
 
-    private void setRecFrequencyBat(enDataType type, object val)
+    private void setRecFrequencyBat(enDataType type, object? val)
     {
       _rec.AcquisitionBat.RecordingFilter.Value = _ctlRecFilterFreqBat.getDoubleValue();
     }
@@ -342,12 +342,12 @@ namespace BatInspector.Forms
       _rec.AcquisitionBat.SampleRate.Value = _ctlSampleRateBat.getSelectedIndex();
     }
 
-    private void setPreTriggerBat(enDataType type, object val)
+    private void setPreTriggerBat(enDataType type, object? val)
     {
       _rec.AcquisitionBat.PreTrigger.Value = _ctlPreTriggerBat.getDoubleValue();
     }
 
-    private void setDeadTimeBat(enDataType type, object val)
+    private void setDeadTimeBat(enDataType type, object? val)
     {
       _rec.AcquisitionBat.DeadTime.Value = _ctlDeadTimeBat.getDoubleValue();
     }
@@ -371,27 +371,27 @@ namespace BatInspector.Forms
       _rec.TriggerBird.Type.Value = _ctlTrigTypeBird.getSelectedIndex();
     }
 
-    private void setRecTimeBird(enDataType type, object val)
+    private void setRecTimeBird(enDataType type, object? val)
     {
       _rec.AcquisitionBird.RecTime.Value = _ctlRecordingTimeBird.getDoubleValue();
     }
 
-    private void setTrigLevelBird(enDataType type, object val)
+    private void setTrigLevelBird(enDataType type, object? val)
     {
       _rec.TriggerBird.Level.Value = _ctlTrigLevelBird.getDoubleValue();
     }
 
-    private void setTrigLengthBird(enDataType type, object val)
+    private void setTrigLengthBird(enDataType type, object? val)
     {
       _rec.TriggerBird.EventLength.Value = _ctlTrigLengthBird.getDoubleValue();
     }
 
-    private void setTrigFrequencyBird(enDataType type, object val)
+    private void setTrigFrequencyBird(enDataType type, object? val)
     {
       _rec.TriggerBird.Frequency.Value = _ctlTrigFreqBird.getDoubleValue();
     }
 
-    private void setRecFrequencyBird(enDataType type, object val)
+    private void setRecFrequencyBird(enDataType type, object? val)
     {
       _rec.AcquisitionBird.RecordingFilter.Value = _ctlRecFilterFreqBird.getDoubleValue();
     }
@@ -401,12 +401,12 @@ namespace BatInspector.Forms
       _rec.AcquisitionBird.SampleRate.Value = _ctlSampleRateBird.getSelectedIndex();
     }
 
-    private void setPreTriggerBird(enDataType type, object val)
+    private void setPreTriggerBird(enDataType type, object? val)
     {
       _rec.AcquisitionBird.PreTrigger.Value = _ctlPreTriggerBird.getDoubleValue();
     }
 
-    private void setDeadTimeBird(enDataType type, object val)
+    private void setDeadTimeBird(enDataType type, object? val)
     {
       _rec.AcquisitionBird.DeadTime.Value = _ctlDeadTimeBird.getDoubleValue();
     }
@@ -562,7 +562,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void execCmd(string cmd, dlgVoid callBack)
+    private void execCmd(string cmd, dlgVoid? callBack)
     {
       if (BatSpy.IsConnected)
       {

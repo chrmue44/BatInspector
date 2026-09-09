@@ -11,9 +11,9 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmPosition : Window
   {
-    ExpressionGenerator _exp;  
+    ExpressionGenerator? _exp;  
 
-    public FrmPosition(ExpressionGenerator exp, string title)
+    public FrmPosition(ExpressionGenerator? exp, string title)
     {
       InitializeComponent();
       Title = title;
@@ -43,12 +43,12 @@ namespace BatInspector.Forms
     {
       if (Title == MyResources.ExpGenIsNear)
       {
-        _exp.GeoExpression = $"isNear({DBBAT.LAT}, {DBBAT.LON}, {_ctlLat.getDoubleValue().ToString(CultureInfo.InvariantCulture)}, " +
+        _exp!.GeoExpression = $"isNear({DBBAT.LAT}, {DBBAT.LON}, {_ctlLat.getDoubleValue().ToString(CultureInfo.InvariantCulture)}, " +
                              $"{_ctlLon.getDoubleValue().ToString(CultureInfo.InvariantCulture)}, {_ctlDist.getDoubleValue().ToString(CultureInfo.InvariantCulture)})";
       }
       else
       { 
-        _exp.GeoExpression = $"calcDistance({DBBAT.LAT}, {DBBAT.LON}, {_ctlLat.getDoubleValue().ToString(CultureInfo.InvariantCulture)}, " +
+        _exp!.GeoExpression = $"calcDistance({DBBAT.LAT}, {DBBAT.LON}, {_ctlLat.getDoubleValue().ToString(CultureInfo.InvariantCulture)}, " +
                              $"{_ctlLon.getDoubleValue().ToString(CultureInfo.InvariantCulture)})";
       }
       this.DialogResult = true;

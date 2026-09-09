@@ -161,7 +161,7 @@ namespace BatInspector
         CountTime[i] = 0;
     }
 
-    public static SumItem find(string species, List<SumItem> list, bool addIfMissing = false)
+    public static SumItem? find(string species, List<SumItem> list, bool addIfMissing = false)
     {
       foreach(SumItem item in list) 
       {
@@ -240,7 +240,7 @@ namespace BatInspector
 
     public Csv Csv { get { return _csv; } }
 
-    public List<SumItemReport> Summary {
+    public List<SumItemReport>? Summary {
       get {
         if (_summary == null)
           return null;
@@ -494,7 +494,7 @@ namespace BatInspector
       {
         string wavName = _csv.getCell(r, Cols.NAME);
 
-        PrjRecord rec = prj.find(wavName);
+        PrjRecord? rec = prj.find(wavName);
         if (rec == null)
           res |= removeWavFromReport(wavName);
       }
@@ -699,7 +699,7 @@ namespace BatInspector
         {
           foreach (AnalysisCall c in f.Calls)
           {
-            SumItem it = SumItem.find(c.getString(Cols.SPECIES_MAN), _summary);
+            SumItem? it = SumItem.find(c.getString(Cols.SPECIES_MAN), _summary);
             if (it != null)
             {
               it.Count++;

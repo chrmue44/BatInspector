@@ -41,21 +41,21 @@ namespace BatInspector.Controls
       InitializeComponent();
     }
 
-    public void setup(ExpressionGenerator gen, dlgEnableOk dlkOk)
+    public void setup(ExpressionGenerator? gen, dlgEnableOk dlkOk)
     {
       _gen = gen;
       _prefix = "";
       _dlgOk = dlkOk;
-      _left = _gen.getAvailableOptions(enField.LEFT);
+      _left = _gen?.getAvailableOptions(enField.LEFT) ?? new List<ExpressionItem>();
       foreach (ExpressionItem item in _left)
         _cbLeft.Items.Add(item.Text);
 
-      _op = _gen.getAvailableOptions(enField.OPERATOR);
+      _op = _gen?.getAvailableOptions(enField.OPERATOR) ?? new List<ExpressionItem>();
       foreach (ExpressionItem item in _op)
         _cbOperator.Items.Add(item.Text + " [" + item.HelpText + "]");
 
-      _right = _gen.getAvailableOptions(enField.RIGHT);
-      foreach (ExpressionItem item in _right)
+      _right = _gen?.getAvailableOptions(enField.RIGHT) ?? new List<ExpressionItem>();
+      foreach (ExpressionItem item in _right) 
         _cbRight.Items.Add(item.Text);
       _cltDateTime.init(DateTime.Now, true, "",100,dateChanged);
 

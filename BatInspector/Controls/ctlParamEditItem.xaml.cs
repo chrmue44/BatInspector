@@ -20,7 +20,7 @@ namespace BatInspector.Controls
   public partial class ctlParamEditItem : System.Windows.Controls.UserControl
   {
     enParamType _type = enParamType.MICSCELLANOUS;
-    string _valString;
+    string _valString = "";
     
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }

@@ -177,7 +177,7 @@ namespace BatInspector
               Csv csvAnn = new Csv();
               csvAnn.read(file, ",", true);
               string fileFeat = file.ToLower().Replace("wav.csv", "wav_spec_features.csv");
-              Csv csvFeat = null;
+              Csv? csvFeat = null;
               if (File.Exists(fileFeat))
               {
                 csvFeat = new Csv();
@@ -239,7 +239,7 @@ namespace BatInspector
                 string abbr = "";
                 //   if (prob < minProb)
                 //     abbr = "??PRO[";
-                SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
+                SpeciesInfos? specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
                 if ((info != null) && (specInfo != null))
                   abbr += specInfo.Abbreviation;
                 else
@@ -257,8 +257,8 @@ namespace BatInspector
               }
             }
           }
-          string dir = Path.GetDirectoryName(reportName);
-          if (!Directory.Exists(dir))
+          string? dir = Path.GetDirectoryName(reportName);
+          if ((dir != null) && !Directory.Exists(dir))
             Directory.CreateDirectory(dir);
           report.saveAs(reportName);
         }
@@ -369,7 +369,7 @@ namespace BatInspector
             val++;
             _listOfFiles += ev.Data + "\n";
             DebugLog.log(ev.Data, enLogType.INFO);
-            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
+            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records!.Length.ToString();
             if (_cli)
               DebugLog.log(msg, enLogType.INFO);
             else

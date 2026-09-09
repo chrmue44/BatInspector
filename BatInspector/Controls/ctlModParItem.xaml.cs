@@ -10,7 +10,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlModParItem : System.Windows.Controls.UserControl
   {
-    ModelParams _pars;
+    ModelParams _pars = new ModelParams();
     public ctlModParItem()
     {
       InitializeComponent();

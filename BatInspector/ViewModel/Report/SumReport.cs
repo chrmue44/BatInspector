@@ -686,9 +686,12 @@ namespace BatInspector
         int nrCalls = 0;
         foreach (SumItem it in item.SpecList)
         {
-          SumItem t = SumItem.find(it.Species, _totalSum, true);
-          t.Count += it.Count;
-          nrCalls += it.Count;
+          SumItem? t = SumItem.find(it.Species, _totalSum, true);
+          if (t != null)
+          {
+            t.Count += it.Count;
+            nrCalls += it.Count;
+          }
         }
         if (nrCalls > 0)
           addEntryToCsvReport(item);
@@ -1273,24 +1276,27 @@ namespace BatInspector
               if (match)
               {
                 string spec = call.getString(Cols.SPECIES_MAN);
-                SumItem item = SumItem.find(spec, list, true);
-                item.Count++;
-                double temp = call.getDouble(Cols.TEMPERATURE);
-                if (temp < item.TempMin)
-                  item.TempMin = temp;
-                if (temp < retVal.TempMin)
-                  retVal.TempMin = temp;
-                if (temp > item.TempMax)
-                  item.TempMax = temp;
-                if (temp > retVal.TempMax)
-                  retVal.TempMax = temp;
-                double humid = call.getDouble(Cols.HUMIDITY);
-                if (humid < item.HumidityMin)
-                  item.HumidityMin = humid;
-                if (humid < retVal.HumidityMin)
-                  retVal.HumidityMin = humid;
-                if (humid > retVal.HumidityMax)
-                  retVal.HumidityMax = humid;
+                SumItem? item = SumItem.find(spec, list, true);
+                if (item != null)
+                {
+                  item.Count++;
+                  double temp = call.getDouble(Cols.TEMPERATURE);
+                  if (temp < item.TempMin)
+                    item.TempMin = temp;
+                  if (temp < retVal.TempMin)
+                    retVal.TempMin = temp;
+                  if (temp > item.TempMax)
+                    item.TempMax = temp;
+                  if (temp > retVal.TempMax)
+                    retVal.TempMax = temp;
+                  double humid = call.getDouble(Cols.HUMIDITY);
+                  if (humid < item.HumidityMin)
+                    item.HumidityMin = humid;
+                  if (humid < retVal.HumidityMin)
+                    retVal.HumidityMin = humid;
+                  if (humid > retVal.HumidityMax)
+                    retVal.HumidityMax = humid;
+                }
               }
             }
           }
@@ -1358,24 +1364,27 @@ namespace BatInspector
                 if (match)
                 {
                   string spec = call.getString(Cols.SPECIES_MAN);
-                  SumItem item = SumItem.find(spec, list, true);
-                  item.Count++;
-                  double temp = call.getDouble(Cols.TEMPERATURE);
-                  if (temp < item.TempMin)
-                    item.TempMin = temp;
-                  if (temp < retVal.TempMin)
-                    retVal.TempMin = temp;
-                  if (temp > item.TempMax)
-                    item.TempMax = temp;
-                  if (temp > retVal.TempMax)
-                    retVal.TempMax = temp;
-                  double humid = call.getDouble(Cols.HUMIDITY);
-                  if (humid < item.HumidityMin)
-                    item.HumidityMin = humid;
-                  if (humid < retVal.HumidityMin)
-                    retVal.HumidityMin = humid;
-                  if (humid > retVal.HumidityMax)
-                    retVal.HumidityMax = humid;
+                  SumItem? item = SumItem.find(spec, list, true);
+                  if (item != null)
+                  {
+                    item.Count++;
+                    double temp = call.getDouble(Cols.TEMPERATURE);
+                    if (temp < item.TempMin)
+                      item.TempMin = temp;
+                    if (temp < retVal.TempMin)
+                      retVal.TempMin = temp;
+                    if (temp > item.TempMax)
+                      item.TempMax = temp;
+                    if (temp > retVal.TempMax)
+                      retVal.TempMax = temp;
+                    double humid = call.getDouble(Cols.HUMIDITY);
+                    if (humid < item.HumidityMin)
+                      item.HumidityMin = humid;
+                    if (humid < retVal.HumidityMin)
+                      retVal.HumidityMin = humid;
+                    if (humid > retVal.HumidityMax)
+                      retVal.HumidityMax = humid;
+                  }
                 }
               }
             }
@@ -1492,7 +1501,7 @@ namespace BatInspector
                   if (webInfo != null)
                   {
                     line = line.Replace("%COMMENT%", webInfo.Comment);
-                    line = line.Replace("%CONFUSION%", formData.findSpecies(spec).Confusion);
+                    line = line.Replace("%CONFUSION%", formData.findSpecies(spec)!.Confusion ?? "");
                   }
                   output.insert(lineNr, line);
                   lineNr++;
@@ -1667,7 +1676,7 @@ namespace BatInspector
               {
                 SpeciesWebInfo? webInfo = formData.findSpecies(spec);
                 if (webInfo != null)
-                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), webInfo.Comment, formData.findSpecies(spec).Confusion);
+                  tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), webInfo.Comment, formData.findSpecies(spec)!.Confusion);
                 else
                   tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), "", "");
               }
@@ -1748,7 +1757,7 @@ namespace BatInspector
         tbCount.Rows[3][c] = $"{it.HumidityMin} ... {it.HumidityMax}";
         for (int i = 0; i < rep.Species.Count; i++)
         {
-          SumItem sumIt = SumItem.find(rep.Species[i], it.SpecList);
+          SumItem? sumIt = SumItem.find(rep.Species[i], it.SpecList);
           if (sumIt != null)
             tbCount.Rows[i + 4][c] = sumIt.Count.ToString();
           else

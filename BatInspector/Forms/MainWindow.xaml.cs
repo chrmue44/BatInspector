@@ -184,7 +184,7 @@ namespace BatInspector.Forms
 
         DirectoryInfo? expandedDir = null;
         if (item.Tag is DriveInfo)
-          expandedDir = (item.Tag as DriveInfo).RootDirectory;
+          expandedDir = ((DriveInfo)item.Tag).RootDirectory;
         if (item.Tag is DirectoryInfo)
           expandedDir = (item.Tag as DirectoryInfo);
         try
@@ -371,12 +371,18 @@ namespace BatInspector.Forms
         {
           if (ctl.Analysis?.getString(Cols.NAME) == fName)
           {
-            AnalysisFile newAnalysis = App.Model.CurrentlyOpen.Analysis.find(fName);
-            PrjRecord rec = App.Model.CurrentlyOpen.findRecord(fName);
-            ctl.updateCallInformations(newAnalysis, rec);
-            if (ctl.Analysis == App.Model.ZoomView.Analysis)
-              _ctlZoom?.updateManSpecies();
-            break;
+            if (App.Model.CurrentlyOpen != null)
+            {
+              AnalysisFile? newAnalysis = App.Model.CurrentlyOpen.Analysis.find(fName);
+              PrjRecord? rec = App.Model.CurrentlyOpen.findRecord(fName);
+              if ((newAnalysis != null) && (rec != null))
+              {
+                ctl.updateCallInformations(newAnalysis, rec);
+                if (ctl.Analysis == App.Model.ZoomView.Analysis)
+                  _ctlZoom?.updateManSpecies();
+                break;
+              }
+            }
           }
         }
       }
@@ -396,7 +402,7 @@ namespace BatInspector.Forms
         {
           if(_projectDir != null)
             App.Model.initProject(_projectDir, true);
-          if ((App.Model.Prj != null) && App.Model.Prj.Ok)
+          if ((App.Model.Prj != null) && App.Model.Prj.Ok && (App.Model.Prj.Records != null))
           {
             _wavCtls.reinitializePool();
             App.Model.View.initSonogramPool();
@@ -471,9 +477,12 @@ namespace BatInspector.Forms
         ctl.InfoVisible = _infoVisible;
       if (_spSpectrums.Children.Count > 0)
       {
-        ctlWavFile ctl0 = _spSpectrums.Children[0] as ctlWavFile;
-        AppParams.Inst.HideInfos = !ctl0.InfoVisible;
-        DebugLog.log("MainWin:BTN 'Call Info' clicked", enLogType.DEBUG);
+        ctlWavFile? ctl0 = _spSpectrums.Children[0] as ctlWavFile;
+        if (ctl0 != null)
+        {
+          AppParams.Inst.HideInfos = !ctl0.InfoVisible;
+          DebugLog.log("MainWin:BTN 'Call Info' clicked", enLogType.DEBUG);
+        }
       }
     }
 
@@ -528,7 +537,7 @@ namespace BatInspector.Forms
       {
         if (reInitList)
           _dgData.ItemsSource = null;
-        if (_dgData.ItemsSource == null)
+        if ((_dgData.ItemsSource == null) && (filter != null) && (filterItem != null))
         {
           if (App.Model.View.populateList(filter, filterItem))
             initDataGridSource();
@@ -645,8 +654,8 @@ namespace BatInspector.Forms
 
       foreach (ctlWavFile ctl in _spSpectrums.Children)
       {
-        AnalysisFile anaF = App.Model.Prj.Analysis.find(ctl.WavName);
-        PrjRecord rec = App.Model.Prj.findRecord(ctl.WavName);
+        AnalysisFile? anaF = App.Model.Prj.Analysis.find(ctl.WavName);
+        PrjRecord? rec = App.Model.Prj.findRecord(ctl.WavName);
         if ((anaF != null) && (rec != null))
           ctl.updateCallInformations(anaF, rec);
       }
@@ -710,14 +719,14 @@ namespace BatInspector.Forms
       }
       if (append)
       {
-        PrjRecord rec = App.Model.CurrentlyOpen.findRecord(wavName);
+        PrjRecord? rec = App.Model.CurrentlyOpen.findRecord(wavName);
         if (rec != null)
         {
           AnalysisFile? analysisFile = null;
           if (App.Model.CurrentlyOpen.Analysis != null)
             analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
           ctlWavFile? ctl = _wavCtls.get("wavCtl append");
-          if (ctl != null)
+          if ((ctl != null) && (analysisFile != null))
           {
             ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
             if (up)
@@ -745,7 +754,7 @@ namespace BatInspector.Forms
       {
         Dispatcher.BeginInvoke(new dlgOneInt(populateControls), startIdx);
       }
-      else
+      else if (App.Model.CurrentlyOpen != null)
       {
         App.Model.View.StartIdx = startIdx;
         PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
@@ -763,7 +772,7 @@ namespace BatInspector.Forms
             if ((startIdx + i) < App.Model.View.VisibleFiles.Count)
             {
               string wavName = App.Model.View.VisibleFiles[i + startIdx];
-              PrjRecord rec = App.Model.CurrentlyOpen.findRecord(wavName);
+              PrjRecord? rec = App.Model.CurrentlyOpen.findRecord(wavName);
               if (rec != null)
               {
                 lock (rec)
@@ -771,13 +780,13 @@ namespace BatInspector.Forms
                   AnalysisFile? analysisFile = null;
                   if ((analysis != null) && (rec != null))
                     analysisFile = analysis.find(rec.File);
-                  ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
-                  if (ctl != null)
+                  ctlWavFile? ctl = _wavCtls.get($"wavCtl[{i}]");
+                  if ((ctl != null) && (analysisFile != null))
                   {
-                    ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
+                    ctl.setup(analysisFile, rec!, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
                     DockPanel.SetDock(ctl, Dock.Bottom);
                     _spSpectrums.Children.Add(ctl);
-                    initCtlWav(ctl, rec, isQuery);
+                    initCtlWav(ctl, rec!, isQuery);
                   }
                   else
                   {
@@ -797,13 +806,13 @@ namespace BatInspector.Forms
 
     void initCtlWav(ctlWavFile ctl, PrjRecord rec, bool fromQuery)
     {
-      AnalysisFile analysis;
+      AnalysisFile? analysis;
       string[] species;
       string fullWavName;
       string wavName;
       string wavFilePath;
       enModel modelType;
-      if (fromQuery)
+      if ((fromQuery) && (App.Model.Query != null))
       {
         fullWavName = Path.Combine(App.Model.SelectedDir, rec.File);
         wavName = Path.GetFileName(fullWavName);
@@ -821,10 +830,12 @@ namespace BatInspector.Forms
         species = App.Model.Prj.Species;
         modelType = App.Model.Prj.Analysis.ModelType;
       }
-
-      ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
-      ctl.InfoVisible = !AppParams.Inst.HideInfos;
-      ctl.createNewPng();
+      if (analysis != null)
+      {
+        ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
+        ctl.InfoVisible = !AppParams.Inst.HideInfos;
+        ctl.createNewPng();
+      }
     }
 
 
@@ -844,14 +855,16 @@ namespace BatInspector.Forms
 
     public void updateControls()
     {
-      foreach (UIElement it in _spSpectrums.Children)
+      if (App.Model.CurrentlyOpen != null)
       {
-        ctlWavFile ctl = (ctlWavFile)it;
-        PrjRecord rec = App.Model.CurrentlyOpen.findRecord(ctl.WavName);
-        if (rec != null)
-          setCheckboxInWavCtl(ctl, rec.Selected);
+        foreach (UIElement it in _spSpectrums.Children)
+        {
+          ctlWavFile ctl = (ctlWavFile)it;
+          PrjRecord? rec = App.Model.CurrentlyOpen.findRecord(ctl.WavName);
+          if (rec != null)
+            setCheckboxInWavCtl(ctl, rec.Selected);
+        }
       }
-
     }
 
 
@@ -859,8 +872,11 @@ namespace BatInspector.Forms
     {
       System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
-        _frmMsg.showMessage(title, msg, topmost);
-        _frmMsg.Visibility = Visibility.Visible;
+        if (_frmMsg != null)
+        {
+          _frmMsg.showMessage(title, msg, topmost);
+          _frmMsg.Visibility = Visibility.Visible;
+        }
       }), DispatcherPriority.Send);
     }
 
@@ -1077,7 +1093,7 @@ namespace BatInspector.Forms
         App.Model.saveSettings();
         if ((App.Model != null) && (App.Model.Prj != null) && (App.Model.Prj.Analysis != null) &&
           (!App.Model.Prj.Analysis.IsEmpty))
-          App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
+          App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes!, App.Model.Prj.SummaryName);
         DebugLog.log("MainWin:BTN 'save' clicked", enLogType.DEBUG);
         foreach (ctlWavFile c in _spSpectrums.Children)
           c.update();
@@ -1234,13 +1250,13 @@ namespace BatInspector.Forms
 
       if ((App.Model.Prj != null) && (App.Model.Prj.ReloadInGui))
       {
-        if ((App.Model.Prj != null) && App.Model.Prj.Ok && (App.Model.Prj.Analysis != null))
+        if (App.Model.Prj.Ok && (App.Model.Prj.Analysis != null))
         {
           _spSpectrums.Children.Clear();
           DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
           initializeProject(dir);
         }
-        App.Model.Prj.ReloadInGui = false;
+        App.Model.Prj!.ReloadInGui = false;
       }
 
       switch (App.Model.Status.State)
@@ -1388,7 +1404,7 @@ namespace BatInspector.Forms
       {
         if (_frmDebug == null)
           _frmDebug = new frmDebug();
-        ScriptItem s = AppParams.Inst.ScriptInventory.getScriptInfo(script);
+        ScriptItem? s = AppParams.Inst.ScriptInventory.getScriptInfo(script);
         List<ParamItem>? pars = null;
         if (s != null)
         {
@@ -1637,21 +1653,20 @@ namespace BatInspector.Forms
           while ((dep != null) && !(dep is System.Windows.Controls.DataGridRow))
             dep = VisualTreeHelper.GetParent(dep);
 
-          System.Windows.Controls.DataGridRow row = dep as System.Windows.Controls.DataGridRow;
-          it = row.DataContext as ReportItemBd2;
+          System.Windows.Controls.DataGridRow? row = dep as System.Windows.Controls.DataGridRow;
+          if(row != null)
+            it = row.DataContext as ReportItemBd2;
         }
 
-        if (App.Model.CurrentlyOpen != null)
+        if ((App.Model.CurrentlyOpen != null) &&  (it != null))
         {
-          if (it != null)
-          {
-            int.TryParse(it.CallNr, out int callNr);
-            AnalysisFile analysis = App.Model.CurrentlyOpen.Analysis.find(it.FileName);
-            string fileName = Path.GetFileName(it.FileName);
-            string? wavPath = Path.GetDirectoryName(App.Model.CurrentlyOpen.getFullFilePath(it.FileName));
+          int.TryParse(it.CallNr, out int callNr);
+          AnalysisFile? analysis = App.Model.CurrentlyOpen.Analysis.find(it.FileName);
+          string fileName = Path.GetFileName(it.FileName);
+          string? wavPath = Path.GetDirectoryName(App.Model.CurrentlyOpen.getFullFilePath(it.FileName));
+          if((analysis != null) && (wavPath != null))
             setZoom(fileName, analysis, wavPath, null, App.Model.CurrentlyOpen.Analysis.ModelType);
-            changeCallInZoom(callNr - 1);
-          }
+          changeCallInZoom(callNr - 1);
         }
         DebugLog.log("Main:Report double click", enLogType.DEBUG);
       }

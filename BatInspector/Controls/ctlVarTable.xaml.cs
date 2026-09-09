@@ -15,17 +15,17 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlVarTable : System.Windows.Controls.UserControl
   {
-    VarList _varList = null;
+    VarList? _varList = null;
     public ctlVarTable()
     {
       InitializeComponent();
     }
 
-    public void setup(VarList varList)
+    public void setup(VarList? varList)
     { 
       _varList = varList;
       _spVars.Children.Clear();
-      foreach(VarListItem var in _varList.getVarList(false))
+      foreach(VarListItem var in _varList!.getVarList(false))
       {
         if (var.Value.Count == 1)
         {

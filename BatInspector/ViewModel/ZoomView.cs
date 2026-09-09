@@ -368,7 +368,7 @@ namespace BatInspector
 
 
 
-    private void onExitNoiseReduction(object sender, EventArgs e)
+    private void onExitNoiseReduction(object? sender, EventArgs? e)
     {
       _wf.Audio.readWav(_tmp2Wav, true);
       _modelState.State = enAppState.IDLE;
@@ -392,7 +392,7 @@ namespace BatInspector
     public static string getDestPathForOriginal(string wavName, string wavSubDir)
     {
       string retVal;
-      string srcPath = Path.GetDirectoryName(wavName);
+      string? srcPath = Path.GetDirectoryName(wavName);
       if (wavSubDir != "")
         retVal = srcPath.Replace(wavSubDir, AppParams.DIR_ORIG);
       else
@@ -439,16 +439,21 @@ namespace BatInspector
     public void saveAnalysisBackup(string wavName)
     {
       string dstPath = "";
-      string srcPath = Path.GetDirectoryName(wavName);
-      if (srcPath.IndexOf(AppParams.DIR_WAVS) >= 0)
-        dstPath = srcPath.Replace(AppParams.DIR_WAVS, AppParams.DIR_ORIG);
+      string? srcPath = Path.GetDirectoryName(wavName);
+      if (srcPath != null)
+      {
+        if (srcPath.IndexOf(AppParams.DIR_WAVS) >= 0)
+          dstPath = srcPath.Replace(AppParams.DIR_WAVS, AppParams.DIR_ORIG);
+        else
+          dstPath = Path.Combine(srcPath, AppParams.DIR_ORIG);
+        if (!Directory.Exists(dstPath))
+          Directory.CreateDirectory(dstPath);
+        string dstFile = Path.Combine(dstPath, Path.GetFileNameWithoutExtension(wavName)) + AppParams.EXT_CSV;
+        if (!File.Exists(dstFile))
+          _analysis.saveAs(dstFile);
+      }
       else
-        dstPath = Path.Combine(srcPath, AppParams.DIR_ORIG);
-      if (!Directory.Exists(dstPath))
-        Directory.CreateDirectory(dstPath);
-      string dstFile = Path.Combine(dstPath, Path.GetFileNameWithoutExtension(wavName)) + AppParams.EXT_CSV;
-      if (!File.Exists(dstFile))
-        _analysis.saveAs(dstFile);
+        DebugLog.log("could not save analysis backup for file: " + wavName, enLogType.ERROR);
     }
 
     public int export(string dstDir, bool incPng, bool incXml, uint timeStretch, string prefix)

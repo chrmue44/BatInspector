@@ -31,19 +31,19 @@ namespace BatInspector
   [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
   public class QueryFile
   {
-    private string _name;
+    private string _name = "";
 
-    private string _srcDir;
+    private string _srcDir = "";
 
-    private string _created;
+    private string _created = "";
 
-    private string _query;
+    private string _query = "";
 
-    private string _reportFile;
+    private string _reportFile = "";
 
     private string _prjType = "Bats";
 
-    private PrjRecord[] _records;
+    private PrjRecord[] _records = new PrjRecord[0];
 
     public QueryFile()
     {

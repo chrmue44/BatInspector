@@ -270,7 +270,7 @@ namespace BatInspector
       //BitmapImage img = PrjView.Convert(bmp.Bmp);
       //TODO
       //return img;
-      return null;
+      return new BitmapImage(); 
     }
 
     public void init()

@@ -111,7 +111,7 @@ public class ModelParams
 
   public static ModelParams GetModelParams(string name, ModelParams[] modelParams)
   {
-    ModelParams retVal = null;
+    ModelParams retVal = new ModelParams();
     foreach (ModelParams p in modelParams)
     {
       if (p.Name == name)

@@ -17,14 +17,14 @@ using System.Windows.Shapes;
 namespace BatInspector.Controls
 {
 
-  public delegate void dlgCbClick(object sender, RoutedEventArgs e);
+  public delegate void dlgCbClick(object sender, RoutedEventArgs? e);
 
   /// <summary>
   /// Interaction logic for CtlMySqlFieldSelect.xaml
   /// </summary>
   public partial class CtlMySqlFieldSelect : System.Windows.Controls.UserControl
   {
-    dlgCbClick _dlg = null;
+    dlgCbClick? _dlg = null;
     int _rank = 0;
     bool _isReverse = false;
 

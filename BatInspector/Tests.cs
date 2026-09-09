@@ -357,14 +357,12 @@ namespace BatInspector
         f[2] = csv.getCellAsDouble(r, Cols.F_CENTER);
         f[3] = csv.getCellAsDouble(r, Cols.F_75);
         f[4] = csv.getCellAsDouble(r, Cols.F_END);
-        enSigStructure sig = ClassifierBarataud.getSigStructure(f);
         res.addRow();
         res.setCell(r, "F00", f[0]);
         res.setCell(r, "F25", f[1]);
         res.setCell(r, "F50", f[2]);
         res.setCell(r, "F75", f[3]);
         res.setCell(r, "F100", f[4]);
-        res.setCell(r, "Form", sig.ToString());
       }
       res.saveAs("sig.csv");
 
@@ -869,9 +867,12 @@ namespace BatInspector
       FileInfo[] files = dir.GetFiles();
       foreach(FileInfo file in files)
       {
-        Bd2AnnFile f = Bd2AnnFile.loadFrom(file.FullName);
-        f.id = file.Name.Replace(".json","");
-        f.save();
+        Bd2AnnFile? f = Bd2AnnFile.loadFrom(file.FullName);
+        if (f != null)
+        {
+          f.id = file.Name.Replace(".json", "");
+          f.save();
+        }
       }
     }
 
@@ -885,7 +886,9 @@ namespace BatInspector
       int countSocial = 0;
       foreach (FileInfo file in files)
       {
-        Bd2AnnFile f = Bd2AnnFile.loadFrom(file.FullName);
+        Bd2AnnFile? f = Bd2AnnFile.loadFrom(file.FullName);
+        if (f == null)
+          continue;
         foreach (Bd2Annatation a in f.Annatations)
         {
           if(a.Event == "Echolocation")
@@ -1257,7 +1260,7 @@ namespace BatInspector
       string[] files = Directory.GetFiles(Path.Combine(root, "ann"), "*.json");
       foreach (string fileName in files)
       {
-        Bd2AnnFile file = Bd2AnnFile.loadFrom(fileName);
+        Bd2AnnFile? file = Bd2AnnFile.loadFrom(fileName);
         if (file != null)
         {
           string wavFile = Path.Combine(root, "wav", file.id);
@@ -1347,8 +1350,9 @@ namespace BatInspector
 
       WavFile testWav = new WavFile();
       testWav.readFile(target);
-      assert("guano present", testWav.Guano != null);
-      if (testWav.Guano != null)
+      assert("guano present1", testWav.Guano != null);
+      assert("guano present2", wav.Guano != null);
+      if ((testWav.Guano != null) && (wav.Guano != null))
       {
         assert("guano, count", testWav.Guano.Fields.Count == 13);
         GuanoItem? it = wav.Guano.getField("Timestamp");

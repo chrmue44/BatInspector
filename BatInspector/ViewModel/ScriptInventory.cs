@@ -99,7 +99,7 @@ namespace BatInspector
     {
       _scriptPath = fPath;
       string fileName = Path.Combine(fPath, FName);
-      ScriptInventory retVal;
+      ScriptInventory? retVal;
       firstLoadAfterInstall = false;
       ScriptInventory? inventory = null;
       try
@@ -196,9 +196,9 @@ namespace BatInspector
       saveAs(Path.Combine(_scriptPath, FName));
     }
 
-    public ScriptItem getScriptInfo(string script)
+    public ScriptItem? getScriptInfo(string script)
     {
-      ScriptItem retVal = null;
+      ScriptItem? retVal = null;
       script = Path.GetFileName(script);
       foreach(ScriptItem s in Scripts)
       {
@@ -306,7 +306,7 @@ namespace BatInspector
       int cntInMenue = 0;
       foreach (ScriptItem s in srcInventory.Scripts)
       {
-        ScriptItem i = getScriptInfo(s.Name);
+        ScriptItem? i = getScriptInfo(s.Name);
         if (i == null)
         {
           Scripts.Add(s);

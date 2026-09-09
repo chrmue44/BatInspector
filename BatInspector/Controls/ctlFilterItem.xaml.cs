@@ -17,9 +17,9 @@ namespace BatInspector.Controls
   public partial class ctlFilterItem : System.Windows.Controls.UserControl
   {
     int _index;
-    dlgDelete _dlgDelete;
-    ExpressionGenerator _gen;
-    FilterItem _filter;
+    dlgDelete? _dlgDelete = null;
+    ExpressionGenerator? _gen = null;
+    FilterItem _filter = new FilterItem(0,"","");
     
     public int Index {  get { return _index; } }
     public string FilterName { get { return _tbName.Text; } }
@@ -53,7 +53,7 @@ namespace BatInspector.Controls
 
     private void _btnDel_Click(object sender, RoutedEventArgs e)
     {
-      _dlgDelete(_filter.Index);
+      _dlgDelete?.Invoke(_filter.Index);
     }
 
 

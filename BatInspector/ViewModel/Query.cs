@@ -28,8 +28,8 @@ namespace BatInspector
     string _expression;
     //string _reportName = "";
  
-    QueryFile _queryFile = null;
-    List<PrjRecord> _records = null;
+    QueryFile _queryFile;
+    List<PrjRecord> _records;
     int _cntCall;
     int _cntFile;
 

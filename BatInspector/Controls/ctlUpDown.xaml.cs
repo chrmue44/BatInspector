@@ -16,7 +16,7 @@ namespace BatInspector.Controls
     double _max = 100;
     double _val = 0;
     double _step = 5;
-    dlgUpDown _dlg;
+    dlgUpDown? _dlg;
 
     public ctlUpDown()
     {
@@ -25,7 +25,7 @@ namespace BatInspector.Controls
 
     public double Value { get { return _val; } }
 
-    public void setup(double min, double max, double initVal, double step, dlgUpDown dlg)
+    public void setup(double min, double max, double initVal, double step, dlgUpDown? dlg)
     {
       _min = min;
       _max = max;

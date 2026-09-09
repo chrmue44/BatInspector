@@ -77,7 +77,7 @@ namespace BatInspector.Forms
         {
           case enParamType.DIRECTORY:
           case enParamType.FILE:
-            CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
+            CtlSelectFile ctl = (CtlSelectFile)_sp.Children[i];
             if (ctl.getValue().Length == 0)
             {
               en = false;
@@ -85,7 +85,7 @@ namespace BatInspector.Forms
             }
             break;
           case enParamType.MICSCELLANOUS:
-            ctlDataItem ctld = _sp.Children[i] as ctlDataItem;
+            ctlDataItem ctld = (ctlDataItem)_sp.Children[i];
             if (ctld.getValue().Length == 0)
             {
               en = false;
@@ -112,15 +112,15 @@ namespace BatInspector.Forms
         {
           case enParamType.FILE:
           case enParamType.DIRECTORY:
-            CtlSelectFile ctl = _sp.Children[i] as CtlSelectFile;
+            CtlSelectFile ctl = (CtlSelectFile)_sp.Children[i];
             _paramVals.Add(ctl.getValue());
             break;
           case enParamType.MICSCELLANOUS:
-            ctlDataItem ctld = _sp.Children[i] as ctlDataItem;
+            ctlDataItem ctld = (ctlDataItem)_sp.Children[i];
             _paramVals.Add(ctld.getValue());
             break;
           case enParamType.BOOL: 
-            System.Windows.Controls.CheckBox chk = _sp.Children[i] as System.Windows.Controls.CheckBox;
+            System.Windows.Controls.CheckBox chk = (System.Windows.Controls.CheckBox)_sp.Children[i];
             string boolVal = "0";
             if((chk != null) && (chk.IsChecked == true))
               boolVal = "1";

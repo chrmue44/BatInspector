@@ -45,7 +45,7 @@ namespace BatInspector.Forms
 
       for (int i = 0; i < exp.DocumentFiles.Length; i++)
       {
-        ctlExportData ctl = _sp.Children[i] as ctlExportData;
+        ctlExportData? ctl = _sp.Children[i] as ctlExportData;
         if (ctl != null)
         {
           exp.DocumentFiles[i] = ctl.getData();

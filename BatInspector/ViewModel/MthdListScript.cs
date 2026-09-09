@@ -19,7 +19,7 @@ namespace BatInspector
 {
   public class MthdListScript : MethodList
   {
-    static MthdListScript _inst;
+    static MthdListScript? _inst;
     List<Csv> _listCsv;
     List<HelpTabItem> _scriptHelpTab = new List<HelpTabItem>();
     string _wrkDir;
@@ -251,7 +251,7 @@ namespace BatInspector
     {
       tParseError err = tParseError.SUCCESS;
       result = new AnyType();
-      PrjInfo info = null;
+      PrjInfo? info = null;
       if (argv.Count >= 9)
       {
         argv[0].changeType(AnyType.tType.RT_STR);
@@ -375,7 +375,7 @@ namespace BatInspector
           RemoveSource = false,
           StartTime = DateTime.MinValue,
           EndTime = DateTime.MaxValue,
-          ModelParams = null,
+          ModelParams = new ModelParams(),
           Location = loc,
           Creator = creator
         };
@@ -502,7 +502,7 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Records != null))
       {
         int nr = App.Model.Prj.Records.Length;
         result.assignInt64(nr);
@@ -555,7 +555,7 @@ namespace BatInspector
               {
                 case enFileInfo.SELECT:
                   argv[2].changeType(AnyType.tType.RT_BOOL);
-                  App.Model.Prj.Records[idxF].Selected = argv[2].getBool();
+                  App.Model.Prj.Records![idxF].Selected = argv[2].getBool();
                   break;
 
                 case enFileInfo.LATITUDE:
@@ -566,7 +566,7 @@ namespace BatInspector
                       err = tParseError.NR_OF_ARGUMENTS;
                       break;
                     }
-                    BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, App.Model.Prj.Records[idxF].File);
+                    BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, App.Model.Prj.Records![idxF].File);
                     argv[2].changeType(AnyType.tType.RT_STR);
                     argv[3].changeType(AnyType.tType.RT_STR);
                     rec.GPS.Position = argv[2].getString() + " " + argv[3].getString();
@@ -601,7 +601,7 @@ namespace BatInspector
         {
           argv[0].changeType(AnyType.tType.RT_UINT64);
           int idxF = (int)argv[0].getUint64();
-          int maxIdxF = App.Model.Prj.Records.Length;
+          int maxIdxF = App.Model.Prj.Records!.Length;
           if (idxF < maxIdxF)
           {
             result.assign(App.Model.SelectedDir + "/" + App.Model.Prj.WavSubDir + "/" +
@@ -744,14 +744,14 @@ namespace BatInspector
                 case enFileInfo.SELECT:
                   if (App.Model.Prj.Analysis.Files.Count > 0)
                   {
-                    PrjRecord rec = App.Model.Prj.find(App.Model.Prj.Analysis.Files[idxF].Name);
+                    PrjRecord? rec = App.Model.Prj.find(App.Model.Prj.Analysis.Files[idxF].Name);
                     if (rec != null)
                       result.assignBool(rec.Selected);
                     else
                       err = tParseError.RESSOURCE;
                   }
                   else
-                    result.assignBool(App.Model.Prj.Records[idxF].Selected);
+                    result.assignBool(App.Model.Prj.Records![idxF].Selected);
                   break;
                 case enFileInfo.LATITUDE:
                   result.assign(App.Model.Prj.Analysis.Files[idxF].getDouble(Cols.LAT));
@@ -796,8 +796,8 @@ namespace BatInspector
           {
             argv[0].changeType(AnyType.tType.RT_INT64);
             int idx = (int)argv[0].getInt64();
-            if (App.Model.Prj.Records.Length > idx)
-              fName = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, App.Model.Prj.Records[idx].File);
+            if (App.Model.Prj.Records!.Length > idx)
+              fName = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, App.Model.Prj.Records![idx].File);
             else
               err = tParseError.ARG1_OUT_OF_RANGE;
           }
@@ -813,7 +813,7 @@ namespace BatInspector
           edit.FftForward();
           edit.bandpass(fMin, fMax);
           edit.FftBackward();
-          edit.saveAs(fName, App.Model.Prj.WavSubDir);
+          edit.saveAs(fName, App.Model.Prj!.WavSubDir);
         }
       }
       return err;
@@ -1119,7 +1119,7 @@ namespace BatInspector
         argv[0].changeType(AnyType.tType.RT_STR);
         string fName = argv[0].getString();
         if ((fName.IndexOf("/") < 0) && (fName.IndexOf("\\") < 0))
-          fName = _inst._wrkDir + "/" + fName;
+          fName = _inst!._wrkDir + "/" + fName;
 
         string sep = ";";
         bool withHeader = false;
@@ -1137,8 +1137,8 @@ namespace BatInspector
         {
           Csv csv = new Csv();
           csv.read(fName, sep, withHeader);
-          _inst._listCsv.Add(csv);
-          result.assignInt64(_inst._listCsv.Count - 1);
+          _inst!._listCsv.Add(csv);
+          result.assignInt64(_inst!._listCsv.Count - 1);
         }
         else
           err = tParseError.ARG1_OUT_OF_RANGE;
@@ -1162,14 +1162,14 @@ namespace BatInspector
           argv[1].changeType(AnyType.tType.RT_INT64);
           write = (argv[1].getInt64() == 1);
         }
-        if (handle < _inst._listCsv.Count)
+        if (handle < _inst!._listCsv.Count)
         {
-          Csv csv = _inst._listCsv[handle];
+          Csv csv = _inst!._listCsv[handle];
           if (File.Exists(csv.FileName))
           {
             if (write)
               csv.write();
-            _inst._listCsv.Remove(csv);
+            _inst!._listCsv.Remove(csv);
           }
           else
             err = tParseError.ARG1_OUT_OF_RANGE;
@@ -1189,9 +1189,9 @@ namespace BatInspector
       {
         argv[0].changeType(AnyType.tType.RT_INT64);
         int handle = (int)argv[0].getInt64();
-        if (handle < _inst._listCsv.Count)
+        if (handle < _inst!._listCsv.Count)
         {
-          Csv csv = _inst._listCsv[handle];
+          Csv csv = _inst!._listCsv[handle];
           result.assignInt64(csv.RowCnt);
         }
         else
@@ -1215,7 +1215,7 @@ namespace BatInspector
         int row = (int)argv[1].getInt64();
         argv[2].changeType(AnyType.tType.RT_STR);
         string col = argv[2].getString();
-        if ((handle >= 0) && (handle < _inst._listCsv.Count))
+        if ((handle >= 0) && (handle < _inst!._listCsv.Count))
         {
           Csv csv = _inst._listCsv[handle];
           string ret = csv.getCell(row, col);
@@ -1243,9 +1243,9 @@ namespace BatInspector
         string col = argv[2].getString();
         argv[3].changeType(AnyType.tType.RT_STR);
         string value = argv[3].getString();
-        if ((handle >= 0) && (handle < _inst._listCsv.Count))
+        if ((handle >= 0) && (handle < _inst!._listCsv.Count))
         {
-          Csv csv = _inst._listCsv[handle];
+          Csv csv = _inst!._listCsv[handle];
           csv.setCell(row, col, value);
         }
         else
@@ -1411,10 +1411,10 @@ namespace BatInspector
         {
           DirectoryInfo dir = new DirectoryInfo(root);
           FileInfo[] files = dir.GetFiles(filter);
-          _inst._files = new List<string>();
+          _inst!._files = new List<string>();
           foreach (FileInfo f in files)
-            _inst._files.Add(f.FullName);
-          result.assign(_inst._files.Count);
+            _inst!._files.Add(f.FullName);
+          result.assign(_inst!._files.Count);
         }
         catch (Exception ex)
         {
@@ -1441,10 +1441,10 @@ namespace BatInspector
         {
           DirectoryInfo dir = new DirectoryInfo(root);
           DirectoryInfo[] subDirs = dir.GetDirectories(filter);
-          _inst._subDirs = new List<string>();
+          _inst!._subDirs = new List<string>();
           foreach (DirectoryInfo f in subDirs)
-            _inst._subDirs.Add(f.FullName);
-          result.assign(_inst._subDirs.Count);
+            _inst!._subDirs.Add(f.FullName);
+          result.assign(_inst!._subDirs.Count);
         }
         catch (Exception ex)
         {
@@ -1472,14 +1472,14 @@ namespace BatInspector
           argv[1].changeType(AnyType.tType.RT_BOOL);
           fullPath = !argv[1].getBool();
         }
-        if (_inst._files != null)
+        if (_inst!._files != null)
         {
-          if ((index >= 0) && (index < _inst._files.Count))
+          if ((index >= 0) && (index < _inst!._files.Count))
           {
             if (fullPath)
-              result.assign(_inst._files[index]);
+              result.assign(_inst!._files[index]);
             else
-              result.assign(Path.GetFileName(_inst._files[index]));
+              result.assign(Path.GetFileName(_inst!._files[index]));
           }
           else
             err = tParseError.ARG1_OUT_OF_RANGE;
@@ -1506,14 +1506,14 @@ namespace BatInspector
           fullPath = !argv[1].getBool();
         }
         int index = (int)argv[0].getInt64();
-        if (_inst._subDirs != null)
+        if (_inst!._subDirs != null)
         {
-          if ((index >= 0) && (index < _inst._subDirs.Count))
+          if ((index >= 0) && (index < _inst!._subDirs.Count))
           {
             if (fullPath)
-              result.assign(_inst._subDirs[index]);
+              result.assign(_inst!._subDirs[index]);
             else
-              result.assign(Path.GetFileName(_inst._subDirs[index]));
+              result.assign(Path.GetFileName(_inst!._subDirs[index]));
           }
           else
             err = tParseError.ARG1_OUT_OF_RANGE;
@@ -1540,7 +1540,7 @@ namespace BatInspector
           double lon = argv[1].getFloat();
           if ((lon >= -180) && (lon <= 180))
           {
-            ParRegion region = App.Model.Regions.findRegion(lat, lon);
+            ParRegion? region = App.Model.Regions.findRegion(lat, lon);
             if (region != null)
               result.assign(region.Name);
             else
@@ -1573,7 +1573,7 @@ namespace BatInspector
           double lon = argv[2].getFloat();
           if ((lon >= -180) && (lon <= 180))
           {
-            bool occurs = App.Model.CurrentlyOpen.IsBirdPrj || App.Model.Regions.occursAtLocation(spec, lat, lon);
+            bool occurs = ((App.Model.CurrentlyOpen != null) && App.Model.CurrentlyOpen.IsBirdPrj) || App.Model.Regions.occursAtLocation(spec, lat, lon);
             result.assignBool(occurs);
           }
           else
@@ -1596,7 +1596,7 @@ namespace BatInspector
         string fileName = argv[0].getString();
         if (App.Model.Prj?.Ok == true)
         {
-          AnalysisFile f = App.Model.Prj.Analysis.find(fileName);
+          AnalysisFile? f = App.Model.Prj.Analysis.find(fileName);
           if (f != null)
           {
             WavFile wav = new WavFile();
@@ -1706,17 +1706,17 @@ namespace BatInspector
           int maxIdxF = App.Model.Prj.Analysis.Files.Count;
           if (idxF < maxIdxF)
           {
-            if ((_inst._audio == null) || (_inst._lastFileIdx != idxF))
+            if ((_inst!._audio == null) || (_inst!._lastFileIdx != idxF))
             {
-              _inst._audio = new SoundEdit();
+              _inst!._audio = new SoundEdit();
               string file = App.Model.Prj.Analysis.Files[idxF].getString(Cols.NAME);
               string fullPath = App.Model.Prj.getFullFilePath(file);
-              int ret = _inst._audio.readWav(fullPath);
+              int ret = _inst!._audio.readWav(fullPath);
               if (ret == 0)
               {
-                double maxT = (double)_inst._audio.Samples.Length / _inst._audio.SamplingRate;
-                _inst._audio.findOverdrive(0, maxT);
-                _inst._lastFileIdx = idxF;
+                double maxT = (double)_inst!._audio.Samples.Length / _inst!._audio.SamplingRate;
+                _inst!._audio.findOverdrive(0, maxT);
+                _inst!._lastFileIdx = idxF;
               }
               else
                 err = tParseError.ARG1_OUT_OF_RANGE;

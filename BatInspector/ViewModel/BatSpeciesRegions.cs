@@ -76,9 +76,10 @@ namespace BatInspector
 
     public static BatSpeciesRegions loadFrom(string fDir)
     {
-      BatSpeciesRegions retVal = null;
-      FileStream file = null;
+      BatSpeciesRegions? retVal = null;
+      FileStream? file = null;
       string fPath = Path.Combine(fDir,  _fName);
+      bool createNew = false;
       try
       {
         DebugLog.log("try loading BatSpeciesRegions: " + fPath, enLogType.DEBUG);
@@ -87,7 +88,7 @@ namespace BatInspector
           using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
           {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatSpeciesRegions));
-            retVal = (BatSpeciesRegions)ser.ReadObject(file);
+            retVal = (BatSpeciesRegions?)ser.ReadObject(file);
             if (retVal == null)
               DebugLog.log("regions file not well formed!", enLogType.ERROR);
           }
@@ -95,22 +96,27 @@ namespace BatInspector
         else
         {
           DebugLog.log("BatSpeciesRegions does not exist, create new file: " + fPath, enLogType.DEBUG);
-          retVal = new BatSpeciesRegions();
-          retVal.init();
           if(!Directory.Exists(fDir))
             Directory.CreateDirectory(fDir);
-          retVal.save(fDir);
+          createNew = true;
         }
       }
       catch (Exception e)
       {
         DebugLog.log("failed to read config file : " + fPath + ": " + e.ToString(), enLogType.ERROR);
-        retVal = null;
+        createNew = true;
       }
       finally
       {
         if (file != null)
           file.Close();
+      }
+
+      if(createNew)
+      {
+        retVal = new BatSpeciesRegions();
+        retVal.init();
+        retVal.save(fDir);
       }
       return retVal;
     }
@@ -259,9 +265,9 @@ namespace BatInspector
       }
     }
 
-    public ParRegion findRegion(double lat, double lon)
+    public ParRegion? findRegion(double lat, double lon)
     {
-      ParRegion retVal = null;
+      ParRegion? retVal = null;
       foreach(ParRegion  r in Regions)
       {
         ParLocation l = new ParLocation(lat, lon);

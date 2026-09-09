@@ -33,26 +33,26 @@ namespace BatInspector.Forms
       ContentRendered += FrmZoom_ContentRendered;
     }
 
-    public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile ctlWav, dlgVoid openExpWindow, enModel modelType)
+    public void setup(string name, AnalysisFile analysis, string wavFilePath,  ctlWavFile? ctlWav, dlgVoid openExpWindow, enModel modelType)
     {
-      string[] species = App.Model.CurrentlyOpen == null ? null : App.Model.CurrentlyOpen.Species;
+      string[]? species = App.Model.CurrentlyOpen == null ? null : App.Model.CurrentlyOpen.Species;
         _ctl.setup(analysis, wavFilePath, species, ctlWav, openExpWindow, modelType);
       this.Title = name;
     }
 
 
-    private void FrmZoom_ContentRendered(object sender, EventArgs e)
+    private void FrmZoom_ContentRendered(object? sender, EventArgs? e)
     {
       _ctl.update();
     }
 
-    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    private void Window_SizeChanged(object? sender, SizeChangedEventArgs? e)
     {
       AppParams.Inst.ZoomWindowHeight = this.Height;
       AppParams.Inst.ZoomWindowWidth = this.Width;
     }
 
-    private void Window_Closing(object sender, CancelEventArgs e)
+    private void Window_Closing(object? sender, CancelEventArgs? e)
     {
       _closeWin(enWinType.ZOOM);
     }

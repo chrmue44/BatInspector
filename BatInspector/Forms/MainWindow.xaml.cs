@@ -41,31 +41,31 @@ namespace BatInspector.Forms
     public const int MAX_IMG_HEIGHT = 256;
     const int MAX_IMG_WIDTH = 512;
 
-    FrmFilter _frmFilter = null;
-    FrmScript _frmScript = null;
-    FrmAbout _frmAbout = null;
-    frmSettings _frmSettings = null;
-    FrmCreatePrj _frmCreatePrj = null;
-    frmCreateReport _frmCreateReport = null;
-    frmWavFile _frmWavFile = null;
-    FrmColorMap _frmColorMap = null;
-    frmDebug _frmDebug = null;
-    FrmQuery _frmQuery = null;
-    frmCleanup _frmCleanup = null;
-    FrmMessage _frmMsg = new FrmMessage();
-    frmExport _frmExp = null;
+    FrmFilter? _frmFilter = null;
+    FrmScript? _frmScript = null;
+    FrmAbout? _frmAbout = null;
+    frmSettings? _frmSettings = null;
+    FrmCreatePrj? _frmCreatePrj = null;
+    frmCreateReport? _frmCreateReport = null;
+    frmWavFile? _frmWavFile = null;
+    FrmColorMap? _frmColorMap = null;
+    frmDebug? _frmDebug = null;
+    FrmQuery? _frmQuery = null;
+    frmCleanup? _frmCleanup = null;
+    FrmMessage? _frmMsg = new FrmMessage();
+    frmExport? _frmExp = null;
     int _imgHeight = MAX_IMG_HEIGHT;
-    FrmZoom _frmZoom = null;
-    CtrlZoom _ctlZoom = null;
-    TabItem _tbZoom = null;
-    frmSpeciesData _frmSpecies = null;
-    Thread _workerPredict = null;
-    Thread _workerStartup = null;
+    FrmZoom? _frmZoom = null;
+    CtrlZoom? _ctlZoom = null;
+    TabItem? _tbZoom = null;
+    frmSpeciesData? _frmSpecies = null;
+    Thread? _workerPredict = null;
+    Thread? _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
-    DirectoryInfo _projectDir;
-    FileInfo _queryFile;
+    DirectoryInfo? _projectDir;
+    FileInfo? _queryFile;
     string _oldTab = "";
     Pool<ctlWavFile> _wavCtls;
 
@@ -108,19 +108,22 @@ namespace BatInspector.Forms
       this.Top = AppParams.Inst.MainWindowPosX;
       this.Left = AppParams.Inst.MainWindowPosY;
 
-      double maxWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;
-      double maxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
-      if ((this.Left + this.Width) > maxWidth)
+      Screen? s = Screen.PrimaryScreen;
+      if (s != null)
       {
-        double w = maxHeight - this.Left;
-        this.Width = w > 0 ? w : maxWidth - 50;
+        double maxWidth = s.WorkingArea.Width;
+        double maxHeight = s.WorkingArea.Height;
+        if ((this.Left + this.Width) > maxWidth)
+        {
+          double w = maxHeight - this.Left;
+          this.Width = w > 0 ? w : maxWidth - 50;
+        }
+        if ((this.Top + this.Height) > maxHeight)
+        {
+          double h = maxHeight - this.Top;
+          this.Height = h > 0 ? h : maxHeight - 50;
+        }
       }
-      if ((this.Top + this.Height) > maxHeight)
-      {
-        double h = maxHeight - this.Top;
-        this.Height = h > 0 ? h : maxHeight - 50;
-      }
-
       _timer = new System.Windows.Threading.DispatcherTimer();
       _timer.Tick += new EventHandler(timer_Tick);
       _timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
@@ -172,14 +175,14 @@ namespace BatInspector.Forms
       }
     }
 
-    public void TreeViewItem_Expanded(object sender, RoutedEventArgs e)
+    public void TreeViewItem_Expanded(object? sender, RoutedEventArgs? e)
     {
-      TreeViewItem item = e.Source as TreeViewItem;
-      if ((item.Items.Count >= 1) /*&& (item.Items[0] is string)*/)
+      TreeViewItem? item = e?.Source as TreeViewItem;
+      if ((item != null) && (item.Items.Count >= 1) /*&& (item.Items[0] is string) */)
       {
-        item.Items.Clear();
+        item!.Items.Clear();  
 
-        DirectoryInfo expandedDir = null;
+        DirectoryInfo? expandedDir = null;
         if (item.Tag is DriveInfo)
           expandedDir = (item.Tag as DriveInfo).RootDirectory;
         if (item.Tag is DirectoryInfo)
@@ -198,7 +201,7 @@ namespace BatInspector.Forms
                 string prjFile = Project.containsProject(subDir);
                 if (prjFile != "")
                 {
-                  ModelParams[] modelParams = Project.readModelParams(prjFile);
+                  ModelParams[]? modelParams = Project.readModelParams(prjFile);
                   childItem.FontWeight = FontWeights.Bold;
                   if (Project.evaluationDone(subDir, modelParams))
                     childItem.Foreground = new SolidColorBrush(Colors.Green);
@@ -246,15 +249,15 @@ namespace BatInspector.Forms
 
     private void trvStructure_Collapsed(object sender, RoutedEventArgs e)
     {
-      TreeViewItem item = e.Source as TreeViewItem;
+      TreeViewItem item = (TreeViewItem)e.Source;
 
     }
 
     public void TreeViewItem_Selected(object sender, RoutedEventArgs e)
     {
       BackgroundWorker worker = new BackgroundWorker();
-      TreeViewItem item = e.Source as TreeViewItem;
-      DirectoryInfo dir = item.Tag as DirectoryInfo;
+      TreeViewItem item = (TreeViewItem)e.Source;
+      DirectoryInfo? dir = item.Tag as DirectoryInfo;
       _sw.Restart();
       foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.release();
@@ -264,25 +267,27 @@ namespace BatInspector.Forms
       {
         _ctlPrjBtn.initFileButton(false);
         collapseTreeView(true);
-        worker.DoWork += delegate (object s, DoWorkEventArgs args)
+        worker.DoWork += delegate (object? s, DoWorkEventArgs args)
         {
-          DirectoryInfo d = (DirectoryInfo)args.Argument;
-          initializeProject(d);
+          DirectoryInfo? d = (DirectoryInfo?)args.Argument;
+          if(d != null)
+            initializeProject(d);
         };
         worker.RunWorkerAsync(dir);
       }
       else
       {
-        FileInfo file = item.Tag as FileInfo;
+        FileInfo? file = item.Tag as FileInfo;
         if ((file != null) && Query.isQuery(file))
         {
           _ctlPrjBtn.initFileButton(true);
           _tbSum.Visibility = Visibility.Collapsed;
           collapseTreeView(true);
-          worker.DoWork += delegate (object s, DoWorkEventArgs args)
+          worker.DoWork += delegate (object? s, DoWorkEventArgs args)
           {
-            FileInfo f = (FileInfo)args.Argument;
-            initializeQuery(f);
+            FileInfo? f = (FileInfo?)args.Argument;
+            if(f != null)
+              initializeQuery(f);
           };
           worker.RunWorkerAsync(file);
         }
@@ -324,7 +329,7 @@ namespace BatInspector.Forms
         _imgHeight = MAX_IMG_HEIGHT;
       foreach (UIElement ui in _spSpectrums.Children)
       {
-        ctlWavFile ctl = ui as ctlWavFile;
+        ctlWavFile ctl = (ctlWavFile)ui;
         ctl.setHeight(_imgHeight);
       }
     }
@@ -366,11 +371,11 @@ namespace BatInspector.Forms
         {
           if (ctl.Analysis?.getString(Cols.NAME) == fName)
           {
-            AnalysisFile newAnalysis = App.Model.CurrentlyOpen?.Analysis.find(fName);
-            PrjRecord rec = App.Model.CurrentlyOpen?.findRecord(fName);
+            AnalysisFile newAnalysis = App.Model.CurrentlyOpen.Analysis.find(fName);
+            PrjRecord rec = App.Model.CurrentlyOpen.findRecord(fName);
             ctl.updateCallInformations(newAnalysis, rec);
             if (ctl.Analysis == App.Model.ZoomView.Analysis)
-              _ctlZoom.updateManSpecies();
+              _ctlZoom?.updateManSpecies();
             break;
           }
         }
@@ -389,7 +394,8 @@ namespace BatInspector.Forms
       {
         try
         {
-          App.Model.initProject(_projectDir, true);
+          if(_projectDir != null)
+            App.Model.initProject(_projectDir, true);
           if ((App.Model.Prj != null) && App.Model.Prj.Ok)
           {
             _wavCtls.reinitializePool();
@@ -426,7 +432,8 @@ namespace BatInspector.Forms
       {
         try
         {
-          App.Model.initQuery(_queryFile);
+          if(_queryFile != null)
+            App.Model.initQuery(_queryFile);
           if (App.Model.Query != null)
           {
             _wavCtls.reinitializePool();
@@ -497,7 +504,7 @@ namespace BatInspector.Forms
 
 
 
-    public void buildWavFileList(bool selectedOnly, Filter filter = null, FilterItem filterItem = null, bool reInitList = false)
+    public void buildWavFileList(bool selectedOnly, Filter? filter = null, FilterItem? filterItem = null, bool reInitList = false)
     {
       if (App.Model.CurrentlyOpen == null)
         return;
@@ -554,7 +561,7 @@ namespace BatInspector.Forms
 
 
 
-    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile ctlWav, enModel modelType, string[] species = null)
+    public void setZoom(string name, AnalysisFile analysis, string wavFilePath, ctlWavFile? ctlWav, enModel modelType, string[]? species = null)
     {
       DebugLog.log("activate zoom view of: " + name, enLogType.DEBUG);
       if (AppParams.Inst.ZoomSeparateWin)
@@ -568,11 +575,11 @@ namespace BatInspector.Forms
       else
       {
         if (App.Model.CurrentlyOpen != null)
-          _ctlZoom.setup(analysis, wavFilePath, App.Model.CurrentlyOpen.Species, ctlWav, openExportWindow, modelType);
+          _ctlZoom?.setup(analysis, wavFilePath, App.Model.CurrentlyOpen.Species, ctlWav, openExportWindow, modelType);
         else
-          _ctlZoom.setup(analysis, wavFilePath, species, null, openExportWindow, modelType);
-        _tbZoom.Header = "Zoom: " + Path.GetFileName(name);
-        _tbZoom.Visibility = Visibility.Visible;
+          _ctlZoom?.setup(analysis, wavFilePath, species, null, openExportWindow, modelType);
+        _tbZoom?.Header = "Zoom: " + Path.GetFileName(name);
+        _tbZoom?.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
         Dispatcher.BeginInvoke((Action)(() => _tbMain.SelectedItem = _tbZoom));
       }
@@ -611,7 +618,7 @@ namespace BatInspector.Forms
     private TreeViewItem CreateTreeItem(object o)
     {
       TreeViewItem item = new TreeViewItem();
-      DirectoryInfo d = o as DirectoryInfo;
+      DirectoryInfo d = (DirectoryInfo)o;
       if (d != null)
         item.Header = d.Name;
       else
@@ -674,7 +681,7 @@ namespace BatInspector.Forms
           App.Model.View.StartIdx++;
           if (_spSpectrums.Children.Count > 0)
           {
-            ctlWavFile ctl = _spSpectrums.Children[0] as ctlWavFile;
+            ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[0];
             ctl.release();
             _spSpectrums.Children.RemoveAt(0);
           }
@@ -694,7 +701,7 @@ namespace BatInspector.Forms
           wavName = App.Model.View.VisibleFiles[App.Model.View.StartIdx];
           if (_spSpectrums.Children.Count > 0)
           {
-            ctlWavFile ctl = _spSpectrums.Children[_spSpectrums.Children.Count - 1] as ctlWavFile;
+            ctlWavFile ctl = (ctlWavFile)_spSpectrums.Children[_spSpectrums.Children.Count - 1];
             ctl.release();
             _spSpectrums.Children.RemoveAt(_spSpectrums.Children.Count - 1);
           }
@@ -706,17 +713,22 @@ namespace BatInspector.Forms
         PrjRecord rec = App.Model.CurrentlyOpen.findRecord(wavName);
         if (rec != null)
         {
-          AnalysisFile analysisFile = null;
+          AnalysisFile? analysisFile = null;
           if (App.Model.CurrentlyOpen.Analysis != null)
             analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
-          ctlWavFile ctl = _wavCtls.get("wavCtl append");
-          ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
-          if (up)
-            _spSpectrums.Children.Add(ctl);
+          ctlWavFile? ctl = _wavCtls.get("wavCtl append");
+          if (ctl != null)
+          {
+            ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
+            if (up)
+              _spSpectrums.Children.Add(ctl);
+            else
+              _spSpectrums.Children.Insert(0, ctl);
+            bool isQuery = App.Model.Query != null;
+            initCtlWav(ctl, rec, isQuery);
+          }
           else
-            _spSpectrums.Children.Insert(0, ctl);
-          bool isQuery = App.Model.Query != null;
-          initCtlWav(ctl, rec, isQuery);
+            DebugLog.log("no more WAV controls in pool available", enLogType.ERROR);
         }
       }
       setPrjHeader(App.Model.View.StartIdx);
@@ -736,7 +748,7 @@ namespace BatInspector.Forms
       else
       {
         App.Model.View.StartIdx = startIdx;
-        PrjRecord[] recList = App.Model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
         bool isQuery = App.Model.Query != null;
         Analysis analysis = App.Model.CurrentlyOpen.Analysis;
         if (recList != null)
@@ -756,7 +768,7 @@ namespace BatInspector.Forms
               {
                 lock (rec)
                 {
-                  AnalysisFile analysisFile = null;
+                  AnalysisFile? analysisFile = null;
                   if ((analysis != null) && (rec != null))
                     analysisFile = analysis.find(rec.File);
                   ctlWavFile ctl = _wavCtls.get($"wavCtl[{i}]");
@@ -834,8 +846,8 @@ namespace BatInspector.Forms
     {
       foreach (UIElement it in _spSpectrums.Children)
       {
-        ctlWavFile ctl = it as ctlWavFile;
-        PrjRecord rec = App.Model.CurrentlyOpen?.findRecord(ctl.WavName);
+        ctlWavFile ctl = (ctlWavFile)it;
+        PrjRecord rec = App.Model.CurrentlyOpen.findRecord(ctl.WavName);
         if (rec != null)
           setCheckboxInWavCtl(ctl, rec.Selected);
       }
@@ -856,7 +868,7 @@ namespace BatInspector.Forms
     {
       System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
-        _frmMsg.Visibility = Visibility.Hidden;
+        _frmMsg?.Visibility = Visibility.Hidden;
       }), DispatcherPriority.ContextIdle);
     }
 
@@ -1051,15 +1063,15 @@ namespace BatInspector.Forms
           App.Model.Prj.writePrjFile();
         }
         if ((App.Model.ZoomView != null) && (App.Model.ZoomView.Waterfall != null) &&
-           ((_ctlZoom._gradientRange != AppParams.Inst.GradientRange) ||
+           ((_ctlZoom?._gradientRange != AppParams.Inst.GradientRange) ||
             (App.Model.ZoomView.Waterfall.BlackLevel != AppParams.Inst.BlackLevel))
           )
         {
           MessageBoxResult res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.MsgDisplayContrast, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
-          if (res == MessageBoxResult.Yes)
+          if ((res == MessageBoxResult.Yes) && (_ctlZoom != null))
           {
             AppParams.Inst.GradientRange = _ctlZoom._gradientRange;
-            AppParams.Inst.BlackLevel = App.Model.ZoomView.Waterfall.BlackLevel;
+            AppParams.Inst.BlackLevel = App.Model.ZoomView.Waterfall.BlackLevel;           
           }
         }
         App.Model.saveSettings();
@@ -1201,7 +1213,7 @@ namespace BatInspector.Forms
       }));
     }
 
-    private void timer_Tick(object sender, EventArgs e)
+    private void timer_Tick(object? sender, EventArgs? e)
     {
       setMouseStatus();
       if (App.Model.Status.Msg != null)
@@ -1269,7 +1281,7 @@ namespace BatInspector.Forms
               _workerStartup = new Thread(initProjectAsync);
             else if (_queryFile != null)
               _workerStartup = new Thread(initQueryAsync);
-            _workerStartup.Start();
+            _workerStartup!.Start();
           }
           else if (!_workerStartup.IsAlive)
           {
@@ -1377,7 +1389,7 @@ namespace BatInspector.Forms
         if (_frmDebug == null)
           _frmDebug = new frmDebug();
         ScriptItem s = AppParams.Inst.ScriptInventory.getScriptInfo(script);
-        List<ParamItem> pars = null;
+        List<ParamItem>? pars = null;
         if (s != null)
         {
           if (s.IsTool)
@@ -1387,11 +1399,11 @@ namespace BatInspector.Forms
           }
           else
             pars = s.Parameter;
+        
+          _frmDebug.Visibility = Visibility.Visible;
+          _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
+          DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
         }
-        _frmDebug.Visibility = Visibility.Visible;
-        _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
-        DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
-
       }
       catch (Exception ex)
       {
@@ -1452,7 +1464,7 @@ namespace BatInspector.Forms
     }
 
 
-    private void _scrollPrj_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    private void _scrollPrj_ValueChanged(object? sender, RoutedPropertyChangedEventArgs<double>? e)
     {
       try
       {
@@ -1499,7 +1511,7 @@ namespace BatInspector.Forms
 
     private void DropdownButton_Checked(object sender, RoutedEventArgs e)
     {
-      var menu = (sender as ToggleButton).ContextMenu;
+      var menu = ((ToggleButton)sender).ContextMenu;
       menu.PlacementTarget = sender as ToggleButton;
       menu.Placement = PlacementMode.Bottom;
       menu.IsOpen = true;
@@ -1507,7 +1519,7 @@ namespace BatInspector.Forms
 
     private void ContextMenu_Closed(object sender, RoutedEventArgs e)
     {
-      ((sender as System.Windows.Controls.ContextMenu).PlacementTarget as ToggleButton).IsChecked = false;
+      ((ToggleButton)((System.Windows.Controls.ContextMenu)sender).PlacementTarget).IsChecked = false;
     }
 
 
@@ -1617,10 +1629,10 @@ namespace BatInspector.Forms
         if (dep == null)
           return;
 
-        ReportItemBd2 it = null;
+        ReportItemBd2? it = null;
         if (dep is System.Windows.Controls.DataGridCell)
         {
-          System.Windows.Controls.DataGridCell cell = dep as System.Windows.Controls.DataGridCell;
+          System.Windows.Controls.DataGridCell cell = (System.Windows.Controls.DataGridCell)dep;
           // navigate further up the tree
           while ((dep != null) && !(dep is System.Windows.Controls.DataGridRow))
             dep = VisualTreeHelper.GetParent(dep);
@@ -1636,7 +1648,7 @@ namespace BatInspector.Forms
             int.TryParse(it.CallNr, out int callNr);
             AnalysisFile analysis = App.Model.CurrentlyOpen.Analysis.find(it.FileName);
             string fileName = Path.GetFileName(it.FileName);
-            string wavPath = Path.GetDirectoryName(App.Model.CurrentlyOpen.getFullFilePath(it.FileName));
+            string? wavPath = Path.GetDirectoryName(App.Model.CurrentlyOpen.getFullFilePath(it.FileName));
             setZoom(fileName, analysis, wavPath, null, App.Model.CurrentlyOpen.Analysis.ModelType);
             changeCallInZoom(callNr - 1);
           }
@@ -1689,9 +1701,9 @@ namespace BatInspector.Forms
       try
       {
         DebugLog.log("BTN custom tool pressed", enLogType.DEBUG);
-        System.Windows.Controls.MenuItem m = sender as System.Windows.Controls.MenuItem;
+        System.Windows.Controls.MenuItem m = (System.Windows.Controls.MenuItem)sender;
         string script = (string)m.Tag;
-        ScriptItem item = App.Model.Scripter.getScript(script);
+        ScriptItem? item = App.Model.Scripter.getScript(script);
         if (item != null)
         {
           if (item.Parameter.Count > 0)
@@ -1717,7 +1729,7 @@ namespace BatInspector.Forms
     protected override void OnSourceInitialized(EventArgs e)
     {
       base.OnSourceInitialized(e);
-      HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+      HwndSource source = (HwndSource)PresentationSource.FromVisual(this);
       source.AddHook(WndProc);
     }
 
@@ -1810,7 +1822,7 @@ namespace BatInspector.Forms
     }
 
     // State change
-    private void MainWindowStateChangeRaised(object sender, EventArgs e)
+    private void MainWindowStateChangeRaised(object? sender, EventArgs? e)
     {
       if (WindowState == WindowState.Maximized)
       {

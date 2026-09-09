@@ -34,9 +34,9 @@ namespace BatInspector
 
   public class ReportListItem
   {
-    public string ReportName { get; set; }
-    public string SummaryName { get; set; }
-    public string PrjDir { get; set; }
+    public string ReportName { get; set; } = "";
+    public string SummaryName { get; set; } = "";
+    public string PrjDir { get; set; } = "";
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
   }
@@ -53,9 +53,9 @@ namespace BatInspector
     [DataMember]
     public double Longitude { get; set; }
     [DataMember]
-    public string Location { get; set; }
+    public string Location { get; set; } = "";
     [DataMember]
-    public string CreatedBy { get; set; }
+    public string CreatedBy { get; set; } = "";
     [DataMember]
     public double TempMin { get; set; }
     [DataMember]
@@ -188,16 +188,16 @@ namespace BatInspector
     }
 
 
-    public static SumReportJson loadFrom(string name)
+    public static SumReportJson? loadFrom(string name)
     {
-      SumReportJson retVal = null;
-      FileStream file = null;
+      SumReportJson? retVal = null;
+      FileStream? file = null;
       try
       {
         using (file = new FileStream(name, FileMode.Open, FileAccess.Read))
         {
           DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(SumReportJson));
-          retVal = (SumReportJson)ser.ReadObject(file);
+          retVal = (SumReportJson?)ser.ReadObject(file);
           if (retVal == null)
             DebugLog.log($"file {name} not well formed!", enLogType.ERROR);
         }
@@ -236,45 +236,45 @@ namespace BatInspector
   public class WebReportDataJson
   {
     [DataMember]
-    public string PageName { get; set; }
+    public string PageName { get; set; } = "";
     [DataMember]
-    public string LocationName { get; set; }
+    public string LocationName { get; set; } = "";
     [DataMember]
-    public string Author { get; set; }
+    public string Author { get; set; } = "";
 
     [DataMember]
-    public string Weather { get; set; }
+    public string Weather { get; set; } = "";
 
     [DataMember]
-    public string TimeSpan { get; set; }
+    public string TimeSpan { get; set; } = "";
 
     [DataMember]
-    public string LocationDescription { get; set; }
+    public string LocationDescription { get; set; } = "";
 
     [DataMember]
-    public string Method { get; set; }
+    public string Method { get; set; } = "";
 
     [DataMember]
-    public string Definitions { get; set; }
+    public string Definitions { get; set; } = "";
 
 
     [DataMember]
-    public string Template { get; set; }
+    public string Template { get; set; } = "";
 
     [DataMember]
-    public string WavFolder { get; set; }
+    public string WavFolder { get; set; } = "";
 
     [DataMember]
-    public string Comment { get; set; }
+    public string Comment { get; set; } = "";
 
     [DataMember]
-    public string ImgLandscape { get; set; }
+    public string ImgLandscape { get; set; } = "";
 
     [DataMember]
-    public string ImgPortrait { get; set; }
+    public string ImgPortrait { get; set; } = "";
 
     [DataMember]
-    List<SpeciesWebInfo> Species { get; set; }
+    List<SpeciesWebInfo> Species { get; set; } = new List<SpeciesWebInfo>();
 
     public WebReportDataJson()
     {
@@ -329,9 +329,9 @@ namespace BatInspector
       Species.Add(new SpeciesWebInfo("Plecotus", "", ""));
     }
 
-    public SpeciesWebInfo findSpecies(string spec)
+    public SpeciesWebInfo? findSpecies(string spec)
     {
-      SpeciesWebInfo retVal = null;
+      SpeciesWebInfo? retVal = null;
       foreach (SpeciesWebInfo s in Species)
       {
         if (spec == s.Name)
@@ -366,10 +366,10 @@ namespace BatInspector
         DebugLog.log("failed to write web report data file:" + name + ": " + e.ToString(), enLogType.ERROR);
       }
     }
-    public static WebReportDataJson load(string name)
+    public static WebReportDataJson? load(string name)
     {
-      WebReportDataJson retVal = null;
-      FileStream file = null;
+      WebReportDataJson? retVal;
+      FileStream?  file = null;
       try
       {
         DebugLog.log("try to load:" + name, enLogType.DEBUG);
@@ -378,7 +378,7 @@ namespace BatInspector
           using (file = new FileStream(name, FileMode.Open, FileAccess.Read))
           {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WebReportDataJson));
-            retVal = (WebReportDataJson)ser.ReadObject(file);
+            retVal = (WebReportDataJson?)ser.ReadObject(file);
             if (retVal == null)
               DebugLog.log("web report entry file not well formed!", enLogType.ERROR);
             else
@@ -445,11 +445,11 @@ namespace BatInspector
   public class ExportDataItem
   {
     [DataMember]
-    public string SpeciesLocal {  get; set; }
+    public string SpeciesLocal { get; set; } = "";
     [DataMember]
-    public string SpeciesLatin { get; set; }
+    public string SpeciesLatin { get; set; } = "";
     [DataMember]
-    public string Date { get; set; }
+    public string Date { get; set; } = "";
     [DataMember]
     public double Temperature { get; set; }
     [DataMember]
@@ -459,11 +459,11 @@ namespace BatInspector
     [DataMember]
     public double Latitude { get; set; }
     [DataMember]
-    public string Comment { get; set; }
+    public string Comment { get; set; } = "";
     [DataMember]
-    public string PathToWav { get; set; }
+    public string PathToWav { get; set; } = "";
     [DataMember]
-    public string PathToPng { get; set; }
+    public string PathToPng { get; set; } = "";
   }
 
   /// <summary>
@@ -612,21 +612,20 @@ namespace BatInspector
   {
     public const int CNT_BEST_FILES = 10;
     private Csv _rep;
-    private string _rootDir;
-    private DirectoryInfo _dirInfo;
+    private string _rootDir ="";
     private List<ReportListItem> _reports;
     private List<SumItem> _totalSum;
-    private ActivityItem _currActivityItem;
+    private ActivityItem? _currActivityItem;
 
     private DateTime _start;
     private DateTime _end;
     private enPeriod _period;
-    private string _dstDir;
-    private string _expression;
-    private dlgShowActivityDiag _showActivityData = null;
-    private string _bmpName;
+    private string _dstDir = "";
+    private string _expression = "";
+    private dlgShowActivityDiag? _showActivityData = null;
+    private string _bmpName = "";
     private ModelParams _modelParams;
-    private string _reportName;
+    private string _reportName ="";
     private List<SpeciesInfos> _species;
     private SpeciesInfos _currSpecies;
 
@@ -850,7 +849,7 @@ namespace BatInspector
 
     }
 
-    public ActivityItem createActivityDiagSync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap, bool withQuery)
+    public ActivityItem? createActivityDiagSync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap, bool withQuery)
     {
       _start = start;
       _end = end;
@@ -991,8 +990,9 @@ namespace BatInspector
           {
             _currSpecies = si;
             _bestFilesCurSpec = new List<SpeciesRecordingItem>();
-            ActivityItem it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG, true);
-            retVal.Activities.Add(it);
+            ActivityItem? it = App.Model.SumReport.createActivityDiagSync(start, end, period, rootDir, dstDir, modelPars, $"SpeciesMan == \"{s}\"", $"activity_{s}.png", createActivityPNG, true);
+            if(it != null)
+              retVal.Activities.Add(it);
           }
         }
       }
@@ -1203,9 +1203,9 @@ namespace BatInspector
     void initDirTree(string rootDir, enModel model)
     {
       _rootDir = rootDir;
-      _dirInfo = new DirectoryInfo(rootDir);
+      DirectoryInfo dirInfo = new DirectoryInfo(rootDir);
       _reports.Clear();
-      crawlDirTree(_dirInfo, model);
+      crawlDirTree(dirInfo, model);
     }
 
 
@@ -1431,7 +1431,7 @@ namespace BatInspector
 
     public void createMarkdownDoc(SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string outputName, bool inclActivityDiags)
     {
-      WebReportDataJson formData = WebReportDataJson.load(formDataName);
+      WebReportDataJson? formData = WebReportDataJson.load(formDataName);
       if (formData != null)
       {
         try
@@ -1488,7 +1488,7 @@ namespace BatInspector
                   line = line.Replace("%SPEC_LOC%", info.Local);
                   line = line.Replace("%PERCENT%", rep.getPerCentStr(spec, 1));
                   line = line.Replace("%ACTIVITY%", (rep.getActivityPercentage(spec) * 100.0).ToString("0.#", CultureInfo.InvariantCulture));
-                  SpeciesWebInfo webInfo = formData.findSpecies(spec);
+                  SpeciesWebInfo? webInfo = formData.findSpecies(spec);
                   if (webInfo != null)
                   {
                     line = line.Replace("%COMMENT%", webInfo.Comment);
@@ -1596,7 +1596,7 @@ namespace BatInspector
 
     public void createDocument(enDocType docType, SumReportJson rep, string formDataName, List<SpeciesInfos> speciesInfo, string srcDir, string outputName)
     {
-      WebReportDataJson formData = WebReportDataJson.load(formDataName);
+      WebReportDataJson? formData = WebReportDataJson.load(formDataName);
       DocHelper doc = DocHelper.create(docType);
       if (formData != null)
       {
@@ -1665,7 +1665,7 @@ namespace BatInspector
               SpeciesInfos info = SpeciesInfos.findAbbreviation(spec, speciesInfo);
               if (info != null)
               {
-                SpeciesWebInfo webInfo = formData.findSpecies(spec);
+                SpeciesWebInfo? webInfo = formData.findSpecies(spec);
                 if (webInfo != null)
                   tbSpec.Rows.Add(info.Local, rep.getPerCentStr(spec, 1), rep.getActivityPercentageStr(spec, 1), webInfo.Comment, formData.findSpecies(spec).Confusion);
                 else
@@ -1783,7 +1783,7 @@ namespace BatInspector
 
   public class TextFile
   {
-    List<string> _lines;
+    List<string> _lines = new List<string>();
     string _name = "";
 
     public void read(string name)

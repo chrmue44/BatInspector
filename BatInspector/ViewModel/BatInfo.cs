@@ -8,17 +8,16 @@
 
 using BatInspector.Properties;
 using libParser;
-using System;
-using System.Collections.Generic;
+using Microsoft.VisualBasic.Logging;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using System.Xml.Linq;
 
 
 namespace BatInspector
@@ -162,6 +161,15 @@ namespace BatInspector
     public enCallChar CallCharacteristic { get; set; }
     [DataMember]
     public enIdentifiable Identifiable { get; set; }
+
+    public CheckData()
+    {
+      FreqStart = new ValRange();
+      FreqEnd = new ValRange();
+      FreqChar = new ValRange();
+      FreqMk = new ValRange();
+      Duration = new ValRange();
+    }
   }
 
 
@@ -171,7 +179,7 @@ namespace BatInspector
   {
     public SpeciesInfos(string abbr, string latin, string local, int page, string notDist, bool show, double fcMin, double fcMax, double dMin, double dMax,
                         double fMinMin, double fMinMax, double fMaxMin, double fMaxMax, double distMin, double distMax, string addContraint,
-                        CheckData[] check = null, string wavExample = null)
+                        CheckData[]? check = null, string? wavExample = null)
     {
       Abbreviation = abbr;
       Latin = latin;
@@ -199,7 +207,7 @@ namespace BatInspector
     public static SpeciesInfos findAbbreviation(string abbreviation, List<SpeciesInfos> list)
     {
 
-      SpeciesInfos retVal = null;
+      SpeciesInfos? retVal = null;
       foreach (SpeciesInfos s in list)
       {
         if (abbreviation.ToLower() == s.Abbreviation.ToLower())
@@ -219,12 +227,12 @@ namespace BatInspector
         else if (abbreviation == "Nyctaloid")
           retVal = new SpeciesInfos("Nyctaloid", "Nyctaloid", "Nyctaloid",1, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"");
       }
-      return retVal;
+      return retVal!;
     }
 
-    public static SpeciesInfos findLatin(string latin, List<SpeciesInfos> list)
+    public static SpeciesInfos? findLatin(string latin, List<SpeciesInfos> list)
     {
-      SpeciesInfos retVal = null;
+      SpeciesInfos? retVal = null;
       foreach (SpeciesInfos s in list)
       {
         if (latin.ToLower() == s.Latin.ToLower())
@@ -315,7 +323,7 @@ namespace BatInspector
 
     [DataMember]
     [Description("Habitat")]
-    public string Habitat { get; set; }
+    public string Habitat { get; set; } = "";
 
     [DataMember]
     [Description("Species of confusion")]
@@ -327,11 +335,11 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedDescription("SpecDescWav")]
-    public string WavExample { get; set; }
+    public string? WavExample { get; set; }
 
     [DataMember]
     [Description("Check data")]
-    public CheckData[] CheckData { get; set; }
+    public CheckData[]? CheckData { get; set; }
 
     [DataMember]
     [Description("Check data")]
@@ -362,7 +370,7 @@ namespace BatInspector
     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 
     const string _fName = "batinfo.json";
-    public List<SpeciesInfos> Species { get; set; }
+    public List<SpeciesInfos> Species { get; set; } = new List<SpeciesInfos>();
 
     public void save(string fDir)
     {
@@ -416,8 +424,8 @@ namespace BatInspector
 
     public static BatInfo loadFrom(string fDir)
     {
-      BatInfo retVal = null;
-      FileStream file = null;
+      BatInfo? retVal = null;
+      FileStream? file = null;
       string fPath = Path.Combine(fDir, _fName);
       try
       {
@@ -427,7 +435,7 @@ namespace BatInspector
           using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
           {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(BatInfo));
-            retVal = (BatInfo)ser.ReadObject(file);
+            retVal = (BatInfo?)ser.ReadObject(file);
             if (retVal == null)
               DebugLog.log("settings file not well formed!", enLogType.ERROR);
           }
@@ -446,7 +454,8 @@ namespace BatInspector
       catch (Exception e)
       {
         DebugLog.log("failed to read config file : " + fPath + ": " + e.ToString(), enLogType.ERROR);
-        retVal = null;
+        retVal = new BatInfo();
+        retVal.initSpeciesInfos();
       }
       finally
       {
@@ -825,8 +834,39 @@ namespace BatInspector
       Species.Add(new SpeciesInfos("VMUR", "Vespertilio murinus", "Zweifarbfledermaus", 40, "", true, 22, 27, 10, 21, 21, 24, 30, 45, 75, 130, "", cVmur, "dat/Vespertilio_murinus_Ski0150_S2_From0877624ms_To0904583ms.wav"));
     }
 
+    static private DocHelperRtf buildResultsOneSpec(CheckResult result, double lat, double lon,bool localNames, RequestNavigateEventHandler evHandler)
+    {
+      DocHelperRtf doc = new DocHelperRtf();
+      SolidColorBrush color;
+      string id = "";
+      switch (result.Identifiable)
+      {
+        case enIdentifiable.CHARACTERISTIC:
+          id = MyResources.BatInfoChar;
+          color = new SolidColorBrush(Colors.LightGreen);
+          break;
+        case enIdentifiable.PARTLY:
+          id = MyResources.BatInfoPartly;
+          color = new SolidColorBrush(Colors.Yellow);
+          break;
+        default:
+        case enIdentifiable.NO:
+          color = new SolidColorBrush(Colors.Orange);
+          id = MyResources.BatInfoNoIdent;
+          break;
+      }
+      string reg = App.Model.Regions.occursAtLocation(result.Species.Abbreviation, lat, lon) ? "" : $"({MyResources.NotRegional})";
+      string spec = localNames ? result.Species.Local : result.Species.Abbreviation;
+      doc.addText($"test against {spec}   ");
+      doc.addHyperlink("PDF", AppDomain.CurrentDomain.BaseDirectory + result.PdfName + $"#page={result.PageNr}", evHandler);
+      doc.addText("\n\n");
+      doc.addText($"Wahrscheinlichkeit: {(int)(result.Score / result.MaxScore * 100)}% \n\n");
+      doc.addText(result.AdditionalInfo);
+      return doc;
+    }
 
-    static private DocHelperRtf buildResults(List<CheckResult> results, double lat, double lon, bool localNames, RequestNavigateEventHandler evHandler)
+    static private DocHelperRtf buildResults(List<CheckResult> results, double lat, double lon, bool localNames, 
+                                             RequestNavigateEventHandler? evHandler)
     {
       DocHelperRtf doc = new  DocHelperRtf();
 
@@ -891,10 +931,10 @@ namespace BatInspector
           {
             foreach (CheckResult r in results)
             {
-              string genus = listGenus.Find(x => x == r.Species.getGenus());
+              string? genus = listGenus.Find(x => x == r.Species.getGenus());
               if ((genus == null) && App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon))
                 listGenus.Add(r.Species.getGenus());
-              SpeciesInfos spec = listSpecies.Find(x => x.Abbreviation == r.Species.Abbreviation);
+              SpeciesInfos? spec = listSpecies.Find(x => x.Abbreviation == r.Species.Abbreviation);
               if ((spec == null) && App.Model.Regions.occursAtLocation(r.Species.Abbreviation, lat, lon))
                 listSpecies.Add(r.Species);
             }
@@ -924,7 +964,7 @@ namespace BatInspector
     }
 
 
-    static private bool checkParameter(double val, ValRange range, string name, string unit, ref string info, CheckResult result, bool verbose)
+    static private bool checkParameter(double val, ValRange range, string name, string unit, ref string info, CheckResult result, bool verbose, bool inclFalseResult = false)
     {
       bool retVal = false;
       if ((range == null) || (range.Min < 0))
@@ -958,23 +998,29 @@ namespace BatInspector
         else
           info += name + $" OK ({MyResources.BatInfoUpperLimit}), ";
       }
+      else if(inclFalseResult)
+      {
+        info += $"{name} outside range: {range.Min} {unit} <  < {range.Max} {unit} , ";
+      }
       return retVal;
     }
 
 
     class CheckResult : IComparable<CheckResult>
     {
-      public SpeciesInfos Species { get; set; }
+      public SpeciesInfos Species { get; set; } = new SpeciesInfos("", "", "", 0, "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", null);
       public enIdentifiable Identifiable { get; set; }
       public bool Unambiguous { get; set; }
-      public string AdditionalInfo { get; set; }
-      public string PdfName { get;set; }
+      public string AdditionalInfo { get; set; } = "";
+      public string PdfName { get; set; } = "";
       public int PageNr { get; set; }
       public double MaxScore { get; set; }
       public double Score { get; set; }
 
-      int IComparable<CheckResult>.CompareTo(CheckResult other)
+      int IComparable<CheckResult>.CompareTo(CheckResult? other)
       {
+        if(other == null)
+          return 1;
         if (Score < other.Score)
           return 1;
         else if (Score > other.Score)
@@ -984,8 +1030,92 @@ namespace BatInspector
       }
     }
 
+    static public FlowDocument checkAgainstOneSpecies(CallData call, string speciesToTest, List<SpeciesInfos> species, double lat, double lon, bool includeUnidentifiable, bool localNames, RequestNavigateEventHandler evHandler) 
+    {
+      string info = "";
+      bool foundChar = false;
+      bool foundDuration = false;
+      bool foundSpecies = false;
+      CheckResult res = new CheckResult();
+      foreach (SpeciesInfos s in species)
+      {
+        if(
+            (localNames && (s.Local == speciesToTest)) ||
+            (!localNames && (s.Abbreviation == speciesToTest))
+          )
+        {
+          bool verbose = true;
+          foundSpecies = true;
+          res.Species = s;
+          if (s.CheckData != null)
+          {
+            foreach (CheckData check in s.CheckData)
+            {
+              bool ok = true;
+              if (!includeUnidentifiable && check.Identifiable == enIdentifiable.NO)
+                continue;
 
-    static public FlowDocument checkBatSpecies(CallData call, List<SpeciesInfos> species, double lat, double lon, bool verbose, bool includeUnidentifiable, bool localNames, RequestNavigateEventHandler evHandler, out string[] possSpecies)
+              if (check.CallCharacteristic != call.CallCharacteristic)
+                continue;
+              foundChar = true;
+              if (s.getGenus() == "Myotis")
+              {
+                foundDuration |= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose);
+                info.Replace(",", "\n");
+                if (foundDuration)
+                {
+                  info = "Charakteristik: " + call.CallCharacteristic.ToString() + "\n";
+                  ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, res, verbose, true);
+                  info = info.Replace(", ", "\n");
+                  ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, res, verbose, true);
+                  info = info.Replace(", ", "\n");
+                  ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz", ref info, res, verbose, true);
+                  info = info.Replace(", ", "\n");
+                  ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk", "kHz", ref info, res, verbose, true);
+                  info = info.Replace(", ", "\n");
+                }
+              }
+              else
+              {
+                info = info = "Charakteristik: " + call.CallCharacteristic.ToString() + "\n";
+                ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, res, verbose, true);
+                info = info.Replace(", ", "\n");
+                ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, res, verbose, true);
+                info = info.Replace(", ", "\n");
+                ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz", ref info, res, verbose, true);
+                info = info.Replace(", ", "\n");
+                ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk", "kHz", ref info, res, verbose, true);
+                info = info.Replace(", ", "\n");
+                foundDuration |= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose, true);
+              }
+            }
+          }
+          break;
+        }
+      }
+      if (!foundSpecies)
+      {
+        info += "Species not found in list" + "\n";
+      }
+      else if (!foundChar)
+      {
+        info += "Call characteristic not found in list" + "\n";
+      }
+      else if (!foundDuration)
+      {
+        info += "Call duration out of bounds" + "\n";
+      }
+      else
+      {
+      }
+      res.AdditionalInfo = info;
+      DocHelperRtf doc = buildResultsOneSpec(res, lat, lon, localNames, evHandler);
+      return doc.Doc;
+    }
+
+    static public FlowDocument checkBatSpecies(CallData call, List<SpeciesInfos> species, double lat, double lon, bool verbose, 
+                                               bool includeUnidentifiable, 
+                                               bool localNames, RequestNavigateEventHandler? evHandler, out string[] possSpecies)
     {      
       List<CheckResult> results = new List<CheckResult>(); 
 

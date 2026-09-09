@@ -614,9 +614,9 @@ namespace BatInspector
       string xml = File.ReadAllText(prjFile);
       TextReader reader = new StringReader(xml);
       XmlSerializer ser = new XmlSerializer(typeof(BatExplorerProjectFile));
-      BatExplorerProjectFile batExplorerPrj = (BatExplorerProjectFile)ser.Deserialize(reader);
-
-      result.applyFreqResponse(batExplorerPrj.Microphone.FrequencyResponse, softening);
+      BatExplorerProjectFile? batExplorerPrj = (BatExplorerProjectFile?)ser.Deserialize(reader);
+      assert("batExplorerPrj != null", batExplorerPrj != null); 
+      result.applyFreqResponse(batExplorerPrj!.Microphone!.FrequencyResponse, softening);
       
       WavFile outFile = new WavFile();
       outFile.createFile(1, (int)w.FormatChunk.Frequency, 0, result.Samples.Length - 1, result.Samples);
@@ -639,8 +639,9 @@ namespace BatInspector
       string xml = File.ReadAllText(prjFile);
       TextReader reader = new StringReader(xml);
       XmlSerializer ser = new XmlSerializer(typeof(BatExplorerProjectFile));
-      BatExplorerProjectFile batExplorerPrj = (BatExplorerProjectFile)ser.Deserialize(reader);
-      batExplorerPrj.Microphone.FrequencyResponse = r;
+      BatExplorerProjectFile? batExplorerPrj = (BatExplorerProjectFile?)ser.Deserialize(reader);
+      assert("batExplorerPrj != null", batExplorerPrj != null);
+      batExplorerPrj!.Microphone!.FrequencyResponse = r;
 
       TextWriter writer = new StreamWriter(prjFile);
       ser.Serialize(writer, batExplorerPrj);
@@ -663,18 +664,21 @@ namespace BatInspector
       string report = Path.Combine(prjDir, "bd2", "report_BatDetect2_GermanBats.pth.tar.csv");
       Analysis a = new Analysis(false, enModel.BAT_DETECT2);
       a.read(report, App.Model.DefaultModelParams, enMetaData.XML);
-      AnalysisFile f = a.find(file);
+      AnalysisFile? f = a.find(file);
       assert("open test data", f != null);
 
-      double tStart = f.Calls[0].getDouble(Cols.START_TIME);
-      double tEnd = tStart + f.Calls[0].getDouble(Cols.DURATION) / 1000;
-      double snr = w.calcSnr(tStart, tEnd);
-      assert("SNR call 1", Math.Abs(snr - 15.905) < 0.1);
+      if (f != null)
+      {
+        double tStart = f.Calls[0].getDouble(Cols.START_TIME);
+        double tEnd = tStart + f.Calls[0].getDouble(Cols.DURATION) / 1000;
+        double snr = w.calcSnr(tStart, tEnd);
+        assert("SNR call 1", Math.Abs(snr - 15.905) < 0.1);
 
-      tStart = f.Calls[9].getDouble(Cols.START_TIME);
-      tEnd = tStart + f.Calls[7].getDouble(Cols.DURATION) / 1000;
-      snr = w.calcSnr(tStart, tEnd);
-      assert("SNR call 8", Math.Abs(snr - 3.1) < 0.1);
+        tStart = f!.Calls[9].getDouble(Cols.START_TIME);
+        tEnd = tStart + f.Calls[7].getDouble(Cols.DURATION) / 1000;
+        snr = w.calcSnr(tStart, tEnd);
+        assert("SNR call 8", Math.Abs(snr - 3.1) < 0.1);
+      }
     }
 
     private void testRemoveSection()
@@ -756,15 +760,19 @@ namespace BatInspector
     private void testKml()
     {
       string fName = "F:\\prj\\BatInspector\\TestData\\20230928\\Session_20230928_195716.kml";
-      kml k = kml.read(fName);
-      k.readPositions();
-      double[] pos = k.getPosition("20230928_195928.wav");
-      assert("GPX lat", Math.Abs(pos[0] - 49.8973) < 0.0001);
-      assert("GPX lon", Math.Abs(pos[1] - 8.6742) < 0.0001);
+      Kml? k = Kml.read(fName);
+      assert("testKml, read kml", k != null);
+      if (k != null)
+      {
+        k.readPositions();
+        double[] pos = k.getPosition("20230928_195928.wav");
+        assert("GPX lat", Math.Abs(pos[0] - 49.8973) < 0.0001);
+        assert("GPX lon", Math.Abs(pos[1] - 8.6742) < 0.0001);
 
-      pos = k.getPosition("20230928_200232.wav");
-      assert("GPX lat", Math.Abs(pos[0] - 49.8974) < 0.0001);
-      assert("GPX lon", Math.Abs(pos[1] - 8.6759) < 0.0001);
+        pos = k.getPosition("20230928_200232.wav");
+        assert("GPX lat", Math.Abs(pos[0] - 49.8974) < 0.0001);
+        assert("GPX lon", Math.Abs(pos[1] - 8.6759) < 0.0001);
+      }
     }
 
     private void testLocfileTxt()
@@ -1339,17 +1347,25 @@ namespace BatInspector
 
       WavFile testWav = new WavFile();
       testWav.readFile(target);
-      assert("guano, count", testWav.Guano.Fields.Count == 13);
-      GuanoItem it =  wav.Guano.getField("Timestamp");
-      assert("guano, timestamp", (it != null) && (it.Value == rec.DateTime));
-      it = wav.Guano.getField("Firmware Version");
-      assert("guano, firmware", (it != null) && (it.Value == rec.Firmware));
-      it = wav.Guano.getField("Humidity");
-      assert("guano, humidity", (it != null) && (it.Value == rec.Humidity));
-      it = wav.Guano.getField("Temperature Ext");
-      assert("guano, temperature", (it != null) && (it.Value == rec.Temparature));
-      it = wav.Guano.getField("Loc Position");
-      assert("guano, position", (it != null) && (it.Value == rec.GPS.Position));
+      assert("guano present", testWav.Guano != null);
+      if (testWav.Guano != null)
+      {
+        assert("guano, count", testWav.Guano.Fields.Count == 13);
+        GuanoItem? it = wav.Guano.getField("Timestamp");
+        assert("guano, item 'Timestamp' present", (it != null));
+        if (it != null)
+        {
+          assert("guano, timestamp", (it != null) && (it.Value == rec.DateTime));
+          it = wav.Guano.getField("Firmware Version");
+          assert("guano, firmware", (it != null) && (it.Value == rec.Firmware));
+          it = wav.Guano.getField("Humidity");
+          assert("guano, humidity", (it != null) && (it.Value == rec.Humidity));
+          it = wav.Guano.getField("Temperature Ext");
+          assert("guano, temperature", (it != null) && (it.Value == rec.Temparature));
+          it = wav.Guano.getField("Loc Position");
+          assert("guano, position", (it != null) && (it.Value == rec.GPS.Position));
+        }
+      }  
     }
 
     void testAirAbsorbtion()

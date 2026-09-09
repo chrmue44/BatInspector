@@ -21,8 +21,8 @@ namespace BatInspector.Forms
   public partial class ctlScriptItem : System.Windows.Controls.UserControl
   {
     int _index;
-    dlgDelete _dlgDelete;
-    dlgDelete _dlgDebug;
+    dlgDelete? _dlgDelete;
+    dlgDelete?  _dlgDebug;
 
     public int Index { get { return _index; } }
     public string ScriptName { get { return _tbScriptName.Text; } }
@@ -31,14 +31,14 @@ namespace BatInspector.Forms
 
     public bool IsInMenue { get { return _cbInMenue.IsChecked == true; } }
 
-    public List<ParamItem> Parameter { get; private set;}
+    public List<ParamItem> Parameter { get; private set;} = new List<ParamItem>();
 
     public ctlScriptItem()
     {
       InitializeComponent();
     }
 
-    public void setup(ScriptItem script, dlgDelete del, dlgDelete debug)
+    public void setup(ScriptItem script, dlgDelete? del, dlgDelete? debug)
     {
       _index = script.Index;
       _dlgDelete = del;
@@ -71,7 +71,7 @@ namespace BatInspector.Forms
 
     private void _btnDel_Click(object sender, RoutedEventArgs e)
     {
-      _dlgDelete(_index);
+      _dlgDelete?.Invoke(_index);
     }
 
     private void _btnRun_Click(object sender, RoutedEventArgs e)
@@ -131,7 +131,7 @@ namespace BatInspector.Forms
 
     private void _btnDebug_Click(object sender, RoutedEventArgs e)
     {
-      _dlgDebug(_index);
+      _dlgDebug?.Invoke(_index);
     }
   }
 }

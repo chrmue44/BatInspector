@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-public delegate void DlgCmd(string cmd, dlgVoid callBack);
+public delegate void DlgCmd(string cmd, dlgVoid? callBack);
 public delegate void dlgAddTextLine(string text, System.Windows.Media.Brush color);
 
 namespace BatInspector.Controls
@@ -23,7 +23,7 @@ namespace BatInspector.Controls
   public partial class CtlLog : System.Windows.Controls.UserControl
   {
 
-    DlgCmd _dlgCmd = null;
+    DlgCmd? _dlgCmd = null;
     bool _clearAfterReturn = false;
 
     public CtlLog()
@@ -49,7 +49,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public void setup(DlgCmd dlg, bool clearAfterReturn)
+    public void setup(DlgCmd? dlg, bool clearAfterReturn)
     {
       _clearAfterReturn = clearAfterReturn;
       _dlgCmd = dlg;
@@ -63,10 +63,10 @@ namespace BatInspector.Controls
         return;
       }
       if (
-          ((entry.Type == enLogType.ERROR) && _cbErr.IsChecked.Value) ||
-          ((entry.Type == enLogType.WARNING) && _cbWarn.IsChecked.Value) ||
-          ((entry.Type == enLogType.INFO) && _cbInfo.IsChecked.Value) ||
-          ((entry.Type == enLogType.DEBUG) && _cbDebug.IsChecked.Value)
+          ((entry.Type == enLogType.ERROR) && _cbErr.IsChecked == true) ||
+          ((entry.Type == enLogType.WARNING) && _cbWarn.IsChecked == true) ||
+          ((entry.Type == enLogType.INFO) && _cbInfo.IsChecked == true) ||
+          ((entry.Type == enLogType.DEBUG) && _cbDebug.IsChecked == true)
         )
       {
         TextBlock text = new TextBlock();

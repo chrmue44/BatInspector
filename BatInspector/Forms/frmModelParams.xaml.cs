@@ -31,12 +31,14 @@ namespace BatInspector.Forms
 
     int _nrOfPrjParams;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public frmModelParams(Project prj)
     {
       InitializeComponent();
       _prj = prj;
       setup();
     }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     private void setup()
     {
@@ -84,12 +86,16 @@ namespace BatInspector.Forms
         for (int i = _nrOfPrjParams; i < _sp.Children.Count; i++)
         {
           int mIdx = i - _nrOfPrjParams;
-          ctlModParItem ctl = _sp.Children[i] as ctlModParItem;
+          ctlModParItem? ctl = _sp.Children[i] as ctlModParItem;
+          if(ctl == null) 
+            continue; 
           mp[mIdx].Enabled = ctl._cbEnabled.IsChecked == true;
           mp[mIdx].DataSet = ctl._ctlDataSet.getValue();
           for (int p = 0; p < mp[i - _nrOfPrjParams].Parameters.Length; p++)
           {
-            ctlDataItem dat = ctl._spPars.Children[p] as ctlDataItem;
+            ctlDataItem? dat = ctl._spPars.Children[p] as ctlDataItem;
+            if(dat == null)
+              continue;
             mp[mIdx].Parameters[p].Value = dat.getValue();
           }
         }

@@ -241,7 +241,7 @@ namespace BatInspector
               }
             }
           }
-          string dir = Path.GetDirectoryName(reportName);
+          string? dir = Path.GetDirectoryName(reportName);
           if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
           report.saveAs(reportName);

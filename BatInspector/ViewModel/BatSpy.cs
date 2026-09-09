@@ -95,7 +95,7 @@ namespace BatInspector
     }
 
     string _cmd;
-    string[] _items;
+    string[] _items = new string[1];
     bool _initialized = false;
 
     public int Value
@@ -136,7 +136,7 @@ namespace BatInspector
     public const string DEV_IDENT = "BatSpy";
     static BatSpy _inst = new BatSpy();
 
-    SerialPort _port = null;
+    SerialPort? _port = null;
     bool _answerReceived = false;
     bool _receiveError = false;
     bool _isConnected = false;
@@ -150,7 +150,7 @@ namespace BatInspector
       serialNr = "?";
       if (!_inst._isConnected)
       {
-        SerialPort p = null;
+        SerialPort? p = null;
         foreach (string port in ports)
         {
           try
@@ -193,7 +193,7 @@ namespace BatInspector
 
     static public void disConncet()
     {
-      if(_inst._isConnected)
+      if((_inst._isConnected) && (_inst._port != null))
       {
         _inst._port.Close();
         _inst._port = null;
@@ -224,6 +224,12 @@ namespace BatInspector
 
     static public byte[] getLiveFft(int part)
     {
+      if(_inst._port == null)
+      {
+        DebugLog.log("BatSpy not connected", enLogType.ERROR);
+        return new byte[0];
+      }
+
       byte[] buf = new byte[64 * 256];
       int iBuf = 0;
       int recLength = 0x4000;  //buf.Length
@@ -263,6 +269,12 @@ namespace BatInspector
     private string execCommand(string cmd, int timeout = 1000)
     {
       string retVal = "";
+      if(_port == null)
+      {
+        DebugLog.log("BatSpy not connected", enLogType.ERROR);
+        return retVal;
+      }
+
       try
       {
         string str = cmd + "\n";
@@ -425,6 +437,11 @@ namespace BatInspector
 
     static public void uploadFirmware(string file)
     {
+      if(_inst._port == null)
+      {
+        DebugLog.log("BatSpy not connected", enLogType.ERROR);
+        return;
+      }
       _inst._port.BaudRate = 134;
       Thread.Sleep(2000);
       ProcessRunner proc = new ProcessRunner();

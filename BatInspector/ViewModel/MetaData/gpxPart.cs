@@ -85,7 +85,7 @@ public partial class Gpx
 
   static Gpx? createGpx(XmlDocument? doc)
   {
-    Gpx retVal = new Gpx();
+    Gpx? retVal = new Gpx();
     if(doc == null)
       return retVal;
     try

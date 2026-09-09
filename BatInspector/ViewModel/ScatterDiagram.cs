@@ -82,7 +82,7 @@ namespace BatInspector
       _axisItems.Add(new stAxisItem("pc_knee", fMax, "kHz")); */
     }
     
-    public void createScatterDiagram(stAxisItem xAxis, stAxisItem yAxis, FilterItem filter, bool freezeAxes)
+    public void createScatterDiagram(stAxisItem xAxis, stAxisItem yAxis, FilterItem? filter, bool freezeAxes)
     { 
       ScatterSeries scatterSeries = new ScatterSeries { MarkerType = MarkerType.Square };
       if(!freezeAxes)

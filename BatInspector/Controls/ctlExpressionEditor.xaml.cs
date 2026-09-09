@@ -25,13 +25,13 @@ namespace BatInspector.Controls
   public partial class ctlExpressionEditor : System.Windows.Controls.UserControl
   {
 
-    ExpressionGenerator _gen;
-    List<ExpressionItem> _left;
-    List<ExpressionItem> _op;
-    List<ExpressionItem> _right;
-    List<ExpressionItem> _append;
-    dlgEnableOk  _dlgOk;
-    string _prefix;
+    ExpressionGenerator? _gen;
+    List<ExpressionItem> _left = new List<ExpressionItem>();
+    List<ExpressionItem> _op = new List<ExpressionItem>();
+    List<ExpressionItem> _right = new List<ExpressionItem>();
+    List<ExpressionItem> _append = new List<ExpressionItem>();
+    dlgEnableOk?  _dlgOk;
+    string _prefix = "";
     bool _formulaOk;
     public bool FormulaOk { get { return _formulaOk; } }
 
@@ -93,10 +93,10 @@ namespace BatInspector.Controls
           FrmPosition frm = new FrmPosition(_gen, (string)_cbLeft.SelectedItem);
           bool? res = frm.ShowDialog();
         }
-        _op = _gen.getAvailableOptions(enField.OPERATOR, _left[iLeft].DataType);
+        _op = _gen?.getAvailableOptions(enField.OPERATOR, _left[iLeft].DataType) ?? new List<ExpressionItem>();
         _cbRight.Items.Clear();
         _lblHelpLeft.Content = _left[iLeft].HelpText;
-        _right = _gen.getAvailableOptions(enField.RIGHT, _left[iLeft].DataType);
+        _right = _gen?.getAvailableOptions(enField.RIGHT, _left[iLeft].DataType) ?? new List<ExpressionItem>();
         foreach (ExpressionItem item in _right)
           _cbRight.Items.Add(item.Text);
 

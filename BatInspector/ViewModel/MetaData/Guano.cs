@@ -92,7 +92,7 @@ namespace BatInspector
 
   public class Guano
   {
-    byte[] _buf;
+    byte[] _buf = new byte[0];
     string _name = "";
     int _pos = 0;
     byte[] _data;
@@ -174,9 +174,9 @@ namespace BatInspector
       return (UInt32)_data.Length + 8;
     }
 
-    public GuanoItem getField(string fieldName, string nameSpace = "")
+    public GuanoItem? getField(string fieldName, string nameSpace = "")
     {
-      GuanoItem retVal = null;
+      GuanoItem? retVal = null;
       foreach(GuanoItem field in _items)
       {
         if ((field.NameSpace == nameSpace) && (field.FieldName == fieldName))
@@ -204,7 +204,7 @@ namespace BatInspector
     {
       double retVal = 0;
       bool ok = false;
-      GuanoItem it = getField(fieldName, nameSpace);
+      GuanoItem? it = getField(fieldName, nameSpace);
       if(it != null)
         ok = double.TryParse(it.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal);
       if (!ok)
@@ -215,7 +215,7 @@ namespace BatInspector
     private string getFieldAsString(string fieldName, string nameSpace = "", bool logError = false)
     {
       string retVal = "";
-      GuanoItem it = getField(fieldName, nameSpace);
+      GuanoItem? it = getField(fieldName, nameSpace);
       if (it != null)
         retVal = it.Value;
       else if(logError)
@@ -259,7 +259,7 @@ namespace BatInspector
             par.FieldName += _name;
             tok = getToken();
           } while (tok == enGuanoToken.NAME);
-          GuanoDictItem dictEntry = getDictEntry(par.FieldName);
+          GuanoDictItem? dictEntry = getDictEntry(par.FieldName);
 
           bool pushBack = false;
           if (dictEntry != null )
@@ -371,6 +371,8 @@ namespace BatInspector
 
     public void copyMetaData(WavFile wav)
     {
+      if(wav.Guano == null)
+        return;
       _data = new byte[wav.Guano._data.Length];
       Array.Copy(wav.Guano._data, _data, wav.Guano._data.Length);
       ChunkId = wav.Guano.ChunkId;
@@ -461,7 +463,7 @@ namespace BatInspector
         _pos--;
     }
 
-    GuanoDictItem getDictEntry(string key)
+    GuanoDictItem? getDictEntry(string key)
     {
       foreach (GuanoDictItem d in _dictionary)
       {

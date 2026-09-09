@@ -104,9 +104,9 @@ namespace BatInspector.Controls
     {
       if ((_cbXaxis.Items.Count > 0) && (_cbXaxis.SelectedItem != null) && (_cbYaxis.SelectedItem != null) && (_cbFilterScatter.SelectedItem != null))
       {
-        stAxisItem x = _scattDiagram.findAxisItem(_cbXaxis.SelectedItem.ToString());
-        stAxisItem y = _scattDiagram.findAxisItem(_cbYaxis.SelectedItem.ToString());
-        FilterItem filter = (_cbFilterScatter.SelectedIndex == 1) ?
+        stAxisItem x = _scattDiagram.findAxisItem(_cbXaxis.SelectedItem.ToString() ?? "");
+        stAxisItem y = _scattDiagram.findAxisItem(_cbYaxis.SelectedItem.ToString() ?? "");
+        FilterItem? filter = (_cbFilterScatter.SelectedIndex == 1) ?
                         filter = App.Model.Filter.TempFilter : filter = App.Model.Filter.getFilter(_cbFilterScatter.Text);
 
         _scattDiagram.createScatterDiagram(x, y, filter, _cbFreezeAxis.IsChecked == true);

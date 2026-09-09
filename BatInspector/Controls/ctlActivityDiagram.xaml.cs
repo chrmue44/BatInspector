@@ -20,10 +20,10 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlActivityDiagram : System.Windows.Controls.UserControl
   {
-    ActivityDiagram _diagram;
-    Bitmap _bmp = null;
-    ActivityData _data = null;
-    string _bmpName;
+    ActivityDiagram? _diagram = null;
+    Bitmap? _bmp = null;
+    ActivityData? _data = null;
+    string _bmpName ="";
 
     public ctlActivityDiagram()
     {
@@ -70,8 +70,7 @@ namespace BatInspector.Controls
       createPlot();
     }
 
-    public ActivityDiagram Diagram { get{ return _diagram; } }
-
+    
     public void createPlot(ActivityData hm, string bmpName)
     {
       _data = hm;
@@ -82,7 +81,7 @@ namespace BatInspector.Controls
 
     private void createPlot()
     {
-      if (_data == null)
+      if ((_data == null) || (_diagram == null))
         return;
       bool month = _cbMonth.IsChecked == true;
       bool week = _cbWeek.IsChecked == true;

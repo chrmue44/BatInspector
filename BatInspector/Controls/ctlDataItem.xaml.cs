@@ -25,7 +25,7 @@ namespace BatInspector.Controls
     double _valDouble;
     int _valInt;
     uint _valUInt;
-    string _valString;
+    string _valString = "";
     dlgValueChanged? _dlgValChange = null;
     bool _textChanged = false;
 

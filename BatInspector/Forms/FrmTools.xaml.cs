@@ -48,7 +48,7 @@ namespace BatInspector.Forms
 
     private void btnCklick(object sender, RoutedEventArgs e)
     {
-    System.Windows.Controls.Button b = e.Source as System.Windows.Controls.Button;
+    System.Windows.Controls.Button b = (System.Windows.Controls.Button)e.Source;
       int index = (int)b.Tag;
       if ((index >= 0) && (index < AppParams.Inst.ScriptInventory.Scripts.Count))
       {

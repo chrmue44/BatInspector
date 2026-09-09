@@ -32,7 +32,7 @@ namespace BatInspector
 
     public static BatRecord retrieveMetaData(string wavName, Guano guano, enMetaData metaData)
     {
-      BatRecord retVal = null;
+      BatRecord retVal = new BatRecord();
 
       if (metaData == enMetaData.AUTO)
       {
@@ -49,7 +49,7 @@ namespace BatInspector
           break;
 
         case enMetaData.GUANO:
-          retVal = guano.getMetaData();
+          retVal = guano!.getMetaData();
           break;
       }
       return retVal;
@@ -63,7 +63,7 @@ namespace BatInspector
 
     public static BatRecord retrieveMetaData(string fullWavPath, enMetaData metaData)
     {
-      BatRecord r = null;
+      BatRecord r = new BatRecord();
 
       string infoFileName = fullWavPath.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_INFO);
       if(metaData == enMetaData.AUTO)
@@ -250,27 +250,28 @@ namespace BatInspector
       return retVal;
     }
 
-    private static bool readKmlFile(PrjInfo info, out kml kmlFile)
+    private static bool readKmlFile(PrjInfo info, out Kml kmlFile)
     {
       bool retVal = true;
-      kmlFile = null;
+      Kml? kml = null;
       // read gpx file if needed
       if (info.OverwriteLocation)
       {
         if (info.LocSourceKml)
         {
-          kmlFile = kml.read(info.GpxFile);
-          if (kmlFile == null)
+          kml = Kml.read(info.GpxFile);
+          if (kml == null)
           {
             DebugLog.log("kml file not readable: " + info.GpxFile, enLogType.ERROR);
             retVal = false;
           }
         }
       }
+      kmlFile = kml ?? new Kml(); 
       return retVal;
     }
 
-    private static bool readLoctxtFile(PrjInfo info, LocFileSettings pars, out LocFileTxt txtFile)
+    private static bool readLoctxtFile(PrjInfo info, LocFileSettings pars, out LocFileTxt? txtFile)
     {
       bool retVal = true;
       txtFile = null;
@@ -325,7 +326,7 @@ namespace BatInspector
     /// <param name="xmlfiles">list if xml files</param>
     /// <param name="wavDir">directory containing the xml files</param>
     /// <param name="kmlFile">name of the kml file with location information</param>
-    private static void replaceLocationsInXmls(string[] xmlfiles, string wavDir, kml kmlFile)
+    private static void replaceLocationsInXmls(string[] xmlfiles, string wavDir, Kml kmlFile)
     {
       DebugLog.log("replace locations from kml file...", enLogType.INFO);
       kmlFile.readPositions();
@@ -414,7 +415,7 @@ namespace BatInspector
       else if (info.OverwriteLocation && info.LocSourceKml)
       {
         DebugLog.log($"replace locations from kml file... at {t.Elapsed}", enLogType.INFO);
-        bool ok = readKmlFile(info, out kml kmlFile);
+        bool ok = readKmlFile(info, out Kml kmlFile);
         if (ok)
           replaceLocationsInXmls(xmlFiles, wavDir, kmlFile);
         else
@@ -423,8 +424,8 @@ namespace BatInspector
       else if (info.OverwriteLocation && info.LocSourceTxt)
       {
         DebugLog.log($"replace locations from txt file... at {t.Elapsed}", enLogType.INFO);
-        bool ok = readLoctxtFile(info, AppParams.Inst.LocFileSettings, out LocFileTxt txtFile);
-        if (ok)
+        bool ok = readLoctxtFile(info, AppParams.Inst.LocFileSettings, out LocFileTxt? txtFile);
+        if (ok && (txtFile != null))
           replaceLocationsInXmls(xmlFiles, wavDir, txtFile);
         else
           DebugLog.log("error reading TXT file, could not generate location information", enLogType.ERROR);
@@ -438,11 +439,6 @@ namespace BatInspector
 
     public static string getDateString(DateTime date)
     {
-      if (date == null)
-      {
-        date = new DateTime();
-        DebugLog.log("erroneous time", enLogType.ERROR);
-      }
       return AnyType.getTimeString(date).Replace("0d", "");
     }
 

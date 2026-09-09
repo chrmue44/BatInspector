@@ -27,7 +27,7 @@ namespace BatInspector.Controls
   {
     bool _isFolder = false;
     string _filter = "all files(*.*)|*.*";
-    dlgVoid _dlgAction = null;
+    dlgVoid? _dlgAction = null;
     bool _runDelegate = true;
 
     public CtlSelectFile()
@@ -45,7 +45,7 @@ namespace BatInspector.Controls
       set { _txt.IsEnabled = value; _btnOpen.IsEnabled = value; }
     }*/
 
-    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "", dlgVoid dlgAction = null)
+    public void setup(string label, int widthLbl = 80, bool isFolder = false, string filter = "", dlgVoid? dlgAction = null)
     {
       _lbl.Text = label;
       _grd.ColumnDefinitions[0].Width = new GridLength(widthLbl);

@@ -504,11 +504,14 @@ namespace BatInspector
               string wavName = pars[1];
               if (App.Model.ZoomView.Waterfall == null)
                 App.Model.ZoomView.initWaterfallDiagram(wavName, enMetaData.AUTO);
-              int ret = App.Model.ZoomView.Waterfall.Audio.readWav(wavName);
-              if(ret != 0)
-              {
-                ErrText = $"unable to read wav file {wavName}";
+              if (App.Model.ZoomView.Waterfall != null)
+              { 
+                int ret = App.Model.ZoomView.Waterfall.Audio.readWav(wavName);
+                if(ret != 0)
+                  ErrText = $"unable to read wav file {wavName}";
               }
+              else
+                ErrText = $"unable to read wav file {wavName}";
             }
             else
               ErrText = "EditWav: not enough parameters for option OPEN";

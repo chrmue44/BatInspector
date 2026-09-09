@@ -25,13 +25,13 @@ namespace BatInspector
 
   public class Spectrum
   {
-    double[] _samples;
+    double[] _samples = new double[0];
     RulerData _rulerDataF;
     uint _fftSize;
-    double[] _ampl;
+    double[]? _ampl = null;
     double _fMax;
     public RulerData RulerDataF { get { return _rulerDataF; } }
-    public double[] Amplitude { get { return _ampl; } }
+    public double[]? Amplitude { get { return _ampl; } }
     public double Fmax { get { return _fMax; } }
 
     public Spectrum()
@@ -61,7 +61,7 @@ namespace BatInspector
     }
 
 
-    double[] generateFft(UInt32 idx, UInt32 length, bool logarithmic, DSP.Window.Type window = DSP.Window.Type.Hanning)
+    double[]? generateFft(UInt32 idx, UInt32 length, bool logarithmic, DSP.Window.Type window = DSP.Window.Type.Hanning)
     {
       if (length > 4)
       {

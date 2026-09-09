@@ -43,7 +43,7 @@ namespace BatInspector
       return textRange.Text;
     }
 
-    public static void appendText(System.Windows.Controls.RichTextBox txt, string str, bool bold = false,  bool underlined = false, SolidColorBrush color = null)
+    public static void appendText(System.Windows.Controls.RichTextBox txt, string str, bool bold = false,  bool underlined = false, SolidColorBrush? color = null)
     {
 
       TextPointer start = txt.Document.ContentEnd;
@@ -98,11 +98,12 @@ namespace BatInspector
       return wpfScreen;
     }
 
+    /*
     public static WpfScreen Primary
     {
       get { return new WpfScreen(System.Windows.Forms.Screen.PrimaryScreen); }
     }
-
+    */
     private readonly Screen screen;
 
     internal WpfScreen(System.Windows.Forms.Screen screen)

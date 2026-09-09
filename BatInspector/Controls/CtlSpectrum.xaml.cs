@@ -20,7 +20,7 @@ namespace BatInspector.Controls
   public partial class CtlSpectrum : System.Windows.Controls.UserControl
   {
     bool _initFlag = false;
-    Spectrum _spectrum;
+    Spectrum _spectrum = new Spectrum();
     enSpectrumMode _mode;
     double _fMin;
     double _fMax;

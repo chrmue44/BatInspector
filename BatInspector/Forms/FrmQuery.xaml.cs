@@ -21,7 +21,7 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class FrmQuery : Window
   {
-    FrmHelpFilter _frmHelp = null;
+    FrmHelpFilter? _frmHelp = null;
     public FrmQuery()
     {
       InitializeComponent();
@@ -67,7 +67,7 @@ namespace BatInspector.Forms
     {
       try
       {
-        App.Model.Query.evaluate();
+        App.Model.Query?.evaluate();
       }
       catch(Exception ex)
       {

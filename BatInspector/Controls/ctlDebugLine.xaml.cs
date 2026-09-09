@@ -16,13 +16,13 @@ namespace BatInspector.Controls
     bool _breakActive = false;
     string _breakCond = "TRUE";
     int _lineNr;
-    dlgSetBreakCondition _dlgSetBreakCondition;
+    dlgSetBreakCondition? _dlgSetBreakCondition;
     public ctlDebugLine()
     {
       InitializeComponent();
     }
 
-    public void setup(int i, string line, dlgSetBreakCondition setBrkCond)
+    public void setup(int i, string line, dlgSetBreakCondition? setBrkCond)
     {
       _lineNr = i;
       _tbLine.Text = line;

@@ -19,7 +19,7 @@ namespace BatInspector.Forms
   {
     Filter _filter;
     DlgUpdate _dlgUpdate;
-    FrmHelpFilter _frmHelp =null;
+    FrmHelpFilter? _frmHelp =null;
     public FrmFilter(Filter filter, DlgUpdate dlgUpdate)
     {
       _filter = filter;

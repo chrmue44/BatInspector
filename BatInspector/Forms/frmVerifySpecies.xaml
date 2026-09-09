@@ -13,12 +13,12 @@
             <RowDefinition Height="65"/>
             <RowDefinition Height="190"/>
             <RowDefinition Height="270"/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="65"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="430"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="480"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Margin="20,5,20,5" Grid.ColumnSpan="2" TextWrapping="Wrap" TextAlignment="Center">
             Grundlage der hier durchgeführten Bestimmung ist der Leitfaden 'Bestimmung von Fledermausrufaufnahmen und Kriterien für die Wertung von akustischen Artnachweisen' Teil 1 und Teil 2 des Bayrischen Landesamtes für Umwelt. Es werden die 24 in Deutschland vorkommenden Fledermausarten erkannt. 
@@ -53,14 +53,23 @@
                 <local:ctlSpecialQuestion x:Name="_ctlIsConvex" Margin="0,-5,0,0"/>
             </StackPanel>
         </GroupBox>
-        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
-        <Button x:Name="_btnCheck" Margin="5,5,15,5" Height="30" Width="120" Content="{x:Static res:MyResources.Verify}" Click="_btnCheck_Click"/>
-            <StackPanel Margin="5">
+        <StackPanel Margin="5" Grid.Row="3" Grid.Column="1">
             <CheckBox x:Name="_cbNotDeterminable" Content="{x:Static res:MyResources.frmVerfify_IncludeSND}"/>
             <CheckBox x:Name="_cbVerbose" Content="{x:Static res:MyResources.frmVerfy_VerboseResult}"/>
-                <CheckBox x:Name="_cbLocalNames" Content="{x:Static res:MyResources.frmVerify_LocalNames}"/>
-            </StackPanel>
+            <CheckBox x:Name="_cbLocalNames" Content="{x:Static res:MyResources.frmVerify_LocalNames}" Click="_cbLocalNames_Click"/>
         </StackPanel>
+        <GroupBox Grid.Row="3" Grid.Column="0" Margin="0,5">
+        <StackPanel  Orientation="Horizontal">
+        <Button x:Name="_btnCheck" Margin="5,5,15,5" Height="30" Width="120" Content="{x:Static res:MyResources.Verify}" Click="_btnCheck_Click"/>
+                <Label x:Name="_lblSpecies" Content="{x:Static res:MyResources.frmVerify_Against}" Margin="15,10,10,5" FontSize="14" />
+                <StackPanel >
+                    <RadioButton x:Name="_rballSpecies" Content="{x:Static res:MyResources.frmVerify_AllSpecies}" Margin="5,5,5,5" IsChecked="True"/>
+                    <RadioButton x:Name="_rbSelectedSpecies"  Margin="5,5,5,5">
+                        <ComboBox x:Name="_cbSpecies" Width="150" Margin="0,-3,5,5" />
+                    </RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
         <GroupBox Template="{DynamicResource GroupBoxCmu}"  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
             <GroupBox.Header>
                 <TextBlock Text="{x:Static res:MyResources.Result}" FontWeight="Bold" />

@@ -210,7 +210,7 @@ namespace BatInspector
                 string abbr = "";
                 if (prob < minProb)
                   abbr = "??PRO[";
-                SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
+                SpeciesInfos? specInfo = SpeciesInfos.findLatin(latin, speciesInfos);
                 if ((info != null) && (specInfo != null))
                   abbr += specInfo.Abbreviation;
                 else
@@ -223,7 +223,7 @@ namespace BatInspector
               }
             }
           }
-          string dir = Path.GetDirectoryName(reportName);
+          string? dir = Path.GetDirectoryName(reportName);
           if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
           report.saveAs(reportName);
@@ -247,7 +247,7 @@ namespace BatInspector
         if (pos >= 0)
         {
           _counter++;
-          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj.Records.Length.ToString();
+          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj!.Records.Length.ToString();
           if (_cli)
             DebugLog.log(msg, enLogType.INFO);
           else

@@ -65,7 +65,7 @@ namespace BatInspector.Forms
     }
 
 
-    private void timer_Tick(object sender, EventArgs e)
+    private void timer_Tick(object? sender, EventArgs? e)
     {
       if (_rec.IsConnected && !_firmwareUpdate)
         updateStatusControls();

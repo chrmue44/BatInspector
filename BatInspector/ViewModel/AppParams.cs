@@ -43,7 +43,8 @@ namespace BatInspector
   {
     static string Localize(string key)
     {
-      return MyResources.ResourceManager.GetString(key, MyResources.Culture);
+      string? str = MyResources.ResourceManager.GetString(key, MyResources.Culture);
+      return str ?? key;
     }
 
     public LocalizedDescriptionAttribute(string key)
@@ -57,7 +58,8 @@ namespace BatInspector
   {
     static string Localize(string key)
     {
-      return MyResources.ResourceManager.GetString(key, MyResources.Culture);
+      string? str = MyResources.ResourceManager.GetString(key, MyResources.Culture);
+      return str ?? key;
     }
 
     public LocalizedCategoryAttribute(string key)
@@ -69,12 +71,12 @@ namespace BatInspector
 
   public class SpeciesInfoConfigurationTypeConverter : TypeConverter
   {
-    public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+    public override bool GetPropertiesSupported(ITypeDescriptorContext? context)
     {
       return true;
     }
 
-    public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+    public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
     {
       return TypeDescriptor.GetProperties(typeof(SpeciesInfos));
     }
@@ -86,31 +88,34 @@ namespace BatInspector
   {
     [DataMember]
     [Description("name of the display filter")]
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
 
     [DataMember]
     [Description("logical expression for filter")]
-    public string Expression { get; set; }
+    public string Expression { get; set; } = "";
 
     [DataMember]
     [Description("only valid, whall ALL calls in one file apply to the logical expression")]
 
     public int Index { get; set; }
 
-    public int CompareTo(FilterParams other)
+    public int CompareTo(FilterParams? other)
     {
-      return this.Name.CompareTo(other.Name);
+      if (other == null)
+        return 1;
+      else
+        return this.Name.CompareTo(other.Name);
     }
   }
 
   public class ColorItemConfigurationTypeConverter : TypeConverter
   {
-    public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+    public override bool GetPropertiesSupported(ITypeDescriptorContext? context)
     {
       return true;
     }
 
-    public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+    public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
     {
       return TypeDescriptor.GetProperties(typeof(ColorItem));
     }
@@ -209,17 +214,17 @@ namespace BatInspector
     public const int MAX_WAVCTL_COUNT = 6;    // max. number of pre initialized WAV controls 
     public const int NR_ZOOM_FREQ_LINES = 5;  // max. number of frequency lines to show in zoom window
 
-    static AppParams _inst = null;
+    static AppParams? _inst;
 
     bool _isInitialized = false;
-    ScriptInventory _scriptInventory = null;
+    ScriptInventory? _scriptInventory;
     static public bool IsInitialized { get { return Inst._isInitialized; } }
 
     public static string AppVersion
     {
       get
       {
-        System.Version version = new System.Version(0, 0, 0, 0);
+        System.Version? version = new System.Version(0, 0, 0, 0);
         try
         {
           version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -230,6 +235,8 @@ namespace BatInspector
     //      version = Assembly.GetExecutingAssembly().GetName().Version;
         }
 
+        if(version == null)
+          version = new System.Version(0, 0, 0, 0);
         return version.ToString();
       }
     }
@@ -242,15 +249,15 @@ namespace BatInspector
         {
           AppParams.load();
         }
-        return _inst;
+        return _inst!;
       }
     }
 
-    static public string DriveLetter
+    static public string? DriveLetter
     {
       get
       {
-        return Path.GetPathRoot(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        return Path.GetPathRoot(Assembly.GetExecutingAssembly()?.Location);
       }
     }
 
@@ -413,7 +420,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescZoomFrequencyLines")]
-    public FreqLineSettings[] FrequencyLines { get; set; }
+    public FreqLineSettings[] FrequencyLines { get; set; } = new FreqLineSettings[NR_ZOOM_FREQ_LINES];
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -451,27 +458,27 @@ namespace BatInspector
     [Category("Filter")]
     [LocalizedDescription("SetDescFilter")]
     [Browsable(false)]
-    public List<FilterParams> Filter { get; set; }
+    public List<FilterParams> Filter { get; set; } = new List<FilterParams>();
 
     [DataMember]
     [LocalizedDescription("SetDescMySqlConnect")]
-    public string MySqlConnectStringBats { get; set; }
+    public string MySqlConnectStringBats { get; set; } = "";
 
     [DataMember]
     [LocalizedDescription("SetDescMySqlConnect")]
-    public string MySqlUser { get; set; }
+    public string MySqlUser { get; set; } = "";
 
     [DataMember]
     [LocalizedDescription("SetDescMySqlConnect")]
-    public string MySqlServer { get; set; }
+    public string MySqlServer { get; set; } = "";
 
     [DataMember]
     [LocalizedDescription("SetDescMySqlConnect")]
-    public string MySqlDbBats { get; set; }
+    public string MySqlDbBats { get; set; } = "";
 
     [DataMember]
     [LocalizedDescription("SetDescMySqlConnect")]
-    public string MySqlDbBirds { get; set; }
+    public string MySqlDbBirds { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -487,7 +494,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatModel"),
     LocalizedDescription("SetDescScriptAutoToMan")]
-    public string ScriptCopyAutoToMan { get; set; }
+    public string ScriptCopyAutoToMan { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatModel")]
@@ -562,22 +569,22 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SerDescScriptInventory")]
-    public string ScriptInventoryPath { get; set; }
+    public string ScriptInventoryPath { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SerDescBatInfo")]
-    public string BatInfoPath { get; set; }
+    public string BatInfoPath { get; set; } = "";
 
     [DataMember]
-    public LocFileSettings LocFileSettings { get; set; }
+    public LocFileSettings LocFileSettings { get; set; } = new LocFileSettings();
 
     [DataMember]
     [Browsable(false)]
-    public string ModelDefaultParamsFile { get; set; }
+    public string ModelDefaultParamsFile { get; set; } = "";
 
     [Browsable(false)]
-    public ScriptInventory ScriptInventory { get { return _scriptInventory; } }
+    public ScriptInventory ScriptInventory { get { return _scriptInventory!; } }
     public AppParams()
     {
       init();
@@ -716,31 +723,42 @@ namespace BatInspector
 
     public static void loadFrom(string fPath)
     {
-      AppParams retVal = null;
-      FileStream file = null;
+      AppParams? retVal = null;
+      FileStream file;
       try
       {
         DebugLog.log("try to load:" + fPath, enLogType.DEBUG);
+        bool createNewFile = false;
         if (File.Exists(fPath))
         {
           using (file = new FileStream(fPath, FileMode.Open, FileAccess.Read))
           {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(AppParams));
-            retVal = (AppParams)ser.ReadObject(file);
+            retVal = (AppParams?)ser.ReadObject(file);
             if (retVal == null)
+            {
               DebugLog.log("settings file not well formed!", enLogType.ERROR);
-            if (retVal.ColorGradientBlue == null)
-              retVal.initColorGradient();
-            //          if (retVal.Models == null)
-            //            retVal.initModels();
-            DebugLog.log("successfully loaded", enLogType.DEBUG);
-            retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
-            retVal.updateFromOlderVersions();
+              createNewFile = true;
+            }
+            else
+            {
+              if (retVal.ColorGradientBlue == null)
+                retVal.initColorGradient();
+              //          if (retVal.Models == null)
+              //            retVal.initModels();
+              DebugLog.log("successfully loaded", enLogType.DEBUG);
+              retVal.AppRootPath = AppDomain.CurrentDomain.BaseDirectory;
+              retVal.updateFromOlderVersions();
+            }
           }
         }
         else
         {
           DebugLog.log("load failed", enLogType.DEBUG);
+          createNewFile = true;
+        }
+        if(createNewFile)
+        {
           retVal = new AppParams();
           retVal.init();
           retVal.save();
@@ -753,9 +771,16 @@ namespace BatInspector
       }
       finally
       {
-        if (file != null)
-          file.Close();
+        //if (file != null)
+        //  file.Close();
       }
+      if(retVal == null)
+      {
+        retVal = new AppParams();
+        retVal.init();
+        retVal.save();
+      }
+
       if (string.IsNullOrEmpty(retVal.ScriptInventoryPath))
       {
         retVal.ScriptInventoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
@@ -808,7 +833,10 @@ namespace BatInspector
         driveIdx = 1;
       }
       if (path.IndexOf(driveStr) < 0)
-        path = path.Replace(path.Substring(driveIdx, 1), DriveLetter.Substring(0, 1));
+      { 
+        if(DriveLetter != null)
+          path = path.Replace(path.Substring(driveIdx, 1), DriveLetter.Substring(0, 1));
+      }
       return path;
     }
 
@@ -835,7 +863,8 @@ namespace BatInspector
       }
       else
       {
-        AppDataPath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        string? path = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+        AppDataPath = path ?? AppDataPath;
         DebugLog.log("datapath.txt NOT found", enLogType.INFO);
       }
       DebugLog.log("resulting data path: " + AppDataPath, enLogType.INFO);

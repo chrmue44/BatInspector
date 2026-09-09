@@ -25,7 +25,7 @@ namespace BatInspector
   [System.ComponentModel.DesignerCategoryAttribute("code")]
   [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
   [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-  public partial class item
+  public partial class ItemKeyVal
   {
 
     private itemKey[] keyField;
@@ -164,9 +164,9 @@ namespace BatInspector
 
     private BatRecordSpecies2[] species2Field;
 
-    private item[] batSpeciesListField;
+    private ItemKeyVal[] batSpeciesListField;
 
-    private item[] batGenusListField;
+    private ItemKeyVal[] batGenusListField;
 
     private string timestampField;
 
@@ -468,8 +468,8 @@ namespace BatInspector
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("item", typeof(item), IsNullable = false)]
-    public item[] BatSpeciesList
+    [System.Xml.Serialization.XmlArrayItemAttribute("item", typeof(ItemKeyVal), IsNullable = false)]
+    public ItemKeyVal[] BatSpeciesList
     {
       get
       {
@@ -483,8 +483,8 @@ namespace BatInspector
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("item", typeof(item), IsNullable = false)]
-    public item[] BatGenusList
+    [System.Xml.Serialization.XmlArrayItemAttribute("item", typeof(ItemKeyVal), IsNullable = false)]
+    public ItemKeyVal[] BatGenusList
     {
       get
       {
@@ -931,7 +931,7 @@ namespace BatInspector
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("BatRecord", typeof(BatRecordBra))]
-    [System.Xml.Serialization.XmlElementAttribute("item", typeof(item))]
+    [System.Xml.Serialization.XmlElementAttribute("item", typeof(ItemKeyVal))]
     public object[] Items
     {
       get

@@ -250,8 +250,6 @@ namespace BatInspector
     public EnumType Gps { get { return _gps; } }
     public BitmapImage getLiveFft()
     {
-
-
       int height = 128;
       int width = 256;
       byte[] fft = new byte[height * width];

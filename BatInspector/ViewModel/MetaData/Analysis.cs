@@ -264,9 +264,9 @@ namespace BatInspector
       _modelType = modelType;
     }
 
-    public AnalysisFile find(string name)
+    public AnalysisFile? find(string name)
     {
-      AnalysisFile retVal = null;
+      AnalysisFile? retVal = null;
       if (!string.IsNullOrEmpty(name))
       {
         foreach (AnalysisFile f in _list)
@@ -385,7 +385,7 @@ namespace BatInspector
         _list.Clear();
         string lastFileName = "$$$";
         int callNr = 1;
-        AnalysisFile file = null;
+        AnalysisFile? file = null;
         for (int row = 2; row <= _csv.RowCnt; row++)
         {
           string fName = _csv.getCell(row, Cols.NAME);
@@ -403,7 +403,7 @@ namespace BatInspector
           AnalysisCall call = new AnalysisCall(_csv, row, _updateCtls);
        
           bool isInList = SpeciesInfos.isInList(App.Model.SpeciesInfos, call.getString(Cols.SPECIES));
-          file.addCall(call, isInList);
+          file!.addCall(call, isInList);
 
           callNr++;
         }
@@ -504,9 +504,9 @@ namespace BatInspector
     }
 
 
-    public AnalysisFile getAnalysis(string fileName)
+    public AnalysisFile? getAnalysis(string fileName)
     {
-      AnalysisFile retVal = null;
+      AnalysisFile? retVal = null;
       foreach (AnalysisFile f in _list)
       {
         string fName = f.getString(Cols.NAME);
@@ -553,7 +553,7 @@ namespace BatInspector
     {
       lock (_fileLock)
       {
-        AnalysisFile fileToDelete = AnalysisFile.find(_list, wavName);
+        AnalysisFile? fileToDelete = AnalysisFile.find(_list, wavName);
         
         if (fileToDelete != null)
           _list.Remove(fileToDelete);
@@ -974,8 +974,8 @@ namespace BatInspector
 
     private Csv _csv;
     private DateTime _recTime;
-    private string _name;
-    private string _backup = null;
+    private string _name = "";
+    private string _backup = "";
 
     public string Name { get { return _name; } set { _name = value; } }
     public DateTime RecTime { get { return _recTime; } }
@@ -1234,9 +1234,9 @@ namespace BatInspector
     }
 
 
-    static public AnalysisFile find(List<AnalysisFile> list, string fName)
+    static public AnalysisFile? find(List<AnalysisFile> list, string fName)
     {
-      AnalysisFile retVal = null;
+      AnalysisFile? retVal = null;
       foreach(AnalysisFile f in list)
       {
         string fileName = f.getString(Cols.NAME);

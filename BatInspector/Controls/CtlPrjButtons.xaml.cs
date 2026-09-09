@@ -65,7 +65,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        PrjRecord[] recList = App.Model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
         if (recList != null)
         {
           foreach (PrjRecord rec in recList)
@@ -83,11 +83,11 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnNone_Click(object sender, RoutedEventArgs e)
+    private void _btnNone_Click(object sender, RoutedEventArgs? e)
     {
       try
       {
-        PrjRecord[] recList = App.Model.CurrentlyOpen?.getRecords();
+        PrjRecord[] recList = App.Model.CurrentlyOpen.getRecords();
         if (recList != null)
         {
           foreach (PrjRecord rec in recList)
@@ -213,7 +213,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnShowAll_Click(object sender, RoutedEventArgs e)
+    private void _btnShowAll_Click(object sender, RoutedEventArgs? e)
     {
       try
       {
@@ -229,19 +229,19 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnApplyFilter_Click(object sender, RoutedEventArgs e)
+    private void _btnApplyFilter_Click(object sender, RoutedEventArgs? e)
     {
       try
       {
         _btnNone_Click(sender, null);
-        FilterItem filter = (_cbFilter.SelectedIndex == 1) ?
+        FilterItem? filter = (_cbFilter.SelectedIndex == 1) ?
                           App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
         if ((filter != null) && (App.Model.CurrentlyOpen != null))
         {
           foreach (AnalysisFile a in App.Model.CurrentlyOpen.Analysis.Files)
           {
             bool res = App.Model.Filter.apply(filter, a);
-            PrjRecord rec = App.Model.CurrentlyOpen.findRecord(a.Name);
+            PrjRecord? rec = App.Model.CurrentlyOpen.findRecord(a.Name);
             if (res && (rec != null))
               rec.Selected = res;
           }
@@ -278,7 +278,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        ModelParams par = App.Model.Prj?.AvailableModelParams[App.Model.Prj.SelectedModelIndex];
+        ModelParams par = App.Model.Prj.AvailableModelParams[App.Model.Prj.SelectedModelIndex];
         bool ok = false;
         if (par != null)
         {

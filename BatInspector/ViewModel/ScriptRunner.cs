@@ -22,7 +22,7 @@ namespace BatInspector
   public class ScriptRunner
   {
     ProcessRunner _proc;
-    delegateUpdateProgress _updProgress;
+    delegateUpdateProgress? _updProgress;
     Parser _parser;
     BaseCommands[] _cmds;
     string _wrkDir;
@@ -31,7 +31,7 @@ namespace BatInspector
     public VarList VarList { get { return _parser.VarTable.VarList; } }
     public List<ScriptItem> Scripts { get { return AppParams.Inst.ScriptInventory.Scripts; } }
     public int CurrentLineNr { get { return _parser.CurrentLineNr; } }
-    public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress updProg)
+    public ScriptRunner(ref ProcessRunner proc, string wrkDir, delegateUpdateProgress? updProg)
     {
       _proc = proc;
       _updProgress = updProg;
@@ -110,15 +110,15 @@ namespace BatInspector
     public int runScript(string fileName, bool background = true, bool initVars = true)
     {
       int retVal = 0;
-      fileName = checkScriptName(fileName);
-      if (fileName != null)
+      string? fileName1 = checkScriptName(fileName);
+      if (fileName1 != null)
       {
         initScriptVars(initVars);
         if (background)
-          _parser.StartParsing(fileName);
+          _parser.StartParsing(fileName1);
         else
         {
-          retVal = _parser.ParseScript(fileName);
+          retVal = _parser.ParseScript(fileName1);
           if (_parser.VarTable.GetValue(Parser.ERROR_LEVEL) != "0")
             retVal = 2;
           if ((_parser.VarTable.GetValue(Parser.RET_VALUE) != "") &&

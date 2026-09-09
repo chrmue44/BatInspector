@@ -28,12 +28,12 @@ namespace BatInspector.Controls
   public partial class CtrlZoom : System.Windows.Controls.UserControl
   {
     //  AnalysisFile _analysis;
-    string _wavFilePath;
+    string _wavFilePath = "";
     int _stretch;
     int _oldCallIdx = -1;
     System.Windows.Controls.Image[] _playImgs;
-    ctlWavFile _ctlWav = null;
-    dlgVoid _openExportForm = null;
+    ctlWavFile? _ctlWav;
+    dlgVoid? _openExportForm = null;
     enModel _modelType;
     Sonogram _sonogramFt;
     Sonogram _sonogramXt;
@@ -42,6 +42,7 @@ namespace BatInspector.Controls
     public CtrlZoom()
     {
       InitializeComponent();
+      _ctlWav = new ctlWavFile();
       _playImgs = new System.Windows.Controls.Image[9];
       int size = 32;
       double op = 0.3;
@@ -127,7 +128,7 @@ namespace BatInspector.Controls
     }
 
     public void setup(AnalysisFile analysis, string wavFilePath,
-                     string[] species, ctlWavFile ctlWav, dlgVoid openExpWindow,
+                     string[]? species, ctlWavFile? ctlWav, dlgVoid openExpWindow,
                      enModel modelType)
     {
       int lblWidth = 110;
@@ -645,7 +646,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnZoomTotal_Click(object sender, RoutedEventArgs e)
+    private void _btnZoomTotal_Click(object? sender, RoutedEventArgs? e)
     {
       try
       {
@@ -1391,7 +1392,7 @@ namespace BatInspector.Controls
           wavSubDir = App.Model.Prj.WavSubDir;
         App.Model.ZoomView.Waterfall.Audio.saveAs(App.Model.ZoomView.Waterfall.WavName, wavSubDir);
         string pngName = App.Model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        _ctlWav.createNewPng();
+        _ctlWav?.createNewPng();
         DebugLog.log("Zoom:Btn 'save' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1523,7 +1524,7 @@ namespace BatInspector.Controls
         App.Model.ZoomView.undoChanges();
         App.Model.updateReport();
         string pngName = App.Model.ZoomView.Waterfall.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-        _ctlWav.createNewPng();
+        _ctlWav?.createNewPng();
         createZoomImg();
         DebugLog.log("Zoom:Btn 'Undo' clicked", enLogType.DEBUG);
       }

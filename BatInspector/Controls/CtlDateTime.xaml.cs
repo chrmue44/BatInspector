@@ -29,15 +29,17 @@ namespace BatInspector.Controls
 
     DateTime getDateTime() 
     {
-      DateTime? retVal = (DateTime?)_dp.SelectedDate;
-      if(retVal == null)
+      DateTime retVal;
+      if(_dp.SelectedDate == null)
         retVal = _dp.DisplayDate;
-      retVal = retVal?.AddHours(getHour());
-      retVal = retVal?.AddMinutes(getMinute());
+      else
+        retVal = (DateTime)_dp.SelectedDate;
+      retVal = retVal.AddHours(getHour());
+      retVal = retVal.AddMinutes(getMinute());
       return (DateTime)retVal;
     }
 
-    public void init(DateTime time, bool dateVisible = true, string label = "", int width = 80, dlgDateChanged dlg = null )
+    public void init(DateTime time, bool dateVisible = true, string label = "", int width = 80, dlgDateChanged? dlg = null )
     {
       _dp.Visibility = dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
       _lbl.Visibility = !dateVisible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;

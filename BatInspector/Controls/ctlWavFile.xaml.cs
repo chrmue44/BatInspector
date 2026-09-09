@@ -31,8 +31,8 @@ namespace BatInspector.Controls
     MainWindow _parent;
     bool _initialized = false;
     enModel _modelType;
-    Sonogram _sonogram = null;
-    dlgRelease _dlgRelease = null;
+    Sonogram? _sonogram = null;
+    dlgRelease? _dlgRelease = null;
     int _infoWidth = 360;
     bool _isBirdPrj = false;
 
@@ -274,19 +274,20 @@ namespace BatInspector.Controls
       }
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void Button_Click(object? sender, RoutedEventArgs? e)
     {
       string fName = Path.Combine(_wavFilePath, _record.File);
       if (File.Exists(fName))
       {
+        enModel modelType = App.Model.CurrentlyOpen?.Analysis.ModelType ?? enModel.BAT_DETECT2;
         if (_analysis != null)
         {
-          _parent.setZoom(_record.File, _analysis, _wavFilePath, this, App.Model.CurrentlyOpen.Analysis.ModelType);
+          _parent.setZoom(_record.File, _analysis, _wavFilePath, this, modelType);
         }
         else
         {
           AnalysisFile ana = new AnalysisFile(_record.File, 383500, 3.001);
-          _parent.setZoom(_record.File, ana, _wavFilePath, this, App.Model.CurrentlyOpen.Analysis.ModelType);
+          _parent.setZoom(_record.File, ana, _wavFilePath, this, modelType);
         }
       }
       else

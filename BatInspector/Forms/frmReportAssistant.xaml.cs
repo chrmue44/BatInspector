@@ -11,8 +11,8 @@ namespace BatInspector.Forms
   public partial class frmReportAssistant : Window
   {
     SumReportJson _rep;
-    WebReportDataJson _formData = null;
-    DlgCmd _dlgSetFormDataName = null;
+    WebReportDataJson? _formData = null;
+    DlgCmd? _dlgSetFormDataName = null;
     string _dstDir = "";
 
     public frmReportAssistant(SumReportJson rep, DlgCmd dlgSetFormDataName, bool markdown, string dstDir)
@@ -57,17 +57,22 @@ namespace BatInspector.Forms
     {
       if ((idx >= 0) && (idx < _spFoundSpecies.Children.Count))
       {
-        ctlWebRepSpecies ctl = _spFoundSpecies.Children[idx] as ctlWebRepSpecies;
-        SpeciesWebInfo info = _formData.findSpecies(ctl.Species);
-        if(info != null)
-          info.Show = false;
-        _spFoundSpecies.Children.RemoveAt(idx);
+        ctlWebRepSpecies? ctl = _spFoundSpecies.Children[idx] as ctlWebRepSpecies;
+        if ((ctl != null) && (_formData != null) && (ctl.Species != null))
+        {
+          SpeciesWebInfo? info = _formData.findSpecies(ctl.Species);
+          if (info != null)
+            info.Show = false;
+          _spFoundSpecies.Children.RemoveAt(idx);
+        }
       }
     }
 
     private void setFormData()
     {
+
       _formData = WebReportDataJson.load(_ctlFormData.getValue());
+      if(_formData != null)
       updateFormValues();
     }
 
@@ -90,13 +95,16 @@ namespace BatInspector.Forms
         _tbDefinitions.Text = _formData.Definitions;
         for (int i = 0; i < _spFoundSpecies.Children.Count; i++)
         {
-          ctlWebRepSpecies ctl = _spFoundSpecies.Children[i] as ctlWebRepSpecies;
-          SpeciesWebInfo info = _formData.findSpecies(ctl.Species);
-          if (info != null)
+          ctlWebRepSpecies? ctl = _spFoundSpecies.Children[i] as ctlWebRepSpecies;
+          if ((ctl != null) && (_formData != null) && (ctl.Species != null))
           {
-            ctl.Confusion = info.Confusion;
-            ctl.Comment = info.Comment;
-            info.Show = true;
+            SpeciesWebInfo? info = _formData.findSpecies(ctl.Species);
+            if (info != null)
+            {
+              ctl.Confusion = info.Confusion;
+              ctl.Comment = info.Comment;
+              info.Show = true;
+            }
           }
         }
       }
@@ -120,7 +128,7 @@ namespace BatInspector.Forms
       _formData.Method = _tbMethod.Text;
       foreach (ctlWebRepSpecies ctl in _spFoundSpecies.Children)
       {
-        SpeciesWebInfo info = _formData.findSpecies(ctl.Species);
+        SpeciesWebInfo? info = _formData.findSpecies(ctl.Species);
         if (info != null)
         {
           info.Confusion = ctl.Confusion;

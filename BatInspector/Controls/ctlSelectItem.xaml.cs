@@ -22,18 +22,18 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlSelectItem : System.Windows.Controls.UserControl
   {
-    string _valString;
-    dlgSelItemChanged _dlgValChange = null;
+    string _valString = ""  ;
+    dlgSelItemChanged? _dlgValChange = null;
     int _index;
-    System.Windows.Media.Brush _brushDefault;
-    dlgClickLabel _dlgClickLabel;
+    System.Windows.Media.Brush _brushDefault = System.Windows.Media.Brushes.Black;
+    dlgClickLabel? _dlgClickLabel;
 
     public int SelectIndex { get { return _cb.SelectedIndex; } set { _cb.SelectedIndex = value; } }    
 
    // public bool Focusable { set { _tb.Focusable = value; } get { return _tb.Focusable; } }
 
     public void setup(string label, int index, int widthLbl = 80, int widthTb = 80,
-                      dlgSelItemChanged dlgValChange = null, dlgClickLabel dlgClick = null, string tooltip = "", bool edit = true)
+                      dlgSelItemChanged? dlgValChange = null, dlgClickLabel? dlgClick = null, string tooltip = "", bool edit = true)
     {
       _lbl.Text = label;
       _lbl.Focusable = false;
@@ -97,7 +97,7 @@ namespace BatInspector.Controls
 
     public string getValue()
     {
-      return _cb.Items[_cb.SelectedIndex].ToString(); 
+      return _cb.Items[_cb.SelectedIndex].ToString() ?? ""; 
     }
 
     public int getSelectedIndex()
@@ -162,7 +162,7 @@ namespace BatInspector.Controls
       {
         if (IsVisible && (_cb.SelectedIndex >= 0))
         {
-          _valString = _cb.Items[_cb.SelectedIndex].ToString();
+          _valString = _cb.Items[_cb.SelectedIndex].ToString() ?? "";
           if (_dlgValChange != null)
             _dlgValChange(_index, _valString);
         }

@@ -100,7 +100,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        FilterItem filterExp = (_cbFilterStatistic.SelectedIndex == 1) ?
+        FilterItem? filterExp = (_cbFilterStatistic.SelectedIndex == 1) ?
                     filterExp = App.Model.Filter.TempFilter : filterExp = App.Model.Filter.getFilter(_cbFilterStatistic.Text);
         if (App.Model.CurrentlyOpen != null)
         {

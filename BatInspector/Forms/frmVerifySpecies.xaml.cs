@@ -25,7 +25,7 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmVerifySpecies : Window
   {
-    Sonogram _sonogram;
+    Sonogram _sonogram = new Sonogram();
     double _tMin, _tMax;
     double _fMin, _fMax;
     enVerifyState _state = enVerifyState.SET_FSTART;
@@ -34,7 +34,7 @@ namespace BatInspector.Forms
     double _lat, _lon;
     double _tEnd;
     double _tMk;
-    string[] _species;
+    string[] _species = new string[0];
     double _range;
 
     public frmVerifySpecies()
@@ -50,7 +50,7 @@ namespace BatInspector.Forms
         _img.Source = _sonogram.ImageFt;
     }
 
-    public void setup(AnalysisCall analysisCall, Sonogram sono, double tMin, double tMax, double fMin, double fMax)
+    public void setup(AnalysisCall? analysisCall, Sonogram sono, double tMin, double tMax, double fMin, double fMax)
     {
       int lw = 260;
 
@@ -119,10 +119,23 @@ namespace BatInspector.Forms
           _ctlCallType.SelectIndex = 1;
       }
 
+      initSpeciesComboBox();
       App.Model.ZoomView.Waterfall.generateFtDiagram(tMin, tMax, AppParams.Inst.WaterfallWidth);
       updateImage();
     }
 
+    private void initSpeciesComboBox()
+    {
+      _cbSpecies.Items.Clear();
+      foreach (SpeciesInfos si in App.Model.SpeciesInfos)
+      {
+        if (_cbLocalNames.IsChecked == true)
+          _cbSpecies.Items.Add(si.Local);
+        else
+          _cbSpecies.Items.Add(si.Abbreviation);
+      }
+      _cbSpecies.SelectedIndex = 0;
+    }
 
     private enCallChar setCalltype()
     {
@@ -192,21 +205,28 @@ namespace BatInspector.Forms
       cd.HasStrongHarmonic = (enYesNoProperty)_ctlHasStrongHarmonics.SelectIndex;
       cd.IsConvex = (enYesNoProperty) _ctlIsConvex.SelectIndex;
       cd.IsUniformFormFreqInt = (enYesNoProperty)_ctlIsUniForm.SelectIndex;
+      if (_rballSpecies.IsChecked == true)
+      {
+        _tbResult.Document = BatInfo.checkBatSpecies(cd, App.Model.SpeciesInfos, _lat, _lon,
+                                             _cbVerbose.IsChecked == true,
+                                             _cbNotDeterminable.IsChecked == true,
+                                             _cbLocalNames.IsChecked == true,
+                                             HandleRequestNavigate,
+                                             out _species
+                                             );
+        _ctlHasCallTypeAB.setVisibility(_species);
+        _ctlHasKneeClearly.setVisibility(_species);
+        _ctlHasMyotisKink.setVisibility(_species);
+        _ctlHasStrongHarmonics.setVisibility(_species);
+        _ctlHasUpwardHookAtEnd.setVisibility(_species);
+        _ctlIsConvex.setVisibility(_species);
+        _ctlIsUniForm.setVisibility(_species);
+      }
+      if(_rbSelectedSpecies.IsChecked == true)
+      {
+        _tbResult.Document = BatInfo.checkAgainstOneSpecies(cd, _cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos, _lat, _lon, _cbNotDeterminable.IsChecked == true, _cbLocalNames.IsChecked == true, HandleRequestNavigate);
 
-      _tbResult.Document = BatInfo.checkBatSpecies(cd, App.Model.SpeciesInfos, _lat, _lon,
-                                           _cbVerbose.IsChecked == true, 
-                                           _cbNotDeterminable.IsChecked == true,
-                                           _cbLocalNames.IsChecked == true,
-                                           HandleRequestNavigate,
-                                           out _species
-                                           );
-      _ctlHasCallTypeAB.setVisibility(_species);
-      _ctlHasKneeClearly.setVisibility(_species);
-      _ctlHasMyotisKink.setVisibility(_species);
-      _ctlHasStrongHarmonics.setVisibility(_species);
-      _ctlHasUpwardHookAtEnd.setVisibility(_species);
-      _ctlIsConvex.setVisibility(_species);
-      _ctlIsUniForm.setVisibility(_species);
+      }
     }
 
     private void HandleRequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -340,6 +360,11 @@ namespace BatInspector.Forms
     {
       Hyperlink hyperlink = (Hyperlink)sender;
       Process.Start(hyperlink.NavigateUri.ToString());
+    }
+
+    private void _cbLocalNames_Click(object sender, RoutedEventArgs e)
+    {
+      initSpeciesComboBox();
     }
 
     private void _img_MouseDown(object sender, MouseButtonEventArgs e)

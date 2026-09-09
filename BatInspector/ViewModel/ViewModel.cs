@@ -56,7 +56,7 @@ namespace BatInspector
   
   public class ModelState
   {
-    public string Msg { get; set; } = null;
+    public string? Msg { get; set; } = null;
     public enAppState State { get; set; } = enAppState.IDLE;
   }
 
@@ -70,7 +70,6 @@ namespace BatInspector
     bool _extBusy = false;
     ScriptRunner _scripter = null;
     WavFile _wav;
-    ClassifierBarataud _clsBarataud;
     List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
     BatSpeciesRegions _batSpecRegions;
@@ -80,7 +79,7 @@ namespace BatInspector
     string _tempCmd;
     PrjView _view;
     ModelParams[] _defaultModelParams;
-    dlgVoid _callBackEnd = null;
+    dlgVoid? _callBackEnd = null;
     DataBase _mySql;
     public PrjView View { get { return _view; } }
 
@@ -89,8 +88,7 @@ namespace BatInspector
 
     public ScriptRunner Scripter { get { return _scripter; } }
 
-    public ClassifierBarataud Classifier { get { return _clsBarataud; } }
-
+   
     public Project Prj { get { return _view.Prj; } }
 
     public ZoomView ZoomView { get { return _zoom; } }
@@ -113,7 +111,7 @@ namespace BatInspector
 
     public bool UpdateUi { get; set; }
 
-    public Query Query { get { return _view.Query; } set { _view.Query = value; } }
+    public Query? Query { get { return _view.Query; } set { _view.Query = value; } }
 
     public ModelState Status { get; set; }
 
@@ -127,7 +125,7 @@ namespace BatInspector
     /// <summary>
     /// currently opened object (prj, query or null)
     /// </summary>
-    public PrjBase CurrentlyOpen
+    public PrjBase? CurrentlyOpen
     {
       get
       {
@@ -154,8 +152,7 @@ namespace BatInspector
       Status = new ModelState();
       _zoom = new ZoomView(_colorTable, _proc, Status);
       _wav = new WavFile();
-      _clsBarataud = new ClassifierBarataud(_batSpecRegions);
-      _sumReport = new SumReport();
+       _sumReport = new SumReport();
       _models = new List<BaseModel>();
       _view = new PrjView();
       _mySql = new DataBase();
@@ -163,7 +160,7 @@ namespace BatInspector
       int index = 0;
 
       _defaultModelParams = BaseModel.readDefaultModelParams();
-      foreach (ModelParams m in _defaultModelParams)
+      foreach (ModelParams m in _defaultModelParams!)
       {
         _models.Add(BaseModel.Create(index, m.Type));
         index++;
@@ -209,7 +206,11 @@ namespace BatInspector
       {
         _view.Prj = null;
         _view.Query = Query.readQueryFile(file.FullName);
-        _selectedDir = Path.GetDirectoryName(file.FullName);
+        string? str = Path.GetDirectoryName(file.FullName);
+        if(str != null)
+         _selectedDir = str;
+        else
+          DebugLog.log("could not get directory of query file " + file.FullName, enLogType.ERROR);
       }
       else
         _view.Query = null;
@@ -264,6 +265,7 @@ namespace BatInspector
         UpdateUi = true;
     }
 
+    /*
     void checkProject()
     {
       bool ok = true;
@@ -290,7 +292,7 @@ namespace BatInspector
       else
         DebugLog.log("mismatch between project file and report, please check", enLogType.ERROR, true);
     }
-
+    */
 
     public void loadSettings()
     {
@@ -382,24 +384,27 @@ namespace BatInspector
       else
         scriptName = path;
       string args = scriptName;
-      _proc.launchCommandLineApp(exe, null, null, false, args, true, false);
+      _proc.launchCommandLineApp(exe, null, "", false, args, true, false);
     }
 
     public void deleteFiles(List<string> files)
     {
       DebugLog.log("start deleting files", enLogType.INFO);
-      _view.Prj.writePrjFile();
+      _view.Prj?.writePrjFile();
 
       foreach (string f in files)
         deleteFile(f);
 
-      _view.Prj.Analysis.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
+      if((_view.Prj != null) && (_view.Prj.ReportName != null) && (_view.Prj.Notes != null) && (_view.Prj.SummaryName != null))
+        _view.Prj.Analysis?.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
+      else
+        DebugLog.log("could not save report after deleting files, project or report name is null", enLogType.ERROR);
       DebugLog.log(files.Count.ToString() + " files deleted", enLogType.INFO);
     }
 
     public void removeDeletedWavsFromReport(string reportName)
     {
-      if (_view.Prj.Analysis != null)
+      if (_view.Prj?.Analysis != null)
         _view.Prj.Analysis.removeDeletedWavsFromReport(_view.Prj);
     }
 
@@ -530,15 +535,15 @@ namespace BatInspector
           else
             DebugLog.log($"could not start classification, model {_models[Prj.SelectedModelIndex].Name} not installed!", enLogType.ERROR);
         }
-        _view.Prj.writePrjFile();
+        _view.Prj?.writePrjFile();
       }
       DebugLog.log("evaluation of species done", enLogType.INFO);
       return retVal;
     }
 
-    public BaseModel getClassifier(enModel type)
+    public BaseModel? getClassifier(enModel type)
     {
-      BaseModel retVal = null;
+      BaseModel? retVal = null;
       foreach (BaseModel m in _models)
       {
         if (type == m.Type)
@@ -1064,24 +1069,24 @@ namespace BatInspector
         }
 
         var assembly = typeof(SmtpClient).Assembly;
-        var mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
+        Type? mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
 
         // Get reflection info for MailWriter contructor
-        var mailWriterContructor = mailWriterType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
+        ConstructorInfo? mailWriterContructor = mailWriterType?.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
 
         // Construct MailWriter object with our FileStream
-        var mailWriter = mailWriterContructor.Invoke(new object[] { filestream });
+        var mailWriter = mailWriterContructor?.Invoke(new object[] { filestream });
 
         // Get reflection info for Send() method on MailMessage
-        var sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
+        MethodInfo? sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
 
-        sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter, true, true }, null);
+        sendMethod?.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { mailWriter, true, true }, null);
 
         // Finally get reflection info for Close() method on our MailWriter
-        var closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
+        MethodInfo? closeMethod = mailWriter?.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
 
         // Call close method
-        closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+        closeMethod?.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
       }
     }
   }

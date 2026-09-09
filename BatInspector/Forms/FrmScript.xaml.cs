@@ -77,7 +77,7 @@ namespace BatInspector.Forms
     {   
       foreach(UIElement el in _sp.Children)
       {
-        ctlScriptItem it = el as ctlScriptItem;
+        ctlScriptItem it = (ctlScriptItem)el;
         if(it.Index < _temp.Count)
         {
           _temp[it.Index].Name = it.ScriptName;

@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.opengis.net/kml/2.2")]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.opengis.net/kml/2.2", IsNullable=false)]
-public partial class kml {
+public partial class Kml {
     
     private kmlDocument itemsField;
     

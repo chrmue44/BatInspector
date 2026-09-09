@@ -20,10 +20,10 @@ namespace BatInspector
 
   public class Pool<T> where T : class, IPool, new()
   {
-    T[] _list;
-    List<int> _free;
+    T[] _list = new T[0];
+    List<int> _free = new List<int>();
     int _size = 0;
-    string[] _allocated; 
+    string[] _allocated = new string[0]; 
 
 
     public Pool(int Size)
@@ -47,9 +47,9 @@ namespace BatInspector
     }
 
 
-    public T get(string id = "")
+    public T? get(string id = "")
     {
-      T retVal = default(T);
+      T? retVal = default(T);
       if (_free.Count > 0)
       {
         int free = _free[0];
@@ -95,7 +95,7 @@ namespace BatInspector
 
     private void releaseSelf(object o)
     {
-      T obj = o as T;
+      T obj = (T)o;
       release(obj);
     }
   }

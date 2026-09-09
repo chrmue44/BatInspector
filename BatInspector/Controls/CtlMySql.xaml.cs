@@ -21,10 +21,10 @@ namespace BatInspector.Controls
   {
     bool _queryCollapsed = false;
     List<CtlMySqlFieldSelect> _listCb = new List<CtlMySqlFieldSelect>();
-    string _columnsList;
+    string _columnsList = "";
     int _limitRows = 1000;
     string _filterExpression = "";
-    List<sqlRow> _query = null;
+    List<sqlRow>? _query = null;
     string[] _order = new string[5];
 
     const int IDX_NONE = 0;
@@ -229,21 +229,24 @@ namespace BatInspector.Controls
 
         if (dep == null)
           return;
-        string[] it = null;
-        string[] hdr = null;
-        System.Data.DataRowView view = null;
+        string[]? it = null;
+        string[]? hdr = null;
+        System.Data.DataRowView? view = null;
         if (dep is System.Windows.Controls.DataGridCell)
         {
-          System.Windows.Controls.DataGridCell cell = dep as System.Windows.Controls.DataGridCell;
+          System.Windows.Controls.DataGridCell cell = (System.Windows.Controls.DataGridCell)dep;
           // navigate further up the tree
           while ((dep != null) && !(dep is System.Windows.Controls.DataGridRow))
             dep = VisualTreeHelper.GetParent(dep);
 
-          System.Windows.Controls.DataGridRow row = dep as System.Windows.Controls. DataGridRow;
-          view = row.Item as System.Data.DataRowView;
-          it = new string[view.Row.ItemArray.Length];
-          for(int k = 0; k < it.Length; k++)
-            it[k] = view.Row.ItemArray[k].ToString();
+          System.Windows.Controls.DataGridRow? row = (System.Windows.Controls. DataGridRow?)dep;
+          if (row != null)
+          {
+            view = (System.Data.DataRowView)row.Item;
+            it = new string[view.Row.ItemArray.Length];
+            for (int k = 0; k < it.Length; k++)
+              it[k] = view.Row.ItemArray[k].ToString();
+          }
         }
 
         if (it != null)
@@ -260,7 +263,7 @@ namespace BatInspector.Controls
           int iWav = findField(DBBAT.WAV_FILE_NAME, hdr);
           int iRecT = findField(DBBAT.RECORDING_TIME, hdr);
           int iPath = findField(DBBAT.PATH_TO_WAV, hdr);
-          AnalysisFile f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it[iWav], it[iRecT]);
+          AnalysisFile? f = App.Model.MySQL.DbBats.fillAnalysisFromQuery(it[iWav], it[iRecT]);
           if (f != null)
           {
             i = findField(DBBAT.CALLNR, hdr);
@@ -412,7 +415,7 @@ namespace BatInspector.Controls
 
     }
 
-    private void _cb_Click(object sender, RoutedEventArgs e)
+    private void _cb_Click(object? sender, RoutedEventArgs? e)
     {
       _columnsList = "";
       int colsPerLine = 0;

@@ -125,15 +125,13 @@ namespace BatInspector
     {
       switch (type)
       {
+        default:
         case enModel.BAT_DETECT2:
           return new ModelBatDetect2(index) as BaseModel;
         case enModel.BATTY_BIRD_NET:
           return new ModelBattyB(index) as BaseModel;
         case enModel.BIRDNET:
           return new ModelBirdnet(index) as BaseModel;
-
-        default:
-          return null;
       }
     }
 
@@ -151,14 +149,14 @@ namespace BatInspector
       return ModelScriptItem.getScriptName(classifier, modelName);
     }
 
-    public static ModelParams[] readDefaultModelParams()
+    public static ModelParams[]? readDefaultModelParams()
     {
-      ModelParams[] retVal = null;
+      ModelParams[]? retVal = null;
       if (!File.Exists(AppParams.Inst.ModelDefaultParamsFile))
         DebugLog.log("Default model params not found: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       string xml = File.ReadAllText(AppParams.Inst.ModelDefaultParamsFile);
       TextReader reader = new StringReader(xml);
-      DefModelParamFile f = (DefModelParamFile)ModParSerializer.Deserialize(reader);
+      DefModelParamFile? f = (DefModelParamFile?)ModParSerializer.Deserialize(reader);
       if (f != null && (f.Models != null))
       {
         List<ModelParams> l = new List<ModelParams>();
@@ -170,7 +168,7 @@ namespace BatInspector
         retVal = l.ToArray();
       }
       if (retVal == null)
-        DebugLog.log("Serialization failed: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
+        DebugLog.log("DeSerialization failed: {AppParams.Inst.ModelDefaultParamsFile}", enLogType.ERROR);
       return retVal;
     }
 
@@ -203,7 +201,7 @@ namespace BatInspector
       string modName = prj.AvailableModelParams[prj.SelectedModelIndex].Name + "-" +
                        prj.AvailableModelParams[prj.SelectedModelIndex].DataSet;
 
-      List<SumSpec> li = null;
+      List<SumSpec> li = new List<SumSpec>();
       for (thresh = 0.7; thresh > 0.2; thresh -= 0.1)
       {
         li = summarizePerformance(perfResult, thresh, lastRow);

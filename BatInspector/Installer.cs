@@ -12,8 +12,8 @@ namespace BatInspector
 {
   public class Installer
   {
-    static string _outputData;
-    static SplashScreen _splashScreen;
+    static string _outputData ="";
+    static SplashScreen? _splashScreen;
     static public bool InstData { get; private set; } = false;
     static public bool InstPy { get; private set; } = false;
     static public bool InstMod { get; private set; } = false;
@@ -137,6 +137,7 @@ namespace BatInspector
     /// elevated. Returns false if the token does not.
     /// </returns>
 
+    /*
     private static void RunAsDesktopUser(string fileName)
     {
       if (string.IsNullOrWhiteSpace(fileName))
@@ -226,6 +227,7 @@ namespace BatInspector
       }
 
     }
+    */
 
     #region Interop
 

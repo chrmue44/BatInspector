@@ -76,6 +76,7 @@
     <None Remove="images\stop.png" />
     <None Remove="images\tea-cup.png" />
     <None Remove="images\toolhammerconstruction_81806.png" />
+    <None Remove="images\Undo_icon-icons.com_73701.png" />
     <None Remove="images\vcsupdaterequired_93493.png" />
     <None Remove="images\volume.png" />
     <None Remove="images\wav-file-format-symbol.png" />
@@ -169,6 +170,7 @@
     <Resource Include="images\stop.png" />
     <Resource Include="images\tea-cup.png" />
     <Resource Include="images\toolhammerconstruction_81806.png" />
+    <Resource Include="images\Undo_icon-icons.com_73701.png" />
     <Resource Include="images\vcsupdaterequired_93493.png" />
     <Resource Include="images\volume.png" />
     <Resource Include="images\wav-file-format-symbol.png" />

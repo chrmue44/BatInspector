@@ -9,7 +9,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlSpecialQuestion : System.Windows.Controls.UserControl
   { 
-    string[] _relevantFor;
+    string[] _relevantFor = new string[0];
     
     public ctlSpecialQuestion()
     {
@@ -29,7 +29,7 @@ namespace BatInspector.Controls
     }
 
     public void setup(string label, int index, int widthLbl = 80, int widthTb = 80,
-                      dlgSelItemChanged dlgValChange = null, dlgClickLabel dlgClick = null, string tooltip = "", bool edit = true)
+                      dlgSelItemChanged? dlgValChange = null, dlgClickLabel? dlgClick = null, string tooltip = "", bool edit = true)
     {
       _cbSelect.setup(label, index, widthLbl, widthTb, dlgValChange, dlgClick, tooltip, edit);
     }

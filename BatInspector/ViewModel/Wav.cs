@@ -167,12 +167,14 @@ namespace BatInspector
     {
       ChunkId = CHUNK_ID;
       ChunkSize = 0;  // Until we add some data
+      WaveData = new short[0];
     }
 
     public DataChunk(byte[] data)
     {
       ChunkId = System.Text.Encoding.ASCII.GetString(data, 0, 4);
       ChunkSize = BitConverter.ToUInt32(data, 4);
+      WaveData = new short[0];
     }
 
     public UInt32 Length()
@@ -194,6 +196,7 @@ namespace BatInspector
       return chunkBytes.ToArray();
     }
 
+    /*
     public void AddSampleData(short[] leftBuffer,
      short[] rightBuffer, int idxStart, int idxEnd)
     {
@@ -205,12 +208,15 @@ namespace BatInspector
       for (int index = 0; index < WaveData.Length; index += 2)
       {
         WaveData[index] = leftBuffer[bufferOffset];
-        WaveData[index + 1] = rightBuffer[bufferOffset];
+        if(rightBuffer != null)
+          WaveData[index + 1] = rightBuffer[bufferOffset];
+        else
+          WaveData[index + 1] = leftBuffer[bufferOffset];
         bufferOffset++;
       }
       ChunkSize = (UInt32)WaveData.Length * 2;
     }
-
+    */
 
 
     public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount)
@@ -383,12 +389,12 @@ namespace BatInspector
     DataChunk _data;
     string _fName;
     bool _isInitialized;
-    WaveOut _outputDevice = null;
-    MemoryStream _memStream = null;
-    RawSourceWaveStream _rawStream = null;
-    Pcm16BitToSampleProvider _sampleProvider = null;
+    WaveOut? _outputDevice = null;
+    MemoryStream? _memStream = null;
+    RawSourceWaveStream? _rawStream = null;
+    Pcm16BitToSampleProvider? _sampleProvider = null;
     PlaybackState _playbackState = PlaybackState.Stopped;
-    Guano _guano = null;
+    Guano? _guano = null;
 
     public string FileName { get { return _fName; } }
 
@@ -398,7 +404,7 @@ namespace BatInspector
 
     public short[] AudioSamples {  get { return _data.WaveData; } }
 
-    public Guano Guano { get{ return _guano; } }
+    public Guano? Guano { get{ return _guano; } }
 
     public PlaybackState PlaybackState
     {
@@ -422,6 +428,7 @@ namespace BatInspector
     {
       _isInitialized = false;
       _fName = "";
+      _rawData = new byte[0];
       _format = new FormatChunk();
       _data = new DataChunk();
       _header = new WaveHeader();
@@ -674,14 +681,14 @@ namespace BatInspector
         splitWav.createFile(sampleRate, idxStart, idxEnd, wav.AudioSamples);
         if(wav.Guano != null)
           splitWav.addGuanoMetaData(wav);
-        string fName = Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name) + "_" + i.ToString("000") + AppParams.EXT_WAV);
+        string fName = Path.Combine(Path.GetDirectoryName(name)?? "", Path.GetFileNameWithoutExtension(name) + "_" + i.ToString("000") + AppParams.EXT_WAV);
         splitWav.saveFileAs(fName);
       }
       if (removeOriginal && File.Exists(name))
         File.Delete(name);
     }
 
-    public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null)
+    public void createFile(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[]? right = null)
     {
       _header = new WaveHeader();
       _format = new FormatChunk(chanCount, (uint)sampleRate);
@@ -747,7 +754,7 @@ namespace BatInspector
       }
     }
 
-    public void play_HET(ushort chanCount, int sampleRate, double f_HET, int idxStart, int idxEnd, double[] left, double[] right = null, double playPosition = 0.0)
+    public void play_HET(ushort chanCount, int sampleRate, double f_HET, int idxStart, int idxEnd, double[] left, double[]? right = null, double playPosition = 0.0)
     {
       if (_playbackState != PlaybackState.Paused)
       {
@@ -770,7 +777,7 @@ namespace BatInspector
       play();
     }
 
-    public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[] right = null, double playPosition = 0.0)
+    public void play(ushort chanCount, int sampleRate, int idxStart, int idxEnd, double[] left, double[]? right = null, double playPosition = 0.0)
     {
       if (_playbackState != PlaybackState.Paused)
       {
@@ -801,7 +808,7 @@ namespace BatInspector
         {
           if (_outputDevice == null)
           {
-            _outputDevice = new WaveOutEvent();
+            _outputDevice = new WaveOut();
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
           }
           if(_rawStream == null)
@@ -829,7 +836,7 @@ namespace BatInspector
       wav.readFile(wavName);
       if(wav.Guano != null)
       {
-        GuanoItem it = wav.Guano.getField("Song Meter|Prefix", "WA");
+        GuanoItem? it = wav.Guano.getField("Song Meter|Prefix", "WA");
         if(it != null)
           retVal = it.Value;
       }
@@ -941,15 +948,15 @@ namespace BatInspector
       return retVal;
     }
 
-    private void OnPlaybackStopped(object sender, StoppedEventArgs args)
+    private void OnPlaybackStopped(object? sender, StoppedEventArgs? args)
     {
       try
       {
-        _outputDevice.Dispose();
+        _outputDevice?.Dispose();
         _outputDevice = null;
-        _rawStream.Dispose();
+        _rawStream?.Dispose();
         _rawStream = null;
-        _memStream.Dispose();
+        _memStream?.Dispose();
         _memStream = null;
         _sampleProvider = null;
         stop();

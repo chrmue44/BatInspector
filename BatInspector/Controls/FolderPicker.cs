@@ -17,13 +17,13 @@ using System.Windows.Interop;  // for WPF support
 
 public class FolderPicker
 {
-  public virtual string ResultPath { get; protected set; }
-  public virtual string ResultName { get; protected set; }
-  public virtual string InputPath { get; set; }
+  public virtual string ResultPath { get; protected set; } = "";
+  public virtual string ResultName { get; protected set; } = "";
+  public virtual string InputPath { get; set; } = "";
   public virtual bool ForceFileSystem { get; set; }
-  public virtual string Title { get; set; }
-  public virtual string OkButtonLabel { get; set; }
-  public virtual string FileNameLabel { get; set; }
+  public virtual string Title { get; set; } = "";
+  public virtual string OkButtonLabel { get; set; } = "";
+  public virtual string FileNameLabel { get; set; } = "";
 
   protected virtual int SetOptions(int options)
   {
@@ -35,7 +35,7 @@ public class FolderPicker
   }
 
   // for WPF support
-  public bool? ShowDialog(Window owner = null, bool throwOnError = false)
+  public bool? ShowDialog(Window? owner = null, bool throwOnError = false)
   {
     if(owner == null)
       owner = System.Windows.Application.Current.MainWindow;

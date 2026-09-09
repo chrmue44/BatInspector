@@ -24,7 +24,7 @@ class TimeLocData
   public double Lon { get; set; }
 }
   
-public partial class kml
+public partial class Kml
 {
 
   private List<TimeLocData> _list = new List<TimeLocData>();
@@ -109,9 +109,9 @@ public partial class kml
   }
   */
 
-  static public kml read(string fileName)
+  static public Kml? read(string fileName)
   {
-    kml retVal = null;
+    Kml? retVal = null;
     try
     {
       if (File.Exists(fileName))
@@ -128,26 +128,29 @@ public partial class kml
     return retVal;
   }
 
-  static private kml createKml(XmlDocument doc)
+  static private Kml? createKml(XmlDocument doc)
   {
-    kml retVal = new kml();
+    Kml? retVal = new Kml();
     retVal.Doc = new kmlDocument();
     string errMsg = "";
 
     try
     {
+      if(doc == null)
+        return null;
       if (doc.ChildNodes.Count < 1)
         return null;
-      if (doc.ChildNodes[0].Name != "kml")
+      if (doc.ChildNodes[0] == null)
         return null;
-      XmlNode n = doc.ChildNodes[0];
+      if (doc.ChildNodes[0]!.Name != "kml")
+        return null;
+      XmlNode n = doc.ChildNodes[0]!;
       if (n.ChildNodes.Count < 1)
         return null;
-      n = doc.ChildNodes[0];
-      if (n.ChildNodes[0].Name != "Document")
+      n = doc.ChildNodes[0]!;
+      if (n.ChildNodes[0]!.Name != "Document")
         return null;
-
-      XmlNodeList list = n.ChildNodes[0].ChildNodes;
+      XmlNodeList list = n.ChildNodes[0]!.ChildNodes;
       List<kmlDocumentPlacemark> tmpList = new List<kmlDocumentPlacemark>();
 
       for (int i = 0; i < list.Count; i++)
@@ -186,6 +189,5 @@ public partial class kml
       DebugLog.log("error reading kml: " + errMsg, enLogType.ERROR);
 
     return retVal;
-
   }
 }

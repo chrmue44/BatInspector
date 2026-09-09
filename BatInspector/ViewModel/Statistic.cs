@@ -42,7 +42,7 @@ namespace BatInspector
       _recTime.init(0, TIME_CLASSES - 1);
     }
 
-    public void calcStatistic(FilterItem filterExp, Analysis analysis, Filter filter)
+    public void calcStatistic(FilterItem? filterExp, Analysis analysis, Filter filter)
     {
       _fmin.init(_fmin.MinClassValue, _fmin.MaxClassValue);
       _fmax.init(_fmax.MinClassValue, _fmax.MaxClassValue);

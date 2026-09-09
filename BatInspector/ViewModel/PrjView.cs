@@ -21,21 +21,21 @@ namespace BatInspector
 
   public class ReportItemBirdNet
   {
-    string _remarks;
+    string _remarks = "";
     bool _changed = false;
     public int Row { get; set; }
-    public string FileName { get; set; }
-    public string CallNr { get; set; }
-    public string StartTime { get; set; }
-    public string Duration { get; set; }
-    public string SpeciesAuto { get; set; }
-    public string SpeciesMan { get; set; }
-    public string SpeciesLatin { get; set; }
-    public string Probability { get; set; }
-    public string Latitude { get; set; }
-    public string Longitude { get; set; }
-    public string Temperature { get; set; }
-    public string Humidity { get; set; }
+    public string FileName { get; set; } = "";
+    public string CallNr { get; set; } = "";
+    public string StartTime { get; set; } = "";
+    public string Duration { get; set; } = "";
+    public string SpeciesAuto { get; set; } = "";
+    public string SpeciesMan { get; set; } = "";
+    public string SpeciesLatin { get; set; } = "";
+    public string Probability { get; set; } = "";
+    public string Latitude { get; set; } = "";
+    public string Longitude { get; set; } = "";
+    public string Temperature { get; set; } = "";
+    public string Humidity { get; set; } = "";
     public string Remarks
     {
       get { return _remarks; }
@@ -72,21 +72,21 @@ namespace BatInspector
 
   public class ReportItemBattyBirdNet
   {
-    string _remarks;
+    string _remarks = "";
     bool _changed = false;
     public int Row { get; set; }
-    public string FileName { get; set; }
-    public string CallNr { get; set; }
-    public string StartTime { get; set; }
-    public string Duration { get; set; }
-    public string Snr { get; set; }
-    public string SpeciesAuto { get; set; }
-    public string SpeciesMan { get; set; }
-    public string Probability { get; set; }
-    public string Latitude { get; set; }
-    public string Longitude { get; set; }
-    public string Temperature { get; set; }
-    public string Humidity { get; set; }
+    public string FileName { get; set; } = "";
+    public string CallNr { get; set; } = "";
+    public string StartTime { get; set; } = "";
+    public string Duration { get; set; } = "";
+    public string Snr { get; set; } = "";
+    public string SpeciesAuto { get; set; } = "";
+    public string SpeciesMan { get; set; } = "";
+    public string Probability { get; set; } = "";
+    public string Latitude { get; set; } = "";
+    public string Longitude { get; set; } = "";
+    public string Temperature { get; set; } = "";
+    public string Humidity { get; set; } = "";
     public string Remarks
     {
       get { return _remarks; }
@@ -123,7 +123,7 @@ namespace BatInspector
 
   public class ReportItemBd2
   {
-    string _remarks;
+    string _remarks = "";
     bool _changed = false;
 
     public ReportItemBd2(AnalysisFile file, AnalysisCall call)
@@ -182,10 +182,10 @@ namespace BatInspector
   public class PrjView
   {
     enModel _modelType = enModel.BAT_DETECT2;
-    List<ReportItemBd2> _reportBd2 = null;
-    List<ReportItemBirdNet> _reportBirdNet = null;
-    List<ReportItemBattyBirdNet> _reportBattyBirdNet = null;
-    Thread _pngThread = null;
+    List<ReportItemBd2>? _reportBd2 = null;
+    List<ReportItemBirdNet>? _reportBirdNet = null;
+    List<ReportItemBattyBirdNet>? _reportBattyBirdNet = null;
+    Thread? _pngThread = null;
 
     public PrjView()
     {
@@ -216,15 +216,15 @@ namespace BatInspector
 
     public List<string> VisibleFiles { get { return _showWavFiles; } }
 
-    public Project Prj { get; set; }
+    public Project? Prj { get; set; }
 
-    public Query Query { get; set; }
+    public Query? Query { get; set; }
     public int StartIdx { get; set; } = 0;
 
 
-    public IEnumerable getListSource()
+    public IEnumerable? getListSource()
     {
-      IEnumerable retVal = null;
+      IEnumerable? retVal = null;
       switch (_modelType)
       {
         case enModel.BAT_DETECT2:
@@ -246,7 +246,7 @@ namespace BatInspector
       _sonograms.reinitializePool();
     }
 
-    public Sonogram createSonogram(string id)
+    public Sonogram? createSonogram(string id)
     {
       return _sonograms.get(id);
     }
@@ -272,9 +272,9 @@ namespace BatInspector
 
     public bool populateList(Filter filter, FilterItem filterItem)
     {
-      PrjRecord[] recList = getRecords();
-      Analysis analysis = getAnalysis();
-      if (recList != null)
+      PrjRecord[]? recList = getRecords();
+      Analysis? analysis = getAnalysis();
+      if ((analysis == null) && (recList != null))
       {
         switch (_modelType)
         {
@@ -294,7 +294,7 @@ namespace BatInspector
         foreach (PrjRecord rec in recList)
         {
           string wavFile = rec.File;
-          AnalysisFile f = analysis.find(wavFile);
+          AnalysisFile? f = analysis!.find(wavFile);
           if (f != null)
           {
             for (int c = 0; c < f.Calls.Count; c++)
@@ -308,16 +308,16 @@ namespace BatInspector
                 {
                   case enModel.BAT_DETECT2:
                     ReportItemBd2 it = new ReportItemBd2(f, f.Calls[c]);
-                    _reportBd2.Add(it);
+                    _reportBd2?.Add(it);
                     break;
                   case enModel.BATTY_BIRD_NET:
                     ReportItemBattyBirdNet itbb = new ReportItemBattyBirdNet(f, f.Calls[c]);
-                    _reportBattyBirdNet.Add(itbb);
+                    _reportBattyBirdNet?.Add(itbb);
                     break;
 
                   case enModel.BIRDNET:
                     ReportItemBirdNet itb = new ReportItemBirdNet(f, f.Calls[c]);
-                    _reportBirdNet.Add(itb);
+                    _reportBirdNet?.Add(itb);
                     break;
                 }
               }
@@ -362,8 +362,8 @@ namespace BatInspector
 
     public void createPngFile(PrjRecord rec, bool fromQuery, ColorTable colorTable)
     {
-      string wavName = fromQuery ? Path.Combine(Query.DestDir, rec.File) : Path.Combine(Prj.PrjDir, Prj.WavSubDir, rec.File);
-      Sonogram tmp = _sonograms.get(rec.Name);
+      string wavName = fromQuery ? Path.Combine(Query!.DestDir, rec.File) : Path.Combine(Prj!.PrjDir, Prj.WavSubDir, rec.File);
+      Sonogram? tmp = _sonograms.get(rec.Name);
       if (tmp != null)
       {
         string imgName = tmp.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, colorTable);
@@ -456,9 +456,9 @@ namespace BatInspector
       return retVal;
     }
 
-    private Analysis getAnalysis()
+    private Analysis? getAnalysis()
     {
-      Analysis retVal = null;
+      Analysis? retVal = null;
       if ((Prj != null) && (Prj.Ok))
       {
         retVal = Prj.Analysis;
@@ -473,13 +473,13 @@ namespace BatInspector
 
   public class Sonogram : IPool
   {
-    BitmapImage _bImgXt = null;
-    BitmapImage _bImgFt = null;
-    dlgRelease _dlgRelease;
+    BitmapImage? _bImgXt = null;
+    BitmapImage? _bImgFt = null;
+    dlgRelease? _dlgRelease;
     MemoryStream _memory;
 
-    public BitmapImage ImageXt { get { return _bImgXt; } }
-    public BitmapImage ImageFt { get { return _bImgFt; } }
+    public BitmapImage? ImageXt { get { return _bImgXt; } }
+    public BitmapImage? ImageFt { get { return _bImgFt; } }
 
     public Sonogram()
     {

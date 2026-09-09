@@ -50,12 +50,12 @@ namespace BatInspector
   public class ExpressionItem
   {
     public enExpType Type { get; set; }
-    public ExpressionItem Left { get; set; }
+    public ExpressionItem? Left { get; set; }
     public enOperator Operator { get; set; }
-    public ExpressionItem Right { get; set; }
+    public ExpressionItem? Right { get; set; }
     public AnyType.tType DataType { get; set; }
-    public string Text { get; set; }
-    public string HelpText { get; set; }
+    public string Text { get; set; } = "";
+    public string HelpText { get; set; } = "";
 
     public ExpressionItem(enExpType type, enOperator op, string text, string helpText)
     {
@@ -95,7 +95,7 @@ namespace BatInspector
     dlgGetVarList _dlgGetVars;
     List<string> _species;
 
-    public string GeoExpression { get; set; }
+    public string GeoExpression { get; set; } = "";
     public List<string> Species { get { return _species; } }
 
     public ExpressionGenerator(dlgGetVarList dlgGetVars, List<string> species)

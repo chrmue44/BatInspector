@@ -16,12 +16,12 @@ namespace BatInspector
 {
   public class FilterVarItem
   {
-    public string VarName { get; set; }
+    public string VarName { get; set; } = "";
     public bool AvailableFile { get; set; }
     public bool AvailableCall { get; set; }
     public bool AvailableSumReport { get; set; }
     public AnyType.tType Type { get; set; }
-    public string Help { get; set; }
+    public string Help { get; set; } = "";
 
     public FilterVarItem()
     {
@@ -53,9 +53,9 @@ namespace BatInspector
       Expression = expression;
     }
 
-    public int CompareTo(FilterItem other)
+    public int CompareTo(FilterItem? other)
     {
-      return this.Name.CompareTo(other.Name);
+      return this.Name.CompareTo(other?.Name);
     }
   }
 
@@ -72,7 +72,7 @@ namespace BatInspector
     public List<FilterItem> Items { get { return _list; } }
     public ExpressionGenerator ExpGenerator { get { return _gen; } }
 
-    public FilterItem TempFilter = null;
+    public FilterItem? TempFilter = null;
 
     List<FilterVarItem> _vars;
 
@@ -185,9 +185,9 @@ namespace BatInspector
     }
 
 
-    public FilterItem getFilter(string name)
+    public FilterItem? getFilter(string name)
     {
-      FilterItem retVal = null;
+      FilterItem? retVal = null;
       foreach (FilterItem it in _list)
       {
         if (it.Name == name)

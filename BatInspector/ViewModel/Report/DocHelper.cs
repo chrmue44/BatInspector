@@ -40,7 +40,7 @@ namespace BatInspector
 
     public abstract void addImage(string image, string altText, int sizeH);
     public abstract void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler);
-    public abstract void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null);
+    public abstract void addText(string text, bool bold = false, bool underline = false, SolidColorBrush? fgColor = null, SolidColorBrush? bgColor = null);
     public abstract void addTable(DataTable dtbl, System.Collections.Generic.List<double> colWidth, int width = 1, int border = 0, bool ommitHeader = false);
     public abstract void saveAs(string docPath);
 
@@ -119,7 +119,7 @@ namespace BatInspector
       }
     }
 
-    public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null)
+    public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush? fgColor = null, SolidColorBrush? bgColor = null)
     {
       Paragraph p = getLastParagraph();
       Run t = new Run(text);
@@ -136,7 +136,7 @@ namespace BatInspector
       p.Inlines.Add(t);
     }
 
-    public override void addHyperlink(string text, string url, RequestNavigateEventHandler reqHnadler)
+    public override void addHyperlink(string text, string url, RequestNavigateEventHandler? reqHnadler)
     {
       Run t = new Run(text);
       t.FontFamily = Font;
@@ -207,12 +207,16 @@ namespace BatInspector
         currentRow.Background = System.Windows.Media.Brushes.Black;
         for (int c = 0; c < dtbl.Columns.Count; c++)
         {
-          Run t = new Run(dtbl.Rows[r].ItemArray[c].ToString());
-          TableCell cell = new TableCell(new Paragraph(t));
-          cell.BorderBrush = System.Windows.Media.Brushes.Gray;
-          cell.BorderThickness = new Thickness(border);
-          cell.Background = System.Windows.Media.Brushes.White;
-          currentRow.Cells.Add(cell);
+          object?[] itemArray = dtbl.Rows[r].ItemArray;
+          if (itemArray != null)
+          {
+            Run t = new Run(itemArray[c]?.ToString() ?? "");
+            TableCell cell = new TableCell(new Paragraph(t));
+            cell.BorderBrush = System.Windows.Media.Brushes.Gray;
+            cell.BorderThickness = new Thickness(border);
+            cell.Background = System.Windows.Media.Brushes.White;
+            currentRow.Cells.Add(cell);
+          }
         }
       }
     }
@@ -262,7 +266,7 @@ namespace BatInspector
 
     private Paragraph getLastParagraph()
     {
-      Paragraph p = _doc.Blocks.LastBlock as Paragraph;
+      Paragraph p = (Paragraph)_doc.Blocks.LastBlock;
       if (p == null)
         p = addParagraph();      
       
@@ -318,7 +322,7 @@ namespace BatInspector
       _doc.Append("</table>\n");
     }
 
-    public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush fgColor = null, SolidColorBrush bgColor = null)
+    public override void addText(string text, bool bold = false, bool underline = false, SolidColorBrush? fgColor = null, SolidColorBrush? bgColor = null)
     {
       _doc.Append($"<p>{text}</p>\n");
     }

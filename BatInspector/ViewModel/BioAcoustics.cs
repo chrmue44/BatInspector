@@ -220,8 +220,6 @@ namespace BatInspector
 
     */
     //https://learn.microsoft.com/de-de/dotnet/framework/interop/marshalling-different-types-of-arrays
-    [HandleProcessCorruptedStateExceptions]
-   // [SecurityCritical]
     public static double[] calculateFft(int size, enWIN_TYPE window, int[] samples)
     {
       lock (_locker)
@@ -243,8 +241,6 @@ namespace BatInspector
       }
     }
 
-    [HandleProcessCorruptedStateExceptions]
-   // [SecurityCritical]
     public static double[] calculateFft(int handle, double[] samples)
     {
       lock (_locker)
@@ -271,8 +267,6 @@ namespace BatInspector
       }
     }
 
-    [HandleProcessCorruptedStateExceptions]
-//    [SecurityCritical]
     public static double[] calculateFftComplexOut(int handle, double[] samples)
     {
       lock (_locker)
@@ -294,8 +288,6 @@ namespace BatInspector
       }
     }
 
-    [HandleProcessCorruptedStateExceptions]
-   // [SecurityCritical]
     public static double[] calculateFftReversed(int handle, double[] spec)
     {
       lock (_locker)
@@ -324,8 +316,6 @@ namespace BatInspector
     /// <param name="fMin">min frequency of passband [Hz]</param>
     /// <param name="fMax">max frequency of passband [Hz]</param>
     /// <param name="samplingRate">sampling rate [Hz]</param>
-    [HandleProcessCorruptedStateExceptions]
-   // [SecurityCritical]
     public static void applyBandpassFilterComplex(ref double[] spectrum, double fMin, double fMax, uint samplingRate)
     {
       lock (_locker)
@@ -357,22 +347,20 @@ namespace BatInspector
       }
     }
 
-    [HandleProcessCorruptedStateExceptions]
     public static int createPngFromWavPart(string wavName, string pngName, double tStart, double tEnd, double fMin, double fMax, int width, int height, double gradientRange)
     {
       return makePngFromWavPart(wavName, pngName, tStart, tEnd, fMin, fMax, width, height, gradientRange);
     }
 
-    [HandleProcessCorruptedStateExceptions]
     public static int createPngFromWav(string name, int width, int height, double gradientRange)
     {
       lock (_pngLocker)
       {
+
         return makePngFromWav(name, width, height, gradientRange);
       }
     }
 
-    [HandleProcessCorruptedStateExceptions]
     public static void setColorTable()
     {
       lock (_locker)

@@ -21,7 +21,7 @@ namespace BatInspector.Controls
   /// </summary>
   public partial class ctlPrjInfo : System.Windows.Controls.UserControl
   {
-    Project _prj = null;
+    Project? _prj = null;
 
     public ctlPrjInfo()
     {

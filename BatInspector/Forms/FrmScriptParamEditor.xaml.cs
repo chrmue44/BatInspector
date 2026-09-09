@@ -73,7 +73,7 @@ namespace BatInspector.Forms
       DialogResult = true;
       for(int i = 0; i <  _sp.Children.Count; i++) 
       {
-        ctlParamEditItem it = _sp.Children[i] as ctlParamEditItem;
+        ctlParamEditItem it = (ctlParamEditItem)_sp.Children[i];
         Parameter[i].Name = it.getValue();
         Parameter[i].Type = it.getType();
       }

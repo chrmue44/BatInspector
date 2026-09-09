@@ -83,7 +83,7 @@ namespace BatInspector.Forms
             }
             double duration = (double)App.Model.WavFile.AudioSamples.Length / App.Model.WavFile.FormatChunk.Frequency;
             AnalysisFile ana = new AnalysisFile(openFileDialog.FileName, (int)App.Model.WavFile.FormatChunk.Frequency, duration);
-            App.MainWin.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName), null, enModel.BAT_DETECT2);
+            App.MainWin.setZoom(Path.GetFileName(openFileDialog.FileName), ana, Path.GetDirectoryName(openFileDialog.FileName) ?? "", null, enModel.BAT_DETECT2);
           }
         }
       }

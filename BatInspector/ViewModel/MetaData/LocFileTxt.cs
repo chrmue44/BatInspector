@@ -22,12 +22,12 @@ namespace BatInspector
 {
   class LocTxtItem
   {
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 
-    public string Date { get; set; }
-    public string Time { get; set; }
+    public string Date { get; set; } = "";
+    public string Time { get; set; } = "";
   }
 
   public enum enLocFileMode

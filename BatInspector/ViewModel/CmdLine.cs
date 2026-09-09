@@ -21,9 +21,11 @@ namespace BatInspector
           break;
 
         case "--version":
-          Version version = Assembly.GetExecutingAssembly().GetName().Version;
+          Version? version = Assembly.GetExecutingAssembly().GetName().Version;
           DateTime linkTimeLocal = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
-          string versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
+          string versionStr = "BatInspector V???";
+          if(version != null)
+            versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
           Console.WriteLine(versionStr);
           break;
         default:

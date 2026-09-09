@@ -21,15 +21,15 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmCreateReport : Window
   {
-    string _formDataName;
+    string _formDataName = "";
     SumReportJson _report;
     DateTime _start;
     DateTime _end;
-    string _rootDir;
-    string _dstDir;
-    string _reportName;
+    string _rootDir = "";
+    string _dstDir = "";
+    string _reportName = "";
     int _selectedModelIndex;
-    string _filterExpression;
+    string _filterExpression = "";
     bool _skipReportGeneration = false;
     enPeriod _period;
     int _classWidthMin = 1;
@@ -41,7 +41,7 @@ namespace BatInspector.Forms
       _ctlReport.setup(this);
     }
 
-    private void setFormDataName(string s, dlgVoid callBack)
+    private void setFormDataName(string s, dlgVoid? callBack)
     {
       _formDataName = s;
     }
@@ -60,7 +60,11 @@ namespace BatInspector.Forms
       }
       else
       {
-        _report = SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+        SumReportJson? rep = SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+        if(rep != null)
+          _report = rep;
+        else
+          DebugLog.log("report file " + Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON) + " not well formed", enLogType.WARNING);
       }
       showReportDialog(true, false, _dstDir);
     }
@@ -77,7 +81,11 @@ namespace BatInspector.Forms
       }
       else
       {
-        _report =  SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+        SumReportJson? rep = SumReportJson.loadFrom(Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON));
+        if(rep != null)
+          _report = rep;
+        else
+          DebugLog.log("report file " + Path.Combine(_dstDir, AppParams.SUM_REPORT_JSON) + " not well formed", enLogType.WARNING);      
       }
       showReportDialog(false, true, _dstDir);
     }

@@ -91,7 +91,7 @@ namespace BatInspector
   public class ColorPreset
   {
     [DataMember]
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
 
     [DataMember]
     [LocalizedCategory("SetCatColorGradient"),
@@ -150,7 +150,7 @@ namespace BatInspector
         return "";
     }
 
-    public ColorPreset getPresetCopy(int i)
+    public ColorPreset? getPresetCopy(int i)
     {
       if ((i < 0) || (i >= _presets.Count))
         return null;

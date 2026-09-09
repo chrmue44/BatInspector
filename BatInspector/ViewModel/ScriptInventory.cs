@@ -6,13 +6,14 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using libParser;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Text.Json;
+using libParser;
 
 namespace BatInspector
 {
@@ -94,38 +95,38 @@ namespace BatInspector
     public List<ScriptItem> Scripts { get; set; } = new List<ScriptItem>();
 
 
-    public static ScriptInventory loadFrom(string fPath, out bool firstLoadAfterInstall)
+    public static ScriptInventory? loadFrom(string fPath, out bool firstLoadAfterInstall)
     {
       _scriptPath = fPath;
       string fileName = Path.Combine(fPath, FName);
-      ScriptInventory retVal = null;
-      FileStream file = null;
+      ScriptInventory retVal;
       firstLoadAfterInstall = false;
+      ScriptInventory? inventory = null;
       try
       {
         DebugLog.log("try to load:" + fileName, enLogType.DEBUG);
-        bool inventoryExists = false;
-        if (File.Exists(fileName))
+        bool inventoryExists = File.Exists(fileName);
+        if (inventoryExists)
         {
-          inventoryExists = true;
-          using (file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-          {
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ScriptInventory));
-            retVal = (ScriptInventory)ser.ReadObject(file);
-            if (retVal == null)
-              DebugLog.log("ScriptInventory inventory file not well formed!", enLogType.ERROR);
-            else if (retVal.Scripts == null)
-              retVal.initScripts();
-            DebugLog.log("successfully loaded", enLogType.DEBUG);
-          }
-          file = null;
+          using (FileStream file = File.OpenRead(fileName))
+          inventory = JsonSerializer.Deserialize<ScriptInventory>(file);
         }
         else
-        {
           DebugLog.log("load failed", enLogType.DEBUG);
+
+        if(inventory == null)
+        {
+          DebugLog.log("ScriptInventory inventory file not well formed!", enLogType.ERROR);
           retVal = new ScriptInventory();
           retVal.initScripts();
           retVal.save();
+        }
+        else
+        {
+          retVal = inventory;
+          if (retVal.Scripts == null)
+            retVal.initScripts();
+          DebugLog.log("successfully loaded", enLogType.DEBUG);
         }
 
         string instFile = Path.Combine(AppParams.AppDataPath, "setup",  InstallFile);
@@ -158,11 +159,6 @@ namespace BatInspector
       {
         DebugLog.log("failed to read config file : " + fPath + ": " + e.ToString(), enLogType.ERROR);
         retVal = null;
-      }
-      finally
-      {
-        if (file != null)
-          file.Close();
       }
       return retVal;
     }

@@ -26,8 +26,8 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmDebug : Window
   { 
-    string _script;
-    List<ParamItem> _params;
+    string _script ="";
+    List<ParamItem> _params = new List<ParamItem>();
 
     public frmDebug()
     {
@@ -121,15 +121,17 @@ namespace BatInspector.Forms
           {
             case enParamType.FILE:
             case enParamType.DIRECTORY:
-              CtlSelectFile ctl = _spPars.Children[i] as CtlSelectFile;
-              App.Model.Scripter.VarList.set(_params[i].VarName, ctl.getValue());
+              CtlSelectFile? ctl = _spPars.Children[i] as CtlSelectFile;
+              if(ctl != null)
+                App.Model.Scripter.VarList.set(_params[i].VarName, ctl.getValue());
               break;
             case enParamType.MICSCELLANOUS:
-              ctlDataItem ctld = _spPars.Children[i] as ctlDataItem;
-              App.Model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
+              ctlDataItem? ctld = _spPars.Children[i] as ctlDataItem;
+              if(ctld != null)
+                App.Model.Scripter.VarList.set(_params[i].VarName, ctld.getValue());
               break;
             case enParamType.BOOL:
-              System.Windows.Controls.CheckBox chk = _spPars.Children[i] as System.Windows.Controls.CheckBox;
+              System.Windows.Controls.CheckBox? chk = _spPars.Children[i] as System.Windows.Controls.CheckBox;
               String boolVal = "0";
               if ((chk != null) && (chk.IsChecked == true))
                 boolVal = "1";
@@ -192,8 +194,8 @@ namespace BatInspector.Forms
       int lineNr = App.Model.Scripter.CurrentLineNr;
       if ((lineNr >= 0) && (lineNr < _spScript.Children.Count))
       {
-        ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine;
-        ctl.activate(on);
+        ctlDebugLine? ctl = _spScript.Children[lineNr] as ctlDebugLine;
+        ctl?.activate(on);
       }
     }
 
@@ -204,9 +206,12 @@ namespace BatInspector.Forms
         lineNr = App.Model.Scripter.CurrentLineNr;
       else
         lineNr = _spScript.Children.Count - 1;
-      ctlDebugLine ctl = _spScript.Children[lineNr] as ctlDebugLine;
-      double verticalOffset = App.Model.Scripter.CurrentLineNr * ctl.ActualHeight - _scrlViewer.ViewportHeight / 2; // _spScript.ViewportHeight; //  ActualHeight/2;
-      _scrlViewer.ScrollToVerticalOffset(verticalOffset);
+      ctlDebugLine? ctl = _spScript.Children[lineNr] as ctlDebugLine;
+      if (ctl != null)
+      {
+        double verticalOffset = App.Model.Scripter.CurrentLineNr * ctl.ActualHeight - _scrlViewer.ViewportHeight / 2; // _spScript.ViewportHeight; //  ActualHeight/2;
+        _scrlViewer.ScrollToVerticalOffset(verticalOffset);
+      }
     }
 
   private void setBreakCondition(int lineNr, string condition)

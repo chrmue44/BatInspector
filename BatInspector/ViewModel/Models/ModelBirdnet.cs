@@ -15,7 +15,7 @@ namespace BatInspector
     const string PAR_SENSITIVITY = "Sensitivity";
     const string PAR_MIN_PROB = "minimal Probability";
     const string PAR_LOCALE = "Locale Species Names";
-    Project _prj;
+    Project? _prj;
     int _counter = 0;
 
     public ModelBirdnet(int index) : base(index, enModel.BIRDNET, "BirdNET")
@@ -284,10 +284,10 @@ namespace BatInspector
       if (ev.Data?.ToLower().IndexOf(AppParams.EXT_WAV) > 0)
       {
         int pos = ev.Data.IndexOf("Analyzing");
-        if (pos >= 0)
+        if ((pos >= 0) && (_prj != null))
         {
           _counter++;
-          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj.Records!.Length.ToString();
+          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj.Records.Length.ToString();
           if (_cli)
             DebugLog.log(msg, enLogType.INFO);
           else

@@ -337,7 +337,7 @@ namespace BatInspector
       return bmp2;
     }
 
-    int calculateBestFftSize(double tMin, double tMax)
+    static int calculateBestFftSize(double tMin, double tMax)
     {
       int fftSize = 1024;
       double dt = tMax - tMin;
@@ -349,7 +349,7 @@ namespace BatInspector
       return fftSize;
     }
 
-    void drawLine(int x, int ymin, int ymax, BitmapFast bmp, Color color) 
+    static void drawLine(int x, int ymin, int ymax, BitmapFast bmp, Color color) 
     {
       for (int y = ymin; y <= ymax; y++)
         bmp.setPixel(x, y, color);

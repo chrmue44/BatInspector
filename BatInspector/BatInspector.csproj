@@ -1,5 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<ItemGroup>
+		<ProjectReference Include="..\libBioAcoustics\libBioAcoustics.vcxproj">
+			<!-- Verhindert, dass .NET versucht, die native DLL als .NET-Assembly zu laden -->
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<!-- Definiert die Ausgabe des C++ Projekts als normalen Inhalt -->
+			<OutputItemType>Content</OutputItemType>
+			<!-- Kopiert die DLL bei jedem Build in das .NET Ausgabeverzeichnis -->
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<!-- Wichtig: Verhindert Fehler, da C++ keine TargetFrameworks kennt -->
+			<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<!-- Relativer Pfad von der .csproj zur libfftw3-3.dll -->
+		<None Include="..\libBioAcoustics\lib\libfftw3-3.dll">
+			<!-- Sorgt für das Kopieren bei jedem Build, falls die Datei neuer ist -->
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<!-- GANZ WICHTIG: Link sorgt dafür, dass die Datei direkt im Root-Verzeichnis (neben der .exe) landet 
+         und nicht die Quell-Ordnerstruktur (z.B. \ThirdParty\fftw\) im Ausgabeordner nachgebildet wird. -->
+			<Link>libfftw3-3.dll</Link>
+		</None>
+	</ItemGroup>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
@@ -10,6 +32,7 @@
     <StartupObject />
     <Win32Resource />
     <Authors>Christian Müller</Authors>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   
   <PropertyGroup> 
@@ -17,6 +40,22 @@
      <UseWPF>true</UseWPF> 
      <UseWindowsForms>true</UseWindowsForms> 
      <PlatformTarget>AnyCPU</PlatformTarget> 
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702; IDE1006; IDE0090; IDE1006; IDE0130; RG0000</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>1701;1702; IDE1006; IDE0090; IDE1006; IDE0130; RG0000</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702; IDE1006; IDE0090;IDE1006; IDE0130; RG0000</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NoWarn>1701;1702; IDE1006; IDE0090;IDE1006; IDE0130; RG0000</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>
@@ -73,6 +112,7 @@
     <None Remove="images\settingscog_87317.png" />
     <None Remove="images\shoes.png" />
     <None Remove="images\simplescreenrecorder_94921.png" />
+    <None Remove="images\splash.png" />
     <None Remove="images\stop.png" />
     <None Remove="images\tea-cup.png" />
     <None Remove="images\toolhammerconstruction_81806.png" />
@@ -167,6 +207,7 @@
     <Resource Include="images\settingscog_87317.png" />
     <Resource Include="images\shoes.png" />
     <Resource Include="images\simplescreenrecorder_94921.png" />
+    <Resource Include="images\splash.png" />
     <Resource Include="images\stop.png" />
     <Resource Include="images\tea-cup.png" />
     <Resource Include="images\toolhammerconstruction_81806.png" />

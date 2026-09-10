@@ -45,7 +45,7 @@ namespace BatInspector
       }
     }
 
-    int getColorFromGradient(double val, List<ColorItem> list)
+    static int getColorFromGradient(double val, List<ColorItem> list)
     {
       double retVal = 100;
       for (int i = 0; i < (list.Count - 1); i++)
@@ -163,7 +163,7 @@ namespace BatInspector
       return retVal;
     }
 
-    private List<ColorItem> getGradientCopy(List<ColorItem> gradient)
+    private static List<ColorItem> getGradientCopy(List<ColorItem> gradient)
     { 
       List<ColorItem> retVal = new List<ColorItem> ();
       foreach (ColorItem item in gradient)

@@ -30,7 +30,7 @@ namespace BatInspector
       }
     }
 
-    public static BatRecord retrieveMetaData(string wavName, Guano guano, enMetaData metaData)
+    public static BatRecord retrieveMetaData(string wavName, Guano? guano, enMetaData metaData)
     {
       BatRecord retVal = new BatRecord();
 

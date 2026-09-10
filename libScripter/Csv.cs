@@ -413,10 +413,10 @@ namespace libScripter
     }
 
 
-    public int findInCol(string val, string colstr, bool subStr = false)
+    public int findInCol(string val, string colstr, int startRow = 1, bool subStr = false)
     {
       int col = getColNr(colstr);
-      return findInCol(val, col, subStr);
+      return findInCol(val, col, startRow, subStr);
     }
 
       /// <summary>
@@ -426,14 +426,14 @@ namespace libScripter
       /// <param name="col">column nr (1..n)</param>
       /// <param name="subStr">true: search for val as substring in cell</param>
       /// <returns>row number containing the value, or 0 if not found</returns>
-      public int findInCol(string val, int col, bool subStr = false)
+      public int findInCol(string val, int col, int startRow = 1, bool subStr = false)
     {
       int retVal = 0;
       if (col > 0)
       {
         if (subStr)
         {
-          for (int row = 1; row <= _cells.Count; row++)
+          for (int row = startRow; row <= _cells.Count; row++)
           {
             if ((col <= _cells[row - 1].Count) && (_cells[row - 1][col - 1].IndexOf(val) >= 0))
             {

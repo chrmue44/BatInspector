@@ -22,7 +22,7 @@ namespace BatInspector.Forms
   public partial class frmCreateReport : Window
   {
     string _formDataName = "";
-    SumReportJson _report;
+    SumReportJson? _report;
     DateTime _start;
     DateTime _end;
     string _rootDir = "";
@@ -99,14 +99,14 @@ namespace BatInspector.Forms
       }
       else
       {
-        frmReportAssistant frm = new frmReportAssistant(_report, setFormDataName, markdown, _dstDir);
+        frmReportAssistant frm = new frmReportAssistant(_report!, setFormDataName, markdown, _dstDir);
         frm.WindowStartupLocation = WindowStartupLocation.Manual;
         frm.Left = 100;
         frm.Top = 10;
         bool? ok = frm.ShowDialog();
         if (ok == true)
         {
-          if (_report.Days.Count > 0)
+          if (_report!.Days.Count > 0)
           {
             if (markdown)
               App.Model.SumReport.createMarkdownDoc(_report, _formDataName, App.Model.SpeciesInfos,

@@ -28,7 +28,7 @@ namespace BatInspector
     string _expression;
     //string _reportName = "";
  
-    QueryFile _queryFile;
+    QueryFile? _queryFile = null;
     List<PrjRecord> _records;
     int _cntCall;
     int _cntFile;
@@ -50,8 +50,17 @@ namespace BatInspector
     /// </summary>
     public string Expression { get { return _expression; } }
 
-    public string ReportName { get {  return _queryFile.ReportFile; } }
-    public PrjRecord[] Records { get { return _queryFile.Records; } }
+    public string? ReportName { get {  return _queryFile?.ReportFile; } }
+    public PrjRecord[] Records 
+    { 
+      get
+      { 
+        if(_queryFile != null)
+         return _queryFile.Records; 
+        else
+         return new PrjRecord[0];
+      }
+    }
 
     public Query(string name, string srcDir, string dstDir, string query, ModelParams modelParams, int modelCount) :
     base(false, modelParams, modelCount)
@@ -115,14 +124,15 @@ namespace BatInspector
       return Path.Combine(_destDir, path);
     }
 
+
     /// <summary>
     /// find a file in the project
     /// </summary>
     /// <param name="fileName">name of the file (full path or just file name)</param>
     /// <returns>record containing the file information</returns>
-    public PrjRecord find(string fileName)
+    public PrjRecord? find(string fileName)
     {
-      PrjRecord retVal = null;
+      PrjRecord? retVal = null;
       foreach (PrjRecord r in Records)
       {
         if (fileName.ToLower().Contains(r.File.ToLower()))
@@ -164,31 +174,33 @@ namespace BatInspector
       };
     }
 
-    public static Query readQueryFile(string name)
+    public static Query? readQueryFile(string name)
     {
-      Query retVal;
+      Query? retVal = null;
       try
       {
-        string dstDir = Path.GetDirectoryName(name);
+        string? dstDir = Path.GetDirectoryName(name);
         string queryName = Path.GetFileName(name);
         string xml = File.ReadAllText(name);
         var serializer = new XmlSerializer(typeof(QueryFile));
         TextReader reader = new StringReader(xml);
-        QueryFile qFile = (QueryFile)serializer.Deserialize(reader);
+        QueryFile? qFile = (QueryFile?)serializer.Deserialize(reader);
         ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-        retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression, 
-                           modelParams, App.Model.DefaultModelParams.Length);
-        retVal._analysis = new Analysis[App.Model.DefaultModelParams.Length];
-        foreach (PrjRecord rec in qFile.Records)
-          retVal._records.Add(rec);
-        retVal._queryFile = qFile;
-        retVal._analysis[retVal.SelectedModelIndex] = new Analysis(false,
-                                           App.Model.DefaultModelParams[retVal.SelectedModelIndex].Type);
-        string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
-        retVal._analysis[retVal.SelectedModelIndex].read(fullReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
-//        retVal._reportName = fullReportName;
-        retVal.initSpeciesList();
-
+        if ((qFile != null) && (dstDir != null))
+        {
+          retVal = new Query(qFile.Name, qFile.SrcDir, dstDir, qFile.Expression,
+                             modelParams, App.Model.DefaultModelParams.Length);
+          retVal._analysis = new Analysis[App.Model.DefaultModelParams.Length];
+          foreach (PrjRecord rec in qFile.Records)
+            retVal._records.Add(rec);
+          retVal._queryFile = qFile;
+          retVal._analysis[retVal.SelectedModelIndex] = new Analysis(false,
+                                             App.Model.DefaultModelParams[retVal.SelectedModelIndex].Type);
+          string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
+          retVal._analysis[retVal.SelectedModelIndex].read(fullReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
+          //        retVal._reportName = fullReportName;
+          retVal.initSpeciesList();
+        }
       }
       catch (Exception ex)
       {
@@ -267,6 +279,7 @@ namespace BatInspector
         }
       }
       //     _analysis[SelectedModelIndex].removeFile(_reportName, wavName);
+      if(_queryFile != null)
       _analysis[SelectedModelIndex].removeFile(_queryFile.ReportFile, wavName);
     }
 
@@ -281,10 +294,10 @@ namespace BatInspector
         serializer.Serialize(writer, _queryFile);
         writer.Close();
         DebugLog.log("query '" + name + "' saved", enLogType.INFO);
-      }
       string reportName = Path.Combine(_destDir, _queryFile.ReportFile);
       _analysis[SelectedModelIndex].save(reportName, "sum query\nsum query", null);
-//      _reportName = reportName;
+        //      _reportName = reportName;
+      }
       DebugLog.log(_cntCall.ToString() + " calls in " + _cntFile.ToString() + " files found", enLogType.INFO);
     }
 

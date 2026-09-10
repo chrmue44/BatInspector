@@ -229,7 +229,7 @@ namespace BatInspector.Controls
       {
         if ((_left[_cbLeft.SelectedIndex].Text == MyResources.ExpGenCalcDist) ||
             (_left[_cbLeft.SelectedIndex].Text == MyResources.ExpGenIsNear))
-          f += _gen.GeoExpression + " ";
+          f += _gen!.GeoExpression + " ";
         else
           f += _left[_cbLeft.SelectedIndex].Text + " ";
         f += _op[_cbOperator.SelectedIndex].Text + " ";

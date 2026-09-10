@@ -72,9 +72,18 @@ namespace BatInspector.Forms
       _ctlMetaData.setItems(metaItems);
       _ctlMetaData.SelectIndex = 0;
       setVisibilityTimeFilter();
-      double maxHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
-      if(this.Height > (maxHeight - 100))
-        this.Height = maxHeight -100;
+
+      Screen? screen = System.Windows.Forms.Screen.PrimaryScreen;
+      if (screen != null)
+      {
+        double maxHeight = screen.WorkingArea.Height;
+        if (this.Height > (maxHeight - 100))
+          this.Height = maxHeight - 100;
+      }
+      else
+      {
+        this.Height = 600;
+      }
     }
 
     private void modelHasChanged(int index, string val)
@@ -101,7 +110,7 @@ namespace BatInspector.Forms
       _dtEnd.Visibility = vis;
     }
 
-    private void initDlgAfterLatChanged(enDataType type, object val)
+    private void initDlgAfterLatChanged(enDataType type, object? val)
     {
       if (!_info.LocSourceGpx && !_info.LocSourceKml && !_info.LocSourceTxt && !_isProjectFolder)
       {
@@ -119,7 +128,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void initDlgAfterLonChanged(enDataType type, object val)
+    private void initDlgAfterLonChanged(enDataType type, object? val)
     {
       if (!_info.LocSourceGpx && !_info.LocSourceKml && !_info.LocSourceTxt && !_isProjectFolder)
       {
@@ -369,7 +378,7 @@ namespace BatInspector.Forms
     }
 
 
-    private void btnRadioClick(object sender, RoutedEventArgs e)
+    private void btnRadioClick(object? sender, RoutedEventArgs? e)
     {
       string oldVal = _ctlGpxFile.getValue();
       if(_rbGpxFile.IsChecked == true)

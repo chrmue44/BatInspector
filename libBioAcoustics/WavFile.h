@@ -117,6 +117,5 @@ private:
   DataChunk _dataChunk;
   const char* _fName = nullptr;
   bool _isOpen = false;
-
 };
 

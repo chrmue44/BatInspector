@@ -35,8 +35,8 @@ namespace BatInspector.Controls
     ctlWavFile? _ctlWav;
     dlgVoid? _openExportForm = null;
     enModel _modelType;
-    Sonogram _sonogramFt;
-    Sonogram _sonogramXt;
+    Sonogram? _sonogramFt;
+    Sonogram? _sonogramXt;
     public double _gradientRange = 0;
 
     public CtrlZoom()
@@ -136,7 +136,7 @@ namespace BatInspector.Controls
       _ctlWav = ctlWav;
       _modelType = modelType;
       _openExportForm = openExpWindow;
-      _imgFt.Source = (ctlWav != null) ? ctlWav._img.Source : null;
+      _imgFt.Source = ctlWav?._img.Source;
       App.Model.ZoomView.Analysis = analysis;
       App.Model.ZoomView.Cursor1.set(0, 0, false);
       App.Model.ZoomView.Cursor2.set(0, 0, false);
@@ -343,14 +343,14 @@ namespace BatInspector.Controls
       }
     }
 
-    private void ctlSpecManBirdChanged(enDataType type, object val)
+    private void ctlSpecManBirdChanged(enDataType type, object? val)
     {
 
       if (App.Model.ZoomView.Analysis != null)
       {
         if ((App.Model.ZoomView.SelectedCallIdx >= 0) && (App.Model.ZoomView.SelectedCallIdx < App.Model.ZoomView.Analysis.Calls.Count))
         {
-          App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, (string)val);
+          App.Model.ZoomView.Analysis.Calls[App.Model.ZoomView.SelectedCallIdx].setString(Cols.SPECIES_MAN, (string?)val ?? "");
           _ctlSpecManBird.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
         }
         else
@@ -382,7 +382,7 @@ namespace BatInspector.Controls
     {
       try
       {
-        if (App.Model.ZoomView.Waterfall == null)
+        if (_rulerT == null)
           return;
         _gradientRange = _slRange.Value;
         updateRuler();
@@ -925,9 +925,9 @@ namespace BatInspector.Controls
 
     private void updateImage()
     {
-      _sonogramFt.createZoomViewFt(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max,
+      _sonogramFt?.createZoomViewFt(App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max,
                                    App.Model.ZoomView.RulerDataF.Min, App.Model.ZoomView.RulerDataF.Max, _gradientRange);
-      if (_sonogramFt.ImageFt != null)
+      if (_sonogramFt?.ImageFt != null)
         _imgFt.Source = _sonogramFt.ImageFt;
 
       updateXtImage();
@@ -937,9 +937,9 @@ namespace BatInspector.Controls
 
     private void updateXtImage()
     {
-      _sonogramXt.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
+      _sonogramXt?.createZoomViewXt(App.Model.ZoomView.RulerDataA.Min, App.Model.ZoomView.RulerDataA.Max,
                                   App.Model.ZoomView.RulerDataT.Min, App.Model.ZoomView.RulerDataT.Max);
-      if (_sonogramXt.ImageXt != null)
+      if (_sonogramXt?.ImageXt != null)
         _imgXt.Source = _sonogramXt.ImageXt;
     }
 
@@ -1567,8 +1567,7 @@ namespace BatInspector.Controls
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)
     {
-      if (_openExportForm != null)
-        _openExportForm();
+      _openExportForm?.Invoke();
     }
 
     private void _cbGrid_Click(object sender, RoutedEventArgs e)

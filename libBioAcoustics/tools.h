@@ -23,7 +23,7 @@
 inline
   std::string s2dhmsms(const double &x)
   {
-    size_t ms = (x - (size_t)x) * 1000;
+    size_t ms = (size_t)( (x - (size_t)x) * 1000 );
     size_t sR = (size_t)x % 60;
     size_t m = (size_t)x / 60;
     size_t mR = m % 60;

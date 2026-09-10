@@ -12,7 +12,7 @@ namespace BatInspector
   {
     const string PAR_SENSITIVITY = "Sensitivity";
     const string PAR_MIN_PROB = "minimal Probability";
-    Project _prj;
+    Project? _prj;
     int _counter = 0;
 
     public ModelBattyB(int index) : base(index, enModel.BATTY_BIRD_NET, "BattyBirdNET")
@@ -247,7 +247,7 @@ namespace BatInspector
         if (pos >= 0)
         {
           _counter++;
-          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj!.Records!.Length.ToString();
+          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj!.Records.Length.ToString();
           if (_cli)
             DebugLog.log(msg, enLogType.INFO);
           else

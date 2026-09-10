@@ -31,8 +31,8 @@ namespace BatInspector
     const string MODEL_NAME = "BatDetect2";
     const string PAR_DETECTION_THRESHOLD = "Detection Threshold";
     public const string BD2_DEFAULT_MODEL = "Net2DFast_UK_same.pth.tar";
-    Project _prj;
-    string _listOfFiles;
+    Project? _prj;
+    string _listOfFiles ="";
 
     public ModelBatDetect2(int index) :
       base(index, enModel.BAT_DETECT2, MODEL_NAME)
@@ -369,7 +369,7 @@ namespace BatInspector
             val++;
             _listOfFiles += ev.Data + "\n";
             DebugLog.log(ev.Data, enLogType.INFO);
-            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records!.Length.ToString();
+            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
             if (_cli)
               DebugLog.log(msg, enLogType.INFO);
             else

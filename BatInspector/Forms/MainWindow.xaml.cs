@@ -180,7 +180,7 @@ namespace BatInspector.Forms
       TreeViewItem? item = e?.Source as TreeViewItem;
       if ((item != null) && (item.Items.Count >= 1) /*&& (item.Items[0] is string) */)
       {
-        item!.Items.Clear();  
+        item.Items.Clear();
 
         DirectoryInfo? expandedDir = null;
         if (item.Tag is DriveInfo)
@@ -402,7 +402,7 @@ namespace BatInspector.Forms
         {
           if(_projectDir != null)
             App.Model.initProject(_projectDir, true);
-          if ((App.Model.Prj != null) && App.Model.Prj.Ok && (App.Model.Prj.Records != null))
+          if ((App.Model.Prj != null) && App.Model.Prj.Ok )
           {
             _wavCtls.reinitializePool();
             App.Model.View.initSonogramPool();
@@ -448,7 +448,9 @@ namespace BatInspector.Forms
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
             _scrollPrj.Maximum = App.Model.Query.Records.Length - 1;
-       //     _scrollBarListPos = 0;
+            if(_scrollPrj.Maximum < 0)
+              _scrollPrj.Maximum = 0;
+            //     _scrollBarListPos = 0;
             // TODO set scroll button size
             _lblPrj.Content = "QUERY:" + " [" + Path.GetFileNameWithoutExtension(App.Model.Query.Name) + "]";
             if (_frmQuery == null)
@@ -1064,7 +1066,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void setCheckboxInWavCtl(ctlWavFile ctl, bool check)
+    private static void setCheckboxInWavCtl(ctlWavFile ctl, bool check)
     {
       ctl._cbSel.IsChecked = check;
     }
@@ -1218,7 +1220,7 @@ namespace BatInspector.Forms
       AppParams.Inst.MainWindowHeight = this.Height;
     }
 
-    void setMouseStatus()
+    static void setMouseStatus()
     {
       System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
@@ -1718,7 +1720,7 @@ namespace BatInspector.Forms
         DebugLog.log("BTN custom tool pressed", enLogType.DEBUG);
         System.Windows.Controls.MenuItem m = (System.Windows.Controls.MenuItem)sender;
         string script = (string)m.Tag;
-        ScriptItem? item = App.Model.Scripter.getScript(script);
+        ScriptItem? item = ScriptRunner.getScript(script);
         if (item != null)
         {
           if (item.Parameter.Count > 0)

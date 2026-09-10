@@ -12,28 +12,30 @@ namespace BatInspector
   /// </summary>
   public partial class App : System.Windows.Application
   {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public static string[] _args;
     public static MainWindow MainWin;
     public static ViewModel Model;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
- /*   [STAThread]
-    public static void Main()
-    {
-  	  try
-	    {
-        var application = new App();
-        application.InitializeComponent();
-          application.Run();
-	    }
-	    catch (Exception e)
-	    {
-		    DebugLog.log(e.ToString(),enLogType.ERROR);
-		    DebugLog.save();
-	    }
-    } */
+    /*   [STAThread]
+       public static void Main()
+       {
+         try
+         {
+           var application = new App();
+           application.InitializeComponent();
+             application.Run();
+         }
+         catch (Exception e)
+         {
+           DebugLog.log(e.ToString(),enLogType.ERROR);
+           DebugLog.save();
+         }
+       } */
 
-  //  [DllImport("Kernel32.dll")]
-   // public static extern bool AttachConsole(int processId);
+    //  [DllImport("Kernel32.dll")]
+    // public static extern bool AttachConsole(int processId);
 
 
     protected override void OnStartup(StartupEventArgs e)

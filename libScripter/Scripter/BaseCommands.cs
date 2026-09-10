@@ -58,7 +58,7 @@ namespace libScripter
       return retVal;
     }
 
-    string CmdLine(string[] args)
+    static string CmdLine(string[] args)
     {
       string retVal = "";
       foreach (string arg in args)
@@ -67,7 +67,7 @@ namespace libScripter
       }
       return retVal;
     }
-    protected void LogMsg(string text, enLogType color)
+    protected static void LogMsg(string text, enLogType color)
     {
       if (EnableLog || (color == enLogType.ERROR))
         DebugLog.log(text, color);

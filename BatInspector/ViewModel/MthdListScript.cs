@@ -502,7 +502,7 @@ namespace BatInspector
     {
       tParseError err = 0;
       result = new AnyType();
-      if ((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Records != null))
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
         int nr = App.Model.Prj.Records.Length;
         result.assignInt64(nr);
@@ -555,7 +555,7 @@ namespace BatInspector
               {
                 case enFileInfo.SELECT:
                   argv[2].changeType(AnyType.tType.RT_BOOL);
-                  App.Model.Prj.Records![idxF].Selected = argv[2].getBool();
+                  App.Model.Prj.Records[idxF].Selected = argv[2].getBool();
                   break;
 
                 case enFileInfo.LATITUDE:
@@ -566,7 +566,7 @@ namespace BatInspector
                       err = tParseError.NR_OF_ARGUMENTS;
                       break;
                     }
-                    BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, App.Model.Prj.Records![idxF].File);
+                    BatRecord rec = PrjMetaData.retrieveMetaData(App.Model.Prj, App.Model.Prj.Records[idxF].File);
                     argv[2].changeType(AnyType.tType.RT_STR);
                     argv[3].changeType(AnyType.tType.RT_STR);
                     rec.GPS.Position = argv[2].getString() + " " + argv[3].getString();
@@ -601,7 +601,7 @@ namespace BatInspector
         {
           argv[0].changeType(AnyType.tType.RT_UINT64);
           int idxF = (int)argv[0].getUint64();
-          int maxIdxF = App.Model.Prj.Records!.Length;
+          int maxIdxF = App.Model.Prj.Records.Length;
           if (idxF < maxIdxF)
           {
             result.assign(App.Model.SelectedDir + "/" + App.Model.Prj.WavSubDir + "/" +
@@ -751,7 +751,7 @@ namespace BatInspector
                       err = tParseError.RESSOURCE;
                   }
                   else
-                    result.assignBool(App.Model.Prj.Records![idxF].Selected);
+                    result.assignBool(App.Model.Prj.Records[idxF].Selected);
                   break;
                 case enFileInfo.LATITUDE:
                   result.assign(App.Model.Prj.Analysis.Files[idxF].getDouble(Cols.LAT));
@@ -796,8 +796,8 @@ namespace BatInspector
           {
             argv[0].changeType(AnyType.tType.RT_INT64);
             int idx = (int)argv[0].getInt64();
-            if (App.Model.Prj.Records!.Length > idx)
-              fName = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, App.Model.Prj.Records![idx].File);
+            if (App.Model.Prj.Records.Length > idx)
+              fName = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, App.Model.Prj.Records[idx].File);
             else
               err = tParseError.ARG1_OUT_OF_RANGE;
           }

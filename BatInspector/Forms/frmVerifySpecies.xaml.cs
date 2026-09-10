@@ -25,7 +25,7 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmVerifySpecies : Window
   {
-    Sonogram _sonogram = new Sonogram();
+    Sonogram? _sonogram;
     double _tMin, _tMax;
     double _fMin, _fMax;
     enVerifyState _state = enVerifyState.SET_FSTART;
@@ -45,12 +45,12 @@ namespace BatInspector.Forms
 
     private void updateImage()
     {
-      _sonogram.createZoomViewFt(_tMin,_tMax, _fMin, _fMax, _range);
-      if (_sonogram.ImageFt != null)
+      _sonogram?.createZoomViewFt(_tMin,_tMax, _fMin, _fMax, _range);
+      if (_sonogram?.ImageFt != null)
         _img.Source = _sonogram.ImageFt;
     }
 
-    public void setup(AnalysisCall? analysisCall, Sonogram sono, double tMin, double tMax, double fMin, double fMax)
+    public void setup(AnalysisCall? analysisCall, Sonogram? sono, double tMin, double tMax, double fMin, double fMax)
     {
       int lw = 260;
 
@@ -76,7 +76,7 @@ namespace BatInspector.Forms
       _ctlHasStrongHarmonics.setup(MyResources.frmVerify_CallHarmonics, 1, qlw, qw);
       _ctlHasStrongHarmonics.setItems(qItems, new string[]{"Plecotus"});
       _ctlHasCallTypeAB.setup(MyResources.frmVerify_CallAB, 2, qlw, qw);
-      _ctlHasCallTypeAB.setItems(qItems, new string[]{"BBAR"});
+      _ctlHasCallTypeAB.setItems(qItems,   new string[]{"BBAR"});
       _ctlHasKneeClearly.setup(MyResources.frmVerifyCallHasKnee,3 , qlw, qw);
       _ctlHasKneeClearly.setItems(qItems, new string[]{"Myotis"});
       _ctlIsUniForm.setup(MyResources.frmVerify_CallsAreUniform, 4, qlw, qw);
@@ -285,7 +285,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private void setCrossPosition(System.Windows.Shapes.Line lx, System.Windows.Shapes.Line ly, System.Windows.Point p)
+    private static void setCrossPosition(System.Windows.Shapes.Line lx, System.Windows.Shapes.Line ly, System.Windows.Point p)
     {
       int w = 14;
       lx.X1 = p.X;

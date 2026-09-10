@@ -97,7 +97,7 @@ namespace BatInspector
     Cursor _cursor1;
     Cursor _cursor2;
     Spectrum _spectrum;
-    Waterfall _wf = null;
+    Waterfall _wf;
     ColorTable _colorTable;
     BatRecord _fileInfo;
     AnalysisFile _analysis;
@@ -118,7 +118,8 @@ namespace BatInspector
       _spectrum = new Spectrum();
       _fileInfo = new BatRecord();
       _proc = pr;
-      _analysis = null;
+      _analysis = new AnalysisFile("", 384000, 3);
+      _wf = new Waterfall("", _colorTable, AppParams.FFT_WIDTH, AppParams.Inst.BlackLevel);
       _modelState = modelState;
       _wrkDir = Path.Combine(AppParams.AppDataPath, AppParams.Inst.ModelRootPath,
                              "bd2"); //TODO find a way for multiple models
@@ -393,6 +394,11 @@ namespace BatInspector
     {
       string retVal;
       string? srcPath = Path.GetDirectoryName(wavName);
+      if (srcPath == null)
+      {
+        srcPath = "";
+        DebugLog.log("could not get source path for file: " + wavName, enLogType.ERROR);
+      }
       if (wavSubDir != "")
         retVal = srcPath.Replace(wavSubDir, AppParams.DIR_ORIG);
       else
@@ -424,7 +430,12 @@ namespace BatInspector
     public static void saveWavBackup(string wavName)
     {
       string dstPath = "";
-      string srcPath = Path.GetDirectoryName(wavName);
+      string? srcPath = Path.GetDirectoryName(wavName);
+      if (srcPath == null)
+      {
+        srcPath = "";
+        DebugLog.log("could not get source path for file: " + wavName, enLogType.ERROR);
+      }
       if (srcPath.IndexOf(AppParams.DIR_WAVS) >= 0)
         dstPath = srcPath.Replace(AppParams.DIR_WAVS, AppParams.DIR_ORIG);
       else

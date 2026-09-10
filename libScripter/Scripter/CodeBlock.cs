@@ -71,11 +71,11 @@ namespace libScripter
                            : base(enBlockType.FOR, args, startLine)
     {     
       _vars = vars;
-      if ((_args != null) && (_args.Count > 2))
+      if ((_args != null) && (_args.Count > 2) && (_vars != null))
       {
         _errText = "";
         _itName = _args[0];
-        Expression exp = new Expression(vars.VarList);
+        Expression exp = new Expression(_vars.VarList);
         AnyType start = exp.parse(args![1]);
         start.changeType(AnyType.tType.RT_INT64);
         _itStart = (int)start.getInt64();
@@ -100,7 +100,7 @@ namespace libScripter
     public override bool loopEnd()
     {
       _iterator++;
-      _vars.VarList.set(_itName, _iterator);
+      _vars?.VarList.set(_itName, _iterator);
       return _execute;
     }
   }

@@ -44,10 +44,10 @@ namespace BatInspector
 
   public class SpeciesItem
   {
-    public string Abbreviation { get; set; }
-    public string Name { get; set; }
-    public double CharFreqMin { get; set; }
-    public double ChaFreqMax { get; set; }
+    public string Abbreviation { get; set; } = "";
+    public string Name { get; set; } = "";
+    public double CharFreqMin { get; set; } 
+    public double ChaFreqMax { get; set; } 
     public double DurationMin { get; set; }
     public double DurationMax { get; set; }
     public double CallDistMin { get; set; }
@@ -65,10 +65,10 @@ namespace BatInspector
     string _selectedDir = "";
     ProcessRunner _proc;
     ZoomView _zoom;
-    Filter _filter;
+    Filter _filter = new Filter(new List<string>());
     ColorTable _colorTable;
     bool _extBusy = false;
-    ScriptRunner _scripter = null;
+    ScriptRunner _scripter;
     WavFile _wav;
     List<SpeciesInfos> _speciesInfos;
     SumReport _sumReport;
@@ -76,7 +76,7 @@ namespace BatInspector
     List<BaseModel> _models;
     CtrlRecorder _recorder;
     Statistic _statistic;
-    string _tempCmd;
+    string _tempCmd = "" ;
     PrjView _view;
     ModelParams[] _defaultModelParams;
     dlgVoid? _callBackEnd = null;
@@ -89,7 +89,7 @@ namespace BatInspector
     public ScriptRunner Scripter { get { return _scripter; } }
 
    
-    public Project Prj { get { return _view.Prj; } }
+    public Project Prj { get { return _view.Prj!; } }
 
     public ZoomView ZoomView { get { return _zoom; } }
 
@@ -159,11 +159,20 @@ namespace BatInspector
       _view.Query = null;
       int index = 0;
 
-      _defaultModelParams = BaseModel.readDefaultModelParams();
-      foreach (ModelParams m in _defaultModelParams!)
+      ModelParams[]? mp = BaseModel.readDefaultModelParams();
+      if (mp == null)
       {
-        _models.Add(BaseModel.Create(index, m.Type));
-        index++;
+        _defaultModelParams = new ModelParams[0];
+        DebugLog.log("could not read default model parameters, installation may be corrupted!", enLogType.ERROR);
+      }
+      else
+      {
+        _defaultModelParams = mp;
+        foreach (ModelParams m in _defaultModelParams!)
+        {
+          _models.Add(BaseModel.Create(index, m.Type));
+          index++;
+        }
       }
       _view.Prj = new Project(true,
                  DefaultModelParams[getModelIndex(AppParams.Inst.DefaultModel)], DefaultModelParams.Length);
@@ -190,11 +199,11 @@ namespace BatInspector
 
     public void updateReport()
     {
-      if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName))
+      if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName) && (_view.Prj != null))
         _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, _view.Prj.MetaData);
       //      else if ((Query != null) && File.Exists(Query.ReportName))
       //        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
-      else if ((Query != null) && File.Exists(Query.ReportName))
+      else if ((Query != null) && File.Exists(Query.ReportName) && (_view.Query != null))
       _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
 
     }

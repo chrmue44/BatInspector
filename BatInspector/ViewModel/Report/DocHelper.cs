@@ -316,7 +316,7 @@ namespace BatInspector
       {
         _doc.Append("<tr>\n");
         for (int c = 0; c < dtbl.Columns.Count; c++)
-          _doc.Append($"<td>{dtbl.Rows[r].ItemArray[c].ToString()}</td>\n");
+          _doc.Append($"<td>{dtbl.Rows[r].ItemArray[c]!.ToString()}</td>\n");
         _doc.Append("</tr>\n");
       }
       _doc.Append("</table>\n");

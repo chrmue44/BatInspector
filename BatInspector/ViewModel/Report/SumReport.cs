@@ -624,13 +624,13 @@ namespace BatInspector
     private string _expression = "";
     private dlgShowActivityDiag? _showActivityData = null;
     private string _bmpName = "";
-    private ModelParams _modelParams;
+    private ModelParams? _modelParams;
     private string _reportName ="";
-    private List<SpeciesInfos> _species;
-    private SpeciesInfos _currSpecies;
+    private List<SpeciesInfos> _species = new List<SpeciesInfos>();
+    private SpeciesInfos? _currSpecies = null;
 
-    private List<SpeciesRecordingItem> _bestFilesCurSpec;
-    private Query _qryBestOf;
+    private List<SpeciesRecordingItem> _bestFilesCurSpec = new List<SpeciesRecordingItem>();
+    private Query? _qryBestOf;
     private bool _withQuery = false;
     private int _classWidthMin;
 
@@ -788,7 +788,7 @@ namespace BatInspector
       double latitude = 0;
       double longitude = 0;
 
-      if (_withQuery)
+      if (_withQuery && _currSpecies != null)
       {
         ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
         string qryName = Path.Combine(_dstDir, _currSpecies.Abbreviation);
@@ -824,12 +824,11 @@ namespace BatInspector
         retVal.Longitude = longitude / retVal.DaysWithData;
       }
       if (_withQuery)
-        _qryBestOf.writeQueryFile();
+        _qryBestOf?.writeQueryFile();
 
-      if (_showActivityData != null)
-        _showActivityData(retVal, Path.Combine(_dstDir,_bmpName), _classWidthMin);
-      
-      if(_currSpecies != null)
+      _showActivityData?.Invoke(retVal, Path.Combine(_dstDir, _bmpName), _classWidthMin);
+
+      if (_currSpecies != null)
         _currActivityItem  = new ActivityItem(_currSpecies.Abbreviation,retVal.getMeanActivity());
     }
 
@@ -1002,7 +1001,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public int calcDays(DateTime date, DateTime end, enPeriod period)
+    public static int calcDays(DateTime date, DateTime end, enPeriod period)
     {
       int days = 0;
       bool exit = false;
@@ -1031,7 +1030,7 @@ namespace BatInspector
       return days;
     }
 
-    public DateTime incrementDate(DateTime date, enPeriod period)
+    public static DateTime incrementDate(DateTime date, enPeriod period)
     {
       switch (period)
       {
@@ -1056,6 +1055,9 @@ namespace BatInspector
 
     void crawlDirTree(DirectoryInfo dir, enModel model)
     {
+      if(_modelParams == null)
+        return;
+
       foreach (DirectoryInfo subDir in dir.GetDirectories())
       {
         crawlDirTree(subDir, model);
@@ -1068,7 +1070,7 @@ namespace BatInspector
           findStartEnd(csv, colName, out string startDateStr, out string endDateStr);
           DateTime startDate = new DateTime();
           DateTime endDate = new DateTime();
-          bool ok_s = false;
+          bool ok_s;
           bool ok_e = false;
           try
           {
@@ -1104,7 +1106,7 @@ namespace BatInspector
       }
     }
 
-    private void findStartEnd(Csv csv, string colName, out string start, out string end)
+    private static void findStartEnd(Csv csv, string colName, out string start, out string end)
     {
       DateTime dStart =  DateTime.MaxValue;
       DateTime dEnd = DateTime.MinValue;
@@ -1180,7 +1182,7 @@ namespace BatInspector
 
               if (!retVal)
                 break;
-              if (_withQuery)
+              if (_withQuery && (_currSpecies != null))
               {
                 double score = file.getScore(_currSpecies.Abbreviation);
                 if (score > 0.1)
@@ -1188,9 +1190,9 @@ namespace BatInspector
                   string fileName = Path.Combine(rep.PrjDir, AppParams.DIR_WAVS, file.Name);
                   bool add = SpeciesRecordingItem.insert(_bestFilesCurSpec, file.Name, score, out string remove);
                   if (add)
-                    _qryBestOf.addFile(file, rep.PrjDir, AppParams.DIR_WAVS);
+                    _qryBestOf?.addFile(file, rep.PrjDir, AppParams.DIR_WAVS);
                   if (remove != "")
-                    _qryBestOf.removeFile(remove);
+                    _qryBestOf?.removeFile(remove);
                 }
               }
             }
@@ -1241,7 +1243,7 @@ namespace BatInspector
       }
     }
 
-    private SumReportItem getSums(DateTime start, DateTime end, string expression, ReportListItem report)
+    private static SumReportItem getSums(DateTime start, DateTime end, string expression, ReportListItem report)
     {
       SumReportItem retVal = new SumReportItem();
       List<SumItem> list = new List<SumItem>();

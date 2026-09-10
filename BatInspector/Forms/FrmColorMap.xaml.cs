@@ -77,7 +77,7 @@ namespace BatInspector.Forms
       AppParams.Inst.ColorGradientRed[4].Color = _ctlR._ctlCol5.getIntValue();
     }
 
-    private void _btnApply_Click(object sender, RoutedEventArgs e)
+    private void _btnApply_Click(object? sender, RoutedEventArgs? e)
     {
       readValuesFromScreen();
       _cbPresets.SelectedIndex = 0;
@@ -121,15 +121,17 @@ namespace BatInspector.Forms
       if (_cbPresets.SelectedIndex > _presets.Count)
         return;
 
-      ColorPreset preset = _presets.getPresetCopy(_cbPresets.SelectedIndex - 1);
-      AppParams.Inst.ColorGradientBlue = preset.ColorGradientBlue;
+      ColorPreset? preset = _presets.getPresetCopy(_cbPresets.SelectedIndex - 1);
+      if (preset != null)
+      {
+        AppParams.Inst.ColorGradientBlue = preset.ColorGradientBlue;
         AppParams.Inst.ColorGradientGreen = preset.ColorGradientGreen;
-      AppParams.Inst.ColorGradientRed = preset.ColorGradientRed;
-      createGradient();
-      _ctlB.updateValue(AppParams.Inst.ColorGradientBlue);
-      _ctlR.updateValue(AppParams.Inst.ColorGradientRed);
-      _ctlG.updateValue(AppParams.Inst.ColorGradientGreen);
-
+        AppParams.Inst.ColorGradientRed = preset.ColorGradientRed;
+        createGradient();
+        _ctlB.updateValue(AppParams.Inst.ColorGradientBlue);
+        _ctlR.updateValue(AppParams.Inst.ColorGradientRed);
+        _ctlG.updateValue(AppParams.Inst.ColorGradientGreen);
+      }
     }
   }
 }

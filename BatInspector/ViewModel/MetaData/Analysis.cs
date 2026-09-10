@@ -222,11 +222,11 @@ namespace BatInspector
   public class Analysis
   {
 
-    private Cols _cols;
+    private Cols _cols = new Cols();
     private object _fileLock = new object();
-    private List<AnalysisFile> _list;
-    private Csv _csv;
-    private List<SumItem> _summary;
+    private List<AnalysisFile> _list = new List<AnalysisFile>();
+    private Csv _csv = new Csv();
+    private List<SumItem> _summary = new List<SumItem>();
     private enModel _modelType;
     private bool _updateCtls = false;
 
@@ -403,7 +403,7 @@ namespace BatInspector
           AnalysisCall call = new AnalysisCall(_csv, row, _updateCtls);
        
           bool isInList = SpeciesInfos.isInList(App.Model.SpeciesInfos, call.getString(Cols.SPECIES));
-          file!.addCall(call, isInList);
+          file!.addCall(call);
 
           callNr++;
         }
@@ -466,7 +466,7 @@ namespace BatInspector
 
 
 
-    public void save(string path, string notes, string sumName)
+    public void save(string path, string notes, string? sumName)
     {
       lock (_fileLock)
       {
@@ -642,7 +642,7 @@ namespace BatInspector
       bool retVal = false;
       do
       {
-        row = _csv.findInCol(wavName, Cols.NAME, true);
+        row = _csv.findInCol(wavName, Cols.NAME, 1, true);
         if (row > 0)
         {
           _csv.removeRow(row);
@@ -679,16 +679,20 @@ namespace BatInspector
 
     void updateRowNumbers()
     {
-      foreach(AnalysisFile f in _list)
+      int startRow = 1;
+      for (int i = 0; i < _list.Count; i++)
       {
-        int row = _csv.findInCol(f.Name, Cols.NAME, true);
+        int row = _csv.findInCol(_list[i].Name, Cols.NAME, startRow, true);
         if (row > 0)
-          f.updateRow(row);
+        {
+          _list[i].updateRow(row);
+          startRow = row;
+        }
       }
     }
 
 
-    public void createSummary(string fileName, string notes)
+    public void createSummary(string? fileName, string notes)
     {
       if (string.IsNullOrEmpty(fileName))
         return;
@@ -1250,7 +1254,7 @@ namespace BatInspector
     }
 
 
-    public void addCall(AnalysisCall call, bool isInList)
+    public void addCall(AnalysisCall call)
     {
       _calls.Add(call);
       updateCall(call);

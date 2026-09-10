@@ -18,7 +18,7 @@ namespace BatInspector.Forms
   /// </summary>
   public partial class frmCleanup : Window
   {
-    string _delFolder;
+    string _delFolder = "";
     bool _delWavs;
     bool _delLogs;
     bool _delPngs;
@@ -29,7 +29,7 @@ namespace BatInspector.Forms
     int _pngSpace;
     int _origSpace;
     int _annSpace;
-    string _rootDir;
+    string _rootDir = "";
 
     public frmCleanup()
     {

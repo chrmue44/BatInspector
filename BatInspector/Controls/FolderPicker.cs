@@ -48,9 +48,10 @@ public class FolderPicker
     var dialog = (IFileOpenDialog)new FileOpenDialog();
     if (!string.IsNullOrEmpty(InputPath))
     {
+#pragma warning disable CS8625
       if (CheckHr(SHCreateItemFromParsingName(InputPath, null, typeof(IShellItem).GUID, out var item), throwOnError) != 0)
         return null;
-
+#pragma warning restore CS8625
       dialog.SetFolder(item);
     }
 

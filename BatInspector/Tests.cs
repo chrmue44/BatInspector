@@ -161,39 +161,39 @@ namespace BatInspector
       SumReport rep = new SumReport();
       DateTime dat = new DateTime(2022, 09, 15);
       DateTime end = new DateTime(2022, 09, 30);
-      int days = rep.calcDays(dat, end, enPeriod.DAILY);
+      int days = SumReport.calcDays(dat, end, enPeriod.DAILY);
       assert("check daily", days == 1);
-      days = rep.calcDays(dat, end, enPeriod.WEEKLY);
+      days = SumReport.calcDays(dat, end, enPeriod.WEEKLY);
       assert("check full week", days == 7);
       end = new DateTime(2022, 09, 20);
-      days = rep.calcDays(dat, end, enPeriod.WEEKLY);
+      days = SumReport.calcDays(dat, end, enPeriod.WEEKLY);
       assert("check part week", days == 5);
       end = new DateTime(2022, 10, 01);
-      days = rep.calcDays(dat, end, enPeriod.MONTHLY);
+      days = SumReport.calcDays(dat, end, enPeriod.MONTHLY);
       assert("check part month", days == 16);
       dat = new DateTime(2022, 10, 01);
       end = new DateTime(2022, 11, 05);
-      days = rep.calcDays(dat, end, enPeriod.MONTHLY);
+      days = SumReport.calcDays(dat, end, enPeriod.MONTHLY);
       assert("check full month", days == 31);
 
       //incrementDate
       dat = new DateTime(2022, 07, 15);
       DateTime exp = new DateTime(2022, 07, 16);
-      end = rep.incrementDate(dat, enPeriod.DAILY);
+      end = SumReport.incrementDate(dat, enPeriod.DAILY);
       assert("check inc day", end == exp);
       dat = new DateTime(2022, 10, 27);
       exp = new DateTime(2022, 11, 03);
-      end = rep.incrementDate(dat, enPeriod.WEEKLY);
+      end = SumReport.incrementDate(dat, enPeriod.WEEKLY);
       assert("check inc week", end == exp);
       dat = new DateTime(2022, 11, 05);
       exp = new DateTime(2022, 12, 01);
-      end = rep.incrementDate(dat, enPeriod.MONTHLY);
+      end = SumReport.incrementDate(dat, enPeriod.MONTHLY);
       assert("check inc month", end == exp);
       DateTime startD = new DateTime(2023, 03, 01);
       DateTime endD = new DateTime(2023, 04, 30);
 
       //string path = "G:/bat/2023";
-      //rep.createReport(startD, endD, enPeriod.DAILY, path);
+      //SumReport.createReport(startD, endD, enPeriod.DAILY, path);
     }
 
     private void testCsvFuncs(string wrkDir)

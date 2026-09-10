@@ -36,7 +36,7 @@ namespace libBioAcoustics
   {
     fftMutex.lock();
     int retVal = -1;
-    int nrOfFfts = ffts.size();
+    int nrOfFfts = (int)ffts.size();
     for (int i = 0; i < nrOfFfts; i++)
     {
       if(!ffts[i]->inUse() &&  (ffts[i]->getSize() == size) && (ffts[i]->getWinType() == win))
@@ -51,7 +51,7 @@ namespace libBioAcoustics
       FFT* pFft = new FFT(size, win);
       pFft->lock();
       ffts.push_back(pFft);
-      retVal = ffts.size() - 1;
+      retVal = (int)(ffts.size() - 1);
     }
     fftMutex.unlock();
     return retVal;
@@ -253,7 +253,7 @@ namespace libBioAcoustics
         audio_vector.resize(s);
         for (int i = 0; i < s / 2; i++)
           audio_vector[i] = spectrum[i];
-        for (int i = s / 2; i < s; i++)
+        for (int i = (int)(s / 2); i < s; i++)
           audio_vector[i] = 0.0;
         fft->implReverse(0, audio_vector);
         for (int i = 0; i < s; i++)
@@ -269,8 +269,7 @@ namespace libBioAcoustics
     {
       FFT* fft = ffts[handle];
       if (fft != nullptr)
-        return fft->getSize();
-      ;
+        return (int)(fft->getSize());
     }
     return -1;
   }

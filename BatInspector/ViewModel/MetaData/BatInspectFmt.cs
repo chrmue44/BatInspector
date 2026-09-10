@@ -158,7 +158,6 @@ public partial class BatExplorerProjectFile
   private string _metaData;
   private string _createdBy;
   private string _location;
-  private string _remarks;
   private bool _micCorrected = false;
 
   public BatExplorerProjectFile()

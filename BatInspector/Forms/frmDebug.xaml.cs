@@ -143,7 +143,7 @@ namespace BatInspector.Forms
     }
 
 
-    private void setParams(enDataType type, object val)
+    private void setParams(enDataType type, object? val)
     {
       setParams();
     }

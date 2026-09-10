@@ -20,7 +20,7 @@ namespace BatInspector
     public const string DATE_FORMAT = "yyyy-MM-ddTHH:mm:ss";
     public static BatRecord read(string infoName)
     {
-      BatRecord retVal;
+      BatRecord? retVal = null;
       if (File.Exists(infoName))
       {
         try
@@ -28,18 +28,17 @@ namespace BatInspector
           string xml = File.ReadAllText(infoName);
           var serializer = new XmlSerializer(typeof(BatRecord));
           TextReader reader = new StringReader(xml);
-          retVal = (BatRecord)serializer.Deserialize(reader);
+          retVal = (BatRecord?)serializer.Deserialize(reader);
         }
         catch (Exception ex) 
         {
           DebugLog.log("error reading info file '" + infoName +"': " + ex.ToString(), enLogType.ERROR);
-          retVal = new BatRecord();
+          retVal = null;
         }
-      }
-      else
-        retVal = new BatRecord();
-      PrjMetaData.initUninitializedValues(ref retVal);
-      return retVal;
+      } 
+      BatRecord retVal2 = (retVal != null) ? retVal : new BatRecord();
+      PrjMetaData.initUninitializedValues(ref retVal2);
+      return retVal2;
     }
 
     public static void write(string infoName, BatRecord record)

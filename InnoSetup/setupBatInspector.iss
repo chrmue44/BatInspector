@@ -70,15 +70,15 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "starticon"; Description: "{cm:CreateStartIcon}"; GroupDescription: "{cm:AdditionalIcons}"; 
 
 [Files]
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Check: Dependency_IsX64; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Check: Dependency_IsX64; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\datapath.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\teensy_loader_cli.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.dll"; DestDir: "{app}"; Check: Dependency_IsX64; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
-Source: "{#SourceFolder}\{#MyAppName}\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\teensy_loader_cli.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\*.dll"; DestDir: "{app}"; Check: Dependency_IsX64; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\*.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\*.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
+Source: "{#SourceFolder}\{#MyAppName}\bin\Release\net10.0-windows\*.config"; DestDir: "{app}"; Flags: ignoreversion
 source: "{#SourceFolder}\scripts\*.xml"; DestDir: "{app}"; Permissions: everyone-full
 source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\dat";

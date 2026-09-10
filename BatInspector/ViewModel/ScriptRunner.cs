@@ -176,7 +176,7 @@ namespace BatInspector
       _parser.VarTable.Remove(name);
     }
 
-    public ScriptItem? getScript(string name)
+    public static ScriptItem? getScript(string name)
     {
       ScriptItem? retVal = null;
       foreach (ScriptItem sItem in AppParams.Inst.ScriptInventory.Scripts)

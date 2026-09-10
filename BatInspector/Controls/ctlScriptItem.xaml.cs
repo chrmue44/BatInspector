@@ -77,7 +77,7 @@ namespace BatInspector.Forms
     private void _btnRun_Click(object sender, RoutedEventArgs e)
     {
       string script = _tbScriptName.Text;
-      ScriptItem? item = App.Model.Scripter.getScript(script);
+      ScriptItem? item = ScriptRunner.getScript(script);
       if (item != null)
       {
         if (item.Parameter.Count > 0)

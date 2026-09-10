@@ -58,7 +58,7 @@ Audio_Event Analyse::impl(const size_t &fft_size,
   //fft.m_fftSize = fft_size;
   fft.set_plan(fft_size);
   fft.set_window(FFT::WIN_TYPE::BLACKMAN_HARRIS_7);
-  freq_res = sample_rate / fft.getSize();
+  freq_res = (double)(sample_rate / fft.getSize());
 
   smooth_spectrum(background_noise, smoothing_gain);
   analyse_frame(seek, noise, signal, background_noise);
@@ -112,7 +112,7 @@ void Analyse::analyse_frame (const int &seek,
   bin_centroid = centroid(mask);
 
   // Harmonic octave above tracked
-  bin_harmonic = std::round(2 * bin_centroid);
+  bin_harmonic = (size_t)std::round(2 * bin_centroid);
 }
 
 
@@ -123,7 +123,7 @@ void Analyse::backward_analyse (Audio_Event &audio_event,
                                 double &noise,
                                 double &signal)
 {
-  seek = peak_location - step;
+  seek = (int)(peak_location - step);
 
   kalman.p_error_prev = 1;
   kalman.p_state_prev = bin_centroid;

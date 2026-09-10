@@ -55,7 +55,7 @@ void detect_impl (const std::vector<int> &audio_samples,
         sum_squares += std::pow(audio_samples.at(seek + j), 2);
       }
     }
-    seek += step_size;
+    seek += (int)step_size;
   }
 
   fft.implForwardInt(seek, audio_samples);
@@ -65,7 +65,7 @@ void detect_impl (const std::vector<int> &audio_samples,
 
   std::vector<double> prev = power_spectrum, background_noise_filtered_prev = power_spectrum, background_noise_filtered_new = power_spectrum;
 
-  size_t win_size = ((float)noise_estim_win_size * (float)sample_rate / 1000) / (float)step_size;
+  size_t win_size = (size_t)( ((float)noise_estim_win_size * (float)sample_rate / 1000) / (float)step_size);
   std::vector< std::vector<double> > bg_noiz_f_win (fft.getSize() / 2, std::vector<double> (win_size));
 
   size_t bg_noiz_f_insert_at = 0, bg_noiz_f_win_size = 0;
@@ -91,13 +91,13 @@ void detect_impl (const std::vector<int> &audio_samples,
 
     if (sum_squares < 0.00001)
     {
-      seek += step_size;
+      seek += (int)step_size;
       continue;
     }
 
     fft.implForwardInt(seek, audio_samples);
     power_spectrum = fft.m_magnitude;
-    seek += step_size;
+    seek += (int)step_size;
 
     std::vector<double> filtered_spectrum = power_spectrum;
     band_pass_filter(filtered_spectrum, LPF, HPF, freq_res);

@@ -150,13 +150,13 @@ namespace BatInspector
 
     public bool Ok { get { return _ok; } }
 
-    public PrjRecord[]? Records
+    public PrjRecord[] Records
     {
       get {
         if ((_batExplorerPrj != null) && (_batExplorerPrj.Records != null))
           return _batExplorerPrj.Records;
         else
-          return null;
+          return new PrjRecord[0];
       }
     }
     public string Name { get { return _prjFileName; } }
@@ -521,7 +521,7 @@ namespace BatInspector
     public int applyFilter(Filter filter, FilterItem filterItem)
     {
       int retVal = 0;
-      if((Analysis?.Files.Count > 0) && (Records != null) && (Records.Length > 0))
+      if((Analysis?.Files.Count > 0) &&  (Records.Length > 0))
       {
         foreach(PrjRecord rec in Records)
         {
@@ -541,7 +541,7 @@ namespace BatInspector
     public void exportFiles(string outputDir, bool withXml = true, bool withPng = true)
     {
       int countWav = 0;
-      if (Directory.Exists(outputDir) && (Records != null))
+      if (Directory.Exists(outputDir))
       {
         DebugLog.log($"start files export from Project {Name}", enLogType.INFO);
         foreach (PrjRecord rec in Records)
@@ -600,7 +600,7 @@ namespace BatInspector
         {
           double lat = 0;
           double lon = 0;
-          if ((Records != null) && (Records.Length > 0))
+          if (Records.Length > 0)
           {
             BatRecord r = PrjMetaData.retrieveMetaData(this, Records[0].File);
             PrjMetaData.parsePosition(r.GPS.Position, out lat, out lon);
@@ -1209,7 +1209,7 @@ namespace BatInspector
             prjDest.Analysis.addFile(f, true);
         }
         string? dir = Path.GetDirectoryName(prjDest.getReportName(prjDest.SelectedModelIndex));
-        if (!Directory.Exists(dir))
+        if ((dir != null) && !Directory.Exists(dir))
           Directory.CreateDirectory(dir);
         prjDest.Analysis.save(prjDest.getReportName(prjDest.SelectedModelIndex), prjDest.Notes, prjDest.SummaryName);
       }
@@ -1267,7 +1267,7 @@ namespace BatInspector
           _selectedDir = prjDir;
           string xml = File.ReadAllText(_prjFileName);
           if(_extension == AppParams.EXT_PRJ)
-            _prjFileName = Path.Combine(Path.GetDirectoryName(_prjFileName), Path.GetFileNameWithoutExtension(_prjFileName) + AppParams.EXT_BATSPY);
+            _prjFileName = Path.Combine(Path.GetDirectoryName(_prjFileName) ?? "", Path.GetFileNameWithoutExtension(_prjFileName) + AppParams.EXT_BATSPY);
           TextReader reader = new StringReader(xml);
           _batExplorerPrj = (BatExplorerProjectFile?)PrjSerializer.Deserialize(reader);
           if (_batExplorerPrj != null)
@@ -1337,17 +1337,18 @@ namespace BatInspector
 
     private ModelParams setModelParams()
     {
-      ModelParams retVal = null;
-      foreach(ModelParams m in _batExplorerPrj.Models)
+      ModelParams retVal = App.Model.DefaultModelParams[0];
+      if (_batExplorerPrj != null)
       {
-        if(m.Enabled)
+        foreach (ModelParams m in _batExplorerPrj.Models)
         {
-          retVal = m;
-          break;
+          if (m.Enabled)
+          {
+            retVal = m;
+            break;
+          }
         }
       }
-      if (retVal == null)
-        DebugLog.log("open Project: no AI clasifier enabled!", enLogType.ERROR);
       return retVal;
     }
 

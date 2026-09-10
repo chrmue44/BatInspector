@@ -17,7 +17,7 @@ namespace BatInspector
 {
   public class BatCommands : BaseCommands
   {
-    public BatCommands(delegateUpdateProgress delUpd) : base(delUpd)
+    public BatCommands(delegateUpdateProgress? delUpd) : base(delUpd)
     {
       _features = new ReadOnlyCollection<OptItem>(new[]
       {
@@ -79,7 +79,7 @@ namespace BatInspector
     int fctSplitProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      if ((App.Model.Prj != null) && (App.Model.Prj.Ok) && (App.Model.Prj.Records != null))
+      if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
         int maxFilesPerProject = 600;
         if (pars.Count > 0)

@@ -26,7 +26,7 @@ class Audio_Event
 {
 public:
   size_t duration = 0;
-  int end, start;
+  int end = 0, start = 0;
   double noise = 0, amp_peak = 0, signal = 0;
   Rcpp::NumericVector amp_track, freq_track, harmonic_amp_track;
   std::vector<double> power_spectrum;

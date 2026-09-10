@@ -18,7 +18,7 @@ namespace libScripter
   {
     ProcessRunner _proc;
     string _lastDosResult = "";
-    public OsCommands(delegateUpdateProgress delUpd) : base(delUpd)
+    public OsCommands(delegateUpdateProgress? delUpd) : base(delUpd)
     {
 
       _proc = new ProcessRunner();

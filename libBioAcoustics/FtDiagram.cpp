@@ -20,7 +20,7 @@ void FtDiagram::discardSpectra()
   _spec.clear();
 }
 
-bool replace(std::string& str, const std::string& from, const std::string& to) 
+static bool replace(std::string& str, const std::string& from, const std::string& to) 
 {
   size_t start_pos = str.find(from);
   if (start_pos == std::string::npos)
@@ -83,11 +83,11 @@ int FtDiagram::saveToPng(const char* name, ColorTable* pColTable, int32_t width,
       if (_spec[idxSpec] != nullptr)
       {
         if (idxFreq >= _spec[idxSpec]->size())
-          idxFreq = _spec[idxSpec]->size() - 1;
+          idxFreq = (int)(_spec[idxSpec]->size() - 1);
         tSpec* spec = _spec[idxSpec];
         double val = (*spec)[idxFreq];
         stColorChans col = pColTable->getColor(val, _minAmplitude, _maxAmplitude);
-        uint16_t ys = fftBinCnt - 1 - y;
+        uint16_t ys = (uint16_t)(fftBinCnt - 1 - y);
         image[4 * width * ys + 4 * x + 0] = col.red;
         image[4 * width * ys + 4 * x + 1] = col.green;
         image[4 * width * ys + 4 * x + 2] = col.blue;

@@ -124,7 +124,7 @@ namespace BatInspector
   public class ReportItemBd2
   {
     string _remarks = "";
-    bool _changed = false;
+//    bool _changed = false;
 
     public ReportItemBd2(AnalysisFile file, AnalysisCall call)
     {
@@ -133,7 +133,7 @@ namespace BatInspector
       CallNr = callNr.ToString();
       if (callNr < 2)
         Remarks = file.getString(Cols.REMARKS);
-      _changed = false;
+      //_changed = false;
       Row = call.ReportRow;
       Duration = call.getDouble(Cols.DURATION).ToString("0.#", CultureInfo.InvariantCulture);
       Snr = call.getDouble(Cols.SNR).ToString("0.#", CultureInfo.InvariantCulture);
@@ -173,7 +173,7 @@ namespace BatInspector
       set
       {
         _remarks = value;
-        _changed = true;
+        //_changed = true;
       }
     }
   }
@@ -398,7 +398,7 @@ namespace BatInspector
 
     private void createPngFiles(ColorTable colorTable)
     {
-      if ((Prj != null) && (Prj.Records != null))
+      if (Prj != null)
       {
         foreach (PrjRecord rec in Prj.Records)
         {
@@ -445,7 +445,7 @@ namespace BatInspector
     private PrjRecord[] getRecords()
     {
       PrjRecord[] retVal = new PrjRecord[0];
-      if ((Prj != null) && (Prj.Ok) && (Prj.Records != null))
+      if ((Prj != null) && Prj.Ok)
       {
         retVal = Prj.Records;
       }

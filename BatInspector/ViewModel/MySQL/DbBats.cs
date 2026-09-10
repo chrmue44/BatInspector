@@ -454,7 +454,7 @@ namespace BatInspector
       for(int r = 2; r < report.RowCnt; r++)
       {
         AnalysisCall call = new AnalysisCall(report, r, false);
-        file.addCall(call, true);
+        file.addCall(call);
       }
 
       return file;

@@ -203,7 +203,7 @@ int WavFile::readFile(const char* name)
     int rdIdx = 0;
     readBytes = fread(data + rdIdx, 1, cnt, file);
     
-    _dataChunk.addSampleData(data, 0, readBytes, _formatChunk.getData()->BitsPerSample, _formatChunk.getData()->Channels);
+    _dataChunk.addSampleData(data, 0, (int)readBytes, _formatChunk.getData()->BitsPerSample, _formatChunk.getData()->Channels);
     _fName = name;
     _isOpen = true;
   }

@@ -11,7 +11,7 @@ namespace BatInspector
 
   public class ElekonBra
   {
-    static XmlSerializer _serializer = null;
+    static XmlSerializer? _serializer = null;
 
     public static XmlSerializer getXmlSerializer()
     {
@@ -20,9 +20,9 @@ namespace BatInspector
       return _serializer;
     }
 
-    public static BatRecordBra read(string braName)
+    public static BatRecordBra? read(string braName)
     {
-      BatRecordBra retVal;
+      BatRecordBra? retVal;
       if (File.Exists(braName))
       {
         try
@@ -30,7 +30,7 @@ namespace BatInspector
           string xml = File.ReadAllText(braName);
           xml = xml.Replace("BatRecord", "BatRecordBra");
           TextReader reader = new StringReader(xml);
-          retVal = (BatRecordBra)getXmlSerializer().Deserialize(reader);
+          retVal = (BatRecordBra?)getXmlSerializer().Deserialize(reader);
         }
         catch (Exception ex)
         {
@@ -46,7 +46,7 @@ namespace BatInspector
     public static Bd2AnnFile convertToBd2Ann(string braName, double timeOffs, double fMinOffs, string speciesName, string eventType)
     {
       Bd2AnnFile ann = new Bd2AnnFile();
-      BatRecordBra rec = read(braName);
+      BatRecordBra? rec = read(braName);
       if (rec != null)
       {
         string wavName = braName.Replace(".bra", ".wav");
@@ -65,14 +65,16 @@ namespace BatInspector
         {
           foreach (BatRecordCall c in rec.Call)
           {
-            Bd2Annatation a = new Bd2Annatation();
-            a.Class = speciesName;
-            a.Event = eventType;
-            a.end_time = c.End + timeOffs;
-            a.start_time = c.Begin + timeOffs;
-            a.low_freq = c.MinFreq + fMinOffs;
-            a.high_freq = c.MaxFreq;
-            a.individual = "0";
+            Bd2Annatation a = new Bd2Annatation
+            {
+              Class = speciesName,
+              Event = eventType,
+              end_time = c.End + timeOffs,
+              start_time = c.Begin + timeOffs,
+              low_freq = c.MinFreq + fMinOffs,
+              high_freq = c.MaxFreq,
+              individual = "0"
+            };
             annCalls.Add(a);
           }
         }

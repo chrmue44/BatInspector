@@ -156,24 +156,31 @@ public partial class Kml
         return null;
       for (int i = 0; i < list.Count; i++)
       {
-        if (list[i].Name == "Placemark")
+        XmlNode? placeMark = list[i];
+        if (placeMark != null && placeMark.Name == "Placemark")
         {
-          XmlNode placeMark = list[i];
           kmlDocumentPlacemark p = new kmlDocumentPlacemark();
           for (int j = 0; j < placeMark.ChildNodes.Count; j++)
           {
-            if (placeMark.ChildNodes[j].Name == "name")
-              p.name = placeMark.ChildNodes[j].InnerText;
-            else if (placeMark.ChildNodes[j].Name == "Point")
+            XmlNode? child = placeMark.ChildNodes[j];
+            if (child != null)
             {
-              XmlNode point = placeMark.ChildNodes[j];
-              if (point.ChildNodes.Count < 1)
-                return null;
-              if (point.ChildNodes[0].Name != "coordinates")
-                return null;
-              string coords = point.ChildNodes[0].InnerText;
-              p.Point = new kmlDocumentPlacemarkPoint();
-              p.Point.coordinates = coords;
+              if (child.Name == "name")
+                p.name = child.InnerText;
+              else if (child.Name == "Point")
+              {
+//                XmlNode point = placeMark.ChildNodes[j];
+                if (child.ChildNodes.Count < 1)
+                  return null;
+                XmlNode? coordsNode = child.ChildNodes[0];
+                if (coordsNode == null)
+                  return null;
+                if (coordsNode.Name != "coordinates")
+                  return null;
+                string coords = coordsNode.InnerText;
+                p.Point = new kmlDocumentPlacemarkPoint();
+                p.Point.coordinates = coords;
+              }
             }
           }
           tmpList.Add(p);

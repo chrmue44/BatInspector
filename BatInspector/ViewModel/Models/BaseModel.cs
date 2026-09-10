@@ -278,7 +278,7 @@ namespace BatInspector
         string annFileName = csv.getCell(row, "FileName") + ".json";
         string spec = csv.getCell(row, "Species");
         annFileName = Path.Combine(pathAnn, annFileName);
-        Bd2AnnFile annFile = Bd2AnnFile.loadFrom(annFileName, false);
+        Bd2AnnFile? annFile = Bd2AnnFile.loadFrom(annFileName, false);
         if (annFile != null)
         {
           int count = 0;
@@ -387,50 +387,53 @@ namespace BatInspector
 
     private static void evaluateAnnFile(Project prj, string file, ref Csv perfResult)
     {
-      Bd2AnnFile annFile = Bd2AnnFile.loadFrom(file);
+      Bd2AnnFile? annFile = Bd2AnnFile.loadFrom(file);
       int callNr = 0;
-      foreach (Bd2Annatation ann in annFile.Annatations)
+      if( annFile != null )
       {
-        callNr++;
-        perfResult.addRow();
-        int row = perfResult.RowCnt;
-        perfResult.setCell(row, Cols.PERF_ANN_FILE, file);
-        perfResult.setCell(row, Cols.NR, callNr);
-        perfResult.setCell(row, Cols.START_TIME, ann.start_time);
-        perfResult.setCell(row, Cols.SPECIES_MAN, ann.Class);
-        string wavFile = Path.GetFileName(file.Replace(".json", ""));
-        AnalysisFile analysis = prj.Analysis.find(wavFile);
-        bool found = false;
-
-        if ((analysis != null) && (ann.Class != "Bat"))
+        foreach (Bd2Annatation ann in annFile.Annatations)
         {
-          foreach (AnalysisCall call in analysis.Calls)
+          callNr++;
+          perfResult.addRow();
+          int row = perfResult.RowCnt;
+          perfResult.setCell(row, Cols.PERF_ANN_FILE, file);
+          perfResult.setCell(row, Cols.NR, callNr);
+          perfResult.setCell(row, Cols.START_TIME, ann.start_time);
+          perfResult.setCell(row, Cols.SPECIES_MAN, ann.Class);
+          string wavFile = Path.GetFileName(file.Replace(".json", ""));
+          AnalysisFile? analysis = prj.Analysis.find(wavFile);
+          bool found = false;
+
+          if ((analysis != null) && (ann.Class != "Bat"))
           {
-            double ts = call.getDouble(Cols.START_TIME);
-            if (Utils.overLap(ts, ts + call.getDouble(Cols.DURATION) / 1000, ann.start_time, ann.end_time))
+            foreach (AnalysisCall call in analysis.Calls)
             {
-              perfResult.setCell(row, Cols.PERF_DETECTED, 1);
-              perfResult.setCell(row, Cols.PROBABILITY, call.getDouble(Cols.PROBABILITY));
-              found = true;
-              string spec = extractSpecies(call.getString(Cols.SPECIES));
-              perfResult.setCell(row, Cols.SPECIES, spec);
-              string latinName = getLatinName(spec);
-              if (
-                 (latinName == ann.Class) ||
-                 ((latinName == "Mbart") && ((ann.Class == "Myotis brandtii") || ((ann.Class == "Myotis mystacinus")))) ||
-                 ((latinName == "Pipistrellus nathusii") && (ann.Class == "Pipistrellus kuhlii")) ||
-                 ((latinName == "Plecotus") && ((ann.Class == "Plecotus auritus") || (ann.Class == "Plecotus austricus")))
-                )
-                perfResult.setCell(row, Cols.PERF_CORRECT, 1);
-              else
-                perfResult.setCell(row, Cols.PERF_CORRECT, 0);
+              double ts = call.getDouble(Cols.START_TIME);
+              if (Utils.overLap(ts, ts + call.getDouble(Cols.DURATION) / 1000, ann.start_time, ann.end_time))
+              {
+                perfResult.setCell(row, Cols.PERF_DETECTED, 1);
+                perfResult.setCell(row, Cols.PROBABILITY, call.getDouble(Cols.PROBABILITY));
+                found = true;
+                string spec = extractSpecies(call.getString(Cols.SPECIES));
+                perfResult.setCell(row, Cols.SPECIES, spec);
+                string latinName = getLatinName(spec);
+                if (
+                   (latinName == ann.Class) ||
+                   ((latinName == "Mbart") && ((ann.Class == "Myotis brandtii") || ((ann.Class == "Myotis mystacinus")))) ||
+                   ((latinName == "Pipistrellus nathusii") && (ann.Class == "Pipistrellus kuhlii")) ||
+                   ((latinName == "Plecotus") && ((ann.Class == "Plecotus auritus") || (ann.Class == "Plecotus austricus")))
+                  )
+                  perfResult.setCell(row, Cols.PERF_CORRECT, 1);
+                else
+                  perfResult.setCell(row, Cols.PERF_CORRECT, 0);
+              }
             }
           }
-        }
-        if (!found)
-        {
-          perfResult.setCell(row, Cols.PERF_DETECTED, 0);
-          perfResult.setCell(row, Cols.PERF_CORRECT, 0);
+          if (!found)
+          {
+            perfResult.setCell(row, Cols.PERF_DETECTED, 0);
+            perfResult.setCell(row, Cols.PERF_CORRECT, 0);
+          }
         }
       }
     }
@@ -449,7 +452,7 @@ namespace BatInspector
     private static string getAbbreviation(string latin)
     {
       string retVal;
-      SpeciesInfos specInfo = SpeciesInfos.findLatin(latin, App.Model.SpeciesInfos);
+      SpeciesInfos? specInfo = SpeciesInfos.findLatin(latin, App.Model.SpeciesInfos);
       if (specInfo != null)
         retVal = specInfo.Abbreviation;
       else
@@ -548,7 +551,7 @@ namespace BatInspector
       for (; row <= lastRow; row++)
       {
         string name = perfResult.getCell(row, Cols.SPECIES_MAN);
-        SumSpec spec = SumSpec.find(name, list);
+        SumSpec? spec = SumSpec.find(name, list);
         if (spec == null)
         {
           spec = new SumSpec(name);
@@ -693,9 +696,9 @@ namespace BatInspector
       StatisticFalsePos.init(0.0, 1.0);
     }
 
-    public static SumSpec find(string name, List<SumSpec> list)
+    public static SumSpec? find(string name, List<SumSpec> list)
     {
-      SumSpec retVal = null;
+      SumSpec? retVal = null;
       foreach (SumSpec s in list)
       {
         if (s.Name == name)

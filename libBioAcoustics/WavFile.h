@@ -21,6 +21,7 @@ public:
   static uint16_t getUint16(const char* pSrc);
 };
 
+#pragma pack(push)
 #pragma pack(4)
 struct stHeader
 {
@@ -40,7 +41,7 @@ struct stFormatChunk
   unsigned short      BlockAlign;     // 2=16-bit mono, 4=16-bit stereo 
   unsigned short      BitsPerSample;  // Number of bits per sample      
 };
-
+#pragma pack(pop)
 
 class WaveHeader
 {
@@ -118,4 +119,3 @@ private:
   const char* _fName = nullptr;
   bool _isOpen = false;
 };
-

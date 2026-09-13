@@ -149,7 +149,7 @@ namespace BatInspector
 
         if (copyScripts)
         {
-          retVal.CopyScriptsFromInstaller();
+          ScriptInventory.CopyScriptsFromInstaller();
           if (inventoryExists)
             retVal.updateInventory(fileName);
         }
@@ -262,7 +262,7 @@ namespace BatInspector
       }
     }
 
-    private void CopyScriptsFromInstaller()
+    private static void CopyScriptsFromInstaller()
     {
       string srcDir = Path.Combine(AppParams.AppDataPath, "setup", AppParams.DIR_SCRIPT);
       DirectoryInfo dir = new DirectoryInfo(srcDir);

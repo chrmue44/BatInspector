@@ -346,7 +346,7 @@ namespace BatInspector
       }
       catch (Exception ex)
       {
-        DebugLog.log($"unable to copy {srcFileName} : {ex.ToString()}", enLogType.ERROR);
+        DebugLog.log($"unable to copy {srcFileName} : {ex}", enLogType.ERROR);
       }
     }
 
@@ -387,8 +387,7 @@ namespace BatInspector
       }
       finally
       {
-        if (file != null)
-          file.Close();
+        file?.Close();
       }
 
       return retVal;
@@ -766,7 +765,7 @@ namespace BatInspector
     {
       DocHelperRtf doc = new DocHelperRtf();
       SolidColorBrush color;
-      string id = "";
+      string id;
       switch (result.Identifiable)
       {
         case enIdentifiable.CHARACTERISTIC:
@@ -989,7 +988,7 @@ namespace BatInspector
               if (s.getGenus() == "Myotis")
               {
                 foundDuration |= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose);
-                info.Replace(",", "\n");
+                //info.Replace(",", "\n");
                 if (foundDuration)
                 {
                   info = "Charakteristik: " + call.CallCharacteristic.ToString() + "\n";

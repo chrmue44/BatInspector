@@ -158,7 +158,8 @@ inline
       return r;
     }
     else {
-      double r = ((i + 1) >= x.size() ? x[i] : linear_interp(f, x[i], x[i + 1]));
+      size_t i1 = (size_t)i;
+      double r = ((i1 + 1) >= x.size() ? x[i1] : linear_interp(f, x[i1], x[i1 + 1]));
       return r;
     }
   }

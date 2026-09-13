@@ -570,11 +570,6 @@ namespace BatInspector
       }
     }
 
-    public void checkConfidence(List<SpeciesInfos> species)
-    {
-      foreach (AnalysisFile f in _list)
-        f.checkConfidence(species);
-    }
 
 
     public void calcProbabilityRatios(string speciesFile)
@@ -895,38 +890,6 @@ namespace BatInspector
     }
 
 
-    public bool checkConfidence(List<SpeciesInfos> species)
-    {
-      bool retVal = false;
-      string speciesAuto = getString(Cols.SPECIES);
-      double duration = getDouble(Cols.DURATION);
-      double fMin = getDouble(Cols.F_MIN);
-      double fMax = getDouble(Cols.F_MAX);
-      SpeciesInfos spec = SpeciesInfos.findAbbreviation(speciesAuto, species);
-      string err = "";
-      if(spec != null)
-      {
-        if (duration < spec.DurationMin)
-          err = "Dmin";
-        else if (duration > spec.DurationMax)
-          err = "Dmax";
-        else if (fMin < (spec.FreqMinMin * 1000))
-          err = "FminMin";
-        else if (fMin > (spec.FreqMinMax * 1000))
-          err = "FminMax";
-        else if (fMax < (spec.FreqMaxMin * 1000))
-          err = "FminMin";
-        if (err == "")
-          retVal = true;
-        else
-        {
-          speciesAuto = "??C95[" + err + "," + speciesAuto + "]";
-          _csv.setCell(_row, Cols.SPECIES, speciesAuto);
-        }
-      }
-      return retVal;
-    }
-
     /// <summary>
     /// compare probability of detected species to the 2nd rank
     /// </summary>
@@ -1132,12 +1095,6 @@ namespace BatInspector
       return update;
     }
 
-
-    public void checkConfidence(List<SpeciesInfos> species)
-    {
-      foreach (AnalysisCall c in _calls)
-        c.checkConfidence(species);
-    }
 
     public void updateFoundSpecies()
     {

@@ -99,7 +99,7 @@ namespace BatInspector
     {
       _scriptPath = fPath;
       string fileName = Path.Combine(fPath, FName);
-      ScriptInventory? retVal;
+      ScriptInventory? retVal = null;
       firstLoadAfterInstall = false;
       ScriptInventory? inventory = null;
       try
@@ -126,7 +126,7 @@ namespace BatInspector
           retVal = inventory;
           if (retVal.Scripts == null)
             retVal.initScripts();
-          DebugLog.log("successfully loaded", enLogType.DEBUG);
+          DebugLog.log("Script inventory successfully loaded", enLogType.DEBUG);
         }
 
         string instFile = Path.Combine(AppParams.AppDataPath, "setup",  InstallFile);
@@ -157,9 +157,8 @@ namespace BatInspector
       }
       catch (Exception e)
       {
-        DebugLog.log("failed to read config file : " + fPath + ": " + e.ToString(), enLogType.ERROR);
-        retVal = null;
-      }
+        DebugLog.log($"failed to handle script inventory initialization: {e}", enLogType.ERROR);
+      }  
       return retVal;
     }
 

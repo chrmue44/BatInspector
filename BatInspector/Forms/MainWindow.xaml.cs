@@ -58,7 +58,6 @@ namespace BatInspector.Forms
     FrmZoom? _frmZoom = null;
     CtrlZoom? _ctlZoom = null;
     TabItem? _tbZoom = null;
-    frmSpeciesData? _frmSpecies = null;
     Thread? _workerPredict = null;
     Thread? _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
@@ -315,9 +314,6 @@ namespace BatInspector.Forms
       {
         case enWinType.ZOOM:
           _frmZoom = null;
-          break;
-        case enWinType.BAT:
-          _frmSpecies = null;
           break;
       }
     }
@@ -1020,8 +1016,6 @@ namespace BatInspector.Forms
         _frmColorMap.Close();
       if (_frmZoom != null)
         _frmZoom.Close();
-      if (_frmSpecies != null)
-        _frmSpecies.Close();
       if (_frmFilter != null)
         _frmFilter.Close();
       if (_frmScript != null)
@@ -1141,21 +1135,6 @@ namespace BatInspector.Forms
       }
     }
 
-    private void _btnSpecies_Click(object sender, RoutedEventArgs e)
-    {
-      try
-      {
-        if (_frmSpecies == null)
-          _frmSpecies = new frmSpeciesData(closeWindow, this);
-        _frmSpecies.Show();
-        _frmSpecies.Visibility = Visibility.Visible;
-        DebugLog.log("MainWin:BTN 'Species' clicked", enLogType.DEBUG);
-      }
-      catch (Exception ex)
-      {
-        DebugLog.log("MainWin:BTN 'Species' failed:" + ex.ToString(), enLogType.ERROR);
-      }
-    }
 
     private void _btnSettings_Click(object sender, RoutedEventArgs e)
     {
@@ -1433,7 +1412,6 @@ namespace BatInspector.Forms
     {
       if (on)
       {
-        _btnSpecies.Visibility = Visibility.Visible;
         _tbScatter.Visibility = Visibility.Visible;
         _tbStatistic.Visibility = Visibility.Visible;
         _tbMySql.Visibility = Visibility.Visible;
@@ -1446,7 +1424,6 @@ namespace BatInspector.Forms
       }
       else
       {
-        _btnSpecies.Visibility = Visibility.Collapsed;
         _tbScatter.Visibility = Visibility.Collapsed;
         _tbStatistic.Visibility = Visibility.Collapsed;
         _tbMySql.Visibility = Visibility.Collapsed;
@@ -2033,7 +2010,6 @@ namespace BatInspector.Forms
   public enum enWinType
   {
     ZOOM,
-    BAT
   }
 
   public delegate void dlgcloseChildWindow(enWinType w);

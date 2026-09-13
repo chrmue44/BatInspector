@@ -80,7 +80,7 @@ Source: "{#SourceFolder}\{#MyAppName}\bin\x64\Release\net10.0-windows\*.txt"; De
 Source: "{#SourceFolder}\{#MyAppName}\bin\x64\Release\net10.0-windows\de\*"; DestDir: "{app}\de"; Flags: ignoreversion
 Source: "{#SourceFolder}\{#MyAppName}\bin\x64\Release\net10.0-windows\*.json"; DestDir: "{app}"; Flags: ignoreversion
 source: "{#SourceFolder}\scripts\*.xml"; DestDir: "{app}"; Permissions: everyone-full
-source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
+//source: "{#SourceFolder}\{#MyAppName}\dat\*.wav"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.md"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\*.xml"; DestDir: "{#MyAppDataFolder}\dat";
 source: "{#SourceFolder}\{#MyAppName}\dat\scriptinst.txt"; DestDir: "{#MyAppDataFolder}\setup"; Permissions: everyone-full

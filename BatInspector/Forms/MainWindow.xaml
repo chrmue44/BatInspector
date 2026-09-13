@@ -132,9 +132,7 @@
                             <Button x:Name="_btnFilter" Click="_btnFilter_Click"  ToolTip="{x:Static res:MyResources.MainToolDefFilters}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <Image Source="pack://application:,,,/BatInspector;component/images/filter.png"></Image>
                             </Button>
-                            <Button x:Name="_btnSpecies" Click="_btnSpecies_Click"  ToolTip="{x:Static res:MyResources.MainToolEditSpeciesInfo}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
-                                <Image Source="pack://application:,,,/BatInspector;component/images/Bat_icon-icons.com_75012.png"></Image>
-                            </Button>
+                           
                             <Separator Margin="15,2" Width="3"/>
                             <Button x:Name="_btnFindCalls" Click="_btnFindCalls_Click"  ToolTip="{x:Static res:MyResources.MainToolEvalBatCalls}" Height="39" VerticalAlignment="Top" HorizontalAlignment="Left">
                                 <Image Source="pack://application:,,,/BatInspector;component/images/magnifying-glass.png"></Image>

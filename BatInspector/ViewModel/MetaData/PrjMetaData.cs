@@ -120,7 +120,7 @@ namespace BatInspector
       {
         case enMetaData.GUANO:
           WavFile wav = new WavFile();
-          wav.readFile(wavName);
+          wav.readFile(fullWavName);
           wav.addGuanoMetaData(rec, 1);
           wav.saveFile();
           break;

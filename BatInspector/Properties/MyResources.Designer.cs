@@ -268,15 +268,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Edit ähnelt.
-        /// </summary>
-        public static string BtnEdit {
-            get {
-                return ResourceManager.GetString("BtnEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Load ... ähnelt.
         /// </summary>
         public static string BtnLoad {
@@ -291,15 +282,6 @@ namespace BatInspector.Properties {
         public static string BtnOK {
             get {
                 return ResourceManager.GetString("BtnOK", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Run ähnelt.
-        /// </summary>
-        public static string BtnRun {
-            get {
-                return ResourceManager.GetString("BtnRun", resourceCulture);
             }
         }
         
@@ -336,15 +318,6 @@ namespace BatInspector.Properties {
         public static string Calls {
             get {
                 return ResourceManager.GetString("Calls", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die char. Frequency ähnelt.
-        /// </summary>
-        public static string CharFrequency {
-            get {
-                return ResourceManager.GetString("CharFrequency", resourceCulture);
             }
         }
         
@@ -889,29 +862,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Characteristic Calls ähnelt.
-        /// </summary>
-        public static string ctlSpeciesDataCharCalls {
-            get {
-                return ResourceManager.GetString("ctlSpeciesDataCharCalls", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Confusion Species ähnelt.
         /// </summary>
         public static string ctlSpeciesDataConfusion {
             get {
                 return ResourceManager.GetString("ctlSpeciesDataConfusion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show Example Recording ähnelt.
-        /// </summary>
-        public static string ctlSpeciesDataShowExample {
-            get {
-                return ResourceManager.GetString("ctlSpeciesDataShowExample", resourceCulture);
             }
         }
         
@@ -1011,15 +966,6 @@ namespace BatInspector.Properties {
         public static string CtlSumReportEndDate {
             get {
                 return ResourceManager.GetString("CtlSumReportEndDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die include Activity Diagrams ähnelt.
-        /// </summary>
-        public static string CtlSumReportIncludeActivityDiagrams {
-            get {
-                return ResourceManager.GetString("CtlSumReportIncludeActivityDiagrams", resourceCulture);
             }
         }
         
@@ -1168,6 +1114,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die type to enter species or right click to select ähnelt.
+        /// </summary>
+        public static string ctlWavToolTipEdit {
+            get {
+                return ResourceManager.GetString("ctlWavToolTipEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Transfer ähnelt.
         /// </summary>
         public static string ctlWavTransfer {
@@ -1209,15 +1164,6 @@ namespace BatInspector.Properties {
         public static string CtlZoomPos {
             get {
                 return ResourceManager.GetString("CtlZoomPos", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die dyn. Range ähnelt.
-        /// </summary>
-        public static string CtlZoomRange {
-            get {
-                return ResourceManager.GetString("CtlZoomRange", resourceCulture);
             }
         }
         
@@ -1272,33 +1218,6 @@ namespace BatInspector.Properties {
         public static string CtlZoomSpecInfo {
             get {
                 return ResourceManager.GetString("CtlZoomSpecInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Trigger Filter ähnelt.
-        /// </summary>
-        public static string CtlZoomTrigFilt {
-            get {
-                return ResourceManager.GetString("CtlZoomTrigFilt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Trigger Filter Freq. [kHz] ähnelt.
-        /// </summary>
-        public static string CtlZoomTrigFilttFreq {
-            get {
-                return ResourceManager.GetString("CtlZoomTrigFilttFreq", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Trigger Level [dB] ähnelt.
-        /// </summary>
-        public static string CtlZoomTrigLevel {
-            get {
-                return ResourceManager.GetString("CtlZoomTrigLevel", resourceCulture);
             }
         }
         
@@ -2428,15 +2347,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die apply to all calls of recording ähnelt.
-        /// </summary>
-        public static string frmExpressionApplyAllCalls {
-            get {
-                return ResourceManager.GetString("frmExpressionApplyAllCalls", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Save ähnelt.
         /// </summary>
         public static string frmExpressionSave {
@@ -2550,15 +2460,6 @@ namespace BatInspector.Properties {
         public static string FrmFilterTtipShowList {
             get {
                 return ResourceManager.GetString("FrmFilterTtipShowList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Location of Recording for ähnelt.
-        /// </summary>
-        public static string FrmLocationLocationOfRecordingFor {
-            get {
-                return ResourceManager.GetString("FrmLocationLocationOfRecordingFor", resourceCulture);
             }
         }
         
@@ -4021,15 +3922,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Report Timespan ähnelt.
-        /// </summary>
-        public static string MainReportTimespan {
-            get {
-                return ResourceManager.GetString("MainReportTimespan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Select Project ähnelt.
         /// </summary>
         public static string MainSelectFolder {
@@ -4183,29 +4075,11 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Edit species information ähnelt.
-        /// </summary>
-        public static string MainToolEditSpeciesInfo {
-            get {
-                return ResourceManager.GetString("MainToolEditSpeciesInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die AI supported evaluation and classification of bat calls in project ähnelt.
         /// </summary>
         public static string MainToolEvalBatCalls {
             get {
                 return ResourceManager.GetString("MainToolEvalBatCalls", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Export files (with filtering) to another directory ähnelt.
-        /// </summary>
-        public static string MainToolExport {
-            get {
-                return ResourceManager.GetString("MainToolExport", resourceCulture);
             }
         }
         
@@ -4282,15 +4156,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Open manual ähnelt.
-        /// </summary>
-        public static string MainToolOpenManual {
-            get {
-                return ResourceManager.GetString("MainToolOpenManual", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Create a query across multiple projects ähnelt.
         /// </summary>
         public static string MainToolQuery {
@@ -4314,24 +4179,6 @@ namespace BatInspector.Properties {
         public static string MainToolRecovery {
             get {
                 return ResourceManager.GetString("MainToolRecovery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Refresh views ähnelt.
-        /// </summary>
-        public static string MainToolRefresh {
-            get {
-                return ResourceManager.GetString("MainToolRefresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Create Report ähnelt.
-        /// </summary>
-        public static string MainToolReport {
-            get {
-                return ResourceManager.GetString("MainToolReport", resourceCulture);
             }
         }
         
@@ -4413,15 +4260,6 @@ namespace BatInspector.Properties {
         public static string MainWindowFiles {
             get {
                 return ResourceManager.GetString("MainWindowFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die files processed ähnelt.
-        /// </summary>
-        public static string MainWindowFilesProcessed {
-            get {
-                return ResourceManager.GetString("MainWindowFilesProcessed", resourceCulture);
             }
         }
         
@@ -4795,15 +4633,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Off ähnelt.
-        /// </summary>
-        public static string Off {
-            get {
-                return ResourceManager.GetString("Off", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die On ähnelt.
         /// </summary>
         public static string On {
@@ -4962,15 +4791,6 @@ namespace BatInspector.Properties {
         public static string SamplingRate {
             get {
                 return ResourceManager.GetString("SamplingRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die select call type ähnelt.
-        /// </summary>
-        public static string SelectCallType {
-            get {
-                return ResourceManager.GetString("SelectCallType", resourceCulture);
             }
         }
         
@@ -5407,6 +5227,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die CLASSIC: select species in Dropdown menu. COMBINED: type the first characters of Species or select with right-click ähnelt.
+        /// </summary>
+        public static string SetDescSpeciesSelectMode {
+            get {
+                return ResourceManager.GetString("SetDescSpeciesSelectMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Path to inspection tool for WAV files ähnelt.
         /// </summary>
         public static string SetDescWavTool {
@@ -5799,6 +5628,15 @@ namespace BatInspector.Properties {
         public static string ToolTipBandpass {
             get {
                 return ResourceManager.GetString("ToolTipBandpass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die left-click: set/delete breakpoint; right-click on breakpoint: set break condition ähnelt.
+        /// </summary>
+        public static string ToolTipBreakPoint {
+            get {
+                return ResourceManager.GetString("ToolTipBreakPoint", resourceCulture);
             }
         }
         

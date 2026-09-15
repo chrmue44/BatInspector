@@ -153,7 +153,7 @@ namespace BatInspector.Controls
         _btnPlay_HET.Visibility = Visibility.Visible;
         _spFreqHet.Visibility = Visibility.Visible;
         _grpCallPars.Visibility = Visibility.Visible;
-        _ctlSelectCall2.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
+        _ctlSelectCallSpecies.setup(MyResources.CtlWavCall + " Nr.", 0, 65, 55, ctlSelCallChanged2);
         _ctlSpecMan.Visibility = Visibility.Visible;
         _ctlSpecManBird.Visibility = Visibility.Collapsed;
       }
@@ -164,7 +164,7 @@ namespace BatInspector.Controls
         _btnPlay_HET.Visibility = Visibility.Collapsed;
         _spFreqHet.Visibility = Visibility.Collapsed;
         _grpCallPars.Visibility = Visibility.Collapsed;
-        _ctlSelectCall2.setup(MyResources.CtlWavSection + " Nr.", 0, 65, 55, ctlSelCallChanged2);
+        _ctlSelectCallSpecies.setup(MyResources.CtlWavSection + " Nr.", 0, 65, 55, ctlSelCallChanged2);
         _ctlSpecMan.Visibility = Visibility.Collapsed;
         _ctlSpecManBird.Visibility = Visibility.Visible;
       }
@@ -276,7 +276,7 @@ namespace BatInspector.Controls
     {
       Visibility vis = on ? Visibility.Visible : Visibility.Hidden;
       _ctlSelectCall.Visibility = vis;
-      _ctlSelectCall2.Visibility = vis;
+      _ctlSelectCallSpecies.Visibility = vis;
       _ctlSpectrum.Visibility = vis;
       _ctlTimeMin.Visibility = vis;
       _ctlTimeMax.Visibility = vis;
@@ -299,7 +299,7 @@ namespace BatInspector.Controls
         for (int i = 0; i < App.Model.ZoomView.Analysis.Calls.Count; i++)
           items[i] = App.Model.ZoomView.Analysis.Calls[i].getString(Cols.NR);  // (i + 1).ToString();
         _ctlSelectCall.setItems(items);
-        _ctlSelectCall2.setItems(items);
+        _ctlSelectCallSpecies.setItems(items);
         setupCallData(0);
       }
       else
@@ -324,7 +324,7 @@ namespace BatInspector.Controls
         initRulerA();
 
         _ctlSelectCall._cb.SelectedIndex = 0;
-        _ctlSelectCall2._cb.SelectedIndex = 0;
+        _ctlSelectCallSpecies._cb.SelectedIndex = 0;
       }
     }
 
@@ -1139,7 +1139,7 @@ namespace BatInspector.Controls
       try
       {
         int.TryParse(val, out int Val);
-        int idx = _ctlSelectCall2.getSelectedIndex();
+        int idx = _ctlSelectCallSpecies.getSelectedIndex();
         if ((idx != _oldCallIdx) && (idx >= 0))
         {
           changeCall(idx);
@@ -1157,7 +1157,7 @@ namespace BatInspector.Controls
       App.Model.ZoomView.SelectedCallIdx = idx;
       string callNr = App.Model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
       _ctlSelectCall.setValue(callNr);
-      _ctlSelectCall2.setValue(callNr);
+      _ctlSelectCallSpecies.setValue(callNr);
       _oldCallIdx = idx;
       setupCallData(idx);
       double tStart = App.Model.ZoomView.Analysis.getStartTime(idx);
@@ -1270,7 +1270,7 @@ namespace BatInspector.Controls
           changeCall(idx);
           string callNr = App.Model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
           _ctlSelectCall.setValue(callNr);
-          _ctlSelectCall2.setValue(callNr);
+          _ctlSelectCallSpecies.setValue(callNr);
         }
         DebugLog.log("ZoomBtn: 'previous' clicked", enLogType.DEBUG);
       }
@@ -1290,7 +1290,7 @@ namespace BatInspector.Controls
           changeCall(idx);
           string callNr = App.Model.ZoomView.Analysis.Calls[idx].getString(Cols.NR);
           _ctlSelectCall.setValue(callNr);
-          _ctlSelectCall2.setValue(callNr);
+          _ctlSelectCallSpecies.setValue(callNr);
         }
         DebugLog.log("ZoomBtn: 'next' clicked", enLogType.DEBUG);
       }
@@ -1556,7 +1556,12 @@ namespace BatInspector.Controls
         {
           //string url = Utils.BingMapUrl(location, title, zoom);
           string url = Utils.OsmMapUrl(loc[0], loc[1], "", zoom);
-          Process.Start(url);
+
+          Process.Start(new ProcessStartInfo
+          {
+            FileName = url,
+            UseShellExecute = true
+          });
         }
       }
       catch (Exception ex)

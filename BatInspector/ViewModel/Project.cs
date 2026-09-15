@@ -107,33 +107,8 @@ namespace BatInspector
       {
         string fName = getFullFilePath(records[0].File);
         PrjMetaData.getPositionFromMetaData(fName, out double lat, out double lon);
-        _speciesArray = createSpeciesList(lat,lon);
+        _speciesArray = App.Model.createSpeciesList(lat,lon);
       }
-    }
-
-    public static string[] createSpeciesList(double lat, double lon)
-    {
-      List<string> speciesList = new List<string>();
-      ParRegion? reg = App.Model.Regions.findRegion(lat, lon);
-      if (reg != null)
-      {
-        foreach (string sp in reg.Species)
-          speciesList.Add(sp);
-      }
-      else
-      {
-        foreach (SpeciesInfos sp in App.Model.SpeciesInfos)
-          speciesList.Add(sp.Abbreviation);
-        speciesList.Add("Mbart");
-        speciesList.Add("Myotis");
-        speciesList.Add("Nyctaloid");
-        speciesList.Add("Pipistrellus");
-        speciesList.Add("Plecotus");
-      }
-      speciesList.Add("?");
-      speciesList.Add("Social");
-      speciesList.Add("todo");
-      return speciesList.ToArray();
     }
   }
 

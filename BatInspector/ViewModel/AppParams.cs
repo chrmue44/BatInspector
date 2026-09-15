@@ -38,6 +38,12 @@ namespace BatInspector
     CENTER
   }
 
+  public enum enSpeciesSelect
+  {
+    CLASSIC,
+    COMBINED
+  }
+
   [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.Delegate | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter)]
   class LocalizedDescriptionAttribute : DescriptionAttribute
   {
@@ -305,6 +311,11 @@ namespace BatInspector
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SetDescExeEditor")]
     public string ExeAcrobat { get; set; } = "";
+
+    [DataMember]
+    [LocalizedCategory("SetCatApplication")]
+    [LocalizedDescription("SetDescSpeciesSelectMode")]
+    public enSpeciesSelect SpeciesSelectMode { get; set; } = enSpeciesSelect.COMBINED;
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
@@ -619,6 +630,11 @@ namespace BatInspector
         FrequencyLines = new FreqLineSettings[5];
         for (int i = 0; i < NR_ZOOM_FREQ_LINES; i++)
           FrequencyLines[i] = new FreqLineSettings() { Visible= false, Frequency = 20 + i * 5, Color = Color.Turquoise };          
+      }
+      comparison = String.Compare(Version, "1.0.0.0", comparisonType: StringComparison.OrdinalIgnoreCase);
+      if (string.IsNullOrEmpty(Version) || (comparison < 0))
+      {
+        SpeciesSelectMode = enSpeciesSelect.COMBINED;
       }
       Version = AppVersion;
     }

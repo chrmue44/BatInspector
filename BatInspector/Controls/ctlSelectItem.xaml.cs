@@ -5,7 +5,6 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using libParser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +12,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using libParser;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BatInspector.Controls
 {
@@ -113,9 +114,38 @@ namespace BatInspector.Controls
 
     public void setBgColor(SolidColorBrush color)
     {
-      _cb.Background = color;
-      _lbl.Background = color;
+      if (_cb.IsLoaded)
+      {
+        ApplyColor();
+      }
+      else
+      {
+        _cb.Loaded += (s, e) => ApplyColor();
+      }
+
+      void ApplyColor()
+      {
+        var border = FindVisualChild<Border>(_cb);
+        if (border != null)
+        {
+          border.Background = color;
+        }
+      }
     }
+
+
+    private T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+      for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+      {
+        var child = VisualTreeHelper.GetChild(parent, i);
+        if (child is T typedChild) return typedChild;
+        var result = FindVisualChild<T>(child);
+        if (result != null) return result;
+      }
+      return null;
+    }
+
 
     public void setFontBold(bool bold)
     {

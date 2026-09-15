@@ -81,6 +81,9 @@ namespace BatInspector
     ModelParams[] _defaultModelParams;
     dlgVoid? _callBackEnd = null;
     DataBase _mySql;
+
+    string[] _validSpeciesList = new string[0];
+
     public PrjView View { get { return _view; } }
 
     public DataBase MySQL { get { return _mySql; } }
@@ -102,6 +105,8 @@ namespace BatInspector
     public WavFile WavFile { get { return _wav; } }
 
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfos; } }
+
+     public string[] ValidSpeciesList { get { return _validSpeciesList; } }
 
     public System.Windows.Input.Key LastKey { get; set; }
 
@@ -145,8 +150,6 @@ namespace BatInspector
       _batSpecRegions = BatSpeciesRegions.loadFrom(AppParams.Inst.BatInfoPath);
       _proc = new ProcessRunner();
       _speciesInfos = BatInfo.loadFrom(AppParams.Inst.BatInfoPath).Species;
-      //   _speciesInfos.Add(new SpeciesInfos("?", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));     // why here???
-      //   _speciesInfos.Add(new SpeciesInfos("Social", "", "", false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
       _colorTable = new ColorTable();
       _colorTable.createColorLookupTable();
       Status = new ModelState();
@@ -158,6 +161,7 @@ namespace BatInspector
       _mySql = new DataBase();
       _view.Query = null;
       int index = 0;
+      _validSpeciesList =createSpeciesList(0, 0);
 
       ModelParams[]? mp = BaseModel.readDefaultModelParams();
       if (mp == null)
@@ -208,6 +212,30 @@ namespace BatInspector
 
     }
 
+    public string[] createSpeciesList(double lat, double lon)
+    {
+      List<string> speciesList = new List<string>();
+      ParRegion? reg = App.Model?.Regions.findRegion(lat, lon);
+      if (reg != null)
+      {
+        foreach (string sp in reg.Species)
+          speciesList.Add(sp);
+      }
+      else
+      {
+        foreach (SpeciesInfos sp in _speciesInfos)
+          speciesList.Add(sp.Abbreviation);
+        speciesList.Add("Mbart");
+        speciesList.Add("Myotis");
+        speciesList.Add("Nyctaloid");
+        speciesList.Add("Pipistrellus");
+        speciesList.Add("Plecotus");
+      }
+      speciesList.Add("?");
+      speciesList.Add("Social");
+      speciesList.Add("todo");
+      return speciesList.ToArray();
+    }
 
     public void initQuery(FileInfo file)
     {

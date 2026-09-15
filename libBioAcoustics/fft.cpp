@@ -24,7 +24,14 @@
 #include <numeric>
 #include "fft.h"
 
-FFT::FFT() {}
+FFT::FFT() :
+m_fftSize{0},
+m_normalise(0.0),
+m_plan(0),
+m_planInv(0),
+m_winType(FFT::WIN_TYPE::HANN),
+m_z(0.0)
+{ }
 
 FFT::~FFT() { fftw_destroy_plan(m_plan); }
 
@@ -43,7 +50,7 @@ void FFT::set_plan(const size_t &fft_sz)
   m_transformed.resize(fft_sz, 0);
   m_magnitude.resize(fft_sz / 2, 0);
   m_plan = fftw_plan_r2r_1d(fft_sz, &m_original[0], &m_transformed[0], FFTW_R2HC, FFTW_ESTIMATE);
-  m_planInv = fftw_plan_r2r_1d(fft_sz, &m_original[0], &m_transformed[0], FFTW_HC2R, FFTW_ESTIMATE);
+  m_planInv = fftw_plan_r2r_1d((int)fft_sz, &m_original[0], &m_transformed[0], FFTW_HC2R, FFTW_ESTIMATE);
 }
 
 void FFT::set_window(const WIN_TYPE& win_type)

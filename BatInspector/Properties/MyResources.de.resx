@@ -120,12 +120,6 @@
   <data name="Duration" xml:space="preserve">
     <value>Dauer</value>
   </data>
-  <data name="CharFrequency" xml:space="preserve">
-    <value>char. Frequenz</value>
-  </data>
-  <data name="SelectCallType" xml:space="preserve">
-    <value>Ruftyp auswählen</value>
-  </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
   </data>
@@ -276,9 +270,6 @@
   <data name="DeltaT" xml:space="preserve">
     <value>Zeitdifferenz</value>
   </data>
-  <data name="CtlZoomRange" xml:space="preserve">
-    <value>dyn. Bereich</value>
-  </data>
   <data name="Snr" xml:space="preserve">
     <value>S/R-Abstand</value>
   </data>
@@ -300,18 +291,6 @@
   <data name="CtlZoomGain" xml:space="preserve">
     <value>Verstärkung</value>
   </data>
-  <data name="CtlZoomTrigLevel" xml:space="preserve">
-    <value>Triggerschwelle [dB]</value>
-  </data>
-  <data name="CtlZoomTrigFilt" xml:space="preserve">
-    <value>Trigger-Filter</value>
-  </data>
-  <data name="CtlZoomTrigFilttFreq" xml:space="preserve">
-    <value>Trigger- Filter Freq. [kHz]</value>
-  </data>
-  <data name="MainToolEditSpeciesInfo" xml:space="preserve">
-    <value>Bearbeite Spezies-Details</value>
-  </data>
   <data name="MainToolManipWavFiles" xml:space="preserve">
     <value>Betrachte und bearbeite WAV-Datei</value>
   </data>
@@ -320,9 +299,6 @@
   </data>
   <data name="MainToolEditAppSettings" xml:space="preserve">
     <value>Bearbeite Programm-Eintellungen</value>
-  </data>
-  <data name="MainToolOpenManual" xml:space="preserve">
-    <value>Öffne Bedienungsanleitung</value>
   </data>
   <data name="MainToolDefFilters" xml:space="preserve">
     <value>Definiere Filter für Auswertung</value>
@@ -455,9 +431,6 @@
   </data>
   <data name="MainSelectFolder" xml:space="preserve">
     <value>Projekt auswählen</value>
-  </data>
-  <data name="MainReportTimespan" xml:space="preserve">
-    <value>Auswertung Zeitabschnitt</value>
   </data>
   <data name="CtlReportCreate" xml:space="preserve">
     <value>Erstelle Auswertung</value>
@@ -654,12 +627,6 @@
   <data name="MainToolRunScript" xml:space="preserve">
     <value>Skriptdatei ausführen</value>
   </data>
-  <data name="BtnEdit" xml:space="preserve">
-    <value>Bearbeiten</value>
-  </data>
-  <data name="BtnRun" xml:space="preserve">
-    <value>Ausführen</value>
-  </data>
   <data name="CtlZoomSpeciesMan" xml:space="preserve">
     <value>Art Manuell</value>
   </data>
@@ -668,9 +635,6 @@
   </data>
   <data name="MainToolCancelScript" xml:space="preserve">
     <value>Stoppe Ausführung laufender Skriptdatei</value>
-  </data>
-  <data name="MainToolRefresh" xml:space="preserve">
-    <value>Aktualisiere Bildschirm</value>
   </data>
   <data name="CtlSumReportRootDirectory" xml:space="preserve">
     <value>Wurzelverzeichnis</value>
@@ -686,9 +650,6 @@
   </data>
   <data name="CtlSumReportDstDirectory" xml:space="preserve">
     <value>Zielverzeichnis</value>
-  </data>
-  <data name="MainToolReport" xml:space="preserve">
-    <value>Erzeuge Auswertung</value>
   </data>
   <data name="frmMainFreezeAxes" xml:space="preserve">
     <value>Maßstab beibehalten</value>
@@ -939,9 +900,6 @@
   <data name="frmExpressionSave" xml:space="preserve">
     <value>Speichern</value>
   </data>
-  <data name="frmExpressionApplyAllCalls" xml:space="preserve">
-    <value>muss für alle Rufe innerhalb der Aufnahme erfüllt sein</value>
-  </data>
   <data name="frmExpressionTitle" xml:space="preserve">
     <value>Generator für Filterausdrücke</value>
   </data>
@@ -1137,9 +1095,6 @@
   <data name="MainWindow_timer_Tick_QUERY" xml:space="preserve">
     <value>ABFRAGE</value>
   </data>
-  <data name="MainWindowFilesProcessed" xml:space="preserve">
-    <value>Dateien verarbeitet</value>
-  </data>
   <data name="FrmCreatePrjFilterByTime" xml:space="preserve">
     <value>Filtern nach Zeit</value>
   </data>
@@ -1188,9 +1143,6 @@
   <data name="CtlZoomBtnShowPlace" xml:space="preserve">
     <value>Zeige Ort...</value>
   </data>
-  <data name="FrmLocationLocationOfRecordingFor" xml:space="preserve">
-    <value>Aufnahmeort für</value>
-  </data>
   <data name="frmCreatePrjPosFromKml" xml:space="preserve">
     <value>Positionen aus KML-Datei</value>
   </data>
@@ -1202,9 +1154,6 @@
   </data>
   <data name="MainToolRecorder" xml:space="preserve">
     <value>Aufnahmegerät Parametrieren</value>
-  </data>
-  <data name="Off" xml:space="preserve">
-    <value>Aus</value>
   </data>
   <data name="On" xml:space="preserve">
     <value>Ein</value>
@@ -1424,12 +1373,6 @@
   </data>
   <data name="ctlStatRecTime" xml:space="preserve">
     <value>Aufnahmezeitpunkt [h]</value>
-  </data>
-  <data name="ctlSpeciesDataCharCalls" xml:space="preserve">
-    <value>Charakteristische Rufe</value>
-  </data>
-  <data name="ctlSpeciesDataShowExample" xml:space="preserve">
-    <value>Zeige Beispielaufnahme</value>
   </data>
   <data name="ctlSpeciesDataConfusion" xml:space="preserve">
     <value>Verwechslungsarten</value>
@@ -1652,9 +1595,6 @@
   </data>
   <data name="ctlActivityTimeShift" xml:space="preserve">
     <value>Zeitverschiebung [h]</value>
-  </data>
-  <data name="MainToolExport" xml:space="preserve">
-    <value>Exportiere Dateien (mit Filterung) in ein anderes Verzeichnis</value>
   </data>
   <data name="MsgDatTimeError" xml:space="preserve">
     <value>Datum und Uhrzeit konnten nicht aus den Dateinamen extrahiert werden.\n Wird fortgefahren, wird das Erstelldatum der Datei gewählt (muss nicht der Aufnahmezeitpunkt sein!) \n Fortfahren?</value>
@@ -1929,9 +1869,6 @@
   <data name="SquareActivity" xml:space="preserve">
     <value>Rechteck Aktivität</value>
   </data>
-  <data name="CtlSumReportIncludeActivityDiagrams" xml:space="preserve">
-    <value>mit Aktivitätsdiagrammen</value>
-  </data>
   <data name="msgFrmReport" xml:space="preserve">
     <value>Soll der bereits bestehende Datensatz verwendet werden?</value>
   </data>
@@ -2135,5 +2072,14 @@
   </data>
   <data name="frmVerify_Against" xml:space="preserve">
     <value>gegen</value>
+  </data>
+  <data name="ctlWavToolTipEdit" xml:space="preserve">
+    <value>tippe die Art ein oder wähle sie per Rechtsklick aus</value>
+  </data>
+  <data name="SetDescSpeciesSelectMode" xml:space="preserve">
+    <value>CLASSIC: wähle Art in Dropdown-Menü aus, COMBINED: tippe die ersten Zeichen der Art, oder wähle mit Rechtsklick aus</value>
+  </data>
+  <data name="ToolTipBreakPoint" xml:space="preserve">
+    <value>Linksklick: setze/lösche Breakpunkt; Rechtsklick auf Breakpunkt: Break-Bedingung festlegen</value>
   </data>
 </root>

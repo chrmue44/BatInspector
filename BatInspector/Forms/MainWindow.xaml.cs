@@ -23,6 +23,7 @@ using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
 using BatInspector.Forms;
+using System.Windows.Forms.Integration;
 //using System.Windows.Forms;
 
 namespace BatInspector.Forms
@@ -54,6 +55,7 @@ namespace BatInspector.Forms
     frmCleanup? _frmCleanup = null;
     FrmMessage? _frmMsg = new FrmMessage();
     frmExport? _frmExp = null;
+    frmExportData? _frmExportData = null;
     int _imgHeight = MAX_IMG_HEIGHT;
     FrmZoom? _frmZoom = null;
     CtrlZoom? _ctlZoom = null;
@@ -160,7 +162,10 @@ namespace BatInspector.Forms
           if ((dir != null) && (dir.Length > 0))
           {
             DirectoryInfo batDataDir = new DirectoryInfo(dir);
-            _trvStructure.Items.Add(CreateTreeItem(batDataDir));
+            TreeViewItem? child = CreateTreeItem(batDataDir);
+            if (child == null)
+              continue;
+            _trvStructure.Items.Add(child);
           }
         }
       }
@@ -169,7 +174,10 @@ namespace BatInspector.Forms
         foreach (DriveInfo driveInfo in drives)
         {
           DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
-          _trvStructure.Items.Add(CreateTreeItem(dir));
+          TreeViewItem? child = CreateTreeItem(dir);
+          if (child == null)
+            continue;
+          _trvStructure.Items.Add(child);
         }
       }
     }
@@ -195,7 +203,9 @@ namespace BatInspector.Forms
               DebugLog.log("start evaluation TODO", enLogType.DEBUG);
               foreach (DirectoryInfo subDir in expandedDir.GetDirectories().OrderBy(f => f.Name))
               {
-                TreeViewItem childItem = CreateTreeItem(subDir);
+                TreeViewItem? childItem = CreateTreeItem(subDir);
+                if (childItem == null)
+                  continue;
                 item.Items.Add(childItem);
                 string prjFile = Project.containsProject(subDir);
                 if (prjFile != "")
@@ -215,7 +225,9 @@ namespace BatInspector.Forms
               {
                 if (Query.isQuery(subFile))
                 {
-                  TreeViewItem childItem = CreateTreeItem(subFile);
+                  TreeViewItem? childItem = CreateTreeItem(subFile);
+                  if (childItem == null)
+                    continue;
                   item.Items.Add(childItem);
                   childItem.FontWeight = FontWeights.Bold;
                   childItem.Foreground = new SolidColorBrush(Colors.Orange);
@@ -225,8 +237,9 @@ namespace BatInspector.Forms
             DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
           }
         }
-        catch
+        catch (Exception ex)
         {
+          DebugLog.log($"problem Mainwindow;{ex}", enLogType.ERROR);
         }
       }
     }
@@ -622,14 +635,23 @@ namespace BatInspector.Forms
       }
     }
 
-    private TreeViewItem CreateTreeItem(object o)
+    private TreeViewItem? CreateTreeItem(object o)
     {
       TreeViewItem item = new TreeViewItem();
-      DirectoryInfo d = (DirectoryInfo)o;
+      DirectoryInfo? d = o as DirectoryInfo;
       if (d != null)
         item.Header = d.Name;
       else
-        item.Header = o.ToString();
+      {
+        FileInfo? f = o as FileInfo;
+        if (f != null)
+          item.Header = f.Name;
+        else
+        {
+          DebugLog.log($"could not create tree view item from {o.ToString()}", enLogType.ERROR);
+          return null;
+        }
+      }
       item.Tag = o;
       item.Items.Add(BatInspector.Properties.MyResources.MainWindowMsgLoading);
       item.Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["colorForeGroundLabel"];
@@ -1012,34 +1034,21 @@ namespace BatInspector.Forms
     {
       DebugLog.log("closing application", enLogType.DEBUG);
       checkSavePrj();
-      if (_frmColorMap != null)
-        _frmColorMap.Close();
-      if (_frmZoom != null)
-        _frmZoom.Close();
-      if (_frmFilter != null)
-        _frmFilter.Close();
-      if (_frmScript != null)
-        _frmScript.Close();
-      if (_frmAbout != null)
-        _frmAbout.Close();
-      if (_frmSettings != null)
-        _frmSettings.Close();
-      if (_frmCreatePrj != null)
-        _frmCreatePrj.Close();
-      if (_frmCreateReport != null)
-        _frmCreateReport.Close();
-      if (_frmWavFile != null)
-        _frmWavFile.Close();
-      if (_frmDebug != null)
-        _frmDebug.Close();
-      if (_frmQuery != null)
-        _frmQuery.Close();
-      if (_frmCleanup != null)
-        _frmCleanup.Close();
-      if (_frmMsg != null)
-        _frmMsg.Close();
-      if (_frmExp != null)
-        _frmExp.Close();
+        _frmColorMap?.Close();
+        _frmZoom?.Close();
+        _frmFilter?.Close();
+        _frmScript?.Close();
+        _frmAbout?.Close();
+        _frmSettings?.Close();
+        _frmCreatePrj?.Close();
+        _frmCreateReport?.Close();
+        _frmWavFile?.Close();
+        _frmDebug?.Close();
+        _frmQuery?.Close();
+        _frmCleanup?.Close();
+        _frmMsg?.Close();
+      _frmExp?.Close();
+      _frmExportData?.Close();
       DebugLog.save();
     }
 
@@ -1400,6 +1409,7 @@ namespace BatInspector.Forms
           _frmDebug.Visibility = Visibility.Visible;
           _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
           DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
+          _frmDebug.Show();
         }
       }
       catch (Exception ex)
@@ -2001,9 +2011,12 @@ namespace BatInspector.Forms
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)
     {
-      frmExportData frm = new frmExportData();
-      frm.setup();
-      frm.Show();
+      if (_frmExportData != null)
+      {
+        _frmExportData = new frmExportData();
+        _frmExportData.setup();
+      }
+      _frmExportData?.Show();
     }
   }
 

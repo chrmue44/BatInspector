@@ -1,8 +1,12 @@
+- .NET10 Framework
 - bugfix: color values are not updated in the setup dialog when selecting a preset (but saved if unchanged)
 - added color preset from AK Fledermausschutz Aachen, Düren
 - expert mode: hides Scatter Diagram, Statistics, MySql and Species View
 - removed option "All Calls" in filtering
 - new option "LATITUDE","LONGITUDE" for script function setFileInfo()
+- removed BatData Form
+- new Option to set manual Species (optional as text field)
+- manual Species offers now selection of all possible Species (not just regionals)
 
 # V0.9.9.0   12.08.26
 - up to 5 fully configurable frequency guide lines in zoom view

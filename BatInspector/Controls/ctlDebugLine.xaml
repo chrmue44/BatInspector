@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BatInspector.Controls"
+             xmlns:res="clr-namespace:BatInspector.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Height="18">
@@ -13,7 +14,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="0" Name="_tbNr" Text="222" TextAlignment="Right"  BorderThickness="0" FontFamily="Courier New"/>
-        <Button Grid.Column="1"  x:Name="_btnBreakPt" Click="_btnBreakPt_Click" PreviewMouseRightButtonUp="_btnBreakPt_PreviewMouseRightButtonUp" Background="Wheat" BorderThickness="0">
+        <Button Grid.Column="1"  x:Name="_btnBreakPt" Click="_btnBreakPt_Click" PreviewMouseRightButtonUp="_btnBreakPt_PreviewMouseRightButtonUp" Background="Wheat" BorderThickness="0" ToolTip="{x:Static res:MyResources.ToolTipBreakPoint}">
         <Image  Name="_imgBreak" Source="..\images\Button-Blank-Red.48.png" />
         </Button>
         <TextBox x:Name="_tbLine" Grid.Column="2" BorderThickness="0" Margin="10,0,0,0" IsReadOnly="True" FontFamily="Courier New"/>

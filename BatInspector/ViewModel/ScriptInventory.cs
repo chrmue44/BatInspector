@@ -30,6 +30,7 @@ namespace BatInspector
   {
     [DataMember]
     public string Name { get; set; } = "";
+    [DataMember]
     public string VarName { get; set; } = "";
     [DataMember]
     public enParamType Type { get; set; } = enParamType.MICSCELLANOUS; 

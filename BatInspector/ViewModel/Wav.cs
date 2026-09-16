@@ -553,8 +553,9 @@ namespace BatInspector
             }
             tempBytes.AddRange(_data.GetBytes());
             _rawData = tempBytes.ToArray();
-            foreach (byte b in _rawData)
-              f.WriteByte(b);
+            f.Write(_rawData, 0, _rawData.Length);
+//            foreach (byte b in _rawData)
+//              f.WriteByte(b);
             if(_guano != null)
             {
               byte[] b = _guano.GetBytes();
@@ -740,6 +741,11 @@ namespace BatInspector
       if (_guano == null)
         _guano = new Guano();
       _guano.copyMetaData(wav);
+    }
+
+    public void updateGuanoFromItems()
+    {
+      _guano.writeDataToChunk();
     }
 
     public void pause()

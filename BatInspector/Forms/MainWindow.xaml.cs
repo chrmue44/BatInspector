@@ -1367,6 +1367,10 @@ namespace BatInspector.Forms
         if (_frmScript == null)
           _frmScript = new FrmScript(populateToolsMenu, debugScript);
         _frmScript.Show();
+        _frmScript.Activate();
+        _frmScript.Topmost = true;
+        _frmScript.Topmost = false;
+        _frmScript.Focus();
         DebugLog.log("MainWin:BTN 'Script' clicked", enLogType.DEBUG);
       }
       catch (Exception ex)
@@ -1410,6 +1414,10 @@ namespace BatInspector.Forms
           _frmDebug.setup(Path.Combine(AppParams.Inst.ScriptInventoryPath, script), pars);
           DebugLog.log("MainWin:BTN 'Debug' clicked", enLogType.DEBUG);
           _frmDebug.Show();
+/*          _frmDebug.Activate();
+          _frmDebug.Topmost = true;
+          _frmDebug.Topmost = false;
+          _frmDebug.Focus(); */
         }
       }
       catch (Exception ex)

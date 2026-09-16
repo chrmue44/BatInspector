@@ -6,11 +6,9 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 using libParser;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
+
 
 
 /*
@@ -188,6 +186,27 @@ namespace BatInspector
       return retVal;
     }
 
+    public int getFieldIndex(string fieldName, string nameSpace = "")
+    {
+      int retVal = -1;
+      for(int i = 0; i < _items.Count; i++)
+      {
+        if ((_items[i].NameSpace == nameSpace) && (_items[i].FieldName == fieldName))
+        {
+          retVal = i;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public void setField(GuanoItem item)
+    {
+      int idx = getFieldIndex(item.FieldName, item.NameSpace);
+      if (idx >= 0)
+        _items[idx] = item;
+    }
+
     public BatRecord getMetaData()
     {
       BatRecord retVal = new BatRecord();
@@ -223,7 +242,7 @@ namespace BatInspector
       return retVal;
     }
 
-    private void writeDataToChunk()
+    public void writeDataToChunk()
     {
       List<byte> data = new List<byte>();
       foreach(GuanoItem it in _items)

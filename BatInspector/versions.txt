@@ -77,6 +77,8 @@
 - new script to export all species found in project to sub projects
 - added buttons "edit", "reload" to script debug window
 - new parameter for functions getNrOfSpecies, getRankSpecies, getRankCount
+- GUANO data is now editable in WAV tool
+- Export function in Zoom View adjusts GUANO time expansion factor if file has GUANO data
 
 import data
 - import Songmeter mini WAV files (wildlife acoustics)

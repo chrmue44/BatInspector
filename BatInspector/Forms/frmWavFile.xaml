@@ -69,7 +69,7 @@
                     <GroupBox.Header>
                         <TextBlock Text="Guano Metadata" FontWeight="Bold" />
                     </GroupBox.Header>
-                    <DataGrid x:Name="_dgGuano" Margin="10"/>
+                    <DataGrid x:Name="_dgGuano" Margin="10" CellEditEnding="_dgGuano_CellEditEnding"/>
                 </GroupBox>
             </StackPanel>
         </ScrollViewer>

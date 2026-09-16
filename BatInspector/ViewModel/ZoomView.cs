@@ -487,6 +487,16 @@ namespace BatInspector
             WavFile wav = new WavFile();
             wav.readFile(dstFile);
             wav.FormatChunk.Frequency = wav.FormatChunk.Frequency / timeStretch;
+            if(wav.Guano != null)
+            {
+              GuanoItem? it = wav.Guano.getField("TE");
+              if (it != null)
+              {
+                it.Value = timeStretch.ToString();
+                wav.Guano.setField(it);
+                wav.updateGuanoFromItems();
+              }
+            }
             wav.saveFile();
           }
           if (incPng)

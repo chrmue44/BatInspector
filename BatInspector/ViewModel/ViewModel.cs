@@ -26,9 +26,7 @@ namespace BatInspector
   public enum enAppState
   {
     IDLE,
-    OPEN_PRJ,
-    WAIT_FOR_GUI,
-    AI_ANALYZE,
+    BUSY,
     IMPORT_PRJ,
     TOOL_RUNNING
   }
@@ -67,7 +65,6 @@ namespace BatInspector
     ZoomView _zoom;
     Filter _filter = new Filter(new List<string>());
     ColorTable _colorTable;
-    bool _extBusy = false;
     ScriptRunner _scripter;
     WavFile _wav;
     List<SpeciesInfos> _speciesInfos;
@@ -99,8 +96,6 @@ namespace BatInspector
     public Filter Filter { get { return _filter; } }
 
     public ColorTable ColorTable { get { return _colorTable; } }
-
-    public bool Busy { get { return isBusy(); } set { _extBusy = value; } }
 
     public WavFile WavFile { get { return _wav; } }
 
@@ -205,11 +200,8 @@ namespace BatInspector
     {
       if ((Prj != null) && (Prj.Ok) && File.Exists(Prj.ReportName) && (_view.Prj != null))
         _view.Prj.Analysis.read(Prj.ReportName, DefaultModelParams, _view.Prj.MetaData);
-      //      else if ((Query != null) && File.Exists(Query.ReportName))
-      //        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
       else if ((Query != null) && File.Exists(Query.ReportName) && (_view.Query != null))
-      _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
-
+       _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
     }
 
     public string[] createSpeciesList(double lat, double lon)
@@ -837,12 +829,6 @@ namespace BatInspector
       }
     }
 
-
-    bool isBusy()
-    {
-      bool retVal = _proc.IsRunning | _extBusy;
-      return retVal;
-    }
 
 
     public string[] getLastLogs()

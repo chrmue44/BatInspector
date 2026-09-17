@@ -63,7 +63,7 @@ namespace BatInspector
     }
 
     public Query(string name, string srcDir, string dstDir, string query, ModelParams modelParams, int modelCount) :
-    base(false, modelParams, modelCount)
+    base(false, modelParams, modelCount, false)
     {
       _name = name;
       _srcDir = srcDir; 

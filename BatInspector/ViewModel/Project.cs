@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using libParser;
 using libScripter;
 using NAudio.Wave;
+using Org.BouncyCastle.Ocsp;
 
 
 namespace BatInspector
@@ -61,14 +62,23 @@ namespace BatInspector
     protected Analysis[] _analysis;
     protected ModelParams _modelParams;
 
+    bool _recordsSorted = false;
     public string[] Species { get { return _speciesArray; } }
     public Analysis Analysis { get { return _analysis[SelectedModelIndex]; } }
     public int SelectedModelIndex { get; set; } = 0;
     public bool IsBirdPrj {  get { return ((_modelParams != null) && (_modelParams.Type == enModel.BIRDNET)); } }
 
     static protected readonly XmlSerializer PrjSerializer = new XmlSerializer(typeof(BatExplorerProjectFile));
-    public PrjBase(bool updateCtls, ModelParams modelParams, int modelCount)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="updateCtls"></param>
+    /// <param name="modelParams">model parameters for project/query</param>
+    /// <param name="modelCount"> number of available models</param>
+    /// <param name="recordsSorted">true for projects (records are always sorted)</param>
+    public PrjBase(bool updateCtls, ModelParams modelParams, int modelCount, bool recordsSorted)
     {
+      _recordsSorted = recordsSorted;
       _analysis = new Analysis[modelCount];
       _speciesArray = new string[0];
       for (int i = 0; i < _analysis.Length; i++)
@@ -96,21 +106,35 @@ namespace BatInspector
 
       int iFirst = 0;
       int iLast = records.Length - 1;
-      while (true)
+      if (_recordsSorted)
       {
-        int i = (iLast - iFirst) / 2 + iFirst;
-        PrjRecord rec = records[i];
-        if (wavName.ToLower().Contains(rec.File.ToLower()))
+        while (true)
         {
-          retVal = rec;
-          break;
+          int i = (iLast - iFirst) / 2 + iFirst;
+          PrjRecord rec = records[i];
+          if (wavName.ToLower().Contains(rec.File.ToLower()))
+          {
+            retVal = rec;
+            break;
+          }
+          else if ((iLast - iFirst) <= 1)
+            break;
+          else if (string.CompareOrdinal(rec.File.ToLower(), Path.GetFileName(wavName).ToString().ToLower()) < 0)
+            iFirst = i;
+          else
+            iLast = i;
         }
-        else if ((iLast - iFirst) <= 1)
-          break;
-        else if (string.CompareOrdinal(rec.File.ToLower(), Path.GetFileName(wavName).ToString().ToLower()) < 0)
-          iFirst = i;
-        else
-          iLast = i;
+      }
+      else
+      {
+        foreach(PrjRecord rec in records)
+        {
+          if (wavName.ToLower().Contains(rec.File.ToLower()))
+          {
+            retVal = rec;
+            break;
+          }
+        }
       }
       return retVal;
     }
@@ -326,7 +350,7 @@ namespace BatInspector
     }
 
     public Project(bool updateCtls, ModelParams modelParams, int modelCount, string wavSubDir = "")
-    : base(updateCtls, modelParams, modelCount)
+    : base(updateCtls, modelParams, modelCount, true)
     {
       _wavSubDir = wavSubDir;
       _extension = AppParams.EXT_BATSPY;

@@ -165,7 +165,7 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnaddFile_Click(object sender, RoutedEventArgs e)
+    private async void _btnaddFile_Click(object sender, RoutedEventArgs e)
     {
       try
       {
@@ -183,7 +183,7 @@ namespace BatInspector.Controls
             App.Model.Prj.writePrjFile();
             App.MainWin._spSpectrums.Children.Clear();
             DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
-            App.MainWin.initializeProject(dir);
+            await App.MainWin.initializeProject(dir);
           }
         }
         else
@@ -243,13 +243,13 @@ namespace BatInspector.Controls
         PrjBase? prj = App.Model.CurrentlyOpen;
         if ((filter != null) && (prj != null))
         {
-          App.Model.Busy = true;
+          App.Model.Status.State = enAppState.BUSY;
           DebugLog.log("start filtering files...", enLogType.INFO);
           await Task.Run(() => prj.Analysis.applyFilterAsync(filter, prj));
           App.MainWin.buildWavFileList(true, App.Model.Filter, filter, true);
           App.MainWin.showStatus();
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
-          App.Model.Busy = false;
+          App.Model.Status.State = enAppState.IDLE;
         }
         else
         {

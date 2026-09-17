@@ -5,12 +5,9 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -22,17 +19,18 @@ using BatInspector.Controls;
 using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
-using BatInspector.Forms;
-using System.Windows.Forms.Integration;
-//using System.Windows.Forms;
+using System.Data;
 
 namespace BatInspector.Forms
 {
 
   delegate void dlgProgress(string pngName);
-  delegate void dlgInitPrj(DirectoryInfo dir);
-  delegate void dlgInitQuery(FileInfo file);
+  delegate Task dlgInitPrj(DirectoryInfo dir);
+  delegate Task dlgInitQuery(FileInfo file);
+  delegate void dlgInitProjectAsync(DirectoryInfo dir);
+  delegate void dlgInitQueryAsync(FileInfo file);
   delegate void dlgOneInt(int a);
+
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -60,13 +58,10 @@ namespace BatInspector.Forms
     FrmZoom? _frmZoom = null;
     CtrlZoom? _ctlZoom = null;
     TabItem? _tbZoom = null;
-    Thread? _workerPredict = null;
-    Thread? _workerStartup = null;
     System.Windows.Threading.DispatcherTimer _timer;
     bool _switchTabToPrj = false;
     Stopwatch _sw = new Stopwatch();
     DirectoryInfo? _projectDir;
-    FileInfo? _queryFile;
     string _oldTab = "";
     Pool<ctlWavFile> _wavCtls;
 
@@ -265,9 +260,8 @@ namespace BatInspector.Forms
 
     }
 
-    public void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+    public async void TreeViewItem_Selected(object sender, RoutedEventArgs e)
     {
-      BackgroundWorker worker = new BackgroundWorker();
       TreeViewItem item = (TreeViewItem)e.Source;
       DirectoryInfo? dir = item.Tag as DirectoryInfo;
       _sw.Restart();
@@ -279,13 +273,7 @@ namespace BatInspector.Forms
       {
         _ctlPrjBtn.initFileButton(false);
         collapseTreeView(true);
-        worker.DoWork += delegate (object? s, DoWorkEventArgs args)
-        {
-          DirectoryInfo? d = (DirectoryInfo?)args.Argument;
-          if(d != null)
-            initializeProject(d);
-        };
-        worker.RunWorkerAsync(dir);
+        await initializeProject(dir);
       }
       else
       {
@@ -295,13 +283,7 @@ namespace BatInspector.Forms
           _ctlPrjBtn.initFileButton(true);
           _tbSum.Visibility = Visibility.Collapsed;
           collapseTreeView(true);
-          worker.DoWork += delegate (object? s, DoWorkEventArgs args)
-          {
-            FileInfo? f = (FileInfo?)args.Argument;
-            if(f != null)
-              initializeQuery(f);
-          };
-          worker.RunWorkerAsync(file);
+          await initializeQuery(file);
         }
       }
     }
@@ -343,28 +325,6 @@ namespace BatInspector.Forms
       }
     }
 
-    void initializeQuery(FileInfo file)
-    {
-      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
-      {
-        Dispatcher.BeginInvoke(new dlgInitQuery(initializeQuery), file);
-      }
-      else
-      {
-        _queryFile = file;
-        _projectDir = null;
-        App.Model.Status.State = enAppState.OPEN_PRJ;
-        App.Model.Busy = true;
-        setMouseStatus();
-
-        DebugLog.log("start to open query", enLogType.DEBUG);
-        showMsg(BatInspector.Properties.MyResources.msgInformation, MyResources.MainWindowMsgOpenQuery);
-        checkSavePrj();
-        setStatus("");
-        _workerStartup = null;
-        _tbPrj.Focus();
-      }
-    }
 
     /// <summary>
     /// callback in case of Analysis has changed (manual species)
@@ -399,18 +359,17 @@ namespace BatInspector.Forms
 
 
 
-    private void initProjectAsync()
+    private async Task initProjectAsync(DirectoryInfo dir)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgVoid(initProjectAsync));
+        await Dispatcher.BeginInvoke(new dlgInitPrj(initProjectAsync), dir);
       }
       else
       {
         try
         {
-          if(_projectDir != null)
-            App.Model.initProject(_projectDir, true);
+          App.Model.initProject(dir, true);
           if ((App.Model.Prj != null) && App.Model.Prj.Ok )
           {
             _wavCtls.reinitializePool();
@@ -437,18 +396,18 @@ namespace BatInspector.Forms
       }
     }
 
-    private void initQueryAsync()
+    private async Task initQueryAsync(FileInfo queryFile)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgVoid(initQueryAsync));
+        await Dispatcher.BeginInvoke(new dlgInitQuery(initQueryAsync), queryFile);
       }
       else
       {
         try
         {
-          if(_queryFile != null)
-            App.Model.initQuery(_queryFile);
+          App.Model.View.stopCreatingPngFiles();
+          App.Model.initQuery(queryFile);
           if (App.Model.Query != null)
           {
             _wavCtls.reinitializePool();
@@ -497,31 +456,74 @@ namespace BatInspector.Forms
       }
     }
 
-    public void initializeProject(DirectoryInfo dir)
+    public async Task initializeProject(DirectoryInfo dir)
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgInitPrj(initializeProject), dir);
+        await Dispatcher.BeginInvoke(new dlgInitPrj(initializeProject), dir, DispatcherPriority.Send);
       }
       else
       {
         _projectDir = dir;
-        _queryFile = null;
-        App.Model.Status.State = enAppState.OPEN_PRJ;
-        App.Model.Busy = true;
+        App.Model.Status.State = enAppState.BUSY;
         setMouseStatus();
         DebugLog.log("start to open project", enLogType.DEBUG);
-        showMsg(MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgOpenPrj);
+        TimeSpan t = _sw.Elapsed;
         _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
+        setStatus("");
+        await showMsgInUiThread(MyResources.msgInformation, MyResources.MainWindowMsgOpenPrj, true);
+
         _scrollPrj.Value = 0;
         checkSavePrj();
-        setStatus("");
-        _workerStartup = null;
         _tbPrj.Focus();
         _dgData.ItemsSource = null;
+        await initProjectAsync(dir);
+
+        _ctlPrjBtn._cbFilter.SelectedIndex = 0;
+        if (_btnCreatePrj.IsEnabled)
+          _btnCreatePrj.IsEnabled = false;
+        if ((App.Model.Prj != null) && App.Model.Prj.Ok)
+        {
+          _lblProject.Text = MyResources.MainWindowPROJECT + ": " + App.Model.Prj.Name;
+          DebugLog.log("Project opened: " + App.Model.Prj.Name, enLogType.INFO);
+        }
+        App.Model.Status.State = enAppState.IDLE;
+        showStatus();
       }
     }
 
+
+    async Task initializeQuery(FileInfo file)
+    {
+      if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+      {
+        await Dispatcher.BeginInvoke(new dlgInitQuery(initializeQuery), file);
+      }
+      else
+      {
+        _projectDir = null;
+        App.Model.Status.State = enAppState.BUSY;
+        setMouseStatus();
+        DebugLog.log("start to open query", enLogType.DEBUG);
+        _lblProject.Text = BatInspector.Properties.MyResources.MainWindowMsgOpenPrj;
+        setStatus("");
+        await showMsgInUiThread(MyResources.msgInformation, MyResources.MainWindowMsgOpenQuery);
+        checkSavePrj();
+        _tbPrj.Focus();
+        await initQueryAsync(file);
+
+        _ctlPrjBtn._cbFilter.SelectedIndex = 0;
+        if (_btnCreatePrj.IsEnabled)
+          _btnCreatePrj.IsEnabled = false;
+        if (App.Model.Query != null)
+        {
+          _lblProject.Text = MyResources.MainWindow_timer_Tick_QUERY + ": " + App.Model.Query.Name;
+          DebugLog.log("Query opened: " + App.Model.Query.Name, enLogType.INFO);
+        }
+        App.Model.Status.State = enAppState.IDLE;
+        showStatus();
+      }
+    }
 
 
     public void buildWavFileList(bool selectedOnly, Filter? filter = null, FilterItem? filterItem = null, bool reInitList = false)
@@ -862,10 +864,10 @@ namespace BatInspector.Forms
       if (App.Model.CurrentlyOpen != null)
       {
         report = !App.Model.CurrentlyOpen.Analysis.IsEmpty ?
-                 BatInspector.Properties.MyResources.MainWindowMsgReport :
-                 BatInspector.Properties.MyResources.MainWindow_showStatus_NoReport;
+                 MyResources.MainWindowMsgReport :
+                 MyResources.MainWindow_showStatus_NoReport;
 
-        setStatus($"  [{BatInspector.Properties.MyResources.MainWindowFiles}: {App.Model.View.VisibleFiles.Count}/{App.Model.CurrentlyOpen.getRecords().Length} | {report} ]");
+        setStatus($"  [{MyResources.MainWindowFiles}: {App.Model.View.VisibleFiles.Count}/{App.Model.CurrentlyOpen.getRecords().Length} | {report} ]");
       }
     }
 
@@ -885,12 +887,27 @@ namespace BatInspector.Forms
     }
 
 
+    async Task  showMsgInUiThread(string title, string msg, bool topmost = false)
+    {
+      if (_frmMsg != null)
+      {
+        TimeSpan t = _sw.Elapsed;
+        _frmMsg.Owner = this;
+        _frmMsg.showMessage(title, msg, topmost);
+        _frmMsg.Visibility = Visibility.Visible;
+        _frmMsg.Show();
+        _frmMsg.Activate();
+        await Dispatcher.Yield();
+      }
+    }
+
     void showMsg(string title, string msg, bool topmost = false)
     {
       System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
         if (_frmMsg != null)
         {
+          TimeSpan t = _sw.Elapsed;
           _frmMsg.showMessage(title, msg, topmost);
           _frmMsg.Visibility = Visibility.Visible;
         }
@@ -911,6 +928,7 @@ namespace BatInspector.Forms
       {
         showMsg(BatInspector.Properties.MyResources.msgInformation, BatInspector.Properties.MyResources.MainWindowMsgClassification, true);
         App.Model.evaluate(false);
+        App.Model.updateReport();
       }
       catch (Exception ex)
       {
@@ -920,7 +938,7 @@ namespace BatInspector.Forms
     }
 
 
-    private void _btnFindCalls_Click(object sender, RoutedEventArgs e)
+    private async void _btnFindCalls_Click(object sender, RoutedEventArgs e)
     {
       try
       {
@@ -937,9 +955,11 @@ namespace BatInspector.Forms
             if (res == MessageBoxResult.Yes)
             {
               App.Model.View.stopCreatingPngFiles();
-              App.Model.Status.State = enAppState.AI_ANALYZE;
-              _workerPredict = new Thread(new ThreadStart(workerPrediction));
-              _workerPredict.Start();
+              App.Model.Status.State = enAppState.BUSY; 
+              await Task.Run(() => { workerPrediction(); });
+              DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
+              await initializeProject(dir);
+              App.Model.Status.State = enAppState.IDLE;
             }
           }
           else
@@ -1030,6 +1050,7 @@ namespace BatInspector.Forms
     private void Window_Closing(object sender, CancelEventArgs e)
     {
       DebugLog.log("closing application", enLogType.DEBUG);
+      App.Model.View.stopCreatingPngFiles();
       checkSavePrj();
         _frmColorMap?.Close();
         _frmZoom?.Close();
@@ -1209,16 +1230,15 @@ namespace BatInspector.Forms
     {
       System.Windows.Application.Current.Dispatcher.BeginInvoke((Action)(() =>
       {
-        if (App.Model.Busy)
+        if (App.Model.Status.State != enAppState.IDLE)
           Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
         else
           Mouse.OverrideCursor = null;
       }));
     }
 
-    private void timer_Tick(object? sender, EventArgs? e)
+    private async void timer_Tick(object? sender, EventArgs? e)
     {
-      setMouseStatus();
       if (App.Model.Status.Msg != null)
       {
         showMsg(BatInspector.Properties.MyResources.msgInformation, App.Model.Status.Msg);
@@ -1241,7 +1261,7 @@ namespace BatInspector.Forms
         {
           _spSpectrums.Children.Clear();
           DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
-          initializeProject(dir);
+          await initializeProject(dir);
         }
         App.Model.Prj!.ReloadInGui = false;
       }
@@ -1256,7 +1276,6 @@ namespace BatInspector.Forms
             _btnCreatePrj.Opacity = 1.0;
           }
           hideMsg();
-          App.Model.Busy = false;
           break;
 
         case enAppState.IMPORT_PRJ:
@@ -1267,50 +1286,8 @@ namespace BatInspector.Forms
           }
           break;
 
-        case enAppState.AI_ANALYZE:
-          if ((_workerPredict != null) && (!_workerPredict.IsAlive))
-          {
-            _workerPredict = null;
-            App.Model.updateReport();
-            DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
-            initializeProject(dir);
-          }
+        case enAppState.BUSY:
           break;
-
-        case enAppState.OPEN_PRJ:
-          if (_workerStartup == null)
-          {
-            if (_projectDir != null)
-              _workerStartup = new Thread(initProjectAsync);
-            else if (_queryFile != null)
-              _workerStartup = new Thread(initQueryAsync);
-            _workerStartup!.Start();
-          }
-          else if (!_workerStartup.IsAlive)
-          {
-            // it takes about 3 sec to come from init..Async() end to here, why???
-            _ctlPrjBtn._cbFilter.SelectedIndex = 0;
-            App.Model.Busy = false;
-            if (_btnCreatePrj.IsEnabled)
-              _btnCreatePrj.IsEnabled = false;
-            if ((App.Model.Prj != null) && App.Model.Prj.Ok)
-              _lblProject.Text = BatInspector.Properties.MyResources.MainWindowPROJECT + ": " + App.Model.Prj.Name;
-            if (App.Model.Query != null)
-              _lblProject.Text = BatInspector.Properties.MyResources.MainWindow_timer_Tick_QUERY + ": " + App.Model.Query.Name;
-            App.Model.Status.State = enAppState.WAIT_FOR_GUI;
-            if (App.Model.Prj != null)
-              DebugLog.log("Project opened: " + App.Model.Prj.Name, enLogType.INFO);
-            else if (App.Model.Query != null)
-              DebugLog.log("Query opened: " + App.Model.Query.Name, enLogType.INFO);
-            showStatus();
-          }
-          break;
-
-        case enAppState.WAIT_FOR_GUI:
-          showStatus();
-          App.Model.Status.State = enAppState.IDLE;
-          break;
-
       }
 
       if (_switchTabToPrj)
@@ -1318,6 +1295,7 @@ namespace BatInspector.Forms
         _tbPrj.IsSelected = true;
         _switchTabToPrj = false;
       }
+      setMouseStatus();
 
       if (_frmZoom != null)
         _frmZoom._ctl.tick(_timer.Interval.TotalMilliseconds);

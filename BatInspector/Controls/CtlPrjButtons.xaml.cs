@@ -179,8 +179,7 @@ namespace BatInspector.Controls
           if (ok == System.Windows.Forms.DialogResult.OK)
           {
             App.Model.Prj.addFiles(ofi.FileNames);
-            if (App.Model.Prj.Analysis != null)
-              App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
+            App.Model.Prj.Analysis?.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
             App.Model.Prj.writePrjFile();
             App.MainWin._spSpectrums.Children.Clear();
             DirectoryInfo dir = new DirectoryInfo(App.Model.SelectedDir);
@@ -234,25 +233,23 @@ namespace BatInspector.Controls
       }
     }
 
-    private void _btnApplyFilter_Click(object sender, RoutedEventArgs? e)
+    private async void _btnApplyFilter_Click(object sender, RoutedEventArgs? e)
     {
       try
       {
         _btnNone_Click(sender, null);
         FilterItem? filter = (_cbFilter.SelectedIndex == 1) ?
                           App.Model.Filter.TempFilter : App.Model.Filter.getFilter(_cbFilter.Text);
-        if ((filter != null) && (App.Model.CurrentlyOpen != null))
+        PrjBase? prj = App.Model.CurrentlyOpen;
+        if ((filter != null) && (prj != null))
         {
-          foreach (AnalysisFile a in App.Model.CurrentlyOpen.Analysis.Files)
-          {
-            bool res = App.Model.Filter.apply(filter, a);
-            PrjRecord? rec = App.Model.CurrentlyOpen.findRecord(a.Name);
-            if (res && (rec != null))
-              rec.Selected = res;
-          }
+          App.Model.Busy = true;
+          DebugLog.log("start filtering files...", enLogType.INFO);
+          await Task.Run(() => prj.Analysis.applyFilterAsync(filter, prj));
           App.MainWin.buildWavFileList(true, App.Model.Filter, filter, true);
           App.MainWin.showStatus();
           DebugLog.log("filter '" + filter.Name + "'  [" + filter.Expression + "] applied", enLogType.INFO);
+          App.Model.Busy = false;
         }
         else
         {

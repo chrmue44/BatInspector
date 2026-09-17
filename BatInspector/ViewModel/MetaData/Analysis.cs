@@ -328,6 +328,17 @@ namespace BatInspector
       _summary = new List<SumItem>();
     }
 
+    public async Task applyFilterAsync(FilterItem filter, PrjBase? currOpen)
+    {
+      foreach ( AnalysisFile a in _list)
+      {
+        bool res = App.Model.Filter.apply(filter, a);
+        PrjRecord? rec = currOpen?.findRecord(a.Name);
+        if (res && (rec != null))
+          rec.Selected = res;
+      }
+    }
+
     public void read(string fileName, ModelParams[] modelParams, enMetaData metaData)
     {
       init();
@@ -494,7 +505,7 @@ namespace BatInspector
       {
         string wavName = _csv.getCell(r, Cols.NAME);
 
-        PrjRecord? rec = prj.find(wavName);
+        PrjRecord? rec = prj.findRecord(wavName);
         if (rec == null)
           res |= removeWavFromReport(wavName);
       }

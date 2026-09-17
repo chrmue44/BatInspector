@@ -6,17 +6,17 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using libParser;
-using libScripter;
-using NAudio.Wave;
+using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
-
 //using System.Windows.Forms;
 using System.Xml.Serialization;
+using libParser;
+using libScripter;
+using NAudio.Wave;
 
 
 namespace BatInspector
@@ -81,17 +81,36 @@ namespace BatInspector
 
     public ModelParams SelectedModelParams { get { return _modelParams; } set { _modelParams = value; } }
 
+
+
+    /// <summary>
+    /// find a file in the project
+    /// </summary>
+    /// <param name="fileName">name of the file (full path or just file name)</param>
+    /// <returns>record containing the file information</returns>
+
     public PrjRecord? findRecord(string wavName)
     {
       PrjRecord? retVal = null;
       PrjRecord[] records = getRecords();
-      foreach(PrjRecord rec in records)
+
+      int iFirst = 0;
+      int iLast = records.Length - 1;
+      while (true)
       {
-        if(rec.File.ToLower().IndexOf(wavName.ToLower()) >= 0)
+        int i = (iLast - iFirst) / 2 + iFirst;
+        PrjRecord rec = records[i];
+        if (wavName.ToLower().Contains(rec.File.ToLower()))
         {
           retVal = rec;
           break;
         }
+        else if ((iLast - iFirst) <= 1)
+          break;
+        else if (string.CompareOrdinal(rec.File.ToLower(), Path.GetFileName(wavName).ToString().ToLower()) < 0)
+          iFirst = i;
+        else
+          iLast = i;
       }
       return retVal;
     }
@@ -1400,28 +1419,6 @@ namespace BatInspector
       writePrjFile();
     }
 
-
-    /// <summary>
-    /// find a file in the project
-    /// </summary>
-    /// <param name="fileName">name of the file (full path or just file name)</param>
-    /// <returns>record containing the file information</returns>
-    public PrjRecord? find(string fileName)
-    {
-      PrjRecord? retVal = null;
-      if (fileName != null)
-      {
-        foreach (PrjRecord r in _batExplorerPrj!.Records)
-        {
-          if (fileName.ToLower().Contains(r.File.ToLower()))
-          {
-            retVal = r;
-            break;
-          }
-        }
-      }
-      return retVal;
-    }
 
 
     public void addFiles(string[] files, bool removeSrc = false)

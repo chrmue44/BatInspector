@@ -744,7 +744,7 @@ namespace BatInspector
                 case enFileInfo.SELECT:
                   if (App.Model.Prj.Analysis.Files.Count > 0)
                   {
-                    PrjRecord? rec = App.Model.Prj.find(App.Model.Prj.Analysis.Files[idxF].Name);
+                    PrjRecord? rec = App.Model.Prj.findRecord(App.Model.Prj.Analysis.Files[idxF].Name);
                     if (rec != null)
                       result.assignBool(rec.Selected);
                     else

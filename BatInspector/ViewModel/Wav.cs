@@ -745,7 +745,7 @@ namespace BatInspector
 
     public void updateGuanoFromItems()
     {
-      _guano.writeDataToChunk();
+      _guano?.writeDataToChunk();
     }
 
     public void pause()

@@ -7,6 +7,8 @@
 - removed BatData Form
 - new Option to set manual Species (optional as text field)
 - manual Species offers now selection of all possible Species (not just regionals)
+- setting filter now a lot faster in big projects
+- GUI doesn't freeze anymore while filtering
 
 # V0.9.9.0   12.08.26
 - up to 5 fully configurable frequency guide lines in zoom view

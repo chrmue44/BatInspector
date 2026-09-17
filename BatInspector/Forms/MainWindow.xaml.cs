@@ -746,7 +746,7 @@ namespace BatInspector.Forms
           if (App.Model.CurrentlyOpen.Analysis != null)
             analysisFile = App.Model.CurrentlyOpen.Analysis.find(rec.File);
           ctlWavFile? ctl = _wavCtls.get("wavCtl append");
-          if ((ctl != null) && (analysisFile != null))
+          if (ctl != null)
           {
             ctl.setup(analysisFile, rec, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
             if (up)
@@ -801,7 +801,7 @@ namespace BatInspector.Forms
                   if ((analysis != null) && (rec != null))
                     analysisFile = analysis.find(rec.File);
                   ctlWavFile? ctl = _wavCtls.get($"wavCtl[{i}]");
-                  if ((ctl != null) && (analysisFile != null))
+                  if (ctl != null)
                   {
                     ctl.setup(analysisFile, rec!, this, true, App.Model.CurrentlyOpen.IsBirdPrj, _infoVisible);
                     DockPanel.SetDock(ctl, Dock.Bottom);
@@ -850,12 +850,9 @@ namespace BatInspector.Forms
         species = App.Model.Prj.Species;
         modelType = App.Model.Prj.Analysis.ModelType;
       }
-      if (analysis != null)
-      {
-        ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
-        ctl.InfoVisible = !AppParams.Inst.HideInfos;
-        ctl.createNewPng();
-      }
+      ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
+      ctl.InfoVisible = !AppParams.Inst.HideInfos;
+      ctl.createNewPng();
     }
 
 

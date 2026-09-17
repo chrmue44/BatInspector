@@ -142,7 +142,7 @@ namespace BatInspector.Controls
       }
     }
 
-    public void setup(AnalysisFile analysis, PrjRecord record, MainWindow parent, bool showButtons, bool isBird, bool infoVisible)
+    public void setup(AnalysisFile? analysis, PrjRecord record, MainWindow parent, bool showButtons, bool isBird, bool infoVisible)
     {
       _parent = parent;
       InitializeComponent();
@@ -184,7 +184,7 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = rec.Selected;
     }
 
-    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile analysis, string[] spec, enModel modelType, double height)
+    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile? analysis, string[] spec, enModel modelType, double height)
     {
       _wavFilePath = wavFilePath;
       _record = record;

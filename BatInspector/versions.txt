@@ -1,5 +1,5 @@
-- .NET10 Framework
 - bugfix: color values are not updated in the setup dialog when selecting a preset (but saved if unchanged)
+- ported to .NET10 Framework
 - added color preset from AK Fledermausschutz Aachen, Düren
 - expert mode: hides Scatter Diagram, Statistics, MySql and Species View
 - removed option "All Calls" in filtering

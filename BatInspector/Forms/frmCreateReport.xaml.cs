@@ -185,7 +185,7 @@ namespace BatInspector.Forms
     {
       if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
       {
-        Dispatcher.BeginInvoke(new dlgShowActivityDiag(showActivityDiagram), data, bmpName);
+        Dispatcher.BeginInvoke(new dlgShowActivityDiag(showActivityDiagram), data, bmpName, classWidthMin);
       }
       else
       {

@@ -1,3 +1,7 @@
+# V0.9.9.1
+- bugfix: creation of Activity diagram in dialog report crashes 
+
+# V0.9.9.0  
 - up to 5 fully configurable frequency guide lines in zoom view
 - summarized report (for multibase import)
 - color gradient presets in color dialog

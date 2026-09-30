@@ -10,8 +10,6 @@ using libParser;
 using libScripter;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
 

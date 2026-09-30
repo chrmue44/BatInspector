@@ -205,9 +205,7 @@ namespace BatInspector.Controls
     private void _cbFilter_DropDownClosed(object sender, EventArgs e)
     {
       DebugLog.log("Main: Filter dropdown closed", enLogType.DEBUG);
-      bool apply;
-      bool resetFilter;
-      CtlScatter.handleFilterDropdown(out apply, out resetFilter, _cbFilter);
+      CtlScatter.handleFilterDropdown(out bool apply, out bool resetFilter, _cbFilter);
       if (apply || resetFilter)
         _btnApplyFilter_Click(sender, null);
       if (resetFilter)

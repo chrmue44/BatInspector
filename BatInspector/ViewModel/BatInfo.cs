@@ -207,8 +207,10 @@ namespace BatInspector
       {
         if (abbreviation == "Myotis")
           retVal = new SpeciesInfos("Myotis", "Myotis", "Myotis", 1,"", false, "", null);
+        if (abbreviation == "Mbart")
+          retVal = new SpeciesInfos("Mbart", "Myotis mystacinus et brandtii", "Bartfledermaus", 1, "", false, "", null);
         else if (abbreviation == "Plecotus")
-          retVal = new SpeciesInfos("Plecotus", "Plecotus", "Plecotus",1, "", false, "", null);
+          retVal = new SpeciesInfos("Plecotus", "Plecotus auritus et austriacus", "Langohr",1, "", false, "", null);
         else if (abbreviation == "Pipistrellus")
           retVal = new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus",1, "", false, "", null);
         else if (abbreviation == "Nyctaloid")
@@ -223,6 +225,20 @@ namespace BatInspector
       foreach (SpeciesInfos s in list)
       {
         if (latin.ToLower() == s.Latin.ToLower())
+        {
+          retVal = s;
+          break;
+        }
+      }
+      return retVal;
+    }
+
+    public static SpeciesInfos? findLocal(string latin, List<SpeciesInfos> list)
+    {
+      SpeciesInfos? retVal = null;
+      foreach (SpeciesInfos s in list)
+      {
+        if (latin.ToLower() == s.Local.ToLower())
         {
           retVal = s;
           break;
@@ -896,6 +912,8 @@ namespace BatInspector
       bool retVal = false;
       if ((range == null) || (range.Min < 0))
         return true;
+      if (val < 0)
+        return true;
 
       result.MaxScore += 1;
       if ((val >= range.NormMin) && (val <= range.NormMax))
@@ -1256,11 +1274,11 @@ namespace BatInspector
           retVal =
           (
             (d.HasMyotisKink == enYesNoProperty.NO) &&
-            (d.Duration < 6.0) &&
+            (d.Duration < 3.5) &&
             (d.FreqStart > 150.0)
           );
           if (retVal)
-            addInfo += "{has mk & D < 6 ms & Fstart > 150 kHz}";
+            addInfo += "{has mk & D < 3.5 ms & Fstart > 150 kHz}";
           /*  TODO  ||
           (
             ((d.HasMyotisKink == enYesNoProperty.YES) || (d.HasKneeClearly == enYesNoProperty.YES)) &&
@@ -1273,7 +1291,7 @@ namespace BatInspector
         case "MMYO":
           {
             bool ok1 = (
-              (d.HasMyotisKink == enYesNoProperty.NO) &&
+              ((d.HasMyotisKink == enYesNoProperty.NO) || (d.HasMyotisKink == enYesNoProperty.DONT_CARE)) &&
               (d.Duration >= 2.5) && (d.Duration <= 3.5) &&
               (d.FreqStart < 120.0) && (d.FreqEnd > 23.0)
             );

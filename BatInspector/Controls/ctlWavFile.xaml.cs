@@ -8,10 +8,7 @@
 
 using BatInspector.Forms;
 using libParser;
-using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using BatInspector.Properties;
 using System.IO;
 using libScripter;
@@ -252,7 +249,7 @@ namespace BatInspector.Controls
             {
               CtlCallItem imc = new CtlCallItem();
               imc.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, true, selItemChanged, clickCallLabel);
-              imc.setItems(App.Model.ValidSpeciesList);
+//              imc.setItems(App.Model.ValidSpeciesAbbrevList);
               imc.setValue(call.getString(Cols.SPECIES_MAN));
               if (call.Changed)
                 imc.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);
@@ -264,7 +261,7 @@ namespace BatInspector.Controls
               ctlSelectItem im = new ctlSelectItem();
               im.setup(getLabelStr() + " " + callStr + ": ", callNr - 1, wLbl, 90, selItemChanged, clickCallLabel,
                     MyResources.ctlWavToolTipCall);
-              im.setItems(App.Model.ValidSpeciesList);
+              im.setItems(App.Model.ValidSpeciesAbbrevList);
               im.setValue(call.getString(Cols.SPECIES_MAN));
               if (call.Changed)
                 im.setBgColor((SolidColorBrush)App.Current.Resources["colorBackgroundAttn"]);

@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using libParser;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using MenuItem = System.Windows.Controls.MenuItem;
 
@@ -27,8 +27,13 @@ namespace BatInspector.Controls
     dlgSelItemChanged? _dlgValChange = null;
     dlgClickLabel? _dlgClickLabel = null; 
     int _index = 0;
-    string[] _items = new string[0];
+    static string[] _itemsAbbr = new string[0];
+    static string[] _itemsLatin = new string[0];
+    static string[] _itemsLocal = new string[0];
 
+    static bool _contextLatin = false;
+
+    System.Windows.Point _lastMenuPosition = new System.Windows.Point();
     bool _setup = false;
     enEditStatus _status;
 
@@ -63,9 +68,17 @@ namespace BatInspector.Controls
       _setup = false;
     }
 
-    public void setItems(string[] items)
+    public static void setItems(SpeciesInfos[] items)
     {
-      _items = items;
+      _itemsAbbr = new string[items.Length];
+      _itemsLatin = new string[items.Length];
+      _itemsLocal = new string[items.Length];
+      for (int i = 0; i < items.Length; i++)
+      {
+        _itemsAbbr[i] = items[i].Abbreviation;
+        _itemsLatin[i] = items[i].Latin;
+        _itemsLocal[i] = items[i].Local;
+      }
     }
 
 
@@ -104,7 +117,7 @@ namespace BatInspector.Controls
         _tb.Text = _tb.Text.Substring(_tb.Text.Length - 1);
       _status = enEditStatus.EDIT;
 
-      string[] finds = Array.FindAll(_items, s => s.StartsWith(_tb.Text, StringComparison.OrdinalIgnoreCase));
+      string[] finds = Array.FindAll(_itemsAbbr, s => s.StartsWith(_tb.Text, StringComparison.OrdinalIgnoreCase));
 
       switch (finds.Length)
       {
@@ -155,9 +168,23 @@ namespace BatInspector.Controls
     {
       _setup = true;
       MenuItem? it = (MenuItem) sender;
-      _tb.Text = it?.Header.ToString();
-      _valString = _tb.Text ?? "";
-      _status = enEditStatus.VALID;
+      if(it != null)
+      { 
+        string? specStr = it.Header.ToString();
+        if (specStr != null)
+        {
+          if(_contextLatin)
+            _tb.Text = SpeciesInfos.findLatin(specStr, App.Model.ValidSpeciesList.ToList<SpeciesInfos>())?.Abbreviation;
+          else
+            _tb.Text = SpeciesInfos.findLocal(specStr, App.Model.ValidSpeciesList.ToList<SpeciesInfos>())?.Abbreviation;
+          _valString = _tb.Text ?? "";
+          _status = enEditStatus.VALID;
+        }
+        else
+          _status = enEditStatus.ERROR;
+      }
+      else
+        _status = enEditStatus.ERROR;
       Keyboard.ClearFocus();
       _dlgValChange?.Invoke(_index, _valString);
       _setup = false;
@@ -165,15 +192,23 @@ namespace BatInspector.Controls
 
     private void _tb_ContextMenuOpening(object sender, ContextMenuEventArgs e)
     {
+      initContextMenu();
+    }
+
+    private void initContextMenu()
+    {
       System.Windows.Controls.ContextMenu menu = new ContextMenu();
-      menu.Width = 90;
-      foreach(string s in _items)
+      menu.Width = 180;
+      menu.PreviewMouseRightButtonDown += _tb_PreviewMouseRightButtonDown;
+      string[] items = _contextLatin ? _itemsLatin : _itemsLocal;
+
+      foreach (string s in items)
       {
         MenuItem it = new MenuItem
         {
           Header = s,
           Padding = new Thickness(-30, 0, 10, 0),
-          Height = 15,
+          Height = 18,
           Style = GetStableMenuItemStyle()
         };
         it.Click += clickContext;
@@ -209,6 +244,29 @@ namespace BatInspector.Controls
         </Style>";
 
       return (Style)System.Windows.Markup.XamlReader.Parse(xaml);
+    }
+
+    private void _tb_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+   //   if (e.OriginalSource is FrameworkElement element && element.Parent is MenuItem menuItem)
+      {
+        _contextLatin = !_contextLatin;
+        // Menü schließen
+        _lastMenuPosition = _tb.ContextMenu.PointToScreen(new System.Windows.Point(0, 0)); ;
+        _tb.ContextMenu.IsOpen = false;
+
+        // Kurze Verzögerung, damit das Menü wirklich geschlossen ist
+        Dispatcher.BeginInvoke(new Action(() =>
+         { 
+           initContextMenu(); 
+           _tb.ContextMenu.IsOpen = true;
+           // Position für das neue Menü setzen
+           _tb.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Absolute;
+           _tb.ContextMenu.HorizontalOffset = _lastMenuPosition.X;
+           _tb.ContextMenu.VerticalOffset = _lastMenuPosition.Y;
+         }));
+        
+      }
     }
   }
 }

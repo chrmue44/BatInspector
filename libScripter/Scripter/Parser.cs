@@ -250,8 +250,7 @@ namespace libScripter
       while(!exec && _busy)
         exec = interpretOneLine();
       _busy = false;
-      if (_dlgFinish != null)
-        _dlgFinish();
+      _dlgFinish?.Invoke();
     }
 
 
@@ -369,8 +368,7 @@ namespace libScripter
           _updateProgress(_actLineNr * 100 / _lines.Length);
       }
       _busy = false;
-      if(_dlgFinish != null)
-        _dlgFinish();
+      _dlgFinish?.Invoke();
     }
 
     public string getTextBlock(int startLine, int endLine)
@@ -977,13 +975,10 @@ namespace libScripter
       int retVal = 0;
       do
       {
-        int pos = 0;
-        int posEnd = 0;
-
-        pos = _actName.IndexOf('%');
+        int pos = _actName.IndexOf('%');
         if ((pos >= _actName.Length) || (pos < 0))
           break;
-        posEnd = _actName.IndexOf('%', pos + 1);
+        int posEnd = _actName.IndexOf('%', pos + 1);
         if ((posEnd >= _actName.Length) || (posEnd < 0))
           break;
         string varName = _actName.Substring(pos + 1, posEnd - pos - 1);

@@ -79,7 +79,9 @@ namespace BatInspector
     dlgVoid? _callBackEnd = null;
     DataBase _mySql;
 
-    string[] _validSpeciesList = new string[0];
+    string[] _validSpeciesAbbrevList = new string[0];
+
+    SpeciesInfos[] _validSpeciesList = new SpeciesInfos[0];
 
     public PrjView View { get { return _view; } }
 
@@ -101,7 +103,9 @@ namespace BatInspector
 
     public List<SpeciesInfos> SpeciesInfos { get { return _speciesInfos; } }
 
-     public string[] ValidSpeciesList { get { return _validSpeciesList; } }
+    public string[] ValidSpeciesAbbrevList { get { return _validSpeciesAbbrevList; } }
+
+    public SpeciesInfos[] ValidSpeciesList { get { return _validSpeciesList; } }
 
     public System.Windows.Input.Key LastKey { get; set; }
 
@@ -156,7 +160,8 @@ namespace BatInspector
       _mySql = new DataBase();
       _view.Query = null;
       int index = 0;
-      _validSpeciesList =createSpeciesList(0, 0);
+      _validSpeciesAbbrevList =createSpeciesAbbreviationList(0, 0);
+      _validSpeciesList = createSpeciesList(0, 0);
 
       ModelParams[]? mp = BaseModel.readDefaultModelParams();
       if (mp == null)
@@ -204,7 +209,7 @@ namespace BatInspector
        _view.Query.Analysis.read(Query.ReportName, DefaultModelParams, enMetaData.AUTO);
     }
 
-    public string[] createSpeciesList(double lat, double lon)
+    public string[] createSpeciesAbbreviationList(double lat, double lon)
     {
       List<string> speciesList = new List<string>();
       ParRegion? reg = App.Model?.Regions.findRegion(lat, lon);
@@ -228,6 +233,36 @@ namespace BatInspector
       speciesList.Add("todo");
       return speciesList.ToArray();
     }
+
+    public SpeciesInfos[] createSpeciesList(double lat, double lon)
+    {
+      List<SpeciesInfos> speciesList = new List<SpeciesInfos>();
+      ParRegion? reg = App.Model?.Regions.findRegion(lat, lon);
+      if (reg != null)
+      {
+        foreach (string sp in reg.Species)
+        { 
+          SpeciesInfos? si = BatInspector.SpeciesInfos.findLatin(sp, SpeciesInfos);
+          if(si != null)
+            speciesList.Add(si);
+        }
+      }
+      else
+      {
+        foreach (SpeciesInfos sp in _speciesInfos)
+          speciesList.Add(sp);
+        speciesList.Add(new SpeciesInfos("Mbart", "Myotis mystacinus et brandtii", "Bartfledermaus", 1, "", false, "", null));
+        speciesList.Add(new SpeciesInfos("Plecotus", "Plecotus auritus et austriacus", "Langohr", 1, "", false, "", null));
+        speciesList.Add(new SpeciesInfos("Pipistrellus", "Pipistrellus", "Pipistrellus", 1, "", false, "", null));
+        speciesList.Add(new SpeciesInfos("Nyctaloid", "Nyctaloid", "Nyctaloid", 1, "", false, "", null));
+        speciesList.Add(new SpeciesInfos("Myotis","Myotis","Myotis",1,"",false, "", null));
+      }
+      speciesList.Add(new SpeciesInfos("?","?","?",1, "", false, "", null));
+      speciesList.Add(new SpeciesInfos("Social", "Social", "Sozialruf", 1, "", false, "", null));
+      speciesList.Add(new SpeciesInfos("todo", "todo", "todo", 1, "", false, "", null));
+      return speciesList.ToArray();
+    }
+
 
     public void initQuery(FileInfo file)
     {
@@ -831,7 +866,7 @@ namespace BatInspector
 
 
 
-    public string[] getLastLogs()
+    public string[] getLastLogs(TimeSpan timeSpan)
     {
       DirectoryInfo dir = new DirectoryInfo(AppParams.LogDataPath);
       FileInfo[] files = dir.GetFiles("*.log");
@@ -842,15 +877,17 @@ namespace BatInspector
           res = 0;
         return res;
       });
-      int cnt = Math.Min(5, files.Length);
-      string[] retVal = new string[cnt];
-      int idx = 0;
-      for (int i = files.Length - cnt; i < files.Length; i++)
+
+      List<string> retVal = new List<string>();
+      DateTime now = DateTime.Now;
+      for (int i = files.Length - 1; i  > 0; i--)
       {
-        retVal[idx] = files[i].FullName;
-        idx++;
+        FileInfo f = files[i];
+        retVal.Add(f.FullName);
+        if ((now - f.LastWriteTimeUtc) > timeSpan)
+          break;
       }
-      return retVal;
+      return retVal.ToArray();
     }
 
     public string[] getInstallationLogs()

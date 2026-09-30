@@ -11,9 +11,6 @@ using BatInspector.Forms;
 using BatInspector.Properties;
 using libParser;
 using libScripter;
-using Org.BouncyCastle.Crypto.Generators;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -107,7 +104,6 @@ namespace BatInspector
       testTranslateFilter();
       testGeoCalc();
       testGetDateFromFilename();
-      //testSignalForm();
       //testSimCall();
       //testReportModelBatdetect2();
       //testCreatePrjFromWavs();
@@ -338,35 +334,6 @@ namespace BatInspector
       assert("loc inside", ret == false);
 
       return retVal;
-    }
-
-    private int testSignalForm()
-    {
-      Csv csv = new Csv();
-      csv.read("E:/bat/2022/20220905/report.csv", ";", true);
-      
-      Csv res = new Csv();
-      res.initColNames("F00;F25;F50;F75;F100;Form", true);
-
-      int rows = csv.RowCnt;
-      for(int r = 2; r <= rows; r++)
-      {
-        double[] f = new double[5];
-        f[0] = csv.getCellAsDouble(r, Cols.F_START);
-        f[1] = csv.getCellAsDouble(r, Cols.F_25);
-        f[2] = csv.getCellAsDouble(r, Cols.F_CENTER);
-        f[3] = csv.getCellAsDouble(r, Cols.F_75);
-        f[4] = csv.getCellAsDouble(r, Cols.F_END);
-        res.addRow();
-        res.setCell(r, "F00", f[0]);
-        res.setCell(r, "F25", f[1]);
-        res.setCell(r, "F50", f[2]);
-        res.setCell(r, "F75", f[3]);
-        res.setCell(r, "F100", f[4]);
-      }
-      res.saveAs("sig.csv");
-
-      return 0;
     }
 
     private void testSimCall()
@@ -1299,16 +1266,60 @@ namespace BatInspector
 
     private void testCheckSpecies()
     {
-      //MDAU
       double lat = 49.5;
       double lon = 8.3;
+
       CallData c = new CallData(83.0, 27.0, -1, 3, -1, 42, enCallChar.FM);
       string[] possibleSpecies;
       c.HasMyotisKink = enYesNoProperty.YES;
       FlowDocument doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       string res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
       assert("MDAU", (res.IndexOf("MDAU") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
-      //PPIP
+
+      c = new CallData(35, 31, -1, 3.4, -1, -1, enCallChar.FM);
+      c.HasCallTypeAandB = enYesNoProperty.YES;
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("BBARA", (res.IndexOf("BBAR") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(44, 31, -1, 5, -1, -1, enCallChar.FM);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("BBARB", (res.IndexOf("BBAR") >= 0));
+
+      c = new CallData(122,42,-1,3.5, -1, 47, enCallChar.FM);
+      c.HasMyotisKink = enYesNoProperty.YES;
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("MALC", (res.IndexOf("MALC") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(152, 40, -1, 2.5, 120, -1, enCallChar.FM);
+      c.HasMyotisKink = enYesNoProperty.NO;
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("MEMA", (res.IndexOf("MEMA") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(115, 24, -1, 3, 120, -1, enCallChar.FM);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("MMYO1", (res.IndexOf("MMYO") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(102, 23.2, -1, 4.8, 120, 27, enCallChar.FM);
+      c.HasMyotisKink = enYesNoProperty.YES;
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("MMYO2", (res.IndexOf("MMYO") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(25, 20, 20, 15, -1, -1, enCallChar.QCF);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("NNOC", (res.IndexOf("NNOC") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(27, 24, 24, 15, -1, -1, enCallChar.QCF);
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("NLEI", (res.IndexOf("NLEI") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
       c = new CallData(-1, -1, 51, 10, -1, -1, enCallChar.FM_QCF);
       doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
@@ -1323,6 +1334,15 @@ namespace BatInspector
       doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
       res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
       assert("PPYG", (res.IndexOf("PPYG") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
+      c = new CallData(55,-1,-1, 5, -1, 22, enCallChar.FM);
+      c.HasMyotisKink = enYesNoProperty.YES;
+      c.IsUniformFormFreqInt = enYesNoProperty.YES;
+      c.HasStrongHarmonic = enYesNoProperty.YES;
+      doc = BatInfo.checkBatSpecies(c, App.Model.SpeciesInfos, lat, lon, true, true, false, null, out possibleSpecies);
+      res = new TextRange(doc.ContentStart, doc.ContentEnd).Text;
+      assert("Plecotus", (res.IndexOf("PAUR") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
+
     }
 
     void testGuano()

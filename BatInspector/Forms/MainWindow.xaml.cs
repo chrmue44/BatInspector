@@ -21,6 +21,7 @@ using BatInspector.Properties;
 using System.Windows.Threading;
 using System.Data;
 
+
 namespace BatInspector.Forms
 {
 
@@ -90,6 +91,7 @@ namespace BatInspector.Forms
       _ctlPrjBtn.setup(true, false);
       _ctlListBtn.setup(false, true);
       DebugLog.setLogDelegate(_ctlLog.log, _ctlLog.clearLog, _ctlLog.checkMaxLogSize, AppParams.LogDataPath);
+      CtlCallItem.setItems(App.Model.ValidSpeciesList);
       initTreeView();
       populateFilterComboBoxes();
       initZoomWindow();
@@ -1544,12 +1546,13 @@ namespace BatInspector.Forms
 
     private void _mnReportError_Click(object sender, RoutedEventArgs e)
     {
-      MessageBoxResult res = System.Windows.MessageBox.Show(MyResources.MsgReportError, MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
-      if (res == MessageBoxResult.Yes)
+      frmErrorLog frm = new frmErrorLog();
+      bool? res = frm.ShowDialog();
+      if (res == true)
       {
         string subject = $"Error Report BatInspector V{AppParams.AppVersion}";
         DebugLog.save();
-        string[] logs = App.Model.getLastLogs();
+        string[] logs = App.Model.getLastLogs(frm.TimeSpan);
         if ((logs != null) && (logs.Length > 0))
           App.Model.sendEmail(AppParams.ERROR_RECIPIENT, subject, MyResources.msgErrorEmail, logs);
       }
@@ -1994,11 +1997,8 @@ namespace BatInspector.Forms
 
     private void _btnExport_Click(object sender, RoutedEventArgs e)
     {
-      if (_frmExportData != null)
-      {
         _frmExportData = new frmExportData();
         _frmExportData.setup();
-      }
       _frmExportData?.Show();
     }
   }

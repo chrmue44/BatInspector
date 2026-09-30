@@ -8,6 +8,7 @@
 
 using libParser;
 using libScripter;
+using Mysqlx;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -39,7 +40,7 @@ namespace BatInspector
         new OptItem("EditWav", "<option> edit wav file", 1, fctEditWav),
         new OptItem("ExportFiles", "export files from project <FilterExpression> <outDir> <allCalls",3, ftcExportFiles ),
         new OptItem("FindMissingFilesInTrainingData", "find missing files in training data <wavPath>, <annPath>",2,fctFindMissingFilesInTrainingData),
-        new OptItem("RemoveFileFromPrj", "remove file from currently open project <FileNr>", 1, fctRemoveFileFromPrj),
+        new OptItem("RemoveFilesFromPrj", "remove selected files from currently open project", 0, fctRemoveFilesFromPrj),
         new OptItem("SaveSelectedAsProject", "<path> <name> save selected files as project",2, fctSaveSelAsPrj),
         new OptItem("SplitProject", "split project",0, fctSplitProject),
         new OptItem("SplitWavFile", "split wav file <fileName> <splitLength> <removeOriginal>",3, fctSplitWavFile),
@@ -58,6 +59,7 @@ namespace BatInspector
       App.Model.Prj?.Analysis?.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
       return 0;
     }
+
     int fctAdjustProject(List<string> pars, out string ErrText)
     {
       ErrText = "";
@@ -65,14 +67,23 @@ namespace BatInspector
       return 0;
     }
 
-    int fctRemoveFileFromPrj(List<string> pars, out string ErrText)
+    int fctRemoveFilesFromPrj(List<string> pars, out string ErrText)
     {
       ErrText = "";
-      int ok = App.Model.deleteFile(pars[0]);
-      if (ok == 2)
+      int ok = 0;
+      if((App.Model.Prj != null) && (App.Model.Prj.Ok))
+      {
+        List<string> files = new List<string>();
+        foreach(PrjRecord rec in App.Model.Prj.Records)
+        {
+          if(rec.Selected)
+            files.Add(rec.File);
+        }
+        App.Model.deleteFiles(files);
+        App.Model.Prj.ReloadInGui = true;
+      }
+      else
         DebugLog.log("RemoveFileFromPrj: project is not open", enLogType.ERROR);
-      if (ok == 1)
-        DebugLog.log("RemoveFileFromPrj: unable to delete", enLogType.ERROR);
       return ok;
     }
 

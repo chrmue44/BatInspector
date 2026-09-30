@@ -53,13 +53,13 @@ namespace libParser
 
     public static string FileName { get { return Inst._fName; } }
 
-    static public void log(string? msg, enLogType type, bool beep = false)
+    static public void log(string? msg, enLogType type, bool beep = false, bool force = false)
     {
       while (_saving)
         Thread.Sleep(20);
       if (beep)
         Console.Beep();
-      Inst.logMsg(msg, type);
+      Inst.logMsg(msg, type, force);
     }
 
     static public void save()
@@ -112,9 +112,9 @@ namespace libParser
       }
     }
 
-    void logMsg(string? msg, enLogType type)
+    void logMsg(string? msg, enLogType type, bool force)
     {
-      if ((msg != null) && (msg != _lastMsg))
+      if ((msg != null) && ((msg != _lastMsg) || force))
       {
         _lastMsg = msg;
         stLogEntry entry = new stLogEntry(msg, type, DateTime.Now);

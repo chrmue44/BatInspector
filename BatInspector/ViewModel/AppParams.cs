@@ -874,7 +874,7 @@ namespace BatInspector
         else
         {
           AppDataPath = replaceDriveLetter(path);
-          AppParamsPath = AppDataPath;
+//          AppParamsPath = AppDataPath;
         }
       }
       else

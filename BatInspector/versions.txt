@@ -1,4 +1,5 @@
 - bugfix: color values are not updated in the setup dialog when selecting a preset (but saved if unchanged)
+- bugfix: crash create ActivityDiagram in report dialog
 - ported to .NET10 Framework
 - added color preset from AK Fledermausschutz Aachen, Düren
 - expert mode: hides Scatter Diagram, Statistics, MySql and Species View
@@ -9,6 +10,7 @@
 - manual Species offers now selection of all possible Species (not just regionals)
 - setting filter now a lot faster in big projects
 - GUI doesn't freeze anymore while filtering
+- selectable timespan for error reports to send
 
 # V0.9.9.0   12.08.26
 - up to 5 fully configurable frequency guide lines in zoom view

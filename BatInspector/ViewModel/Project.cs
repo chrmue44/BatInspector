@@ -117,7 +117,9 @@ namespace BatInspector
             retVal = rec;
             break;
           }
-          else if ((iLast - iFirst) <= 1)
+          else if ((iLast - iFirst) == 1)
+            iFirst = iLast;
+          else if ((iLast - iFirst) == 0)
             break;
           else if (string.CompareOrdinal(rec.File.ToLower(), Path.GetFileName(wavName).ToString().ToLower()) < 0)
             iFirst = i;
@@ -150,7 +152,7 @@ namespace BatInspector
       {
         string fName = getFullFilePath(records[0].File);
         PrjMetaData.getPositionFromMetaData(fName, out double lat, out double lon);
-        _speciesArray = App.Model.createSpeciesList(lat,lon);
+        _speciesArray = App.Model.createSpeciesAbbreviationList(lat,lon);
       }
     }
   }

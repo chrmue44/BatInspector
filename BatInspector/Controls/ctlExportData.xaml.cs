@@ -35,6 +35,10 @@ namespace BatInspector.Controls
       _ctlComment.setup(MyResources.Comment, enDataType.STRING, 0, 120, true);
       _ctlPathWav.setup("WAV", enDataType.STRING, 0, 120, false);
       _ctlPathWav.setValue(item.PathToWav);
+      _ctlName.setup("Name", enDataType.STRING, 0, 120, true);
+      _ctlName.setValue(item.Name);
+      _ctlLocation.setup("Fundort", enDataType.STRING, 0, 120, true);
+      _ctlLocation.setValue(item.Location);
       _ctlPathPng.setup("PNG", enDataType.STRING, 0, 120, false);
       _ctlPathPng.setValue(item.PathToPng);
     }
@@ -53,6 +57,8 @@ namespace BatInspector.Controls
       retVal.PathToWav = _ctlPathWav.getValue();
       retVal.Latitude = _ctlLat.getDoubleValue();
       retVal.Longitude = _ctlLon.getDoubleValue();
+      retVal.Name = _ctlName.getValue();
+      retVal.Location = _ctlLocation.getValue();
       return retVal;
     }
   }

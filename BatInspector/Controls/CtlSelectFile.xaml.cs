@@ -91,8 +91,7 @@ namespace BatInspector.Controls
             _txt.Text = ofi.FileName;
           }
         }
-        if (_dlgAction != null)
-          _dlgAction();
+        _dlgAction?.Invoke();
       }
       catch (Exception ex)
       {

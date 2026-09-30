@@ -6,14 +6,28 @@
         xmlns:local="clr-namespace:BatInspector.Controls"
         xmlns:res="clr-namespace:BatInspector.Properties"
         mc:Ignorable="d"
-        Title="{x:Static res:MyResources.MainToolExportData}" Height="600" Width="1000">
+        Title="{x:Static res:MyResources.MainToolExportData}" Height="576" Width="990">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <local:CtlSelectFile Grid.Row="0" x:Name="_ctlWavFolder" Margin="10,30,10,20"/>
+        <Grid Grid.Row="0" Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <local:CtlSelectFile  x:Name="_ctlWavFolder" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <CheckBox Name="_cbRecursive" Content="{x:Static res:MyResources.FrmCreatePrj_Rekursiv}" Margin="10,3,0,0" Grid.Column="2" Click="_cbRecursive_Click"/>
+            <local:ctlDataItem x:Name="_ctlEvalFolderName" Grid.Row="1"/>
+            <local:ctlDataItem x:Name="_ctlWavFolderName" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+        </Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <GroupBox Margin="5" Template="{DynamicResource GroupBoxCmu}">
                 <GroupBox.Header>
@@ -28,6 +42,7 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5,20,5,5" HorizontalAlignment="Right">
             <Button Width="120" x:Name="_btnNaturGucker" Content="Naturgucker..." Height="25" Margin="10,0,0,0" />
             <Button Width="120" x:Name="_btnInaturalist" Content="iNaturalist..." Height="25" Margin="10,0,0,0" Click="_btnInaturalist_Click" />
+            <Button Width="120" x:Name="_btnMultiBase" Content="Multibase..." Height="25" Margin="10,0,0,0" Click="_btnMultiBase_Click" />
             <Button Width="120" x:Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Height="25" Margin="10,0,0,0" Click="_btnCancel_Click" />
         </StackPanel>
 

@@ -2065,7 +2065,7 @@
     <value>Document Recordings</value>
   </data>
   <data name="frmExportData_SelectWAVFolder" xml:space="preserve">
-    <value>select Folder for Document Recordings</value>
+    <value>select folder for document recordings</value>
   </data>
   <data name="frmVerify_AllSpecies" xml:space="preserve">
     <value>All Bat Species</value>
@@ -2081,5 +2081,32 @@
   </data>
   <data name="ToolTipBreakPoint" xml:space="preserve">
     <value>left-click: set/delete breakpoint; right-click on breakpoint: set break condition</value>
+  </data>
+  <data name="frmErrorLog_SelectTime" xml:space="preserve">
+    <value>Select time to range to submit</value>
+  </data>
+  <data name="frmErrorLog_1Hour" xml:space="preserve">
+    <value>1 hour</value>
+  </data>
+  <data name="frmErrorLog_2Hours" xml:space="preserve">
+    <value>2 hours</value>
+  </data>
+  <data name="frmErrorLog_6Hours" xml:space="preserve">
+    <value>6 hours</value>
+  </data>
+  <data name="frmErrorLog_1Day" xml:space="preserve">
+    <value>1 day</value>
+  </data>
+  <data name="frmErrorLog_2Days" xml:space="preserve">
+    <value>2 days</value>
+  </data>
+  <data name="frmExportData_DirEval" xml:space="preserve">
+    <value>Folder name for evaluations</value>
+  </data>
+  <data name="frmExportData_DirWav" xml:space="preserve">
+    <value>Folder name for WAV files</value>
+  </data>
+  <data name="frmExportData_SelectRoot" xml:space="preserve">
+    <value>select root folder</value>
   </data>
 </root>

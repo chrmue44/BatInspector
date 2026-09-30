@@ -2302,6 +2302,60 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 1 day ähnelt.
+        /// </summary>
+        public static string frmErrorLog_1Day {
+            get {
+                return ResourceManager.GetString("frmErrorLog_1Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 1 hour ähnelt.
+        /// </summary>
+        public static string frmErrorLog_1Hour {
+            get {
+                return ResourceManager.GetString("frmErrorLog_1Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2 days ähnelt.
+        /// </summary>
+        public static string frmErrorLog_2Days {
+            get {
+                return ResourceManager.GetString("frmErrorLog_2Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2 hours ähnelt.
+        /// </summary>
+        public static string frmErrorLog_2Hours {
+            get {
+                return ResourceManager.GetString("frmErrorLog_2Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 6 hours ähnelt.
+        /// </summary>
+        public static string frmErrorLog_6Hours {
+            get {
+                return ResourceManager.GetString("frmErrorLog_6Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Select time to range to submit ähnelt.
+        /// </summary>
+        public static string frmErrorLog_SelectTime {
+            get {
+                return ResourceManager.GetString("frmErrorLog_SelectTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die include PNG file (image) ähnelt.
         /// </summary>
         public static string frmExpIncludePNG {
@@ -2320,7 +2374,34 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die select Folder for Document Recordings ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folder name for evaluations ähnelt.
+        /// </summary>
+        public static string frmExportData_DirEval {
+            get {
+                return ResourceManager.GetString("frmExportData_DirEval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Folder name for WAV files ähnelt.
+        /// </summary>
+        public static string frmExportData_DirWav {
+            get {
+                return ResourceManager.GetString("frmExportData_DirWav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die select root folder ähnelt.
+        /// </summary>
+        public static string frmExportData_SelectRoot {
+            get {
+                return ResourceManager.GetString("frmExportData_SelectRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die select folder for document recordings ähnelt.
         /// </summary>
         public static string frmExportData_SelectWAVFolder {
             get {

@@ -2082,4 +2082,31 @@
   <data name="ToolTipBreakPoint" xml:space="preserve">
     <value>Linksklick: setze/lösche Breakpunkt; Rechtsklick auf Breakpunkt: Break-Bedingung festlegen</value>
   </data>
+  <data name="frmErrorLog_SelectTime" xml:space="preserve">
+    <value>Zeitraum wählen, der übermittelt werden soll</value>
+  </data>
+  <data name="frmErrorLog_1Hour" xml:space="preserve">
+    <value>1 Stunde</value>
+  </data>
+  <data name="frmErrorLog_2Hours" xml:space="preserve">
+    <value>2 Stunden</value>
+  </data>
+  <data name="frmErrorLog_6Hours" xml:space="preserve">
+    <value>6 Stunden</value>
+  </data>
+  <data name="frmErrorLog_1Day" xml:space="preserve">
+    <value>1 Tag</value>
+  </data>
+  <data name="frmErrorLog_2Days" xml:space="preserve">
+    <value>2 Tage</value>
+  </data>
+  <data name="frmExportData_DirEval" xml:space="preserve">
+    <value>Verzeichnisname für Auswertungen</value>
+  </data>
+  <data name="frmExportData_DirWav" xml:space="preserve">
+    <value>Verzeichnisname für WAV Dateien</value>
+  </data>
+  <data name="frmExportData_SelectRoot" xml:space="preserve">
+    <value>Wurzelverzeichnis festlegen</value>
+  </data>
 </root>

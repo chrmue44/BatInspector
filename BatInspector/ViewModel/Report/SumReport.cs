@@ -8,17 +8,14 @@
 using BatInspector.Properties;
 using libParser;
 using libScripter;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+
 
 
 namespace BatInspector
@@ -342,6 +339,7 @@ namespace BatInspector
       }
       return retVal;
     }
+
     public void save(string name)
     {
       try
@@ -366,6 +364,7 @@ namespace BatInspector
         DebugLog.log("failed to write web report data file:" + name + ": " + e.ToString(), enLogType.ERROR);
       }
     }
+
     public static WebReportDataJson? load(string name)
     {
       WebReportDataJson? retVal;
@@ -441,7 +440,6 @@ namespace BatInspector
 
 
   [DataContract]
-  
   public class ExportDataItem
   {
     [DataMember]
@@ -461,6 +459,10 @@ namespace BatInspector
     [DataMember]
     public string Comment { get; set; } = "";
     [DataMember]
+    public string Name { get; set; } = "";
+    [DataMember]
+    public string Location { get; set; } = "";
+    [DataMember]
     public string PathToWav { get; set; } = "";
     [DataMember]
     public string PathToPng { get; set; } = "";
@@ -472,6 +474,7 @@ namespace BatInspector
   [DataContract]
   public class ExportDataJson
   {
+    const string MULIBASE_TEMPLATE = "MultiBaseCS_Importvorlage_Beobachtungen.csv";
     public ExportDataJson(int cnt)
     {
       DocumentFiles = new ExportDataItem[cnt];
@@ -479,7 +482,7 @@ namespace BatInspector
 
     [DataMember]
     public ExportDataItem[] DocumentFiles { get; set; }
-  
+
     public void save(string name)
     {
       try
@@ -499,8 +502,86 @@ namespace BatInspector
       {
         DebugLog.log("failed to write export data:" + name + ": " + e.ToString(), enLogType.ERROR);
       }
+    }
+
+    public void saveAsCsv(string name, bool append)
+    {
+      try
+      {
+        Csv csv = new Csv();
+        bool createNew = !append;
+        if (append)
+        {
+          if (File.Exists(name))
+            csv.read(name,";", true);
+          else
+            createNew = true;
+        }
+        if (createNew)
+        {
+          string template = Path.Combine(AppParams.AppDataPath,"dat", MULIBASE_TEMPLATE);
+          csv.read(template,";",true);
+        }
+        foreach (ExportDataItem it in DocumentFiles)
+        {
+          csv.addRow();
+          int row = csv.RowCnt;
+          csv.setCell(row, "Art", it.SpeciesLatin);
+          csv.setCell(row, "Datum", it.Date);
+          csv.setCell(row, "Nachweistyp", "Akustik: Detektor (Dauererfassung Boden)");
+          csv.setCell(row, "EPSG", 4326);
+          csv.setCell(row, "X", it.Longitude);
+          csv.setCell(row, "Y", it.Latitude);
+          csv.setCell(row, "Fundort", it.Location);
+          csv.setCell(row, "Beobachter", it.Name);
+          csv.setCell(row, "Bestimmer", it.Name);
+          csv.setCell(row, "Bemerkung_1", it.Comment);
+          csv.setCell(row, "Bemerkung_2", "Belegaufnahme: " +  Path.GetFileName(it.PathToWav));
+          csv.setCell(row, "Toleranz", "genau bis 100m");
+        }
+        csv.saveAs(name, true);
+      }
+      catch (Exception e)
+      {
+        DebugLog.log($"failed to write export data: {name} {e}", enLogType.ERROR);
+      }
+    }
+
+    public static void exportEvaluation(DirectoryInfo dir, string subDirEval, string subsubDirWav, bool append)
+    {
+      DirectoryInfo[] subDirs = dir.GetDirectories();
+      foreach (DirectoryInfo d in subDirs)
+      {
+        if (d.Name == subsubDirWav)
+        {
+          ExportDataJson? exp = App.Model.SumReport.getListOfDocumentRecordings(d.FullName);
+          if (exp != null)
+          {
+            string expName = Path.Combine(AppParams.AppParamsPath, "exp_multibase.csv");
+            exp.saveAsCsv(expName, append);
+          }
+        }
+      }
 
     }
+
+    public static void exportRecursive(string path, string subDirEval, string subsubDirWav, ref bool append)
+    {
+      DirectoryInfo startDir = new DirectoryInfo(path);
+      DirectoryInfo[] subDirs = startDir.GetDirectories();
+      foreach(DirectoryInfo dir in subDirs)
+      {
+        if (dir.Name == subDirEval)
+        {
+          exportEvaluation(dir, subDirEval, subsubDirWav, append);
+          append = true;
+        }
+        else
+          exportRecursive(dir.FullName, subDirEval, subsubDirWav, ref append);
+      }
+    }
+
+
   }
 
   /// <summary>
@@ -721,9 +802,29 @@ namespace BatInspector
     }
 
 
-    public ExportDataJson getListOfDocumentRecordings(string path)
+    public ExportDataJson? getListOfDocumentRecordings(string path)
     {
+      if (string.IsNullOrEmpty(path))
+        return null;
+
       DirectoryInfo dir = new DirectoryInfo(path);
+
+      // retrieve information shared between all recordings
+      DirectoryInfo? parentDir = dir.Parent;
+      string Name = "";
+      string Location = "";
+      if (parentDir != null)
+      {
+        string repName = Path.Combine(parentDir.FullName, "formular.json");
+        WebReportDataJson? repData = WebReportDataJson.load(repName);
+        if (repData != null)
+        {
+          Name = repData.Author;
+          Location = repData.LocationName;
+        }
+      }
+
+      // retrieve individual informations
       FileInfo[] files = dir.GetFiles("*.wav");
       ExportDataJson retVal = new ExportDataJson(files.Length);
       int index = 0;
@@ -733,6 +834,8 @@ namespace BatInspector
         int pos1 = file.Name.IndexOf('_');
         item.PathToWav = file.FullName;
         item.PathToPng = file.FullName.ToLower().Replace(".wav",".png");
+        item.Location = Location;
+        item.Name = Name;
         string abbrSpec = file.Name.Substring(0, pos1);
         SpeciesInfos spec = SpeciesInfos.findAbbreviation(abbrSpec, App.Model.SpeciesInfos);
         if (spec != null)
@@ -768,6 +871,10 @@ namespace BatInspector
             item.Humidity = humid;
           item.Date = rec.DateTime;
         }
+        else
+        {
+          DebugLog.log($"no meta data found for file {item.PathToWav}", enLogType.WARNING);
+        }
         retVal.DocumentFiles[index] = item;
         index++;
       }
@@ -776,60 +883,67 @@ namespace BatInspector
 
     void createActivityDiagSync()
     {
-      DebugLog.log("start creating activity diagram...", enLogType.INFO);
-      initDirTree(_rootDir, enModel.BAT_DETECT2);
-
-      DateTime date = _start;
-      int ticksPerHour = 60 / _classWidthMin;
-      bool addLine = false;
-      ActivityData retVal = new ActivityData(ticksPerHour);
-      retVal.StartDate = _start.AddDays(-1); ;
-      retVal.EndDate = _end;
-      double latitude = 0;
-      double longitude = 0;
-
-      if (_withQuery && _currSpecies != null)
+      try
       {
-        ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
-        string qryName = Path.Combine(_dstDir, _currSpecies.Abbreviation);
-        _qryBestOf = new Query(qryName, _rootDir, _dstDir, "", modelParams, App.Model.DefaultModelParams.Length);
-        _qryBestOf.createQueryFile();
-      }
+        DebugLog.log("start creating activity diagram...", enLogType.INFO);
+        initDirTree(_rootDir, enModel.BAT_DETECT2);
 
-      while (date < _end)
-      {
-        DailyActivity dailyActivity = new DailyActivity(date,ticksPerHour);
-        int days = calcDays(date, _end, _period);
+        DateTime date = _start;
+        int ticksPerHour = 60 / _classWidthMin;
+        bool addLine = false;
+        ActivityData retVal = new ActivityData(ticksPerHour);
+        retVal.StartDate = _start.AddDays(-1); ;
+        retVal.EndDate = _end;
+        double latitude = 0;
+        double longitude = 0;
 
-        bool cont = gatherDailyActivity(date, days, _expression, dailyActivity, out bool addedLine);
-        if(dailyActivity.TotalCalls > 0)
+        if (_withQuery && _currSpecies != null)
         {
-          retVal.DaysWithData++;
-          latitude += dailyActivity.Latitude;
-          longitude += dailyActivity.Longitude;
-          retVal.TotalCalls += dailyActivity.TotalCalls;
-          if (dailyActivity.MaxCount > retVal.MaxCount)
-            retVal.MaxCount = dailyActivity.MaxCount;
+          ModelParams modelParams = App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)];
+          string qryName = Path.Combine(_dstDir, _currSpecies.Abbreviation);
+          _qryBestOf = new Query(qryName, _rootDir, _dstDir, "", modelParams, App.Model.DefaultModelParams.Length);
+          _qryBestOf.createQueryFile();
         }
-        // after first line was found continue to add lines, even without having data
-        if (addedLine)
-          addLine = true;
-        date = incrementDate(date, _period);
-        if (addLine)
-          retVal.Add(dailyActivity);
+
+        while (date < _end)
+        {
+          DailyActivity dailyActivity = new DailyActivity(date, ticksPerHour);
+          int days = calcDays(date, _end, _period);
+
+          bool cont = gatherDailyActivity(date, days, _expression, dailyActivity, out bool addedLine);
+          if (dailyActivity.TotalCalls > 0)
+          {
+            retVal.DaysWithData++;
+            latitude += dailyActivity.Latitude;
+            longitude += dailyActivity.Longitude;
+            retVal.TotalCalls += dailyActivity.TotalCalls;
+            if (dailyActivity.MaxCount > retVal.MaxCount)
+              retVal.MaxCount = dailyActivity.MaxCount;
+          }
+          // after first line was found continue to add lines, even without having data
+          if (addedLine)
+            addLine = true;
+          date = incrementDate(date, _period);
+          if (addLine)
+            retVal.Add(dailyActivity);
+        }
+        if (retVal.DaysWithData > 0)
+        {
+          retVal.Latitude = latitude / retVal.DaysWithData;
+          retVal.Longitude = longitude / retVal.DaysWithData;
+        }
+        if (_withQuery)
+          _qryBestOf?.writeQueryFile();
+
+        _showActivityData?.Invoke(retVal, Path.Combine(_dstDir, _bmpName), _classWidthMin);
+
+        if (_currSpecies != null)
+          _currActivityItem = new ActivityItem(_currSpecies.Abbreviation, retVal.getMeanActivity());
       }
-      if (retVal.DaysWithData > 0)
+      catch (Exception ex)
       {
-        retVal.Latitude = latitude / retVal.DaysWithData;
-        retVal.Longitude = longitude / retVal.DaysWithData;
+        DebugLog.log($"{ex}", enLogType.ERROR);
       }
-      if (_withQuery)
-        _qryBestOf?.writeQueryFile();
-
-      _showActivityData?.Invoke(retVal, Path.Combine(_dstDir, _bmpName), _classWidthMin);
-
-      if (_currSpecies != null)
-        _currActivityItem  = new ActivityItem(_currSpecies.Abbreviation,retVal.getMeanActivity());
     }
 
     public void createActivityDiagAsync(DateTime start, DateTime end, enPeriod period, string rootDir, string dstDir, ModelParams modelPars, string expression, string bmpName, dlgShowActivityDiag dlgShowHeatMap, int classWidthMin)

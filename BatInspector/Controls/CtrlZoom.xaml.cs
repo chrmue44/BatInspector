@@ -230,7 +230,7 @@ namespace BatInspector.Controls
       _ctlSpecManBird.setup(MyResources.CtlZoomSpeciesMan, 0, lblWidth, 95, true, ctlSpecManBirdChanged);
       if (species != null)
         _ctlSpecMan.setItems(species);
-      _ctlProbability.setup(BatInspector.Properties.MyResources.CtrlZoomProbability, enDataType.DOUBLE, 2, lblWidth);
+      _ctlProbability.setup(BatInspector.Properties.MyResources.Confidence, enDataType.DOUBLE, 2, lblWidth);
       int wt = 140;
       _ctlDateTime.setup(BatInspector.Properties.MyResources.CtlZoomRecTime, enDataType.STRING, 0, wt);
       DateTime t = AnyType.getDate(App.Model.ZoomView.FileInfo.DateTime);

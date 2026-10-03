@@ -940,7 +940,7 @@
     <value>Duration of call [ms]</value>
   </data>
   <data name="FilterVarHelpProb" xml:space="preserve">
-    <value>Probability AI determination of species</value>
+    <value>Confidence AI determination of species</value>
   </data>
   <data name="FilterVarHelpRecording" xml:space="preserve">
     <value>Remarks for the recording</value>
@@ -1122,8 +1122,8 @@
   <data name="FrmCreatePrjImportingProject" xml:space="preserve">
     <value>Importing project...</value>
   </data>
-  <data name="CtrlZoomProbability" xml:space="preserve">
-    <value>Probability</value>
+  <data name="Confidence" xml:space="preserve">
+    <value>Confidence</value>
   </data>
   <data name="ZoomViewMsgNoiseReduction" xml:space="preserve">
     <value>applying noise reduction...</value>
@@ -2108,5 +2108,20 @@
   </data>
   <data name="frmExportData_SelectRoot" xml:space="preserve">
     <value>select root folder</value>
+  </data>
+  <data name="BatInfoTestFor" xml:space="preserve">
+    <value>test for</value>
+  </data>
+  <data name="BatInfoSpeciesNotInList" xml:space="preserve">
+    <value>Species not found in list</value>
+  </data>
+  <data name="BatInfoCallChar" xml:space="preserve">
+    <value>Call characteristic not found for this species</value>
+  </data>
+  <data name="BatInfoCallDuration" xml:space="preserve">
+    <value>Call duration out of bounds for this species</value>
+  </data>
+  <data name="BatInfoOutsideRange" xml:space="preserve">
+    <value>outside range</value>
   </data>
 </root>

@@ -1,0 +1,23 @@
+﻿<Window x:Class="BatInspector.Forms.frmErrorLog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatInspector.Controls"
+        xmlns:res="clr-namespace:BatInspector.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static res:MyResources.FrmMainReportError}" Height="150" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+        <local:ctlSelectItem x:Name="_ctlSelTime"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10" HorizontalAlignment="Right">
+            <Button  Name="_btnOk" Content="{x:Static res:MyResources.BtnOK}" Width="120" Height="28" Margin="0,0,10,0" Click="_btnOk_Click"/>
+            <Button  Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Width="120" Height="28" Click="_btnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

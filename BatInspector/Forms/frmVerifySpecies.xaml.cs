@@ -127,13 +127,17 @@ namespace BatInspector.Forms
     private void initSpeciesComboBox()
     {
       _cbSpecies.Items.Clear();
-      foreach (SpeciesInfos si in App.Model.SpeciesInfos)
+      string[] spItems = new string[App.Model.SpeciesInfos.Count];
+      for (int i = 0; i < App.Model.SpeciesInfos.Count; i++)
       {
         if (_cbLocalNames.IsChecked == true)
-          _cbSpecies.Items.Add(si.Local);
+          spItems[i] = App.Model.SpeciesInfos[i].Local;
         else
-          _cbSpecies.Items.Add(si.Abbreviation);
+          spItems[i] = App.Model.SpeciesInfos[i].Abbreviation;
       }
+      Array.Sort(spItems);
+      foreach (string s in spItems) 
+        _cbSpecies.Items.Add(s);
       _cbSpecies.SelectedIndex = 0;
     }
 
@@ -225,6 +229,16 @@ namespace BatInspector.Forms
       if(_rbSelectedSpecies.IsChecked == true)
       {
         _tbResult.Document = BatInfo.checkAgainstOneSpecies(cd, _cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos, _lat, _lon, _cbNotDeterminable.IsChecked == true, _cbLocalNames.IsChecked == true, HandleRequestNavigate);
+        _species = new string[1];
+        SpeciesInfos? si = SpeciesInfos.findLocal(_cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos);
+        _species[0] = si?.Abbreviation ?? "";
+        _ctlHasCallTypeAB.setVisibility(_species);
+        _ctlHasKneeClearly.setVisibility(_species);
+        _ctlHasMyotisKink.setVisibility(_species);
+        _ctlHasStrongHarmonics.setVisibility(_species);
+        _ctlHasUpwardHookAtEnd.setVisibility(_species);
+        _ctlIsConvex.setVisibility(_species);
+        _ctlIsUniForm.setVisibility(_species);
 
       }
     }

@@ -196,6 +196,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Call characteristic not found for this species ähnelt.
+        /// </summary>
+        public static string BatInfoCallChar {
+            get {
+                return ResourceManager.GetString("BatInfoCallChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Call duration out of bounds for this species ähnelt.
+        /// </summary>
+        public static string BatInfoCallDuration {
+            get {
+                return ResourceManager.GetString("BatInfoCallDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die characteristic ähnelt.
         /// </summary>
         public static string BatInfoChar {
@@ -223,11 +241,38 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die outside range ähnelt.
+        /// </summary>
+        public static string BatInfoOutsideRange {
+            get {
+                return ResourceManager.GetString("BatInfoOutsideRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die partly idenfiable ähnelt.
         /// </summary>
         public static string BatInfoPartly {
             get {
                 return ResourceManager.GetString("BatInfoPartly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Species not found in list ähnelt.
+        /// </summary>
+        public static string BatInfoSpeciesNotInList {
+            get {
+                return ResourceManager.GetString("BatInfoSpeciesNotInList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die test for ähnelt.
+        /// </summary>
+        public static string BatInfoTestFor {
+            get {
+                return ResourceManager.GetString("BatInfoTestFor", resourceCulture);
             }
         }
         
@@ -480,6 +525,15 @@ namespace BatInspector.Properties {
         public static string Comment {
             get {
                 return ResourceManager.GetString("Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Confidence ähnelt.
+        /// </summary>
+        public static string Confidence {
+            get {
+                return ResourceManager.GetString("Confidence", resourceCulture);
             }
         }
         
@@ -1294,15 +1348,6 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Probability ähnelt.
-        /// </summary>
-        public static string CtrlZoomProbability {
-            get {
-                return ResourceManager.GetString("CtrlZoomProbability", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die set heterodyne frequency ähnelt.
         /// </summary>
         public static string CtrlZoomToolHeterodyneFreq {
@@ -1744,7 +1789,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Probability AI determination of species ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Confidence AI determination of species ähnelt.
         /// </summary>
         public static string FilterVarHelpProb {
             get {

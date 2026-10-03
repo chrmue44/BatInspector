@@ -79,6 +79,8 @@ namespace BatInspector.Controls
         _itemsLatin[i] = items[i].Latin;
         _itemsLocal[i] = items[i].Local;
       }
+      Array.Sort(_itemsLatin);
+      Array.Sort(_itemsLocal);
     }
 
 

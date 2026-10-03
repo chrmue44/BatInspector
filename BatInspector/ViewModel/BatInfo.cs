@@ -777,7 +777,7 @@ namespace BatInspector
       Species.Add(new SpeciesInfos("VMUR", "Vespertilio murinus", "Zweifarbfledermaus", 40, "", true, "", cVmur ));
     }
 
-    static private DocHelperRtf buildResultsOneSpec(CheckResult result, double lat, double lon,bool localNames, RequestNavigateEventHandler evHandler)
+    static private DocHelperRtf buildResultsOneSpec(CheckResult result, double lat, double lon, bool ok, bool localNames, RequestNavigateEventHandler evHandler)
     {
       DocHelperRtf doc = new DocHelperRtf();
       SolidColorBrush color;
@@ -800,10 +800,11 @@ namespace BatInspector
       }
       string reg = App.Model.Regions.occursAtLocation(result.Species.Abbreviation, lat, lon) ? "" : $"({MyResources.NotRegional})";
       string spec = localNames ? result.Species.Local : result.Species.Abbreviation;
-      doc.addText($"test against {spec}   ");
+      doc.addText($"{MyResources.BatInfoTestFor} {spec}   ");
       doc.addHyperlink("PDF", AppDomain.CurrentDomain.BaseDirectory + result.PdfName + $"#page={result.PageNr}", evHandler);
       doc.addText("\n\n");
-      doc.addText($"Wahrscheinlichkeit: {(int)(result.Score / result.MaxScore * 100)}% \n\n");
+      if (ok)
+        doc.addText($"{MyResources.Confidence}: {(int)(result.Score / result.MaxScore * 100)}% \n\n");
       doc.addText(result.AdditionalInfo);
       return doc;
     }
@@ -945,7 +946,7 @@ namespace BatInspector
       }
       else if(inclFalseResult)
       {
-        info += $"{name} outside range: {range.Min} {unit} <  < {range.Max} {unit} , ";
+        info += $"{name} {MyResources.BatInfoOutsideRange}: {range.Min} {unit} <  < {range.Max} {unit} , ";
       }
       return retVal;
     }
@@ -981,6 +982,7 @@ namespace BatInspector
       bool foundChar = false;
       bool foundDuration = false;
       bool foundSpecies = false;
+      bool ok = true;
       CheckResult res = new CheckResult();
       foreach (SpeciesInfos s in species)
       {
@@ -996,7 +998,7 @@ namespace BatInspector
           {
             foreach (CheckData check in s.CheckData)
             {
-              bool ok = true;
+              ok = true;
               if (!includeUnidentifiable && check.Identifiable == enIdentifiable.NO)
                 continue;
 
@@ -1009,6 +1011,7 @@ namespace BatInspector
                 //info.Replace(",", "\n");
                 if (foundDuration)
                 {
+                  res.MaxScore = 1;  // Score never reaches 100% if not unambiguous
                   info = "Charakteristik: " + call.CallCharacteristic.ToString() + "\n";
                   ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, res, verbose, true);
                   info = info.Replace(", ", "\n");
@@ -1019,8 +1022,10 @@ namespace BatInspector
                   ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk", "kHz", ref info, res, verbose, true);
                   info = info.Replace(", ", "\n");
                 }
+                else
+                  ok = false;
               }
-              else
+              else 
               {
                 info = info = "Charakteristik: " + call.CallCharacteristic.ToString() + "\n";
                 ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, res, verbose, true);
@@ -1031,8 +1036,24 @@ namespace BatInspector
                 info = info.Replace(", ", "\n");
                 ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk", "kHz", ref info, res, verbose, true);
                 info = info.Replace(", ", "\n");
-                foundDuration |= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose, true);
+                ok &= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose, true);
               }
+              res.Species = s;
+              res.Identifiable = check.Identifiable;
+              res.PdfName = s.getGenus() == "Myotis" ? AppParams.BAT_INFO2_PDF : AppParams.BAT_INFO1_PDF;
+              res.PageNr = s.PageNr;
+              string addInfo = "";
+              if (ok)
+              {
+                res.Unambiguous = checkUniqueness(s.Abbreviation, call, ref addInfo);
+                if (res.Unambiguous)
+                  res.Score = res.MaxScore;
+                addInfo += " " + info;
+                res.AdditionalInfo = addInfo;
+                break;
+              }
+              else if (foundDuration)
+                break;
             }
           }
           break;
@@ -1040,21 +1061,17 @@ namespace BatInspector
       }
       if (!foundSpecies)
       {
-        info += "Species not found in list" + "\n";
+        info += MyResources.BatInfoSpeciesNotInList + "\n";
       }
       else if (!foundChar)
       {
-        info += "Call characteristic not found in list" + "\n";
+        info += MyResources.BatInfoCallChar + "\n";
       }
-      else if (!foundDuration)
+      else 
       {
-        info += "Call duration out of bounds" + "\n";
-      }
-      else
-      {
-      }
+      } 
       res.AdditionalInfo = info;
-      DocHelperRtf doc = buildResultsOneSpec(res, lat, lon, localNames, evHandler);
+      DocHelperRtf doc = buildResultsOneSpec(res, lat, lon, ok, localNames, evHandler);
       return doc.Doc;
     }
 

@@ -1122,7 +1122,7 @@
   <data name="FrmCreatePrjImportingProject" xml:space="preserve">
     <value>Importiere Projekt...</value>
   </data>
-  <data name="CtrlZoomProbability" xml:space="preserve">
+  <data name="Confidence" xml:space="preserve">
     <value>Wahrscheinlichkeit</value>
   </data>
   <data name="ZoomViewMsgNoiseReduction" xml:space="preserve">
@@ -2108,5 +2108,20 @@
   </data>
   <data name="frmExportData_SelectRoot" xml:space="preserve">
     <value>Wurzelverzeichnis festlegen</value>
+  </data>
+  <data name="BatInfoTestFor" xml:space="preserve">
+    <value>prüfe auf</value>
+  </data>
+  <data name="BatInfoSpeciesNotInList" xml:space="preserve">
+    <value>gesuchte Art nicht in der Liste</value>
+  </data>
+  <data name="BatInfoCallChar" xml:space="preserve">
+    <value>Rufcharakteristik für diese Art nicht gefunden</value>
+  </data>
+  <data name="BatInfoCallDuration" xml:space="preserve">
+    <value>Rufdauer außerhalb der Grenzen für diese Art</value>
+  </data>
+  <data name="BatInfoOutsideRange" xml:space="preserve">
+    <value>außerhalb der Grenzen</value>
   </data>
 </root>

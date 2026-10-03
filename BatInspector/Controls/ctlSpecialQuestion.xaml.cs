@@ -49,7 +49,7 @@ namespace BatInspector.Controls
       bool relevant = false;
       foreach (string item in species) 
       {
-        SpeciesInfos s = SpeciesInfos.findAbbreviation(item, App.Model.SpeciesInfos);
+        SpeciesInfos? s = SpeciesInfos.findAbbreviation(item, App.Model.SpeciesInfos);
         relevant |= checkRelevance(s);
         Visibility = relevant ? Visibility.Visible : Visibility.Collapsed;
       }

@@ -1929,6 +1929,34 @@ namespace BatInspector.Forms
       collapseTreeView(!_treeViewCollaped);
     }
 
+    delegate Task<bool> dlgShowMsg(string msg, string caption, MessageBoxButton buttons, MessageBoxImage img);
+
+    /// <summary>
+    /// show message in front of the main windows from a background thread
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="caption"></param>
+    /// <param name="buttons"></param>
+    /// <param name="img"></param>
+    /// <returns></returns>
+    public async Task<bool> showMsg(string msg, string caption, MessageBoxButton buttons, MessageBoxImage img)
+    {
+      if (!Dispatcher.CheckAccess()) // Nicht auf dem UI-Thread
+      {
+        // Lambda-Ausdruck direkt anpassen
+        return await Dispatcher.InvokeAsync(() =>
+        {
+          MessageBoxResult res = System.Windows.MessageBox.Show(App.MainWin, msg, caption, buttons, img);
+          return (res == MessageBoxResult.Yes);
+        });
+      }
+      else
+      {
+        MessageBoxResult res = System.Windows.MessageBox.Show(App.MainWin, msg, caption, buttons, img);
+        return (res == MessageBoxResult.Yes);
+      }
+    }
+
 
     private void collapseTreeView(bool collapse)
     {

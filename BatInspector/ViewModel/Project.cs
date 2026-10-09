@@ -6,18 +6,15 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
-//using System.Windows.Forms;
 using System.Xml.Serialization;
 using libParser;
 using libScripter;
-using NAudio.Wave;
-using Org.BouncyCastle.Ocsp;
+
 
 
 namespace BatInspector

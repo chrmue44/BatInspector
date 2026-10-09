@@ -82,7 +82,7 @@ namespace BatInspector
       set { _frequency = value; RecalcBlockSizes(); }
     }
 
-    public UInt32 AverageBytesPerSec { get;  private set; }
+    public UInt32 AverageBytesPerSec { get; private set; }
 
     public UInt16 BlockAlign { get; private set; }
 
@@ -196,28 +196,6 @@ namespace BatInspector
       return chunkBytes.ToArray();
     }
 
-    /*
-    public void AddSampleData(short[] leftBuffer,
-     short[] rightBuffer, int idxStart, int idxEnd)
-    {
-      int len = leftBuffer.Length;
-      if (rightBuffer != null)
-        len += rightBuffer.Length;
-      WaveData = new short[len];
-      int bufferOffset = 0;
-      for (int index = 0; index < WaveData.Length; index += 2)
-      {
-        WaveData[index] = leftBuffer[bufferOffset];
-        if(rightBuffer != null)
-          WaveData[index + 1] = rightBuffer[bufferOffset];
-        else
-          WaveData[index + 1] = leftBuffer[bufferOffset];
-        bufferOffset++;
-      }
-      ChunkSize = (UInt32)WaveData.Length * 2;
-    }
-    */
-
 
     public void AddSampleData(byte[] data, int offs, int len, int bitsPerSample, int chanCount)
     {
@@ -257,82 +235,42 @@ namespace BatInspector
         }
       }
       else
-      { 
+      {
         if (bitsPerSample == 16)
-      {
-        for (int i = 0; i < size; i++)
         {
-          int sl = (data[offs] << 16) | (data[offs + 1] << 24);
-          int sr = (data[offs+2] << 16) | (data[offs + 3] << 24);
-          WaveData[i] = (short)((sl + sr) >> 17);
-          offs += 4;
-        }
-        ChunkSize = (UInt32)(WaveData.Length * 2);
-      }
-      else if (bitsPerSample == 24)
-      {
-        for (int i = 0; i < size; i++)
-        {
-          int sl = (data[offs] << 8) | (data[offs + 1] << 16) | (data[offs + 2] << 24);
-          int sr = (data[offs+3] << 8) | (data[offs + 4] << 16) | (data[offs + 5] << 24);
-            WaveData[i] = (short)((sl+sr) >> 17);
-          offs += 6;
-        }
-        ChunkSize = (UInt32)(WaveData.Length * 3);
-      }
-      else if (bitsPerSample == 32)
-      {
-        for (int i = 0; i < size; i++)
-        {
-          long sl = data[offs] | (data[offs + 1] << 8) | (data[offs + 2] << 16) | (data[offs + 3] << 24);
-          long sr = data[offs+4] | (data[offs + 5] << 8) | (data[offs + 6] << 16) | (data[offs + 7] << 24);
+          for (int i = 0; i < size; i++)
+          {
+            int sl = (data[offs] << 16) | (data[offs + 1] << 24);
+            int sr = (data[offs + 2] << 16) | (data[offs + 3] << 24);
             WaveData[i] = (short)((sl + sr) >> 17);
-          offs += 8;
+            offs += 4;
+          }
+          ChunkSize = (UInt32)(WaveData.Length * 2);
         }
-        ChunkSize = (UInt32)(WaveData.Length * 4);
+        else if (bitsPerSample == 24)
+        {
+          for (int i = 0; i < size; i++)
+          {
+            int sl = (data[offs] << 8) | (data[offs + 1] << 16) | (data[offs + 2] << 24);
+            int sr = (data[offs + 3] << 8) | (data[offs + 4] << 16) | (data[offs + 5] << 24);
+            WaveData[i] = (short)((sl + sr) >> 17);
+            offs += 6;
+          }
+          ChunkSize = (UInt32)(WaveData.Length * 3);
+        }
+        else if (bitsPerSample == 32)
+        {
+          for (int i = 0; i < size; i++)
+          {
+            long sl = data[offs] | (data[offs + 1] << 8) | (data[offs + 2] << 16) | (data[offs + 3] << 24);
+            long sr = data[offs + 4] | (data[offs + 5] << 8) | (data[offs + 6] << 16) | (data[offs + 7] << 24);
+            WaveData[i] = (short)((sl + sr) >> 17);
+            offs += 8;
+          }
+          ChunkSize = (UInt32)(WaveData.Length * 4);
+        }
       }
-    }
 
-  }
-
-  public void AddSampleData(byte[] data, int offs, int len, ref double[] samples, int bitsPerSample)
-    {
-      int size = len * 8 / bitsPerSample;
-      WaveData = new short[size];
-      samples = new double[size];
-      if (bitsPerSample == 16)
-      {
-        for (int i = 0; i < size; i++)
-        {
-          int s = (data[offs] << 16) | (data[offs + 1] << 24);
-          WaveData[i] = (short)(s >> 16);
-          samples[i] = (double)s / 2147483648f;
-          offs += 2;
-        }
-        ChunkSize = (UInt32)(WaveData.Length * 2);
-      }
-      else if(bitsPerSample == 24)
-      {
-        for (int i = 0; i < size; i++)
-        {
-          int s = (data[offs] << 8) | (data[offs + 1] << 16) | (data[offs + 2] << 24);
-          WaveData[i] = (short)(s >> 16);
-          samples[i] = (double)s / 2147483648f;
-          offs += 3;
-        }
-        ChunkSize = (UInt32)(WaveData.Length * 3);
-      }
-      else if (bitsPerSample == 32)
-      {
-        for (int i = 0; i < size; i++)
-        {
-          int s = data[offs] | (data[offs+1] << 8) | (data[offs + 2] << 16) | (data[offs + 3] << 24);
-          WaveData[i] = (short)(s >> 16);
-          samples[i] = (double)s / 2147483648f;
-          offs += 4;
-        }
-        ChunkSize = (UInt32)(WaveData.Length * 3);
-      }
     }
 
     public void AddSampleData(double[] leftBuffer, int idxStart, int idxEnd)
@@ -398,13 +336,13 @@ namespace BatInspector
 
     public string FileName { get { return _fName; } }
 
-    public WaveHeader WavHeader { get { return _header;} }
+    public WaveHeader WavHeader { get { return _header; } }
 
-    public FormatChunk FormatChunk {  get {  return _format;} }
+    public FormatChunk FormatChunk { get { return _format; } }
 
-    public short[] AudioSamples {  get { return _data.WaveData; } }
+    public short[] AudioSamples { get { return _data.WaveData; } }
 
-    public Guano? Guano { get{ return _guano; } }
+    public Guano? Guano { get { return _guano; } }
 
     public PlaybackState PlaybackState
     {
@@ -416,11 +354,11 @@ namespace BatInspector
           return _outputDevice.PlaybackState;
       }
     }
-    
-    
+
+
     public double PlayPosition
     {
-      get { return (_rawStream!= null) ? (double)_rawStream.Position / _rawStream.Length * _data.WaveData.Length/_format.Frequency  : 0.0; }
+      get { return (_rawStream != null) ? (double)_rawStream.Position / _rawStream.Length * _data.WaveData.Length / _format.Frequency : 0.0; }
     }
 
 
@@ -435,7 +373,7 @@ namespace BatInspector
       _guano = null;
     }
 
-    public static byte[] partArray(byte[]list, int startIdx, int len)
+    public static byte[] partArray(byte[] list, int startIdx, int len)
     {
       byte[] retVal = new byte[len];
       for (int i = 0; i < len; i++)
@@ -507,7 +445,7 @@ namespace BatInspector
             }
             pos += 4 + chunkSize;
           }
-          if(remainingBytes < 0)
+          if (remainingBytes < 0)
             DebugLog.log($"format error (chunk too long, {-remainingBytes} Bytes) in WAV file: {name}", enLogType.DEBUG);
         }
         _fName = name;
@@ -535,14 +473,14 @@ namespace BatInspector
       {
         if (_isInitialized)
         {
-          if(File.Exists(_fName))
+          if (File.Exists(_fName))
             File.Delete(_fName);
           _format.BitsPerSample = 16;
           using (FileStream f = File.OpenWrite(_fName))
           {
             List<Byte> tempBytes = new List<byte>();
             _header.FileLength = 4 + _format.Length() + _data.Length();
-            if(_guano != null)
+            if (_guano != null)
               _header.FileLength += _guano.Length();
             tempBytes.AddRange(_header.GetBytes());
             tempBytes.AddRange(_format.GetBytes());
@@ -554,12 +492,12 @@ namespace BatInspector
             tempBytes.AddRange(_data.GetBytes());
             _rawData = tempBytes.ToArray();
             f.Write(_rawData, 0, _rawData.Length);
-//            foreach (byte b in _rawData)
-//              f.WriteByte(b);
-            if(_guano != null)
+            //            foreach (byte b in _rawData)
+            //              f.WriteByte(b);
+            if (_guano != null)
             {
               byte[] b = _guano.GetBytes();
-              f.Write(b,0, b.Length);
+              f.Write(b, 0, b.Length);
             }
           }
         }
@@ -598,7 +536,7 @@ namespace BatInspector
         return 1;
       }
 
-      if(pars.Channels > 1)
+      if (pars.Channels > 1)
       {
         DebugLog.log($"import raw failed for file {file}: more than one channel currently not supported", enLogType.ERROR);
         return 2;
@@ -632,7 +570,6 @@ namespace BatInspector
         List<float> samplesR = new List<float>();
         float[] buffer = new float[sampleProvider.WaveFormat.SampleRate];
         int samplesRead;
-        float max = 0;
         Span<float> span = new Span<float>(buffer);
 
         while ((samplesRead = sampleProvider.Read(span)) > 0)
@@ -643,8 +580,6 @@ namespace BatInspector
             {
 
               samplesL.Add(buffer[i]);
-              if (buffer[i + 1] > max)
-                max = buffer[i + 1];
               samplesR.Add(buffer[i + 1]);
             }
           }
@@ -653,7 +588,7 @@ namespace BatInspector
             for (int i = 0; i < samplesRead; i++)
               samplesR.Add(buffer[i]);
           }
-        } 
+        }
         if ((flac.WaveFormat.Channels == 2) && !chanR)
           _data.AddSampleData(samplesL.ToArray(), 0, samplesL.Count);
         else
@@ -672,7 +607,7 @@ namespace BatInspector
       wav.readFile(name);
       int sampleRate = (int)wav.FormatChunk.Frequency;
       double len = (double)wav.AudioSamples.Length / sampleRate;
-      for(int i = 0; i <= len / splitLength; i++)
+      for (int i = 0; i <= len / splitLength; i++)
       {
         int idxStart = (int)(splitLength * i * sampleRate);
         int idxEnd = (int)(splitLength * (i + 1) * sampleRate) - 1;
@@ -680,9 +615,9 @@ namespace BatInspector
           idxEnd = wav.AudioSamples.Length - 1;
         WavFile splitWav = new WavFile();
         splitWav.createFile(sampleRate, idxStart, idxEnd, wav.AudioSamples);
-        if(wav.Guano != null)
+        if (wav.Guano != null)
           splitWav.addGuanoMetaData(wav);
-        string fName = Path.Combine(Path.GetDirectoryName(name)?? "", Path.GetFileNameWithoutExtension(name) + "_" + i.ToString("000") + AppParams.EXT_WAV);
+        string fName = Path.Combine(Path.GetDirectoryName(name) ?? "", Path.GetFileNameWithoutExtension(name) + "_" + i.ToString("000") + AppParams.EXT_WAV);
         splitWav.saveFileAs(fName);
       }
       if (removeOriginal && File.Exists(name))
@@ -724,8 +659,8 @@ namespace BatInspector
     public void createSineWave(double freqHz, int sampleRate, double amplitude, double offs)
     {
       double[] vals = new double[sampleRate];
-      for(int i = 0; i < sampleRate; i++)
-        vals[i] = amplitude * Math.Sin(i * freqHz * 2 * Math.PI/ sampleRate) + offs;
+      for (int i = 0; i < sampleRate; i++)
+        vals[i] = amplitude * Math.Sin(i * freqHz * 2 * Math.PI / sampleRate) + offs;
       createFile(1, sampleRate, 0, vals.Length - 1, vals);
     }
 
@@ -817,7 +752,7 @@ namespace BatInspector
             _outputDevice = new WaveOut();
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
           }
-          if(_rawStream == null)
+          if (_rawStream == null)
           {
             WaveFormat fmt = new WaveFormat((int)_format.Frequency, _format.BitsPerSample, _format.Channels);
             _memStream = new MemoryStream(_rawData);
@@ -840,10 +775,10 @@ namespace BatInspector
       string retVal = "";
       WavFile wav = new WavFile();
       wav.readFile(wavName);
-      if(wav.Guano != null)
+      if (wav.Guano != null)
       {
         GuanoItem? it = wav.Guano.getField("Song Meter|Prefix", "WA");
-        if(it != null)
+        if (it != null)
           retVal = it.Value;
       }
       retVal = retVal.Replace('(', '_');
@@ -860,10 +795,10 @@ namespace BatInspector
       double sum = 0;
       double dt = 1.0 / (double)_format.Frequency;
       double t = _data.WaveData.Length / _format.Frequency;
-      for(int i = iStart; i < iEnd; i++)
+      for (int i = iStart; i < iEnd; i++)
         sum += (long)(_data.WaveData[i] - mean) * (long)(_data.WaveData[i] - mean) * dt;
 
-      retVal =   Math.Sqrt(t * (double)(sum) ) / 32768;
+      retVal = Math.Sqrt(t * (double)(sum)) / 32768;
 
       return retVal;
     }
@@ -934,7 +869,7 @@ namespace BatInspector
       if (idxNextSlice >= _data.WaveData.Length)
         idxNextSlice = _data.WaveData.Length - 1;
       double sum = 0;
-      while (idx < idxNextSlice) 
+      while (idx < idxNextSlice)
       {
         sum += _data.WaveData[idx] * _data.WaveData[idx];
         idx++;
@@ -947,9 +882,9 @@ namespace BatInspector
     private int timeToIndex(double t)
     {
       int retVal = (int)(t * _format.Frequency);
-      if(retVal < 0)
+      if (retVal < 0)
         retVal = 0;
-      if(retVal >= _data.WaveData.Length)
+      if (retVal >= _data.WaveData.Length)
         retVal = _data.WaveData.Length - 1;
       return retVal;
     }

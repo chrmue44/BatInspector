@@ -315,8 +315,8 @@ namespace BatInspector
       string lastFileName = "";
       if (analysis.Files.Count == 0)
       {
-        MessageBoxResult res = System.Windows.MessageBox.Show(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-        retVal = res == MessageBoxResult.Yes;
+        Task<bool> t = App.MainWin.showMsg(BatInspector.Properties.MyResources.QueryReportMissing, BatInspector.Properties.MyResources.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        retVal = t.Result;
       }
       else
       {

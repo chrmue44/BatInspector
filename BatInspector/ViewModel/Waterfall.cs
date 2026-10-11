@@ -79,7 +79,7 @@ namespace BatInspector
       }
       else
       {
-        DebugLog.log("wav file '" + _wavName + "' does not exist!", enLogType.ERROR);
+        DebugLog.log("wav file '" + _wavName + "' does not exist!", enLogType.DEBUG);
       }
     }
 

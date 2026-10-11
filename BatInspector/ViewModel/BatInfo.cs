@@ -946,7 +946,8 @@ namespace BatInspector
       }
       else if(inclFalseResult)
       {
-        info += $"{name} {MyResources.BatInfoOutsideRange}: {range.Min} {unit} <  < {range.Max} {unit} , ";
+        result.Score = 0;
+        info += $"{name} {MyResources.BatInfoOutsideRange}: {range.Min} {unit} < {name} < {range.Max} {unit} , ";
       }
       return retVal;
     }
@@ -1007,7 +1008,7 @@ namespace BatInspector
               foundChar = true;
               if (s.getGenus() == "Myotis")
               {
-                foundDuration |= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose);
+                foundDuration |= checkParameter(call.Duration, check.Duration, MyResources.Duration, "ms", ref info, res, verbose);
                 //info.Replace(",", "\n");
                 if (foundDuration)
                 {
@@ -1028,6 +1029,8 @@ namespace BatInspector
               else 
               {
                 info = info = "Charakteristik: " + call.CallCharacteristic.ToString() + "\n";
+                ok &= checkParameter(call.Duration, check.Duration, MyResources.Duration, "ms", ref info, res, verbose, true);
+                info = info.Replace(", ", "\n");
                 ok &= checkParameter(call.FreqChar, check.FreqChar, "Fc", "kHz", ref info, res, verbose, true);
                 info = info.Replace(", ", "\n");
                 ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, res, verbose, true);
@@ -1035,8 +1038,6 @@ namespace BatInspector
                 ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz", ref info, res, verbose, true);
                 info = info.Replace(", ", "\n");
                 ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk", "kHz", ref info, res, verbose, true);
-                info = info.Replace(", ", "\n");
-                ok &= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose, true);
               }
               res.Species = s;
               res.Identifiable = check.Identifiable;
@@ -1102,7 +1103,7 @@ namespace BatInspector
             ok &= checkParameter(call.FreqStart, check.FreqStart, "Fstart", "kHz", ref info, res, verbose);
             ok &= checkParameter(call.FreqEnd, check.FreqEnd, "Fend", "kHz",ref info, res, verbose);
             ok &= checkParameter(call.FreqMk, check.FreqMk, "Fmk","kHz", ref info, res, verbose);
-            ok &= checkParameter(call.Duration, check.Duration, "D", "ms", ref info, res, verbose);
+            ok &= checkParameter(call.Duration, check.Duration, MyResources.Duration, "ms", ref info, res, verbose);
             if (ok)
             {
               res.Species = s;

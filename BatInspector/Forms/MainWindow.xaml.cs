@@ -1518,11 +1518,13 @@ namespace BatInspector.Forms
       string helpFileName = AppDomain.CurrentDomain.BaseDirectory + name;
       try
       {
-        Process.Start(helpFileName);
+        ProcessStartInfo pInfo = new ProcessStartInfo(helpFileName);
+        pInfo.UseShellExecute = true;
+        Process.Start(pInfo);
       }
-      catch
+      catch (Exception ex)
       {
-        DebugLog.log("could not open PDF file: " + helpFileName, enLogType.ERROR);
+        DebugLog.log($"could not open PDF file {helpFileName}  {ex}", enLogType.ERROR);
       }
     }
 

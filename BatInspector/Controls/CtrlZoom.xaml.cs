@@ -30,7 +30,7 @@ namespace BatInspector.Controls
     //  AnalysisFile _analysis;
     string _wavFilePath = "";
     int _stretch;
-    int _oldCallIdx = -1;
+    int _oldCallIdx = 0;
     System.Windows.Controls.Image[] _playImgs;
     ctlWavFile? _ctlWav;
     dlgVoid? _openExportForm = null;
@@ -249,7 +249,7 @@ namespace BatInspector.Controls
 
       _btnZoomTotal_Click(null, null);
 
-      _oldCallIdx = -1;
+      _oldCallIdx = 0;
       _tbFreqHET.Text = ((int)(AppParams.Inst.FrequencyHET / 1000)).ToString();
       _cbGrid.IsChecked = AppParams.Inst.ShowGrid;
 

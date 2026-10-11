@@ -59,7 +59,7 @@ namespace BatInspector
 
     double[]? generateFft(UInt32 idx, UInt32 length, bool logarithmic, enWIN_TYPE win = enWIN_TYPE.HANN)
     {
-      if (length > 4)
+      if ((length > 4) && (idx < _samples.Length) && ((idx + length) < _samples.Length))
       {
         //   double amplitude = 1.0; double frequency = 20000.5;
         UInt32 zeroPadding = 0; // NOTE: Zero Padding

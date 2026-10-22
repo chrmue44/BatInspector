@@ -4615,6 +4615,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You are opening a compressed project. Unzip compressed recordings? ähnelt.
+        /// </summary>
+        public static string msgInitZipPrj {
+            get {
+                return ResourceManager.GetString("msgInitZipPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Installation Report ähnelt.
         /// </summary>
         public static string msgInstallationEmail {

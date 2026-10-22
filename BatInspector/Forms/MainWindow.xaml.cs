@@ -159,7 +159,7 @@ namespace BatInspector.Forms
           if ((dir != null) && (dir.Length > 0))
           {
             DirectoryInfo batDataDir = new DirectoryInfo(dir);
-            TreeViewItem? child = CreateTreeItem(batDataDir);
+            TreeViewItem? child = CreateTreeItem(batDataDir, false);
             if (child == null)
               continue;
             _trvStructure.Items.Add(child);
@@ -171,7 +171,7 @@ namespace BatInspector.Forms
         foreach (DriveInfo driveInfo in drives)
         {
           DirectoryInfo dir = new DirectoryInfo(driveInfo.Name);
-          TreeViewItem? child = CreateTreeItem(dir);
+          TreeViewItem? child = CreateTreeItem(dir, false);
           if (child == null)
             continue;
           _trvStructure.Items.Add(child);
@@ -193,18 +193,19 @@ namespace BatInspector.Forms
           expandedDir = (item.Tag as DirectoryInfo);
         try
         {
+          List<TreeViewItem> list = new List<TreeViewItem>();
           if (expandedDir != null)
           {
-            if (Project.containsProject(expandedDir) == "")
+            if (Project.containsProject(expandedDir, out bool zipped) == "")
             {
               DebugLog.log("start evaluation TODO", enLogType.DEBUG);
-              foreach (DirectoryInfo subDir in expandedDir.GetDirectories().OrderBy(f => f.Name))
+              foreach (DirectoryInfo subDir in expandedDir.GetDirectories()/*.OrderBy(f => f.Name)*/)
               {
-                TreeViewItem? childItem = CreateTreeItem(subDir);
+                string prjFile = Project.containsProject(subDir, out zipped);
+                TreeViewItem? childItem = CreateTreeItem(subDir, zipped);
                 if (childItem == null)
                   continue;
-                item.Items.Add(childItem);
-                string prjFile = Project.containsProject(subDir);
+                list.Add(childItem);
                 if (prjFile != "")
                 {
                   ModelParams[]? modelParams = Project.readModelParams(prjFile);
@@ -218,18 +219,22 @@ namespace BatInspector.Forms
                   childItem.Foreground = new SolidColorBrush(Colors.Blue);
               }
 
-              foreach (FileInfo subFile in expandedDir.GetFiles())
+              foreach (FileInfo subFile in expandedDir.GetFiles() /*.OrderBy(f => f.Name)*/)
               {
                 if (Query.isQuery(subFile))
                 {
-                  TreeViewItem? childItem = CreateTreeItem(subFile);
+                  TreeViewItem? childItem = CreateTreeItem(subFile, false);
                   if (childItem == null)
                     continue;
-                  item.Items.Add(childItem);
+                  list.Add(childItem);
                   childItem.FontWeight = FontWeights.Bold;
                   childItem.Foreground = new SolidColorBrush(Colors.Orange);
                 }
               }
+
+              list = list.OrderBy(f => f.Header).ToList();
+              foreach (TreeViewItem it in list)
+                item.Items.Add(it);
             }
             DebugLog.log("evaluation of dir '" + expandedDir.Name + "' for TODOs finished", enLogType.DEBUG);
           }
@@ -270,22 +275,32 @@ namespace BatInspector.Forms
       foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.release();
       _spSpectrums.Children.Clear();
+      if (App.Model.Prj?.Ok == true)
+        checkSavePrj();
       _tbSum.Visibility = Visibility.Visible;
-      if ((dir != null) && (Project.containsProject(dir) != ""))
+      if ((dir != null) && (Project.containsProject(dir, out bool zipped) != ""))
       {
         _ctlPrjBtn.initFileButton(false);
         collapseTreeView(true);
-        await initializeProject(dir);
+        if (zipped)
+          await initializeProjectFromZip(dir);
+        else
+        {
+          await initializeProject(dir);
+        }
       }
       else
       {
         FileInfo? file = item.Tag as FileInfo;
-        if ((file != null) && Query.isQuery(file))
+        if (file != null)
         {
-          _ctlPrjBtn.initFileButton(true);
-          _tbSum.Visibility = Visibility.Collapsed;
-          collapseTreeView(true);
-          await initializeQuery(file);
+          if (Query.isQuery(file))
+          {
+            _ctlPrjBtn.initFileButton(true);
+            _tbSum.Visibility = Visibility.Collapsed;
+            collapseTreeView(true);
+            await initializeQuery(file);
+          }
         }
       }
     }
@@ -379,7 +394,7 @@ namespace BatInspector.Forms
             _spSpectrums.Children.Clear();
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
-            _scrollPrj.Maximum = App.Model.Prj.Records.Length - 1;
+            _scrollPrj.Maximum = App.Model.Prj.Records.Count - 1;
            // _scrollBarListPos = 0;
             // TODO set scroll button size
             _ctlPrjInfo.setup(App.Model.Prj);
@@ -417,7 +432,7 @@ namespace BatInspector.Forms
             _spSpectrums.Children.Clear();
             _scrollPrj.Minimum = 0;
             _scrollBarPrjPos = 0;
-            _scrollPrj.Maximum = App.Model.Query.Records.Length - 1;
+            _scrollPrj.Maximum = App.Model.Query.Records.Count - 1;
             if(_scrollPrj.Maximum < 0)
               _scrollPrj.Maximum = 0;
             //     _scrollBarListPos = 0;
@@ -494,6 +509,24 @@ namespace BatInspector.Forms
       }
     }
 
+    async Task initializeProjectFromZip(DirectoryInfo dir)
+    {
+      Task<bool> t = showMsg(MyResources.msgInitZipPrj,MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      if (t.Result)
+      {
+        string prjDir = Project.decompress(dir.FullName, Path.Combine(AppParams.AppDataPath, "tmp"));
+        if (prjDir != "")
+        {
+          DirectoryInfo dirTmp = new DirectoryInfo(prjDir);
+          await initializeProject(dirTmp);
+        }
+      }
+      else
+      {
+        _tbReport.Visibility = Visibility.Visible;
+        await initializeProject(dir);
+      }
+    }
 
     async Task initializeQuery(FileInfo file)
     {
@@ -552,7 +585,7 @@ namespace BatInspector.Forms
       {
         if (reInitList)
           _dgData.ItemsSource = null;
-        if ((_dgData.ItemsSource == null) && (filter != null) && (filterItem != null))
+        if (_dgData.ItemsSource == null)
         {
           if (App.Model.View.populateList(filter, filterItem))
             initDataGridSource();
@@ -599,9 +632,9 @@ namespace BatInspector.Forms
       else
       {
         if (App.Model.CurrentlyOpen != null)
-          _ctlZoom?.setup(analysis, wavFilePath, App.Model.CurrentlyOpen.Species, ctlWav, openExportWindow, modelType);
+          _ctlZoom?.setup(analysis, wavFilePath, ctlWav, openExportWindow, modelType);
         else
-          _ctlZoom?.setup(analysis, wavFilePath, species, null, openExportWindow, modelType);
+          _ctlZoom?.setup(analysis, wavFilePath, null, openExportWindow, modelType);
         _tbZoom?.Header = "Zoom: " + Path.GetFileName(name);
         _tbZoom?.Visibility = Visibility.Visible;
         //      https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol
@@ -627,6 +660,9 @@ namespace BatInspector.Forms
           if (res == MessageBoxResult.Yes)
             App.Model.Prj.Analysis.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
         }
+        App.Model.View.stopCreatingPngFiles();
+        App.Model.Prj.close();
+        _tbReport.Visibility = AppParams.Inst.ExpertMode ? Visibility.Visible : Visibility.Collapsed;
       }
     }
 
@@ -639,7 +675,7 @@ namespace BatInspector.Forms
       }
     }
 
-    private TreeViewItem? CreateTreeItem(object o)
+    private TreeViewItem? CreateTreeItem(object o, bool zipped)
     {
       TreeViewItem item = new TreeViewItem();
       DirectoryInfo? d = o as DirectoryInfo;
@@ -656,6 +692,8 @@ namespace BatInspector.Forms
           return null;
         }
       }
+      if (zipped)
+        item.Header += " (zip)";
       item.Tag = o;
       item.Items.Add(BatInspector.Properties.MyResources.MainWindowMsgLoading);
       item.Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["colorForeGroundLabel"];
@@ -831,7 +869,6 @@ namespace BatInspector.Forms
     void initCtlWav(ctlWavFile ctl, PrjRecord rec, bool fromQuery)
     {
       AnalysisFile? analysis;
-      string[] species;
       string fullWavName;
       string wavName;
       string wavFilePath;
@@ -842,7 +879,6 @@ namespace BatInspector.Forms
         wavName = Path.GetFileName(fullWavName);
         wavFilePath = App.Model.SelectedDir;
         analysis = App.Model.Query.Analysis.find(rec.File);
-        species = App.Model.Query.Species;
         modelType = App.Model.Query.Analysis.ModelType;
       }
       else
@@ -851,10 +887,9 @@ namespace BatInspector.Forms
         wavName = rec.File;
         fullWavName = Path.Combine(App.Model.SelectedDir, rec.File);
         analysis = App.Model.Prj.Analysis.find(rec.File);
-        species = App.Model.Prj.Species;
         modelType = App.Model.Prj.Analysis.ModelType;
       }
-      ctl.setFileInformations(rec, wavFilePath, analysis, species, modelType, _imgHeight);
+      ctl.setFileInformations(rec, wavFilePath, analysis, modelType, _imgHeight);
       ctl.InfoVisible = !AppParams.Inst.HideInfos;
       ctl.createNewPng();
     }
@@ -1017,7 +1052,9 @@ namespace BatInspector.Forms
         try
         {
           if (App.Model.CurrentlyOpen != null)
-            buildWavFileList(false);
+          {
+            buildWavFileList(false, null, null, true);
+          }
           else
             _dgData.ItemsSource = null;
           DebugLog.log("TAB 'Report' got selected", enLogType.DEBUG);

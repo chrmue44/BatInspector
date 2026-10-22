@@ -3,6 +3,7 @@ TODO
 - markieren von manuell geänderten Rufen
 - more flexible import: 
   - real "inplace" import
-
-- scrolling through files with many calls is still slow
-  constructors of ctlDataItem and ctlSelectItem is slow (not changeable)
+- browse through deleted files
+- allow deleted files in project
+- compress project for backup
+- allow opening of compressed projects (only data browsable)

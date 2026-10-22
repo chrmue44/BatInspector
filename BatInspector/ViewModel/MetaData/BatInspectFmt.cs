@@ -152,7 +152,7 @@ public partial class BatExplorerProjectFile
   private string _created;
   private string _notes;
   private string _autoProcess;
-  private PrjRecord[] _records;
+  private List<PrjRecord> _records;
   private string _fileVersion;
   private string _prjType;
   private string _metaData;
@@ -168,6 +168,7 @@ public partial class BatExplorerProjectFile
     _prjType = "Bats";
   }
 
+  /*
   public BatExplorerProjectFile(string name, int fileCount)
   {
     _name = name;
@@ -179,12 +180,10 @@ public partial class BatExplorerProjectFile
     _autoProcess = "true";
     _prjType = "Bats";
   }
-  
-  public BatExplorerProjectFile(string name, List<PrjRecord> records) : this(name, records.ToArray())
-  {
-  }
+  */
 
-  public BatExplorerProjectFile(string name, PrjRecord[] records)
+  
+  public BatExplorerProjectFile(string name, List<PrjRecord> records)
   {
     _name = name;
     _records = records;
@@ -235,7 +234,7 @@ public partial class BatExplorerProjectFile
   [XmlIgnoreAttribute]
   //[System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
   //[System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(BatExplorerProjectFileRecordsRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
-  public PrjRecord[] Records
+  public List<PrjRecord> Records
   {
     get
     {
@@ -328,11 +327,12 @@ public partial class PrjRecord : IComparable<PrjRecord>
     Selected = false;
   }
 
-  public PrjRecord(string name)
+  public PrjRecord(string name, bool isAvailable)
   {
     fileField = name;
     nameField = Path.GetFileNameWithoutExtension(name);
     Selected = false;
+    WavIsAvailable = isAvailable;
   }
 
   /// <remarks/>
@@ -366,6 +366,9 @@ public partial class PrjRecord : IComparable<PrjRecord>
 
   [XmlIgnoreAttribute]
   public bool Selected { get; set; } = false;
+
+  [XmlIgnoreAttribute]
+  public bool WavIsAvailable { get; set; } = false;
 
   public int CompareTo(PrjRecord obj)
   { 

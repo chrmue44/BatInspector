@@ -2124,4 +2124,7 @@
   <data name="BatInfoOutsideRange" xml:space="preserve">
     <value>außerhalb der Grenzen</value>
   </data>
+  <data name="msgInitZipPrj" xml:space="preserve">
+    <value>Sie öffnen gerade ein komprimiertes Projekt. Sollen die Aufnahmen entpackt werden?</value>
+  </data>
 </root>

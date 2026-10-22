@@ -51,14 +51,14 @@ namespace BatInspector
     public string Expression { get { return _expression; } }
 
     public string? ReportName { get {  return _queryFile?.ReportFile; } }
-    public PrjRecord[] Records 
+    public List<PrjRecord> Records 
     { 
       get
       { 
         if(_queryFile != null)
          return _queryFile.Records; 
         else
-         return new PrjRecord[0];
+         return new List<PrjRecord>();
       }
     }
 
@@ -151,7 +151,7 @@ namespace BatInspector
       bool ok = true;
       foreach (DirectoryInfo d in dirs)
       {
-        if (Project.containsProject(d) != "")
+        if (Project.containsProject(d, out bool zipped) != "")
           ok = evaluatePrj(d);
         else
           ok = crawl(d);
@@ -199,7 +199,11 @@ namespace BatInspector
           string fullReportName = Path.Combine(dstDir, retVal._queryFile.ReportFile);
           retVal._analysis[retVal.SelectedModelIndex].read(fullReportName, App.Model.DefaultModelParams, enMetaData.AUTO);
           //        retVal._reportName = fullReportName;
-          retVal.initSpeciesList();
+          foreach(PrjRecord rec in retVal._records)
+          {
+            if (File.Exists(Path.Combine(dstDir, rec.File)))
+              rec.WavIsAvailable = true;
+          }
         }
       }
       catch (Exception ex)
@@ -287,7 +291,7 @@ namespace BatInspector
     {
       if (_queryFile != null)
       {
-        _queryFile.Records = _records.ToArray();
+        _queryFile.Records = _records;
         var serializer = new XmlSerializer(typeof(QueryFile));
         string name = Path.Combine(_destDir, _name) + AppParams.EXT_QUERY;
         TextWriter writer = new StreamWriter(name);

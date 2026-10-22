@@ -1008,7 +1008,7 @@ namespace BatInspector
               foundChar = true;
               if (s.getGenus() == "Myotis")
               {
-                foundDuration |= checkParameter(call.Duration, check.Duration, MyResources.Duration, "ms", ref info, res, verbose);
+                foundDuration |= checkParameter(call.Duration, check.Duration, MyResources.Duration, "ms", ref info, res, verbose, true);
                 //info.Replace(",", "\n");
                 if (foundDuration)
                 {

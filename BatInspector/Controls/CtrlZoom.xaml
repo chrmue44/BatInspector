@@ -204,7 +204,7 @@
                         </StackPanel>
                         <local:ctlDataItem x:Name="_ctlSpecAuto"/>
                         <local:ctlDataItem x:Name="_ctlProbability"/>
-                        <local:ctlSelectItem x:Name="_ctlSpecMan"/>
+                        <local:CtlCallItem x:Name="_ctlSpecMan"/>
                         <local:ctlDataItem x:Name="_ctlSpecManBird"/>
                     </StackPanel>
                 </GroupBox>

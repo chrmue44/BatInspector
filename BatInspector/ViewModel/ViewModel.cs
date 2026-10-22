@@ -283,7 +283,7 @@ namespace BatInspector
     public void initProject(DirectoryInfo dir, bool updateCtls)
     {
       App.Model.View.stopCreatingPngFiles();
-      if (Project.containsProject(dir) != "")
+      if (Project.containsProject(dir, out bool zipped) != "")
       {
         _view.Query = null;
         _selectedDir = dir.FullName;
@@ -299,9 +299,13 @@ namespace BatInspector
             _view.Prj.Analysis.filloutTemperature(_view.Prj);
             _view.Prj.Analysis.save(_view.Prj.ReportName, _view.Prj.Notes, _view.Prj.SummaryName);
           }
+          _view.Prj.initPrjRecordsFromAnalysis();
         }
         else
+        {
           _view.Prj.Analysis.init();
+          _view.Prj.initPrjRecordsFromWavFiles();
+        }
         initScripter();
       }
       else if (Project.containsWavs(dir))
@@ -704,6 +708,10 @@ namespace BatInspector
             Directory.Delete(annDir, true);
             DebugLog.log("AI annotation files permanently removed from project " + dir.Name, enLogType.INFO);
           }
+          DirectoryInfo d = new DirectoryInfo(prj.getModelDir());
+          FileInfo[] files = d.GetFiles("*.bak");
+          foreach (FileInfo f in files)
+            File.Delete(f.FullName);  
         }
         if (pngs)
         {
@@ -780,13 +788,13 @@ namespace BatInspector
         return false;
       DirectoryInfo[] dirs = dir.GetDirectories();
       bool ok = true;
-      if (Project.containsProject(dir) != "")
+      if (Project.containsProject(dir, out bool zipped) != "")
         ok = tidyUpProject(dir, delWavs, pngs, delOrig, delAnn);
       else
       {
         foreach (DirectoryInfo d in dirs)
         {
-          if (Project.containsProject(d) != "")
+          if (Project.containsProject(d, out zipped) != "")
             ok = tidyUpProject(d, delWavs, pngs, delOrig, delAnn);
           else
             ok = crawlTidyUp(d, delWavs, pngs, delOrig, delAnn);
@@ -805,14 +813,14 @@ namespace BatInspector
       DirectoryInfo[] dirs = dir.GetDirectories();
 
       bool ok = true;
-      if (Project.containsProject(dir) != "")
+      if (Project.containsProject(dir, out bool zipped) != "")
         ok = checkProjectMem(dir, ref wavSpace, ref pngSpace, ref origSpace, ref annSpace);
       else
       {
         foreach (DirectoryInfo d in dirs)
         {
           DebugLog.log($"checking for disk space to free in directory {d.FullName}", enLogType.INFO);
-          if (Project.containsProject(d) != "")
+          if (Project.containsProject(d, out zipped) != "")
             ok = checkProjectMem(d, ref wavSpace, ref pngSpace, ref origSpace, ref annSpace);
           else
             ok = crawlCheckSpace(d, ref wavSpace, ref pngSpace, ref origSpace, ref annSpace);
@@ -948,9 +956,9 @@ namespace BatInspector
           evaluate(cli);
           initProject(dir, false);  // re init project to take deleted files into account
         }
-        if (Prj.Records.Length > info.MaxFileCnt)
+        if (Prj.Records.Count > info.MaxFileCnt)
         {
-          double prjCnt = (double)Prj.Records.Length / info.MaxFileCnt;
+          double prjCnt = (double)Prj.Records.Count / info.MaxFileCnt;
           if (prjCnt > (int)prjCnt)
             prjCnt += 1;
           List<string> prjs = Project.splitProject(Prj, (int)prjCnt, Regions, info.ModelParams, DefaultModelParams.Length);

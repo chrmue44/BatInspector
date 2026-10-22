@@ -91,6 +91,7 @@
     <None Remove="images\icons8-zoom-out-v-64.png" />
     <None Remove="images\magnifying-glass.png" />
     <None Remove="images\micCorr.png" />
+    <None Remove="images\nowav.png" />
     <None Remove="images\pause.png" />
     <None Remove="images\perfomance.png" />
     <None Remove="images\play-button-10x.png" />
@@ -186,6 +187,7 @@
     </Resource>
     <Resource Include="images\magnifying-glass.png" />
     <Resource Include="images\micCorr.png" />
+    <Resource Include="images\nowav.png" />
     <Resource Include="images\pause.png" />
     <Resource Include="images\perfomance.png" />
     <Resource Include="images\play-button-10x.png" />

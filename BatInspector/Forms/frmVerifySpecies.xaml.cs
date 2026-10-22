@@ -230,7 +230,12 @@ namespace BatInspector.Forms
       {
         _tbResult.Document = BatInfo.checkAgainstOneSpecies(cd, _cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos, _lat, _lon, _cbNotDeterminable.IsChecked == true, _cbLocalNames.IsChecked == true, HandleRequestNavigate);
         _species = new string[1];
-        SpeciesInfos? si = SpeciesInfos.findLocal(_cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos);
+        SpeciesInfos? si;
+        if (_cbLocalNames.IsChecked == true)
+          si = SpeciesInfos.findLocal(_cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos);
+        else
+          si = SpeciesInfos.findAbbreviation(_cbSpecies.SelectedItem?.ToString() ?? "", App.Model.SpeciesInfos);
+
         _species[0] = si?.Abbreviation ?? "";
         _ctlHasCallTypeAB.setVisibility(_species);
         _ctlHasKneeClearly.setVisibility(_species);

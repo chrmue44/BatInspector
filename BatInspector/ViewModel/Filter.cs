@@ -142,7 +142,7 @@ namespace BatInspector
       return retVal;
     }
 
-    public bool apply(FilterItem filter, AnalysisCall call)
+    public bool apply(FilterItem? filter, AnalysisCall call)
     {
       if (filter == null)
         return true;

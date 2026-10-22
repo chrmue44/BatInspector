@@ -369,7 +369,7 @@ namespace BatInspector
             val++;
             _listOfFiles += ev.Data + "\n";
             DebugLog.log(ev.Data, enLogType.INFO);
-            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Length.ToString();
+            string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + val.ToString() + "/" + _prj.Records.Count.ToString();
             if (_cli)
               DebugLog.log(msg, enLogType.INFO);
             else

@@ -29,6 +29,7 @@ namespace BatInspector
         new OptItem("ApplyMicCorrection", "apply microphone correction <softening>",1, fctMicCorrection),
         new OptItem("CheckModelPerformance", "check model performance against man. evaluation", 0, fctCheckModelPerformance),
         new OptItem("CombineProjects", "combine multiple projects <DirName> <PrjOut> <Prj1> < Prj2> ...",4 , fctCombineProjects ),
+        new OptItem("CompressProjects", "compress projects <prjDir>",1, fctZipProject),
         new OptItem("CopyFile", "copy file to directory <fileName> <targetDir>",2, fctCopyFile),
         new OptItem("CountCallsInTrainingData", "count calls in fctFindMissingFilesInTrainingData data and write to csv file <annPath> <csvFile>",2,fctCountCallsInTrainingData),
         new OptItem("CreateMicFreqResponse", "create mic response <wavFile> <outFile>", 2, fctCreateMicResponse),
@@ -36,6 +37,7 @@ namespace BatInspector
         new OptItem("CreateAnnsFromBra", "create training annotations from Elekon BRA files <wavDir> <annDir> <timeOffs> <fMinOffs>", 4, fctCreateAnnsFromBra),
         new OptItem("CreateReport", "create report from annotations <prjDirName>",1, ftcCreateReport ),
         new OptItem("CreateTrainingReport", "create report of training annotations <srcDir> <reportName>", 2, fctTrainReport),
+        new OptItem("DecompressProjects", "decompress projects <dir>",1, fctUnzipProject),
         new OptItem("DelProjectFromDb", "delete currently open project from DB", 0, ftcDelPrjFromDb),
         new OptItem("EditWav", "<option> edit wav file", 1, fctEditWav),
         new OptItem("ExportFiles", "export files from project <FilterExpression> <outDir> <allCalls",3, ftcExportFiles ),
@@ -100,7 +102,7 @@ namespace BatInspector
             maxFilesPerProject = val;
         }
         DebugLog.log("starting to split project..", enLogType.INFO);
-        double prjCount = (double)App.Model.Prj.Records.Length / maxFilesPerProject + 1;
+        double prjCount = (double)App.Model.Prj.Records.Count / maxFilesPerProject + 1;
         if (prjCount > (int)prjCount)
           prjCount += 1;
         string prjPath = App.Model.Prj.PrjDir;
@@ -126,7 +128,7 @@ namespace BatInspector
         App.Model.DefaultModelParams[App.Model.getModelIndex(AppParams.Inst.DefaultModel)],
         App.Model.DefaultModelParams.Length);
         string prjDir = Path.Combine(dir, pars[i]);
-        if (Project.containsProject(prjDir) != "")
+        if (Project.containsProject(prjDir, out bool zipped) != "")
         {
           prj.readPrjFile(prjDir);
           if (File.Exists(prj.ReportName))
@@ -499,6 +501,49 @@ namespace BatInspector
       return retVal;
     }
 
+    int fctZipProject(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+        string prjDir = pars[0];
+      DirectoryInfo dir = new DirectoryInfo(prjDir);
+      DirectoryInfo[] dirs = dir.GetDirectories();
+      foreach (DirectoryInfo d in dirs)
+      {
+        List<string> subPars = new List<string>();
+        subPars.Add(d.FullName);
+        fctZipProject(subPars, out ErrText);
+      }
+      if (Project.containsProject(prjDir, out bool zipped) != "")
+      {
+        if(!zipped)
+          Project.zipProject(prjDir);
+      }
+      return retVal;
+    }
+
+    int fctUnzipProject(List<string> pars, out string ErrText)
+    {
+      int retVal = 0;
+      ErrText = "";
+      string targetDir = pars[0];
+      DirectoryInfo dir = new DirectoryInfo(targetDir);
+      DirectoryInfo[] dirs = dir.GetDirectories();
+      foreach (DirectoryInfo d in dirs)
+      {
+        List<string> subPars = new List<string>();
+        subPars.Add(d.FullName);
+        fctUnzipProject(subPars, out ErrText);
+      }
+      FileInfo[] files = dir.GetFiles("*.zip");
+      foreach(FileInfo f in files)
+      {
+        string zipName = f.FullName;
+        Project.unzipProject(targetDir, zipName);
+        File.Delete(zipName);
+      }
+      return retVal;
+    }
 
     int fctEditWav(List<string> pars, out string ErrText)
     {

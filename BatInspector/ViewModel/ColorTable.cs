@@ -133,6 +133,7 @@ namespace BatInspector
       BLUE_WHITE,
       RED_BLUE,
       MAGENTA_BLACK,
+      INFERNO,
     }
 
     public ColorPresetCollection() 
@@ -182,7 +183,7 @@ namespace BatInspector
         p.Name = MyResources.ColGradientBlueToGreen;
           p.ColorGradientBlue = new List<ColorItem>
           {
-            new ColorItem(0, 0),
+            new ColorItem(40, 0),
             new ColorItem(100, 20),
             new ColorItem(0, 40),
             new ColorItem(0, 75),
@@ -205,6 +206,35 @@ namespace BatInspector
             new ColorItem(255, 100)
           };
           break;
+
+        case enColorGrading.INFERNO:
+          p.Name = "Inferno";
+          p.ColorGradientRed = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(40, 30),
+            new ColorItem(159, 45),
+            new ColorItem(212, 60),
+            new ColorItem(252, 100)
+          };
+          p.ColorGradientGreen = new List<ColorItem>
+          {
+            new ColorItem(0, 0),
+            new ColorItem(11, 30),
+            new ColorItem(42, 45),
+            new ColorItem(72, 60),
+            new ColorItem(255, 100)
+          };
+          p.ColorGradientBlue = new List<ColorItem>
+          {
+            new ColorItem(4, 0),
+            new ColorItem(84, 30),
+            new ColorItem(99, 45),
+            new ColorItem(66, 60),
+            new ColorItem(164, 100)
+          };
+          break;
+
 
         case enColorGrading.GREEN_BLACK:
           p.Name = MyResources.ColGradientBlackToGreen;
@@ -264,28 +294,28 @@ namespace BatInspector
 
         case enColorGrading.MAGENTA_BLACK:
           p.Name = MyResources.ColGradientBlackToMagenta;
-          p.ColorGradientBlue = new List<ColorItem>
+          p.ColorGradientRed = new List<ColorItem>
           {
-            new ColorItem(50,  0),
-            new ColorItem(150, 20),
-            new ColorItem(0,   50),
-            new ColorItem(40,  75),
+            new ColorItem(0, 0),
+            new ColorItem(50, 30),
+            new ColorItem(220, 50),
+            new ColorItem(255, 75),
             new ColorItem(255, 100)
           };
           p.ColorGradientGreen = new List<ColorItem>
           {
             new ColorItem(0, 0),
-            new ColorItem(255, 20),
-            new ColorItem(240, 50),
+            new ColorItem(155, 30),
+            new ColorItem(220, 50),
             new ColorItem(0, 75),
             new ColorItem(0, 100)
           };
-          p.ColorGradientRed = new List<ColorItem>
+          p.ColorGradientBlue = new List<ColorItem>
           {
-            new ColorItem(0, 0),
-            new ColorItem(150, 20),
-            new ColorItem(240, 50),
-            new ColorItem(255, 75),
+            new ColorItem(50,  0),
+            new ColorItem(50, 30),
+            new ColorItem(40,   50),
+            new ColorItem(40,  75),
             new ColorItem(255, 100)
           };
           break;
@@ -298,7 +328,7 @@ namespace BatInspector
             new ColorItem(255, 10),
             new ColorItem(0,   50),
             new ColorItem(0,  75),
-            new ColorItem(255, 100)
+            new ColorItem(100, 100)
           };
           p.ColorGradientGreen = new List<ColorItem>
           {
@@ -306,7 +336,7 @@ namespace BatInspector
             new ColorItem(0, 10),
             new ColorItem(255, 50),
             new ColorItem(0, 75),
-            new ColorItem(255, 100)
+            new ColorItem(100, 100)
           };
           p.ColorGradientRed = new List<ColorItem>
           {
@@ -366,6 +396,8 @@ namespace BatInspector
       preset = initColorGradient(enColorGrading.BLUE_WHITE);
       _presets.Add(preset);
       preset = initColorGradient(enColorGrading.RED_BLUE);
+      _presets.Add(preset);
+      preset = initColorGradient(enColorGrading.INFERNO);
       _presets.Add(preset);
     }
   }

@@ -247,7 +247,7 @@ namespace BatInspector
         if (pos >= 0)
         {
           _counter++;
-          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj!.Records.Length.ToString();
+          string msg = BatInspector.Properties.MyResources.ModelBatDetect2msgProcessing + _counter.ToString() + "/" + _prj!.Records.Count.ToString();
           if (_cli)
             DebugLog.log(msg, enLogType.INFO);
           else

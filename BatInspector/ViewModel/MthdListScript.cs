@@ -502,7 +502,7 @@ namespace BatInspector
       result = new AnyType();
       if ((App.Model.Prj != null) && (App.Model.Prj.Ok))
       {
-        int nr = App.Model.Prj.Records.Length;
+        int nr = App.Model.Prj.Records.Count;
         result.assignInt64(nr);
       }
       else
@@ -599,7 +599,7 @@ namespace BatInspector
         {
           argv[0].changeType(AnyType.tType.RT_UINT64);
           int idxF = (int)argv[0].getUint64();
-          int maxIdxF = App.Model.Prj.Records.Length;
+          int maxIdxF = App.Model.Prj.Records.Count;
           if (idxF < maxIdxF)
           {
             result.assign(App.Model.SelectedDir + "/" + App.Model.Prj.WavSubDir + "/" +
@@ -794,7 +794,7 @@ namespace BatInspector
           {
             argv[0].changeType(AnyType.tType.RT_INT64);
             int idx = (int)argv[0].getInt64();
-            if (App.Model.Prj.Records.Length > idx)
+            if (App.Model.Prj.Records.Count > idx)
               fName = Path.Combine(App.Model.Prj.PrjDir, App.Model.Prj.WavSubDir, App.Model.Prj.Records[idx].File);
             else
               err = tParseError.ARG1_OUT_OF_RANGE;

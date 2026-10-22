@@ -254,7 +254,7 @@ namespace BatInspector
     public void buildListOfVisibles(bool selectedOnly)
     {
       _showWavFiles.Clear();
-      PrjRecord[] list = getRecords();
+      List<PrjRecord> list = getRecords();
       foreach (PrjRecord rec in list)
       {
         if (!selectedOnly || (selectedOnly && rec.Selected))
@@ -270,11 +270,11 @@ namespace BatInspector
       }
     }
 
-    public bool populateList(Filter? filter, FilterItem filterItem)
+    public bool populateList(Filter? filter, FilterItem? filterItem)
     {
-      PrjRecord[]? recList = getRecords();
+      List<PrjRecord>? recList = getRecords();
       Analysis? analysis = getAnalysis();
-      if ((analysis == null) && (recList != null))
+      if ((analysis != null) && (recList != null))
       {
         switch (_modelType)
         {
@@ -442,9 +442,9 @@ namespace BatInspector
       }
     } */
 
-    private PrjRecord[] getRecords()
+    private List<PrjRecord> getRecords()
     {
-      PrjRecord[] retVal = new PrjRecord[0];
+      List<PrjRecord> retVal = new List<PrjRecord>();
       if ((Prj != null) && Prj.Ok)
       {
         retVal = Prj.Records;
@@ -585,7 +585,7 @@ namespace BatInspector
               }
             }
             else
-             DebugLog.log("File '" + wavName + "'does not exist, removed from project and report", enLogType.WARNING);
+              pngName = "";
           }
         }
         catch (Exception ex)

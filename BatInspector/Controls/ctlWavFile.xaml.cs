@@ -122,20 +122,31 @@ namespace BatInspector.Controls
 
     public void createNewPng()
     {
-      string wavName = Path.Combine(_wavFilePath, WavName);
-      if (_sonogram != null)
+      if (_record.WavIsAvailable)
       {
-        string image = _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
-        if (string.IsNullOrEmpty(image) && (App.Model.Prj != null))
-          DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
-        else
+        string wavName = Path.Combine(_wavFilePath, WavName);
+        if (_sonogram != null)
         {
-          _img.Source = createBitmapImageFromFile(image);
-          _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
-          //Force render
-          _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
-          _img.Arrange(new Rect(_img.DesiredSize));
+          string image = _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
+          if (string.IsNullOrEmpty(image) && (App.Model.Prj != null))
+            DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
+          else
+          {
+            _img.Source = createBitmapImageFromFile(image);
+            _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
+            //Force render
+            _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
+            _img.Arrange(new Rect(_img.DesiredSize));
+          }
         }
+      }
+      else
+      {
+        _img.Source = new BitmapImage(new Uri(@"pack://application:,,,/images/nowav.png", UriKind.Absolute));
+        _img.MaxHeight = MainWindow.MAX_IMG_HEIGHT;
+        //Force render
+        _img.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
+        _img.Arrange(new Rect(_img.DesiredSize));
       }
     }
 
@@ -181,7 +192,7 @@ namespace BatInspector.Controls
       _cbSel.IsChecked = rec.Selected;
     }
 
-    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile? analysis, string[] spec, enModel modelType, double height)
+    public void setFileInformations(PrjRecord record, string wavFilePath, AnalysisFile? analysis, enModel modelType, double height)
     {
       _wavFilePath = wavFilePath;
       _record = record;

@@ -43,7 +43,7 @@ namespace BatInspector
 
     private string _prjType = "Bats";
 
-    private PrjRecord[] _records = new PrjRecord[0];
+    private List<PrjRecord> _records = new List<PrjRecord>();
 
     public QueryFile()
     {
@@ -76,6 +76,6 @@ namespace BatInspector
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     [System.Xml.Serialization.XmlArrayItemAttribute("Record", typeof(PrjRecord), Form = System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable = false)]
-    public PrjRecord[] Records { get { return _records; } set { _records = value; } }
+    public List<PrjRecord> Records { get { return _records; } set { _records = value; } }
   }
 }

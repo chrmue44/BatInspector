@@ -134,12 +134,13 @@
   
   
   <ItemGroup>
+    <PackageReference Include="BatInspectorPublisher" Version="0.1.0" />
     <PackageReference Include="BunLabs.NAudio.Flac" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
-    <PackageReference Include="MySql.Data" Version="26.7.0" />
-    <PackageReference Include="NAudio" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.13" />
+    <PackageReference Include="MySql.Data" Version="26.10.0" />
+    <PackageReference Include="NAudio" Version="3.3.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
-    <PackageReference Include="System.IO.Ports" Version="10.0.11" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.13" />
   </ItemGroup>
   
   <ItemGroup>

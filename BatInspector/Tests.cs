@@ -14,6 +14,7 @@ using libScripter;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Documents;
 using System.Xml.Serialization;
 
@@ -126,6 +127,7 @@ namespace BatInspector
       testAirAbsorbtion();
       //testMySql();
       //testFlacImport();
+      testCryptKey();
 
       //testCreateMicSpectrumFromNoiseFile();
       //double soft = 1.0;
@@ -1344,6 +1346,23 @@ namespace BatInspector
       assert("Plecotus", (res.IndexOf("PAUR") >= 0) && (res.IndexOf(MyResources.Unambiguous) >= 0));
 
     }
+
+
+    void testCryptKey()
+    {
+      string configFile = "f:/prj/BatInspector/api_keys.txt";
+      ExportPlatforms.genKeyFile(configFile);
+      string key = ExportPlatforms.getKey();
+      string test1 = "ABCD123";
+      string enc1 = ExportPlatforms.Encrypt(test1, key);
+      string dec1 = ExportPlatforms.Decrypt(enc1, key);
+      assert("encryption test 1", dec1 == test1);
+
+      string[] lines = File.ReadAllLines(AppParams.API_KEYS_CRYPT);
+      string a = ExportPlatforms.Decrypt(lines[0], key);
+      string b = ExportPlatforms.Decrypt(lines[1], key);
+    }
+
 
     void testGuano()
     {

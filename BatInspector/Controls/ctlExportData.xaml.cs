@@ -6,18 +6,26 @@ using System.Windows.Controls;
 
 namespace BatInspector.Controls
 {
+
+
+  public delegate void dlgDeleteItem(int index);
+
   /// <summary>
   /// Interaction logic for ctlExportData.xaml
   /// </summary>
   public partial class ctlExportData : System.Windows.Controls.UserControl
   {
+    int _index = 0;
+    dlgDeleteItem? _dlgDelete = null;
     public ctlExportData()
     {
       InitializeComponent();
     }
 
-    public void setup(ExportDataItem item)
+    public void setup(ExportDataItem item, int index, dlgDeleteItem dlgDelete)
     {
+      _index = index;
+      _dlgDelete = dlgDelete;
       _ctlLocal.setup("Artname Deutsch", enDataType.STRING, 0, 120, true);
       _ctlLocal.setValue(item.SpeciesLocal);
       _ctlLatin.setup("Artname Latein", enDataType.STRING, 0, 120, true);
@@ -60,6 +68,14 @@ namespace BatInspector.Controls
       retVal.Name = _ctlName.getValue();
       retVal.Location = _ctlLocation.getValue();
       return retVal;
+    }
+
+    private void _btnDelete_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+      if (_dlgDelete != null)
+      {
+        _dlgDelete(_index);
+      }
     }
   }
 }

@@ -876,9 +876,6 @@
   <data name="ctlWavToolTipCall" xml:space="preserve">
     <value>click to show call in zoom view</value>
   </data>
-  <data name="SetDescScriptAutoToMan" xml:space="preserve">
-    <value>'intelligent' Script to copy all automatic detected species to manual</value>
-  </data>
   <data name="MsgSpecifyScript" xml:space="preserve">
     <value>please specify a script to run in Application Settings: 'ScriptAutoToMan</value>
   </data>
@@ -2126,5 +2123,20 @@
   </data>
   <data name="msgInitZipPrj" xml:space="preserve">
     <value>You are opening a compressed project. Unzip compressed recordings?</value>
+  </data>
+  <data name="frmExportData_iNaturalistFix" xml:space="preserve">
+    <value>Some problems have to be fixed, see log window for details.</value>
+  </data>
+  <data name="frmExportData_iNatExportSuccess" xml:space="preserve">
+    <value>Data exported successfully to iNaturalist!</value>
+  </data>
+  <data name="SetDescExePDF" xml:space="preserve">
+    <value>Path to PDF viewer</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmExportData_iNaturalistOkContinue" xml:space="preserve">
+    <value>No problems found, continue with upload to iNaturalist?</value>
   </data>
 </root>

@@ -30,3 +30,6 @@
 /InnoSetup/ExampleSetup.iss
 bin
 obj
+/BatInspector/api_keys.txt
+libTools
+/nuget

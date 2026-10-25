@@ -28,6 +28,10 @@ namespace BatInspector
             versionStr = "BatInspector V" + version.ToString() + " " + linkTimeLocal.ToString();
           Console.WriteLine(versionStr);
           break;
+        case "--crypt":
+          ExportPlatforms.genKeyFile(args[1]);
+          break;
+
         default:
           Console.WriteLine("unkonwn option: " + args[0]);
           break;

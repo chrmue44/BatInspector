@@ -205,6 +205,8 @@ namespace BatInspector
     public const string CMD_REDUCE_NOISE = "reduce_noise.bat"; //command to reduce the background noise in WAV file
     public const string BATSPECIES_REGIONS = "BatSpeciesRegions.json";   //name of the file containing region information
 
+    public const string API_KEYS_CRYPT = "config.txt";    // file name for crypted api keys
+
     public const string SUM_REPORT_JSON = "sumReport.json";    // name of summarized report data file
     public const int CTLWAV_WIDTH_BIRDS = 500;            // ctlWav with of info section for bird projects
     public const int CTLWAV_WIDTH_BATS = 360;             // ctlWav with of info section for bat projects
@@ -299,7 +301,8 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [LocalizedDescription("SetDescRootPath")]
+    [Browsable(false)]
+
     public bool ExpertMode { get; set; } = false;
 
     [DataMember]
@@ -309,7 +312,7 @@ namespace BatInspector
 
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
-    [LocalizedDescription("SetDescExeEditor")]
+    [LocalizedDescription("SetDescExePDF")]
     public string ExeAcrobat { get; set; } = "";
 
     [DataMember]
@@ -361,11 +364,13 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescFrequencyHET")]
+    [Browsable(false)]
     public double FrequencyHET { get; set; } = 40000;
 
     [DataMember]
     [LocalizedCategory("SetCatZoom")]
     [LocalizedDescription("SetDescShowGrid")]
+    [Browsable(false)]
     public bool ShowGrid { get; set; } = true;
 
     [DataMember]
@@ -436,6 +441,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SerDescHideCallInfo")]
+    [Browsable(false)]
     public bool HideInfos { get; set; } = false;
 
     [DataMember]
@@ -502,14 +508,10 @@ namespace BatInspector
     [Browsable(false)]
     public int SamplingRate { get; set; }
 
-    [DataMember]
-    [LocalizedCategory("SetCatModel"),
-    LocalizedDescription("SetDescScriptAutoToMan")]
-    public string ScriptCopyAutoToMan { get; set; } = "";
-
+  
     [DataMember]
     [LocalizedCategory("SetCatModel")]
-    [Browsable(true)]
+    [Browsable(false)]
     public string ModelRootPath { get; set; } = "";
 
     [DataMember]
@@ -585,6 +587,7 @@ namespace BatInspector
     [DataMember]
     [LocalizedCategory("SetCatApplication")]
     [LocalizedDescription("SerDescBatInfo")]
+    [Browsable(false)]
     public string BatInfoPath { get; set; } = "";
 
     [DataMember]
@@ -677,7 +680,6 @@ namespace BatInspector
       MySqlDbBirds = "birds";
       //  initModels();
       SamplingRate = 312500;
-      ScriptCopyAutoToMan = "copyAutoToMan.scr";
       LogShowError = true;
       LogShowWarning = true;
       LogShowInfo = true;

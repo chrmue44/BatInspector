@@ -46,11 +46,14 @@ namespace BatInspector
       new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_GERMAN_OLD, "auto_to_man_german_bats_09.scr"),
       new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_GERMAN, "auto_to_man_german_bats_09.scr"),
       new ModelScriptItem(enModel.BAT_DETECT2, BaseModel.BD2_MODEL_UK, "auto_to_man_UK.scr"),
+      new ModelScriptItem(enModel.BATTY_BIRD_NET, "", "copyAutoToMan.scr"),
+      new ModelScriptItem(enModel.BIRDNET, "", "copyAutoToMan.scr"),
+
     };
 
     public static string getScriptName(enModel classifier, string modelName)
     {
-      string retVal = AppParams.Inst.ScriptCopyAutoToMan;
+      string retVal = "copyAutoToMan.scr";
       foreach (ModelScriptItem it in _list)
       {
         if ((it.Classifier == classifier) && (modelName == it.Model))
@@ -69,7 +72,7 @@ namespace BatInspector
     public const string BD2_MODEL_GERMAN_OLD = "GermanBats_0.93.pth.tar";
     public const string BD2_MODEL_GERMAN = "GermanBats_0.95.pth.tar";
     public const string BD2_MODEL_UK = "Net2DFast_UK_same.pth.tar";
-
+    
     static protected readonly XmlSerializer ModParSerializer = new XmlSerializer(typeof(DefModelParamFile));
 
     int _index = 0;

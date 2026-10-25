@@ -8,11 +8,8 @@
 
 using BatInspector.Controls;
 using libParser;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
 
 namespace BatInspector.Forms

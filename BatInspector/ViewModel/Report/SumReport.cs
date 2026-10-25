@@ -29,6 +29,13 @@ namespace BatInspector
     MONTHLY = 2
   }
 
+  public enum enPlatform
+  {
+    NONE,
+    INATURALIST,
+    MULTIBASE,
+  }
+
   public class ReportListItem
   {
     public string ReportName { get; set; } = "";
@@ -475,18 +482,22 @@ namespace BatInspector
   public class ExportDataJson
   {
     const string MULIBASE_TEMPLATE = "MultiBaseCS_Importvorlage_Beobachtungen.csv";
-    public ExportDataJson(int cnt)
+    public ExportDataJson()
     {
-      DocumentFiles = new ExportDataItem[cnt];
+      DocumentFiles = new List<ExportDataItem>();
     }
 
     [DataMember]
-    public ExportDataItem[] DocumentFiles { get; set; }
+    public int SchemaVersion { get; set; } = 1;
 
-    public void save(string name)
+    [DataMember]
+    public List<ExportDataItem> DocumentFiles { get; set; }
+
+    public void save(string name, enPlatform platform)
     {
       try
       {
+        adjustData(platform);
         StreamWriter file = new StreamWriter(name);
         MemoryStream stream = new MemoryStream();
         DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(ExportDataJson));
@@ -547,6 +558,27 @@ namespace BatInspector
       }
     }
 
+    void adjustData(enPlatform platform)
+    {
+      switch (platform)
+      {
+        case enPlatform.INATURALIST:
+          {
+            foreach (ExportDataItem it in DocumentFiles)
+            {
+              it.SpeciesLatin = it.SpeciesLatin.Replace("Eptesicus", "Cnephaeus");
+              it.SpeciesLatin = it.SpeciesLatin.Replace("Plecotus auritus et austriacus", "Plecotus");
+              it.SpeciesLatin = it.SpeciesLatin.Replace("Myotis mystacinus et brandtii", "Myotis");
+              if (it.Temperature >= 99)
+                it.Temperature = 0.0;
+            }
+          }
+          break;
+        case enPlatform.MULTIBASE:
+          break;
+      }
+    }
+
     public static void exportEvaluation(DirectoryInfo dir, string subDirEval, string subsubDirWav, bool append)
     {
       DirectoryInfo[] subDirs = dir.GetDirectories();
@@ -554,10 +586,11 @@ namespace BatInspector
       {
         if (d.Name == subsubDirWav)
         {
-          ExportDataJson? exp = App.Model.SumReport.getListOfDocumentRecordings(d.FullName);
+          string exportPath = AppParams.AppParamsPath;
+          ExportDataJson? exp = App.Model.SumReport.getListOfDocumentRecordings(d.FullName, ref exportPath);
           if (exp != null)
           {
-            string expName = Path.Combine(AppParams.AppParamsPath, "exp_multibase.csv");
+            string expName = Path.Combine(exportPath, "exp_multibase.csv");
             exp.saveAsCsv(expName, append);
           }
         }
@@ -801,8 +834,7 @@ namespace BatInspector
         DebugLog.log("unable to save sum report, directory does not exist: " + _rootDir, enLogType.ERROR);
     }
 
-
-    public ExportDataJson? getListOfDocumentRecordings(string path)
+    public ExportDataJson? getListOfDocumentRecordings(string path, ref string evaluationPath)
     {
       if (string.IsNullOrEmpty(path))
         return null;
@@ -815,6 +847,7 @@ namespace BatInspector
       string Location = "";
       if (parentDir != null)
       {
+        evaluationPath = parentDir.FullName;
         string repName = Path.Combine(parentDir.FullName, "formular.json");
         WebReportDataJson? repData = WebReportDataJson.load(repName);
         if (repData != null)
@@ -826,8 +859,7 @@ namespace BatInspector
 
       // retrieve individual informations
       FileInfo[] files = dir.GetFiles("*.wav");
-      ExportDataJson retVal = new ExportDataJson(files.Length);
-      int index = 0;
+      ExportDataJson retVal = new ExportDataJson();
       foreach (FileInfo file in files)
       {
         ExportDataItem item = new ExportDataItem();
@@ -875,8 +907,7 @@ namespace BatInspector
         {
           DebugLog.log($"no meta data found for file {item.PathToWav}", enLogType.WARNING);
         }
-        retVal.DocumentFiles[index] = item;
-        index++;
+        retVal.DocumentFiles.Add(item);
       }
       return retVal;
     }

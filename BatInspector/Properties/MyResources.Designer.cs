@@ -1447,6 +1447,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Delete ähnelt.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Time Lag ähnelt.
         /// </summary>
         public static string DeltaT {
@@ -2433,6 +2442,33 @@ namespace BatInspector.Properties {
         public static string frmExportData_DirWav {
             get {
                 return ResourceManager.GetString("frmExportData_DirWav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Data exported successfully to iNaturalist! ähnelt.
+        /// </summary>
+        public static string frmExportData_iNatExportSuccess {
+            get {
+                return ResourceManager.GetString("frmExportData_iNatExportSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Some problems have to be fixed, see log window for details. ähnelt.
+        /// </summary>
+        public static string frmExportData_iNaturalistFix {
+            get {
+                return ResourceManager.GetString("frmExportData_iNaturalistFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No problems found, continue with upload to iNaturalist? ähnelt.
+        /// </summary>
+        public static string frmExportData_iNaturalistOkContinue {
+            get {
+                return ResourceManager.GetString("frmExportData_iNaturalistOkContinue", resourceCulture);
             }
         }
         
@@ -5137,6 +5173,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Path to PDF viewer ähnelt.
+        /// </summary>
+        public static string SetDescExePDF {
+            get {
+                return ResourceManager.GetString("SetDescExePDF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Settings for display filter ähnelt.
         /// </summary>
         public static string SetDescFilter {
@@ -5313,15 +5358,6 @@ namespace BatInspector.Properties {
         public static string SetDescSamplingRate {
             get {
                 return ResourceManager.GetString("SetDescSamplingRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die &apos;intelligent&apos; Script to copy all automatic detected species to manual ähnelt.
-        /// </summary>
-        public static string SetDescScriptAutoToMan {
-            get {
-                return ResourceManager.GetString("SetDescScriptAutoToMan", resourceCulture);
             }
         }
         

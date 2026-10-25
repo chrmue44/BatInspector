@@ -1,6 +1,5 @@
 ﻿using BatInspector.Properties;
 using System.Windows;
-using ZstdSharp.Unsafe;
 
 
 namespace BatInspector.Forms

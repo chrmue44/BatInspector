@@ -5,7 +5,6 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using System.Linq;
 using System.Windows;
 using System.Windows.Interop;
 using BatInspector.Controls;

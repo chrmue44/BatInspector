@@ -125,6 +125,8 @@ namespace BatInspector
 
     public ModelParams[] DefaultModelParams { get { return _defaultModelParams; } }
 
+    public ExportPlatforms Export { get; set; } = new ExportPlatforms();
+
 
     /// <summary>
     /// currently opened object (prj, query or null)

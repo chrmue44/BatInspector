@@ -13,6 +13,18 @@
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\libTools\libTools.vcxproj">
+			<!-- Verhindert, dass .NET versucht, die native DLL als .NET-Assembly zu laden -->
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<!-- Definiert die Ausgabe des C++ Projekts als normalen Inhalt -->
+			<OutputItemType>Content</OutputItemType>
+			<!-- Kopiert die DLL bei jedem Build in das .NET Ausgabeverzeichnis -->
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<!-- Wichtig: Verhindert Fehler, da C++ keine TargetFrameworks kennt -->
+			<SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
 		<!-- Relativer Pfad von der .csproj zur libfftw3-3.dll -->
 		<None Include="..\libBioAcoustics\lib\libfftw3-3.dll">
 			<!-- Sorgt für das Kopieren bei jedem Build, falls die Datei neuer ist -->
@@ -146,6 +158,7 @@
   <ItemGroup>
     <ProjectReference Include="..\libBioAcoustics\libBioAcoustics.vcxproj" />
     <ProjectReference Include="..\libScripter\libScripter.csproj" />
+    <ProjectReference Include="..\libTools\libTools.vcxproj" />
   </ItemGroup>
   
   <ItemGroup>

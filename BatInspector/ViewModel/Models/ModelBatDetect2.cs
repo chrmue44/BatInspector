@@ -139,6 +139,7 @@ namespace BatInspector
         else
         {
           string[] files = Directory.GetFiles(annDir, "*.wav.csv", SearchOption.AllDirectories);
+          Array.Sort(files);
           if (files.Length == 0)
           {
             DebugLog.log("Not a single bat call found!", enLogType.WARNING);

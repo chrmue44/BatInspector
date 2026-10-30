@@ -105,6 +105,7 @@ namespace BatInspector
       testTranslateFilter();
       testGeoCalc();
       testGetDateFromFilename();
+      testCsv();
       //testSimCall();
       //testReportModelBatdetect2();
       //testCreatePrjFromWavs();
@@ -620,6 +621,35 @@ namespace BatInspector
         text += $"{rec.Frequency.ToString("0.0", CultureInfo.InvariantCulture)}, {rec.Amplitude.ToString("0.0", CultureInfo.InvariantCulture)}\n".ToString(System.Globalization.CultureInfo.InvariantCulture);
       }
       File.WriteAllText(micFile, text);
+    }
+
+    private void testCsv()
+    {
+      Csv csv = new Csv();
+      string file = "F:\\prj\\BatInspector\\TestData\\test_csv.csv";
+      csv.read(file, ";", true);
+      assert("testCsvR1", csv.RowCnt == 27);
+      int row = csv.findFollowingRowInSortedList("cccc", 1);
+      assert("testCsv1", row == 5);
+      csv.insertRow(5);
+      csv.setCell(5, 1, "cccc");
+      assert("testCsvR1", csv.RowCnt == 28);
+      row = csv.findFollowingRowInSortedList("aaaa", 1);
+      assert("testCsv1", row == 2);
+      csv.insertRow(2);
+      csv.setCell(2, 1, "aaaa");
+      assert("testCsvR1", csv.RowCnt == 29);
+      row = csv.findFollowingRowInSortedList("aaab", 1);
+      assert("testCsvR1", row == 3);
+      row = csv.findFollowingRowInSortedList("aaad", 1);
+      assert("testCsvR1", row == 4);
+      row = csv.findFollowingRowInSortedList("oooa", 1);
+      assert("testCsv1", row == 18);
+      row = csv.findFollowingRowInSortedList("zzzz", 1);
+      assert("testCsv1", row == 30);
+      csv.insertRow(30);
+      csv.setCell(30, 1, "zzzz");
+      assert("testCsvR1", csv.RowCnt == 30);
     }
 
     private void testCalcSnr()

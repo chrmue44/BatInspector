@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace libScripter
 {
@@ -183,6 +184,52 @@ namespace libScripter
         DebugLog.log("Csv.findInRow(): rom number " + row.ToString() + " not valid", enLogType.ERROR);
       return retVal;
     }
+
+    /// <summary>
+    /// find the following row to insert row in a sorted CSV
+    /// </summary>
+    /// <param name="val"></param>
+    /// <param name="col"></param>
+    /// <param name="assumeSorted"></param>
+    /// <returns></returns>
+    public int findFollowingRowInSortedList(string val, string colName)
+    {
+      int col = getColNr(colName);
+      if (col < 0)
+      {
+        DebugLog.log("Csv.findFollowingRowInSortedList(): column " + colName + " not found", enLogType.ERROR);
+        return -1;
+      }
+      return findFollowingRowInSortedList(val, col);
+    }
+
+
+    public int findFollowingRowInSortedList(string val, int col)
+    {
+      int iFirst = _withHdr ? 2 : 1;
+      int iLast = _cells.Count; // _cells.Count ist die letzte gültige Zeile (1-basiert)
+      int retVal = 0; // Standardwert für "nicht gefunden"
+
+      while (iFirst <= iLast)
+      {
+        int i = (iLast - iFirst) / 2 + iFirst;
+        string cellValue = getCell(i, col);
+
+        int comparison = cellValue.CompareTo(val);
+        if (comparison <= 0)
+          iFirst = i + 1;
+        else
+        {
+          retVal = i;
+          iLast = i - 1;
+        }
+      }
+      if ((retVal == 0) && (iFirst <= (_cells.Count + 1)))
+        retVal = iFirst;
+
+      return retVal;
+    }
+
 
     public int saveAs(string name, bool withBackup = true)
     {
@@ -497,6 +544,12 @@ namespace libScripter
         _changed = true;
       }
       else
+      {
+        while (RowCnt < row)
+        {
+          addRow();
+        }
+      }
         log($"could not insert row in row {row}, file has only {RowCnt} rows", enLogType.ERROR);
     }
     

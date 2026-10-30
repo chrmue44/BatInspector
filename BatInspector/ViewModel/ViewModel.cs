@@ -484,17 +484,31 @@ namespace BatInspector
       if ((_view.Prj != null) && _view.Prj.Ok)
       {
         string dirName = Path.Combine(_selectedDir, _view.Prj.WavSubDir);
-        string delName = System.IO.Path.GetFileName(wavName);
-        delName = delName.ToLower().Replace(AppParams.EXT_WAV, ".*");
-        IEnumerable<string> delFiles = Directory.EnumerateFiles(dirName, delName);
+        string delNameWav = System.IO.Path.GetFileName(wavName);
+        string delNamePng = delNameWav.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
+        IEnumerable<string> delFilesWav = Directory.EnumerateFiles(dirName, delNameWav);
+        IEnumerable<string> delFilesPng = Directory.EnumerateFiles(dirName, delNamePng);
         string destDir = Path.Combine(SelectedDir, AppParams.DIR_DEL);
         if (!Directory.Exists(destDir))
           Directory.CreateDirectory(destDir);
-        foreach (string f in delFiles)
+        foreach (string f in delFilesWav)
         {
           try
           {
             File.Copy(f, destDir + "/" + System.IO.Path.GetFileName(f));
+            File.Delete(f);
+            DebugLog.log("delete file " + f, enLogType.DEBUG);
+          }
+          catch
+          {
+            retVal = 1;
+            DebugLog.log($"unable to remove file {f} from project", enLogType.ERROR);
+          }
+        }
+        foreach (string f in delFilesPng)
+        {
+          try
+          {
             File.Delete(f);
             DebugLog.log("delete file " + f, enLogType.DEBUG);
           }

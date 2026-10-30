@@ -551,11 +551,13 @@ namespace BatInspector
         string wavFileName = Path.GetFileName(wavName);
         AnalysisFile f = new AnalysisFile(wavFileName, samplerate, duration);
         _list.Add(f);
-        _csv.addRow();
-        _csv.setCell(_csv.RowCnt, Cols.NAME, wavFileName);
-        _csv.setCell(_csv.RowCnt, Cols.SAMPLERATE, samplerate);
-        _csv.setCell(_csv.RowCnt, Cols.FILE_LEN, duration);
-        _csv.setCell(_csv.RowCnt, Cols.NR, 1);        
+        _list.Sort();
+        int row =_csv.findFollowingRowInSortedList(wavFileName, Cols.NAME); 
+        _csv.insertRow(row);
+        _csv.setCell(row, Cols.NAME, wavFileName);
+        _csv.setCell(row, Cols.SAMPLERATE, samplerate);
+        _csv.setCell(row, Cols.FILE_LEN, duration);
+        _csv.setCell(row, Cols.NR, 1);        
       }
     }
 
@@ -944,7 +946,7 @@ namespace BatInspector
   }
 
 
-  public class AnalysisFile
+  public class AnalysisFile : IComparable<AnalysisFile>
   {
     private List<AnalysisCall> _calls;
 
@@ -980,6 +982,13 @@ namespace BatInspector
       _csv.setCell(_startRow, Cols.START_TIME, 0);
     }
 
+    public int CompareTo(AnalysisFile? other)
+    {
+      if (other == null)
+        return 1;
+      else
+        return this.Name.CompareTo(other.Name);
+    }
 
 
     /// <summary>

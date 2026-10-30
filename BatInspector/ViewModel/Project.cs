@@ -100,6 +100,8 @@ namespace BatInspector
       PrjRecord? retVal = null;
       PrjRecord[] records = getRecords();
 
+      if (records.Length == 0)
+        return null;
       int iFirst = 0;
       int iLast = records.Length - 1;
       if (_recordsSorted)
@@ -1462,7 +1464,7 @@ namespace BatInspector
 
 
 
-    public void addFiles(string[] files, bool removeSrc = false)
+    public async Task addFiles(string[] files, bool removeSrc = false)
     {
       List<PrjRecord> list = new List<PrjRecord>();
       if (_batExplorerPrj == null)
@@ -1473,13 +1475,10 @@ namespace BatInspector
       {
         _changed = true;
         addRecord(file, ref list);
-        if (_analysis[SelectedModelIndex]?.IsEmpty == false)
-        {
-          WavFile wFile = new WavFile();
-          wFile.readFile(file);
-          _analysis[SelectedModelIndex].addFile(ReportName, file, (int)wFile.FormatChunk.Frequency,
+        WavFile wFile = new WavFile();
+        wFile.readFile(file);
+        _analysis[SelectedModelIndex].addFile(ReportName, file, (int)wFile.FormatChunk.Frequency,
                             (double)wFile.AudioSamples.Length / wFile.FormatChunk.Frequency);
-        }
       }
 
       _batExplorerPrj.Records = list;
@@ -1501,7 +1500,7 @@ namespace BatInspector
       _reloadInGui = true;
     }
 
-    public void applyMicCorrection(double softening)
+    public async Task applyMicCorrection(double softening)
     {
       if (_batExplorerPrj == null)
         return;
@@ -1511,7 +1510,7 @@ namespace BatInspector
         foreach (PrjRecord record in _batExplorerPrj.Records)
         {
           string path = Path.Combine(_selectedDir, _wavSubDir, record.File);
-          applyMicCorrection(path, softening);
+          await applyMicCorrection(path, softening);
         }
         _batExplorerPrj.MicCorrected = true;
         writePrjFile();
@@ -1521,7 +1520,7 @@ namespace BatInspector
     }
 
 
-    private void applyMicCorrection(string wavFile, double softening)
+    private async Task applyMicCorrection(string wavFile, double softening)
     {
       try
       {
@@ -1674,7 +1673,7 @@ namespace BatInspector
       }
     }
 
-    public void recovery(bool delFiles, bool changedFiles)
+    public async Task recovery(bool delFiles, bool changedFiles)
     {
       if (changedFiles)
       {
@@ -1719,7 +1718,7 @@ namespace BatInspector
         List<string> files = new List<string>();
         foreach (FileInfo file in dir.GetFiles("*.wav"))
           files.Add(file.FullName);
-        addFiles(files.ToArray(), true);
+        await addFiles(files.ToArray(), true);
         DebugLog.log("deleted files of Prj '" + Name + "' recovered", enLogType.INFO);
       }
     }

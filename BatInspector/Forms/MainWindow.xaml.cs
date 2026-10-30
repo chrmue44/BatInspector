@@ -1783,7 +1783,7 @@ namespace BatInspector.Forms
       return IntPtr.Zero;
     }
 
-    private void _btnRecovery_Click(object sender, RoutedEventArgs e)
+    private async void _btnRecovery_Click(object sender, RoutedEventArgs e)
     {
       try
       {
@@ -1793,7 +1793,7 @@ namespace BatInspector.Forms
           FrmRecovery frm = new FrmRecovery(App.Model.Prj.Name);
           bool res = frm.ShowDialog() == true;
           if (res)
-            App.Model.Prj.recovery(frm._cbDel.IsChecked == true, frm._cbChanged.IsChecked == true);
+           await App.Model.Prj.recovery(frm._cbDel.IsChecked == true, frm._cbChanged.IsChecked == true);
         }
         else
         {

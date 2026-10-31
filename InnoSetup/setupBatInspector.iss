@@ -10,7 +10,7 @@
 #define MyAppURL "https://chrmue.de/bat/batinspector.html"
 #define MyAppExeName "BatInspector.exe"
 #define MyAppDataFolder "{commonappdata}\BatInspector"
-#define SourceFolder "F:\prj\BatInspector"
+#define SourceFolder "F:\prj\BatInspector099x"
 #define PythonInstaller "python-3.11.9-amd64.exe"
 #define PythonInstFolder "python311"
 #define BatDetectVersion "1.3.0"

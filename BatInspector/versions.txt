@@ -15,6 +15,9 @@
 - GUI doesn't freeze anymore while filtering big projects
 - selectable timespan for error reports to send
 
+# V0.9.9.1
+- bugfix: creation of Activity diagram in dialog report crashes 
+
 # V0.9.9.0   12.08.26
 - up to 5 fully configurable frequency guide lines in zoom view
 - summarized report (for multibase import)

@@ -8,7 +8,6 @@
 
 using BatInspector.Properties;
 using libParser;
-using Microsoft.VisualBasic.Logging;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
@@ -17,7 +16,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using System.Xml.Linq;
 
 
 namespace BatInspector
@@ -634,7 +632,8 @@ namespace BatInspector
                                              CallCharacteristic = enCallChar.FM_QCF,
                                              Identifiable = enIdentifiable.NO},
                            new CheckData() { FreqMk= new ValRange(26.0, 28.0, 32.0, 32.0 ),
-                                             Duration = new ValRange(3.0, 3.0, 5.0, 6.0),                                         CallCharacteristic = enCallChar.FM,
+                                             Duration = new ValRange(3.0, 3.0, 5.0, 6.0),  
+                                             CallCharacteristic = enCallChar.FM,
                                              Identifiable = enIdentifiable.NO}
                           };
 
@@ -761,7 +760,7 @@ namespace BatInspector
       Species.Add(new SpeciesInfos("MMYO", "Myotis myotis", "Großes Mausohr", 36, "", true, "", cMmyo));
       Species.Add(new SpeciesInfos("MMYS", "Myotis mystacinus", "Kleine Bartfledermaus", 23, "MBRA", true, "", cMmys));
       Species.Add(new SpeciesInfos("MNAT", "Myotis nattereri", "Fransenfledermaus", 40, "", true, "", cMnat));
-      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnatus", "Kleines Mausohr", 1, "", true, "", null));
+      Species.Add(new SpeciesInfos("MOXY", "Myotis oxygnathus", "Kleines Mausohr", 1, "", true, "", null));
       Species.Add(new SpeciesInfos("MSCH", "Miniopterus schreibersii", "Langflügelfledermaus", 1,"", true,"" , null));
       Species.Add(new SpeciesInfos("NLAS", "Nyctalus lasiopterus", "Riesenabendsegler", 1,"", true, "", null));
       Species.Add(new SpeciesInfos("NLEI", "Nyctalus leisleri", "Kleiner Abendsegler", 36, "", true, "FreqMin > 23000", cNlei));

@@ -1,5 +1,6 @@
 - bugfix: color values are not updated in the setup dialog when selecting a preset (but saved if unchanged)
 - bugfix: crash create ActivityDiagram in report dialog
+- bugfix: fixed typo in species name Myotis oxygnathus
 - ported to .NET10 Framework
 - added color preset from AK Fledermausschutz Aachen, Düren
 - expert mode: hides scatter diagram, detailed report, statistics, MySql and Species View
@@ -14,6 +15,8 @@
 - setting filter now a lot faster in big projects
 - GUI doesn't freeze anymore while filtering big projects
 - selectable timespan for error reports to send
+- added option for including f and t axes to PNG image when exporting files
+- Context Menu in the Project selection tree with various functions (compress, uncompress, cleanup)
 
 # V0.9.9.1
 - bugfix: creation of Activity diagram in dialog report crashes 

@@ -2122,7 +2122,7 @@
     <value>außerhalb der Grenzen</value>
   </data>
   <data name="msgInitZipPrj" xml:space="preserve">
-    <value>Sie öffnen gerade ein komprimiertes Projekt. Sollen die Aufnahmen entpackt werden?</value>
+    <value>Sie öffnen gerade ein komprimiertes Projekt. Sollen die Aufnahmen in ein temporäres Verzeichnis entpackt werden?</value>
   </data>
   <data name="frmExportData_iNaturalistFix" xml:space="preserve">
     <value>Es sind Probleme aufgetreten, die korrigiert werden müssen. Details im Log-Fenster.</value>
@@ -2138,5 +2138,32 @@
   </data>
   <data name="frmExportData_iNaturalistOkContinue" xml:space="preserve">
     <value>Keine Probleme gefunden, mit dem Upload nach iNaturalist fortfahren?</value>
+  </data>
+  <data name="frmExpWAVShowAxes" xml:space="preserve">
+    <value>f/t-Achsen im Sonogramm anzeigen</value>
+  </data>
+  <data name="MainContextCompressPrj" xml:space="preserve">
+    <value>Komprimiere Projekt</value>
+  </data>
+  <data name="MainContextRestoreDel" xml:space="preserve">
+    <value>Gelöschte Dateien wieder herstellen</value>
+  </data>
+  <data name="MainContextRestoreOrig" xml:space="preserve">
+    <value>Veränderte Aufnahmen wieder herstellen</value>
+  </data>
+  <data name="MainContextCleanupPrj" xml:space="preserve">
+    <value>Projekt aufräumen</value>
+  </data>
+  <data name="MainContextUncompressPrj" xml:space="preserve">
+    <value>Dekomprimiere Projekt</value>
+  </data>
+  <data name="MainContextCompressUnder" xml:space="preserve">
+    <value>Komprimiere Projekte in Unterverzeichnissen</value>
+  </data>
+  <data name="MainContextDeCompressUnder" xml:space="preserve">
+    <value>Dekomprimiere Projekte in Unterverzeichnissen</value>
+  </data>
+  <data name="MainContextCleanupUnder" xml:space="preserve">
+    <value>Projekte in Unterverzeichnissen aufräumen</value>
   </data>
 </root>

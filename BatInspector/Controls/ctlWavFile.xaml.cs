@@ -127,7 +127,7 @@ namespace BatInspector.Controls
         string wavName = Path.Combine(_wavFilePath, WavName);
         if (_sonogram != null)
         {
-          string image = _sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
+          string image = Sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, App.Model.ColorTable);
           if (string.IsNullOrEmpty(image) && (App.Model.Prj != null))
             DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
           else

@@ -14,7 +14,8 @@
             <CheckBox Name="_cbIncPng" Content="{x:Static res:MyResources.frmExpIncludePNG}" Margin="0,10,0,0" />
       <CheckBox Name="_cbIncXML" Content="{x:Static res:MyResources.frmExpIncludeXML}" />
       <CheckBox Name="_cbTimeStretch" Content="{x:Static res:MyResources.frmExpWAVTimeStretched}" />
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="35">
+      <CheckBox Name="_cbAxes" Content="{x:Static res:MyResources.frmExpWAVShowAxes}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Height="35">
         <Button x:Name="_btnOk" Content="{x:Static res:MyResources.BtnOK}" Width="100" Margin="0,10,0,0" Click="_btnOk_Click"/>
         <Button x:Name="_btnCancel" Content="{x:Static res:MyResources.BtnCancel}" Width="100"  Margin="10,10,0,0" Click="_btnCancel_Click"/>
       </StackPanel>

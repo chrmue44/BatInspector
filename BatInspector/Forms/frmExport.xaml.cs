@@ -32,7 +32,7 @@ namespace BatInspector.Forms
       if (((App.Model.Prj != null) && App.Model.Prj.Ok) || (App.Model.Query != null))
       {
         int call = App.Model.ZoomView.SelectedCallIdx;
-        if ((call >= 0) && (call <= App.Model.ZoomView.Analysis.Calls.Count))
+        if ((App.Model.ZoomView.Analysis != null) && (call >= 0) && (call < App.Model.ZoomView.Analysis.Calls.Count))
         {          
           string pref = App.Model.ZoomView.Analysis.Calls[call].getString(Cols.SPECIES_MAN);
           _ctlPrefix.setValue(pref);
@@ -47,7 +47,8 @@ namespace BatInspector.Forms
       bool incXml= _cbIncXML.IsChecked == true;
       uint timeStretch = (uint)(_cbTimeStretch.IsChecked == true ? 10 : 1);
       string prefix = _ctlPrefix.getValue();
-      App.Model.ZoomView.export(dstDir, incPng, incXml, timeStretch, prefix);
+      bool incAxes = _cbAxes.IsChecked == true;
+      App.Model.ZoomView.export(dstDir, incPng, incXml, timeStretch, prefix, incAxes);
       this.Hide();
     }
 

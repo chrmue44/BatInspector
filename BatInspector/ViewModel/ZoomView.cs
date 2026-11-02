@@ -467,7 +467,7 @@ namespace BatInspector
         DebugLog.log("could not save analysis backup for file: " + wavName, enLogType.ERROR);
     }
 
-    public int export(string dstDir, bool incPng, bool incXml, uint timeStretch, string prefix)
+    public int export(string dstDir, bool incPng, bool incXml, uint timeStretch, string prefix, bool incAxes)
     {
       int retVal = 0;
       try
@@ -501,15 +501,7 @@ namespace BatInspector
           }
           if (incPng)
           {
-            srcFile = _wf.WavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
-            if (string.IsNullOrEmpty(prefix))
-              dstFile = Path.Combine(dstDir, Path.GetFileName(srcFile));
-            else
-              dstFile = Path.Combine(dstDir, prefix + "_" + Path.GetFileName(srcFile));
-            if (File.Exists(srcFile))
-              File.Copy(srcFile, dstFile);
-            else
-              DebugLog.log($"PNG file: {srcFile} doesn'exist!", enLogType.WARNING);
+            Sonogram.createFtImageFromWavFile(dstFile, 1024, App.Model.ColorTable, (int)timeStretch, incAxes);
           }
           if (incXml)
           {

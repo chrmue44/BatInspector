@@ -178,7 +178,7 @@ namespace BatInspector.Controls
           System.Windows.Forms.DialogResult ok = ofi.ShowDialog();
           if (ok == System.Windows.Forms.DialogResult.OK)
           {
-            App.Model.Prj.addFiles(ofi.FileNames);
+            await App.Model.Prj.addFiles(ofi.FileNames);
             App.Model.Prj.Analysis?.save(App.Model.Prj.ReportName, App.Model.Prj.Notes, App.Model.Prj.SummaryName);
             App.Model.Prj.writePrjFile();
             App.MainWin._spSpectrums.Children.Clear();

@@ -5,13 +5,11 @@
  *
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using libParser;
-using System.Diagnostics;
 using NAudio.Wave;
+using System.Diagnostics;
+using System.IO;
+using System.Drawing;
 
 namespace BatInspector
 {
@@ -39,7 +37,7 @@ namespace BatInspector
           return 0;
        }
     }
-    public int SamplingRate { get { return _audio.SamplingRate; } }
+    public int SamplingRate { get { return _audio.SamplingRate; }  }
 
     public SoundEdit Audio { get { return _audio; } }
     public bool Ok { get { return _ok; } }
@@ -259,7 +257,7 @@ namespace BatInspector
     }
 
 
-    public Bitmap generateFtPicture(double tMin, double tMax, double fMin, double fMax, double gradientRange)
+    public Bitmap generateFtPicture(double tMin, double tMax, double fMin, double fMax, double gradientRange, int timeStretch = 1, bool withAxis = false)
     {
       int width = (int)AppParams.Inst.WaterfallWidth;
       Bitmap bmp2 = new Bitmap(10, 10); 
@@ -295,10 +293,64 @@ namespace BatInspector
             else
               DebugLog.log($"index error create Bitmap: {idxSpec}, nr of specs: {_spec.Count}", enLogType.ERROR);
           }
+          if (withAxis)
+          {
+            Color fontColor = Color.White;
+            createYAxis(bmp, fMin * timeStretch, fMax * timeStretch, fontColor);
+            createXAxis(bmp, tMin / timeStretch, tMax / timeStretch, width, fontColor);
+            drawGrid(bmp,fMin * timeStretch, fMax * timeStretch, width, fontColor);
+          }
           bmp2 = new Bitmap(bmp.Bmp);
         }
       }
       return bmp2;
+    }
+
+    void createYAxis(BitmapFast bmp, double fMin, double fMax, Color color)
+    {
+      bmp.print("[kHz]", 3, 3, color);
+      int fftBinCnt = calculateBestFftSize(0, Duration) / 2;
+      int height = fftBinCnt;
+      for (int f = 20; f < fMax; f+=20)
+      {
+        int y = (int)((double)f * height/fMax);
+        bmp.printLineX(0, height - 1 - y, 5, color);
+        bmp.print(f.ToString(), 10, height - 1 - y - 3, color);
+      }
+    }
+
+    void createXAxis(BitmapFast bmp, double tMin, double tMax, int width, Color color)
+    {
+      int height = calculateBestFftSize(0, Duration) / 2;
+      bmp.print("[s]", width - 20, height - 15, color);
+      int nrOfTicks = 10;
+      int dist = (int)(width / nrOfTicks);
+      for (int x = dist; x < width - dist; x += dist)
+      {
+        double t =  tMin  + (tMax - tMin) * x / width;
+        bmp.printLineY(x, height - 5, 5, color);
+        bmp.print(t.ToString("0.##"), x - 5, height - 18, color);
+        t += (tMax - tMin) / nrOfTicks;
+      }
+    }
+
+    void drawGrid(BitmapFast bmp, double fMin, double fMax, int width, Color color)
+    {
+      int fftBinCnt = calculateBestFftSize(0, Duration) / 2;
+      int height = fftBinCnt;
+      int dotDist = 8;
+      for (int f = 20; f < fMax; f += 20)
+      {
+        int y = (int)((double)f * height / fMax);
+        bmp.printLineX(30, height - 1 - y, width - 30  , color, dotDist);
+      }
+
+      int nrOfTicks = 10;
+      int dist = (int)(width / nrOfTicks);
+      for (int x = dist; x < width - dist; x += dist)
+      {
+        bmp.printLineY(x, 0, height - 30, color, dotDist);
+      }
     }
 
     public Bitmap generateXtPicture(double aMin, double aMax, double tMin, double tMax)
@@ -349,11 +401,11 @@ namespace BatInspector
       return fftSize;
     }
 
-    static void drawLine(int x, int ymin, int ymax, BitmapFast bmp, Color color) 
+/*    static void drawLine(int x, int ymin, int ymax, BitmapFast bmp, Color color) 
     {
       for (int y = ymin; y <= ymax; y++)
         bmp.setPixel(x, y, color);
-    }
+    } */
 
 
     void plotAsBand(double aMin, double aMax,  int idxMin, int idxMax, BitmapFast bmp) 
@@ -392,7 +444,8 @@ namespace BatInspector
           color = Color.Red;
           ovrDriveCnt--;
         }
-        drawLine(x, y1, y2, bmp, color);
+        bmp.printLineY(x, y1, y2 - y1 + 1, color);
+//        drawLine(x, y1, y2, bmp, color);
       }
     }
 

@@ -20,7 +20,8 @@ using libParser;
 using BatInspector.Properties;
 using System.Windows.Threading;
 using System.Data;
-
+using ContextMenu = System.Windows.Controls.ContextMenu;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace BatInspector.Forms
 {
@@ -68,8 +69,6 @@ namespace BatInspector.Forms
 
     double _scrollBarPrjPos = 0;
     bool _mouseIsDownOnScrollPrj = false;
-//    double _scrollBarListPos = 0;
-//    bool _mouseIsDownOnScrollList = false;
     bool _treeViewCollaped = false;
     bool _infoVisible = true;
 
@@ -267,16 +266,21 @@ namespace BatInspector.Forms
 
     }
 
-    public async void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+    private void closeProject()
     {
-      TreeViewItem item = (TreeViewItem)e.Source;
-      DirectoryInfo? dir = item.Tag as DirectoryInfo;
-      _sw.Restart();
       foreach (ctlWavFile ctl in _spSpectrums.Children)
         ctl.release();
       _spSpectrums.Children.Clear();
       if (App.Model.Prj?.Ok == true)
         checkSavePrj();
+    }
+
+    public async void TreeViewItem_Selected(object sender, RoutedEventArgs e)
+    {
+      TreeViewItem item = (TreeViewItem)e.Source;
+      DirectoryInfo? dir = item.Tag as DirectoryInfo;
+      _sw.Restart();
+      closeProject();
       _tbSum.Visibility = Visibility.Visible;
       if ((dir != null) && (Project.containsProject(dir, out bool zipped) != ""))
       {
@@ -304,6 +308,107 @@ namespace BatInspector.Forms
         }
       }
     }
+
+
+    private void trvStructure_ContextMenuOpening(object sender, RoutedEventArgs e)
+    {
+      TreeViewItem item = (TreeViewItem)e.Source;
+      DirectoryInfo? expandedDir = null;
+      bool isProject = false;
+      bool isZipped = false;
+      if (item.Tag is DirectoryInfo)
+        expandedDir = (item.Tag as DirectoryInfo);
+      try
+      {
+        List<TreeViewItem> list = new List<TreeViewItem>();
+        string dirName = "";
+        if (expandedDir != null)
+        {
+          if (Project.containsProject(expandedDir, out isZipped) != "")
+            isProject = true;
+          dirName = expandedDir.FullName;
+        }
+        initContextMenu(item, isProject, isZipped, dirName);
+      }
+      catch { }
+    }
+
+    async void clickContext(object sender, EventArgs e)
+    {
+      MenuItem? it = (MenuItem)sender;
+      if (it != null)
+      {
+        string? path = (string)it.Tag;
+        Enum.TryParse<enFunc>(it.Name, out enFunc func);
+        if (path != null)
+        {
+          closeProject();
+          switch (func)
+          {
+            case enFunc.CLEANUP:
+              if (_frmCleanup == null)
+                _frmCleanup = new frmCleanup();
+              _frmCleanup.StartDirectory = path;
+              _frmCleanup.Show();
+              break;
+            case enFunc.COMPRESS:
+              Project.zipProject(path);
+              break;
+            case enFunc.UNCOMPRESS:
+              Project.unzipProject(path);
+              break;
+            case enFunc.RESTORE_ORIGINALS:
+              await App.Model.Prj.recovery(false, true);
+              break;
+            case enFunc.RESTORE_DELETED:
+              await App.Model.Prj.recovery(true, false);
+              break;
+          }
+        }
+      }
+    }
+
+    enum enFunc
+    { 
+      COMPRESS,
+      UNCOMPRESS,
+      RESTORE_DELETED,
+      RESTORE_ORIGINALS,
+      CLEANUP
+    }
+
+    private void initContextMenu(TreeViewItem item, bool isProject, bool isZipped, string path)
+    {
+      System.Windows.Controls.ContextMenu menu = new ContextMenu();
+      menu.Width = 300;
+      //      menu.PreviewMouseRightButtonDown += _tb_PreviewMouseRightButtonDown;
+      string[] items1 = { MyResources.MainContextCompressPrj, MyResources.MainContextRestoreDel, MyResources.MainContextRestoreOrig, MyResources.MainContextCleanupPrj };
+      enFunc[] func1 = { enFunc.COMPRESS, enFunc.RESTORE_DELETED, enFunc.RESTORE_ORIGINALS, enFunc.CLEANUP };
+      string[] items2 = { MyResources.MainContextUncompressPrj, MyResources.MainContextRestoreDel, MyResources.MainContextRestoreOrig, MyResources.MainContextCleanupPrj };
+      enFunc[] func2 = { enFunc.UNCOMPRESS, enFunc.RESTORE_DELETED, enFunc.RESTORE_ORIGINALS, enFunc.CLEANUP };
+      string[] items3 = { MyResources.MainContextCompressUnder, MyResources.MainContextDeCompressUnder, MyResources.MainContextCleanupUnder };
+      enFunc[] func3 = { enFunc.COMPRESS, enFunc.UNCOMPRESS, enFunc.CLEANUP };
+      string[] items = isProject ? (isZipped ? items2 : items1) : items3;
+      enFunc[] func = isProject ? (isZipped ? func2 : func1) : func3;
+      for(int i = 0; i < items.Length; i++)
+      {
+        MenuItem it = new MenuItem
+        {
+          Header = items[i],
+          Padding = new Thickness(-30, 0, 10, 0),
+          Height = 22,
+//          Style = GetStableMenuItemStyle()
+        };
+        it.Click += clickContext;
+        it.Tag = path;
+        it.Name = func[i].ToString();
+        menu.Items.Add(it);
+      }
+      
+      item.ContextMenu = menu;
+    }
+
+
 
     public void setStatus(string status)
     {
@@ -514,7 +619,7 @@ namespace BatInspector.Forms
       Task<bool> t = showMsg(MyResources.msgInitZipPrj,MyResources.msgQuestion, MessageBoxButton.YesNo, MessageBoxImage.Question);
       if (t.Result)
       {
-        string prjDir = Project.decompress(dir.FullName, Path.Combine(AppParams.AppDataPath, "tmp"));
+        string prjDir = Project.decompressToTemp(dir.FullName, Path.Combine(AppParams.AppDataPath, "tmp"));
         if (prjDir != "")
         {
           DirectoryInfo dirTmp = new DirectoryInfo(prjDir);

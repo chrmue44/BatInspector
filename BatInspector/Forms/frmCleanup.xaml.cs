@@ -37,6 +37,15 @@ namespace BatInspector.Forms
       _ctlSelectFolder.setup(MyResources.frmCleanupSelRootFolder, 120, true, "", folderSelected);
     }
 
+    public string StartDirectory
+    {
+      set
+      {
+        _ctlSelectFolder.setValue(value);
+        folderSelected();
+      }
+    }
+
     void threadCheckMem()
     {
       App.Model.checkMem(_rootDir, out _wavSpace, out _logSpace, out _pngSpace, out _origSpace, out _annSpace);

@@ -2545,6 +2545,15 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die show f/t axes in sonogram ähnelt.
+        /// </summary>
+        public static string frmExpWAVShowAxes {
+            get {
+                return ResourceManager.GetString("frmExpWAVShowAxes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die save WAV file 10x time stretched ähnelt.
         /// </summary>
         public static string frmExpWAVTimeStretched {
@@ -4048,6 +4057,78 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Cleanup Projekt ähnelt.
+        /// </summary>
+        public static string MainContextCleanupPrj {
+            get {
+                return ResourceManager.GetString("MainContextCleanupPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Cleanup projects in subdirectories ähnelt.
+        /// </summary>
+        public static string MainContextCleanupUnder {
+            get {
+                return ResourceManager.GetString("MainContextCleanupUnder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Compress Project ähnelt.
+        /// </summary>
+        public static string MainContextCompressPrj {
+            get {
+                return ResourceManager.GetString("MainContextCompressPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Compress projects in subdirectories ähnelt.
+        /// </summary>
+        public static string MainContextCompressUnder {
+            get {
+                return ResourceManager.GetString("MainContextCompressUnder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Uncompress projects in subdirectories ähnelt.
+        /// </summary>
+        public static string MainContextDeCompressUnder {
+            get {
+                return ResourceManager.GetString("MainContextDeCompressUnder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Restore deleted files ähnelt.
+        /// </summary>
+        public static string MainContextRestoreDel {
+            get {
+                return ResourceManager.GetString("MainContextRestoreDel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Restorechaged recordings ähnelt.
+        /// </summary>
+        public static string MainContextRestoreOrig {
+            get {
+                return ResourceManager.GetString("MainContextRestoreOrig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Uncompress Project ähnelt.
+        /// </summary>
+        public static string MainContextUncompressPrj {
+            get {
+                return ResourceManager.GetString("MainContextUncompressPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Filter:  ähnelt.
         /// </summary>
         public static string MainFilter {
@@ -4651,7 +4732,7 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die You are opening a compressed project. Unzip compressed recordings? ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die You are opening a compressed project. Unzip compressed recordings into a temporary folder? ähnelt.
         /// </summary>
         public static string msgInitZipPrj {
             get {

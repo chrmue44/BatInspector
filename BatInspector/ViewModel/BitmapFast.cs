@@ -6,69 +6,149 @@
  *              Licence:  CC BY-NC 4.0 
  ********************************************************************************/
 
-/* old version
-
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace BatInspector
+public delegate void dlgSetPixel(int x, int y, Color col);
+
+public class Font
 {
-  public class BitmapFast
+  static int fontHeight = 9;
+  static int[] font = {
+    '0',5,
+    0b011111110,
+    0b100000001,
+    0b100000001,
+    0b100000001,
+    0b011111110,
+    '1',3,
+    0b100000010,
+    0b111111111,
+    0b100000000,
+    '2',5,
+    0b110000010,
+    0b101000001,
+    0b100100001,
+    0b100100001,
+    0b100011110,
+    '3',5,
+    0b010000010,
+    0b100000001,
+    0b100010001,
+    0b100010001,
+    0b011101110,
+    '4',5,
+    0b001111000,
+    0b001000100,
+    0b001000010,
+    0b111111111,
+    0b001000000,
+    '5',5,
+    0b010011111,
+    0b100010001,
+    0b100010001,
+    0b100010001,
+    0b011100001,
+    '6',5,
+    0b011111110,
+    0b100010001,
+    0b100010001,
+    0b100010001,
+    0b011100010,
+    '7',5,
+    0b000000001,
+    0b111100001,
+    0b000010001,
+    0b000001001,
+    0b000000111,
+    '8',5,
+    0b011101110,
+    0b100010001,
+    0b100010001,
+    0b100010001,
+    0b011101110,
+    '9',5,
+    0b010001110,
+    0b100010001,
+    0b100010001,
+    0b100010001,
+    0b011111110,
+    'k',4,
+    0b111111111,
+    0b001100000,
+    0b010010000,
+    0b100001000,
+    'H',5,
+    0b111111111,
+    0b000100000,
+    0b000100000,
+    0b000100000,
+    0b111111111,
+    'z',4,
+    0b111000100,
+    0b100100100,
+    0b100010100,
+    0b100001100,
+    's',4,
+    0b010011000,
+    0b100100100,
+    0b100100100,
+    0b011001000,
+    '[',3,
+    0b111111111,
+    0b100000001,
+    0b100000001,
+    ']',3,
+    0b100000001,
+    0b100000001,
+    0b111111111,
+    '.',2,
+    0b110000000,
+    0b110000000,
+    ',',2,
+    0b111000000,
+    0b011000000,
+    0xFFFF,1,
+    0
+  };
+
+  public static void printString(string str, int x, int y, Color fontColor, dlgSetPixel dlgSetPixel)
   {
-    int _w;
-    int _h;
-    int[] _pixel;
-    int _stride;
-    PixelFormat _fmt;
-
-    public Bitmap Bmp 
-    { get
-      {
-        lock (this)
-        {
-          IntPtr addr = Marshal.UnsafeAddrOfPinnedArrayElement(_pixel, 0);
-          return new Bitmap(_w, _h, _stride / 8, _fmt, addr);
-        }
-      }
-    }
-
-    public BitmapFast(int width, int height)
+    int xPos = x;
+    for (int i = 0; i < str.Length; i++)
     {
-      _w = width;
-      _h = height;
-      _fmt = PixelFormat.Format32bppRgb;
-
-      int pixelFormatSize = Image.GetPixelFormatSize(_fmt);
-      _stride = width * pixelFormatSize;
-      int padding = 32 - (_stride % 32);
-      if (padding < 32)
-        _stride += padding;
-      _pixel = new int[(_stride / 32) * _h];
-    }
-
-    public void setPixel(int x, int y, Color col)
-    {
-      int idx = y * _w + x;
-      _pixel[idx] = col.B | (col.G << 8) | (col.R << 16);
-    }
-
-    public void setPixel(int x, int y, int col)
-    {
-      int idx = y * _w + x;
-      _pixel[idx] = col;
-    }
-
-    public Color getPixel(int x, int y)
-    {
-      int idx = y * _w + x;
-      return Color.FromArgb((int)_pixel[idx]);
+      int advance = printChar(str[i], xPos, y, fontColor, dlgSetPixel);
+      xPos += advance;
     }
   }
+
+  static int printChar(char c, int x, int y, Color fontColor, dlgSetPixel dlgSetPixel)
+  {
+    int i = 0;
+    int advance = 1;
+    while (font[i] != 0xFFFF)
+    {
+      if (c == font[i])
+      {
+        advance = font[i + 1];
+        break;
+      }
+      i += font[i+1] + 2;
+    }
+
+    i += 2;
+    for (int xl = 0; xl < advance; xl++)
+    {
+      int row = font[i + xl];
+      for (int yl = 0; yl < fontHeight; yl++)
+      {
+        if ((row & (1 << yl)) != 0)
+          dlgSetPixel(x + xl, y + yl, fontColor);
+      }
+    }
+    return advance + 1;
+  }
 }
-*/
- // improved by Gemini
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 
 public class BitmapFast : IDisposable
 {
@@ -77,6 +157,7 @@ public class BitmapFast : IDisposable
   private readonly int[] _pixel;
   private GCHandle _gcHandle;
   private bool _disposed;
+
 
   public Bitmap Bmp { get; }
 
@@ -92,6 +173,29 @@ public class BitmapFast : IDisposable
 
     // Format32bppArgb erzwingen
     Bmp = new Bitmap(_w, _h, _w * 4, PixelFormat.Format32bppArgb, addr);
+  }
+
+  public void print(string str, int x, int y, Color color)
+  {
+    Font.printString(str, x, y, color, setPixel);
+  }
+
+  public void printLineX(int x, int y, int length, Color color, int dotDist = 0)
+  {
+    for (int i = 0; i < length; i++)
+    {
+      if (dotDist == 0 || i % (dotDist + 1) == 0)
+        setPixel(x + i, y, color);
+    }
+  }
+
+  public void printLineY(int x, int y, int length, Color color, int dotDist = 0)
+  {
+    for (int i = 0; i < length; i++)
+    {
+      if (dotDist == 0 || i % (dotDist + 1) == 0)
+        setPixel(x, y + i, color);
+    }
   }
 
   public void setPixel(int x, int y, Color col)

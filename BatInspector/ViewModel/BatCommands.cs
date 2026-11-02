@@ -530,18 +530,19 @@ namespace BatInspector
       string targetDir = pars[0];
       DirectoryInfo dir = new DirectoryInfo(targetDir);
       DirectoryInfo[] dirs = dir.GetDirectories();
+      bool isCompressed;
       foreach (DirectoryInfo d in dirs)
       {
-        List<string> subPars = new List<string>();
-        subPars.Add(d.FullName);
-        fctUnzipProject(subPars, out ErrText);
+        if (Project.containsProject(d, out isCompressed) == "")
+        {
+          List<string> subPars = new List<string>();
+          subPars.Add(d.FullName);
+          fctUnzipProject(subPars, out ErrText);
+        }
       }
-      FileInfo[] files = dir.GetFiles("*.zip");
-      foreach(FileInfo f in files)
+      if (Project.containsProject(dir, out isCompressed) == "")
       {
-        string zipName = f.FullName;
-        Project.unzipProject(targetDir, zipName);
-        File.Delete(zipName);
+        Project.unzipProject(targetDir);
       }
       return retVal;
     }

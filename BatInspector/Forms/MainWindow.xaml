@@ -253,7 +253,7 @@
                                 <controls:ctlPrjInfo x:Name="_ctlPrjInfo"   />
                                     </StackPanel>
                                 <Label Name="_lblProjectSelect" Grid.Row="1" Content="{x:Static res:MyResources.MainSelectFolder}" Background="{DynamicResource colorBackGroundWindow}" Foreground="White" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
-                                <TreeView  Grid.Row="2" x:Name="_trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,0,0,0" Grid.ColumnSpan="2"/>
+                                <TreeView  Grid.Row="2" x:Name="_trvStructure" BorderThickness="0"   TreeViewItem.Expanded="TreeViewItem_Expanded" TreeViewItem.Selected="TreeViewItem_Selected"  TreeViewItem.Collapsed="trvStructure_Collapsed" TreeViewItem.ContextMenuOpening="trvStructure_ContextMenuOpening"  Foreground="{DynamicResource colorForeGroundLabel}" Margin="5,0,0,0" Grid.ColumnSpan="2"/>
                                 <Rectangle Name="_rect" Grid.Row="2" Fill="{DynamicResource colorBackGroundWindow}" Visibility="Collapsed"/>
                             </Grid>
                         </Grid>

@@ -8,6 +8,7 @@
 
 using libParser;
 using libScripter;
+using NAudio.Wave;
 using OxyPlot;
 using System.Diagnostics;
 using System.Globalization;
@@ -1500,7 +1501,7 @@ namespace BatInspector
       _reloadInGui = true;
     }
 
-    public async Task applyMicCorrection(double softening)
+    public void applyMicCorrection(double softening)
     {
       if (_batExplorerPrj == null)
         return;
@@ -1510,7 +1511,7 @@ namespace BatInspector
         foreach (PrjRecord record in _batExplorerPrj.Records)
         {
           string path = Path.Combine(_selectedDir, _wavSubDir, record.File);
-          await applyMicCorrection(path, softening);
+          applyMicCorrection(path, softening);
         }
         _batExplorerPrj.MicCorrected = true;
         writePrjFile();
@@ -1520,7 +1521,7 @@ namespace BatInspector
     }
 
 
-    private async Task applyMicCorrection(string wavFile, double softening)
+    private void applyMicCorrection(string wavFile, double softening)
     {
       try
       {
@@ -1816,7 +1817,7 @@ namespace BatInspector
     /// <param name="zipFile"></param>
     /// <param name="dstDir"></param>
     /// <returns>the name of the project created directory</returns>
-    public static string decompress(string srcDir, string dstDir)
+    public static string decompressToTemp(string srcDir, string dstDir)
     {
       string retVal = "";
       try
@@ -1855,6 +1856,7 @@ namespace BatInspector
           DebugLog.log($"zipping {prjDir}...", enLogType.INFO);
           ZipFile.CreateFromDirectory(wavDir, wavDir + ".zip", CompressionLevel.Optimal, true);
           Directory.Delete(wavDir, true);
+          DebugLog.log("zipping done", enLogType.INFO);
         }
         else
           DebugLog.log($"{prjDir} is already compressed", enLogType.INFO);
@@ -1865,12 +1867,20 @@ namespace BatInspector
       }
     }
 
-    public static void unzipProject(string prjDir, string zipFile)
+    public static void unzipProject(string prjDir)
     {
       try
       {
-        DebugLog.log($"unzipping {zipFile}...", enLogType.INFO);
-        ZipFile.ExtractToDirectory(zipFile, prjDir);
+        string zipFile = Path.Combine(prjDir, AppParams.DIR_WAVS + ".zip");
+        if (!File.Exists(zipFile))
+          DebugLog.log($"{prjDir} is already uncompressed", enLogType.INFO);
+        else
+        {
+          DebugLog.log($"unzipping {zipFile}...", enLogType.INFO);
+          ZipFile.ExtractToDirectory(zipFile, prjDir);
+          File.Delete(zipFile);
+          DebugLog.log("unzipping done", enLogType.INFO);
+        }
       }
       catch (Exception ex)
       {

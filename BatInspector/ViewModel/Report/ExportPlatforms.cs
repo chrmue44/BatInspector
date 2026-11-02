@@ -22,7 +22,7 @@ namespace BatInspector
   public class ExportPlatforms
   {
 
-    public static string getKey()
+    public static string? getKey()
     {
       [DllImport("libTools.dll", CallingConvention = CallingConvention.Cdecl)]
       static extern IntPtr retrieveKey();
@@ -30,7 +30,7 @@ namespace BatInspector
       static extern void freeString(IntPtr str);
 
       IntPtr ptr = retrieveKey();
-      string retVal = Marshal.PtrToStringAnsi(ptr);
+      string? retVal = Marshal.PtrToStringAnsi(ptr);
       freeString(ptr);
       return retVal;
 
@@ -63,7 +63,12 @@ namespace BatInspector
         return;
       }
       string b = token[1].Replace("\"", "");
-      string key = getKey();
+      string? key = getKey();
+      if (key == null)
+      {
+        DebugLog.log("Failed to retrieve encryption key", enLogType.ERROR);
+        return;
+      }
       string encrA = Encrypt(a, key);
       string encrB = Encrypt(b, key);
       string file = encrA + "\n" + encrB + "\n";
@@ -80,7 +85,12 @@ namespace BatInspector
         else
           DebugLog.log("starting data check on iNaturalist, this may take a while...", enLogType.INFO);
         string[] lines = File.ReadAllLines(AppParams.API_KEYS_CRYPT);
-        string key = getKey();
+        string? key = getKey();
+        if (key == null)
+        {
+          DebugLog.log("Failed to retrieve encryption key", enLogType.ERROR);
+          return null;
+        }
         string clientId = ExportPlatforms.Decrypt(lines[0], key);
         string clientSecret = ExportPlatforms.Decrypt(lines[1], key);
 

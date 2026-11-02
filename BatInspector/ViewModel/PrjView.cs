@@ -366,7 +366,7 @@ namespace BatInspector
       Sonogram? tmp = _sonograms.get(rec.Name);
       if (tmp != null)
       {
-        string imgName = tmp.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, colorTable);
+        string imgName = Sonogram.createFtImageFromWavFile(wavName, AppParams.FFT_WIDTH, colorTable);
         if (string.IsNullOrEmpty(imgName) && (Prj != null))
           DebugLog.log($"unable to create PNG filefor : {wavName}", enLogType.ERROR);
         tmp.release();
@@ -553,7 +553,7 @@ namespace BatInspector
 
 
 
-    public string createFtImageFromWavFile(string wavName, int fftWidth, ColorTable colorTable)
+    public static string createFtImageFromWavFile(string wavName, int fftWidth, ColorTable colorTable, int timeExpansion = 1, bool withAxis = false)
     {
       string pngName = wavName.ToLower().Replace(AppParams.EXT_WAV, AppParams.EXT_IMG);
       bool fromDll = false;
@@ -579,7 +579,7 @@ namespace BatInspector
             if (wf.Ok)
             {
               wf.generateFtDiagram(0, (double)wf.Audio.Samples.Length / wf.SamplingRate, AppParams.Inst.WaterfallWidth);
-              using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, wf.SamplingRate / 2000, AppParams.Inst.GradientRange))
+              using (Bitmap bmp = wf.generateFtPicture(0, wf.Duration, 0, /*wf.SamplingRate / 2000 */ 130/timeExpansion, AppParams.Inst.GradientRange, (int)timeExpansion, withAxis))
               {
                 bmp.Save(pngName);
               }

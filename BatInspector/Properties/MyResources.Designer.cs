@@ -1915,6 +1915,24 @@ namespace BatInspector.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Source directory to backup from ähnelt.
+        /// </summary>
+        public static string frmBackupSrc {
+            get {
+                return ResourceManager.GetString("frmBackupSrc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Backup to external drive ähnelt.
+        /// </summary>
+        public static string frmBackupTitle {
+            get {
+                return ResourceManager.GetString("frmBackupTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die AI annotation files ähnelt.
         /// </summary>
         public static string frmCleanupAnnotations {
@@ -4053,6 +4071,15 @@ namespace BatInspector.Properties {
         public static string MainBtnSize {
             get {
                 return ResourceManager.GetString("MainBtnSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Backup projects in subdirectories ähnelt.
+        /// </summary>
+        public static string MainContextBackupUnder {
+            get {
+                return ResourceManager.GetString("MainContextBackupUnder", resourceCulture);
             }
         }
         

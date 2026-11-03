@@ -1382,15 +1382,22 @@ namespace BatInspector
     {
       string configFile = "f:/prj/BatInspector/api_keys.txt";
       ExportPlatforms.genKeyFile(configFile);
-      string key = ExportPlatforms.getKey();
+      string? key = ExportPlatforms.getKey();
       string test1 = "ABCD123";
-      string enc1 = ExportPlatforms.Encrypt(test1, key);
-      string dec1 = ExportPlatforms.Decrypt(enc1, key);
+      string dec1 = "";
+      if (key != null)
+      {
+        string enc1 = ExportPlatforms.Encrypt(test1, key);
+        dec1 = ExportPlatforms.Decrypt(enc1, key);
+      }
       assert("encryption test 1", dec1 == test1);
 
       string[] lines = File.ReadAllLines(AppParams.API_KEYS_CRYPT);
-      string a = ExportPlatforms.Decrypt(lines[0], key);
-      string b = ExportPlatforms.Decrypt(lines[1], key);
+      if (key != null)
+      {
+        string a = ExportPlatforms.Decrypt(lines[0], key);
+        string b = ExportPlatforms.Decrypt(lines[1], key);
+      }
     }
 
 

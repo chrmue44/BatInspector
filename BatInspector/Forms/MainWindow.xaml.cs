@@ -53,6 +53,7 @@ namespace BatInspector.Forms
     frmDebug? _frmDebug = null;
     FrmQuery? _frmQuery = null;
     frmCleanup? _frmCleanup = null;
+    frmBackup? _frmBackup = null;
     FrmMessage? _frmMsg = new FrmMessage();
     frmExport? _frmExp = null;
     frmExportData? _frmExportData = null;
@@ -363,6 +364,12 @@ namespace BatInspector.Forms
             case enFunc.RESTORE_DELETED:
               await App.Model.Prj.recovery(true, false);
               break;
+            case enFunc.BACKUP:
+              if(_frmBackup == null)
+                _frmBackup = new frmBackup();
+              _frmBackup.StartDirectory = path;
+              _frmBackup.Show();
+              break;
           }
         }
       }
@@ -374,7 +381,8 @@ namespace BatInspector.Forms
       UNCOMPRESS,
       RESTORE_DELETED,
       RESTORE_ORIGINALS,
-      CLEANUP
+      CLEANUP,
+      BACKUP
     }
 
     private void initContextMenu(TreeViewItem item, bool isProject, bool isZipped, string path)
@@ -386,8 +394,8 @@ namespace BatInspector.Forms
       enFunc[] func1 = { enFunc.COMPRESS, enFunc.RESTORE_DELETED, enFunc.RESTORE_ORIGINALS, enFunc.CLEANUP };
       string[] items2 = { MyResources.MainContextUncompressPrj, MyResources.MainContextRestoreDel, MyResources.MainContextRestoreOrig, MyResources.MainContextCleanupPrj };
       enFunc[] func2 = { enFunc.UNCOMPRESS, enFunc.RESTORE_DELETED, enFunc.RESTORE_ORIGINALS, enFunc.CLEANUP };
-      string[] items3 = { MyResources.MainContextCompressUnder, MyResources.MainContextDeCompressUnder, MyResources.MainContextCleanupUnder };
-      enFunc[] func3 = { enFunc.COMPRESS, enFunc.UNCOMPRESS, enFunc.CLEANUP };
+      string[] items3 = { MyResources.MainContextCompressUnder, MyResources.MainContextDeCompressUnder, MyResources.MainContextCleanupUnder, MyResources.MainContextBackupUnder };
+      enFunc[] func3 = { enFunc.COMPRESS, enFunc.UNCOMPRESS, enFunc.CLEANUP, enFunc.BACKUP };
       string[] items = isProject ? (isZipped ? items2 : items1) : items3;
       enFunc[] func = isProject ? (isZipped ? func2 : func1) : func3;
       for(int i = 0; i < items.Length; i++)
@@ -1196,19 +1204,20 @@ namespace BatInspector.Forms
       DebugLog.log("closing application", enLogType.DEBUG);
       App.Model.View.stopCreatingPngFiles();
       checkSavePrj();
-        _frmColorMap?.Close();
-        _frmZoom?.Close();
-        _frmFilter?.Close();
-        _frmScript?.Close();
-        _frmAbout?.Close();
-        _frmSettings?.Close();
-        _frmCreatePrj?.Close();
-        _frmCreateReport?.Close();
-        _frmWavFile?.Close();
-        _frmDebug?.Close();
-        _frmQuery?.Close();
-        _frmCleanup?.Close();
-        _frmMsg?.Close();
+      _frmColorMap?.Close();
+      _frmZoom?.Close();
+      _frmFilter?.Close();
+      _frmScript?.Close();
+      _frmAbout?.Close();
+      _frmSettings?.Close();
+      _frmCreatePrj?.Close();
+      _frmCreateReport?.Close();
+      _frmWavFile?.Close();
+      _frmDebug?.Close();
+      _frmQuery?.Close();
+      _frmCleanup?.Close();
+      _frmBackup?.Close();
+      _frmMsg?.Close();
       _frmExp?.Close();
       _frmExportData?.Close();
       DebugLog.save();

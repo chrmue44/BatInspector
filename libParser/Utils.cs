@@ -81,32 +81,32 @@ namespace libParser
       return (c == ' ') || (c == '\t');
     }
 
-    static public void CopyFolder(string sourceFolder, string destFolder)
+    static public void CopyFolder(string sourceFolder, string destFolder, bool overwriteIfNewer = false, bool quiet = false)
     {
       //http://www.csharp411.com/c-copy-folder-recursively/
       if (!Directory.Exists(destFolder))
         Directory.CreateDirectory(destFolder);
       string[] files = Directory.GetFiles(sourceFolder);
-      copyFiles(files, destFolder);
+      copyFiles(files, destFolder,false,overwriteIfNewer, quiet);
       string[] folders = Directory.GetDirectories(sourceFolder);
       foreach (string folder in folders)
       {
         string name = Path.GetFileName(folder);
         string dest = Path.Combine(destFolder, name);
-        CopyFolder(folder, dest);
+        CopyFolder(folder, dest, overwriteIfNewer, quiet);
       }
     }
 
-    static public void copyFiles(FileInfo[] fileInfos, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false)
+    static public void copyFiles(FileInfo[] fileInfos, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false, bool quiet = false)
     {
       string[] files = new string[fileInfos.Length];
       for (int i = 0; i < files.Length; i++)
         files[i] = fileInfos[i].FullName;
-      copyFiles(files, dstFolder, removeSrc, overWriteIfNewer);
+      copyFiles(files, dstFolder, removeSrc, overWriteIfNewer, quiet);
     }
 
 
-    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false)
+    static public void copyFiles(string[] files, string dstFolder, bool removeSrc = false, bool overWriteIfNewer = false, bool quiet = false)
     {
       foreach (string file in files)
       {
@@ -122,7 +122,7 @@ namespace libParser
             DateTime dstTime = File.GetLastWriteTime(dest);
             if (srcTime > dstTime)
               overWrite = overWriteIfNewer;
-            if (!overWriteIfNewer)
+            if (!overWriteIfNewer && !quiet)
               DebugLog.log("File already exists (not overwritten): " + dest, enLogType.WARNING);
           }
           else
@@ -134,7 +134,8 @@ namespace libParser
             if (overWrite)
             {
               File.Copy(file, dest, overWrite);
-              DebugLog.log($"replace file with newer version: {dest}", enLogType.INFO);
+              if(!quiet)
+                DebugLog.log($"replace file with newer version: {dest}", enLogType.INFO);
             }
           }
           else

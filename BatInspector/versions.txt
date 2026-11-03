@@ -1,22 +1,26 @@
+fixes:
 - bugfix: color values are not updated in the setup dialog when selecting a preset (but saved if unchanged)
 - bugfix: crash create ActivityDiagram in report dialog
 - bugfix: fixed typo in species name Myotis oxygnathus
+improvements:
 - ported to .NET10 Framework
-- added color preset from AK Fledermausschutz Aachen, Düren
-- expert mode: hides scatter diagram, detailed report, statistics, MySql and Species View
-- upload observations to iNaturalist (requires internet connection)
 - removed option "All Calls" in filtering
-- new option "LATITUDE","LONGITUDE" for script function setFileInfo()
-- new commands: CompressProject, DecompressProject
-- open project with compressed wav files possible: data is still available for analysis, but not for playback
 - removed BatData Form
-- new way to set manual Species as text field, optionally go back to old way with drop down list by setting "SpeciesSelectMode = CLASSIC" in BatInspectorSettings.json
 - manual Species offers now selection of all possible Species (not just regionals)
 - setting filter now a lot faster in big projects
 - GUI doesn't freeze anymore while filtering big projects
+new features:
 - selectable timespan for error reports to send
+- added color preset from AK Fledermausschutz Aachen, Düren
+- expert mode: hides scatter diagram, detailed report, statistics, MySql and Species View
+- upload observations to iNaturalist (requires internet connection)
+- new option "LATITUDE","LONGITUDE" for script function setFileInfo()
+- new commands: CompressProject, DecompressProject
+- open project with compressed wav files possible: data is still available for analysis, but not for playback
+- new way to set manual Species as text field, optionally go back to old way with drop down list by setting "SpeciesSelectMode = CLASSIC" in BatInspectorSettings.json
 - added option for including f and t axes to PNG image when exporting files
 - Context Menu in the Project selection tree with various functions (compress, uncompress, cleanup)
+
 
 # V0.9.9.1
 - bugfix: creation of Activity diagram in dialog report crashes 

@@ -8,13 +8,10 @@
 
 using libParser;
 using libScripter;
-using NAudio.Wave;
-using OxyPlot;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Windows;
 using System.Xml.Serialization;
@@ -785,6 +782,63 @@ namespace BatInspector
         }
         else
           DebugLog.log($"file {name} not imported because it is too short", enLogType.INFO);
+      }
+    }
+
+    public static void backup(string srcDir, string dstDir)
+    {
+      bool srcZipped = false;
+      bool dstZipped = false;
+      if (containsProject(srcDir, out srcZipped) == "")
+      {
+        DebugLog.log($"no project found in {srcDir}, backup of project aborted", enLogType.WARNING);
+        return;
+      }
+      DebugLog.log($"backing up project {srcDir} ...", enLogType.INFO);
+      if (!Directory.Exists(dstDir))
+      {
+        Utils.CopyFolder(srcDir, dstDir, true, true);
+        zipProject(dstDir);
+      }
+      else
+      {
+        if(containsProject(dstDir, out dstZipped) != "")
+        {
+          DirectoryInfo srcDirInfo = new DirectoryInfo(dstDir);
+          DirectoryInfo[] srcDirs = srcDirInfo.GetDirectories();
+
+          // if source and target have same zip status, just copy all files and folders
+          if (dstZipped == srcZipped)
+          {
+            Utils.CopyFolder(srcDir, dstDir, true, true);
+          }
+
+          // if src is zipped and dst is not, remove dst WAV folder and then copy all files
+          else if (srcZipped)
+          {
+            string dstWavDir = Path.Combine(dstDir, AppParams.DIR_WAVS);
+            if (Directory.Exists(dstWavDir))
+              Directory.Delete(dstWavDir, true);
+            Utils.CopyFolder(srcDir, dstDir, true, true);
+          }
+
+          // if dst ist zipped and src is not, remove dst ZIP file and then copy all files
+          else
+          {
+            string dstZipFile = Path.Combine(dstDir, AppParams.DIR_WAVS + ".zip");
+            if (File.Exists(dstZipFile))
+              File.Delete(dstZipFile);
+            Utils.CopyFolder(srcDir, dstDir, true, true);
+            zipProject(dstDir);
+          }
+
+          if (!dstZipped)
+            zipProject(dstDir);
+        }
+        else
+        {
+          Utils.CopyFolder(srcDir, dstDir, true, true);
+        }
       }
     }
 

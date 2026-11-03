@@ -2166,4 +2166,13 @@
   <data name="MainContextCleanupUnder" xml:space="preserve">
     <value>Cleanup projects in subdirectories</value>
   </data>
+  <data name="frmBackupTitle" xml:space="preserve">
+    <value>Backup to external drive</value>
+  </data>
+  <data name="frmBackupSrc" xml:space="preserve">
+    <value>Source directory to backup from</value>
+  </data>
+  <data name="MainContextBackupUnder" xml:space="preserve">
+    <value>Backup projects in subdirectories</value>
+  </data>
 </root>

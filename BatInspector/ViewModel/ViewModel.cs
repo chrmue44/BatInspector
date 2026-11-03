@@ -867,6 +867,42 @@ namespace BatInspector
       }
     }
 
+    public void backup(string root, string dest)
+    {
+      if (!Directory.Exists(root))
+      {
+        DebugLog.log($"backup source directory {root} does not exist", enLogType.ERROR);
+        return;
+      }
+      if(!Directory.Exists(dest))
+      {
+        DebugLog.log($"backup destination directory {dest} does not exist", enLogType.ERROR);
+        return;
+      }
+      bool isPrjDir = false;
+      DirectoryInfo currentDir = new DirectoryInfo(root);
+      DirectoryInfo[] dirs = currentDir.GetDirectories();
+      foreach (DirectoryInfo d in dirs)
+      {
+        string srcDir = Path.Combine(root, d.Name);
+        string destDir = Path.Combine(dest, d.Name);
+        isPrjDir = (Project.containsProject(d, out bool zipped) != "");
+        if (isPrjDir)
+          Project.backup(srcDir, destDir);
+        else
+        {
+          if(!Directory.Exists(destDir))
+            Directory.CreateDirectory(destDir);
+          backup(srcDir, destDir);
+        }
+      }
+      if(!isPrjDir)
+      {
+        FileInfo[] files = currentDir.GetFiles();
+        Utils.copyFiles(files, dest, false, true, true);
+      }
+    }
+
     public void checkMem(string root, out int wavSpace, out int logSpace, out int pngSpace, out int origSpace, out int annSpace)
     {
       wavSpace = 0;

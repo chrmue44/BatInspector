@@ -2166,4 +2166,13 @@
   <data name="MainContextCleanupUnder" xml:space="preserve">
     <value>Projekte in Unterverzeichnissen aufräumen</value>
   </data>
+  <data name="frmBackupTitle" xml:space="preserve">
+    <value>Datensicherung auf externes Laufwerk</value>
+  </data>
+  <data name="frmBackupSrc" xml:space="preserve">
+    <value>Quellverzeichnis</value>
+  </data>
+  <data name="MainContextBackupUnder" xml:space="preserve">
+    <value>Datensicherung von Projekten in Unterverzeichnissen</value>
+  </data>
 </root>
